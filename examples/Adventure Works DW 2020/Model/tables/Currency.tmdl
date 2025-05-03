@@ -1,0 +1,49 @@
+﻿table Currency
+
+	column CurrencyKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: CurrencyKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Format String'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Format String
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Currency = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(SqlServerInstance, SqlServerDatabase),
+				    dbo_DimCurrency = Source{[Schema="dbo",Item="DimCurrency"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(dbo_DimCurrency,{"DimOrganization", "FactCurrencyRate", "FactInternetSales", "FactResellerSales"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"CurrencyName", "Currency"}, {"CurrencyAlternateKey", "Code"}, {"FormatString", "Format String"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
