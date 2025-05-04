@@ -1,0 +1,249 @@
+# Configuration for mapping Tableau TWB XML elements to Power BI TMDL/Report objects
+
+# --- Metadata & Lookups ---
+# These provide reusable mappings for specific transformations
+
+tableau_datatype_to_tmdl:
+  string: string
+  integer: int64
+  real: double
+  datetime: dateTime
+  date: date
+  boolean: boolean
+  # Add others as needed, potentially default to 'string'
+
+tableau_role_to_summarize_by:
+  # If role is 'measure' and datatype is numeric, default summarizeBy could be 'sum'
+  # Otherwise, default is typically 'none' in TMDL unless specified.
+  # This mapping might be handled in code logic rather than a direct lookup.
+  # Example placeholder (logic likely more complex):
+  measure_numeric: sum
+  default: none
+
+tableau_semantic_role_to_datacategory:
+  # Based on values like '[Geo].[Latitude]' etc. Needs parsing.
+  "[Geo].[City]": City
+  "[Geo].[Country/Region]": Country
+  "[Geo].[County]": County
+  "[Geo].[Latitude]": Latitude
+  "[Geo].[Longitude]": Longitude
+  "[Geo].[Postal Code]": PostalCode
+  "[Geo].[State/Province]": StateOrProvince
+  "[Url].[Url]": WebUrl # Example, adjust based on actual Tableau values
+  # Add other relevant semantic roles
+
+tableau_viz_type_to_pbi:
+  text-table: matrix
+  discrete-bar: barChart # Or stackedBarChart, clusteredBarChart depending on layout
+  continuous-line: lineChart
+  pie-chart: pieChart
+  crosstab: matrix
+  map: map # Basic map, filled map needs more inspection
+  # Add many more... Needs comprehensive list
+  default: table # Fallback for unsupported types
+
+# --- Mapping Definitions for Dataclasses ---
+
+PowerBiTable:
+  source_xpath: //datasources/datasource/relation[@name and (@type='table' or @type='text')] # Finds tables and custom SQL relations
+  pbi_name:
+    source_attribute: name
+    mapping_function: sanitize_identifier # Python function to clean name for PBI
+  source_name:
+    source_attribute: name # Keep original for lineage
+  description:
+    source_attribute: caption # Or use datasource caption if relation lacks one
+    default: null
+  is_hidden:
+    default: false # Can be overridden by post-processing logic if needed
+  partitions: # Not a direct mapping - signals generation needed
+    derived_rule: generate_m_partition # Requires connection info + relation details
+    connection_info_xpath: ../connection # Relative to relation element
+    relation_details: self # Use the current relation node
+
+PowerBiColumn:
+  # Find columns defined within datasources OR referenced within worksheets/shelves if not in DS metadata
+  source_xpath: //datasources/datasource/column[@name] | //datasources/datasource/calculated-field[@name]
+  context_note: "Needs logic to handle calculated fields potentially mapping to Measures instead."
+  pbi_name:
+    source_attribute: name
+    mapping_function: sanitize_identifier # Remove brackets [], handle special chars
+  pbi_datatype:
+    source_attribute: datatype
+    lookup: tableau_datatype_to_tmdl # Use lookup table above
+    default: string
+  source_name:
+    source_attribute: name # Original name with brackets etc.
+  description:
+    source_attribute: caption
+    alternative_xpath: desc # Check for child <desc> element
+    default: null
+  format_string:
+    # Complex: Needs to find associated style-rules or format attributes
+    source_xpath: # Example XPaths (likely need refinement)
+      - ./style-rule/format[@attr='text-format']
+      - ./_.fcp.FormatAttribute... # Check for specific format attributes
+    mapping_function: map_tableau_format # Python function to convert Tableau format codes
+    default: null
+  is_hidden:
+    source_attribute: hidden
+    mapping_function: to_boolean # Convert 'true'/'false' string
+    default: false
+  source_column:
+    source_attribute: name # Default to source_name, logic might override if renamed
+  summarize_by:
+    # Rule: Check 'role' and 'datatype'. If role='measure' & numeric type -> 'sum', else 'none'.
+    derived_rule: determine_summarize_by
+    source_attribute_role: role
+    source_attribute_datatype: datatype
+  sortByColumnName:
+    # Complex: Look for specific Tableau metadata elements related to sorting
+    source_xpath: .//_.fcp.SortSpecAttribute... # Placeholder for actual path
+    mapping_function: extract_sort_column
+    default: null
+  dataCategory:
+    source_attribute: semantic-role
+    lookup: tableau_semantic_role_to_datacategory
+    mapping_function: parse_semantic_role # Extract key like '[Geo].[City]'
+    default: null
+  annotations: # Derived during processing
+    SummarizationSetBy:
+      derived_rule: derive_summarization_set_by # Based on summarize_by value
+    PBI_FormatHint:
+      derived_rule: derive_pbi_format_hint # Based on format_string and potentially global locale setting
+
+PowerBiMeasure:
+  # Typically maps from <column role='measure' calculation='...'> or <calculated-field>
+  source_xpath: //datasources/datasource/column[@role='measure' and @calculation] | //datasources/datasource/calculated-field
+  context_note: "Requires filter to ensure it's used as an aggregation."
+  pbi_name:
+    source_attribute: name
+    mapping_function: sanitize_identifier
+  dax_expression:
+    ai_translation_source: calculation # Attribute containing Tableau formula string
+    context_required: # Information needed by the AI prompt builder
+      - referenced_field_names # List of fields used in the formula
+      - data_model_context # Mapped PBI names and datatypes of referenced fields
+  source_name:
+    source_attribute: name
+  description:
+    source_attribute: caption
+    alternative_xpath: desc
+    default: null
+  format_string:
+    # Similar complex lookup as PowerBiColumn format_string
+    mapping_function: map_tableau_format
+    default: null
+  is_hidden:
+    source_attribute: hidden
+    mapping_function: to_boolean
+    default: false
+  display_folder:
+    source_attribute: group # From calculated-field element
+    default: null
+  annotations: # Derived
+    PBI_FormatHint:
+      derived_rule: derive_pbi_format_hint
+
+PowerBiRelationship:
+  # Maps from <relation type='join'> elements
+  source_xpath: //datasources/datasource/relation[@type='join']
+  context_note: "Requires parsing join clause expressions."
+  from_table:
+    mapping_function: get_join_table_name # Parses join clause to find table name on one side
+    transformation: sanitize_identifier
+  from_column:
+    mapping_function: get_join_column_name # Parses join clause expression for field name
+    transformation: sanitize_identifier # Must match sanitized column name
+  to_table:
+    mapping_function: get_join_table_name # Parses join clause for the other table name
+    transformation: sanitize_identifier
+  to_column:
+    mapping_function: get_join_column_name # Parses join clause for the other field name
+    transformation: sanitize_identifier
+  is_active:
+    default: true
+  cardinality:
+    derived_rule: infer_cardinality # Attempt analysis, or default
+    default: manyToOne
+  cross_filter_behavior:
+    default: oneWay # Power BI 'Single direction'
+
+PowerBiHierarchy:
+  # Find columns that are part of a hierarchy
+  source_xpath: //datasources/datasource/column[@hierarchy]
+  name:
+    source_attribute: hierarchy
+  levels:
+    derived_rule: find_hierarchy_levels # Logic to group columns by 'hierarchy' attribute
+    level_name_attribute: name # Use column name as level name
+    level_column_attribute: name # Reference the column itself
+
+PowerBiPartition: # Definition within PowerBiTable mapping applies
+  name:
+    source_attribute: name # From the relation element
+  source_type:
+    default: m
+  expression: # M Code
+    derived_rule: generate_m_code # Complex function using connection/relation info
+    source_connection_xpath: ../connection
+    source_relation_details: self # The relation element itself
+
+# --- Report Object Mappings (Targeting report.json) ---
+
+PowerBiReportPage:
+  source_xpath: //dashboards/dashboard
+  name:
+    source_attribute: name
+    mapping_function: sanitize_identifier
+    default_prefix: "Page "
+  # width, height, display_option might need parsing from <size> elements or use defaults
+
+PowerBiVisual:
+  # Maps from <zone> elements within dashboards that reference worksheets (<view>)
+  source_xpath: //dashboards/dashboard/zones/zone[@type='view']
+  context_note: "Requires finding the referenced worksheet definition."
+  worksheet_ref_attribute: name # Attribute linking zone to worksheet name
+  worksheet_xpath: "//worksheets/worksheet[@name='{ref_name}']" # Format string to find worksheet
+  pbi_type:
+    source_xpath_relative_to_worksheet: . # Check attributes/structure of worksheet
+    mapping_function: determine_viz_type # Complex logic analyzing shelves/marks
+    lookup: tableau_viz_type_to_pbi # Use lookup table
+    default: table
+  title:
+    source_xpath_relative_to_worksheet: .//title/formatted-text/run
+    alternative_attribute: name # Fallback to worksheet name
+  source_name:
+    source_attribute_relative_to_worksheet: name
+  field_mappings:
+    derived_rule: map_visual_shelves # Function to process <rows>, <cols>, <color>, etc.
+    source_shelves_xpath: # XPaths relative to the worksheet element
+      - ./table/view/rows
+      - ./table/view/cols
+      - ./table/view/mark/color
+      - ./table/view/mark/size
+      - ./table/view/mark/tooltip
+      # etc.
+    target_roles: # Map Tableau shelves to PBI roles (highly viz-type dependent)
+      rows: Axis # Example, varies greatly
+      cols: Values # Example, varies greatly
+      color: Legend # Example, varies greatly
+      tooltip: Tooltips # Example, varies greatly
+
+# --- Helper Function References (Python code needs to implement these) ---
+# sanitize_identifier(name)
+# to_boolean(value)
+# map_tableau_format(format_code)
+# determine_summarize_by(role, datatype)
+# extract_sort_column(sort_spec_node)
+# parse_semantic_role(role_string)
+# derive_summarization_set_by(summarize_by_value)
+# derive_pbi_format_hint(format_string, global_locale)
+# get_join_table_name(join_relation_node, side) # side='from' or 'to'
+# get_join_column_name(join_relation_node, side)
+# infer_cardinality(join_info)
+# find_hierarchy_levels(hierarchy_name, all_columns)
+# generate_m_partition(connection_node, relation_node) -> returns PowerBiPartition object
+# generate_m_code(connection_node, relation_node) -> returns M code string
+# determine_viz_type(worksheet_node) -> returns Tableau viz type string
+# map_visual_shelves(worksheet_node, pbi_viz_type) -> returns list of PowerBiVisualFieldMapping
