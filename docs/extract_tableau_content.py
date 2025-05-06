@@ -14,15 +14,16 @@ Example:
     python extract_tableau_content.py ./tableau-desktop-samples/sample.twbx
 """
 
+import argparse
+import io
+import json
+import logging
 import os
 import sys
-import json
-import zipfile
+import tempfile
 import xml.etree.ElementTree as ET
-import logging
+import zipfile
 from pathlib import Path
-import argparse
-from typing import Dict, List, Any, Tuple, Optional
 
 # Set up logging
 logging.basicConfig(
@@ -31,6 +32,20 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
+
+
+def zip_directory(path: Path):
+    buffer = io.BytesIO()
+    files = path.rglob('*')
+    with zipfile.ZipFile(
+            buffer, 'w',
+            compression=zipfile.ZIP_LZMA,
+            allowZip64=True
+    ) as zipped:
+        for file in files:
+            zipped.write(file, arcname=file.relative_to(path.parent))
+    return buffer
+
 
 def parse_twb_metadata(xml_content):
     """Parses XML content from a .twb file to extract metadata."""
@@ -43,7 +58,7 @@ def parse_twb_metadata(xml_content):
         "filters": [],
         "actions": []
     }
-    
+
     try:
         root = ET.fromstring(xml_content)
 
@@ -56,13 +71,13 @@ def parse_twb_metadata(xml_content):
                 ds_info["server"] = connection.get('server')
                 ds_info["dbname"] = connection.get('dbname')
                 ds_info["authentication"] = connection.get('authentication')
-                
+
                 # Extract connection attributes
                 conn_attrs = {}
                 for attr_name, attr_value in connection.attrib.items():
                     conn_attrs[attr_name] = attr_value
                 ds_info["connection_attributes"] = conn_attrs
-                
+
                 # Extract columns/fields
                 columns = []
                 for col in ds.findall('.//column'):
@@ -74,7 +89,7 @@ def parse_twb_metadata(xml_content):
                     }
                     columns.append(col_info)
                 ds_info["columns"] = columns
-                
+
             metadata["datasources"].append(ds_info)
 
         # --- Extract Calculations ---
@@ -94,7 +109,7 @@ def parse_twb_metadata(xml_content):
                 "name": ws.get('name'),
                 "fields": []
             }
-            
+
             # Extract fields used in the worksheet
             for field in ws.findall('.//field'):
                 field_info = {
@@ -102,12 +117,12 @@ def parse_twb_metadata(xml_content):
                     "role": field.get('role')
                 }
                 ws_info["fields"].append(field_info)
-                
+
             # Extract style information
             style = ws.find('.//style')
             if style is not None:
                 ws_info["style"] = {attr: style.get(attr) for attr in style.attrib}
-                
+
             metadata["worksheets"].append(ws_info)
 
         # --- Extract Dashboards ---
@@ -117,7 +132,7 @@ def parse_twb_metadata(xml_content):
                 "worksheets": [],
                 "size": {}
             }
-            
+
             # Get dashboard size
             size = db.find('.//size')
             if size is not None:
@@ -127,12 +142,12 @@ def parse_twb_metadata(xml_content):
                     "minwidth": size.get('minwidth'),
                     "minheight": size.get('minheight')
                 }
-                
+
             # Get worksheets in dashboard
             for zone in db.findall('.//zone'):
                 if zone.get('name'):
                     db_info["worksheets"].append(zone.get('name'))
-                    
+
             metadata["dashboards"].append(db_info)
 
         # --- Extract Parameters ---
@@ -142,7 +157,7 @@ def parse_twb_metadata(xml_content):
                 "datatype": param.get('datatype'),
                 "value": param.get('value')
             }
-            
+
             # Get parameter domain values if available
             domain = param.find('.//domain')
             if domain is not None:
@@ -152,7 +167,7 @@ def parse_twb_metadata(xml_content):
                     if value:
                         values.append(value)
                 param_info["domain_values"] = values
-                
+
             metadata["parameters"].append(param_info)
 
         # --- Extract Filters ---
@@ -183,56 +198,81 @@ def parse_twb_metadata(xml_content):
 
     return metadata
 
-def process_tableau_file(file_path, output_base_dir=None):
+
+def process_tableau_file(file_input, output_base_dir=None):
     """Processes a .twb or .twbx file.
-    
+
     Args:
-        file_path: Path to the Tableau file
+        file_input: Either a path string to the Tableau file or a bytes IO object
         output_base_dir: Base output directory (defaults to 'output' if None)
     """
-    p = Path(file_path)
     metadata = None
     extracted_data_paths = []  # Store paths to any extracted files
-    
+
+    # Handle the file input type
+    if isinstance(file_input, str):
+        p = Path(file_input)
+        file_name = p.name
+        file_stem = p.stem
+    else:
+        # Assume it's a bytes IO object with a name attribute
+        file_name = getattr(file_input, 'name', 'tableau_file').replace('_', ' ')
+        file_stem = Path(file_name).stem
+
     # Set up output directories
     if output_base_dir is None:
-        # If no output directory is provided, use the default
         output_base_dir = "output"
-        output_dir = Path(output_base_dir) / p.stem
+        output_dir = Path(output_base_dir) / file_stem
     else:
-        # If an output directory is provided, use it directly
         output_dir = Path(output_base_dir)
-    
+
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Create data directory for extracted files
     data_dir = output_dir / "data"
     data_dir.mkdir(exist_ok=True)
 
-    if p.suffix.lower() == '.twb':
-        logger.info(f"Processing .twb file: {p.name}")
+    # Determine file type from name
+    is_twb = file_name.lower().endswith('.twb')
+    is_twbx = file_name.lower().endswith('.twbx')
+
+    if is_twb:
+        logger.info(f"Processing .twb file: {file_name}")
         try:
-            with open(p, 'r', encoding='utf-8') as f:
-                xml_content = f.read()
+            if isinstance(file_input, str):
+                with open(file_input, 'r', encoding='utf-8') as f:
+                    xml_content = f.read()
+            else:
+                xml_content = file_input.read().decode('utf-8')
             metadata = parse_twb_metadata(xml_content)
         except UnicodeDecodeError:
             # Try with different encodings if UTF-8 fails
             try:
-                with open(p, 'r', encoding='latin-1') as f:
-                    xml_content = f.read()
+                if isinstance(file_input, str):
+                    with open(file_input, 'r', encoding='latin-1') as f:
+                        xml_content = f.read()
+                else:
+                    file_input.seek(0)
+                    xml_content = file_input.read().decode('latin-1')
                 metadata = parse_twb_metadata(xml_content)
             except Exception as e:
                 logger.error(f"Error reading/parsing .twb file with latin-1 encoding: {e}")
         except Exception as e:
             logger.error(f"Error reading/parsing .twb file: {e}")
 
-    elif p.suffix.lower() == '.twbx':
-        logger.info(f"Processing .twbx file: {p.name}")
+    elif is_twbx:
+        logger.info(f"Processing .twbx file: {file_name}")
         try:
-            with zipfile.ZipFile(p, 'r') as zip_ref:
+            if isinstance(file_input, str):
+                zip_file = zipfile.ZipFile(file_input, 'r')
+            else:
+                import io
+                zip_file = zipfile.ZipFile(io.BytesIO(file_input.read()))
+
+            with zip_file as zip_ref:
                 twb_file_name = None
                 data_files = []
-                
+
                 # List all files in the archive
                 for member in zip_ref.namelist():
                     if member.lower().endswith('.twb'):
@@ -240,13 +280,13 @@ def process_tableau_file(file_path, output_base_dir=None):
                     elif member.lower().endswith('.hyper') or member.lower().endswith('.tde'):
                         data_files.append(member)
                         logger.info(f"Found data extract: {member}")
-                
+
                 # Extract and process the .twb file
                 if twb_file_name:
                     logger.info(f"Extracting metadata from: {twb_file_name}")
                     xml_content = zip_ref.read(twb_file_name).decode('utf-8', errors='replace')
                     metadata = parse_twb_metadata(xml_content)
-                    
+
                     # Save the .twb file directly to the data directory
                     file_name = os.path.basename(twb_file_name)
                     extract_path = data_dir / file_name
@@ -256,10 +296,9 @@ def process_tableau_file(file_path, output_base_dir=None):
                     logger.info(f"Saved .twb file to: {extract_path}")
                 else:
                     logger.error("No .twb file found within the .twbx archive.")
-                
-                # Extract any data files directly to the data directory (without preserving structure)
+
+                # Extract any data files
                 for data_file in data_files:
-                    # Just use the filename without any directory structure
                     file_name = os.path.basename(data_file)
                     extract_path = data_dir / file_name
                     with open(extract_path, 'wb') as f:
@@ -268,22 +307,23 @@ def process_tableau_file(file_path, output_base_dir=None):
                     logger.info(f"Extracted data file to: {extract_path}")
 
         except zipfile.BadZipFile:
-            logger.error(f"Error: Invalid or corrupted .twbx file: {p.name}")
+            logger.error(f"Error: Invalid or corrupted .twbx file: {file_name}")
         except Exception as e:
             logger.error(f"Error processing .twbx file: {e}")
 
     else:
-        logger.error(f"Unsupported file type: {p.suffix}")
+        logger.error(f"Unsupported file type: {Path(file_name).suffix}")
 
+    # Return metadata and paths to any extracted files
     if metadata:
         # Create the required directory structure
         extracted_dir = output_dir / "extracted"
         extracted_dir.mkdir(exist_ok=True, parents=True)
-        
+
         # Ensure data directory exists
         data_dir = output_dir / "data"
         data_dir.mkdir(exist_ok=True, parents=True)
-        
+
         # Save metadata components to separate JSON files in the extracted directory
         for component, data in metadata.items():
             if data:  # Only save non-empty components
@@ -295,7 +335,7 @@ def process_tableau_file(file_path, output_base_dir=None):
                     logger.info(f"{component.capitalize()} metadata extracted to: {output_json_path}")
                 except Exception as e:
                     logger.error(f"Error writing {component} metadata JSON: {e}")
-        
+
         # Save complete metadata to a single file in the extracted directory
         complete_output_path = extracted_dir / "complete_metadata.json"
         try:
@@ -305,8 +345,24 @@ def process_tableau_file(file_path, output_base_dir=None):
         except Exception as e:
             logger.error(f"Error writing complete metadata JSON: {e}")
 
-    # Return metadata and paths to any extracted files
     return metadata, extracted_data_paths
+
+
+def process_tableau_file_buffer(file):
+    """
+    Process a .twb or .twbx file.
+
+    Args:
+         file: binary file.
+    """
+    zipped = io.BytesIO()
+    file_stem = Path(file.name).stem
+    with tempfile.TemporaryDirectory() as tempdir:
+        path = Path(tempdir).resolve() / file_stem
+        process_tableau_file(file, path)
+        zipped = zip_directory(path)
+    return zipped
+
 
 def main():
     """Main function to run the script."""
@@ -314,7 +370,7 @@ def main():
     parser = argparse.ArgumentParser(description='Extract metadata from Tableau files (.twb or .twbx)')
     parser.add_argument('file_path', help='Path to the Tableau file to process')
     parser.add_argument('--output-dir', '-o', help='Output directory for extracted files (default: output)')
-    
+
     # If the script is called with arguments containing spaces, they might be split
     # Let's handle this by reconstructing the file path if needed
     if len(sys.argv) > 2 and not sys.argv[1].startswith('-'):
@@ -325,8 +381,8 @@ def main():
             # Extract any options
             output_dir = None
             for i, arg in enumerate(sys.argv):
-                if arg in ['--output-dir', '-o'] and i+1 < len(sys.argv):
-                    output_dir = sys.argv[i+1]
+                if arg in ['--output-dir', '-o'] and i + 1 < len(sys.argv):
+                    output_dir = sys.argv[i + 1]
         else:
             # Fall back to regular argument parsing
             args = parser.parse_args()
@@ -341,14 +397,15 @@ def main():
         # No arguments provided
         parser.print_help()
         sys.exit(1)
-    
+
     if not os.path.exists(file_path):
         logger.error(f"File not found: {file_path}")
         sys.exit(1)
-        
+
     logger.info(f"Starting extraction process for: {file_path}")
     logger.info(f"Output directory: {output_dir if output_dir else 'output'} (default)")
-    metadata_result, extracted_files = process_tableau_file(file_path, output_dir)
+    path = Path(file_path)
+    metadata_result, extracted_files = process_tableau_file(path, output_dir)
 
     if metadata_result:
         logger.info("\nExtraction Summary:")
@@ -357,11 +414,12 @@ def main():
         logger.info(f"- Found {len(metadata_result.get('worksheets', []))} worksheets")
         logger.info(f"- Found {len(metadata_result.get('dashboards', []))} dashboards")
         logger.info(f"- Found {len(metadata_result.get('parameters', []))} parameters")
-    
+
     if extracted_files:
         logger.info(f"\nExtracted files: {len(extracted_files)}")
         for file in extracted_files:
             logger.info(f"- {file}")
+
 
 if __name__ == "__main__":
     main()
