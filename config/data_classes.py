@@ -1,4 +1,4 @@
-from data_classes import dataclass, field
+from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Literal, Any # Added 'Any' for annotation flexibility
 
 # --- Model Objects (Targeting TMDL Files) ---
@@ -57,20 +57,20 @@ class PowerBiHierarchy:
 class PowerBiPartition:
     """Represents a partition within a Power BI table for TMDL."""
     name: str
+    expression: str # The M code query (or DAX)
     description: Optional[str] = None
     source_type: Literal['m', 'calculated', 'query'] = 'm'
-    expression: str # The M code query (or DAX)
     annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
 
 @dataclass
 class PowerBiRelationship:
     """Represents a relationship between tables for TMDL."""
-    description: Optional[str] = None
     from_table: str
     from_column: str
     to_table: str
     to_column: str
     is_active: bool = True
+    description: Optional[str] = None
     cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
     cross_filter_behavior: Literal['oneWay', 'bothDirections', 'automatic'] = 'automatic'
     annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
