@@ -23,7 +23,6 @@ def extract_datasource_connections(datasource: Et.Element):
     named_connections = connection.findall('.//named-connection')
     named_connections_data = []
     for named_connection in named_connections:
-        print(named_connection.attrib)
         connection = named_connection.find('.//connection')
         named_connection_data = {
             'caption': named_connection.get('caption'),
