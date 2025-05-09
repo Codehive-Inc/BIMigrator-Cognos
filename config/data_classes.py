@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from data_classes import dataclass, field
 from typing import List, Dict, Optional, Literal, Any # Added 'Any' for annotation flexibility
 
 # --- Model Objects (Targeting TMDL Files) ---
