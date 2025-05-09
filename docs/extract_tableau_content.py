@@ -25,6 +25,8 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
+from src.common.extractors import extract_data_sources
+
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
@@ -63,36 +65,37 @@ def parse_twb_metadata(xml_content):
         root = ET.fromstring(xml_content)
 
         # --- Extract Datasources ---
-        for ds in root.findall('.//datasource'):
-            ds_info = {"name": ds.get('name'), "version": ds.get('version'), "caption": ds.get('caption')}
-            connection = ds.find('.//connection')
-            if connection is not None:
-                ds_info["connection_type"] = connection.get('class')
-                ds_info["server"] = connection.get('server')
-                ds_info["dbname"] = connection.get('dbname')
-                ds_info["authentication"] = connection.get('authentication')
-
-                # Extract connection attributes
-                conn_attrs = {}
-                for attr_name, attr_value in connection.attrib.items():
-                    conn_attrs[attr_name] = attr_value
-                ds_info["connection_attributes"] = conn_attrs
-
-                # Extract columns/fields
-                columns = []
-                for col in ds.findall('.//column'):
-                    col_info = {
-                        "name": col.get('name'),
-                        "datatype": col.get('datatype'),
-                        "role": col.get('role'),
-                        "type": col.get('type')
-                    }
-                    columns.append(col_info)
-                ds_info["columns"] = columns
-
-            metadata["datasources"].append(ds_info)
+        # for ds in root.findall('.//datasource'):
+        #     ds_info = {"name": ds.get('name'), "version": ds.get('version'), "caption": ds.get('caption')}
+        #     connection = ds.find('.//connection')
+        #     if connection is not None:
+        #         ds_info["connection_type"] = connection.get('class')
+        #         ds_info["server"] = connection.get('server')
+        #         ds_info["dbname"] = connection.get('dbname')
+        #         ds_info["authentication"] = connection.get('authentication')
+        #
+        #         # Extract connection attributes
+        #         conn_attrs = {}
+        #         for attr_name, attr_value in connection.attrib.items():
+        #             conn_attrs[attr_name] = attr_value
+        #         ds_info["connection_attributes"] = conn_attrs
+        #
+        #         # Extract columns/fields
+        #         columns = []
+        #         for col in ds.findall('.//column'):
+        #             col_info = {
+        #                 "name": col.get('name'),
+        #                 "datatype": col.get('datatype'),
+        #                 "role": col.get('role'),
+        #                 "type": col.get('type')
+        #             }
+        #             columns.append(col_info)
+        #         ds_info["columns"] = columns
+        #
+        #     metadata["datasources"].append(ds_info)
 
         # --- Extract Calculations ---
+        metadata['datasources'] = extract_data_sources(root)
         for calc in root.findall('.//calculation'):
             formula = calc.get('formula')
             calc_info = {
@@ -216,7 +219,7 @@ def process_tableau_file(file_input, output_base_dir=None):
         file_stem = p.stem
     else:
         # Assume it's a bytes IO object with a name attribute
-        file_name = getattr(file_input, 'name', 'tableau_file').replace('_', ' ')
+        file_name = getattr(file_input, 'name', 'tableau_file')
         file_stem = Path(file_name).stem
 
     # Set up output directories
@@ -238,8 +241,9 @@ def process_tableau_file(file_input, output_base_dir=None):
 
     if is_twb:
         logger.info(f"Processing .twb file: {file_name}")
+        print("FILE INPUT: ", file_input)
         try:
-            if isinstance(file_input, str):
+            if isinstance(file_input, (str, Path)):
                 with open(file_input, 'r', encoding='utf-8') as f:
                     xml_content = f.read()
             else:
@@ -248,7 +252,7 @@ def process_tableau_file(file_input, output_base_dir=None):
         except UnicodeDecodeError:
             # Try with different encodings if UTF-8 fails
             try:
-                if isinstance(file_input, str):
+                if isinstance(file_input, (str, Path)):
                     with open(file_input, 'r', encoding='latin-1') as f:
                         xml_content = f.read()
                 else:
@@ -263,7 +267,7 @@ def process_tableau_file(file_input, output_base_dir=None):
     elif is_twbx:
         logger.info(f"Processing .twbx file: {file_name}")
         try:
-            if isinstance(file_input, str):
+            if isinstance(file_input, (str,Path)):
                 zip_file = zipfile.ZipFile(file_input, 'r')
             else:
                 import io
