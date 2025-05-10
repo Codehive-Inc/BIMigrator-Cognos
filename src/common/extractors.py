@@ -42,6 +42,15 @@ def extract_datasource_connections(datasource: Et.Element):
     return connection_data
 
 
+def extract_datasource_relation(datasource: Et.Element):
+    relation = datasource.find(".//relation")
+    return {
+        'name': relation.get('name'),
+        'table': relation.get('table'),
+        'type': relation.get('type')
+    }
+
+
 def extract_data_sources(root: Et.Element):
     datasources = root.find('datasources')
     datasources_data = []
@@ -51,6 +60,7 @@ def extract_data_sources(root: Et.Element):
             'name': datasource.get('name'),
             'caption': datasource.get('caption'),
             'inline': datasource.get('inline'),
+            'relation': extract_datasource_relation(datasource),
             'connections': extract_datasource_connections(datasource),
             'columns': extract_datasource_columns(datasource)
         }
