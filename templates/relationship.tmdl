@@ -1,0 +1,17 @@
+relationship {{id}}
+    fromColumn: {{from_table}}.{{from_column}}
+    toColumn: {{to_table}}.{{to_column}}
+    {{#if cross_filter_behavior}}
+    crossFilteringBehavior: {{cross_filter_behavior}}
+    {{/if}}
+    {{#if from_cardinality}}
+    fromCardinality: {{from_cardinality}}
+    {{/if}}
+    fromColumn: {{from_table}}.{{from_column}}
+    toColumn: {{to_table}}.{{to_column}}
+    joinOnDateBehavior: {{join_behavior}}
+    crossFilteringBehavior: {{cross_filter_behavior}}
+    type: {{relationship_type}}
+    cardinality: {{cardinality}}
+    isActive: {{is_active}}
+    relationType: {{relation_type}}
