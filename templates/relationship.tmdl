@@ -1,17 +1,11 @@
 relationship {{id}}
-    fromColumn: {{from_table}}.{{from_column}}
-    toColumn: {{to_table}}.{{to_column}}
-    {{#if cross_filter_behavior}}
-    crossFilteringBehavior: {{cross_filter_behavior}}
-    {{/if}}
-    {{#if from_cardinality}}
-    fromCardinality: {{from_cardinality}}
-    {{/if}}
-    fromColumn: {{from_table}}.{{from_column}}
-    toColumn: {{to_table}}.{{to_column}}
-    joinOnDateBehavior: {{join_behavior}}
-    crossFilteringBehavior: {{cross_filter_behavior}}
-    type: {{relationship_type}}
+    fromTable: {{from_table}}
+    fromColumn: {{from_column}}
+    toTable: {{to_table}}
+    toColumn: {{to_column}}
     cardinality: {{cardinality}}
+    crossFilteringBehavior: {{cross_filter_behavior}}
     isActive: {{is_active}}
-    relationType: {{relation_type}}
+    {{#if join_on_date_behavior}}
+    joinOnDateBehavior: {{join_on_date_behavior}}
+    {{/if}}
