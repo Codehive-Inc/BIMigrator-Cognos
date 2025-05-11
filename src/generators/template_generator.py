@@ -160,6 +160,11 @@ class TemplateGenerator:
     def _get_template(self, template_name: str):
         """Get a compiled template, using cache if available."""
         if template_name not in self._template_cache:
+            template_path = self.template_dir / template_name
+            with open(template_path, 'r') as f:
+                source = f.read()
+            self._template_cache[template_name] = self.compiler.compile(source)
+        return self._template_cache[template_name]
 
 
 def generate_project_files(

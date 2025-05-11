@@ -2,7 +2,7 @@
 import os
 import yaml
 from pathlib import Path
-from typing import Dict, Any, List, Set
+from typing import Dict, Any, List, Set, Optional
 from dataclasses import dataclass
 
 @dataclass
@@ -42,11 +42,11 @@ class ProjectStructureGenerator:
     
     def _get_required_directories(self) -> List[DirectoryStructure]:
         """Analyze template mappings to determine required directories."""
-        directories = set()
+        directories = []
         
         # Add base directories
-        directories.add(DirectoryStructure('Model'))
-        directories.add(DirectoryStructure('Report'))
+        directories.append(DirectoryStructure('Model'))
+        directories.append(DirectoryStructure('Report'))
         
         # Analyze template mappings
         for mapping in self.template_mappings.values():
@@ -59,25 +59,14 @@ class ProjectStructureGenerator:
             for part in parts[:-1]:  # Skip filename
                 if '{{' not in part:  # Only add static directory paths
                     current_path = str(Path(current_path) / part)
-                    directories.add(DirectoryStructure(
-                        path=current_path,
-                        required=not any(c in part for c in '{}[]()'
-                    ))
+                    if not any(d.path == current_path for d in directories):
+                        directories.append(DirectoryStructure(
+                            path=current_path,
+                            required=not any(c in part for c in '{}[]()')
+                        ))
         
         return sorted(directories, key=lambda d: d.path)
         
-    def _should_create_directory(self, dir_path: Path) -> bool:
-        """Determine if a directory should be created based on configuration."""
-        # Check if any template outputs to this directory or its subdirectories
-        dir_str = str(dir_path.relative_to(self.base_dir))
-        
-        for mapping in self.template_mappings.values():
-            output = mapping['output']
-            if output.startswith(dir_str + '/') or output == dir_str:
-                return True
-        
-        return False
-
     def _should_create_directory(self, dir_path: Path) -> bool:
         """Determine if a directory should be created based on configuration."""
         # Check if any template outputs to this directory or its subdirectories
@@ -96,10 +85,6 @@ class ProjectStructureGenerator:
         
         return False
 
-def generate_project_structure(
-    output_path: str,
-    model_config: Dict[str, Any],
-    report_config: Dict[str, Any]
 def create_project_structure(
     config_path: str,
     output_dir: Optional[str] = None
