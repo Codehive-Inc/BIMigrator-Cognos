@@ -85,6 +85,15 @@ class PowerBiTheme:
     type: int = 2
 
 @dataclass
+class PowerBiSlowDataSourceSettings:
+    """Settings for slow data sources."""
+    is_cross_highlighting_disabled: bool = False
+    is_slicer_selections_enabled: bool = True
+    is_filter_selections_enabled: bool = True
+    is_field_well_enabled: bool = True
+    is_apply_all_enabled: bool = True
+
+@dataclass
 class PowerBiReportConfig:
     """Report configuration."""
     version: str
@@ -93,13 +102,14 @@ class PowerBiReportConfig:
     default_drill_filter: bool = True
     use_new_filter_pane: bool = True
     allow_change_filter_types: bool = True
+    slow_data_source_settings: PowerBiSlowDataSourceSettings = field(default_factory=PowerBiSlowDataSourceSettings)
 
 @dataclass
 class PowerBiResourceItem:
     """Resource item in a package."""
     name: str
     path: str
-    type: int
+    type: str
 
 @dataclass
 class PowerBiResourcePackage:
@@ -117,13 +127,40 @@ class PowerBiReport:
     resource_packages: List[PowerBiResourcePackage] = field(default_factory=list)
 
 @dataclass
+class PowerBiFilterTarget:
+    """Filter target specification."""
+    table: str
+    column: str
+
+@dataclass
+class PowerBiFilter:
+    """Report filter configuration."""
+    type: str
+    target: PowerBiFilterTarget
+    value: Any
+
+@dataclass
+class PowerBiVisualObject:
+    """Visual object configuration."""
+    id: str
+    type: str
+    properties: Dict[str, Any] = field(default_factory=dict)
+
+@dataclass
+class PowerBiSectionLayout:
+    """Section layout configuration."""
+    width: int = 1280
+    height: int = 720
+    display_option: str = "fitToPage"
+
+@dataclass
 class PowerBiReportSection:
     """Report section/page."""
     name: str
     display_name: str
-    filters: List[Dict[str, Any]] = field(default_factory=list)
-    objects: Dict[str, Any] = field(default_factory=dict)
-    layout: Dict[str, Any] = field(default_factory=dict)
+    filters: List[PowerBiFilter] = field(default_factory=list)
+    objects: Dict[str, List[PowerBiVisualObject]] = field(default_factory=lambda: {"visuals": []})
+    layout: PowerBiSectionLayout = field(default_factory=PowerBiSectionLayout)
 
 # --- Model Objects ---
 

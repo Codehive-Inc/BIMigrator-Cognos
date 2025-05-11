@@ -82,21 +82,6 @@ Templates:
       output: .pbixproj.json
       config: PowerBiProject
       dataclass: PowerBiProject
-    report_metadata:
-      template: report.metadata.json
-      output: ReportMetadata.json
-      config: PowerBiReportMetadata
-      dataclass: PowerBiReportMetadata
-    report_settings:
-      template: report.settings.json
-      output: ReportSettings.json
-      config: PowerBiReportSettings
-      dataclass: PowerBiReportSettings
-    diagram_layout:
-      template: diagram.layout.json
-      output: DiagramLayout.json
-      config: PowerBiDiagramLayout
-      dataclass: PowerBiDiagramLayout
     version:
       template: version.txt
       output: Version.txt
