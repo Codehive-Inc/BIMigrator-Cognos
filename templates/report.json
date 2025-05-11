@@ -1,0 +1,20 @@
+{
+  "id": "{{report_id}}",
+  "layoutOptimization": "{{layout_optimization}}",
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {{#each shared_resources}}{
+            "name": "{{name}}",
+            "path": "{{path}}",
+            "type": "{{type}}"
+          }{{#unless @last}},{{/unless}}{{/each}}
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ]
+}

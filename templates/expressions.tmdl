@@ -1,0 +1,4 @@
+{{#each expressions}}
+expression {{name}} = {{expression}}
+{{#if description}}    annotation Description = {{description}}{{/if}}
+{{/each}}

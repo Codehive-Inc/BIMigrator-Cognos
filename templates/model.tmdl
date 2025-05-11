@@ -1,0 +1,11 @@
+model {{model_name}}
+    culture: {{default_culture}}
+    defaultPowerBIDataSourceVersion: powerBI_V3
+    sourceQueryCulture: {{source_culture}}
+    dataAccessOptions:
+        legacyRedirects: {{legacy_redirects}}
+        returnErrorValuesAsNull: {{return_null_errors}}
+
+    annotation PBI_QueryOrder = {{query_order_list}}
+
+    annotation __PBI_TimeIntelligenceEnabled = {{time_intelligence_enabled}}

@@ -1,0 +1,12 @@
+{
+  "version": "{{version}}",
+  "layout": {
+    "tables": {{#each tables}}{
+      "id": "{{id}}",
+      "position": {
+        "x": {{x}},
+        "y": {{y}}
+      }
+    }{{#unless @last}},{{/unless}}{{/each}}
+  }
+}

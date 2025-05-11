@@ -1,0 +1,36 @@
+table {{name}}
+    lineageTag: {{lineage_tag}}
+
+    {{#each columns}}
+    column {{name}}
+        dataType: {{datatype}}
+        formatString: {{format_string}}
+        lineageTag: {{lineage_tag}}
+        summarizeBy: {{summarize_by}}
+        sourceColumn: {{source_column}}
+        {{#if description}}
+        annotation SummarizationSetBy = User
+        {{/if}}
+    {{/each}}
+
+    {{#if partition}}
+    partition {{name}} = {{partition}}
+    {{/if}}
+    lineageTag: {{table_lineage_tag}}
+
+{{#each columns}}
+    column {{name}}
+        dataType: {{data_type}}
+        {{#if format_string}}formatString: {{format_string}}{{/if}}
+        lineageTag: {{lineage_tag}}
+        sourceColumn: {{source_column}}
+        summarizeBy: {{summarize_by}}
+{{/each}}
+
+    {{#if has_widget_serialization}}
+    annotation TableWidgetSerialization =
+        {
+          "VisualType": {{visual_type}},
+          "Columns": {{column_settings}}
+        }
+    {{/if}}
