@@ -1,17 +1,15 @@
 # Generators Documentation
 
 ## Overview
-The generators package contains classes responsible for generating the Power BI TMDL file structure and templates. It consists of two main components:
+The generators package contains a modular architecture for generating Power BI TMDL files. It follows a hierarchical structure with base and specialized generators:
 
-1. `StructureGenerator`: Creates the directory structure for TMDL files
-2. `TemplateGenerator`: Generates TMDL template files using configuration mappings
+1. `BaseTemplateGenerator`: Core template rendering functionality
+2. Specialized Generators:
+   - `DatabaseTemplateGenerator`: Database TMDL files
+   - `ModelTemplateGenerator`: Model and table TMDL files
+3. `TemplateGenerator`: Main coordinator for all generators
 
-## StructureGenerator
-
-### Purpose
-Creates a standardized directory structure for TMDL files based on the input file name.
-
-### Directory Structure
+## Directory Structure
 ```
 output/
 └── {input_file_name}/
@@ -25,27 +23,65 @@ output/
             └── sections/
 ```
 
+## BaseTemplateGenerator
+
+### Purpose
+Provides core template functionality shared across all generators.
+
+### Key Features
+- Template loading and compilation
+- File generation utilities
+- Configuration management
+- Path resolution
+
 ### Key Methods
-- `create_directory_structure()`: Creates all required directories
-- `get_output_path()`: Resolves the output path for a given file
+- `render_template()`: Renders a template with context
+- `generate_file()`: Generates a file from a template
+- `_load_template_mappings()`: Loads template configuration
+
+## Specialized Generators
+
+### DatabaseTemplateGenerator
+
+#### Purpose
+Generates database-specific TMDL files.
+
+#### Key Methods
+- `generate_database_tmdl()`: Creates database.tmdl file
+
+### ModelTemplateGenerator
+
+#### Purpose
+Generates model and table TMDL files.
+
+#### Key Methods
+- `generate_model_tmdl()`: Creates model.tmdl file
 
 ## TemplateGenerator
 
 ### Purpose
-Generates TMDL files by applying configuration mappings to extracted data.
+Coordinates the generation of all TMDL files using specialized generators.
 
-### Supported Templates
-1. Database Template
-   - Location: `pbit/Model/database.tmdl`
-   - Contains database connection information
-
-### Configuration
-Templates use the mappings defined in `twb-to-pbi.yaml`:
-- Source XPath expressions for data extraction
-- Attribute mappings for field conversion
-- Default values and fallbacks
+### Key Features
+- Manages specialized generators
+- Handles high-level file generation
+- Provides unified interface
 
 ### Key Methods
-- `generate_database_template()`: Creates the database.tmdl file
-- `_resolve_output_path()`: Determines output location for generated files
-- `_render_template()`: Applies data to Handlebars templates
+- `generate_all()`: Generates all TMDL files
+
+## Configuration
+All generators use mappings defined in `twb-to-pbi.yaml`:
+- Template paths and output locations
+- Source XPath expressions
+- Attribute mappings
+- Default values and fallbacks
+
+## Usage Example
+```python
+# Initialize generator
+generator = TemplateGenerator(config_path, input_path)
+
+# Generate all files
+generated_files = generator.generate_all(config_data, output_dir)
+```
