@@ -1,0 +1,36 @@
+##- 1 . API Endpoint -> Should interact with the knowledge graph. (Cosmos DB)
+
+2. API Endpoint -> Should interact with the Output files when extracted using BiMigrator tool.
+Idea: 
+    Convert this project to some containiorized structure. (Virtitual network)
+    Create a function that will call this specific endpoint in this container.
+    For example:
+        https://connect-with-bi-BiMigrator/some-example/ -> POST -> payload files --> Connect with this container endpoint (not exposed) -> generate the output (zipped file)
+        Name UUID structure
+    Zip output -> show user/download (use it internally)  
+
+3. API -> pbi-tools To convert the extracted files into powerbi structure/file.
+    Container -> take zip file -> combine it to pbi format -> Return / files 
+
+4. Azure Storage (Blob storage) (private access)
+
+
+//Linux -: Nginx
+// WIndows : IIS / Nginx OS <- Doesnot suuport multithreaded
+
+/app/
+Django (Only Backend) -> WSGI Framework
+    - REST API Protocols
+    - Database
+    - Storage
+
+
+    /app-1/
+    - Microservices/ mini apps in Flask, FastAPI
+
+Feature branch.
+
+Cloud Deployments:
+1. Main-> Production (manual)
+2. Testing -> Staging (auto pr on push)
+3. Dev -> Local testing (features/#featureName)
