@@ -8,6 +8,7 @@ from typing import Dict, Any, Optional, List
 from src.generators.structure_generator import create_project_structure
 from src.generators.template_generator import generate_project_files
 from src.parsers.database_parser import DatabaseParser
+from src.parsers.model_parser import ModelParser
 
 def load_config(path: str) -> Dict[str, Any]:
     """Load configuration from YAML or JSON file."""
@@ -51,9 +52,14 @@ def migrate_to_tmdl(
         print(f"  - {directory}")
     
     # Parse TWB file and extract database info
-    parser = DatabaseParser(input_path, config)
-    database = parser.extract_database_info()
+    db_parser = DatabaseParser(input_path, config)
+    database = db_parser.extract_database_info()
     print(f"Extracted database name: {database.name}")
+    
+    # Parse TWB file and extract model info
+    model_parser = ModelParser(input_path, config)
+    model = model_parser.extract_model_info()
+    print(f"Extracted model name: {model.model_name}")
     
     # Get intermediate directory from config
     intermediate_dir = config.get('Output', {}).get('intermediate_dir', 'extracted')
@@ -61,12 +67,17 @@ def migrate_to_tmdl(
     # Save extracted data
     extracted_dir = Path(project_dir) / intermediate_dir
     database_json = extracted_dir / 'database.json'
+    model_json = extracted_dir / 'model.json'
+    
     with open(database_json, 'w') as f:
         json.dump(database.__dict__, f, indent=2)
+    with open(model_json, 'w') as f:
+        json.dump(model.__dict__, f, indent=2)
     
     # Prepare config data for template generation
     config_data = {
-        'PowerBiDatabase': database
+        'PowerBiDatabase': database,
+        'PowerBiModel': model
     }
     
     # Generate files

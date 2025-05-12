@@ -10,15 +10,20 @@ class BaseParser:
         self.twb_file = twb_path
         self.config = config
     
-    def _find_elements(self, xpath: str) -> List[ET.Element]:
+    def _find_elements(self, xpath: Optional[str]) -> List[ET.Element]:
+        if not xpath:
+            return []
+        
         if xpath.startswith('//'):
             xpath = '.' + xpath
+            
         # Handle attribute queries
         if '@' in xpath:
             base_xpath, attr = xpath.rsplit('@', 1)
             base_xpath = base_xpath.rstrip('/')
             elements = self.root.findall(base_xpath, self.namespaces)
             return [e for e in elements if attr in e.attrib]
+            
         return self.root.findall(xpath, self.namespaces)
     
     def _get_element_text(self, element: ET.Element, default: str = None) -> str:

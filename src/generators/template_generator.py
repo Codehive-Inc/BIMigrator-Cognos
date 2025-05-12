@@ -25,15 +25,15 @@ class TemplateGenerator(BaseTemplateGenerator):
         """Generate all TMDL files.
         
         Args:
-            config_data: Complete configuration data
+            config_data: Configuration data from parsers
             output_dir: Optional output directory override
             
         Returns:
-            Dictionary mapping template types to generated file paths
+            Dict mapping component types to lists of generated file paths
         """
         generated_files = defaultdict(list)
         
-        # Generate database files
+        # Generate database TMDL
         if 'PowerBiDatabase' in config_data:
             path = self.database_generator.generate_database_tmdl(
                 config_data['PowerBiDatabase'],
@@ -41,13 +41,18 @@ class TemplateGenerator(BaseTemplateGenerator):
             )
             generated_files['database'].append(path)
         
-        # Generate model files
+        # Generate model TMDL and table TMDLs
         if 'PowerBiModel' in config_data:
-            path = self.model_generator.generate_model_tmdl(
+            paths = self.model_generator.generate_model_tmdl(
                 config_data['PowerBiModel'],
                 output_dir
             )
-            generated_files['model'].append(path)
+            generated_files['model'].append(paths)
+            
+            # Add table paths
+            for table in config_data['PowerBiModel'].get('tables', []):
+                table_path = self.model_generator.generate_table_tmdl(table)
+                generated_files['tables'].append(table_path)
         
         return dict(generated_files)
 
