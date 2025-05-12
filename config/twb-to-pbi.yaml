@@ -27,11 +27,11 @@ Templates:
       dataclass: PowerBiExpressions
     table:
       template: Table.tmdl
-      output: Model/tables/{{name}}.tmdl
+      output: Model/tables/{{source_name}}.tmdl
       config: PowerBiTable
       dataclass: PowerBiTable
       multiple: true
-      name_from: name
+      name_from: source_name
     relationship:
       template: relationship.tmdl
       output: Model/relationships/{{id}}.tmdl
@@ -117,10 +117,15 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  source_xpath: //relation[@type="table"]
-  name:
-    source_xpath: ./@name
-    format: identifier  # Will be sanitized for PBI
+  source_xpath: //datasources/datasource/connection/relation
+  source_name:
+    source_attribute: name
+  description:
+    source_attribute: caption
+    default: null
+  is_hidden:
+    source_attribute: hidden
+    default: false
   columns:
     source_xpath: .//column
     mapping:
@@ -333,23 +338,6 @@ PowerBiDatabase:
     source_xpath: .//datasources/datasource/@caption
     alternative_xpath: .//datasources/datasource/@name
     default: Model
-
-PowerBiTable:
-  source_xpath: //datasources/datasource/relation[@name and (@type='table' or @type='text')] # Finds tables and custom SQL relations
-  pbi_name:
-    source_attribute: name
-    mapping_function: sanitize_identifier # Python function to clean name for PBI
-  source_name:
-    source_attribute: name # Keep original for lineage
-  description:
-    source_attribute: caption # Or use datasource caption if relation lacks one
-    default: null
-  is_hidden:
-    default: false # Can be overridden by post-processing logic if needed
-  partitions: # Not a direct mapping - signals generation needed
-    derived_rule: generate_m_partition # Requires connection info + relation details
-    connection_info_xpath: ../connection # Relative to relation element
-    relation_details: self # Use the current relation node
 
 PowerBiColumn:
   # Find columns defined within datasources OR referenced within worksheets/shelves if not in DS metadata

@@ -68,7 +68,6 @@ table {{name}}
         description: {{description}}
         {{/if}}
     {{/each}}
-        summarizeBy: {{summarize_by}}
 {{/each}}
 
     {{#if has_widget_serialization}}
