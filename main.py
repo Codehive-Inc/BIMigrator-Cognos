@@ -8,7 +8,9 @@ from typing import Dict, List, Optional, Any
 from src.parsers.database_parser import DatabaseParser
 from src.parsers.model_parser import ModelParser
 from src.parsers.table_parser import TableParser
+
 from src.generators.structure_generator import ProjectStructureGenerator
+
 from src.generators.database_template_generator import DatabaseTemplateGenerator
 from src.generators.model_template_generator import ModelTemplateGenerator
 from src.generators.table_template_generator import TableTemplateGenerator
@@ -51,7 +53,8 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         
         database_generator = DatabaseTemplateGenerator(
             config_path=config_path,
-            input_path=input_path
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
         )
         database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
         print(f'Generated database TMDL: {database_path}')
@@ -68,7 +71,8 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         
         table_generator = TableTemplateGenerator(
             config_path=config_path,
-            input_path=input_path
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
         )
         table_paths = table_generator.generate_all_tables(tables, output_dir=structure_generator.base_dir)
         print(f'Generated {len(table_paths)} table TMDL files:')
@@ -82,13 +86,14 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     print('\nStep 3: Generating model TMDL...')
     try:
         model_parser = ModelParser(input_path, config)
-        model = model_parser.extract_model_info()
+        model, tables = model_parser.extract_model_info()
         
         model_generator = ModelTemplateGenerator(
             config_path=config_path,
-            input_path=input_path
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
         )
-        model_path = model_generator.generate_model_tmdl(model, output_dir=structure_generator.base_dir)
+        model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
         print(f'Generated model TMDL: {model_path}')
         print(f'  Model name: {model.model_name}')
     except Exception as e:

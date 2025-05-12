@@ -10,9 +10,9 @@ from config.dataclasses import PowerBiModel, PowerBiTable
 class ModelTemplateGenerator(BaseTemplateGenerator):
     """Generator for model TMDL files."""
     
-    def __init__(self, template_dir: Path, output_dir: Path):
-        super().__init__(template_dir, output_dir)
-        self.table_generator = TableTemplateGenerator(template_dir, output_dir)
+    def __init__(self, config_path: str, input_path: Optional[str] = None, output_dir: Optional[Path] = None):
+        super().__init__(config_path, input_path, output_dir)
+        self.table_generator = TableTemplateGenerator(config_path, input_path, output_dir)
     
     def generate_model_tmdl(self, model: PowerBiModel, tables: List[PowerBiTable], output_dir: Optional[Path] = None) -> Tuple[Path, List[Path]]:
         """Generate model.tmdl file and all table files.

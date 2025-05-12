@@ -19,23 +19,27 @@ class TemplateMapping:
 class BaseTemplateGenerator:
     """Base class for template generators."""
     
-    def __init__(self, config_path: str, input_path: Optional[str] = None):
+    def __init__(self, config_path: str, input_path: Optional[str] = None, output_dir: Optional[Path] = None):
         """Initialize base template generator.
         
         Args:
             config_path: Path to YAML configuration file
             input_path: Optional path to input file for output subdirectory
+            output_dir: Optional output directory override
         """
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
         
-        self.template_dir = Path(self.config['Templates']['base_dir'])
+        # Make template directory path absolute relative to project root
+        project_root = Path(__file__).parent.parent.parent
+        self.template_dir = project_root / self.config['Templates']['base_dir']
         self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
         self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)
         self.mappings = self._load_template_mappings()
         self.compiler = Compiler()
         self._template_cache = {}
         self.input_name = Path(input_path).stem if input_path else None
+        self.output_dir = output_dir
     
     def _load_template_mappings(self) -> Dict[str, TemplateMapping]:
         """Load template mappings from configuration."""
@@ -68,10 +72,18 @@ class BaseTemplateGenerator:
         mapping = self.mappings[template_type]
         output_path = mapping.output
         
-        if name and '{{name}}' in output_path:
-            output_path = output_path.replace('{{name}}', name)
-        elif name and '{{id}}' in output_path:
-            output_path = output_path.replace('{{id}}', name)
+        # Create a template for the path
+        path_template = self.compiler.compile(output_path)
+        
+        # Create context with name and source_name (since both are commonly used)
+        context = {'name': name, 'source_name': name} if name else {}
+        
+        # Render the path template
+        output_path = path_template(context)
+        
+        # If output_dir is set, use it as the base path
+        if self.output_dir:
+            return self.output_dir / output_path
             
         return Path(output_path)
     

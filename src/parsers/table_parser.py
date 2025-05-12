@@ -127,14 +127,14 @@ class TableParser(BaseParser):
             
             table = self.extract_table_info(table_elem)
             if table:
-                print(f'Debug: Successfully extracted table: {table.name}')
+                print(f'Debug: Successfully extracted table: {table.source_name}')
                 tables.append(table)
             else:
                 print('Debug: Failed to extract table info')
         
         print(f'\nDebug: Total tables extracted: {len(tables)}')
         for table in tables:
-            print(f'Debug: - {table.name} ({len(table.columns)} columns, {len(table.measures)} measures, {len(table.hierarchies)} hierarchies)')
+            print(f'Debug: - {table.source_name} ({len(table.columns)} columns, {len(table.measures)} measures, {len(table.hierarchies)} hierarchies)')
         
         return tables
     

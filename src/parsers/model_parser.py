@@ -65,7 +65,7 @@ class ModelParser(BaseParser):
         
         # Extract tables using table parser
         tables = self.table_parser.extract_all_tables()
-        table_names = [table.name for table in tables]
+        table_names = [table.source_name for table in tables]
         
         return PowerBiModel(
             model_name=name,

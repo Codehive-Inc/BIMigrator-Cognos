@@ -1,4 +1,4 @@
-table {{name}}
+table {{source_name}}
     lineageTag: {{lineage_tag}}
     {{#if description}}
     description: {{description}}
@@ -8,7 +8,7 @@ table {{name}}
     {{/if}}
 
     {{#each columns}}
-    column {{name}}
+    column {{source_name}}
         dataType: {{datatype}}
         {{#if format_string}}
         formatString: {{format_string}}
@@ -32,7 +32,7 @@ table {{name}}
     {{/each}}
 
     {{#each measures}}
-    measure {{name}}
+    measure {{source_name}}
         expression: {{expression}}
         {{#if format_string}}
         formatString: {{format_string}}
@@ -68,7 +68,6 @@ table {{name}}
         description: {{description}}
         {{/if}}
     {{/each}}
-{{/each}}
 
     {{#if has_widget_serialization}}
     annotation TableWidgetSerialization =
