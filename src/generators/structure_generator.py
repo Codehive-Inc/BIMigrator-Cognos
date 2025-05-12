@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Set, Optional
 from dataclasses import dataclass
 
-@dataclass
+@dataclass(frozen=True)
 class DirectoryStructure:
     """Represents a directory in the project structure."""
     path: str
@@ -14,14 +14,17 @@ class DirectoryStructure:
 class ProjectStructureGenerator:
     """Generates the Power BI TMDL project structure based on configuration."""
     
-    def __init__(self, config_path: str):
-        """Initialize with configuration file path."""
-        with open(config_path, 'r') as f:
-            self.config = yaml.safe_load(f)
+    def __init__(self, config: Dict[str, Any], output_dir: str):
+        """Initialize with configuration.
         
-        # Load template mappings to determine required directories
+        Args:
+            config: Configuration dictionary
+            output_dir: Base output directory
+        """
+        self.config = config
         self.template_mappings = self.config['Templates']['mappings']
-        self.base_dir = Path(self.config['Templates'].get('output_dir', 'output'))
+        self.base_dir = Path(output_dir) / 'pbit'  # TMDL files go in pbit subdirectory
+        self.extracted_dir = Path(output_dir) / 'extracted'  # Parser output goes in extracted subdirectory
     
     def create_directory_structure(self) -> Set[Path]:
         """Create the directory structure based on template mappings.
@@ -32,21 +35,30 @@ class ProjectStructureGenerator:
         directories = self._get_required_directories()
         created_dirs = set()
         
+        # Create all directories under pbit
         for directory in directories:
             dir_path = self.base_dir / directory.path
             if directory.required or self._should_create_directory(dir_path):
                 dir_path.mkdir(parents=True, exist_ok=True)
                 created_dirs.add(dir_path)
         
+        # Create extracted directory
+        self.extracted_dir.mkdir(parents=True, exist_ok=True)
+        created_dirs.add(self.extracted_dir)
+        
         return created_dirs
     
     def _get_required_directories(self) -> List[DirectoryStructure]:
-        """Analyze template mappings to determine required directories."""
-        directories = []
+        """Analyze template mappings to determine required directories.
         
-        # Add base directories
-        directories.append(DirectoryStructure('Model'))
-        directories.append(DirectoryStructure('Report'))
+        Extracts required directories from the output paths in template mappings.
+        For example, if a mapping has output 'Model/tables/{{name}}.tmdl',
+        this will create directories for 'Model' and 'Model/tables'.
+        
+        Returns:
+            List of DirectoryStructure objects representing required directories
+        """
+        directories = set()
         
         # Analyze template mappings
         for mapping in self.template_mappings.values():
@@ -59,13 +71,14 @@ class ProjectStructureGenerator:
             for part in parts[:-1]:  # Skip filename
                 if '{{' not in part:  # Only add static directory paths
                     current_path = str(Path(current_path) / part)
-                    if not any(d.path == current_path for d in directories):
-                        directories.append(DirectoryStructure(
-                            path=current_path,
-                            required=not any(c in part for c in '{}[]()')
-                        ))
+                    # Mark as required if path has no template variables
+                    required = not any(c in current_path for c in '{}[]()')
+                    directories.add(DirectoryStructure(
+                        path=current_path,
+                        required=required
+                    ))
         
-        return sorted(directories, key=lambda d: d.path)
+        return sorted(list(directories), key=lambda d: d.path)
         
     def _should_create_directory(self, dir_path: Path) -> bool:
         """Determine if a directory should be created based on configuration."""
@@ -85,24 +98,29 @@ class ProjectStructureGenerator:
         
         return False
 
-def create_project_structure(
-    config_path: str,
-    output_dir: Optional[str] = None
-) -> Set[Path]:
-    """Create the project directory structure based on configuration.
+def create_project_structure(config_path: str, input_path: Optional[str] = None, output_dir: Optional[str] = None) -> Set[Path]:
+    """Create project directory structure based on configuration.
     
     Args:
-        config_path: Path to YAML configuration file
-        output_dir: Optional output directory (overrides config)
+        config_path: Path to configuration file
+        input_path: Optional path to input file
+        output_dir: Optional output directory
     
     Returns:
         Set of created directory paths
     """
-    generator = ProjectStructureGenerator(config_path)
+    # Load configuration
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
     
-    if output_dir:
-        generator.base_dir = Path(output_dir)
+    # Set output directory and add input file name subdirectory
+    if not output_dir:
+        output_dir = config['Templates'].get('output_dir', 'output')
+    input_name = Path(input_path).stem if input_path else None
+    project_dir = str(Path(output_dir) / input_name) if input_name else output_dir
     
+    # Create project structure
+    generator = ProjectStructureGenerator(config=config, output_dir=project_dir)
     return generator.create_directory_structure()
 
 

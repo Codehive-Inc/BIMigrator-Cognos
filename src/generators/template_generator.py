@@ -21,17 +21,25 @@ class TemplateMapping:
 class TemplateGenerator:
     """Handles template rendering and file generation."""
     
-    def __init__(self, config_path: str):
-        """Initialize with configuration file path."""
+    def __init__(self, config_path: str, input_path: Optional[str] = None):
+        """Initialize with configuration file path and optional input path.
+        
+        Args:
+            config_path: Path to YAML configuration file
+            input_path: Optional path to input file, used to create output subdirectory
+        """
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
         
         self.template_dir = Path(self.config['Templates']['base_dir'])
-        self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'intermediate'))
+        self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
         self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)
         self.mappings = self._load_template_mappings()
         self.compiler = Compiler()
         self._template_cache = {}
+        
+        # Set input name for output path
+        self.input_name = Path(input_path).stem if input_path else None
     
     def _load_template_mappings(self) -> Dict[str, TemplateMapping]:
         """Load template mappings from configuration."""
@@ -204,10 +212,18 @@ class TemplateGenerator:
         path_template = self.compiler.compile(output_template)
         relative_path = path_template(context)
         
-        # Combine with base directory if provided
-        if base_dir:
-            return Path(base_dir) / relative_path
-        return Path(relative_path)
+        # Start with base directory if provided
+        base = Path(base_dir) if base_dir else Path('')
+        
+        # Add input name subdirectory if available
+        if self.input_name:
+            base = base / self.input_name
+        
+        # Add pbit subdirectory for TMDL files
+        if relative_path.endswith('.tmdl'):
+            base = base / 'pbit'
+            
+        return base / relative_path
     
     def _get_template(self, template_name: str):
         """Get a compiled template, using cache if available."""
@@ -222,6 +238,7 @@ class TemplateGenerator:
 def generate_project_files(
     config_path: str,
     config_data: Dict[str, Any],
+    input_path: Optional[str] = None,
     output_dir: Optional[str] = None
 ) -> Dict[str, List[str]]:
     """Generate all project files using templates.
@@ -234,7 +251,7 @@ def generate_project_files(
     Returns:
         Dictionary mapping template types to lists of generated file paths
     """
-    generator = TemplateGenerator(config_path)
+    generator = TemplateGenerator(config_path, input_path)
     return generator.generate_files(config_data, output_dir)
 
 
