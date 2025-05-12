@@ -27,6 +27,8 @@ class TemplateGenerator:
             self.config = yaml.safe_load(f)
         
         self.template_dir = Path(self.config['Templates']['base_dir'])
+        self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'intermediate'))
+        self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)
         self.mappings = self._load_template_mappings()
         self.compiler = Compiler()
         self._template_cache = {}
@@ -59,12 +61,31 @@ class TemplateGenerator:
         """
         generated_files = defaultdict(list)
         
+        # Create intermediate directory if needed
+        if output_dir:
+            intermediate_dir = Path(output_dir) / self.intermediate_dir
+        else:
+            intermediate_dir = self.intermediate_dir
+        intermediate_dir.mkdir(parents=True, exist_ok=True)
+        
         for mapping_key, mapping in self.mappings.items():
             # Get the configuration data for this template
             config_key = mapping.config
             context = self._get_context_for_template(config_key, config_data)
             
             if context is not None:
+                # Save intermediate JSON
+                intermediate_file = intermediate_dir / f"{mapping_key}.json"
+                with open(intermediate_file, 'w') as f:
+                    if hasattr(context, '__dict__'):
+                        json.dump(context.__dict__, f, indent=2)
+                    else:
+                        json.dump(context, f, indent=2)
+                
+                # Validate if required
+                if self.validate_intermediate:
+                    self._validate_intermediate(mapping_key, context)
+                
                 # Generate files based on the mapping type
                 if mapping.multiple:
                     if not isinstance(context, list):
@@ -78,6 +99,37 @@ class TemplateGenerator:
                     generated_files[mapping_key].extend(paths)
         
         return dict(generated_files)
+    
+    def _validate_intermediate(self, mapping_key: str, context: Any) -> None:
+        """Validate intermediate data against expected schema.
+        
+        Args:
+            mapping_key: Key of the template mapping
+            context: Data to validate
+        
+        Raises:
+            ValueError: If validation fails
+        """
+        mapping = self.mappings[mapping_key]
+        
+        # For now, just check if required fields are present
+        if hasattr(context, '__dict__'):
+            data = context.__dict__
+        else:
+            data = context
+        
+        # Basic validation - ensure all required fields are present and non-None
+        if mapping.dataclass in globals():
+            dataclass = globals()[mapping.dataclass]
+            required_fields = {
+                f.name for f in dataclass.__dataclass_fields__.values()
+                if f.default == f.default_factory == None
+            }
+            
+            missing = required_fields - set(data.keys())
+            if missing:
+                raise ValueError(
+                    f"Missing required fields for {mapping_key}: {missing}")
     
     def _generate_single_file(
         self,
@@ -189,34 +241,53 @@ def generate_project_files(
 def main():
     """Example usage of the template generator."""
     import argparse
+    import json
+    import yaml
+    import sys
+    from pathlib import Path
+    
+    # Add project root to path
+    project_root = Path(__file__).parent.parent.parent
+    sys.path.insert(0, str(project_root))
+    
+    from src.parsers import parse_workbook
     
     parser = argparse.ArgumentParser(description='Generate Power BI TMDL files from templates')
     parser.add_argument('--config', required=True, help='Path to YAML configuration file')
-    parser.add_argument('--data', required=True, help='Path to input data file (JSON/YAML)')
+    parser.add_argument('--input', required=True, help='Path to input file (.twb, .json, or .yaml)')
     parser.add_argument('--output', help='Output directory')
     
     args = parser.parse_args()
     
-    # Load input data
-    with open(args.data, 'r') as f:
-        if args.data.endswith('.yaml') or args.data.endswith('.yml'):
-            config_data = yaml.safe_load(f)
-        else:
-            config_data = json.load(f)
+    # Load YAML config
+    with open(args.config, 'r') as f:
+        yaml_config = yaml.safe_load(f)
+
+    # Load input data based on file type
+    input_path = args.input
+    if input_path.endswith('.twb'):
+        config_data = parse_workbook(input_path, yaml_config)
+    else:
+        # Load JSON/YAML data
+        with open(input_path, 'r') as f:
+            if input_path.endswith('.json'):
+                config_data = json.load(f)
+            else:
+                config_data = yaml.safe_load(f)
     
     # Generate files
-    generated_files = generate_project_files(
+    generated = generate_project_files(
         config_path=args.config,
         config_data=config_data,
         output_dir=args.output
     )
     
     # Print summary
-    print("\nGenerated files:")
-    for template_type, files in generated_files.items():
-        print(f"\n{template_type}:")
+    print('\nGenerated files:\n')
+    for template_type, files in generated.items():
+        print(f'{template_type}:')
         for file in files:
-            print(f"  - {file}")
+            print(f'  - {file}')
 
 
 if __name__ == '__main__':

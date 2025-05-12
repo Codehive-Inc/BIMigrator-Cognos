@@ -1,2 +1,2 @@
-database {{name}}
-    connection: {{connection_string}}
+database '{{name}}'
+    compatibilityLevel: {{compatibility_level}}
