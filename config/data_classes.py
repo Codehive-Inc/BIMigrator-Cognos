@@ -168,7 +168,7 @@ class PowerBiReportSection:
 class PowerBiDatabase:
     """Database configuration."""
     name: str
-    connection_string: str
+    compatibility_level: int = 1550
 
 @dataclass
 class PowerBiExpression:

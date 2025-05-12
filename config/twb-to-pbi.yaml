@@ -1,5 +1,10 @@
 # Configuration for mapping Tableau TWB XML elements to Power BI TMDL/Report objects
 
+# --- Output Settings ---
+Output:
+  intermediate_dir: extracted  # Directory for storing intermediate JSON files
+  validate_intermediate: false     # Whether to validate intermediate files
+
 # --- Template Mappings ---
 Templates:
   base_dir: templates
@@ -321,6 +326,13 @@ tableau_viz_type_to_pbi:
   default: table # Fallback for unsupported types
 
 # --- Mapping Definitions for Dataclasses ---
+
+PowerBiDatabase:
+  source_xpath: //workbook
+  name:
+    source_xpath: .//datasources/datasource/@caption
+    alternative_xpath: .//datasources/datasource/@name
+    default: Model
 
 PowerBiTable:
   source_xpath: //datasources/datasource/relation[@name and (@type='table' or @type='text')] # Finds tables and custom SQL relations
