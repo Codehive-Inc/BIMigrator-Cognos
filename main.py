@@ -53,6 +53,7 @@ def migrate_to_tmdl(
     # Parse TWB file and extract database info
     parser = DatabaseParser(input_path, config)
     database = parser.extract_database_info()
+    print(f"Extracted database name: {database.name}")
     
     # Get intermediate directory from config
     intermediate_dir = config.get('Output', {}).get('intermediate_dir', 'extracted')

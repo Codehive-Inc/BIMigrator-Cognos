@@ -18,7 +18,7 @@ The parser extracts the following information:
         4. Default to 'Model' if no names found
 """
 import xml.etree.ElementTree as ET
-from typing import Dict, Any, Any, Optional
+from typing import Dict, Any, Optional, List
 from pathlib import Path
 import sys
 
@@ -39,42 +39,56 @@ class DatabaseParser:
         self.twb_file = twb_path
         self.config = config
     
+    def _find_elements(self, xpath: str) -> List[ET.Element]:
+        """Find elements using xpath, handling both absolute and relative paths."""
+        if xpath.startswith('//'):
+            xpath = '.' + xpath
+        return self.root.findall(xpath, self.namespaces)
+    
     def extract_database_info(self) -> PowerBiDatabase:
         """Extract database connection information from the TWB file.
         
-        The method tries to find a suitable database name in the following order:
-        1. Caption attribute of the first <datasource> element
-        2. Name attribute of the first <datasource> element if no caption
-        3. Name attribute of the first <dashboard> element if no datasource name
-        4. Default to 'Model' if no names found
+        Uses the PowerBiDatabase mapping from config to find the source elements.
+        The database name is extracted in the following order:
+        1. Using source_xpath from config to find datasource caption
+        2. Using alternative_xpath from config to find datasource name
+        3. Default to 'Model' if no name found
         
         Returns:
             PowerBiDatabase: Database configuration with extracted name
         """
-        # Find datasource using xpath
+        # Get PowerBiDatabase mapping from config
+        mapping = self.config.get('PowerBiDatabase', {})
         name = None
-        datasources = self.root.findall('.//datasource')
         
-        # Try to get caption from first datasource
-        if datasources:
-            datasource = datasources[0]
-            name = datasource.get('caption')
-            
-            # If no caption, try name
-            if not name:
-                name = datasource.get('name')
+        # Try source_xpath for caption first
+        name_mapping = mapping.get('name', {})
+        source_xpath = name_mapping.get('source_xpath')
+        if source_xpath:
+            # Remove attribute part for finding elements
+            base_xpath = source_xpath.split('@')[0].rstrip('/')
+            elements = self._find_elements(base_xpath)
+            if elements:
+                # Get attribute name from xpath
+                attr = source_xpath.split('@')[-1]
+                name = elements[0].get(attr)
         
-        # If still no name, try dashboard name
+        # Try alternative_xpath for name if no caption found
         if not name:
-            dashboards = self.root.findall('.//dashboard')
-            if dashboards:
-                dashboard = dashboards[0]
-                name = dashboard.get('name')
+            alt_xpath = name_mapping.get('alternative_xpath')
+            if alt_xpath:
+                # Remove attribute part for finding elements
+                base_xpath = alt_xpath.split('@')[0].rstrip('/')
+                elements = self._find_elements(base_xpath)
+                if elements:
+                    # Get attribute name from xpath
+                    attr = alt_xpath.split('@')[-1]
+                    name = elements[0].get(attr)
         
-        # Use default if still no name
+        # Use default if no name found
         if not name:
-            name = 'Model'
-
+            name = name_mapping.get('default', 'Model')
+        
         return PowerBiDatabase(
             name=name
         )
