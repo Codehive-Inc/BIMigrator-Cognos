@@ -1,0 +1,312 @@
+{
+  "projectionOrdering": {
+    "Values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "queryMetadata": {
+    "Select": [
+      {
+        "Restatement": "Order ID",
+        "Name": "Sheet1.Order ID",
+        "Type": 3,
+        "Format": "0"
+      },
+      {
+        "Restatement": "Order Date",
+        "Name": "Sheet1.Order Date",
+        "Type": 3,
+        "Format": "0"
+      },
+      {
+        "Restatement": "Region",
+        "Name": "Sheet1.Region",
+        "Type": 2048
+      },
+      {
+        "Restatement": "Product Category",
+        "Name": "Sheet1.Product Category",
+        "Type": 2048
+      },
+      {
+        "Restatement": "Product Name",
+        "Name": "Sheet1.Product Name",
+        "Type": 2048
+      },
+      {
+        "Restatement": "Discount",
+        "Name": "Sheet1.Discount",
+        "Type": 1
+      },
+      {
+        "Restatement": "Profit",
+        "Name": "Sheet1.Profit",
+        "Type": 1
+      },
+      {
+        "Restatement": "Quantity",
+        "Name": "Sheet1.Quantity",
+        "Type": 3,
+        "Format": "0"
+      },
+      {
+        "Restatement": "Sales",
+        "Name": "Sheet1.Sales",
+        "Type": 1
+      }
+    ]
+  },
+  "visualElements": [
+    {
+      "DataRoles": [
+        {
+          "Name": "Values",
+          "Projection": 0,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 1,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 2,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 3,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 4,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 5,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 6,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 7,
+          "isActive": false
+        },
+        {
+          "Name": "Values",
+          "Projection": 8,
+          "isActive": false
+        }
+      ]
+    }
+  ],
+  "selects": [
+    {
+      "displayName": "Order ID",
+      "format": "0",
+      "queryName": "Sheet1.Order ID",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 260
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Order ID"
+        }
+      }
+    },
+    {
+      "displayName": "Order Date",
+      "format": "0",
+      "queryName": "Sheet1.Order Date",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 260
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Order Date"
+        }
+      }
+    },
+    {
+      "displayName": "Region",
+      "queryName": "Sheet1.Region",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 1
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Region"
+        }
+      }
+    },
+    {
+      "displayName": "Product Category",
+      "queryName": "Sheet1.Product Category",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 1
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Product Category"
+        }
+      }
+    },
+    {
+      "displayName": "Product Name",
+      "queryName": "Sheet1.Product Name",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 1
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Product Name"
+        }
+      }
+    },
+    {
+      "displayName": "Discount",
+      "queryName": "Sheet1.Discount",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 259
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Discount"
+        }
+      }
+    },
+    {
+      "displayName": "Profit",
+      "queryName": "Sheet1.Profit",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 259
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Profit"
+        }
+      }
+    },
+    {
+      "displayName": "Quantity",
+      "format": "0",
+      "queryName": "Sheet1.Quantity",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 260
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Quantity"
+        }
+      }
+    },
+    {
+      "displayName": "Sales",
+      "queryName": "Sheet1.Sales",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 259
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Sales"
+        }
+      }
+    }
+  ]
+}

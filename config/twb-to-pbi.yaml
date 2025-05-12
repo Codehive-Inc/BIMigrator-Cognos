@@ -45,7 +45,7 @@ tableau_viz_type_to_pbi:
 # --- Mapping Definitions for Dataclasses ---
 
 PowerBiTable:
-  source_xpath: //datasources/datasource/relation[@name and (@type='table' or @type='text')] # Finds tables and custom SQL relations
+  source_xpath: //datasources/datasource/connection/relation[@name and (@type='table' or @type='text')] # Finds tables and custom SQL relations
   pbi_name:
     source_attribute: name
     mapping_function: sanitize_identifier # Python function to clean name for PBI
