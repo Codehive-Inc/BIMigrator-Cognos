@@ -155,6 +155,11 @@ def parse_workbook(twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
         Dict containing extracted table information
     """
     parser = TableParser(twb_path, config)
-    return {
+    data = {
         'PowerBiTables': parser.extract_all_tables()
     }
+    
+    # Save intermediate file
+    parser.save_intermediate(data, 'tables')
+    
+    return data

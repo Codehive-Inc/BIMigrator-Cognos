@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, List, Optional
 from pathlib import Path
+import json
 
 class BaseParser:
     def __init__(self, twb_path: str, config: Dict[str, Any]):
@@ -9,6 +10,12 @@ class BaseParser:
         self.namespaces = {'': self.root.tag.split('}')[0].strip('{')} if '}' in self.root.tag else {}
         self.twb_file = twb_path
         self.config = config
+        self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
+        self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)
+        
+        # Create intermediate directory if it doesn't exist
+        if not self.intermediate_dir.exists():
+            self.intermediate_dir.mkdir(parents=True)
     
     def _find_elements(self, xpath: Optional[str]) -> List[ET.Element]:
         if not xpath:
@@ -67,3 +74,17 @@ class BaseParser:
                     return self._get_element_text(elements[0], default)
                 
         return mapping.get('default', default)
+    
+    def save_intermediate(self, data: Dict[str, Any], name: str) -> None:
+        """Save intermediate data to JSON file.
+        
+        Args:
+            data: Data to save
+            name: Name of the intermediate file (without extension)
+        """
+        if not self.intermediate_dir.exists():
+            self.intermediate_dir.mkdir(parents=True)
+            
+        output_path = self.intermediate_dir / f'{name}.json'
+        with open(output_path, 'w') as f:
+            json.dump(data, f, indent=2)

@@ -26,8 +26,14 @@ class ModelTemplateGenerator(BaseTemplateGenerator):
             Tuple of (model file path, list of table file paths)
         """
         if output_dir:
-            self.output_dir = output_dir
-            self.table_generator.output_dir = output_dir
+            self.output_dir = output_dir.parent
+            self.pbit_dir = output_dir
+            self.extracted_dir = self.output_dir / 'extracted'
+            
+            # Update table generator paths
+            self.table_generator.output_dir = self.output_dir
+            self.table_generator.pbit_dir = self.pbit_dir
+            self.table_generator.extracted_dir = self.extracted_dir
         
         # Prepare template data
         template_data = {

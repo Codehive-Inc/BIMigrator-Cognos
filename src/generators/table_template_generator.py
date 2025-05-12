@@ -20,7 +20,9 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             Path to generated file
         """
         if output_dir:
-            self.output_dir = output_dir
+            self.output_dir = output_dir.parent
+            self.pbit_dir = output_dir
+            self.extracted_dir = self.output_dir / 'extracted'
             
         # Prepare column data
         print(f'\nDebug: Processing columns for table {table.source_name}')
@@ -95,7 +97,7 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         print(f'Debug: Template data - columns: {len(columns_data)}, measures: {len(measures_data)}, hierarchies: {len(hierarchies_data)}')
         
         # Generate table.tmdl in tables subdirectory
-        tables_dir = self.output_dir / 'tables'
+        tables_dir = self.pbit_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
         # Add name to template_data for handlebars
         template_data['name'] = template_data['source_name']
@@ -114,7 +116,9 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         """
         print('\nDebug: Generating table TMDL files...')
         if output_dir:
-            self.output_dir = output_dir
+            self.output_dir = output_dir.parent
+            self.pbit_dir = output_dir
+            self.extracted_dir = self.output_dir / 'extracted'
             print(f'Debug: Using output directory: {output_dir}')
         
         print(f'Debug: Processing {len(tables)} tables')

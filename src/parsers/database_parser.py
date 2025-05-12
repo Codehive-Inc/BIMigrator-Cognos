@@ -19,9 +19,14 @@ class DatabaseParser(BaseParser):
 
     
     def extract_all(self) -> Dict[str, Any]:
-        return {
+        data = {
             'PowerBiDatabase': self.extract_database_info()
         }
+        
+        # Save intermediate file
+        self.save_intermediate(data, 'database')
+        
+        return data
 
 
 def parse_workbook(twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
