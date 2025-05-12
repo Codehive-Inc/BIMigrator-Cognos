@@ -1,0 +1,80 @@
+table {{name}}
+    lineageTag: {{lineage_tag}}
+    {{#if description}}
+    description: {{description}}
+    {{/if}}
+    {{#if is_hidden}}
+    isHidden
+    {{/if}}
+
+    {{#each columns}}
+    column {{name}}
+        dataType: {{datatype}}
+        {{#if format_string}}
+        formatString: {{format_string}}
+        {{/if}}
+        lineageTag: {{lineage_tag}}
+        {{#if summarize_by}}
+        summarizeBy: {{summarize_by}}
+        {{/if}}
+        {{#if source_column}}
+        sourceColumn: {{source_column}}
+        {{/if}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+        {{#if is_hidden}}
+        isHidden
+        {{/if}}
+        {{#if data_category}}
+        dataCategory: {{data_category}}
+        {{/if}}
+    {{/each}}
+
+    {{#each measures}}
+    measure {{name}}
+        expression: {{expression}}
+        {{#if format_string}}
+        formatString: {{format_string}}
+        {{/if}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+        {{#if is_hidden}}
+        isHidden
+        {{/if}}
+    {{/each}}
+
+    {{#each hierarchies}}
+    hierarchy {{name}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+        {{#if is_hidden}}
+        isHidden
+        {{/if}}
+        {{#each levels}}
+        level {{name}}
+            column: {{column_name}}
+            {{#if ordinal}}
+            ordinal: {{ordinal}}
+            {{/if}}
+        {{/each}}
+    {{/each}}
+
+    {{#each partitions}}
+    partition {{name}} = {{expression}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+    {{/each}}
+        summarizeBy: {{summarize_by}}
+{{/each}}
+
+    {{#if has_widget_serialization}}
+    annotation TableWidgetSerialization =
+        {
+          "VisualType": {{visual_type}},
+          "Columns": {{column_settings}}
+        }
+    {{/if}}

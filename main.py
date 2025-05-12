@@ -1,84 +1,96 @@
-#!/usr/bin/env python3
-"""
-Tableau File Structure Extractor
-
-This script extracts content and metadata from Tableau (.twb and .twbx) files by:
-1. Directly parsing .twb files
-2. Extracting and parsing .twb files from .twbx archives (which are zip files)
-3. Saving the extracted metadata as JSON files
-
-Usage:
-    python main.py [input_tableau_file]
-
-Example:
-    python main.py ./tableau-desktop-samples/sample.twbx
-"""
-
+"""Main module for Power BI TMDL migration."""
 import argparse
-import os
-import sys
+import json
+import yaml
 from pathlib import Path
+from typing import Dict, Any
 
-from src.common.logging import logger
-from src.generators.tableu import process_tableau_file
+from src.generators.structure_generator import create_project_structure
+from src.generators.template_generator import generate_project_files
 
+def load_config(path: str) -> Dict[str, Any]:
+    """Load configuration from YAML or JSON file."""
+    with open(path, 'r') as f:
+        if path.endswith('.yaml') or path.endswith('.yml'):
+            return yaml.safe_load(f)
+        return json.load(f)
+
+def migrate_to_tmdl(
+    config_path: str,
+    input_path: str,
+    output_dir: str = None
+) -> Dict[str, Any]:
+    """Migrate Tableau workbook to Power BI TMDL format.
+
+    Args:
+        config_path: Path to YAML configuration file
+        input_path: Path to input data file (YAML/JSON)
+        output_dir: Optional output directory
+
+    Returns:
+        Dictionary mapping file types to their generated paths
+    """
+    # Load input data
+    config_data = load_config(input_path)
+
+    # Create project structure
+    created_dirs = create_project_structure(
+        config_path=config_path,
+        output_dir=output_dir
+    )
+    print("\nCreated directories:")
+    for directory in sorted(created_dirs):
+        print(f"  - {directory}")
+
+    # Generate files
+    generated_files = generate_project_files(
+        config_path=config_path,
+        config_data=config_data,
+        output_dir=output_dir
+    )
+    print("\nGenerated files:")
+    for file_type, files in generated_files.items():
+        print(f"\n{file_type}:")
+        for file in files:
+            print(f"  - {file}")
+
+    return {
+        'directories': sorted(str(d) for d in created_dirs),
+        'files': generated_files
+    }
 
 def main():
-    """Main function to run the script."""
-    # Set up argument parser
-    parser = argparse.ArgumentParser(description='Extract metadata from Tableau files (.twb or .twbx)')
-    parser.add_argument('file_path', help='Path to the Tableau file to process')
-    parser.add_argument('--output-dir', '-o', help='Output directory for extracted files (default: output)')
+    """Command line interface."""
+    parser = argparse.ArgumentParser(
+        description='Migrate Tableau workbook to Power BI TMDL format'
+    )
+    parser.add_argument(
+        '--config',
+        required=True,
+        help='Path to YAML configuration file'
+    )
+    parser.add_argument(
+        '--input',
+        required=True,
+        help='Path to input data file (YAML/JSON)'
+    )
+    parser.add_argument(
+        '--output',
+        help='Output directory'
+    )
 
-    # If the script is called with arguments containing spaces, they might be split
-    # Let's handle this by reconstructing the file path if needed
-    if len(sys.argv) > 2 and not sys.argv[1].startswith('-'):
-        # Check if this might be a file path with spaces
-        potential_path = ' '.join([arg for arg in sys.argv[1:] if not arg.startswith('-')])
-        if os.path.exists(potential_path):
-            file_path = potential_path
-            # Extract any options
-            output_dir = None
-            for i, arg in enumerate(sys.argv):
-                if arg in ['--output-dir', '-o'] and i + 1 < len(sys.argv):
-                    output_dir = sys.argv[i + 1]
-        else:
-            # Fall back to regular argument parsing
-            args = parser.parse_args()
-            file_path = args.file_path
-            output_dir = args.output_dir
-    elif len(sys.argv) > 1:
-        # Parse arguments normally
-        args = parser.parse_args()
-        file_path = args.file_path
-        output_dir = args.output_dir
-    else:
-        # No arguments provided
-        parser.print_help()
-        sys.exit(1)
+    args = parser.parse_args()
 
-    if not os.path.exists(file_path):
-        logger.error(f"File not found: {file_path}")
-        sys.exit(1)
+    try:
+        result = migrate_to_tmdl(
+            config_path=args.config,
+            input_path=args.input,
+            output_dir=args.output
+        )
+        print("\nMigration completed successfully!")
+    except Exception as e:
+        print(f"\nError during migration: {str(e)}")
+        raise
 
-    logger.info(f"Starting extraction process for: {file_path}")
-    logger.info(f"Output directory: {output_dir if output_dir else 'output'} (default)")
-    path = Path(file_path)
-    metadata_result, extracted_files = process_tableau_file(path, output_dir)
-
-    if metadata_result:
-        logger.info("\nExtraction Summary:")
-        logger.info(f"- Found {len(metadata_result.get('datasources', []))} datasources")
-        logger.info(f"- Found {len(metadata_result.get('calculations', []))} calculations")
-        logger.info(f"- Found {len(metadata_result.get('worksheets', []))} worksheets")
-        logger.info(f"- Found {len(metadata_result.get('dashboards', []))} dashboards")
-        logger.info(f"- Found {len(metadata_result.get('parameters', []))} parameters")
-
-    if extracted_files:
-        logger.info(f"\nExtracted files: {len(extracted_files)}")
-        for file in extracted_files:
-            logger.info(f"- {file}")
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
