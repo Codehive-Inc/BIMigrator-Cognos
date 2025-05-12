@@ -1,24 +1,21 @@
-"""Parser for extracting information from Tableau Workbook (.twb) files.
+"""Parser for extracting database information from Tableau Workbook (.twb) files.
 
 This module provides functionality to parse Tableau Workbook (.twb) files and extract
-information needed to generate Power BI TMDL files. The main components are:
+database information needed to generate Power BI TMDL files. The main components are:
 
 Classes:
-    - TableauWorkbookParser: Main parser class that handles TWB file parsing
+    - DatabaseParser: Main parser class that handles database information extraction
 
 Usage:
-    parser = TableauWorkbookParser('path/to/workbook.twb', config)
-    data = parser.extract_all()
+    parser = DatabaseParser('path/to/workbook.twb', config)
+    database = parser.extract_database_info()
 
 The parser extracts the following information:
     - Database name from:
         1. Datasource caption (<datasource caption='...'>) 
         2. Datasource name (<datasource name='...'>) if no caption
-        3. Dashboard name (<dashboard name='...'>) if no datasource name
+        3. Dashboard name (<dashboard name='...'>) if no names found
         4. Default to 'Model' if no names found
-    - Tables from <relation> elements
-    - Relationships from <relation> join information
-    - Expressions from calculated fields
 """
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, Any, Optional
@@ -31,7 +28,7 @@ sys.path.insert(0, str(project_root))
 
 from config.dataclasses import PowerBiDatabase
 
-class TableauWorkbookParser:
+class DatabaseParser:
     """Parser for Tableau Workbook (.twb) files."""
     
     def __init__(self, twb_path: str, config: Dict[str, Any]):

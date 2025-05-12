@@ -7,7 +7,7 @@ from typing import Dict, Any, Optional, List
 
 from src.generators.structure_generator import create_project_structure
 from src.generators.template_generator import generate_project_files
-from src.parsers.twb_parser import TableauWorkbookParser
+from src.parsers.database_parser import DatabaseParser
 
 def load_config(path: str) -> Dict[str, Any]:
     """Load configuration from YAML or JSON file."""
@@ -51,11 +51,14 @@ def migrate_to_tmdl(
         print(f"  - {directory}")
     
     # Parse TWB file and extract database info
-    parser = TableauWorkbookParser(input_path, config)
+    parser = DatabaseParser(input_path, config)
     database = parser.extract_database_info()
     
+    # Get intermediate directory from config
+    intermediate_dir = config.get('Output', {}).get('intermediate_dir', 'extracted')
+    
     # Save extracted data
-    extracted_dir = Path(project_dir) / 'extracted'
+    extracted_dir = Path(project_dir) / intermediate_dir
     database_json = extracted_dir / 'database.json'
     with open(database_json, 'w') as f:
         json.dump(database.__dict__, f, indent=2)
