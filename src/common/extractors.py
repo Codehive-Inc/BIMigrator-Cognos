@@ -44,6 +44,8 @@ def extract_datasource_connections(datasource: Et.Element):
 
 def extract_datasource_relation(datasource: Et.Element):
     relation = datasource.find(".//relation")
+    if not relation:
+        return None
     return {
         'name': relation.get('name'),
         'table': relation.get('table'),

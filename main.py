@@ -1,24 +1,16 @@
 """Main module for Power BI TMDL migration."""
 import argparse
-import json
-import yaml
-from pathlib import Path
 from typing import Dict, Any
 
+from src.common.helpers import load_config
 from src.generators.structure_generator import create_project_structure
 from src.generators.template_generator import generate_project_files
 
-def load_config(path: str) -> Dict[str, Any]:
-    """Load configuration from YAML or JSON file."""
-    with open(path, 'r') as f:
-        if path.endswith('.yaml') or path.endswith('.yml'):
-            return yaml.safe_load(f)
-        return json.load(f)
 
 def migrate_to_tmdl(
-    config_path: str,
-    input_path: str,
-    output_dir: str = None
+        config_path: str,
+        input_path: str,
+        output_dir: str = None
 ) -> Dict[str, Any]:
     """Migrate Tableau workbook to Power BI TMDL format.
 
@@ -59,6 +51,7 @@ def migrate_to_tmdl(
         'files': generated_files
     }
 
+
 def main():
     """Command line interface."""
     parser = argparse.ArgumentParser(
@@ -91,6 +84,7 @@ def main():
     except Exception as e:
         print(f"\nError during migration: {str(e)}")
         raise
+
 
 if __name__ == '__main__':
     main()
