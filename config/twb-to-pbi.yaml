@@ -61,6 +61,24 @@ PowerBiTable:
     connection_info_xpath: ../connection # Relative to relation element
     relation_details: self # Use the current relation node
 
+PowerBiModel:
+  source_xpath: //workbook
+  annotations:
+    time_intelligence:
+      source_xpath: .//column[@role="dimension"][@datatype="date"]
+      mapping_rule: has_elements  # If any elements found, set to "1", else "0"
+    version:
+      source_xpath: .//preferences/preference[@name="version"]
+      source_attribute: value
+      default: "2.120.7013.10 (Main)"
+  query_order:
+    source_xpath: //relation[@type="join"]
+    table_refs:
+      - ./connection/relation[@name]  # Left table
+      - ./connection/relation[@name]  # Right table
+    fallback: table_list  # If no joins found, use alphabetical list of tables
+ 
+
 PowerBiColumn:
   # Find columns defined within datasources OR referenced within worksheets/shelves if not in DS metadata
   source_xpath: //datasources/datasource/column[@name] | //datasources/datasource/calculated-field[@name]
