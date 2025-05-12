@@ -1,8 +1,6 @@
 from dataclasses import dataclass, field
-<<<<<<< HEAD:config/data_classes.py
 from typing import List, Dict, Optional, Literal, Any  # Added 'Any' for annotation flexibility
 
-=======
 from typing import List, Dict, Optional, Any, Union
 from typing_extensions import Literal
 from uuid import uuid4
@@ -315,7 +313,6 @@ class CultureInfo:
     """Represents a complete culture TMDL file."""
     culture: str
     linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata)
->>>>>>> main:config/dataclasses.py
 
 # --- Model Objects (Targeting TMDL Files) ---
 
@@ -323,8 +320,8 @@ class CultureInfo:
 class PowerBiColumn:
     """Represents a column within a Power BI table for TMDL."""
     pbi_name: str
-    pbi_datatype: str  # e.g., "string", "int64", "double", "dateTime", "boolean"
-    source_name: str  # Original source name for reference/lineage
+    pbi_datatype: str # e.g., "string", "int64", "double", "dateTime", "boolean"
+    source_name: str # Original source name for reference/lineage
     description: Optional[str] = None
     format_string: Optional[str] = None
     is_hidden: bool = False
@@ -377,18 +374,11 @@ class PowerBiHierarchy:
 class PowerBiPartition:
     """Represents a partition within a Power BI table for TMDL."""
     name: str
-<<<<<<< HEAD:config/data_classes.py
     expression: str  # The M code query (or DAX)
     description: Optional[str] = None
     source_type: Literal['m', 'calculated', 'query'] = 'm'
     annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
 
-=======
-    expression: str
-    description: Optional[str] = None
-    source_type: Literal['m', 'calculated', 'query'] = 'm'
-    annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
->>>>>>> main:config/dataclasses.py
 
 @dataclass
 class PowerBiRelationship:
@@ -397,7 +387,6 @@ class PowerBiRelationship:
     from_column: str
     to_table: str
     to_column: str
-    description: Optional[str] = None
     is_active: bool = True
     description: Optional[str] = None
     cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
