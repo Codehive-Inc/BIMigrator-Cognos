@@ -14,6 +14,9 @@ table {{source_name}}
         formatString: {{format_string}}
         {{/if}}
         lineageTag: {{lineage_tag}}
+        {{#if is_calculated}}
+        type: calculated
+        {{/if}}
         {{#if summarize_by}}
         summarizeBy: {{summarize_by}}
         {{/if}}
@@ -29,6 +32,16 @@ table {{source_name}}
         {{#if data_category}}
         dataCategory: {{data_category}}
         {{/if}}
+        {{#if is_data_type_inferred}}
+        isDataTypeInferred: {{is_data_type_inferred}}
+        {{/if}}
+        {{#if annotations}}
+        annotations
+            {{#each annotations}}
+            {{@key}}: {{this}}
+            {{/each}}
+        {{/if}}
+        
     {{/each}}
 
     {{#each measures}}

@@ -619,10 +619,6 @@ class TableParser(BaseParser):
                     # Add SummarizationSetBy annotation for proper TMDL format
                     annotations["SummarizationSetBy"] = "User"
                     
-                    # For TMDL format, we need to set the type property to "calculated"
-                    # This is done through annotations in our dataclass
-                    annotations["Type"] = "calculated"
-                    
                     print(f"Debug: Column '{final_col_name}' is a calculated column with expression: {dax_expression}")
                     
                     column = PowerBiColumn(
@@ -634,7 +630,11 @@ class TableParser(BaseParser):
                         is_hidden=is_hidden,
                         format_string=format_string,
                         summarize_by=summarize_by,
-                        annotations=annotations
+                        annotations=annotations,
+                        # Set is_calculated to True for calculated columns
+                        is_calculated=True,
+                        # Data type is inferred from the DAX expression
+                        is_data_type_inferred=True
                     )
                 else:
                     # Regular column

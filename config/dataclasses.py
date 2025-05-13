@@ -319,6 +319,9 @@ class PowerBiColumn:
     sortByColumnName: Optional[str] = None
     dataCategory: Optional[str] = None
     annotations: Dict[str, Any] = field(default_factory=dict) # <-- Added annotations dict
+    # For calculated columns in TMDL format
+    is_calculated: bool = False
+    is_data_type_inferred: bool = False
     # Example usage for annotations:
     # col.annotations["SummarizationSetBy"] = "Automatic" # or "User" or "None"
     # col.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}' # Store JSON as a string literal

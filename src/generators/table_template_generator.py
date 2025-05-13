@@ -37,8 +37,19 @@ class TableTemplateGenerator(BaseTemplateGenerator):
                 'source_column': column.source_column,
                 'description': column.description,
                 'is_hidden': column.is_hidden,
-                'data_category': column.dataCategory if hasattr(column, 'dataCategory') else None
+                'data_category': column.dataCategory if hasattr(column, 'dataCategory') else None,
+                # Add new properties for calculated columns
+                'is_calculated': column.is_calculated if hasattr(column, 'is_calculated') else False,
+                'is_data_type_inferred': column.is_data_type_inferred if hasattr(column, 'is_data_type_inferred') else False,
+                'annotations': column.annotations if hasattr(column, 'annotations') and column.annotations else None
             }
+            
+            # Debug output for calculated columns
+            if column_data['is_calculated']:
+                print(f"Debug: Column '{column.source_name}' is a calculated column with type=calculated and isDataTypeInferred={column_data['is_data_type_inferred']}")
+                if column_data['annotations']:
+                    print(f"Debug: Column '{column.source_name}' has annotations: {column_data['annotations']}")
+            
             columns_data.append(column_data)
             
         # Prepare measure data
