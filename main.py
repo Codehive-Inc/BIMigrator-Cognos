@@ -4,6 +4,7 @@ import json
 import yaml
 from pathlib import Path
 from typing import Dict, List, Optional, Any
+from typing import Dict, Any
 
 from src.parsers.database_parser import DatabaseParser
 from src.parsers.model_parser import ModelParser
@@ -24,14 +25,14 @@ def load_config(path: str) -> Dict[str, Any]:
 
 def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
-    
+
     Args:
         input_path: Path to TWB file to convert
         config_path: Path to YAML configuration file
         output_dir: Optional output directory
-    
+
     Returns:
-        Dictionary mapping file types to lists of generated file paths
+        Dictionary mapping file types to their generated paths
     """
     # Load configuration
     with open(config_path, 'r') as f:
@@ -123,9 +124,9 @@ def main():
         '--output',
         help='Output directory'
     )
-    
+
     args = parser.parse_args()
-    
+
     try:
         result = migrate_to_tmdl(
             config_path=args.config,
@@ -136,6 +137,7 @@ def main():
     except Exception as e:
         print(f"\nError during migration: {str(e)}")
         raise
+
 
 if __name__ == '__main__':
     main()

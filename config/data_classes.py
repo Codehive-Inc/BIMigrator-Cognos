@@ -1,8 +1,7 @@
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Any, Union
-from typing_extensions import Literal
-from uuid import uuid4
 from datetime import datetime
+from typing import List, Dict, Optional, Any, Literal
+
 
 # --- Project Objects ---
 
@@ -12,6 +11,7 @@ class PowerBiProject:
     version: str = '1.0'
     created: datetime = field(default_factory=datetime.now)
     last_modified: datetime = field(default_factory=datetime.now)
+
 
 @dataclass
 class PowerBiReportMetadata:
@@ -26,11 +26,13 @@ class PowerBiReportMetadata:
     tags: List[str] = field(default_factory=list)
     custom_metadata: Dict[str, str] = field(default_factory=dict)
 
+
 @dataclass
 class PowerBiVisualSettings:
     """Visual settings configuration."""
     default_visual_style: str
     show_data_labels: bool = False
+
 
 @dataclass
 class PowerBiFilterSettings:
@@ -38,11 +40,13 @@ class PowerBiFilterSettings:
     persistent_filters: bool = True
     filter_pane_enabled: bool = True
 
+
 @dataclass
 class PowerBiInteractionSettings:
     """Interaction settings configuration."""
     drill_enabled: bool = True
     cross_filtering_enabled: bool = True
+
 
 @dataclass
 class PowerBiReportSettings:
@@ -52,11 +56,13 @@ class PowerBiReportSettings:
     filter_settings: PowerBiFilterSettings = field(default_factory=PowerBiFilterSettings)
     interaction_settings: PowerBiInteractionSettings = field(default_factory=PowerBiInteractionSettings)
 
+
 @dataclass
 class PowerBiTablePosition:
     """Table position in diagram."""
     x: float
     y: float
+
 
 @dataclass
 class PowerBiTableLayout:
@@ -64,16 +70,19 @@ class PowerBiTableLayout:
     id: str
     position: PowerBiTablePosition
 
+
 @dataclass
 class PowerBiDiagramLayout:
     """Diagram layout."""
     version: str
     layout: Dict[str, List[PowerBiTableLayout]] = field(default_factory=lambda: {"tables": []})
 
+
 @dataclass
 class PowerBiVersion:
     """Version information."""
     version: str
+
 
 # --- Report Objects ---
 
@@ -84,6 +93,7 @@ class PowerBiTheme:
     version: str
     type: int = 2
 
+
 @dataclass
 class PowerBiSlowDataSourceSettings:
     """Settings for slow data sources."""
@@ -92,6 +102,7 @@ class PowerBiSlowDataSourceSettings:
     is_filter_selections_enabled: bool = True
     is_field_well_enabled: bool = True
     is_apply_all_enabled: bool = True
+
 
 @dataclass
 class PowerBiReportConfig:
@@ -104,12 +115,14 @@ class PowerBiReportConfig:
     allow_change_filter_types: bool = True
     slow_data_source_settings: PowerBiSlowDataSourceSettings = field(default_factory=PowerBiSlowDataSourceSettings)
 
+
 @dataclass
 class PowerBiResourceItem:
     """Resource item in a package."""
     name: str
     path: str
     type: str
+
 
 @dataclass
 class PowerBiResourcePackage:
@@ -119,6 +132,7 @@ class PowerBiResourcePackage:
     name: str = 'SharedResources'
     type: int = 2
 
+
 @dataclass
 class PowerBiReport:
     """Report definition."""
@@ -126,11 +140,13 @@ class PowerBiReport:
     layout_optimization: str
     resource_packages: List[PowerBiResourcePackage] = field(default_factory=list)
 
+
 @dataclass
 class PowerBiFilterTarget:
     """Filter target specification."""
     table: str
     column: str
+
 
 @dataclass
 class PowerBiFilter:
@@ -139,6 +155,7 @@ class PowerBiFilter:
     target: PowerBiFilterTarget
     value: Any
 
+
 @dataclass
 class PowerBiVisualObject:
     """Visual object configuration."""
@@ -146,12 +163,14 @@ class PowerBiVisualObject:
     type: str
     properties: Dict[str, Any] = field(default_factory=dict)
 
+
 @dataclass
 class PowerBiSectionLayout:
     """Section layout configuration."""
     width: int = 1280
     height: int = 720
     display_option: str = "fitToPage"
+
 
 @dataclass
 class PowerBiReportSection:
@@ -162,6 +181,7 @@ class PowerBiReportSection:
     objects: Dict[str, List[PowerBiVisualObject]] = field(default_factory=lambda: {"visuals": []})
     layout: PowerBiSectionLayout = field(default_factory=PowerBiSectionLayout)
 
+
 # --- Model Objects ---
 
 @dataclass
@@ -170,6 +190,7 @@ class PowerBiDatabase:
     name: str
     compatibility_level: int = 1550
 
+
 @dataclass
 class PowerBiExpression:
     """DAX Expression."""
@@ -177,16 +198,19 @@ class PowerBiExpression:
     expression: str
     description: Optional[str] = None
 
+
 @dataclass
 class PowerBiExpressions:
     """Container for DAX expressions."""
     expressions: List[PowerBiExpression] = field(default_factory=list)
+
 
 @dataclass
 class DataAccessOptions:
     """Data access options for the model."""
     legacy_redirects: bool = True
     return_error_values_as_null: bool = True
+
 
 @dataclass
 class PowerBiModel:
@@ -198,6 +222,7 @@ class PowerBiModel:
     time_intelligence_enabled: bool = False
     version: str = '2.120.7013.10 (Main)'
     tables: List[str] = field(default_factory=list)
+
 
 # --- Table Objects ---
 
@@ -213,8 +238,6 @@ class PowerBiColumn:
     summarize_by: str = 'none'
     lineage_tag: Optional[str] = None
 
-# --- Relationship Objects ---
-
 @dataclass
 class PowerBiRelationship:
     """Represents a relationship between two tables."""
@@ -228,6 +251,7 @@ class PowerBiRelationship:
     join_on_date_behavior: Optional[str] = None
     type: Optional[str] = None
 
+
 # --- Culture Objects ---
 
 @dataclass
@@ -235,6 +259,7 @@ class EntityBinding:
     """Binding information for an entity."""
     conceptual_entity: str
     conceptual_property: Optional[str] = None
+
 
 @dataclass
 class LinguisticTerm:
@@ -244,6 +269,7 @@ class LinguisticTerm:
     type: Optional[Literal['Noun', 'Verb', 'Adjective']] = None
     weight: Optional[float] = None
 
+
 @dataclass
 class LinguisticEntity:
     """Entity in linguistic metadata."""
@@ -251,6 +277,7 @@ class LinguisticEntity:
     state: Literal['Generated', 'Suggested'] = 'Generated'
     hidden: bool = False
     terms: List[Dict[str, Dict[str, Any]]] = field(default_factory=list)
+
 
 @dataclass
 class LinguisticMetadata:
@@ -260,13 +287,15 @@ class LinguisticMetadata:
     dynamic_improvement: Literal['HighConfidence', 'LowConfidence'] = 'HighConfidence'
     entities: Dict[str, LinguisticEntity] = field(default_factory=dict)
 
+
 @dataclass
 class CultureInfo:
     """Complete culture information."""
     culture: str
-    linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata) 
+    linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata)
 
 # --- Culture TMDL Objects ---
+
 
 @dataclass
 class LinguisticTerm:
@@ -276,11 +305,13 @@ class LinguisticTerm:
     type: Optional[Literal['Noun', 'Verb', 'Adjective']] = None
     weight: Optional[float] = None
 
+
 @dataclass
 class EntityBinding:
     """Represents the binding information for an entity."""
     conceptual_entity: str
     conceptual_property: Optional[str] = None
+
 
 @dataclass
 class LinguisticEntity:
@@ -290,6 +321,7 @@ class LinguisticEntity:
     hidden: bool = False
     terms: List[Dict[str, Dict[str, Any]]] = field(default_factory=list)
 
+
 @dataclass
 class LinguisticMetadata:
     """Represents the linguistic metadata in a culture TMDL file."""
@@ -298,11 +330,13 @@ class LinguisticMetadata:
     dynamic_improvement: Literal['HighConfidence', 'LowConfidence'] = 'HighConfidence'
     entities: Dict[str, LinguisticEntity] = field(default_factory=dict)
 
+
 @dataclass
 class CultureInfo:
     """Represents a complete culture TMDL file."""
     culture: str
     linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata)
+
 
 # --- Model Objects (Targeting TMDL Files) ---
 
@@ -327,6 +361,7 @@ class PowerBiColumn:
     # col.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}' # Store JSON as a string literal
     # col.annotations["SomeOtherAnnotation"] = True
 
+
 @dataclass
 class PowerBiMeasure:
     """Represents a DAX measure within a Power BI table for TMDL."""
@@ -336,9 +371,10 @@ class PowerBiMeasure:
     format_string: Optional[str] = None
     is_hidden: bool = False
     display_folder: Optional[str] = None
-    annotations: Dict[str, Any] = field(default_factory=dict) # <-- Added annotations dict
+    annotations: Dict[str, Any] = field(default_factory=dict)  # <-- Added annotations dict
     # Example usage for annotations:
     # measure.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}'
+
 
 # --- Other dataclasses remain largely the same as the previous TMDL version ---
 
@@ -346,7 +382,8 @@ class PowerBiMeasure:
 class PowerBiHierarchyLevel:
     """Represents a level within a hierarchy."""
     name: str
-    column_name: str # The pbi_name of the column in this table
+    column_name: str  # The pbi_name of the column in this table
+
 
 @dataclass
 class PowerBiHierarchy:
@@ -355,7 +392,8 @@ class PowerBiHierarchy:
     description: Optional[str] = None
     levels: List[PowerBiHierarchyLevel] = field(default_factory=list)
     is_hidden: bool = False
-    annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
+    annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
+
 
 @dataclass
 class PowerBiPartition:
@@ -364,7 +402,8 @@ class PowerBiPartition:
     expression: str
     description: Optional[str] = None
     source_type: Literal['m', 'calculated', 'query'] = 'm'
-    annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
+    annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
+
 
 @dataclass
 class PowerBiRelationship:
@@ -377,7 +416,8 @@ class PowerBiRelationship:
     is_active: bool = True
     cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
     cross_filter_behavior: Literal['oneWay', 'bothDirections', 'automatic'] = 'automatic'
-    annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
+    annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
+
 
 @dataclass
 class PowerBiTable:
@@ -389,7 +429,7 @@ class PowerBiTable:
     columns: List[PowerBiColumn] = field(default_factory=list)
     measures: List[PowerBiMeasure] = field(default_factory=list)
     hierarchies: List[PowerBiHierarchy] = field(default_factory=list)
-    annotations: Dict[str, Any] = field(default_factory=dict) # Annotations can apply here too
+    annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
 
 
 # --- Report Objects (Targeting report.json - No change needed for model annotations) ---
@@ -398,12 +438,14 @@ class PowerBiVisualFieldMapping:
     role: str
     field_name: str
 
+
 @dataclass
 class PowerBiVisual:
     pbi_type: str
     title: str
     source_name: str
     field_mappings: List[PowerBiVisualFieldMapping] = field(default_factory=list)
+
 
 @dataclass
 class PowerBiReportPage:
@@ -413,6 +455,7 @@ class PowerBiReportPage:
     height: Optional[int] = 720
     visuals: List[PowerBiVisual] = field(default_factory=list)
 
+
 # --- Overall Container ---
 @dataclass
 class PowerBiTargetStructure:
@@ -420,7 +463,7 @@ class PowerBiTargetStructure:
     db_name: str = "SemanticModel"
     compatibility_level: int = 1550
     model_description: Optional[str] = None
-    annotations: Dict[str, Any] = field(default_factory=dict) # Annotations for the Database/Model itself
+    annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations for the Database/Model itself
     tables: Dict[str, PowerBiTable] = field(default_factory=dict)
     relationships: List[PowerBiRelationship] = field(default_factory=list)
     pages: List[PowerBiReportPage] = field(default_factory=list)
