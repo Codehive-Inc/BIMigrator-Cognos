@@ -5,7 +5,7 @@ import json
 
 from .base_template_generator import BaseTemplateGenerator
 from .table_template_generator import TableTemplateGenerator
-from config.dataclasses import PowerBiModel, PowerBiTable
+from config.data_classes import PowerBiModel, PowerBiTable
 
 class ModelTemplateGenerator(BaseTemplateGenerator):
     """Generator for model TMDL files."""

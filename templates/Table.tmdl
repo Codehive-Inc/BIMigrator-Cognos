@@ -13,12 +13,11 @@ table {{source_name}}
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
-        lineageTag: {{lineage_tag}}
-        {{#if is_calculated}}
-        type: calculated
-        {{/if}}
         {{#if summarize_by}}
         summarizeBy: {{summarize_by}}
+        {{/if}}
+        {{#if is_calculated}}
+        type: calculated
         {{/if}}
         {{#if source_column}}
         sourceColumn: {{{source_column}}}
@@ -38,7 +37,7 @@ table {{source_name}}
         {{#if annotations}}
         annotations
             {{#each annotations}}
-            {{@key}}: {{this}}
+            {{@key}}: {{{this}}}
             {{/each}}
         {{/if}}
         

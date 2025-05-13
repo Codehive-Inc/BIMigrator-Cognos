@@ -6,17 +6,9 @@ import uuid
 import xml.etree.ElementTree as ET
 import logging
 
-# Import the tableau_to_dax_client module functions for API-based conversion
-from src.utils.tableau_to_dax_client import (
-    convert_tableau_formula_to_dax,
-    convert_tableau_calculation_to_dax_measure,
-    convert_tableau_calculation_to_dax_column
-)
-
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
-
-from config.dataclasses import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel
+from .base_parser import BaseParser
+from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel
+from ..converters import CalculationConverter, CalculationInfo
 from .base_parser import BaseParser
 
 
@@ -55,6 +47,7 @@ class TableParser(BaseParser):
     def __init__(self, twb_path: str, config: Dict[str, Any]):
         super().__init__(twb_path, config)
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
+        self.calculation_converter = CalculationConverter(config)
     
     def _map_datatype(self, tableau_type: str) -> str:
         """Map Tableau datatypes to Power BI datatypes.
@@ -628,24 +621,47 @@ class TableParser(BaseParser):
                 # Get the calculation formula from the element if available
                 formula = col_elem.get('calculation_formula') or calculation_formula
                 
+                # Extract summarize_by from configuration
                 summarize_by = "none"
-                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
-                    summarize_by = "sum"
+                summarize_by_config = columns_yaml_config.get('summarize_by', {})
+                if col_elem.tag.endswith('metadata-record'):
+                    # Try to get aggregation from the element using XPath
+                    agg_xpath = summarize_by_config.get('source_xpath')
+                    if agg_xpath:
+                        agg_elem = col_elem.find(agg_xpath.replace('/text()', ''))
+                        if agg_elem is not None and agg_elem.text:
+                            tableau_agg = agg_elem.text.lower()
+                            # Map Tableau aggregation to Power BI summarization
+                            if tableau_agg in ['sum', 'avg', 'min', 'max', 'count']:
+                                summarize_by = tableau_agg
+                            elif tableau_agg == 'none':
+                                summarize_by = 'none'
+                            # Default to sum for numeric columns if no specific aggregation
+                            elif pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
+                                summarize_by = "sum"
+                else:
+                    # For non-metadata records, use default logic
+                    if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
+                        summarize_by = "sum"
                 
-                # If this is a measure, create a PowerBiMeasure instead of a column
-                if is_measure and formula:
-                    try:
-                        # Extract calculation info for better conversion
-                        calc_info = {
-                            'formula': formula,
-                            'caption': final_col_name,
-                            'role': 'measure',
-                            'datatype': pbi_datatype
-                        }
-                        
-                        # Convert Tableau formula to DAX using the specialized measure conversion function
-                        dax_expression = convert_tableau_calculation_to_dax_measure(calc_info, pbi_table_name)
-                        
+                # Initialize annotations
+                annotations = {}
+                
+                # Handle calculated fields (measures and calculated columns)
+                if formula:
+                    # Create calculation info from configuration
+                    calc_info = CalculationInfo(
+                        formula=formula,
+                        caption=final_col_name,
+                        datatype=pbi_datatype,
+                        role='measure' if is_measure else None
+                    )
+                    
+                    # Convert formula to DAX using the calculation converter
+                    dax_expression = self.calculation_converter.convert_to_dax(calc_info, pbi_table_name)
+                    
+                    if is_measure:
+                        # Create PowerBI measure
                         measure = PowerBiMeasure(
                             source_name=final_col_name,
                             dax_expression=dax_expression,
@@ -655,40 +671,13 @@ class TableParser(BaseParser):
                         )
                         pbi_measures.append(measure)
                         print(f"Debug: Created measure '{final_col_name}' with expression: {dax_expression}")
-                    except Exception as e:
-                        print(f"Error: Failed to convert measure '{final_col_name}': {str(e)}")
-                        # Create a measure with an error comment
-                        error_expression = f"/* ERROR: Could not convert Tableau formula: {formula} */\n/* Error details: {str(e)} */"
-                        measure = PowerBiMeasure(
-                            source_name=final_col_name,
-                            dax_expression=error_expression,
-                            description=f"{description} (Conversion error)",
-                            is_hidden=is_hidden,
-                            format_string=format_string
-                        )
-                        pbi_measures.append(measure)
-                    continue
-                
-                # Create annotations for calculated columns
-                annotations = {}
-                if is_calculated_column:
-                    try:
-                        # Extract calculation info for better conversion
-                        calc_info = {
-                            'formula': formula,
-                            'caption': final_col_name,
-                            'datatype': pbi_datatype
-                        }
-                        
-                        # Convert Tableau formula to DAX for calculated columns using the specialized column conversion function
-                        dax_expression = convert_tableau_calculation_to_dax_column(calc_info, pbi_table_name)
-                    except Exception as e:
-                        print(f"Error: Failed to convert calculated column '{final_col_name}': {str(e)}")
-                        # Create a calculated column with an error comment
-                        dax_expression = f"/* ERROR: Could not convert Tableau formula: {formula} */\n/* Error details: {str(e)} */"
+                        continue
                     
-                    # Add SummarizationSetBy annotation for proper TMDL format
-                    annotations["SummarizationSetBy"] = "User"
+                    # For calculated columns, store the DAX expression in annotations
+                    annotations.update({
+                        'SummarizationSetBy': 'User',  # Calculated columns are always set by user
+                        'CalculationFormula': dax_expression
+                    })
                     
                     print(f"Debug: Column '{final_col_name}' is a calculated column with expression: {dax_expression}")
                     

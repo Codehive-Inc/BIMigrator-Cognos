@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 
 from .base_template_generator import BaseTemplateGenerator
-from config.dataclasses import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy
+from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy
 
 class TableTemplateGenerator(BaseTemplateGenerator):
     """Generator for table TMDL files."""
@@ -37,6 +37,7 @@ class TableTemplateGenerator(BaseTemplateGenerator):
                 'source_column': column.source_column,
                 'description': column.description,
                 'is_hidden': column.is_hidden,
+                'summarize_by': column.summarize_by if hasattr(column, 'summarize_by') else None,
                 'data_category': column.dataCategory if hasattr(column, 'dataCategory') else None,
                 # Add new properties for calculated columns
                 'is_calculated': column.is_calculated if hasattr(column, 'is_calculated') else False,
@@ -107,9 +108,6 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         print(f'Debug: Template data - source_name: {template_data["source_name"]}')
         print(f'Debug: Template data - columns: {len(columns_data)}, measures: {len(measures_data)}, hierarchies: {len(hierarchies_data)}')
         
-        # Generate table.tmdl in tables subdirectory
-        tables_dir = self.pbit_dir / 'tables'
-        tables_dir.mkdir(exist_ok=True)
         # Add name to template_data for handlebars
         template_data['name'] = template_data['source_name']
         print(f'Debug: Added name to template data: {template_data["name"]}')
