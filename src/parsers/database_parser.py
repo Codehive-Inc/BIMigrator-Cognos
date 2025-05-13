@@ -5,7 +5,7 @@ from typing import Dict, Any
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from config.dataclasses import PowerBiDatabase
+from config.data_classes import PowerBiDatabase
 from .base_parser import BaseParser
 
 class DatabaseParser(BaseParser):

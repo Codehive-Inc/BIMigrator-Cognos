@@ -16,7 +16,7 @@ from src.utils.tableau_to_dax_client import (
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from config.dataclasses import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel
+from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel
 from .base_parser import BaseParser
 
 

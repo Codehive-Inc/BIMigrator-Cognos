@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 
 from .base_template_generator import BaseTemplateGenerator
-from config.dataclasses import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy
+from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy
 
 class TableTemplateGenerator(BaseTemplateGenerator):
     """Generator for table TMDL files."""

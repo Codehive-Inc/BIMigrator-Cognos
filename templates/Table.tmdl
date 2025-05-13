@@ -13,7 +13,9 @@ table {{source_name}}
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
-        lineageTag: {{lineage_tag}}
+        {{#if summarize_by}}
+        summarizeBy: {{summarize_by}}
+        {{/if}}
         {{#if is_calculated}}
         type: calculated
         {{/if}}
