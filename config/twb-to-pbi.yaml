@@ -151,7 +151,24 @@ PowerBiTable:
   # Columns configuration
   columns_config:
     # Target metadata-records for logical columns
-    source_xpath: "metadata-record[@class='column']"
+    source_xpath: ".//metadata-records/metadata-record[@class='column']"
+    # Target standalone calculated fields directly under datasource
+    calculated_fields_xpath: "column[calculation]"
+    # Additional XPaths for finding columns in relation elements
+    relation_column_paths:
+      - ".//_.fcp.ObjectModelEncapsulateLegacy.false...relation//column"
+      - ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column"
+      - ".//relation//column"
+    # Attribute mappings for relation columns
+    relation_column_mappings:
+      name_attribute: "name"
+      datatype_attribute: "datatype"
+      ordinal_attribute: "ordinal"
+    # Attribute mappings for calculated fields
+    calculated_field_mappings:
+      name_attribute: "caption"
+      datatype_attribute: "datatype"
+      description_attribute: "caption"
     name:
       source_attribute: caption
       fallback_attribute: local-name
