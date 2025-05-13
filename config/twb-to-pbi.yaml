@@ -117,7 +117,7 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  source_xpath: //datasources/datasource/connection/relation
+  source_xpath: //datasources/datasource/connection/relation | //datasources/datasource/connection/_.fcp.ObjectModelEncapsulateLegacy.false...relation
   source_name:
     source_attribute: name
   description:

@@ -110,9 +110,22 @@ class TableParser(BaseParser):
         xpath = mapping.get('source_xpath', '//relation[@type="table"]')
         print(f'Debug: Using XPath: {xpath}')
         
-        table_elements = self._find_elements(xpath)
-        print(f'Debug: Found {len(table_elements)} table elements')
+        # Handle special namespace elements like _.fcp.ObjectModelEncapsulateLegacy.false...relation
+        # First try with the configured XPath
+        table_elements = []
         
+        # Try each part of the XPath separately (they may be separated by |)
+        if '|' in xpath:
+            xpath_parts = [part.strip() for part in xpath.split('|')]
+            for part in xpath_parts:
+                elements = self._find_elements(part)
+                print(f'Debug: Found {len(elements)} table elements with XPath: {part}')
+                table_elements.extend(elements)
+        else:
+            table_elements = self._find_elements(xpath)
+            print(f'Debug: Found {len(table_elements)} table elements')
+        
+        # If no tables found, try alternative XPath
         if not table_elements:
             print('Debug: No table elements found. Trying alternative XPath: //datasources/datasource/connection/relation')
             table_elements = self._find_elements('//datasources/datasource/connection/relation')
