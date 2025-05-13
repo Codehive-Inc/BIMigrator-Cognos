@@ -57,7 +57,13 @@ class CalculationConverter:
                 response.raise_for_status()
                 
                 result = response.json()
-                return result['dax_expression']
+                dax_expression = result['dax_expression']
+                
+                # Decode any HTML entities in the DAX expression
+                from html import unescape
+                dax_expression = unescape(dax_expression)
+                
+                return dax_expression
                     
         except Exception as e:
             # Create a DAX comment with the error
