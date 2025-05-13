@@ -1,12 +1,4 @@
 from dataclasses import dataclass, field
-<<<<<<< HEAD
-from typing import List, Dict, Optional, Literal, Any  # Added 'Any' for annotation flexibility
-
-from typing import List, Dict, Optional, Any, Union
-from typing_extensions import Literal
-from uuid import uuid4
-=======
->>>>>>> main
 from datetime import datetime
 from typing import List, Dict, Optional, Any, Literal
 
@@ -356,13 +348,8 @@ class CultureInfo:
     """Represents a complete culture TMDL file."""
     culture: str
     linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata)
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 
 # --- Model Objects (Targeting TMDL Files) ---
-
 @dataclass
 class PowerBiColumn:
     """Represents a column within a Power BI table for TMDL."""
@@ -421,11 +408,7 @@ class PowerBiHierarchy:
 class PowerBiPartition:
     """Represents a partition within a Power BI table for TMDL."""
     name: str
-<<<<<<< HEAD
-    expression: str  # The M code query (or DAX)
-=======
     expression: str
->>>>>>> main
     description: Optional[str] = None
     source_type: Literal['m', 'calculated', 'query'] = 'm'
     annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
