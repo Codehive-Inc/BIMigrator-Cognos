@@ -117,8 +117,8 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  # Target datasource elements, EXCLUDING 'Parameters' for regular tables
-  source_xpath: "//datasources/datasource[not(@name='Parameters')]"
+  # Target datasource elements that are inline and not Parameters
+  source_xpath: "//datasources/datasource[@inline='true' and not(@name='Parameters')]"
   source_name:
     # 'caption' is often the user-friendly name
     source_attribute: caption
@@ -129,6 +129,24 @@ PowerBiTable:
   is_hidden:
     source_attribute: hidden
     default: false
+
+  # Relation configuration to find actual tables within datasources
+  relation_config:
+    # Find relations within connections in datasources
+    source_xpath: "connection/relation | connection/_.fcp.ObjectModelEncapsulateLegacy.false...relation | relation"
+    table_name:
+      source_attribute: name
+      optional: true
+    table_type:
+      source_attribute: type
+      optional: true
+    connection_id:
+      source_xpath: "../@name"
+      optional: true
+    sql_query:
+      # For text type relations that contain SQL queries
+      source_xpath: "text()"
+      optional: true
 
   # Columns configuration
   columns_config:

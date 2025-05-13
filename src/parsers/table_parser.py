@@ -34,7 +34,7 @@ class TableParser(BaseParser):
         return self.tableau_to_tmdl_datatypes.get(tableau_type.lower(), 'string')
     
     def extract_all_tables(self) -> List[PowerBiTable]:
-        """Extract all table information from the workbook based on datasources.
+        """Extract all table information from the workbook based on datasources and their relations.
         
         Returns:
             List[PowerBiTable]: List of extracted tables
@@ -52,8 +52,6 @@ class TableParser(BaseParser):
 
             datasource_elements = self._find_elements(datasource_xpath)
             
-            # Debugging code removed
-            
             # Initialize default datatype mapping if not provided in config
             if not self.tableau_to_tmdl_datatypes:
                 self.tableau_to_tmdl_datatypes = {
@@ -67,7 +65,9 @@ class TableParser(BaseParser):
 
             extracted_tables = []
             seen_table_names = set()  # To ensure unique Power BI table names
+            datasource_info = {}  # Store datasource info for relation processing
 
+            # First pass: Process datasources and extract their basic information
             for ds_element in datasource_elements:
                 try:
                     table_name_mapping = table_config_yaml.get('source_name', {})
@@ -83,12 +83,17 @@ class TableParser(BaseParser):
                     if not table_name:
                         continue
                     
-                    # Ensure unique table name for Power BI
+                    # Store datasource information for later use
+                    ds_id = ds_element.get('name')
+                    if ds_id:
+                        datasource_info[ds_id] = {
+                            'name': table_name,
+                            'element': ds_element
+                        }
+                    
+                    # Use the original table name without adding suffixes
+                    # This ensures we only have one table per datasource
                     final_table_name = table_name
-                    counter = 1
-                    while final_table_name in seen_table_names:
-                        final_table_name = f"{table_name}_{counter}"
-                        counter += 1
                     seen_table_names.add(final_table_name)
 
                     description_mapping = table_config_yaml.get('description', {})
@@ -103,8 +108,7 @@ class TableParser(BaseParser):
                         ds_element, columns_yaml_config, final_table_name
                     )
 
-                    # No special handling needed if no columns or measures found
-
+                    # Create the table object
                     table = PowerBiTable(
                         source_name=final_table_name,  # Use the de-duplicated name
                         description=description,
@@ -116,9 +120,97 @@ class TableParser(BaseParser):
                         annotations={}
                     )
                     extracted_tables.append(table)
-                except Exception as e:
+                except Exception:
                     # Silently continue to next datasource if there's an error
                     continue
+
+            # Second pass: Process relations within datasources if configured
+            relation_config = table_config_yaml.get('relation_config')
+            if relation_config:
+                relation_xpath = relation_config.get('source_xpath')
+                if relation_xpath:
+                    print(f"\nDebug: Looking for relations using XPath: {relation_xpath}")
+                    print(f"Debug: Found {len(datasource_info)} datasources to process for relations")
+                    
+                    for ds_id, ds_info in datasource_info.items():
+                        ds_element = ds_info['element']
+                        print(f"Debug: Processing datasource '{ds_info['name']}' (ID: {ds_id}) for relations")
+                        try:
+                            # Find relations within this datasource
+                            relation_elements = ds_element.findall(relation_xpath, namespaces=self.namespaces)
+                            print(f"Debug: Found {len(relation_elements)} relation elements in datasource '{ds_info['name']}'")
+                            
+                            # If no relations found directly, try a more generic approach
+                            if not relation_elements:
+                                print(f"Debug: Trying alternate approach to find relations in datasource '{ds_info['name']}'")
+                                # Try to find any relation elements anywhere in this datasource
+                                relation_elements = ds_element.findall(".//relation", namespaces=self.namespaces)
+                                print(f"Debug: Found {len(relation_elements)} relation elements with alternate approach")
+                                
+                                # If still no relations, try without namespaces
+                                if not relation_elements:
+                                    relation_elements = ds_element.findall(".//relation")
+                                    print(f"Debug: Found {len(relation_elements)} relation elements without namespaces")
+                            
+                            
+                            for rel_element in relation_elements:
+                                # Process relation based on its type
+                                table_type_attr = relation_config.get('table_type', {}).get('source_attribute')
+                                rel_type = rel_element.get(table_type_attr) if table_type_attr else None
+                                
+                                # Get table name from relation
+                                table_name_attr = relation_config.get('table_name', {}).get('source_attribute')
+                                rel_table_name = rel_element.get(table_name_attr) if table_name_attr else None
+                                
+                                # If no name, try to generate one based on type
+                                if not rel_table_name:
+                                    if rel_type == 'table':
+                                        rel_table_name = f"Table_{len(extracted_tables)}"
+                                    elif rel_type == 'text':
+                                        rel_table_name = f"SQL_Query_{len(extracted_tables)}"
+                                    elif rel_type == 'join':
+                                        rel_table_name = f"Join_{len(extracted_tables)}"
+                                    else:
+                                        rel_table_name = f"Relation_{len(extracted_tables)}"
+                                
+                                # Create a unique name for this relation
+                                rel_final_name = f"{ds_info['name']} - {rel_table_name}"
+                                counter = 1
+                                while rel_final_name in seen_table_names:
+                                    rel_final_name = f"{ds_info['name']} - {rel_table_name}_{counter}"
+                                    counter += 1
+                                seen_table_names.add(rel_final_name)
+                                
+                                # Handle SQL queries (text type relations)
+                                description = f"Table {rel_table_name} from datasource {ds_info['name']}"
+                                if rel_type == 'text':
+                                    # Try to extract SQL query text
+                                    sql_query_xpath = relation_config.get('sql_query', {}).get('source_xpath')
+                                    if sql_query_xpath:
+                                        try:
+                                            sql_text = rel_element.text
+                                            if sql_text and len(sql_text) > 10:  # Basic validation
+                                                # Truncate long SQL for description
+                                                sql_preview = sql_text[:100] + '...' if len(sql_text) > 100 else sql_text
+                                                description = f"SQL Query: {sql_preview}"
+                                        except Exception:
+                                            pass
+                                
+                                # Create a table entry for this relation
+                                rel_table = PowerBiTable(
+                                    source_name=rel_final_name,
+                                    description=description,
+                                    is_hidden=False,
+                                    columns=[],  # Could extract columns if needed
+                                    measures=[],
+                                    hierarchies=[],
+                                    partitions=[],
+                                    annotations={'relation_type': rel_type or 'unknown'}
+                                )
+                                extracted_tables.append(rel_table)
+                        except Exception:
+                            # Silently continue if there's an error processing relations
+                            continue
 
             return extracted_tables
         except Exception:
