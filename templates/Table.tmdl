@@ -21,7 +21,7 @@ table {{source_name}}
         summarizeBy: {{summarize_by}}
         {{/if}}
         {{#if source_column}}
-        sourceColumn: {{source_column}}
+        sourceColumn: {{{source_column}}}
         {{/if}}
         {{#if description}}
         description: {{description}}
@@ -46,7 +46,7 @@ table {{source_name}}
 
     {{#each measures}}
     measure {{source_name}}
-        expression: {{expression}}
+        expression: {{{expression}}}
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
