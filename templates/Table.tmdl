@@ -37,7 +37,7 @@ table {{source_name}}
         {{#if annotations}}
         annotations
             {{#each annotations}}
-            {{@key}}: {{this}}
+            {{@key}}: {{{this}}}
             {{/each}}
         {{/if}}
         

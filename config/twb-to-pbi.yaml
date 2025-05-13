@@ -5,6 +5,17 @@ Output:
   intermediate_dir: extracted  # Directory for storing intermediate JSON files
   validate_intermediate: false     # Whether to validate intermediate files
 
+# --- API Settings ---
+api_settings:
+  # Base URL for the FastAPI service
+  base_url: "http://localhost:8000"
+  # Timeout in seconds for API requests
+  timeout_seconds: 30
+  # Endpoints
+  endpoints:
+    tableau_to_dax: "/convert/tableau-to-dax"
+    # Add more endpoints as needed
+
 # --- Template Mappings ---
 Templates:
   base_dir: templates
