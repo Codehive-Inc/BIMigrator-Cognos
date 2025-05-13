@@ -1,0 +1,80 @@
+{
+  "name": "Product",
+  "lineage_tag": "tag-123",
+  "description": "Product table",
+  "is_hidden": false,
+  "columns": [
+    {
+      "name": "ProductID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": "col-tag-1",
+      "summarize_by": null,
+      "source_column": null,
+      "description": "ID of the product",
+      "is_hidden": false,
+      "data_category": null
+    },
+    {
+      "name": "ProductName",
+      "datatype": "string",
+      "format_string": "@",
+      "lineage_tag": "col-tag-2",
+      "summarize_by": "sum",
+      "source_column": "ProductNameSrc",
+      "description": "Name of the product",
+      "is_hidden": true,
+      "data_category": "Category"
+    }
+  ],
+  "measures": [
+    {
+      "name": "TotalSales",
+      "expression": "SUM([Amount])",
+      "format_string": "$#,##0.00",
+      "description": "Total sales amount",
+      "is_hidden": false
+    },
+    {
+      "name": "HiddenMeasure",
+      "expression": "COUNT([ProductID])",
+      "is_hidden": true
+    }
+  ],
+  "hierarchies": [
+    {
+      "name": "ProductHierarchy",
+      "description": "Hierarchy of products",
+      "is_hidden": false,
+      "levels": [
+        {"name": "Category", "column_name": "CategoryCol", "ordinal": 1},
+        {"name": "SubCategory", "column_name": "SubCategoryCol"}
+      ]
+    },
+    {
+      "name": "HiddenHierarchy",
+      "is_hidden": true,
+      "levels": [
+        {"name": "HiddenLevel", "column_name": "HiddenCol"}
+      ]
+    }
+  ],
+  "partitions": [
+    {
+      "name": "Partition1",
+      "expression": "SELECT * FROM Product",
+      "description": "Main partition"
+    },
+    {
+      "name": "Partition2",
+      "expression": "SELECT * FROM Product WHERE Active = 1"
+    }
+  ],
+  "summarize_by": "sum",
+  "has_widget_serialization": true,
+  "visual_type": "TableVisual",
+  "column_settings": [
+    {"name": "ProductID", "width": 100},
+    {"name": "ProductName", "width": 200}
+  ]
+}
