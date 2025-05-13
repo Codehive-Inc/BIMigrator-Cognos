@@ -1,38 +1,30 @@
 """Main module for Power BI TMDL migration."""
 import argparse
-import json
-import yaml
-from pathlib import Path
 from typing import Dict, Any
 
+from src.common.helpers import load_config
 from src.generators.structure_generator import create_project_structure
 from src.generators.template_generator import generate_project_files
 
-def load_config(path: str) -> Dict[str, Any]:
-    """Load configuration from YAML or JSON file."""
-    with open(path, 'r') as f:
-        if path.endswith('.yaml') or path.endswith('.yml'):
-            return yaml.safe_load(f)
-        return json.load(f)
 
 def migrate_to_tmdl(
-    config_path: str,
-    input_path: str,
-    output_dir: str = None
+        config_path: str,
+        input_path: str,
+        output_dir: str = None
 ) -> Dict[str, Any]:
     """Migrate Tableau workbook to Power BI TMDL format.
-    
+
     Args:
         config_path: Path to YAML configuration file
         input_path: Path to input data file (YAML/JSON)
         output_dir: Optional output directory
-    
+
     Returns:
         Dictionary mapping file types to their generated paths
     """
     # Load input data
     config_data = load_config(input_path)
-    
+
     # Create project structure
     created_dirs = create_project_structure(
         config_path=config_path,
@@ -41,7 +33,7 @@ def migrate_to_tmdl(
     print("\nCreated directories:")
     for directory in sorted(created_dirs):
         print(f"  - {directory}")
-    
+
     # Generate files
     generated_files = generate_project_files(
         config_path=config_path,
@@ -53,11 +45,12 @@ def migrate_to_tmdl(
         print(f"\n{file_type}:")
         for file in files:
             print(f"  - {file}")
-    
+
     return {
         'directories': sorted(str(d) for d in created_dirs),
         'files': generated_files
     }
+
 
 def main():
     """Command line interface."""
@@ -78,9 +71,9 @@ def main():
         '--output',
         help='Output directory'
     )
-    
+
     args = parser.parse_args()
-    
+
     try:
         result = migrate_to_tmdl(
             config_path=args.config,
@@ -91,6 +84,7 @@ def main():
     except Exception as e:
         print(f"\nError during migration: {str(e)}")
         raise
+
 
 if __name__ == '__main__':
     main()

@@ -1,5 +1,10 @@
 # Configuration for mapping Tableau TWB XML elements to Power BI TMDL/Report objects
 
+# --- Output Settings ---
+Output:
+  intermediate_dir: extracted  # Directory for storing intermediate JSON files
+  validate_intermediate: false     # Whether to validate intermediate files
+
 # --- Template Mappings ---
 Templates:
   base_dir: templates
@@ -112,10 +117,26 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  source_xpath: //relation[@type="table"]
-  name:
-    source_xpath: ./@name
+  source_xpath: //datasource
+  pbi_name:
+    source_xpath: .//named-connection/@caption
     format: identifier  # Will be sanitized for PBI
+  source_name:
+    source_xpath: .//connection/@filename  # Get the actual file path
+    format: string
+    default: null
+  description:
+    source_xpath: .//named-connection/@caption  # Use same caption for description
+    format: string
+    default: null
+  is_hidden:
+    source_attribute: hidden
+    mapping_function: to_boolean
+    default: false
+  partitions: # Not a direct mapping - signals generation needed
+    derived_rule: generate_m_partition
+    connection_info_xpath: .//connection # Relative to datasource element
+    relation_details: self
   columns:
     source_xpath: .//column
     mapping:
@@ -163,30 +184,42 @@ PowerBiCulture:
 
 # --- Relationship Settings ---
 PowerBiRelationship:
-  source_xpath: //relation[@type="join"]
-  mapping:
-    from_table:
-      source_xpath: ./connection/relation[1]/@name
-      format: identifier
-    to_table:
-      source_xpath: ./connection/relation[2]/@name
-      format: identifier
-    from_column:
-      source_xpath: ./connection/relation[1]/@key
-      format: identifier
-    to_column:
-      source_xpath: ./connection/relation[2]/@key
-      format: identifier
-    cardinality:
-      source_xpath: ./@cardinality
-      default: many_to_one
-    cross_filter_behavior:
-      source_xpath: ./@crossfilter
-      default: both
-    is_active:
-      source_xpath: ./@active
-      format: boolean
-      default: true
+  # Maps from <relation type='join'> elements
+  source_xpath: //datasources/datasource/relation[@type='join']
+  context_note: "Requires parsing join clause expressions."
+  from_table:
+    # Explicit XPath approach
+    source_xpath: ./connection/relation[1]/@name
+    # Function approach for complex parsing
+    mapping_function: get_join_table_name # Parses join clause to find table name on one side
+    transformation: sanitize_identifier
+    format: identifier
+  to_table:
+    source_xpath: ./connection/relation[2]/@name
+    mapping_function: get_join_table_name # Parses join clause for the other table name
+    transformation: sanitize_identifier
+    format: identifier
+  from_column:
+    source_xpath: ./connection/relation[1]/@key
+    mapping_function: get_join_column_name # Parses join clause expression for field name
+    transformation: sanitize_identifier
+    format: identifier
+  to_column:
+    source_xpath: ./connection/relation[2]/@key
+    mapping_function: get_join_column_name # Parses join clause for the other field name
+    transformation: sanitize_identifier
+    format: identifier
+  is_active:
+    source_xpath: ./@active
+    format: boolean
+    default: true
+  cardinality:
+    source_xpath: ./@cardinality
+    derived_rule: infer_cardinality # Attempt analysis, or default
+    default: manyToOne
+  cross_filter_behavior:
+    source_xpath: ./@crossfilter
+    default: oneWay # Power BI 'Single direction'
 
 # --- Type Mappings ---
 tableau_datatype_to_tmdl:
@@ -194,51 +227,7 @@ tableau_datatype_to_tmdl:
   integer: int64
   real: double
   datetime: dateTime
-  date: date
   boolean: boolean
-  array: string
-  bstr: string
-  byref: string
-  bytes: string
-  cy: string
-  empty: string
-  error: string
-  guid: string
-  hchapter: string
-  idispatch: string
-  iunknown: string
-  null: string
-  propvariant: string
-  reserved: string
-  str: string
-  udt: string
-  time_intelligence:
-    source_xpath: .//column[@role="dimension"][@datatype="date"]
-    mapping_rule: has_elements  # If any elements found, set to "1", else "0"
-  version:
-    source_xpath: .//preferences/preference[@name="version"]
-    source_attribute: value
-    default: "2.120.7013.10 (Main)"
-  query_order:
-    source_xpath: //relation[@type="join"]
-    table_refs:
-      - ./connection/relation[@name]  # Left table
-      - ./connection/relation[@name]  # Right table
-    fallback: table_list  # If no joins found, use alphabetical list of tables
-
-# --- Metadata & Lookups ---
-# These provide reusable mappings for specific transformations
-
-tableau_datatype_to_tmdl:
-  string: string
-  integer: int64
-  real: double
-  datetime: dateTime
-  date: date
-  boolean: boolean
-  # Add others as needed, potentially default to 'string'
-
-  # Start - Added by Madhu on 05/06/2025
   array: string
   bstr: string
   byref: string
@@ -264,10 +253,8 @@ tableau_datatype_to_tmdl:
   wdc_geometry: string
   wdc_string: string
   wstr: string
-
   bool: boolean
   wdc_bool: boolean
-
   date: datetime
   dbdate: datetime
   dbtime: datetime
@@ -275,20 +262,35 @@ tableau_datatype_to_tmdl:
   filetime: datetime
   wdc_date: datetime
   wdc_datetime: datetime
-
   decimal: decimal
   numeric: decimal
   varnumeric: decimal
   r4: decimal
   r8: decimal
   wdc_float: decimal
-
   i1: int64
   i2: int64
   i4: int64
   i8: int64
-  wdc_int: int64  
-  # End - Added by Madhu on 05/06/2025
+  wdc_int: int64
+  time_intelligence:
+    source_xpath: .//column[@role="dimension"][@datatype="date"]
+    mapping_rule: has_elements  # If any elements found, set to "1", else "0"
+  version:
+    source_xpath: .//preferences/preference[@name="version"]
+    source_attribute: value
+    default: "2.120.7013.10 (Main)"
+  query_order:
+    source_xpath: //relation[@type="join"]
+    table_refs:
+      - ./connection/relation[@name]  # Left table
+      - ./connection/relation[@name]  # Right table
+    fallback: table_list  # If no joins found, use alphabetical list of tables
+
+
+# --- Metadata & Lookups ---
+# These provide reusable mappings for specific transformations
+
 
 tableau_role_to_summarize_by:
   # If role is 'measure' and datatype is numeric, default summarizeBy could be 'sum'
@@ -322,22 +324,13 @@ tableau_viz_type_to_pbi:
 
 # --- Mapping Definitions for Dataclasses ---
 
-PowerBiTable:
-  source_xpath: //datasources/datasource/connection/relation[@name and (@type='table' or @type='text')] # Finds tables and custom SQL relations
-  pbi_name:
-    source_attribute: name
-    mapping_function: sanitize_identifier # Python function to clean name for PBI
-  source_name:
-    source_attribute: name # Keep original for lineage
-  description:
-    source_attribute: caption # Or use datasource caption if relation lacks one
-    default: null
-  is_hidden:
-    default: false # Can be overridden by post-processing logic if needed
-  partitions: # Not a direct mapping - signals generation needed
-    derived_rule: generate_m_partition # Requires connection info + relation details
-    connection_info_xpath: ../connection # Relative to relation element
-    relation_details: self # Use the current relation node
+PowerBiDatabase:
+  source_xpath: //workbook
+  name:
+    source_xpath: .//datasources/datasource/@caption
+    alternative_xpath: .//datasources/datasource/@name
+    default: Model
+
 
 PowerBiModel:
   source_xpath: //workbook
@@ -440,30 +433,6 @@ PowerBiMeasure:
   annotations: # Derived
     PBI_FormatHint:
       derived_rule: derive_pbi_format_hint
-
-PowerBiRelationship:
-  # Maps from <relation type='join'> elements
-  source_xpath: //datasources/datasource/relation[@type='join']
-  context_note: "Requires parsing join clause expressions."
-  from_table:
-    mapping_function: get_join_table_name # Parses join clause to find table name on one side
-    transformation: sanitize_identifier
-  from_column:
-    mapping_function: get_join_column_name # Parses join clause expression for field name
-    transformation: sanitize_identifier # Must match sanitized column name
-  to_table:
-    mapping_function: get_join_table_name # Parses join clause for the other table name
-    transformation: sanitize_identifier
-  to_column:
-    mapping_function: get_join_column_name # Parses join clause for the other field name
-    transformation: sanitize_identifier
-  is_active:
-    default: true
-  cardinality:
-    derived_rule: infer_cardinality # Attempt analysis, or default
-    default: manyToOne
-  cross_filter_behavior:
-    default: oneWay # Power BI 'Single direction'
 
 PowerBiHierarchy:
   # Find columns that are part of a hierarchy

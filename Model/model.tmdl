@@ -1,0 +1,11 @@
+model Sales Dashboard Model
+    culture: 
+    defaultPowerBIDataSourceVersion: powerBI_V3
+    sourceQueryCulture: 
+    dataAccessOptions:
+        legacyRedirects: 
+        returnErrorValuesAsNull: 
+
+    annotation PBI_QueryOrder = 
+
+    annotation __PBI_TimeIntelligenceEnabled = 
