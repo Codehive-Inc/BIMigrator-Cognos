@@ -248,8 +248,38 @@ class TableParser(BaseParser):
         direct_calc_field_xpath = "column[calculation]"
         calculated_field_elements = ds_element.findall(direct_calc_field_xpath, namespaces=self.namespaces)
         
+        # Look for columns in relation elements (for Excel and other direct connections)
+        relation_column_elements = []
+        
+        # Try both legacy and non-legacy relation paths
+        relation_paths = [
+            ".//_.fcp.ObjectModelEncapsulateLegacy.false...relation//column",
+            ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column",
+            ".//relation//column"
+        ]
+        
+        for rel_path in relation_paths:
+            rel_columns = ds_element.findall(rel_path, namespaces=self.namespaces)
+            if rel_columns:
+                relation_column_elements.extend(rel_columns)
+        
         # Combine all potential column elements
         all_potential_column_elements = list(column_elements_from_ds)
+        
+        # Add relation columns if they're not already included
+        for rel_col in relation_column_elements:
+            rel_col_name = rel_col.get('name')
+            if rel_col_name:
+                # Check if this column is already in our list
+                existing = False
+                for col in all_potential_column_elements:
+                    col_name = col.get('caption') or col.get('local-name') or col.get('name')
+                    if col_name == rel_col_name:
+                        existing = True
+                        break
+                        
+                if not existing:
+                    all_potential_column_elements.append(rel_col)
         
         # Add calculated fields if they're not already included
         for cf_elem in calculated_field_elements:
@@ -257,8 +287,8 @@ class TableParser(BaseParser):
             if cf_name:
                 # Check if this calculated field is already in our list
                 existing = False
-                for col in column_elements_from_ds:
-                    col_name = col.get('caption') or col.get('local-name')
+                for col in all_potential_column_elements:
+                    col_name = col.get('caption') or col.get('local-name') or col.get('name')
                     if col_name == cf_name:
                         existing = True
                         break
@@ -267,10 +297,15 @@ class TableParser(BaseParser):
                     all_potential_column_elements.append(cf_elem)
 
         for col_elem in all_potential_column_elements:
-            col_name_mapping = columns_yaml_config.get('name', {})
-            col_name = self._get_mapping_value(col_name_mapping, col_elem)
-            if not col_name and 'fallback_attribute' in col_name_mapping:
-                col_name = col_elem.get(col_name_mapping['fallback_attribute'])
+            # For relation columns, use the 'name' attribute directly
+            if col_elem.tag.endswith('column') and col_elem.get('name'):
+                col_name = col_elem.get('name')
+            else:
+                # For metadata-record columns, use the configured mapping
+                col_name_mapping = columns_yaml_config.get('name', {})
+                col_name = self._get_mapping_value(col_name_mapping, col_elem)
+                if not col_name and 'fallback_attribute' in col_name_mapping:
+                    col_name = col_elem.get(col_name_mapping['fallback_attribute'])
             
             if not col_name:
                 continue
@@ -283,9 +318,15 @@ class TableParser(BaseParser):
                 counter += 1
             seen_col_names.add(final_col_name)
 
-            datatype_mapping_cfg = columns_yaml_config.get('datatype', {})
-            twb_datatype = self._get_mapping_value(datatype_mapping_cfg, col_elem, default_value='string')
-            pbi_datatype = self._map_datatype(twb_datatype)
+            # For relation columns, use the 'datatype' attribute directly
+            if col_elem.tag.endswith('column') and col_elem.get('datatype'):
+                twb_datatype = col_elem.get('datatype')
+                pbi_datatype = self._map_datatype(twb_datatype)
+            else:
+                # For metadata-record columns, use the configured mapping
+                datatype_mapping_cfg = columns_yaml_config.get('datatype', {})
+                twb_datatype = self._get_mapping_value(datatype_mapping_cfg, col_elem, default_value='string')
+                pbi_datatype = self._map_datatype(twb_datatype)
 
             description_mapping_cfg = columns_yaml_config.get('description', {})
             description = self._get_mapping_value(description_mapping_cfg, col_elem)
