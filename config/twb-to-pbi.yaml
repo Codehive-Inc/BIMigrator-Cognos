@@ -20,6 +20,12 @@ api_settings:
 Templates:
   base_dir: templates
   mappings:
+    # --- Project Files ---
+    pbixproj:
+      template: pbixproj.json
+      output: .pbixproj.json
+      config: PowerBiProject
+      dataclass: PowerBiProject
     # --- Model Files ---
     model:
       template: model.tmdl

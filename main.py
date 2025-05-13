@@ -46,6 +46,26 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
     created_dirs = structure_generator.create_directory_structure()
     
+    # Step 0: Generate .pbixproj.json
+    print('\nStep 0: Generating .pbixproj.json...')
+    try:
+        from src.parsers.pbixproj_parser import PbixprojParser
+        from src.generators.pbixproj_generator import PbixprojGenerator
+        
+        pbixproj_parser = PbixprojParser(input_path, config)
+        project_info = pbixproj_parser.extract_pbixproj_info()
+        
+        pbixproj_generator = PbixprojGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
+        print(f'Generated .pbixproj.json: {pbixproj_path}')
+    except Exception as e:
+        print(f'Failed to generate .pbixproj.json: {str(e)}')
+        return
+    
     # Step 1: Generate database TMDL
     print('\nStep 1: Generating database TMDL...')
     try:
