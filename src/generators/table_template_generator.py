@@ -108,9 +108,6 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         print(f'Debug: Template data - source_name: {template_data["source_name"]}')
         print(f'Debug: Template data - columns: {len(columns_data)}, measures: {len(measures_data)}, hierarchies: {len(hierarchies_data)}')
         
-        # Generate table.tmdl in tables subdirectory
-        tables_dir = self.pbit_dir / 'tables'
-        tables_dir.mkdir(exist_ok=True)
         # Add name to template_data for handlebars
         template_data['name'] = template_data['source_name']
         print(f'Debug: Added name to template data: {template_data["name"]}')

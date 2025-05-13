@@ -1,0 +1,25 @@
+﻿table 'Diff Percentage'
+
+	measure 'Diff Percentage Value' = SELECTEDVALUE('Diff Percentage'[Diff Percentage], 5)
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Diff Percentage'
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Diff Percentage' = calculated
+		mode: import
+		source = GENERATESERIES(0, 20, 0.5)
+
+	annotation PBI_Id = 113d6f6ee0664e60bbf993bf76c0d404
+
