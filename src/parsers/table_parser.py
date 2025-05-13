@@ -4,12 +4,50 @@ import sys
 from typing import Dict, Any, List, Optional, Tuple
 import uuid
 import xml.etree.ElementTree as ET
+import logging
+
+# Import the tableau_to_dax_client module functions for API-based conversion
+from src.utils.tableau_to_dax_client import (
+    convert_tableau_formula_to_dax,
+    convert_tableau_calculation_to_dax_measure,
+    convert_tableau_calculation_to_dax_column
+)
 
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from config.dataclasses import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel
 from .base_parser import BaseParser
+
+
+def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]:
+    """
+    Extract information from a Tableau calculation element.
+    
+    Args:
+        calculation_element: The Tableau calculation element
+        
+    Returns:
+        A dictionary containing the calculation information
+    """
+    if calculation_element is None:
+        return {}
+    
+    # Extract attributes from the calculation element
+    calc_info = {}
+    
+    # Handle different types of calculation elements
+    if hasattr(calculation_element, 'get'):
+        # XML element
+        calc_info['formula'] = calculation_element.get('formula', '')
+        calc_info['caption'] = calculation_element.get('caption', '')
+        calc_info['datatype'] = calculation_element.get('datatype', '')
+        calc_info['role'] = calculation_element.get('role', '')
+    elif isinstance(calculation_element, dict):
+        # Dictionary
+        calc_info = calculation_element
+    
+    return calc_info
 
 class TableParser(BaseParser):
     """Parser for extracting table information from Tableau workbooks."""
@@ -596,25 +634,58 @@ class TableParser(BaseParser):
                 
                 # If this is a measure, create a PowerBiMeasure instead of a column
                 if is_measure and formula:
-                    # Convert Tableau formula to DAX
-                    dax_expression = self._convert_tableau_formula_to_dax(formula, pbi_table_name)
-                    
-                    measure = PowerBiMeasure(
-                        source_name=final_col_name,
-                        dax_expression=dax_expression,
-                        description=description,
-                        is_hidden=is_hidden,
-                        format_string=format_string
-                    )
-                    pbi_measures.append(measure)
-                    print(f"Debug: Created measure '{final_col_name}' with expression: {dax_expression}")
+                    try:
+                        # Extract calculation info for better conversion
+                        calc_info = {
+                            'formula': formula,
+                            'caption': final_col_name,
+                            'role': 'measure',
+                            'datatype': pbi_datatype
+                        }
+                        
+                        # Convert Tableau formula to DAX using the specialized measure conversion function
+                        dax_expression = convert_tableau_calculation_to_dax_measure(calc_info, pbi_table_name)
+                        
+                        measure = PowerBiMeasure(
+                            source_name=final_col_name,
+                            dax_expression=dax_expression,
+                            description=description,
+                            is_hidden=is_hidden,
+                            format_string=format_string
+                        )
+                        pbi_measures.append(measure)
+                        print(f"Debug: Created measure '{final_col_name}' with expression: {dax_expression}")
+                    except Exception as e:
+                        print(f"Error: Failed to convert measure '{final_col_name}': {str(e)}")
+                        # Create a measure with an error comment
+                        error_expression = f"/* ERROR: Could not convert Tableau formula: {formula} */\n/* Error details: {str(e)} */"
+                        measure = PowerBiMeasure(
+                            source_name=final_col_name,
+                            dax_expression=error_expression,
+                            description=f"{description} (Conversion error)",
+                            is_hidden=is_hidden,
+                            format_string=format_string
+                        )
+                        pbi_measures.append(measure)
                     continue
                 
                 # Create annotations for calculated columns
                 annotations = {}
                 if is_calculated_column:
-                    # Convert Tableau formula to DAX for calculated columns
-                    dax_expression = self._convert_tableau_formula_to_dax(formula, pbi_table_name)
+                    try:
+                        # Extract calculation info for better conversion
+                        calc_info = {
+                            'formula': formula,
+                            'caption': final_col_name,
+                            'datatype': pbi_datatype
+                        }
+                        
+                        # Convert Tableau formula to DAX for calculated columns using the specialized column conversion function
+                        dax_expression = convert_tableau_calculation_to_dax_column(calc_info, pbi_table_name)
+                    except Exception as e:
+                        print(f"Error: Failed to convert calculated column '{final_col_name}': {str(e)}")
+                        # Create a calculated column with an error comment
+                        dax_expression = f"/* ERROR: Could not convert Tableau formula: {formula} */\n/* Error details: {str(e)} */"
                     
                     # Add SummarizationSetBy annotation for proper TMDL format
                     annotations["SummarizationSetBy"] = "User"
@@ -653,75 +724,6 @@ class TableParser(BaseParser):
         return pbi_columns, pbi_measures
     
     # The old extract_all_tables method has been replaced with a new implementation above
-    
-    def _convert_tableau_formula_to_dax(self, tableau_formula: str, table_name: str) -> str:
-        """
-        Convert a Tableau formula to a DAX expression.
-        This is a simplified conversion and may need to be enhanced for complex formulas.
-        
-        Args:
-            tableau_formula: The Tableau formula to convert
-            table_name: The name of the table containing the formula
-            
-        Returns:
-            A DAX expression equivalent to the Tableau formula
-        """
-        if not tableau_formula:
-            return ""
-            
-        # Basic conversion - this is a simplified approach
-        # In a real implementation, you would need a more sophisticated parser
-        import re
-        
-        # Replace Tableau's field references [Field] with table references 'Table'[Field]
-        def replace_field_ref(match):
-            field_name = match.group(1)
-            return f"'{table_name}'[{field_name}]"
-            
-        # Pattern to match Tableau field references like [Field]
-        pattern = r'\[(\w+(?:\s+\w+)*)\]'
-        
-        # Replace field references
-        dax_formula = re.sub(pattern, replace_field_ref, tableau_formula)
-        
-        # Replace common Tableau functions with DAX equivalents
-        replacements = {
-            'DATEPART': 'DATEPART',  # Same name but different syntax
-            'MIN(': 'MIN(',  # Same function name
-            'MAX(': 'MAX(',  # Same function name
-            'SUM(': 'SUM(',  # Same function name
-            'AVG(': 'AVERAGE(',  # Different name
-            'ATTR(': '',  # ATTR is Tableau-specific, often can be removed in DAX
-            'FIXED': 'CALCULATE',  # FIXED is similar to CALCULATE with specific filters
-            'STR(': 'FORMAT(',  # STR is similar to FORMAT in DAX
-            # Add more replacements as needed
-        }
-        
-        for tableau_func, dax_func in replacements.items():
-            if tableau_func in dax_formula:
-                # Simple replacement - in a real implementation you'd need to handle
-                # the different syntax and parameters of these functions
-                dax_formula = dax_formula.replace(tableau_func, dax_func)
-        
-        # Handle Tableau's IF THEN ELSE syntax
-        # Tableau: IF condition THEN result END
-        # DAX: IF(condition, result, BLANK())
-        if 'IF' in dax_formula and 'THEN' in dax_formula and 'END' in dax_formula:
-            # Very simplified conversion - would need proper parsing in real implementation
-            dax_formula = dax_formula.replace('THEN', ',')
-            dax_formula = dax_formula.replace('END', ', BLANK())')
-            dax_formula = dax_formula.replace('IF', 'IF(')
-            
-            # Handle ELSE clause if present
-            if 'ELSE' in dax_formula:
-                dax_formula = dax_formula.replace(', BLANK())', '')
-                dax_formula = dax_formula.replace('ELSE', ',')
-                dax_formula = dax_formula + ')'
-        
-        # Add a note about the conversion
-        dax_formula = f"/* Converted from Tableau: {tableau_formula} */\n{dax_formula}"
-        
-        return dax_formula
         
     def _get_datasource_id(self, element: ET.Element) -> str:
         """Get the datasource ID for a table element to help with deduplication.
