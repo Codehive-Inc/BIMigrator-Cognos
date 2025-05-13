@@ -21,6 +21,12 @@ Templates:
   base_dir: templates
   mappings:
     # --- Project Files ---
+    version:
+      template: version.txt
+      output: version.txt
+      config: PowerBiVersion
+      dataclass: PowerBiVersion
+
     pbixproj:
       template: pbixproj.json
       output: .pbixproj.json
@@ -97,18 +103,6 @@ Templates:
       dataclass: PowerBiReportSection
       multiple: true
       name_from: name
-
-    # --- Project Files ---
-    project:
-      template: pbixproj.json
-      output: .pbixproj.json
-      config: PowerBiProject
-      dataclass: PowerBiProject
-    version:
-      template: version.txt
-      output: Version.txt
-      config: PowerBiVersion
-      dataclass: PowerBiVersion
 
 # --- Model Settings ---
 PowerBiModel:

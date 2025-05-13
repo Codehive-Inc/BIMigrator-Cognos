@@ -9,12 +9,14 @@ from typing import Dict, Any
 from src.parsers.database_parser import DatabaseParser
 from src.parsers.model_parser import ModelParser
 from src.parsers.table_parser import TableParser
+from src.parsers.version_parser import VersionParser
 
 from src.generators.structure_generator import ProjectStructureGenerator
 
 from src.generators.database_template_generator import DatabaseTemplateGenerator
 from src.generators.model_template_generator import ModelTemplateGenerator
 from src.generators.table_template_generator import TableTemplateGenerator
+from src.generators.version_generator import VersionGenerator
 
 def load_config(path: str) -> Dict[str, Any]:
     """Load configuration from YAML or JSON file."""
@@ -46,8 +48,25 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
     created_dirs = structure_generator.create_directory_structure()
     
-    # Step 0: Generate .pbixproj.json
-    print('\nStep 0: Generating .pbixproj.json...')
+    # Step 0: Generate version.txt
+    print('\nStep 0: Generating version.txt...')
+    try:
+        version_parser = VersionParser(input_path, config)
+        version_info = version_parser.extract_version()
+        
+        version_generator = VersionGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        version_path = version_generator.generate_version(version_info, output_dir=structure_generator.base_dir)
+        print(f'Generated version.txt: {version_path}')
+    except Exception as e:
+        print(f'Failed to generate version.txt: {str(e)}')
+        return
+
+    # Step 1: Generate .pbixproj.json
+    print('\nStep 1: Generating .pbixproj.json...')
     try:
         from src.parsers.pbixproj_parser import PbixprojParser
         from src.generators.pbixproj_generator import PbixprojGenerator
@@ -66,7 +85,7 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         print(f'Failed to generate .pbixproj.json: {str(e)}')
         return
     
-    # Step 1: Generate database TMDL
+    # Step 2: Generate database TMDL
     print('\nStep 1: Generating database TMDL...')
     try:
         db_parser = DatabaseParser(input_path, config)
@@ -84,7 +103,7 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         print(f'Failed to generate database TMDL: {str(e)}')
         return
     
-    # Step 2: Generate table TMDL files
+    # Step 3: Generate table TMDL files
     print('\nStep 2: Generating table TMDL files...')
     try:
         table_parser = TableParser(input_path, config)
