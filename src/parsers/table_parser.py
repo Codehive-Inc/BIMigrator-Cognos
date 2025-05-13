@@ -628,9 +628,28 @@ class TableParser(BaseParser):
                 # Get the calculation formula from the element if available
                 formula = col_elem.get('calculation_formula') or calculation_formula
                 
+                # Extract summarize_by from configuration
                 summarize_by = "none"
-                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
-                    summarize_by = "sum"
+                summarize_by_config = columns_yaml_config.get('summarize_by', {})
+                if col_elem.tag.endswith('metadata-record'):
+                    # Try to get aggregation from the element using XPath
+                    agg_xpath = summarize_by_config.get('source_xpath')
+                    if agg_xpath:
+                        agg_elem = col_elem.find(agg_xpath.replace('/text()', ''))
+                        if agg_elem is not None and agg_elem.text:
+                            tableau_agg = agg_elem.text.lower()
+                            # Map Tableau aggregation to Power BI summarization
+                            if tableau_agg in ['sum', 'avg', 'min', 'max', 'count']:
+                                summarize_by = tableau_agg
+                            elif tableau_agg == 'none':
+                                summarize_by = 'none'
+                            # Default to sum for numeric columns if no specific aggregation
+                            elif pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
+                                summarize_by = "sum"
+                else:
+                    # For non-metadata records, use default logic
+                    if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
+                        summarize_by = "sum"
                 
                 # If this is a measure, create a PowerBiMeasure instead of a column
                 if is_measure and formula:

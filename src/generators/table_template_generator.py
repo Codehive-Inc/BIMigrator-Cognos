@@ -37,6 +37,7 @@ class TableTemplateGenerator(BaseTemplateGenerator):
                 'source_column': column.source_column,
                 'description': column.description,
                 'is_hidden': column.is_hidden,
+                'summarize_by': column.summarize_by if hasattr(column, 'summarize_by') else None,
                 'data_category': column.dataCategory if hasattr(column, 'dataCategory') else None,
                 # Add new properties for calculated columns
                 'is_calculated': column.is_calculated if hasattr(column, 'is_calculated') else False,

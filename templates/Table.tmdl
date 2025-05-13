@@ -19,9 +19,6 @@ table {{source_name}}
         {{#if is_calculated}}
         type: calculated
         {{/if}}
-        {{#if summarize_by}}
-        summarizeBy: {{summarize_by}}
-        {{/if}}
         {{#if source_column}}
         sourceColumn: {{{source_column}}}
         {{/if}}

@@ -179,6 +179,9 @@ PowerBiTable:
     format_string:
       source_attribute: format
       optional: true
+    summarize_by:
+      source_xpath: "aggregation/text()"
+      optional: true
     description:
       source_attribute: caption
       optional: true
