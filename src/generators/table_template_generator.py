@@ -121,10 +121,30 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             self.extracted_dir = self.output_dir / 'extracted'
             print(f'Debug: Using output directory: {output_dir}')
         
-        print(f'Debug: Processing {len(tables)} tables')
+        # Create a dictionary to track unique table names
+        # This ensures we don't generate duplicate TMDL files for tables with the same name
+        unique_tables = {}
+        for table in tables:
+            # If we have multiple tables with the same name, we'll use the one with more columns/measures
+            if table.source_name in unique_tables:
+                existing_table = unique_tables[table.source_name]
+                existing_complexity = len(existing_table.columns) + len(existing_table.measures)
+                new_complexity = len(table.columns) + len(table.measures)
+                
+                if new_complexity > existing_complexity:
+                    # Replace with the more complex table
+                    unique_tables[table.source_name] = table
+                    print(f'Debug: Replacing table {table.source_name} with more complex version')
+            else:
+                unique_tables[table.source_name] = table
+                
+        # Use the unique tables dictionary
+        unique_table_list = list(unique_tables.values())
+        print(f'Debug: Processing {len(unique_table_list)} unique tables')
+        
         table_paths = []
-        for i, table in enumerate(tables, 1):
-            print(f'\nDebug: Processing table {i}/{len(tables)}: {table.source_name}')
+        for i, table in enumerate(unique_table_list, 1):
+            print(f'\nDebug: Processing table {i}/{len(unique_table_list)}: {table.source_name}')
             try:
                 table_path = self.generate_table_tmdl(table)
                 print(f'Debug: Generated TMDL file: {table_path}')

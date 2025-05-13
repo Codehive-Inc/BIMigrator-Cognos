@@ -84,21 +84,23 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     
     # Step 3: Generate model TMDL
     print('\nStep 3: Generating model TMDL...')
-    try:
-        model_parser = ModelParser(input_path, config)
-        model, tables = model_parser.extract_model_info()
-        
-        model_generator = ModelTemplateGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
-        )
-        model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
-        print(f'Generated model TMDL: {model_path}')
-        print(f'  Model name: {model.model_name}')
-    except Exception as e:
-        print(f'Failed to generate model TMDL: {str(e)}')
-        return
+    # Commenting out model TMDL generation to focus on table parsing
+    # try:
+    #     model_parser = ModelParser(input_path, config)
+    #     model, tables = model_parser.extract_model_info()
+    #     
+    #     model_generator = ModelTemplateGenerator(
+    #         config_path=config_path,
+    #         input_path=input_path,
+    #         output_dir=structure_generator.base_dir
+    #     )
+    #     model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
+    #     print(f'Generated model TMDL: {model_path}')
+    #     print(f'  Model name: {model.model_name}')
+    # except Exception as e:
+    #     print(f'Failed to generate model TMDL: {str(e)}')
+    #     return
+    print('Model TMDL generation skipped to focus on table parsing')
     
     print('\nMigration completed successfully!')
 
