@@ -444,6 +444,22 @@ class TableParser(BaseParser):
             # For calculated fields with calculation child element
             if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(calc_name_attr):
                 col_name = col_elem.get(calc_name_attr)
+                # Mark this as a calculated column
+                col_elem.set('is_calculated', 'true')
+                
+                # Extract the calculation formula
+                calc_elem = col_elem.find('calculation')
+                if calc_elem is not None and calc_elem.get('formula'):
+                    # Store the formula for later use
+                    col_elem.set('calculation_formula', calc_elem.get('formula'))
+                    
+                    # Check if this is a measure based on role attribute
+                    role = col_elem.get('role')
+                    if role == 'measure':
+                        col_elem.set('is_measure', 'true')
+                    else:
+                        # It's a calculated column
+                        col_elem.set('is_calculated_column', 'true')
             # For relation columns, use the configured name attribute
             elif col_elem.tag.endswith('column') and col_elem.get(relation_name_attr):
                 col_name = col_elem.get(relation_name_attr)
@@ -566,25 +582,146 @@ class TableParser(BaseParser):
                 )
                 pbi_measures.append(measure)
             else:
-                # It's a regular column
+                # Check if it's a calculated column, measure, or regular column
+                is_calculated_column = col_elem.get('is_calculated_column') == 'true'
+                is_measure = col_elem.get('is_measure') == 'true'
+                is_calculated = col_elem.get('is_calculated') == 'true' or bool(calculation_formula)
+                
+                # Get the calculation formula from the element if available
+                formula = col_elem.get('calculation_formula') or calculation_formula
+                
                 summarize_by = "none"
-                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
+                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
                     summarize_by = "sum"
-
-                column = PowerBiColumn(
-                    source_name=final_col_name,
-                    pbi_datatype=pbi_datatype,
-                    source_column=final_col_name,
-                    description=description,
-                    is_hidden=is_hidden,
-                    format_string=format_string,
-                    summarize_by=summarize_by
-                )
+                
+                # If this is a measure, create a PowerBiMeasure instead of a column
+                if is_measure and formula:
+                    # Convert Tableau formula to DAX
+                    dax_expression = self._convert_tableau_formula_to_dax(formula, pbi_table_name)
+                    
+                    measure = PowerBiMeasure(
+                        source_name=final_col_name,
+                        dax_expression=dax_expression,
+                        description=description,
+                        is_hidden=is_hidden,
+                        format_string=format_string
+                    )
+                    pbi_measures.append(measure)
+                    print(f"Debug: Created measure '{final_col_name}' with expression: {dax_expression}")
+                    continue
+                
+                # Create annotations for calculated columns
+                annotations = {}
+                if is_calculated_column:
+                    # Convert Tableau formula to DAX for calculated columns
+                    dax_expression = self._convert_tableau_formula_to_dax(formula, pbi_table_name)
+                    
+                    # Add SummarizationSetBy annotation for proper TMDL format
+                    annotations["SummarizationSetBy"] = "User"
+                    
+                    # For TMDL format, we need to set the type property to "calculated"
+                    # This is done through annotations in our dataclass
+                    annotations["Type"] = "calculated"
+                    
+                    print(f"Debug: Column '{final_col_name}' is a calculated column with expression: {dax_expression}")
+                    
+                    column = PowerBiColumn(
+                        source_name=final_col_name,
+                        pbi_datatype=pbi_datatype,
+                        # For calculated columns in TMDL, the sourceColumn holds the DAX expression
+                        source_column=dax_expression,
+                        description=description,
+                        is_hidden=is_hidden,
+                        format_string=format_string,
+                        summarize_by=summarize_by,
+                        annotations=annotations
+                    )
+                else:
+                    # Regular column
+                    column = PowerBiColumn(
+                        source_name=final_col_name,
+                        pbi_datatype=pbi_datatype,
+                        source_column=final_col_name,  # Regular columns use their name as the source column
+                        description=description,
+                        is_hidden=is_hidden,
+                        format_string=format_string,
+                        summarize_by=summarize_by,
+                        annotations=annotations
+                    )
                 pbi_columns.append(column)
 
         return pbi_columns, pbi_measures
     
     # The old extract_all_tables method has been replaced with a new implementation above
+    
+    def _convert_tableau_formula_to_dax(self, tableau_formula: str, table_name: str) -> str:
+        """
+        Convert a Tableau formula to a DAX expression.
+        This is a simplified conversion and may need to be enhanced for complex formulas.
+        
+        Args:
+            tableau_formula: The Tableau formula to convert
+            table_name: The name of the table containing the formula
+            
+        Returns:
+            A DAX expression equivalent to the Tableau formula
+        """
+        if not tableau_formula:
+            return ""
+            
+        # Basic conversion - this is a simplified approach
+        # In a real implementation, you would need a more sophisticated parser
+        import re
+        
+        # Replace Tableau's field references [Field] with table references 'Table'[Field]
+        def replace_field_ref(match):
+            field_name = match.group(1)
+            return f"'{table_name}'[{field_name}]"
+            
+        # Pattern to match Tableau field references like [Field]
+        pattern = r'\[(\w+(?:\s+\w+)*)\]'
+        
+        # Replace field references
+        dax_formula = re.sub(pattern, replace_field_ref, tableau_formula)
+        
+        # Replace common Tableau functions with DAX equivalents
+        replacements = {
+            'DATEPART': 'DATEPART',  # Same name but different syntax
+            'MIN(': 'MIN(',  # Same function name
+            'MAX(': 'MAX(',  # Same function name
+            'SUM(': 'SUM(',  # Same function name
+            'AVG(': 'AVERAGE(',  # Different name
+            'ATTR(': '',  # ATTR is Tableau-specific, often can be removed in DAX
+            'FIXED': 'CALCULATE',  # FIXED is similar to CALCULATE with specific filters
+            'STR(': 'FORMAT(',  # STR is similar to FORMAT in DAX
+            # Add more replacements as needed
+        }
+        
+        for tableau_func, dax_func in replacements.items():
+            if tableau_func in dax_formula:
+                # Simple replacement - in a real implementation you'd need to handle
+                # the different syntax and parameters of these functions
+                dax_formula = dax_formula.replace(tableau_func, dax_func)
+        
+        # Handle Tableau's IF THEN ELSE syntax
+        # Tableau: IF condition THEN result END
+        # DAX: IF(condition, result, BLANK())
+        if 'IF' in dax_formula and 'THEN' in dax_formula and 'END' in dax_formula:
+            # Very simplified conversion - would need proper parsing in real implementation
+            dax_formula = dax_formula.replace('THEN', ',')
+            dax_formula = dax_formula.replace('END', ', BLANK())')
+            dax_formula = dax_formula.replace('IF', 'IF(')
+            
+            # Handle ELSE clause if present
+            if 'ELSE' in dax_formula:
+                dax_formula = dax_formula.replace(', BLANK())', '')
+                dax_formula = dax_formula.replace('ELSE', ',')
+                dax_formula = dax_formula + ')'
+        
+        # Add a note about the conversion
+        dax_formula = f"/* Converted from Tableau: {tableau_formula} */\n{dax_formula}"
+        
+        return dax_formula
         
     def _get_datasource_id(self, element: ET.Element) -> str:
         """Get the datasource ID for a table element to help with deduplication.
