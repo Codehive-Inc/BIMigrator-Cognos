@@ -27,11 +27,11 @@ Templates:
       dataclass: PowerBiExpressions
     table:
       template: Table.tmdl
-      output: Model/tables/{{name}}.tmdl
+      output: Model/tables/{{source_name}}.tmdl
       config: PowerBiTable
       dataclass: PowerBiTable
       multiple: true
-      name_from: name
+      name_from: source_name
     relationship:
       template: relationship.tmdl
       output: Model/relationships/{{id}}.tmdl
@@ -117,45 +117,81 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  source_xpath: //datasource
-  pbi_name:
-    source_xpath: .//named-connection/@caption
-    format: identifier  # Will be sanitized for PBI
+  # Target datasource elements that are inline and not Parameters
+  source_xpath: "//datasources/datasource[@inline='true' and not(@name='Parameters')]"
   source_name:
-    source_xpath: .//connection/@filename  # Get the actual file path
-    format: string
-    default: null
+    # 'caption' is often the user-friendly name
+    source_attribute: caption
+    fallback_attribute: name # Fallback to internal name if caption is missing
   description:
-    source_xpath: .//named-connection/@caption  # Use same caption for description
-    format: string
+    source_attribute: caption
     default: null
   is_hidden:
     source_attribute: hidden
-    mapping_function: to_boolean
     default: false
-  partitions: # Not a direct mapping - signals generation needed
-    derived_rule: generate_m_partition
-    connection_info_xpath: .//connection # Relative to datasource element
-    relation_details: self
-  columns:
-    source_xpath: .//column
-    mapping:
-      name:
-        source_xpath: ./@name
-        format: identifier
-      datatype:
-        source_xpath: ./@datatype
-        mapping: tableau_datatype_to_tmdl
-      format_string:
-        source_xpath: ./@format
-        optional: true
-      description:
-        source_xpath: ./@description
-        optional: true
-      is_hidden:
-        source_xpath: ./@hidden
-        format: boolean
-        default: false
+
+  # Relation configuration to find actual tables within datasources
+  relation_config:
+    # Find relations within connections in datasources
+    source_xpath: "connection/relation | connection/_.fcp.ObjectModelEncapsulateLegacy.false...relation | relation"
+    table_name:
+      source_attribute: name
+      optional: true
+    table_type:
+      source_attribute: type
+      optional: true
+    connection_id:
+      source_xpath: "../@name"
+      optional: true
+    sql_query:
+      # For text type relations that contain SQL queries
+      source_xpath: "text()"
+      optional: true
+
+  # Columns configuration
+  columns_config:
+    # Target metadata-records for logical columns
+    source_xpath: ".//metadata-records/metadata-record[@class='column']"
+    # Target standalone calculated fields directly under datasource
+    calculated_fields_xpath: "column[calculation]"
+    # Additional XPaths for finding columns in relation elements
+    relation_column_paths:
+      - ".//_.fcp.ObjectModelEncapsulateLegacy.false...relation//column"
+      - ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column"
+      - ".//relation//column"
+    # Attribute mappings for relation columns
+    relation_column_mappings:
+      name_attribute: "name"
+      datatype_attribute: "datatype"
+      ordinal_attribute: "ordinal"
+    # Attribute mappings for calculated fields
+    calculated_field_mappings:
+      name_attribute: "caption"
+      datatype_attribute: "datatype"
+      description_attribute: "caption"
+    name:
+      source_attribute: caption
+      fallback_attribute: local-name
+      format: identifier
+    datatype:
+      source_attribute: local-type
+      mapping: tableau_datatype_to_tmdl
+    format_string:
+      source_attribute: format
+      optional: true
+    description:
+      source_attribute: caption
+      optional: true
+    is_hidden:
+      source_attribute: hidden
+      format: boolean
+      default: false
+    role:
+      source_attribute: role
+      optional: true
+    calculation_formula:
+      source_xpath: "calculation/@formula"
+      optional: true
 
 # --- Culture Settings ---
 PowerBiCulture:
@@ -330,7 +366,6 @@ PowerBiDatabase:
     source_xpath: .//datasources/datasource/@caption
     alternative_xpath: .//datasources/datasource/@name
     default: Model
-
 
 PowerBiColumn:
   # Find columns defined within datasources OR referenced within worksheets/shelves if not in DS metadata

@@ -1,24 +1,27 @@
 from pathlib import Path
 import sys
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from config.dataclasses import PowerBiModel, DataAccessOptions
 from .base_parser import BaseParser
+from .table_parser import TableParser
 
 class ModelParser(BaseParser):
     """Parser for extracting model information from Tableau workbooks."""
     
     def __init__(self, twb_path: str, config: Dict[str, Any]):
         super().__init__(twb_path, config)
+        self.table_parser = TableParser(twb_path, config)
     
-    def extract_model_info(self) -> PowerBiModel:
-        """Extract model information from the Tableau workbook.
+    def extract_model_info(self) -> (PowerBiModel, List[Any]):
+        """Extract model information from the workbook.
         
         Returns:
             PowerBiModel: The extracted model information
+            List[Any]: The extracted tables
         """
         mapping = self.config['PowerBiModel']
         
@@ -60,12 +63,9 @@ class ModelParser(BaseParser):
                 except Exception:
                     pass  # Ignore annotation parsing errors
         
-        # Extract tables list
-        tables = []
-        tables_mapping = mapping.get('tables_xpath', './/datasources/datasource/relation[@name]')
-        if tables_mapping:
-            table_elements = self._find_elements(tables_mapping)
-            tables = [elem.get('name') for elem in table_elements if elem.get('name')]
+        # Extract tables using table parser
+        tables = self.table_parser.extract_all_tables()
+        table_names = [table.source_name for table in tables]
         
         return PowerBiModel(
             model_name=name,
@@ -73,8 +73,8 @@ class ModelParser(BaseParser):
             data_access_options=data_access_options,
             query_order=query_order,
             time_intelligence_enabled=time_intelligence_enabled,
-            tables=tables
-        )
+            tables=table_names
+        ), tables
     
     def extract_all(self) -> Dict[str, Any]:
         """Extract all model information.
@@ -82,8 +82,10 @@ class ModelParser(BaseParser):
         Returns:
             Dict containing PowerBiModel information
         """
+        model, tables = self.extract_model_info()
         return {
-            'PowerBiModel': self.extract_model_info()
+            'PowerBiModel': model,
+            'PowerBiTables': tables
         }
     
     def _parse_annotations(self, element: Any) -> Dict[str, Any]:

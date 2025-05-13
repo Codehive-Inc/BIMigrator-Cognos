@@ -229,26 +229,14 @@ class PowerBiModel:
 @dataclass
 class PowerBiColumn:
     """Represents a column in a Power BI table."""
-    name: str
-    datatype: str
+    source_name: str
+    pbi_datatype: str
     source_column: str
     format_string: Optional[str] = None
     description: Optional[str] = None
     is_hidden: bool = False
     summarize_by: str = 'none'
     lineage_tag: Optional[str] = None
-
-
-@dataclass
-class PowerBiTable:
-    """Represents a Power BI table."""
-    name: str
-    columns: List[PowerBiColumn] = field(default_factory=list)
-    lineage_tag: Optional[str] = None
-    visual_config: Optional[Dict[str, Any]] = None
-
-
-# --- Relationship Objects ---
 
 @dataclass
 class PowerBiRelationship:
@@ -355,17 +343,19 @@ class CultureInfo:
 @dataclass
 class PowerBiColumn:
     """Represents a column within a Power BI table for TMDL."""
-    pbi_name: str
-    pbi_datatype: str  # e.g., "string", "int64", "double", "dateTime", "boolean"
-    source_name: str  # Original source name for reference/lineage
+    source_name: str
+    pbi_datatype: str # e.g., "string", "int64", "double", "dateTime", "boolean"
+    source_column: Optional[str] = None
     description: Optional[str] = None
     format_string: Optional[str] = None
     is_hidden: bool = False
-    source_column: Optional[str] = None
     summarize_by: Literal['sum', 'count', 'min', 'max', 'average', 'distinctCount', 'none'] = 'none'
     sortByColumnName: Optional[str] = None
     dataCategory: Optional[str] = None
-    annotations: Dict[str, Any] = field(default_factory=dict)  # <-- Added annotations dict
+    annotations: Dict[str, Any] = field(default_factory=dict) # <-- Added annotations dict
+    # For calculated columns in TMDL format
+    is_calculated: bool = False
+    is_data_type_inferred: bool = False
     # Example usage for annotations:
     # col.annotations["SummarizationSetBy"] = "Automatic" # or "User" or "None"
     # col.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}' # Store JSON as a string literal
@@ -375,9 +365,8 @@ class PowerBiColumn:
 @dataclass
 class PowerBiMeasure:
     """Represents a DAX measure within a Power BI table for TMDL."""
-    pbi_name: str
+    source_name: str
     dax_expression: str
-    source_name: str  # Original source name for reference/lineage
     description: Optional[str] = None
     format_string: Optional[str] = None
     is_hidden: bool = False
@@ -433,8 +422,7 @@ class PowerBiRelationship:
 @dataclass
 class PowerBiTable:
     """Represents a table in the Power BI model for TMDL generation."""
-    pbi_name: str
-    source_name: str  # Original source name for reference/lineage
+    source_name: str
     description: Optional[str] = None
     is_hidden: bool = False
     partitions: List[PowerBiPartition] = field(default_factory=list)

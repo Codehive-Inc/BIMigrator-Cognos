@@ -1,4 +1,4 @@
-table {{name}}
+table {{source_name}}
     lineageTag: {{lineage_tag}}
     {{#if description}}
     description: {{description}}
@@ -8,17 +8,20 @@ table {{name}}
     {{/if}}
 
     {{#each columns}}
-    column {{name}}
+    column {{source_name}}
         dataType: {{datatype}}
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
         lineageTag: {{lineage_tag}}
+        {{#if is_calculated}}
+        type: calculated
+        {{/if}}
         {{#if summarize_by}}
         summarizeBy: {{summarize_by}}
         {{/if}}
         {{#if source_column}}
-        sourceColumn: {{source_column}}
+        sourceColumn: {{{source_column}}}
         {{/if}}
         {{#if description}}
         description: {{description}}
@@ -29,11 +32,21 @@ table {{name}}
         {{#if data_category}}
         dataCategory: {{data_category}}
         {{/if}}
+        {{#if is_data_type_inferred}}
+        isDataTypeInferred: {{is_data_type_inferred}}
+        {{/if}}
+        {{#if annotations}}
+        annotations
+            {{#each annotations}}
+            {{@key}}: {{this}}
+            {{/each}}
+        {{/if}}
+        
     {{/each}}
 
     {{#each measures}}
-    measure {{name}}
-        expression: {{expression}}
+    measure {{source_name}}
+        expression: {{{expression}}}
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
@@ -68,8 +81,6 @@ table {{name}}
         description: {{description}}
         {{/if}}
     {{/each}}
-        summarizeBy: {{summarize_by}}
-{{/each}}
 
     {{#if has_widget_serialization}}
     annotation TableWidgetSerialization =
