@@ -11,6 +11,7 @@ from src.parsers.model_parser import ModelParser
 from src.parsers.table_parser import TableParser
 from src.parsers.version_parser import VersionParser
 from src.parsers.culture_parser import CultureParser
+from src.parsers.relationship_parser import RelationshipParser
 
 from src.generators.structure_generator import ProjectStructureGenerator
 
@@ -19,6 +20,7 @@ from src.generators.model_template_generator import ModelTemplateGenerator
 from src.generators.table_template_generator import TableTemplateGenerator
 from src.generators.version_generator import VersionGenerator
 from src.generators.culture_generator import CultureGenerator
+from src.generators.relationship_template_generator import RelationshipTemplateGenerator
 
 def load_config(path: str) -> Dict[str, Any]:
     """Load configuration from YAML or JSON file."""
@@ -153,8 +155,36 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         print(f'Failed to generate table TMDL files: {str(e)}')
         return
     
-    # Step 3: Generate model TMDL
-    print('\nStep 3: Generating model TMDL...')
+    # Step 3: Generate relationships TMDL
+    print('\nStep 3: Generating relationship TMDL files...')
+    try:
+        print('Debug: Creating relationship parser...')
+        relationship_parser = RelationshipParser(input_path, config)
+        print('Debug: Extracting relationships...')
+        relationships = relationship_parser.extract_relationships()
+        print(f'Debug: Found {len(relationships)} relationships')
+        
+        print('Debug: Creating relationship generator...')
+        relationship_generator = RelationshipTemplateGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        print('Debug: Generating relationship TMDL files...')
+        relationship_paths = relationship_generator.generate_relationships(
+            relationships,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated {len(relationship_paths)} relationship TMDL files:')
+        for path in relationship_paths:
+            print(f'  - {path}')
+    except Exception as e:
+        print(f'Failed to generate relationship TMDL files: {str(e)}')
+        import traceback
+        traceback.print_exc()
+
+    # Step 4: Generate model TMDL
+    print('\nStep 4: Generating model TMDL...')
     try:
         model_parser = ModelParser(input_path, config)
         model, tables = model_parser.extract_model_info()

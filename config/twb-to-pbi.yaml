@@ -57,7 +57,7 @@ Templates:
       name_from: source_name
     relationship:
       template: relationship.tmdl
-      output: Model/relationships/{{id}}.tmdl
+      output: Model/relationships.tmdl
       config: PowerBiRelationship
       dataclass: PowerBiRelationship
       multiple: true
@@ -236,38 +236,33 @@ PowerBiCulture:
 
 # --- Relationship Settings ---
 PowerBiRelationship:
-  # Maps from <relation type='join'> elements
-  source_xpath: //datasources/datasource/relation[@type='join']
+  # Maps from <relation type='join'> elements, including both legacy and non-legacy formats
+  source_xpath: //datasources/datasource/_.fcp.ObjectModelEncapsulateLegacy.false...relation[@type='join'] | //datasources/datasource/_.fcp.ObjectModelEncapsulateLegacy.true...relation[@type='join'] | //datasources/datasource/relation[@type='join']
   context_note: "Requires parsing join clause expressions."
   from_table:
-    # Explicit XPath approach
-    source_xpath: ./connection/relation[1]/@name
-    # Function approach for complex parsing
-    mapping_function: get_join_table_name # Parses join clause to find table name on one side
-    transformation: sanitize_identifier
+    # Extract from join clause expressions
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[1]/@op
+    transformation: extract_table_name
     format: identifier
   to_table:
-    source_xpath: ./connection/relation[2]/@name
-    mapping_function: get_join_table_name # Parses join clause for the other table name
-    transformation: sanitize_identifier
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[2]/@op
+    transformation: extract_table_name
     format: identifier
   from_column:
-    source_xpath: ./connection/relation[1]/@key
-    mapping_function: get_join_column_name # Parses join clause expression for field name
-    transformation: sanitize_identifier
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[1]/@op
+    transformation: extract_column_name
     format: identifier
   to_column:
-    source_xpath: ./connection/relation[2]/@key
-    mapping_function: get_join_column_name # Parses join clause for the other field name
-    transformation: sanitize_identifier
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[2]/@op
+    transformation: extract_column_name
     format: identifier
   is_active:
     source_xpath: ./@active
     format: boolean
     default: true
   cardinality:
-    source_xpath: ./@cardinality
-    derived_rule: infer_cardinality # Attempt analysis, or default
+    source_xpath: ./@join
+    transformation: map_join_to_cardinality
     default: manyToOne
   cross_filter_behavior:
     source_xpath: ./@crossfilter

@@ -24,16 +24,19 @@ class BaseParser:
         
         self.twb_file = twb_path
         
-    def _get_attribute(self, element: ET.Element, attr_name: str, default: Any = None) -> Any:
-        """Get attribute value, handling @ in attribute names."""
-        return element.get(attr_name.replace('@', ''), default)
-        self.config = config
-        self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
-        self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)
+        # Initialize intermediate directory
+        output_config = config.get('Output', {})
+        intermediate_dir = output_config.get('intermediate_dir', 'extracted')
+        self.intermediate_dir = Path(Path(twb_path).parent, intermediate_dir)
+        self.validate_intermediate = output_config.get('validate_intermediate', True)
         
         # Create intermediate directory if it doesn't exist
         if not self.intermediate_dir.exists():
             self.intermediate_dir.mkdir(parents=True)
+        
+    def _get_attribute(self, element: ET.Element, attr_name: str, default: Any = None) -> Any:
+        """Get attribute value, handling @ in attribute names."""
+        return element.get(attr_name.replace('@', ''), default)
     
     def _find_elements(self, xpath: Optional[str]) -> List[ET.Element]:
         """Find elements in the XML tree using XPath.
