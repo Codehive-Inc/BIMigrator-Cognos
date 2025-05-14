@@ -345,23 +345,6 @@ class TableParser(BaseParser):
                     
                     column_elements_from_ds.append(meta_record)
                     print("Debug: Added synthetic metadata record for Tab_module")
-                
-                if 'PUAT_Module' in sql:
-                    # Create a synthetic metadata record for PUAT_Module
-                    meta_record = ET.Element('metadata-record')
-                    meta_record.set('class', 'column')
-                    
-                    remote_name = ET.SubElement(meta_record, 'remote-name')
-                    remote_name.text = 'PUAT_Module'
-                    
-                    local_name = ET.SubElement(meta_record, 'local-name')
-                    local_name.text = '[PUAT_Module]'
-                    
-                    remote_type = ET.SubElement(meta_record, 'remote-type')
-                    remote_type.text = '130'  # String type
-                    
-                    column_elements_from_ds.append(meta_record)
-                    print("Debug: Added synthetic metadata record for PUAT_Module")
         
         # Print the first few metadata records for debugging
         for i, meta_col in enumerate(column_elements_from_ds[:5]):
@@ -639,6 +622,19 @@ class TableParser(BaseParser):
                 
                 # Initialize annotations
                 annotations = {}
+                
+                # Check for explicit aggregation in Tableau XML to set SummarizationSetBy annotation
+                has_explicit_aggregation = False
+                
+                # Instead of trying to detect the aggregation element directly,
+                # use the summarize_by value that's already been determined
+                # If summarize_by is anything other than 'none', it means there's an explicit aggregation
+                has_explicit_aggregation = summarize_by != 'none'
+                
+                # Set SummarizationSetBy annotation based on whether there's explicit aggregation
+                annotations['SummarizationSetBy'] = 'User' if has_explicit_aggregation else 'Automatic'
+                
+                print(f"Debug: Column '{final_col_name}': summarize_by={summarize_by}, SummarizationSetBy={annotations['SummarizationSetBy']}")
                 
                 # Handle calculated fields (measures and calculated columns)
                 if formula:

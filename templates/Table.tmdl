@@ -37,7 +37,9 @@ table '{{source_name}}'
         {{#if is_data_type_inferred}}
         isDataTypeInferred: {{is_data_type_inferred}}
         {{/if}}
-        {{#if annotations}}
+        {{#if annotations.SummarizationSetBy}}
+        annotation SummarizationSetBy = {{annotations.SummarizationSetBy}}
+        {{else}}
         annotation SummarizationSetBy = Automatic
         {{/if}}
         
