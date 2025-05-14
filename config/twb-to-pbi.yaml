@@ -22,8 +22,8 @@ Templates:
   mappings:
     # --- Project Files ---
     version:
-      template: version.txt
-      output: version.txt
+      template: Version.txt
+      output: Version.txt
       config: PowerBiVersion
       dataclass: PowerBiVersion
 

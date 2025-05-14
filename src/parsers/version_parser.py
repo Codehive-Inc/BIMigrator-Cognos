@@ -12,7 +12,7 @@ class VersionParser(BaseParser):
     def extract_version(self) -> PowerBiVersion:
         """Extract version information."""
         # You can customize this based on your needs
-        return PowerBiVersion(version="1.0.0")
+        return PowerBiVersion(version="1.28")
     
     def extract_all(self) -> Dict[str, Any]:
         """Extract all information and save intermediate file."""
