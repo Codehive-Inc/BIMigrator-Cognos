@@ -63,7 +63,7 @@ Templates:
       multiple: true
       name_from: id
     culture:
-      template: en-US.tmdl
+      template: culture.tmdl
       output: Model/cultures/{{culture}}.tmdl
       config: PowerBiCulture
       dataclass: CultureInfo
@@ -216,16 +216,18 @@ PowerBiCulture:
     default: en-US
   entities:
     tables:
-      source_xpath: .//relation[@type="table"]
-      name_attribute: name
+      source_xpath: .//relation[@type="table"] | .//metadata-record[@class="column"]/../../..
+      name_attribute: caption
+      fallback_attribute: name
       binding_template:
         State: Generated
         Terms:
           - State: Generated
     columns:
-      source_xpath: .//relation[@type="table"]//column
-      name_attribute: name
-      parent_ref: ../../@name  # How to find parent table name
+      source_xpath: .//relation[@type="table"]//column | .//metadata-record[@class="column"]
+      name_attribute: local-name
+      fallback_attribute: remote-name
+      parent_ref: parent-name  # How to find parent table name
       binding_template:
         State: Generated
         Hidden: true

@@ -5,8 +5,10 @@ import json
 
 class BaseParser:
     def __init__(self, twb_path: str, config: Dict[str, Any]):
+        """Initialize with TWB file path and configuration."""
         self.tree = ET.parse(twb_path)
         self.root = self.tree.getroot()
+        self.config = config
         
         # Initialize namespaces properly for Tableau workbooks
         self.namespaces = {}
@@ -19,9 +21,12 @@ class BaseParser:
                 '_': ns,  # For _.fcp... elements
                 'fcp': ns  # For fcp elements
             }
-            # Initialize namespaces for Tableau workbooks
         
         self.twb_file = twb_path
+        
+    def _get_attribute(self, element: ET.Element, attr_name: str, default: Any = None) -> Any:
+        """Get attribute value, handling @ in attribute names."""
+        return element.get(attr_name.replace('@', ''), default)
         self.config = config
         self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
         self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)
