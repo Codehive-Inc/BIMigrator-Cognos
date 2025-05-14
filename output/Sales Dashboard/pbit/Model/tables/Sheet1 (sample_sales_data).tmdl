@@ -7,6 +7,8 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Order ID
 
         annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Order Date'
         dataType: datetime
@@ -14,6 +16,7 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Order Date
 
         annotation SummarizationSetBy = Automatic
+
         
     column 'Region'
         dataType: string
@@ -21,6 +24,7 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Region
 
         annotation SummarizationSetBy = Automatic
+
         
     column 'Product Category'
         dataType: string
@@ -28,6 +32,7 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Product Category
 
         annotation SummarizationSetBy = Automatic
+
         
     column 'Product Name'
         dataType: string
@@ -35,6 +40,7 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Product Name
 
         annotation SummarizationSetBy = Automatic
+
         
     column 'Sales'
         dataType: double
@@ -42,6 +48,8 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Sales
 
         annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Quantity'
         dataType: int64
@@ -49,6 +57,8 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Quantity
 
         annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Discount'
         dataType: double
@@ -56,6 +66,8 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Discount
 
         annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Profit'
         dataType: double
@@ -63,6 +75,8 @@ table 'Sheet1 (sample_sales_data)'
         sourceColumn: Profit
 
         annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
 

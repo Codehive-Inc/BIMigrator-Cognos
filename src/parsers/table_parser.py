@@ -634,6 +634,11 @@ class TableParser(BaseParser):
                 # Set SummarizationSetBy annotation based on whether there's explicit aggregation
                 annotations['SummarizationSetBy'] = 'User' if has_explicit_aggregation else 'Automatic'
                 
+                # Add PBI_FormatHint annotation for numeric columns
+                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
+                    # For numeric columns, add the format hint
+                    annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
+                    
                 print(f"Debug: Column '{final_col_name}': summarize_by={summarize_by}, SummarizationSetBy={annotations['SummarizationSetBy']}")
                 
                 # Handle calculated fields (measures and calculated columns)
