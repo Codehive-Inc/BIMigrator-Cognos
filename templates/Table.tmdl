@@ -5,7 +5,7 @@ table '{{source_name}}'
     {{/if}}
 
     {{#each columns}}
-    column {{source_name}}
+    column '{{source_name}}'
         dataType: {{datatype}}
         {{#if format_string}}
         formatString: {{format_string}}
@@ -44,8 +44,9 @@ table '{{source_name}}'
     {{/each}}
 
     {{#each measures}}
-    measure {{source_name}}
-        expression: {{{expression}}}
+    measure '{{source_name}}' = ```
+			{{{expression}}}
+			```
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
@@ -71,7 +72,7 @@ table '{{source_name}}'
     {{/each}}
 
     {{#each partitions}}
-    partition {{name}} = {{expression}}
+    partition '{{name}}' = {{expression}}
 
     {{/each}}
 
