@@ -40,13 +40,17 @@ class ModelTemplateGenerator(BaseTemplateGenerator):
             'model_name': model.model_name,
             'default_culture': model.culture,  # Use same culture for both
             'source_culture': model.culture,
-            # Convert data access options to strings
-            'legacy_redirects': str(model.data_access_options.legacy_redirects).lower(),
-            'return_null_errors': str(model.data_access_options.return_error_values_as_null).lower(),
-            # Convert query order list to JSON string
-            'query_order_list': json.dumps(model.query_order),
-            # Convert boolean to string
-            'time_intelligence_enabled': str(model.time_intelligence_enabled).lower()
+            # No need to convert data access options to strings since they are flags
+            'legacy_redirects': model.data_access_options.legacy_redirects,
+            'return_null_errors': model.data_access_options.return_error_values_as_null,
+            # Format query order list with table names, using raw strings to avoid HTML encoding
+            'query_order_list': json.dumps([table.source_name.strip() for table in tables], ensure_ascii=False) if tables else '[]',
+            # Convert boolean to 1/0 for time intelligence
+            'time_intelligence_enabled': '1' if model.time_intelligence_enabled else '0',
+            # Add desktop version if available
+            'desktop_version': getattr(model, 'desktop_version', None),
+            # Add table references with proper spacing
+            'tables': [table.source_name.strip() for table in tables]
         }
         
         # Generate model.tmdl
