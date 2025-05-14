@@ -1,0 +1,24 @@
+{
+  "culture": "en-US",
+  "entities_json": {
+    "Customer": {
+      "Binding": {
+        "ConceptualEntity": "CustomerEntity"
+      },
+      "State": "active",
+      "Terms": [
+        {"Customer": {"State": "active"}},
+        {"Client": {"State": "synonym"}}
+      ]
+    },
+    "Order": {
+      "Binding": {
+        "ConceptualEntity": "OrderEntity"
+      },
+      "State": "inactive",
+      "Terms": [
+        {"Order": {"State": "active"}}
+      ]
+    }
+  }
+}
