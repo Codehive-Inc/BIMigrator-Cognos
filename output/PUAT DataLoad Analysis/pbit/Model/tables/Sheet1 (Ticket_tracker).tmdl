@@ -1,0 +1,62 @@
+table 'Sheet1 (Ticket_tracker)'
+
+
+    column 'Table Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Table Name
+
+        
+    column 'Date'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: Date
+
+        
+    column 'Date2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Date2
+
+        
+    column 'raised date'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: raised date
+
+        
+    column '% dips(compared to golden data)'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: % dips(compared to golden data)
+
+        
+    column 'ticket number'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ticket number
+
+        
+    column 'ticket owner'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ticket owner
+
+        
+    column 'status'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: status
+
+        
+    column 'followups'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: followups
+
+        
+
+
+
+
+
