@@ -63,9 +63,16 @@ class ModelParser(BaseParser):
                 except Exception:
                     pass  # Ignore annotation parsing errors
         
+        # Extract desktop version from annotations
+        desktop_version = None
+        if 'PBIDesktopVersion' in annotations:
+            desktop_version = annotations['PBIDesktopVersion']
+        
         # Extract tables using table parser
         tables = self.table_parser.extract_all_tables()
-        table_names = [table.source_name for table in tables]
+        # Deduplicate table names while preserving order
+        seen = set()
+        table_names = [x for x in (table.source_name for table in tables) if not (x in seen or seen.add(x))]
         
         return PowerBiModel(
             model_name=name,
@@ -73,7 +80,8 @@ class ModelParser(BaseParser):
             data_access_options=data_access_options,
             query_order=query_order,
             time_intelligence_enabled=time_intelligence_enabled,
-            tables=table_names
+            tables=table_names,
+            desktop_version=desktop_version
         ), tables
     
     def extract_all(self) -> Dict[str, Any]:

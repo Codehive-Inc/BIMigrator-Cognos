@@ -94,8 +94,8 @@ class TableParser(BaseParser):
                     'datetime': 'dateTime'
                 }
 
-            extracted_tables = []
-            seen_table_names = set()  # To ensure unique Power BI table names
+            # Use a dictionary to track unique tables by name, keeping only the one with most columns
+            unique_tables = {}
             datasource_info = {}  # Store datasource info for relation processing
 
             # First pass: Process datasources and extract their basic information
@@ -125,7 +125,6 @@ class TableParser(BaseParser):
                     # Use the original table name without adding suffixes
                     # This ensures we only have one table per datasource
                     final_table_name = table_name
-                    seen_table_names.add(final_table_name)
 
                     description_mapping = table_config_yaml.get('description', {})
                     description = self._get_mapping_value(description_mapping, ds_element)
@@ -154,7 +153,10 @@ class TableParser(BaseParser):
                     # Debug output
                     print(f"Debug: Created table '{final_table_name}' with {len(pbi_columns)} columns and {len(pbi_measures)} measures")
                     
-                    extracted_tables.append(table)
+                    # Keep only the table with the most columns and measures
+                    if final_table_name not in unique_tables or \
+                       len(pbi_columns) + len(pbi_measures) > len(unique_tables[final_table_name].columns) + len(unique_tables[final_table_name].measures):
+                        unique_tables[final_table_name] = table
                 except Exception as e:
                     # Print the error for debugging
                     print(f"Error processing datasource: {str(e)}")
@@ -249,7 +251,8 @@ class TableParser(BaseParser):
                             # Silently continue if there's an error processing relations
                             continue
 
-            return extracted_tables
+            # Convert dictionary values to list for return
+            return list(unique_tables.values())
         except Exception:
             # Return empty list if there's an error in the overall process
             return []

@@ -1,11 +1,23 @@
+{{! model.tmdl - Template for pbi-tools text-based TMDL }}
 model {{model_name}}
-    culture: {{default_culture}}
-    defaultPowerBIDataSourceVersion: powerBI_V3
-    sourceQueryCulture: {{source_culture}}
-    dataAccessOptions:
-        legacyRedirects: {{legacy_redirects}}
-        returnErrorValuesAsNull: {{return_null_errors}}
+	culture: {{default_culture}}
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: {{source_culture}}
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
 
-    annotation PBI_QueryOrder = {{query_order_list}}
+{{#if query_order_list}}
+annotation PBI_QueryOrder = {{query_order_list}}
+{{/if}}
 
-    annotation __PBI_TimeIntelligenceEnabled = {{time_intelligence_enabled}}
+annotation __PBI_TimeIntelligenceEnabled = {{time_intelligence_enabled}}
+
+{{#if desktop_version}}
+annotation PBIDesktopVersion = {{desktop_version}}
+{{/if}}
+
+{{#each tables}}
+ref table {{this}}
+{{/each}}
+

@@ -222,6 +222,7 @@ class PowerBiModel:
     time_intelligence_enabled: bool = False
     version: str = '2.120.7013.10 (Main)'
     tables: List[str] = field(default_factory=list)
+    desktop_version: Optional[str] = None
 
 
 # --- Table Objects ---
