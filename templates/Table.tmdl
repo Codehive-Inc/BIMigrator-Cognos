@@ -89,3 +89,5 @@ table '{{source_name}}'
           "Columns": {{column_settings}}
         }
     {{/if}}
+
+    annotation PBI_ResultType = Table
