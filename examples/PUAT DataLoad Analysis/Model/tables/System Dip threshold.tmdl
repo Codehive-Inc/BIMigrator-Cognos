@@ -1,0 +1,25 @@
+﻿table 'System Dip threshold'
+
+	measure 'System Dip threshold Value' = SELECTEDVALUE('System Dip threshold'[System Dip threshold])
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'System Dip threshold'
+		dataType: double
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition 'System Dip threshold' = calculated
+		mode: import
+		source = GENERATESERIES(1500, 2500, 100)
+
+	annotation PBI_Id = 613a31e10b294bfea9cc1f1e4cbf88b0
+

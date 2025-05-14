@@ -1,56 +1,211 @@
-"""Main module for Power BI TMDL migration."""
+"""Main entry point for the migration tool."""
 import argparse
+import json
+import yaml
+from pathlib import Path
+from typing import Dict, List, Optional, Any
 from typing import Dict, Any
 
-from src.common.helpers import load_config
-from src.generators.structure_generator import create_project_structure
-from src.generators.template_generator import generate_project_files
+from src.parsers.database_parser import DatabaseParser
+from src.parsers.model_parser import ModelParser
+from src.parsers.table_parser import TableParser
+from src.parsers.version_parser import VersionParser
+from src.parsers.culture_parser import CultureParser
+from src.parsers.relationship_parser import RelationshipParser
 
+from src.generators.structure_generator import ProjectStructureGenerator
 
-def migrate_to_tmdl(
-        config_path: str,
-        input_path: str,
-        output_dir: str = None
-) -> Dict[str, Any]:
+from src.generators.database_template_generator import DatabaseTemplateGenerator
+from src.generators.model_template_generator import ModelTemplateGenerator
+from src.generators.table_template_generator import TableTemplateGenerator
+from src.generators.version_generator import VersionGenerator
+from src.generators.culture_generator import CultureGenerator
+from src.generators.relationship_template_generator import RelationshipTemplateGenerator
+
+def load_config(path: str) -> Dict[str, Any]:
+    """Load configuration from YAML or JSON file."""
+    with open(path, 'r') as f:
+        if path.endswith('.yaml') or path.endswith('.yml'):
+            return yaml.safe_load(f)
+        return json.load(f)
+
+def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
 
     Args:
+        input_path: Path to TWB file to convert
         config_path: Path to YAML configuration file
-        input_path: Path to input data file (YAML/JSON)
         output_dir: Optional output directory
 
     Returns:
         Dictionary mapping file types to their generated paths
     """
-    # Load input data
-    config_data = load_config(input_path)
+    # Load configuration
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    
+    # Create output directories
+    output_path = Path(output_dir)
+    twb_name = Path(input_path).stem
+    
+    # Create output directory structure
+    structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
+    created_dirs = structure_generator.create_directory_structure()
+    
+    # Step 0: Generate version.txt
+    print('\nStep 0: Generating version.txt...')
+    try:
+        version_parser = VersionParser(input_path, config)
+        version_info = version_parser.extract_version()
+        
+        version_generator = VersionGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        version_path = version_generator.generate_version(version_info, output_dir=structure_generator.base_dir)
+        print(f'Generated version.txt: {version_path}')
+    except Exception as e:
+        print(f'Failed to generate version.txt: {str(e)}')
+        return
 
-    # Create project structure
-    created_dirs = create_project_structure(
-        config_path=config_path,
-        output_dir=output_dir
-    )
-    print("\nCreated directories:")
-    for directory in sorted(created_dirs):
-        print(f"  - {directory}")
+    # Step 1: Generate culture TMDL
+    print('\nStep 1: Generating culture TMDL...')
+    try:
+        culture_parser = CultureParser(input_path, config)
+        culture_info = culture_parser.extract_culture_info()
+        
+        # Debug culture info
+        print(f'Debug: Culture info - culture: {culture_info.culture}')
+        if culture_info.linguistic_metadata:
+            print(f'Debug: Linguistic metadata - entities: {len(culture_info.linguistic_metadata.entities) if culture_info.linguistic_metadata.entities else 0} entities')
+            if culture_info.linguistic_metadata.entities:
+                for key, entity in culture_info.linguistic_metadata.entities.items():
+                    print(f'Debug: Entity {key} - binding: {entity.binding.conceptual_entity if entity.binding else None}')
+        
+        # Generate culture TMDL file
+        culture_generator = CultureGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        # Pass the correct output directory for culture TMDL
+        culture_path = culture_generator.generate_culture_tmdl(
+            culture_info,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated culture TMDL: {culture_path}')
+    except Exception as e:
+        print(f'Failed to generate culture TMDL: {str(e)}')
 
-    # Generate files
-    generated_files = generate_project_files(
-        config_path=config_path,
-        config_data=config_data,
-        output_dir=output_dir
-    )
-    print("\nGenerated files:")
-    for file_type, files in generated_files.items():
-        print(f"\n{file_type}:")
-        for file in files:
-            print(f"  - {file}")
+    # Step 2: Generate .pbixproj.json
+    print('\nStep 2: Generating .pbixproj.json...')
+    try:
+        from src.parsers.pbixproj_parser import PbixprojParser
+        from src.generators.pbixproj_generator import PbixprojGenerator
+        
+        pbixproj_parser = PbixprojParser(input_path, config)
+        project_info = pbixproj_parser.extract_pbixproj_info()
+        
+        pbixproj_generator = PbixprojGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
+        print(f'Generated .pbixproj.json: {pbixproj_path}')
+    except Exception as e:
+        print(f'Failed to generate .pbixproj.json: {str(e)}')
+        return
+    
+    # Step 2: Generate database TMDL
+    print('\nStep 1: Generating database TMDL...')
+    try:
+        db_parser = DatabaseParser(input_path, config)
+        db_info = db_parser.extract_database_info()
+        
+        database_generator = DatabaseTemplateGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
+        print(f'Generated database TMDL: {database_path}')
+        print(f'  Database name: {db_info.name}')
+    except Exception as e:
+        print(f'Failed to generate database TMDL: {str(e)}')
+        return
+    
+    # Step 3: Generate table TMDL files
+    print('\nStep 2: Generating table TMDL files...')
+    try:
+        table_parser = TableParser(input_path, config)
+        tables = table_parser.extract_all_tables()
+        
+        table_generator = TableTemplateGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        table_paths = table_generator.generate_all_tables(tables, output_dir=structure_generator.base_dir)
+        print(f'Generated {len(table_paths)} table TMDL files:')
+        for path in table_paths:
+            print(f'  - {path}')
+    except Exception as e:
+        print(f'Failed to generate table TMDL files: {str(e)}')
+        return
+    
+    # Step 3: Generate relationships TMDL
+    print('\nStep 3: Generating relationship TMDL files...')
+    try:
+        print('Debug: Creating relationship parser...')
+        relationship_parser = RelationshipParser(input_path, config)
+        print('Debug: Extracting relationships...')
+        relationships = relationship_parser.extract_relationships()
+        print(f'Debug: Found {len(relationships)} relationships')
+        
+        print('Debug: Creating relationship generator...')
+        relationship_generator = RelationshipTemplateGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        print('Debug: Generating relationship TMDL files...')
+        relationship_paths = relationship_generator.generate_relationships(
+            relationships,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated {len(relationship_paths)} relationship TMDL files:')
+        for path in relationship_paths:
+            print(f'  - {path}')
+    except Exception as e:
+        print(f'Failed to generate relationship TMDL files: {str(e)}')
+        import traceback
+        traceback.print_exc()
 
-    return {
-        'directories': sorted(str(d) for d in created_dirs),
-        'files': generated_files
-    }
-
+    # Step 4: Generate model TMDL
+    print('\nStep 4: Generating model TMDL...')
+    try:
+        model_parser = ModelParser(input_path, config)
+        model, tables = model_parser.extract_model_info()
+        
+        model_generator = ModelTemplateGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
+        print(f'Generated model TMDL: {model_path}')
+        print(f'  Model name: {model.model_name}')
+        print(f'  Culture: {model.culture}')
+        print(f'  Number of tables: {len(model.tables)}')
+        if model.desktop_version:
+            print(f'  Desktop version: {model.desktop_version}')
+    except Exception as e:
+        print(f'Failed to generate model TMDL: {str(e)}')
+        return
+    
+    print('\nMigration completed successfully!')
 
 def main():
     """Command line interface."""

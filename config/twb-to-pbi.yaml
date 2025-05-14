@@ -5,10 +5,33 @@ Output:
   intermediate_dir: extracted  # Directory for storing intermediate JSON files
   validate_intermediate: false     # Whether to validate intermediate files
 
+# --- API Settings ---
+api_settings:
+  # Base URL for the FastAPI service
+  base_url: "http://localhost:8000"
+  # Timeout in seconds for API requests
+  timeout_seconds: 30
+  # Endpoints
+  endpoints:
+    tableau_to_dax: "/convert/tableau-to-dax"
+    # Add more endpoints as needed
+
 # --- Template Mappings ---
 Templates:
   base_dir: templates
   mappings:
+    # --- Project Files ---
+    version:
+      template: version.txt
+      output: version.txt
+      config: PowerBiVersion
+      dataclass: PowerBiVersion
+
+    pbixproj:
+      template: pbixproj.json
+      output: .pbixproj.json
+      config: PowerBiProject
+      dataclass: PowerBiProject
     # --- Model Files ---
     model:
       template: model.tmdl
@@ -27,20 +50,20 @@ Templates:
       dataclass: PowerBiExpressions
     table:
       template: Table.tmdl
-      output: Model/tables/{{name}}.tmdl
+      output: Model/tables/{{source_name}}.tmdl
       config: PowerBiTable
       dataclass: PowerBiTable
       multiple: true
-      name_from: name
+      name_from: source_name
     relationship:
       template: relationship.tmdl
-      output: Model/relationships/{{id}}.tmdl
+      output: Model/relationships.tmdl
       config: PowerBiRelationship
       dataclass: PowerBiRelationship
       multiple: true
       name_from: id
     culture:
-      template: en-US.tmdl
+      template: culture.tmdl
       output: Model/cultures/{{culture}}.tmdl
       config: PowerBiCulture
       dataclass: CultureInfo
@@ -81,18 +104,6 @@ Templates:
       multiple: true
       name_from: name
 
-    # --- Project Files ---
-    project:
-      template: pbixproj.json
-      output: .pbixproj.json
-      config: PowerBiProject
-      dataclass: PowerBiProject
-    version:
-      template: version.txt
-      output: Version.txt
-      config: PowerBiVersion
-      dataclass: PowerBiVersion
-
 # --- Model Settings ---
 PowerBiModel:
   source_xpath: //workbook
@@ -117,45 +128,84 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  source_xpath: //datasource
-  pbi_name:
-    source_xpath: .//named-connection/@caption
-    format: identifier  # Will be sanitized for PBI
+  # Target datasource elements that are inline and not Parameters
+  source_xpath: "//datasources/datasource[@inline='true' and not(@name='Parameters')]"
   source_name:
-    source_xpath: .//connection/@filename  # Get the actual file path
-    format: string
-    default: null
+    # 'caption' is often the user-friendly name
+    source_attribute: caption
+    fallback_attribute: name # Fallback to internal name if caption is missing
   description:
-    source_xpath: .//named-connection/@caption  # Use same caption for description
-    format: string
+    source_attribute: caption
     default: null
   is_hidden:
     source_attribute: hidden
-    mapping_function: to_boolean
     default: false
-  partitions: # Not a direct mapping - signals generation needed
-    derived_rule: generate_m_partition
-    connection_info_xpath: .//connection # Relative to datasource element
-    relation_details: self
-  columns:
-    source_xpath: .//column
-    mapping:
-      name:
-        source_xpath: ./@name
-        format: identifier
-      datatype:
-        source_xpath: ./@datatype
-        mapping: tableau_datatype_to_tmdl
-      format_string:
-        source_xpath: ./@format
-        optional: true
-      description:
-        source_xpath: ./@description
-        optional: true
-      is_hidden:
-        source_xpath: ./@hidden
-        format: boolean
-        default: false
+
+  # Relation configuration to find actual tables within datasources
+  relation_config:
+    # Find relations within connections in datasources
+    source_xpath: "connection/relation | connection/_.fcp.ObjectModelEncapsulateLegacy.false...relation | relation"
+    table_name:
+      source_attribute: name
+      optional: true
+    table_type:
+      source_attribute: type
+      optional: true
+    connection_id:
+      source_xpath: "../@name"
+      optional: true
+    sql_query:
+      # For text type relations that contain SQL queries
+      source_xpath: "text()"
+      optional: true
+
+  # Columns configuration
+  columns_config:
+    # Target metadata-records for logical columns
+    source_xpath: ".//metadata-records/metadata-record[@class='column']"
+    # Target standalone calculated fields directly under datasource
+    calculated_fields_xpath: "column[calculation]"
+    # Additional XPaths for finding columns in relation elements
+    relation_column_paths:
+      - ".//_.fcp.ObjectModelEncapsulateLegacy.false...relation//column"
+      - ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column"
+      - ".//relation//column"
+    # Attribute mappings for relation columns
+    relation_column_mappings:
+      name_attribute: "name"
+      datatype_attribute: "datatype"
+      ordinal_attribute: "ordinal"
+    # Attribute mappings for calculated fields
+    calculated_field_mappings:
+      name_attribute: "caption"
+      datatype_attribute: "datatype"
+      description_attribute: "caption"
+    name:
+      source_attribute: caption
+      fallback_attribute: local-name
+      format: identifier
+    datatype:
+      source_attribute: local-type
+      mapping: tableau_datatype_to_tmdl
+    format_string:
+      source_attribute: format
+      optional: true
+    summarize_by:
+      source_xpath: "aggregation/text()"
+      optional: true
+    description:
+      source_attribute: caption
+      optional: true
+    is_hidden:
+      source_attribute: hidden
+      format: boolean
+      default: false
+    role:
+      source_attribute: role
+      optional: true
+    calculation_formula:
+      source_xpath: "calculation/@formula"
+      optional: true
 
 # --- Culture Settings ---
 PowerBiCulture:
@@ -166,16 +216,18 @@ PowerBiCulture:
     default: en-US
   entities:
     tables:
-      source_xpath: .//relation[@type="table"]
-      name_attribute: name
+      source_xpath: .//relation[@type="table"] | .//metadata-record[@class="column"]/../../..
+      name_attribute: caption
+      fallback_attribute: name
       binding_template:
         State: Generated
         Terms:
           - State: Generated
     columns:
-      source_xpath: .//relation[@type="table"]//column
-      name_attribute: name
-      parent_ref: ../../@name  # How to find parent table name
+      source_xpath: .//relation[@type="table"]//column | .//metadata-record[@class="column"]
+      name_attribute: local-name
+      fallback_attribute: remote-name
+      parent_ref: parent-name  # How to find parent table name
       binding_template:
         State: Generated
         Hidden: true
@@ -184,38 +236,33 @@ PowerBiCulture:
 
 # --- Relationship Settings ---
 PowerBiRelationship:
-  # Maps from <relation type='join'> elements
-  source_xpath: //datasources/datasource/relation[@type='join']
+  # Maps from <relation type='join'> elements, including both legacy and non-legacy formats
+  source_xpath: //datasources/datasource/_.fcp.ObjectModelEncapsulateLegacy.false...relation[@type='join'] | //datasources/datasource/_.fcp.ObjectModelEncapsulateLegacy.true...relation[@type='join'] | //datasources/datasource/relation[@type='join']
   context_note: "Requires parsing join clause expressions."
   from_table:
-    # Explicit XPath approach
-    source_xpath: ./connection/relation[1]/@name
-    # Function approach for complex parsing
-    mapping_function: get_join_table_name # Parses join clause to find table name on one side
-    transformation: sanitize_identifier
+    # Extract from join clause expressions
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[1]/@op
+    transformation: extract_table_name
     format: identifier
   to_table:
-    source_xpath: ./connection/relation[2]/@name
-    mapping_function: get_join_table_name # Parses join clause for the other table name
-    transformation: sanitize_identifier
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[2]/@op
+    transformation: extract_table_name
     format: identifier
   from_column:
-    source_xpath: ./connection/relation[1]/@key
-    mapping_function: get_join_column_name # Parses join clause expression for field name
-    transformation: sanitize_identifier
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[1]/@op
+    transformation: extract_column_name
     format: identifier
   to_column:
-    source_xpath: ./connection/relation[2]/@key
-    mapping_function: get_join_column_name # Parses join clause for the other field name
-    transformation: sanitize_identifier
+    source_xpath: .//clause[@type='join']/expression[@op='=']/expression[2]/@op
+    transformation: extract_column_name
     format: identifier
   is_active:
     source_xpath: ./@active
     format: boolean
     default: true
   cardinality:
-    source_xpath: ./@cardinality
-    derived_rule: infer_cardinality # Attempt analysis, or default
+    source_xpath: ./@join
+    transformation: map_join_to_cardinality
     default: manyToOne
   cross_filter_behavior:
     source_xpath: ./@crossfilter
@@ -330,25 +377,6 @@ PowerBiDatabase:
     source_xpath: .//datasources/datasource/@caption
     alternative_xpath: .//datasources/datasource/@name
     default: Model
-
-
-PowerBiModel:
-  source_xpath: //workbook
-  annotations:
-    time_intelligence:
-      source_xpath: .//column[@role="dimension"][@datatype="date"]
-      mapping_rule: has_elements  # If any elements found, set to "1", else "0"
-    version:
-      source_xpath: .//preferences/preference[@name="version"]
-      source_attribute: value
-      default: "2.120.7013.10 (Main)"
-  query_order:
-    source_xpath: //relation[@type="join"]
-    table_refs:
-      - ./connection/relation[@name]  # Left table
-      - ./connection/relation[@name]  # Right table
-    fallback: table_list  # If no joins found, use alphabetical list of tables
- 
 
 PowerBiColumn:
   # Find columns defined within datasources OR referenced within worksheets/shelves if not in DS metadata

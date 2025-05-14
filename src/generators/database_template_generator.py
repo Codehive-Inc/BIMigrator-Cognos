@@ -18,6 +18,8 @@ class DatabaseTemplateGenerator(BaseTemplateGenerator):
             Path to generated file
         """
         if output_dir:
-            self.output_dir = output_dir
+            self.output_dir = output_dir.parent
+            self.pbit_dir = output_dir
+            self.extracted_dir = self.output_dir / 'extracted'
             
         return self.generate_file('database', database_info)

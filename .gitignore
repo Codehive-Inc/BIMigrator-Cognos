@@ -4,6 +4,9 @@ output
 venv
 extracted
 __pycache__
+
+src/generators/__pycache__
+src/parsers/__pycache__
 __pycache__
 *.pyc
 *.pyo
