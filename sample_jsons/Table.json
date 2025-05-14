@@ -1,42 +1,47 @@
 {
-  "name": "Product",
+  "source_name": "Product",
   "lineage_tag": "tag-123",
   "description": "Product table",
   "is_hidden": false,
   "columns": [
     {
-      "name": "ProductID",
-      "datatype": "int64",
+      "source_name": "ProductID",
+      "datatype": "int",
       "format_string": null,
-      "lineage_tag": "col-tag-1",
       "summarize_by": null,
+      "is_calculated": false,
       "source_column": null,
       "description": "ID of the product",
       "is_hidden": false,
-      "data_category": null
+      "data_category": null,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "CustomAnnotation": "Value1"
+      }
     },
     {
-      "name": "ProductName",
+      "source_name": "ProductName",
       "datatype": "string",
       "format_string": "@",
-      "lineage_tag": "col-tag-2",
       "summarize_by": "sum",
+      "is_calculated": true,
       "source_column": "ProductNameSrc",
       "description": "Name of the product",
       "is_hidden": true,
-      "data_category": "Category"
+      "data_category": "Category",
+      "is_data_type_inferred": true
     }
   ],
   "measures": [
     {
-      "name": "TotalSales",
+      "source_name": "TotalSales",
       "expression": "SUM([Amount])",
       "format_string": "$#,##0.00",
       "description": "Total sales amount",
       "is_hidden": false
     },
     {
-      "name": "HiddenMeasure",
+      "source_name": "HiddenMeasure",
       "expression": "COUNT([ProductID])",
       "is_hidden": true
     }

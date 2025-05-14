@@ -1,4 +1,6 @@
 """Generator for creating Power BI TMDL files."""
+import argparse
+import json
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 from collections import defaultdict
