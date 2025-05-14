@@ -1,8 +1,5 @@
-table {{source_name}}
-    lineageTag: {{lineage_tag}}
-    {{#if description}}
-    description: {{description}}
-    {{/if}}
+table '{{source_name}}'
+
     {{#if is_hidden}}
     isHidden
     {{/if}}
@@ -20,11 +17,17 @@ table {{source_name}}
         type: calculated
         {{/if}}
         {{#if source_column}}
+        {{#if is_calculated}}
+        sourceColumn = ```
+            
+            {{{source_column}}}
+            
+            ```
+        {{else}}
         sourceColumn: {{{source_column}}}
         {{/if}}
-        {{#if description}}
-        description: {{description}}
         {{/if}}
+
         {{#if is_hidden}}
         isHidden
         {{/if}}
@@ -35,10 +38,7 @@ table {{source_name}}
         isDataTypeInferred: {{is_data_type_inferred}}
         {{/if}}
         {{#if annotations}}
-        annotations
-            {{#each annotations}}
-            {{@key}}: {{{this}}}
-            {{/each}}
+        annotation SummarizationSetBy = Automatic
         {{/if}}
         
     {{/each}}
@@ -49,9 +49,7 @@ table {{source_name}}
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
-        {{#if description}}
-        description: {{description}}
-        {{/if}}
+
         {{#if is_hidden}}
         isHidden
         {{/if}}
@@ -59,9 +57,7 @@ table {{source_name}}
 
     {{#each hierarchies}}
     hierarchy {{name}}
-        {{#if description}}
-        description: {{description}}
-        {{/if}}
+
         {{#if is_hidden}}
         isHidden
         {{/if}}
@@ -76,9 +72,7 @@ table {{source_name}}
 
     {{#each partitions}}
     partition {{name}} = {{expression}}
-        {{#if description}}
-        description: {{description}}
-        {{/if}}
+
     {{/each}}
 
     {{#if has_widget_serialization}}

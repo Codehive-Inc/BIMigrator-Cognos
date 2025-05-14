@@ -4,12 +4,12 @@ relationship {{id}}
 	joinOnDateBehavior: {{join_on_date_behavior}}
 	{{/if}}
 	fromColumn: '{{from_table}}'.{{from_column}}
-	toColumn: {{to_table}}.{{to_column}}
-{{#if cardinality}}
-	cardinality: {{cardinality}}
-{{/if}}
+	toColumn: '{{to_table}}'.{{to_column}}
 {{#if cross_filter_behavior}}
-	crossFilteringBehavior: {{cross_filter_behavior}}
+	crossFilteringBehavior: bothDirections
+{{/if}}
+{{#if cardinality}}
+	fromCardinality: one
 {{/if}}
 {{#if is_active}}
 	isActive: {{is_active}}

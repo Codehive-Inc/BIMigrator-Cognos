@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Dict, Optional, Any, Literal
+import uuid
 
 
 # --- Project Objects ---
@@ -246,8 +247,9 @@ class PowerBiRelationship:
     to_table: str
     from_column: str
     to_column: str
-    cardinality: Literal['one_to_one', 'one_to_many', 'many_to_one', 'many_to_many'] = 'many_to_one'
-    cross_filter_behavior: Literal['both', 'one', 'none'] = 'both'
+    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    cardinality: Literal['one', 'many'] = 'many'
+    cross_filter_behavior: Literal['bothDirections', 'oneWay', 'automatic'] = 'bothDirections'
     is_active: bool = True
     join_on_date_behavior: Optional[str] = None
     type: Optional[str] = None
@@ -413,10 +415,11 @@ class PowerBiRelationship:
     from_column: str
     to_table: str
     to_column: str
+    id: str = field(default_factory=lambda: str(uuid.uuid4()))
     description: Optional[str] = None
     is_active: bool = True
-    cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
-    cross_filter_behavior: Literal['oneWay', 'bothDirections', 'automatic'] = 'automatic'
+    cardinality: Literal['one', 'many'] = 'many'
+    cross_filter_behavior: Literal['bothDirections', 'oneWay', 'automatic'] = 'bothDirections'
     annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
 
 
