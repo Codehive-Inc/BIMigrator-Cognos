@@ -1,5 +1,5 @@
 {{! model.tmdl - Template for pbi-tools text-based TMDL }}
-model Model
+model {{model_name}}
 	culture: {{default_culture}}
 	defaultPowerBIDataSourceVersion: powerBI_V3
 	sourceQueryCulture: {{default_culture}}
@@ -9,7 +9,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = {{time_intelligence_enabled}}
 annotation PBIDesktopVersion = {{desktop_version}}
-annotation PBI_QueryOrder = {{query_order_list}}
+annotation PBI_QueryOrder = {{{query_order_list}}}
 
 {{#each tables}}
 ref table {{this}}

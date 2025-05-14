@@ -43,8 +43,8 @@ class ModelTemplateGenerator(BaseTemplateGenerator):
             # No need to convert data access options to strings since they are flags
             'legacy_redirects': model.data_access_options.legacy_redirects,
             'return_null_errors': model.data_access_options.return_error_values_as_null,
-            # Convert query order list to JSON string
-            'query_order_list': json.dumps(model.query_order),
+            # Format query order list with table names, using raw strings to avoid HTML encoding
+            'query_order_list': json.dumps([table.source_name.strip() for table in tables], ensure_ascii=False) if tables else '[]',
             # Convert boolean to 1/0 for time intelligence
             'time_intelligence_enabled': '1' if model.time_intelligence_enabled else '0',
             # Add desktop version if available
