@@ -1,0 +1,36 @@
+# ---TO BE IMPLEMENTED (Need Review) Helper Function References (Python code needs to implement these) ---
+# sanitize_identifier(name)
+# to_boolean(value)
+# map_tableau_format(format_code)
+# determine_summarize_by(role, datatype)
+# extract_sort_column(sort_spec_node)
+# parse_semantic_role(role_string)
+# derive_summarization_set_by(summarize_by_value)
+# derive_pbi_format_hint(format_string, global_locale)
+# get_join_table_name(join_relation_node, side) # side='from' or 'to'
+# get_join_column_name(join_relation_node, side)
+# infer_cardinality(join_info)
+# find_hierarchy_levels(hierarchy_name, all_columns)
+# generate_m_partition(connection_node, relation_node) -> returns PowerBiPartition object
+# generate_m_code(connection_node, relation_node) -> returns M code string
+# determine_viz_type(worksheet_node) -> returns Tableau viz type string
+# map_visual_shelves(worksheet_node, pbi_viz_type) -> returns list of PowerBiVisualFieldMapping
+
+
+
+Psedo - code flow:
+Load Config: Load the YAML file into a Python dictionary.
+Parse XML: Parse the Tableau TWB XML using a library like xml.etree.ElementTree or lxml.
+Iterate Through Mappings: For each target dataclass (e.g., PowerBiTable), find its configuration section.
+Find Source Elements: Use the source_xpath from the config to find the relevant XML nodes in the parsed XML.
+Populate Dataclass Fields: For each field in the dataclass (e.g., pbi_name for PowerBiTable):
+Look up the field's mapping instructions in the config.
+Attribute/Text: If source_attribute is defined, get the attribute value from the current XML node.
+XPath: If alternative_xpath or other specific XPaths are given, execute them relative to the current node.
+Lookup: If lookup is specified, use the source value as a key into the corresponding metadata lookup table (e.g., tableau_datatype_to_tmdl).
+Mapping Function: If mapping_function is specified, call the corresponding Python helper function (which you implement) with the extracted source value(s).
+Derived Rule: If derived_rule is specified, call a more complex Python function that might take the current XML node and other context (like the partially built PowerBiTargetStructure) to compute the value (e.g., generate_m_partition, map_visual_shelves).
+AI Translation: If ai_translation_source is specified, extract the source formula, gather the required context (querying the KG or partially built structure), and call the AI translation service.
+Default: If no source value is found or mapping fails, use the default value if provided.
+Build Structure: Create instances of the dataclasses and populate the overall PowerBiTargetStructure object.
+Generate Output: Once PowerBiTargetStructure is populated, use it to generate the TMDL files and report.json.

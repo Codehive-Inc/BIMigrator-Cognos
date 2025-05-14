@@ -1,0 +1,90 @@
+table {{source_name}}
+    lineageTag: {{lineage_tag}}
+    {{#if description}}
+    description: {{description}}
+    {{/if}}
+    {{#if is_hidden}}
+    isHidden
+    {{/if}}
+
+    {{#each columns}}
+    column {{source_name}}
+        dataType: {{datatype}}
+        {{#if format_string}}
+        formatString: {{format_string}}
+        {{/if}}
+        {{#if summarize_by}}
+        summarizeBy: {{summarize_by}}
+        {{/if}}
+        {{#if is_calculated}}
+        type: calculated
+        {{/if}}
+        {{#if source_column}}
+        sourceColumn: {{{source_column}}}
+        {{/if}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+        {{#if is_hidden}}
+        isHidden
+        {{/if}}
+        {{#if data_category}}
+        dataCategory: {{data_category}}
+        {{/if}}
+        {{#if is_data_type_inferred}}
+        isDataTypeInferred: {{is_data_type_inferred}}
+        {{/if}}
+        {{#if annotations}}
+        annotations
+            {{#each annotations}}
+            {{@key}}: {{{this}}}
+            {{/each}}
+        {{/if}}
+        
+    {{/each}}
+
+    {{#each measures}}
+    measure {{source_name}}
+        expression: {{{expression}}}
+        {{#if format_string}}
+        formatString: {{format_string}}
+        {{/if}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+        {{#if is_hidden}}
+        isHidden
+        {{/if}}
+    {{/each}}
+
+    {{#each hierarchies}}
+    hierarchy {{name}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+        {{#if is_hidden}}
+        isHidden
+        {{/if}}
+        {{#each levels}}
+        level {{name}}
+            column: {{column_name}}
+            {{#if ordinal}}
+            ordinal: {{ordinal}}
+            {{/if}}
+        {{/each}}
+    {{/each}}
+
+    {{#each partitions}}
+    partition {{name}} = {{expression}}
+        {{#if description}}
+        description: {{description}}
+        {{/if}}
+    {{/each}}
+
+    {{#if has_widget_serialization}}
+    annotation TableWidgetSerialization =
+        {
+          "VisualType": {{visual_type}},
+          "Columns": {{column_settings}}
+        }
+    {{/if}}
