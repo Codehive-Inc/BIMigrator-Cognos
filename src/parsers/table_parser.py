@@ -150,16 +150,14 @@ class TableParser(BaseParser):
                         annotations={}
                     )
                     
-                    # Debug output
-                    print(f"Debug: Created table '{final_table_name}' with {len(pbi_columns)} columns and {len(pbi_measures)} measures")
+
                     
                     # Keep only the table with the most columns and measures
                     if final_table_name not in unique_tables or \
                        len(pbi_columns) + len(pbi_measures) > len(unique_tables[final_table_name].columns) + len(unique_tables[final_table_name].measures):
                         unique_tables[final_table_name] = table
                 except Exception as e:
-                    # Print the error for debugging
-                    print(f"Error processing datasource: {str(e)}")
+
                     # Continue to next datasource if there's an error
                     continue
 
@@ -168,28 +166,24 @@ class TableParser(BaseParser):
             if relation_config:
                 relation_xpath = relation_config.get('source_xpath')
                 if relation_xpath:
-                    print(f"\nDebug: Looking for relations using XPath: {relation_xpath}")
-                    print(f"Debug: Found {len(datasource_info)} datasources to process for relations")
+
                     
                     for ds_id, ds_info in datasource_info.items():
                         ds_element = ds_info['element']
-                        print(f"Debug: Processing datasource '{ds_info['name']}' (ID: {ds_id}) for relations")
+
                         try:
                             # Find relations within this datasource
                             relation_elements = ds_element.findall(relation_xpath, namespaces=self.namespaces)
-                            print(f"Debug: Found {len(relation_elements)} relation elements in datasource '{ds_info['name']}'")
+
                             
                             # If no relations found directly, try a more generic approach
                             if not relation_elements:
-                                print(f"Debug: Trying alternate approach to find relations in datasource '{ds_info['name']}'")
                                 # Try to find any relation elements anywhere in this datasource
                                 relation_elements = ds_element.findall(".//relation", namespaces=self.namespaces)
-                                print(f"Debug: Found {len(relation_elements)} relation elements with alternate approach")
                                 
                                 # If still no relations, try without namespaces
                                 if not relation_elements:
                                     relation_elements = ds_element.findall(".//relation")
-                                    print(f"Debug: Found {len(relation_elements)} relation elements without namespaces")
                             
                             
                             for rel_element in relation_elements:
@@ -263,11 +257,7 @@ class TableParser(BaseParser):
         columns_yaml_config: Dict,
         pbi_table_name: str  # For DAX expressions in measures
     ):  # -> Tuple[List[PowerBiColumn], List[PowerBiMeasure]]
-        # For debugging
-        ds_name = ds_element.get('caption') or ds_element.get('name')
-        print(f"Debug: Processing datasource '{ds_name}'")
-        print(f"Debug: Datasource element tag: {ds_element.tag}")
-        print(f"Debug: Datasource element attributes: {ds_element.attrib}")
+
         """Extract columns and measures from a datasource element.
         
         Args:
