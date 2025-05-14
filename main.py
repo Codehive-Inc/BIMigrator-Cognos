@@ -10,6 +10,7 @@ from src.parsers.database_parser import DatabaseParser
 from src.parsers.model_parser import ModelParser
 from src.parsers.table_parser import TableParser
 from src.parsers.version_parser import VersionParser
+from src.parsers.culture_parser import CultureParser
 
 from src.generators.structure_generator import ProjectStructureGenerator
 
@@ -17,6 +18,7 @@ from src.generators.database_template_generator import DatabaseTemplateGenerator
 from src.generators.model_template_generator import ModelTemplateGenerator
 from src.generators.table_template_generator import TableTemplateGenerator
 from src.generators.version_generator import VersionGenerator
+from src.generators.culture_generator import CultureGenerator
 
 def load_config(path: str) -> Dict[str, Any]:
     """Load configuration from YAML or JSON file."""
@@ -65,8 +67,37 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         print(f'Failed to generate version.txt: {str(e)}')
         return
 
-    # Step 1: Generate .pbixproj.json
-    print('\nStep 1: Generating .pbixproj.json...')
+    # Step 1: Generate culture TMDL
+    print('\nStep 1: Generating culture TMDL...')
+    try:
+        culture_parser = CultureParser(input_path, config)
+        culture_info = culture_parser.extract_culture_info()
+        
+        # Debug culture info
+        print(f'Debug: Culture info - culture: {culture_info.culture}')
+        if culture_info.linguistic_metadata:
+            print(f'Debug: Linguistic metadata - entities: {len(culture_info.linguistic_metadata.entities) if culture_info.linguistic_metadata.entities else 0} entities')
+            if culture_info.linguistic_metadata.entities:
+                for key, entity in culture_info.linguistic_metadata.entities.items():
+                    print(f'Debug: Entity {key} - binding: {entity.binding.conceptual_entity if entity.binding else None}')
+        
+        # Generate culture TMDL file
+        culture_generator = CultureGenerator(
+            config_path=config_path,
+            input_path=input_path,
+            output_dir=structure_generator.base_dir
+        )
+        # Pass the correct output directory for culture TMDL
+        culture_path = culture_generator.generate_culture_tmdl(
+            culture_info,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated culture TMDL: {culture_path}')
+    except Exception as e:
+        print(f'Failed to generate culture TMDL: {str(e)}')
+
+    # Step 2: Generate .pbixproj.json
+    print('\nStep 2: Generating .pbixproj.json...')
     try:
         from src.parsers.pbixproj_parser import PbixprojParser
         from src.generators.pbixproj_generator import PbixprojGenerator

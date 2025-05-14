@@ -1,0 +1,10 @@
+cultureInfo '{{culture}}'
+
+    linguisticMetadata =
+        {
+          "Version": "1.0.0",
+          "Language": "{{culture}}",
+          "DynamicImprovement": "HighConfidence",
+          "Entities": {{entities_json}}
+        }
+        contentType: json
