@@ -1,26 +1,25 @@
 """Main entry point for the migration tool."""
 import argparse
 import json
-import yaml
 from pathlib import Path
-from typing import Dict, List, Optional, Any
 from typing import Dict, Any
 
-from src.parsers.database_parser import DatabaseParser
-from src.parsers.model_parser import ModelParser
-from src.parsers.table_parser import TableParser
-from src.parsers.version_parser import VersionParser
-from src.parsers.culture_parser import CultureParser
-from src.parsers.relationship_parser import RelationshipParser
+import yaml
 
-from src.generators.structure_generator import ProjectStructureGenerator
-
+from src.generators.culture_generator import CultureGenerator
 from src.generators.database_template_generator import DatabaseTemplateGenerator
 from src.generators.model_template_generator import ModelTemplateGenerator
+from src.generators.relationship_template_generator import RelationshipTemplateGenerator
+from src.generators.structure_generator import ProjectStructureGenerator
 from src.generators.table_template_generator import TableTemplateGenerator
 from src.generators.version_generator import VersionGenerator
-from src.generators.culture_generator import CultureGenerator
-from src.generators.relationship_template_generator import RelationshipTemplateGenerator
+from src.parsers.culture_parser import CultureParser
+from src.parsers.database_parser import DatabaseParser
+from src.parsers.model_parser import ModelParser
+from src.parsers.relationship_parser import RelationshipParser
+from src.parsers.table_parser import TableParser
+from src.parsers.version_parser import VersionParser
+
 
 def load_config(path: str) -> Dict[str, Any]:
     """Load configuration from YAML or JSON file."""
@@ -28,6 +27,7 @@ def load_config(path: str) -> Dict[str, Any]:
         if path.endswith('.yaml') or path.endswith('.yml'):
             return yaml.safe_load(f)
         return json.load(f)
+
 
 def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
@@ -43,21 +43,21 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     # Load configuration
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
-    
+
     # Create output directories
     output_path = Path(output_dir)
     twb_name = Path(input_path).stem
-    
+
     # Create output directory structure
     structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
     created_dirs = structure_generator.create_directory_structure()
-    
+
     # Step 0: Generate version.txt
     print('\nStep 0: Generating version.txt...')
     try:
         version_parser = VersionParser(input_path, config)
         version_info = version_parser.extract_version()
-        
+
         version_generator = VersionGenerator(
             config_path=config_path,
             input_path=input_path,
@@ -74,15 +74,17 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     try:
         culture_parser = CultureParser(input_path, config)
         culture_info = culture_parser.extract_culture_info()
-        
+
         # Debug culture info
         print(f'Debug: Culture info - culture: {culture_info.culture}')
         if culture_info.linguistic_metadata:
-            print(f'Debug: Linguistic metadata - entities: {len(culture_info.linguistic_metadata.entities) if culture_info.linguistic_metadata.entities else 0} entities')
+            print(
+                f'Debug: Linguistic metadata - entities: {len(culture_info.linguistic_metadata.entities) if culture_info.linguistic_metadata.entities else 0} entities')
             if culture_info.linguistic_metadata.entities:
                 for key, entity in culture_info.linguistic_metadata.entities.items():
-                    print(f'Debug: Entity {key} - binding: {entity.binding.conceptual_entity if entity.binding else None}')
-        
+                    print(
+                        f'Debug: Entity {key} - binding: {entity.binding.conceptual_entity if entity.binding else None}')
+
         # Generate culture TMDL file
         culture_generator = CultureGenerator(
             config_path=config_path,
@@ -103,10 +105,10 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     try:
         from src.parsers.pbixproj_parser import PbixprojParser
         from src.generators.pbixproj_generator import PbixprojGenerator
-        
+
         pbixproj_parser = PbixprojParser(input_path, config)
         project_info = pbixproj_parser.extract_pbixproj_info()
-        
+
         pbixproj_generator = PbixprojGenerator(
             config_path=config_path,
             input_path=input_path,
@@ -117,13 +119,13 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     except Exception as e:
         print(f'Failed to generate .pbixproj.json: {str(e)}')
         return
-    
+
     # Step 2: Generate database TMDL
     print('\nStep 1: Generating database TMDL...')
     try:
         db_parser = DatabaseParser(input_path, config)
         db_info = db_parser.extract_database_info()
-        
+
         database_generator = DatabaseTemplateGenerator(
             config_path=config_path,
             input_path=input_path,
@@ -135,13 +137,13 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     except Exception as e:
         print(f'Failed to generate database TMDL: {str(e)}')
         return
-    
+
     # Step 3: Generate table TMDL files
     print('\nStep 2: Generating table TMDL files...')
     try:
         table_parser = TableParser(input_path, config)
         tables = table_parser.extract_all_tables()
-        
+
         table_generator = TableTemplateGenerator(
             config_path=config_path,
             input_path=input_path,
@@ -154,7 +156,7 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     except Exception as e:
         print(f'Failed to generate table TMDL files: {str(e)}')
         return
-    
+
     # Step 3: Generate relationships TMDL
     print('\nStep 3: Generating relationship TMDL files...')
     try:
@@ -163,7 +165,7 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         print('Debug: Extracting relationships...')
         relationships = relationship_parser.extract_relationships()
         print(f'Debug: Found {len(relationships)} relationships')
-        
+
         print('Debug: Creating relationship generator...')
         relationship_generator = RelationshipTemplateGenerator(
             config_path=config_path,
@@ -188,7 +190,7 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     try:
         model_parser = ModelParser(input_path, config)
         model, tables = model_parser.extract_model_info()
-        
+
         model_generator = ModelTemplateGenerator(
             config_path=config_path,
             input_path=input_path,
@@ -204,8 +206,9 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     except Exception as e:
         print(f'Failed to generate model TMDL: {str(e)}')
         return
-    
+
     print('\nMigration completed successfully!')
+
 
 def main():
     """Command line interface."""
@@ -224,13 +227,14 @@ def main():
     )
     parser.add_argument(
         '--output',
-        help='Output directory'
+        help='Output directory',
+        default='output'
     )
 
     args = parser.parse_args()
 
     try:
-        result = migrate_to_tmdl(
+        migrate_to_tmdl(
             config_path=args.config,
             input_path=args.input,
             output_dir=args.output

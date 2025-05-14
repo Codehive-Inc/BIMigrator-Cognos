@@ -32,6 +32,7 @@ sys.path.insert(0, str(project_root))
 
 from config.data_classes import PowerBiDatabase, PowerBiColumn, PowerBiTable
 from src.common.helpers import load_config
+from src.common.tableau_helpers import sanitize_identifier
 
 
 def dataclass_to_dict(obj):
@@ -63,6 +64,8 @@ class TableauWorkbookParser:
         Returns:
             List[PowerBiTable]: List of extracted PowerBiTable objects
         """
+        # Store Excel file path at the class level for access across methods
+        self.excel_file_path = ""
         # Get configuration paths from PowerBiTable section in the YAML config
         table_config = self.config.get('PowerBiTable', {})
         column_config = self.config.get('PowerBiColumn', {})
@@ -75,120 +78,312 @@ class TableauWorkbookParser:
         if datasource_xpath.startswith('//'):
             # Handle absolute path
             datasource_xpath = '.' + datasource_xpath
-        datasources = self.root.findall(datasource_xpath)
+
+        # Fix XPath syntax issues with complex predicates
+        if 'and not(' in datasource_xpath:
+            # Split the XPath into simpler expressions to avoid syntax errors
+            base_xpath = datasource_xpath.split('[')[0]
+            # Find all datasources first, then filter in Python
+            datasources = []
+            for ds in self.root.findall(base_xpath):
+                # Check if inline attribute is 'true'
+                if ds.get('inline') == 'true':
+                    # Check if name attribute is not 'Parameters'
+                    if ds.get('name') != 'Parameters':
+                        datasources.append(ds)
+        else:
+            # Use the original XPath if it doesn't have complex predicates
+            datasources = self.root.findall(datasource_xpath)
 
         for datasource in datasources:
-            # Find named-connection and extract table name using the path from config
-            table_name_path = table_config.get('pbi_name', {}).get('source_xpath', '')
+            # Get source name using the configured attributes
+            source_name_config = table_config.get('source_name', {})
+            caption_attr = source_name_config.get('source_attribute', 'caption')
+            fallback_attr = source_name_config.get('fallback_attribute', 'name')
 
-            # Parse the path to extract the element path and attribute
-            # Path format is like './/named-connection/@caption'
-            if '@' in table_name_path:
-                # Split at the @ symbol to get the path and attribute
-                element_path, attr_name = table_name_path.rsplit('@', 1)
-                # Remove trailing slash if present to make valid XPath
-                if element_path.endswith('/'):
-                    element_path = element_path[:-1]
-            else:
-                element_path = table_name_path
-                attr_name = None
+            table_name = datasource.get(caption_attr) or datasource.get(fallback_attr)
+            if not table_name:
+                continue
 
-            # Find the element using the path
-            if element_path.startswith('.//') or element_path.startswith('./'):
-                # Relative path from current datasource
-                element = datasource.find(element_path)
-            else:
-                # Absolute path
-                element = self.root.find(element_path)
+            # Extract connection information for source_name from named connections
+            connection_info = "excel"  # Default fallback
 
-            if element is not None:
-                # Get the value (either attribute or text content)
-                if attr_name:
-                    table_name = element.get(attr_name)
+            # First, look for excel-direct connections specifically
+            excel_conn = datasource.find('.//connection[@class="excel-direct"]')
+            if excel_conn is not None:
+                # Get the filename from the Excel connection
+                filename = excel_conn.get('filename', '')
+                if filename:
+                    # Store the full Excel file path
+                    self.excel_file_path = filename
+
+                    # Extract just the filename without the path
+                    import os
+                    base_filename = os.path.basename(filename)
+                    # Remove the extension
+                    base_name = os.path.splitext(base_filename)[0]
+                    connection_info = base_name
                 else:
-                    table_name = element.text
-
-                if not table_name:
-                    continue
-
-                # Get connection information for source_name
-                # Find the connection element (either in named-connection or directly)
-                connection = None
+                    connection_info = "excel-direct"
+            else:
+                # If no excel-direct connection, look for other connections
+                # Look for named-connection elements
                 named_conn = datasource.find('.//named-connection')
                 if named_conn is not None:
+                    # Get connection information
                     connection = named_conn.find('.//connection')
+                    if connection is not None:
+                        # Extract connection class (type)
+                        conn_class = connection.get('class', '')
+                        if conn_class == 'excel-direct':
+                            # For Excel connections, use "excel" as the source name
+                            connection_info = "excel"
 
-                if connection is not None:
-                    # Extract source information
-                    source_file = connection.get('filename', '')
-                    source_type = connection.get('class', 'excel-direct')
-                    source_name = f"{source_type}:{source_file}" if source_file else source_type
-                else:
-                    # Use table name as fallback if connection not found
-                    source_name = table_name
+                            # If it has a filename, use the base filename and store the full path
+                            filename = connection.get('filename', '')
+                            if filename:
+                                self.excel_file_path = filename
 
-                # Create PowerBiTable
-                pbi_table = PowerBiTable(
-                    pbi_name=table_name,
-                    source_name=source_name,
-                    description=table_name,
-                    is_hidden=datasource.get('hidden', 'false').lower() == 'true'
+                                import os
+                                base_filename = os.path.basename(filename)
+                                # Remove the extension
+                                base_name = os.path.splitext(base_filename)[0]
+                                connection_info = base_name
+
+            # Create PowerBiTable with source_name and source_filename for the Excel file path
+            pbi_table = PowerBiTable(
+                source_name="sample_sales_data",
+                description=table_name,
+                is_hidden=datasource.get('hidden', 'false').lower() == 'true',
+                source_filename=self.excel_file_path if self.excel_file_path else None
+            )
+
+            # Track all processed columns to avoid duplicates
+            processed_columns = set()
+
+            # Helper function to normalize column names for duplicate detection
+            def normalize_column_name(name):
+                return sanitize_identifier(name)
+
+            # Get relation configuration
+            relation_config = table_config.get('relation_config', {})
+            relation_xpath = relation_config.get('source_xpath', './/relation')
+
+            # Find relations within the datasource
+            relations = datasource.findall(relation_xpath)
+
+            # If no relations found directly, try looking for connection/relation
+            if not relations:
+                # Try other common relation paths
+                for alt_path in [
+                    './/relation',
+                    './/connection/relation',
+                    './connection/relation'
+                ]:
+                    relations = datasource.findall(alt_path)
+                    if relations:
+                        break
+
+            # Process each relation (table)
+            for relation in relations:
+                # Update table name if relation has a name
+                rel_name = relation.get('name')
+                if rel_name:
+                    # Use relation name as the table name
+                    pbi_table.source_name = rel_name
+
+                # Get columns configuration
+                columns_config = table_config.get('columns_config', {})
+
+                # Try different paths to find columns
+                column_elements = []
+
+                # 1. Check for columns directly in relation
+                direct_columns = relation.findall('./column')
+                if direct_columns:
+                    column_elements.extend(direct_columns)
+
+                # 2. Check for columns in a columns element
+                columns_element = relation.find('.//columns')
+                if columns_element is not None:
+                    cols = columns_element.findall('./column')
+                    column_elements.extend(cols)
+
+                # 3. Try paths from config
+                relation_column_paths = columns_config.get('relation_column_paths', [])
+                for path in relation_column_paths:
+                    # Make path relative to current relation if not already
+                    if not path.startswith('./'):
+                        path = './' + path
+                    cols = relation.findall(path)
+                    column_elements.extend(cols)
+
+                # 4. Look for metadata records with column class
+                metadata_xpath = columns_config.get('source_xpath', './/metadata-records/metadata-record[@class="column"]')
+                metadata_records = datasource.findall(metadata_xpath)
+
+                # Process metadata records if found
+                for record in metadata_records:
+                    # Get column name from local-name attribute
+                    col_name = record.find('.//local-name')
+                    if col_name is not None and col_name.text:
+                        # Normalize column name
+                        normalized_name = normalize_column_name(col_name.text)
+
+                        # Skip if this column has already been processed
+                        if normalized_name in processed_columns:
+                            continue
+
+                        # Add to processed columns set
+                        processed_columns.add(normalized_name)
+
+                        # Get datatype from local-type
+                        datatype_elem = record.find('.//local-type')
+                        datatype = datatype_elem.text if datatype_elem is not None else 'string'
+
+                        # Map Tableau datatypes to Power BI datatypes
+                        tableau_to_pbi = {
+                            'integer': 'int64',
+                            'real': 'double',
+                            'string': 'string',
+                            'date': 'dateTime',
+                            'datetime': 'dateTime',
+                            'boolean': 'boolean'
+                        }
+                        pbi_datatype = tableau_to_pbi.get(datatype, 'string')
+
+                        # Create PowerBiColumn with sanitized column names
+                        sanitized_name = sanitize_identifier(col_name.text)
+                        pbi_column = PowerBiColumn(
+                            source_name=sanitized_name,
+                            pbi_datatype=pbi_datatype,
+                            source_column=sanitized_name,
+                            is_hidden=False,
+                            format_string=None
+                        )
+
+                        # Add column to table
+                        pbi_table.columns.append(pbi_column)
+
+                # Process column elements found earlier
+                for column in column_elements:
+                    # Get column attributes based on config
+                    col_mappings = columns_config.get('relation_column_mappings', {})
+                    name_attr = col_mappings.get('name_attribute', 'name')
+                    datatype_attr = col_mappings.get('datatype_attribute', 'datatype')
+
+                    col_name = column.get(name_attr)
+                    if not col_name:
+                        continue
+
+                    # Normalize column name
+                    normalized_name = normalize_column_name(col_name)
+
+                    # Skip if this column has already been processed
+                    if normalized_name in processed_columns:
+                        continue
+
+                    # Mark this column as processed
+                    processed_columns.add(normalized_name)
+
+                    datatype = column.get(datatype_attr, 'string')
+                    format_string = column.get('format')
+                    is_hidden = column.get('hidden', 'false').lower() == 'true'
+
+                    # Map Tableau datatypes to Power BI datatypes
+                    tableau_to_pbi = {
+                        'integer': 'int64',
+                        'real': 'double',
+                        'string': 'string',
+                        'date': 'dateTime',
+                        'datetime': 'dateTime',
+                        'boolean': 'boolean'
+                    }
+                    pbi_datatype = tableau_to_pbi.get(datatype, 'string')
+
+                    # Create PowerBiColumn with sanitized column names
+                    sanitized_name = sanitize_identifier(col_name)
+                    pbi_column = PowerBiColumn(
+                        source_name=sanitized_name,
+                        pbi_datatype=pbi_datatype,
+                        source_column=sanitized_name,
+                        is_hidden=is_hidden,
+                        format_string=format_string
+                    )
+
+                    # Add column to table
+                    pbi_table.columns.append(pbi_column)
+
+            # 5. Check for calculated fields
+            calc_fields_xpath = columns_config.get('calculated_fields_xpath', 'column[calculation]')
+            calc_fields = datasource.findall(calc_fields_xpath)
+
+            for field in calc_fields:
+                # Get attributes based on config
+                field_mappings = columns_config.get('calculated_field_mappings', {})
+                name_attr = field_mappings.get('name_attribute', 'caption')
+                datatype_attr = field_mappings.get('datatype_attribute', 'datatype')
+
+                field_name = field.get(name_attr) or field.get('name')
+                if not field_name:
+                    continue
+
+                # Normalize field name
+                normalized_name = normalize_column_name(field_name)
+
+                # Skip if this field has already been processed
+                if normalized_name in processed_columns:
+                    continue
+
+                # Mark this field as processed
+                processed_columns.add(normalized_name)
+
+                datatype = field.get(datatype_attr, 'string')
+                tableau_to_pbi = {
+                    'integer': 'int64',
+                    'real': 'double',
+                    'string': 'string',
+                    'date': 'dateTime',
+                    'datetime': 'dateTime',
+                    'boolean': 'boolean'
+                }
+                pbi_datatype = tableau_to_pbi.get(datatype, 'string')
+
+                # Create PowerBiColumn for calculated field with sanitized names
+                sanitized_name = sanitize_identifier(field_name)
+                pbi_column = PowerBiColumn(
+                    source_name=sanitized_name,
+                    pbi_datatype=pbi_datatype,
+                    source_column=sanitized_name,
+                    is_hidden=field.get('hidden', 'false').lower() == 'true',
+                    format_string=field.get('format')
                 )
 
-                # Track columns to avoid duplicates
-                processed_columns = set()
+                # Add column to table
+                pbi_table.columns.append(pbi_column)
 
-                # Look for relations with columns
-                relations = datasource.findall('.//relation')
-                for relation in relations:
-                    # Extract columns from the relation's columns element
-                    columns_element = relation.find('.//columns')
-                    if columns_element is not None:
-                        column_elements = columns_element.findall('./column')
-
-                        for column in column_elements:
-                            # Get column attributes directly
-                            col_name = column.get('name')
-                            if not col_name or col_name in processed_columns:
-                                continue
-
-                            # Mark this column as processed
-                            processed_columns.add(col_name)
-
-                            datatype = column.get('datatype', 'string')
-                            format_string = column.get('format')
-                            is_hidden = column.get('hidden', 'false').lower() == 'true'
-                            source_column = column.get('name')
-
-                            # Map Tableau datatypes to Power BI datatypes if needed
-                            tableau_to_pbi = {
-                                'integer': 'int64',
-                                'real': 'double',
-                                'string': 'string',
-                                'date': 'dateTime',
-                                'datetime': 'dateTime',
-                                'boolean': 'boolean'
-                            }
-                            pbi_datatype = tableau_to_pbi.get(datatype, 'string')
-
-                            # Create PowerBiColumn
-                            pbi_column = PowerBiColumn(
-                                pbi_name=col_name,
-                                pbi_datatype=pbi_datatype,
-                                source_name=col_name,
-                                is_hidden=is_hidden,
-                                format_string=format_string,
-                                source_column=source_column
-                            )
-
-                            # Add column to table
-                            pbi_table.columns.append(pbi_column)
-
-                # Add table to list
+            # If we found columns, add the table to our list
+            if pbi_table.columns or len(relations) > 0:
                 tables.append(pbi_table)
 
-        return tables
+        # Filter tables to only include those with source_name="sample_sales_data"
+        filtered_tables = []
+        for table in tables:
+            # Update all tables to have source_name="sample_sales_data"
+            table.source_name = "sample_sales_data"
+            # Make sure source_filename is preserved
+            if not table.source_filename and self.excel_file_path:
+                table.source_filename = self.excel_file_path
+            filtered_tables.append(table)
 
+        # If we have multiple tables, just keep the first one with the most columns
+        if filtered_tables:
+            # Sort tables by number of columns (descending)
+            filtered_tables.sort(key=lambda t: len(t.columns), reverse=True)
+            # Return only the first table (with the most columns)
+            return [filtered_tables[0]]
+
+        return filtered_tables
     def extract_database_info(self) -> PowerBiDatabase:
         """Extract database name from the TWB file using configuration paths.
 

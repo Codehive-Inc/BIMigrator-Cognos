@@ -426,6 +426,7 @@ class PowerBiTable:
     source_name: str
     description: Optional[str] = None
     is_hidden: bool = False
+    source_filename: Optional[str] = None  # Path to the source file
     partitions: List[PowerBiPartition] = field(default_factory=list)
     columns: List[PowerBiColumn] = field(default_factory=list)
     measures: List[PowerBiMeasure] = field(default_factory=list)
