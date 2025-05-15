@@ -5,10 +5,11 @@ import yaml
 import os
 
 class PbiFromData:
-	def __init__(self):
+	def __init__(self, project_name: str):
 		self.config_yaml_path = 'config/twb-to-pbi.yaml'
 		self.template_dir = 'templates'
 		self.sample_data_path = 'generators/pbi/data_template_mapping.json'
+		self.output_dir = f'output/{project_name}'
 
 	@staticmethod
 	def __generate_pbi_from_data(template: str, data: Dict[str, Any]) -> str:
@@ -81,7 +82,16 @@ class PbiFromData:
 			with open(template_path, 'r') as file:
 				return file.read()
 		return ''
-	
+
+	@staticmethod
+	def __create_output_directory_if_not_exists(output_path: str) -> None:
+		"""
+		Create the output directory if it does not exist.
+		:param output_path: Path to the output directory.
+		"""
+		if not os.path.exists(output_path):
+			os.makedirs(output_path)
+
 	@staticmethod
 	def __write_output_file(output_path: str, content: str) -> None:
 		"""
@@ -89,5 +99,37 @@ class PbiFromData:
 		:param output_path: Path to the output file.
 		:param content: Content to write to the output file.
 		"""
+		output_dir = os.path.dirname(output_path)
+		PbiFromData.__create_output_directory_if_not_exists(output_dir)
 		with open(output_path, 'w') as file:
 			file.write(content)
+
+
+	def pbi_from_data(self):
+		"""
+		Main function to generate Power BI files from data.
+		"""
+		yaml_content = PbiFromData.__read_yaml(self.config_yaml_path)
+		yaml_map = PbiFromData.__get_yaml_mappings_for_templates(yaml_content)
+
+		for key in yaml_map.keys():
+			template = PbiFromData.__get_template_content(key, yaml_map)
+			sample_data = PbiFromData.__get_sample_json_content(key)
+			output_path = self.output_dir + "/" + PbiFromData.__get_output_path(key, yaml_map)
+			rendered_content = PbiFromData.__generate_pbi_from_data(template, sample_data)
+			PbiFromData.__write_output_file(output_path, rendered_content)
+
+if __name__ == "__main__":
+	import argparse
+	parser = argparse.ArgumentParser(description="Run PBI from data utility")
+
+	parser.add_argument(
+		"--project_name",
+		type=str,
+		required=False,
+		help="Project name (optional)"
+	)
+	args = parser.parse_args()
+	project_name = args.project_name if args.project_name else "default_project"
+	pbi_generator = PbiFromData(project_name)
+	pbi_generator.pbi_from_data()
