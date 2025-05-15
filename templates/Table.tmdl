@@ -78,7 +78,11 @@ table '{{source_name}}'
     {{/each}}
 
     {{#each partitions}}
-    partition '{{name}}' = {{expression}}
+    partition '{{name}}' = {{source_type}}
+        mode: import
+        source = ```
+            {{expression}}
+        ```
 
     {{/each}}
 

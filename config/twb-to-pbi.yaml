@@ -14,6 +14,7 @@ api_settings:
   # Endpoints
   endpoints:
     tableau_to_dax: "/convert/tableau-to-dax"
+    tableau_to_m: "/convert/tableau-to-m-code"
     # Add more endpoints as needed
 
 # --- Template Mappings ---

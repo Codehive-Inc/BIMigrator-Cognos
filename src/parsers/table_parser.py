@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 import logging
 
 from .base_parser import BaseParser
-from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel
+from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel, PowerBiPartition
 from ..converters import CalculationConverter, CalculationInfo
 from .base_parser import BaseParser
 
@@ -49,6 +49,48 @@ class TableParser(BaseParser):
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
         self.calculation_converter = CalculationConverter(config)
     
+    def _extract_partition_info(self, ds_element: ET.Element, table_name: str) -> List[PowerBiPartition]:
+        """Extract partition information from a datasource element.
+        
+        Args:
+            ds_element: Datasource element
+            table_name: Name of the table
+            
+        Returns:
+            List of PowerBiPartition objects
+        """
+        partitions = []
+        try:
+            # Find the connection element
+            connection = ds_element.find('.//connection')
+            print(f"Debug: Connection element found: {connection is not None}")
+            if connection is not None:
+                print(f"Debug: Connection attributes: {connection.attrib}")
+                # Find relation elements
+                relations = connection.findall('.//relation')
+                print(f"Debug: Found {len(relations)} relation elements")
+                for i, relation in enumerate(relations):
+                    print(f"Debug: Relation {i} attributes: {relation.attrib}")
+                    print(f"Debug: Relation {i} text: {relation.text}")
+                    # Generate M code for this relation
+                    from ..common.tableau_helpers import generate_m_code
+                    m_code = generate_m_code(connection, relation)
+                    print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
+                    if m_code:
+                        partition_name = f"{table_name}-{str(uuid.uuid4())}"
+                        partition = PowerBiPartition(
+                            name=partition_name,
+                            expression=m_code,
+                            source_type='M',
+                            description=f"Partition {i+1} for table {table_name}"
+                        )
+                        partitions.append(partition)
+        except Exception as e:
+            print(f"Error extracting partition info: {e}")
+        
+        print(f"Debug: Generated {len(partitions)} partitions")
+        return partitions
+
     def _map_datatype(self, tableau_type: str) -> str:
         """Map Tableau datatypes to Power BI datatypes.
         
@@ -138,6 +180,9 @@ class TableParser(BaseParser):
                         ds_element, columns_yaml_config, final_table_name
                     )
 
+                    # Extract partition information
+                    partitions = self._extract_partition_info(ds_element, final_table_name)
+
                     # Create the table object
                     table = PowerBiTable(
                         source_name=final_table_name,  # Use the de-duplicated name
@@ -146,9 +191,9 @@ class TableParser(BaseParser):
                         columns=pbi_columns,
                         measures=pbi_measures,
                         hierarchies=[],
-                        partitions=[],
-                        annotations={}
-                    )
+                        partitions=partitions,
+                        annotations={})
+
                     
 
                     

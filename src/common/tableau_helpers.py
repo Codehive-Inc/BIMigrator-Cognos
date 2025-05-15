@@ -145,22 +145,62 @@ def generate_m_partition(connection_node: Element, relation_node: Element) -> Di
     name = relation_node.get('name', '')
     return {
         'name': sanitize_identifier(name),
-        'source': 'm',
+        'source_type': 'M',
         'expression': generate_m_code(connection_node, relation_node)
     }
 
 def generate_m_code(connection_node: Element, relation_node: Element) -> str:
     """
     Generates M code string for a table based on connection and relation information.
+    Uses the FastAPI service for LLM-assisted M code generation.
     """
-    conn_class = connection_node.get('class', '')
-    if conn_class == 'sqlserver':
-        server = connection_node.get('server', '')
-        database = connection_node.get('dbname', '')
-        schema = connection_node.get('schema', 'dbo')
-        table = relation_node.get('name', '')
-        return f'let\n    Source = Sql.Database("{server}", "{database}"),\n    {schema}_{table} = Source{{[Schema="{schema}",Item="{table}"]}}\nin\n    {schema}_{table}'
-    return ''
+    import httpx
+    import json
+    from typing import Dict, Any
+    import os
+
+    # Get API settings from environment or config
+    api_base_url = os.getenv('TABLEAU_TO_DAX_API_URL', 'http://localhost:8000')
+
+    # Extract connection information
+    conn_info: Dict[str, Any] = {
+        'class_type': connection_node.get('class', ''),
+        'server': connection_node.get('server'),
+        'database': connection_node.get('dbname'),
+        'db_schema': connection_node.get('schema', 'dbo'),  # Changed to db_schema
+        'table': relation_node.get('name'),
+        'sql_query': relation_node.text if relation_node.get('type') == 'text' else None,
+        'filename': connection_node.get('filename'),
+        'connection_type': relation_node.get('type'),
+        'additional_properties': {}
+    }
+
+    # Add any additional properties that might be useful
+    for key, value in connection_node.attrib.items():
+        if key not in ['class', 'server', 'dbname', 'schema', 'filename']:
+            conn_info['additional_properties'][key] = value
+
+    try:
+        # Call the FastAPI service
+        with httpx.Client(timeout=30) as client:
+            response = client.post(
+                f"{api_base_url}/convert/tableau-to-m-code",
+                json=conn_info
+            )
+            response.raise_for_status()
+            result = response.json()
+            return result.get('m_code', '')
+    except Exception as e:
+        print(f"Error generating M code: {e}")
+        # Fallback to basic M code generation for SQL Server
+        if conn_info['class_type'] == 'sqlserver' and conn_info['server'] and conn_info['database'] and conn_info['table']:
+            schema = conn_info['db_schema']
+            m_code = (
+                f'let\n'
+                f'    Source = Sql.Database("{conn_info["server"]}", "{conn_info["database"]}"),\n'
+                f'    {schema}_{conn_info["table"]} = Source{{[Schema="{schema}",Item="{conn_info["table"]}"]}}')
+            return f'{m_code}\nin\n    {schema}_{conn_info["table"]}'
+        return ''
 
 def determine_viz_type(worksheet_node: Element) -> str:
     """
