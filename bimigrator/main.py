@@ -18,7 +18,6 @@ from bimigrator.parsers.database_parser import DatabaseParser
 from bimigrator.parsers.model_parser import ModelParser
 from bimigrator.parsers.relationship_parser import RelationshipParser
 from bimigrator.parsers.table_parser import TableParser
-from bimigrator.parsers.twb_parser import parse_workbook
 from bimigrator.parsers.version_parser import VersionParser
 
 
@@ -44,7 +43,7 @@ def generate_version_file(filename, config, output_dir):
     return
 
 
-def migrate_to_tmdl(filename, config: dict[str, Any], output_dir: str) -> None:
+def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = 'output') -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
 
     Args:
@@ -56,6 +55,8 @@ def migrate_to_tmdl(filename, config: dict[str, Any], output_dir: str) -> None:
     Returns:
         Dictionary mapping file types to their generated paths
     """
+    if not config:
+        config = get_default_config()
 
     # Create output directories
     output_path = Path(output_dir)
@@ -118,7 +119,7 @@ def migrate_to_tmdl(filename, config: dict[str, Any], output_dir: str) -> None:
         project_info = pbixproj_parser.extract_pbixproj_info()
 
         pbixproj_generator = PbixprojGenerator(
-            config,filename,output_dir
+            config, filename, output_dir
         )
         pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
         print(f'Generated .pbixproj.json: {pbixproj_path}')
@@ -236,11 +237,9 @@ def main():
         if args.config:
             custom_config = load_config(args.config)
             config.update(custom_config)
-        # parsed_data = parse_workbook(args.filename, config)
         migrate_to_tmdl(
             args.filename,
             config=config,
-            # parsed_data=parsed_data,
             output_dir=args.output
         )
         print("\nMigration completed successfully!")
