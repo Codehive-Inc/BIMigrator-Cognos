@@ -21,7 +21,9 @@ The parser extracts the following information:
     - Expressions from calculated fields
 """
 import dataclasses
+import io
 import sys
+import uuid
 import xml.etree.ElementTree as Et
 from pathlib import Path
 from typing import Dict, Any
@@ -30,9 +32,9 @@ from typing import Dict, Any
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from bimigrator.config.data_classes import PowerBiDatabase, PowerBiColumn, PowerBiTable
 from bimigrator.common.helpers import load_config
 from bimigrator.common.tableau_helpers import sanitize_identifier
+from bimigrator.config.data_classes import PowerBiDatabase, PowerBiColumn, PowerBiTable
 
 
 def dataclass_to_dict(obj):
@@ -48,13 +50,16 @@ def dataclass_to_dict(obj):
 class TableauWorkbookParser:
     """Parser for Tableau Workbook (.twb) files."""
 
-    def __init__(self, twb_path: str, config_path: str):
+    def __init__(self, twb_file: str | io.BytesIO, config: dict[str, Any]):
         """Initialize parser with TWB file path and config."""
-        self.tree = Et.parse(twb_path)
+        if isinstance(twb_file, (str, Path)):
+            self.filename = Path(twb_file).stem
+        else:
+            self.filename = getattr(twb_file, 'name', uuid.uuid4().hex)
+        self.tree = Et.parse(twb_file)
         self.root = self.tree.getroot()
         self.namespaces = {'': self.root.tag.split('}')[0].strip('{')} if '}' in self.root.tag else {}
-        self.twb_file = twb_path
-        self.config = load_config(config_path)
+        self.config = config
 
     def extract_tables(self) -> list[PowerBiTable]:
         """Extract PowerBiTable objects from TWB file using configuration paths.
@@ -69,7 +74,7 @@ class TableauWorkbookParser:
         # Get configuration paths from PowerBiTable section in the YAML config
         table_config = self.config.get('PowerBiTable', {})
         column_config = self.config.get('PowerBiColumn', {})
-
+        columns_config = {}
         tables = []
 
         # Find all datasources using the source_xpath from config
@@ -219,7 +224,8 @@ class TableauWorkbookParser:
                     column_elements.extend(cols)
 
                 # 4. Look for metadata records with column class
-                metadata_xpath = columns_config.get('source_xpath', './/metadata-records/metadata-record[@class="column"]')
+                metadata_xpath = columns_config.get('source_xpath',
+                                                    './/metadata-records/metadata-record[@class="column"]')
                 metadata_records = datasource.findall(metadata_xpath)
 
                 # Process metadata records if found
@@ -384,6 +390,7 @@ class TableauWorkbookParser:
             return [filtered_tables[0]]
 
         return filtered_tables
+
     def extract_database_info(self) -> PowerBiDatabase:
         """Extract database name from the TWB file using configuration paths.
 
@@ -433,20 +440,23 @@ class TableauWorkbookParser:
             'PowerBiDatabase': self.extract_database_info(),
             'PowerBiTables': self.extract_tables(),
         }
-        return {key: dataclass_to_dict(value) for key, value in values.items()}
+        data = {key: dataclass_to_dict(value) for key, value in values.items()}
+        data['filename'] = self.filename
+        return data
 
 
-def parse_workbook(twb_path: str, config_path: str) -> Dict[str, Any]:
+def parse_workbook(twb_path: str | io.BytesIO, config: dict[str, Any]) -> Dict[str, Any]:
     """Parse a Tableau Workbook file and extract all required information.
     
     Args:
         twb_path: Path to .twb file
-        config_path: Path to config JSON or YAML
+        config: Config dictionary
     
     Returns:
         Dictionary containing all extracted information organized by template type
     """
-    parser = TableauWorkbookParser(twb_path, config_path)
+
+    parser = TableauWorkbookParser(twb_path, config)
     return parser.extract_all()
 
 
@@ -462,8 +472,9 @@ def main():
 
     args = parser.parse_args()
 
+    config = load_config(args.config)
     # Parse workbook
-    data = parse_workbook(args.twb_file, args.config)
+    data = parse_workbook(args.twb_file, config)
     # Output results
     if args.output:
         with open(args.output, 'w') as f:

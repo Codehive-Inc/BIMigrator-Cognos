@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Any, Optional
 
-import yaml
 from pybars import Compiler
 
 
@@ -22,17 +21,16 @@ class TemplateMapping:
 class BaseTemplateGenerator:
     """Base class for template generators."""
 
-    def __init__(self, config_path: str, input_path: Optional[str] = None, output_dir: Optional[Path] = None):
+    def __init__(self, config: dict[str, Any], filename: Optional[str] = None,
+                 output_dir: Optional[Path] = None):
         """Initialize with configuration file path.
         
         Args:
-            config_path: Path to YAML configuration file
-            input_path: Optional path to input file
+            config: Path to YAML configuration file
+            filename: Optional path to input file
             output_dir: Optional output directory override
         """
-        with open(config_path, 'r') as f:
-            self.config = yaml.safe_load(f)
-
+        self.config = config
         self.template_dir = Path(self.config['Templates']['base_dir'])
         self.base_output_dir = output_dir or Path('output')
         self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
@@ -41,7 +39,7 @@ class BaseTemplateGenerator:
         self._template_cache = {}
 
         # Set input name for output path
-        self.input_name = Path(input_path).stem if input_path else None
+        self.input_name = Path(filename).stem if filename else None
 
         # Set output directory with input name
         self.output_dir = self.base_output_dir / self.input_name if self.input_name else self.base_output_dir

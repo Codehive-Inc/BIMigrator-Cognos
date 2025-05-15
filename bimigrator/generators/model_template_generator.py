@@ -1,7 +1,7 @@
 """Generator for model TMDL files."""
 import json
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Any
 
 from bimigrator.config.data_classes import PowerBiModel, PowerBiTable
 from .base_template_generator import BaseTemplateGenerator
@@ -11,9 +11,9 @@ from .table_template_generator import TableTemplateGenerator
 class ModelTemplateGenerator(BaseTemplateGenerator):
     """Generator for model TMDL files."""
 
-    def __init__(self, config_path: str, input_path: Optional[str] = None, output_dir: Optional[Path] = None):
-        super().__init__(config_path, input_path, output_dir)
-        self.table_generator = TableTemplateGenerator(config_path, input_path, output_dir)
+    def __init__(self, config: dict[str,Any], input_path: Optional[str] = None, output_dir: Optional[Path] = None):
+        super().__init__(config, input_path, output_dir)
+        self.table_generator = TableTemplateGenerator(config, input_path, output_dir)
 
     def generate_model_tmdl(self, model: PowerBiModel, tables: List[PowerBiTable], output_dir: Optional[Path] = None) -> \
     Tuple[Path, List[Path]]:

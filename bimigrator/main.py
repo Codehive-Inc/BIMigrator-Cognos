@@ -18,6 +18,7 @@ from bimigrator.parsers.database_parser import DatabaseParser
 from bimigrator.parsers.model_parser import ModelParser
 from bimigrator.parsers.relationship_parser import RelationshipParser
 from bimigrator.parsers.table_parser import TableParser
+from bimigrator.parsers.twb_parser import parse_workbook
 from bimigrator.parsers.version_parser import VersionParser
 
 
@@ -29,50 +30,60 @@ def load_config(path: str) -> Dict[str, Any]:
         return json.load(f)
 
 
-def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
+def get_default_config() -> dict[str, Any]:
+    """Retrieves the default config stored inside the config for all cases"""
+    config_path = Path().resolve() / 'config' / 'twb-to-pbi.yaml'
+    return load_config(str(config_path))
+
+
+def generate_version_file(filename, config, output_dir):
+    version_parser = VersionParser(filename, config)
+    version_info = version_parser.extract_version()
+    version_generator = VersionGenerator(config, output_dir)
+    version_path = version_generator.generate_version(version_info, output_dir)
+    return
+
+
+def migrate_to_tmdl(filename, config: dict[str, Any], output_dir: str) -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
 
     Args:
-        input_path: Path to TWB file to convert
-        config_path: Path to YAML configuration file
+        filename: Name of the twb_file
+        # parsed_data: Content of the TWB file parsed to dict.
+        config: Dict containing configuration data
         output_dir: Optional output directory
 
     Returns:
         Dictionary mapping file types to their generated paths
     """
-    # Load configuration
-    with open(config_path, 'r') as f:
-        config = yaml.safe_load(f)
 
     # Create output directories
     output_path = Path(output_dir)
-    twb_name = Path(input_path).stem
-
+    twb_name = Path(filename).stem
     # Create output directory structure
+
     structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
     structure_generator.create_directory_structure()
+    output_dir = structure_generator.base_dir
 
     # Step 0: Generate version.txt
     print('\nStep 0: Generating version.txt...')
     try:
-        version_parser = VersionParser(input_path, config)
+        version_parser = VersionParser(filename, config)
         version_info = version_parser.extract_version()
 
-        version_generator = VersionGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
-        )
-        version_path = version_generator.generate_version(version_info, output_dir=structure_generator.base_dir)
+        version_generator = VersionGenerator(config, output_dir)
+        version_path = version_generator.generate_version(version_info, output_dir)
         print(f'Generated version.txt: {version_path}')
     except Exception as e:
         print(f'Failed to generate version.txt: {str(e)}')
+        raise e
         return
 
     # Step 1: Generate culture TMDL
     print('\nStep 1: Generating culture TMDL...')
     try:
-        culture_parser = CultureParser(input_path, config)
+        culture_parser = CultureParser(filename, config)
         culture_info = culture_parser.extract_culture_info()
 
         # Debug culture info
@@ -87,14 +98,11 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
 
         # Generate culture TMDL file
         culture_generator = CultureGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
+            config, filename, output_dir
         )
         # Pass the correct output directory for culture TMDL
         culture_path = culture_generator.generate_culture_tmdl(
-            culture_info,
-            output_dir=structure_generator.base_dir
+            culture_info, output_dir
         )
         print(f'Generated culture TMDL: {culture_path}')
     except Exception as e:
@@ -106,13 +114,11 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
         from bimigrator.parsers.pbixproj_parser import PbixprojParser
         from bimigrator.generators.pbixproj_generator import PbixprojGenerator
 
-        pbixproj_parser = PbixprojParser(input_path, config)
+        pbixproj_parser = PbixprojParser(filename, config)
         project_info = pbixproj_parser.extract_pbixproj_info()
 
         pbixproj_generator = PbixprojGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
+            config,filename,output_dir
         )
         pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
         print(f'Generated .pbixproj.json: {pbixproj_path}')
@@ -123,13 +129,11 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     # Step 2: Generate database TMDL
     print('\nStep 1: Generating database TMDL...')
     try:
-        db_parser = DatabaseParser(input_path, config)
+        db_parser = DatabaseParser(filename, config)
         db_info = db_parser.extract_database_info()
 
         database_generator = DatabaseTemplateGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
+            config, filename, output_dir
         )
         database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
         print(f'Generated database TMDL: {database_path}')
@@ -141,13 +145,11 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     # Step 3: Generate table TMDL files
     print('\nStep 2: Generating table TMDL files...')
     try:
-        table_parser = TableParser(input_path, config)
+        table_parser = TableParser(filename, config)
         tables = table_parser.extract_all_tables()
 
         table_generator = TableTemplateGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
+            config, filename, output_dir
         )
         table_paths = table_generator.generate_all_tables(tables, output_dir=structure_generator.base_dir)
         print(f'Generated {len(table_paths)} table TMDL files:')
@@ -161,16 +163,14 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     print('\nStep 3: Generating relationship TMDL files...')
     try:
         print('Debug: Creating relationship parser...')
-        relationship_parser = RelationshipParser(input_path, config)
+        relationship_parser = RelationshipParser(filename, config)
         print('Debug: Extracting relationships...')
         relationships = relationship_parser.extract_relationships()
         print(f'Debug: Found {len(relationships)} relationships')
 
         print('Debug: Creating relationship generator...')
         relationship_generator = RelationshipTemplateGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
+            config, filename, output_dir
         )
         print('Debug: Generating relationship TMDL files...')
         relationship_paths = relationship_generator.generate_relationships(
@@ -188,13 +188,11 @@ def migrate_to_tmdl(input_path: str, config_path: str, output_dir: str) -> None:
     # Step 4: Generate model TMDL
     print('\nStep 4: Generating model TMDL...')
     try:
-        model_parser = ModelParser(input_path, config)
+        model_parser = ModelParser(filename, config)
         model, tables = model_parser.extract_model_info()
 
         model_generator = ModelTemplateGenerator(
-            config_path=config_path,
-            input_path=input_path,
-            output_dir=structure_generator.base_dir
+            config, filename, output_dir
         )
         model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
         print(f'Generated model TMDL: {model_path}')
@@ -216,14 +214,13 @@ def main():
         description='Migrate Tableau workbook to Power BI TMDL format'
     )
     parser.add_argument(
-        '--config',
-        required=True,
-        help='Path to YAML configuration file'
+        'filename',
+        help='Path to input TWB file'
     )
     parser.add_argument(
-        '--input',
-        required=True,
-        help='Path to input data file (YAML/JSON)'
+        '--config',
+        required=False,
+        help='Path to YAML configuration file'
     )
     parser.add_argument(
         '--output',
@@ -234,15 +231,22 @@ def main():
     args = parser.parse_args()
 
     try:
+        # Load configuration
+        config = get_default_config()
+        if args.config:
+            custom_config = load_config(args.config)
+            config.update(custom_config)
+        # parsed_data = parse_workbook(args.filename, config)
         migrate_to_tmdl(
-            config_path=args.config,
-            input_path=args.input,
+            args.filename,
+            config=config,
+            # parsed_data=parsed_data,
             output_dir=args.output
         )
         print("\nMigration completed successfully!")
     except Exception as e:
         print(f"\nError during migration: {str(e)}")
-        raise
+        raise e
 
 
 if __name__ == '__main__':

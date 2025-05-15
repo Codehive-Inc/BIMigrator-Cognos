@@ -9,18 +9,8 @@ from .base_template_generator import BaseTemplateGenerator
 class RelationshipTemplateGenerator(BaseTemplateGenerator):
     """Generator for relationship TMDL files."""
 
-    def __init__(self, config_path: str, input_path: str, output_dir: Path):
-        """Initialize with configuration file path.
-        
-        Args:
-            config_path: Path to YAML configuration file
-            input_path: Path to input file
-            output_dir: Output directory override
-        """
-        super().__init__(config_path, input_path, output_dir)
-
     def generate_relationships(self, relationships: List[PowerBiRelationship], output_dir: Optional[Path] = None) -> \
-    List[Path]:
+            List[Path]:
         """Generate a single relationships TMDL file containing all relationships.
         
         Args:

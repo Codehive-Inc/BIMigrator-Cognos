@@ -2,15 +2,12 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from bimigrator.configdata_classes import PowerBiProject
+from bimigrator.config.data_classes import PowerBiProject
 from .base_template_generator import BaseTemplateGenerator
 
 
 class PbixprojGenerator(BaseTemplateGenerator):
     """Generator for .pbixproj.json files"""
-
-    def __init__(self, config_path: str, input_path: str, output_dir: Path):
-        super().__init__(config_path, input_path, output_dir)
 
     def generate_pbixproj(self, project_info: PowerBiProject, output_dir: Optional[Path] = None) -> Path:
         """Generate .pbixproj.json file

@@ -1,3 +1,4 @@
+import io
 from typing import Dict, Any
 
 from bimigrator.config.data_classes import PowerBiDatabase
@@ -5,8 +6,8 @@ from .base_parser import BaseParser
 
 
 class DatabaseParser(BaseParser):
-    def __init__(self, twb_path: str, config: Dict[str, Any]):
-        super().__init__(twb_path, config)
+    def __init__(self, twb_content: io.BytesIO, config: Dict[str, Any]):
+        super().__init__(twb_content, config)
 
     def extract_database_info(self) -> PowerBiDatabase:
         mapping = self.config['PowerBiDatabase']
