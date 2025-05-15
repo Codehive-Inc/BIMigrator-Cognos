@@ -194,9 +194,6 @@ class TableParser(BaseParser):
                         partitions=partitions,
                         annotations={})
 
-                    
-
-                    
                     # Keep only the table with the most columns and measures
                     if final_table_name not in unique_tables or \
                        len(pbi_columns) + len(pbi_measures) > len(unique_tables[final_table_name].columns) + len(unique_tables[final_table_name].measures):

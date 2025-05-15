@@ -149,6 +149,42 @@ def generate_m_partition(connection_node: Element, relation_node: Element) -> Di
         'expression': generate_m_code(connection_node, relation_node)
     }
 
+def format_m_code_indentation(m_code: str, base_indent: int = 1) -> str:
+    """
+    Formats M code with proper indentation for TMDL files.
+    Args:
+        m_code: The M code to format
+        base_indent: Number of tabs for base indentation
+    Returns:
+        Properly indented M code
+    """
+    if not m_code:
+        return m_code
+
+    # Split into lines
+    lines = m_code.split('\n')
+    
+    # Calculate indentation
+    base = '\t' * base_indent  # Base indentation for all lines
+    
+    # Process each line
+    formatted_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        
+        # Add base indentation
+        if stripped.startswith('let'):
+            formatted_lines.append(f"{base*1}{stripped}")
+        elif stripped.startswith('in'):
+            formatted_lines.append(f"{base*3}\t{stripped}")
+        else:
+            # Add one more level of indentation for the content between let and in
+            formatted_lines.append(f"{base*4}\t{stripped}")
+    
+    return '\n'.join(formatted_lines)
+
 def generate_m_code(connection_node: Element, relation_node: Element) -> str:
     """
     Generates M code string for a table based on connection and relation information.
@@ -212,7 +248,7 @@ def generate_m_code(connection_node: Element, relation_node: Element) -> str:
             m_code = m_code.replace('&gt;', '>')
             m_code = m_code.replace('&#x27;', "'")
             
-            return m_code
+            return format_m_code_indentation(m_code)
     except Exception as e:
         print(f"Error generating M code: {e}")
         # Fallback to basic M code generation for SQL Server
@@ -222,7 +258,8 @@ def generate_m_code(connection_node: Element, relation_node: Element) -> str:
                 f'let\n'
                 f'    Source = Sql.Database("{conn_info["server"]}", "{conn_info["database"]}"),\n'
                 f'    {schema}_{conn_info["table"]} = Source{{[Schema="{schema}",Item="{conn_info["table"]}"]}}')
-            return f'{m_code}\nin\n    {schema}_{conn_info["table"]}'
+            m_code = f'{m_code}\nin\n    {schema}_{conn_info["table"]}'
+            return format_m_code_indentation(m_code)
         return ''
 
 def determine_viz_type(worksheet_node: Element) -> str:
