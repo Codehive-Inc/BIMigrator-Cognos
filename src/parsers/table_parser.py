@@ -77,11 +77,11 @@ class TableParser(BaseParser):
                     m_code = generate_m_code(connection, relation)
                     print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
                     if m_code:
-                        partition_name = f"{table_name}-{str(uuid.uuid4())}"
+                        partition_name = table_name
                         partition = PowerBiPartition(
                             name=partition_name,
                             expression=m_code,
-                            source_type='M',
+                            source_type='m',
                             description=f"Partition {i+1} for table {table_name}"
                         )
                         partitions.append(partition)
