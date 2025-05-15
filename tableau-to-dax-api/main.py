@@ -382,8 +382,28 @@ async def generate_m_code(connection: TableauConnection) -> MCodeResponse:
         
         # Clean and validate the M code
         m_code = m_code.strip()
-        if not m_code.startswith('let'):
-            m_code = f'let\n    Source = {m_code}\nin\n    Source'
+        
+        # For Excel connections, generate M code directly
+        if connection.class_type == 'excel-direct':
+            filename = connection.filename.replace('\\', '/')
+            table_name = connection.table.strip('[]')
+            m_code = f'''let
+    Source = Excel.Workbook(File.Contents("{filename}"), null, true),
+    {table_name}_Table = Source{{[Item="{table_name}", Kind="Sheet"]}},
+    #"Promoted Headers" = Table.PromoteHeaders({table_name}_Table, [PromoteAllScalars=true])
+in
+    #"Promoted Headers"'''
+        else:
+            # For other connections, use the LLM-generated M code
+            if not m_code.startswith('let'):
+                m_code = f'let\n    Source = {m_code}\nin\n    Source'
+        
+        # Unescape HTML entities
+        m_code = m_code.replace('&quot;', '"')
+        m_code = m_code.replace('&amp;', '&')
+        m_code = m_code.replace('&lt;', '<')
+        m_code = m_code.replace('&gt;', '>')
+        m_code = m_code.replace('&#x27;', "'")
         
         return MCodeResponse(
             m_code=m_code,

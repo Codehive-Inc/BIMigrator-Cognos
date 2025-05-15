@@ -162,15 +162,29 @@ def generate_m_code(connection_node: Element, relation_node: Element) -> str:
     # Get API settings from environment or config
     api_base_url = os.getenv('TABLEAU_TO_DAX_API_URL', 'http://localhost:8000')
 
-    # Extract connection information
+    # Extract connection information from the connection node
+    class_type = connection_node.get('class', '')
+    
+    # For Excel connections, we need to look in the named-connections
+    if class_type == 'federated':
+        named_conn = connection_node.find('.//named-connection')
+        if named_conn is not None:
+            excel_conn = named_conn.find('.//connection')
+            if excel_conn is not None and excel_conn.get('class') == 'excel-direct':
+                class_type = 'excel-direct'
+                filename = excel_conn.get('filename')
+    else:
+        filename = connection_node.get('filename')
+    
+    # Build connection info
     conn_info: Dict[str, Any] = {
-        'class_type': connection_node.get('class', ''),
+        'class_type': class_type,
         'server': connection_node.get('server'),
         'database': connection_node.get('dbname'),
-        'db_schema': connection_node.get('schema', 'dbo'),  # Changed to db_schema
-        'table': relation_node.get('name'),
+        'db_schema': connection_node.get('schema', 'dbo'),
+        'table': relation_node.get('table') or relation_node.get('name'),
         'sql_query': relation_node.text if relation_node.get('type') == 'text' else None,
-        'filename': connection_node.get('filename'),
+        'filename': filename,
         'connection_type': relation_node.get('type'),
         'additional_properties': {}
     }
@@ -189,7 +203,16 @@ def generate_m_code(connection_node: Element, relation_node: Element) -> str:
             )
             response.raise_for_status()
             result = response.json()
-            return result.get('m_code', '')
+            m_code = result.get('m_code', '')
+            
+            # Unescape HTML entities
+            m_code = m_code.replace('&quot;', '"')
+            m_code = m_code.replace('&amp;', '&')
+            m_code = m_code.replace('&lt;', '<')
+            m_code = m_code.replace('&gt;', '>')
+            m_code = m_code.replace('&#x27;', "'")
+            
+            return m_code
     except Exception as e:
         print(f"Error generating M code: {e}")
         # Fallback to basic M code generation for SQL Server

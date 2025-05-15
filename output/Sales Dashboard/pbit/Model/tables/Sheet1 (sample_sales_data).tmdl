@@ -81,16 +81,16 @@ table 'Sheet1 (sample_sales_data)'
 
 
 
-    partition 'Sheet1 (sample_sales_data)-37ac1e29-3474-45b3-a722-5aa6abd02740' = M
+    partition 'Sheet1 (sample_sales_data)-61d82534-bd7a-467e-9dd5-ca003d096172' = M
         mode: import
-        source = ```
+        source = 
             let
-    Source = Excel.Workbook(File.Contents(&quot;C:\Path\To\File.xlsx&quot;), null, true),
-    Sheet1_Table = Source{[Item=&quot;Sheet1&quot;,Kind=&quot;Sheet&quot;]}[Data],
-    #&quot;Changed Type&quot; = Table.TransformColumnTypes(Sheet1_Table,{{&quot;Column1&quot;, type text}, {&quot;Column2&quot;, Int64.Type}, {&quot;Column3&quot;, type date}})
+    Source = Excel.Workbook(File.Contents("C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx"), null, true),
+    Sheet1$_Table = Source{[Item="Sheet1$", Kind="Sheet"]},
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1$_Table, [PromoteAllScalars=true])
 in
-    #&quot;Changed Type&quot;
-        ```
+    #"Promoted Headers"
+        
 
 
 
