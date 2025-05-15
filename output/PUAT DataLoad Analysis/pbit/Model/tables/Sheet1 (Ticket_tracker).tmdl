@@ -6,11 +6,15 @@ table 'Sheet1 (Ticket_tracker)'
         summarizeBy: none
         sourceColumn: Table Name
 
+        annotation SummarizationSetBy = Automatic
+
         
     column 'Date'
         dataType: datetime
         summarizeBy: none
         sourceColumn: Date
+
+        annotation SummarizationSetBy = Automatic
 
         
     column 'Date2'
@@ -18,11 +22,15 @@ table 'Sheet1 (Ticket_tracker)'
         summarizeBy: none
         sourceColumn: Date2
 
+        annotation SummarizationSetBy = Automatic
+
         
     column 'raised date'
         dataType: datetime
         summarizeBy: none
         sourceColumn: raised date
+
+        annotation SummarizationSetBy = Automatic
 
         
     column '% dips(compared to golden data)'
@@ -30,11 +38,16 @@ table 'Sheet1 (Ticket_tracker)'
         summarizeBy: sum
         sourceColumn: % dips(compared to golden data)
 
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'ticket number'
         dataType: string
         summarizeBy: none
         sourceColumn: ticket number
+
+        annotation SummarizationSetBy = Automatic
 
         
     column 'ticket owner'
@@ -42,11 +55,15 @@ table 'Sheet1 (Ticket_tracker)'
         summarizeBy: none
         sourceColumn: ticket owner
 
+        annotation SummarizationSetBy = Automatic
+
         
     column 'status'
         dataType: string
         summarizeBy: none
         sourceColumn: status
+
+        annotation SummarizationSetBy = Automatic
 
         
     column 'followups'
@@ -54,9 +71,12 @@ table 'Sheet1 (Ticket_tracker)'
         summarizeBy: none
         sourceColumn: followups
 
+        annotation SummarizationSetBy = Automatic
+
         
 
 
 
 
 
+    annotation PBI_ResultType = Table
