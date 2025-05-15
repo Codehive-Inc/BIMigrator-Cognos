@@ -8,8 +8,8 @@ from .base_parser import BaseParser
 class CultureParser(BaseParser):
     """Parser for extracting culture information from Tableau workbooks."""
 
-    def __init__(self, twb_file: str | io.BytesIO, config: Dict[str, Any]):
-        super().__init__(twb_file, config)
+    def __init__(self, twb_file: str | io.BytesIO, config: Dict[str, Any], output_dir: str = 'output'):
+        super().__init__(twb_file, config, output_dir)
         self.culture_config = config.get('PowerBiCulture', {})
 
     def extract_culture_info(self) -> CultureInfo:

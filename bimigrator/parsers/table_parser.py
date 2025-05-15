@@ -40,8 +40,8 @@ def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]
 class TableParser(BaseParser):
     """Parser for extracting table information from Tableau workbooks."""
 
-    def __init__(self, twb_path: str, config: Dict[str, Any]):
-        super().__init__(twb_path, config)
+    def __init__(self, twb_path: str, config: Dict[str, Any], output_dir: str = 'output'):
+        super().__init__(twb_path, config, output_dir)
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
         self.calculation_converter = CalculationConverter(config)
 

@@ -9,14 +9,14 @@ from .base_parser import BaseParser
 class RelationshipParser(BaseParser):
     """Parser for extracting relationships from Tableau workbooks."""
 
-    def __init__(self, twb_path: str, config: Dict[str, Any]):
+    def __init__(self, twb_path: str, config: Dict[str, Any], output_dir: str = 'output'):
         """Initialize the parser.
         
         Args:
             twb_path: Path to the input TWB file
             config: Configuration dictionary
         """
-        super().__init__(twb_path, config)
+        super().__init__(twb_path, config, output_dir)
         self.relationship_config = config.get('PowerBiRelationship', {})
 
     def _get_sql_query_table_name(self, query_name: str) -> str:

@@ -7,14 +7,15 @@ from typing import Dict, Any, List, Optional
 
 
 class BaseParser:
-    def __init__(self, twb_file, config: Dict[str, Any]):
+    def __init__(self, twb_file, config: Dict[str, Any], output_dir: str = 'output'):
         """Initialize with TWB file path and configuration."""
 
         if isinstance(twb_file, (str, Path)):
             self.filename = Path(twb_file).stem
         else:
-            self.filename = getattr(twb_file, 'name', uuid.uuid4().hex)
-
+            self.filename = Path(getattr(twb_file, 'name', uuid.uuid4().hex)).stem
+        if isinstance(twb_file, io.IOBase):
+            twb_file.seek(0)
         self.tree = ET.parse(twb_file)
         self.root = self.tree.getroot()
         self.config = config
@@ -34,13 +35,12 @@ class BaseParser:
         # Initialize intermediate directory
         output_config = config.get('Output', {})
         intermediate_dir = output_config.get('intermediate_dir', 'extracted')
-        self.intermediate_dir = Path(Path(self.filename + '/intermediate/').parent, intermediate_dir)
+        self.intermediate_dir = Path(Path(output_dir), intermediate_dir)
         self.validate_intermediate = output_config.get('validate_intermediate', True)
 
         # Create intermediate directory if it doesn't exist
         if not self.intermediate_dir.exists():
             self.intermediate_dir.mkdir(parents=True)
-
 
     def _get_attribute(self, element: ET.Element, attr_name: str, default: Any = None) -> Any:
         """Get attribute value, handling @ in attribute names."""

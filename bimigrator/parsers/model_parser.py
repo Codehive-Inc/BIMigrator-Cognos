@@ -8,8 +8,8 @@ from .table_parser import TableParser
 class ModelParser(BaseParser):
     """Parser for extracting model information from Tableau workbooks."""
 
-    def __init__(self, twb_path: str, config: Dict[str, Any]):
-        super().__init__(twb_path, config)
+    def __init__(self, twb_path: str, config: Dict[str, Any], output_dir: str = 'output'):
+        super().__init__(twb_path, config, output_dir)
         self.table_parser = TableParser(twb_path, config)
 
     def extract_model_info(self) -> (PowerBiModel, List[Any]):

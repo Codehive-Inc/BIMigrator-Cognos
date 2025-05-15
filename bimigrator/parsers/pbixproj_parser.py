@@ -8,9 +8,6 @@ from .base_parser import BaseParser
 class PbixprojParser(BaseParser):
     """Parser for generating .pbixproj.json content from Tableau workbook"""
 
-    def __init__(self, twb_path: str, config: Dict[str, Any]):
-        super().__init__(twb_path, config)
-
     def extract_pbixproj_info(self) -> PowerBiProject:
         """Extract information needed for .pbixproj.json
         

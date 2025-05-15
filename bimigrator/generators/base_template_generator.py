@@ -17,6 +17,8 @@ class TemplateMapping:
     multiple: bool = False
     name_from: Optional[str] = None
 
+TEMPLATE_DIR = Path(__file__).resolve().parent.parent / 'templates'
+
 
 class BaseTemplateGenerator:
     """Base class for template generators."""
@@ -31,7 +33,8 @@ class BaseTemplateGenerator:
             output_dir: Optional output directory override
         """
         self.config = config
-        self.template_dir = Path(self.config['Templates']['base_dir'])
+        # self.template_dir = Path(self.config['Templates']['base_dir'])
+        self.template_dir = TEMPLATE_DIR
         self.base_output_dir = output_dir or Path('output')
         self.intermediate_dir = Path(self.config.get('Output', {}).get('intermediate_dir', 'extracted'))
         self.validate_intermediate = self.config.get('Output', {}).get('validate_intermediate', True)

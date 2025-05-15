@@ -1,6 +1,8 @@
 """Main entry point for the migration tool."""
 import argparse
+import io
 import json
+import uuid
 from pathlib import Path
 from typing import Dict, Any
 
@@ -31,7 +33,7 @@ def load_config(path: str) -> Dict[str, Any]:
 
 def get_default_config() -> dict[str, Any]:
     """Retrieves the default config stored inside the config for all cases"""
-    config_path = Path().resolve() / 'config' / 'twb-to-pbi.yaml'
+    config_path = Path(__file__).resolve().parent / 'config' / 'twb-to-pbi.yaml'
     return load_config(str(config_path))
 
 
@@ -43,7 +45,7 @@ def generate_version_file(filename, config, output_dir):
     return
 
 
-def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = 'output') -> None:
+def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None) -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
 
     Args:
@@ -60,9 +62,12 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
 
     # Create output directories
     output_path = Path(output_dir)
-    twb_name = Path(filename).stem
-    # Create output directory structure
+    if isinstance(filename, (Path, str)):
+        twb_name = Path(filename).stem
+    else:
+        twb_name = Path(getattr(filename, 'name', uuid.uuid4().hex)).stem
 
+    # Create output directory structure
     structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
     structure_generator.create_directory_structure()
     output_dir = structure_generator.base_dir
@@ -70,7 +75,7 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
     # Step 0: Generate version.txt
     print('\nStep 0: Generating version.txt...')
     try:
-        version_parser = VersionParser(filename, config)
+        version_parser = VersionParser(filename, config, output_dir)
         version_info = version_parser.extract_version()
 
         version_generator = VersionGenerator(config, output_dir)
@@ -78,13 +83,12 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
         print(f'Generated version.txt: {version_path}')
     except Exception as e:
         print(f'Failed to generate version.txt: {str(e)}')
-        raise e
         return
 
     # Step 1: Generate culture TMDL
     print('\nStep 1: Generating culture TMDL...')
     try:
-        culture_parser = CultureParser(filename, config)
+        culture_parser = CultureParser(filename, config, output_dir)
         culture_info = culture_parser.extract_culture_info()
 
         # Debug culture info
@@ -99,7 +103,7 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
 
         # Generate culture TMDL file
         culture_generator = CultureGenerator(
-            config, filename, output_dir
+            config, twb_name, output_dir,
         )
         # Pass the correct output directory for culture TMDL
         culture_path = culture_generator.generate_culture_tmdl(
@@ -108,49 +112,49 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
         print(f'Generated culture TMDL: {culture_path}')
     except Exception as e:
         print(f'Failed to generate culture TMDL: {str(e)}')
+        raise e
 
     # Step 2: Generate .pbixproj.json
     print('\nStep 2: Generating .pbixproj.json...')
     try:
         from bimigrator.parsers.pbixproj_parser import PbixprojParser
         from bimigrator.generators.pbixproj_generator import PbixprojGenerator
-
-        pbixproj_parser = PbixprojParser(filename, config)
+        pbixproj_parser = PbixprojParser(filename, config, output_dir)
         project_info = pbixproj_parser.extract_pbixproj_info()
 
         pbixproj_generator = PbixprojGenerator(
-            config, filename, output_dir
+            config, twb_name, output_dir
         )
         pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
         print(f'Generated .pbixproj.json: {pbixproj_path}')
     except Exception as e:
         print(f'Failed to generate .pbixproj.json: {str(e)}')
-        return
+        raise e
 
     # Step 2: Generate database TMDL
     print('\nStep 1: Generating database TMDL...')
     try:
-        db_parser = DatabaseParser(filename, config)
+        db_parser = DatabaseParser(filename, config, output_dir)
         db_info = db_parser.extract_database_info()
 
         database_generator = DatabaseTemplateGenerator(
-            config, filename, output_dir
+            config, twb_name, output_dir
         )
         database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
         print(f'Generated database TMDL: {database_path}')
         print(f'  Database name: {db_info.name}')
     except Exception as e:
         print(f'Failed to generate database TMDL: {str(e)}')
-        return
+        raise e
 
     # Step 3: Generate table TMDL files
     print('\nStep 2: Generating table TMDL files...')
     try:
-        table_parser = TableParser(filename, config)
+        table_parser = TableParser(filename, config, output_dir)
         tables = table_parser.extract_all_tables()
 
         table_generator = TableTemplateGenerator(
-            config, filename, output_dir
+            config, twb_name, output_dir
         )
         table_paths = table_generator.generate_all_tables(tables, output_dir=structure_generator.base_dir)
         print(f'Generated {len(table_paths)} table TMDL files:')
@@ -158,20 +162,20 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
             print(f'  - {path}')
     except Exception as e:
         print(f'Failed to generate table TMDL files: {str(e)}')
-        return
+        raise e
 
     # Step 3: Generate relationships TMDL
     print('\nStep 3: Generating relationship TMDL files...')
     try:
         print('Debug: Creating relationship parser...')
-        relationship_parser = RelationshipParser(filename, config)
+        relationship_parser = RelationshipParser(filename, config, output_dir)
         print('Debug: Extracting relationships...')
         relationships = relationship_parser.extract_relationships()
         print(f'Debug: Found {len(relationships)} relationships')
 
         print('Debug: Creating relationship generator...')
         relationship_generator = RelationshipTemplateGenerator(
-            config, filename, output_dir
+            config, twb_name, output_dir
         )
         print('Debug: Generating relationship TMDL files...')
         relationship_paths = relationship_generator.generate_relationships(
@@ -183,17 +187,16 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
             print(f'  - {path}')
     except Exception as e:
         print(f'Failed to generate relationship TMDL files: {str(e)}')
-        import traceback
-        traceback.print_exc()
+        raise e
 
     # Step 4: Generate model TMDL
     print('\nStep 4: Generating model TMDL...')
     try:
-        model_parser = ModelParser(filename, config)
+        model_parser = ModelParser(filename, config, output_dir)
         model, tables = model_parser.extract_model_info()
 
         model_generator = ModelTemplateGenerator(
-            config, filename, output_dir
+            config, twb_name, output_dir
         )
         model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
         print(f'Generated model TMDL: {model_path}')
@@ -204,7 +207,7 @@ def migrate_to_tmdl(filename, config: dict[str, Any] = None, output_dir: str = '
             print(f'  Desktop version: {model.desktop_version}')
     except Exception as e:
         print(f'Failed to generate model TMDL: {str(e)}')
-        return
+        raise e
 
     print('\nMigration completed successfully!')
 
@@ -239,8 +242,8 @@ def main():
             config.update(custom_config)
         migrate_to_tmdl(
             args.filename,
+            output_dir=args.output,
             config=config,
-            output_dir=args.output
         )
         print("\nMigration completed successfully!")
     except Exception as e:
