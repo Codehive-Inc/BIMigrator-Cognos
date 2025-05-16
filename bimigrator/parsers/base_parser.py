@@ -1,4 +1,3 @@
-import io
 import json
 import uuid
 import xml.etree.ElementTree as ET
@@ -14,7 +13,8 @@ class BaseParser:
             self.filename = Path(twb_file).stem
         else:
             self.filename = Path(getattr(twb_file, 'name', uuid.uuid4().hex)).stem
-        if isinstance(twb_file, io.IOBase):
+        # if isinstance(twb_file, io.IOBase):
+        if hasattr(twb_file, 'seek'):
             twb_file.seek(0)
         self.tree = ET.parse(twb_file)
         self.root = self.tree.getroot()
