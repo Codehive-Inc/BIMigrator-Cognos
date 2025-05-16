@@ -10,11 +10,11 @@ import os
 import json
 import logging
 from typing import Dict, List, Any, Optional
+from pydantic import BaseModel, Field
 # Import python-dotenv correctly
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import httpx
 
 # Load environment variables
@@ -62,6 +62,25 @@ class TableauFormula(BaseModel):
 class DAXResponse(BaseModel):
     dax_expression: str
     confidence: float = 1.0  # Confidence score (1.0 = high confidence)
+    notes: Optional[str] = None
+
+class TableauConnection(BaseModel):
+    class_type: str
+    server: Optional[str] = None
+    database: Optional[str] = None
+    db_schema: Optional[str] = Field(None, alias='schema')  # Use alias for schema
+    table: Optional[str] = None
+    sql_query: Optional[str] = None
+    filename: Optional[str] = None
+    connection_type: Optional[str] = None
+    additional_properties: Optional[Dict[str, Any]] = None
+
+class Config:
+    allow_population_by_field_name = True
+
+class MCodeResponse(BaseModel):
+    m_code: str
+    confidence: float = 1.0
     notes: Optional[str] = None
 
 # Helper function to create a prompt for the LLM
@@ -122,6 +141,51 @@ Return only the DAX expression without any additional explanation.
 """
     return prompt
 
+def create_m_code_prompt(connection: TableauConnection) -> str:
+    """Create a prompt for the LLM to generate M code.
+    
+    Args:
+        connection: The connection information
+        
+    Returns:
+        A prompt string for the LLM
+    """
+    prompt = [
+        "Generate Power BI M code for the following Tableau connection information:",
+        "Rules:",
+        "1. Use only valid Power BI M code syntax",
+        "2. Include proper error handling where appropriate",
+        "3. Follow Power BI best practices for data source connections",
+        "4. Return only the M code, no explanations",
+        "5. Use proper variable names and formatting",
+        "6. For Excel files, use Excel.Workbook and specify the table name in Item",
+        "7. For federated connections to Excel, use the Excel.Workbook function",
+        "",
+        "Connection details:"
+    ]
+    
+    # Add connection details to prompt
+    prompt.append(f"Connection type: {connection.class_type}")
+    
+    if connection.server:
+        prompt.append(f"Server: {connection.server}")
+    if connection.database:
+        prompt.append(f"Database: {connection.database}")
+    if connection.db_schema:
+        prompt.append(f"Schema: {connection.db_schema}")
+    if connection.table:
+        prompt.append(f"Table: {connection.table}")
+    if connection.sql_query:
+        prompt.append(f"SQL Query:\n{connection.sql_query}")
+    if connection.filename:
+        prompt.append(f"File: {connection.filename}")
+    if connection.additional_properties:
+        prompt.append("Additional properties:")
+        for key, value in connection.additional_properties.items():
+            prompt.append(f"  {key}: {value}")
+    
+    return "\n".join(prompt)
+
 # Function to call LLM API
 def clean_dax_expression(dax_expression: str) -> str:
     """
@@ -144,13 +208,13 @@ def clean_dax_expression(dax_expression: str) -> str:
 
 async def call_llm_api(prompt: str) -> str:
     """
-    Call the LLM API to convert a Tableau formula to DAX.
+    Call the LLM API to convert a Tableau formula to DAX or generate M code.
     
     Args:
         prompt: The prompt for the LLM
         
     Returns:
-        The DAX expression from the LLM
+        The DAX expression or M code from the LLM
     """
     if not LLM_API_KEY:
         raise HTTPException(status_code=500, detail="LLM API key not configured")
@@ -180,10 +244,10 @@ async def call_llm_api(prompt: str) -> str:
                 
                 if response.status_code == 200:
                     result = response.json()
-                    dax_expression = result.get("content", [{}])[0].get("text", "").strip()
-                    # Clean the DAX expression
-                    dax_expression = clean_dax_expression(dax_expression)
-                    return dax_expression
+                    response_text = result.get("content", [{}])[0].get("text", "").strip()
+                    # Clean the response text
+                    response_text = clean_dax_expression(response_text)
+                    return response_text
                 else:
                     logger.error(f"Error from Claude API: {response.status_code} - {response.text}")
                     raise HTTPException(status_code=500, detail=f"Claude API error: {response.text}")
@@ -211,10 +275,10 @@ async def call_llm_api(prompt: str) -> str:
                 
                 if response.status_code == 200:
                     result = response.json()
-                    dax_expression = result["choices"][0]["message"]["content"].strip()
-                    # Clean the DAX expression
-                    dax_expression = clean_dax_expression(dax_expression)
-                    return dax_expression
+                    response_text = result["choices"][0]["message"]["content"].strip()
+                    # Clean the response text
+                    response_text = clean_dax_expression(response_text)
+                    return response_text
                 else:
                     logger.error(f"Error from OpenAI API: {response.status_code} - {response.text}")
                     raise HTTPException(status_code=500, detail=f"OpenAI API error: {response.text}")
@@ -239,10 +303,10 @@ async def call_llm_api(prompt: str) -> str:
                 if response.status_code == 200:
                     result = response.json()
                     # Adapt this based on your custom LLM API response format
-                    dax_expression = result.get("response", "").strip()
-                    # Clean the DAX expression
-                    dax_expression = clean_dax_expression(dax_expression)
-                    return dax_expression
+                    response_text = result.get("response", "").strip()
+                    # Clean the response text
+                    response_text = clean_dax_expression(response_text)
+                    return response_text
                 else:
                     logger.error(f"Error from custom LLM API: {response.status_code} - {response.text}")
                     raise HTTPException(status_code=500, detail=f"Custom LLM API error: {response.text}")
@@ -253,7 +317,6 @@ async def call_llm_api(prompt: str) -> str:
 
 # API endpoints
 
-# API endpoints
 @app.post("/convert", response_model=DAXResponse)
 async def convert_formula(formula_request: TableauFormula):
     """
@@ -299,6 +362,57 @@ async def convert_formula(formula_request: TableauFormula):
     except Exception as e:
         logger.error(f"Error converting formula: {e}")
         raise HTTPException(status_code=500, detail=f"Error converting formula: {str(e)}")
+
+@app.post("/convert/tableau-to-m-code")
+async def generate_m_code(connection: TableauConnection) -> MCodeResponse:
+    """Generate M code for a Tableau connection.
+    
+    Args:
+        connection: The connection information
+        
+    Returns:
+        The M code response
+    """
+    try:
+        # Create prompt for LLM
+        prompt = create_m_code_prompt(connection)
+        
+        # Call LLM API
+        m_code = await call_llm_api(prompt)
+        
+        # Clean and validate the M code
+        m_code = m_code.strip()
+        
+        # For Excel connections, generate M code directly
+        if connection.class_type == 'excel-direct':
+            filename = connection.filename.replace('\\', '/')
+            table_name = connection.table.strip('[]')
+            m_code = f'''let
+    Source = Excel.Workbook(File.Contents("{filename}"), null, true),
+    {table_name}_Table = Source{{[Item="{table_name}", Kind="Sheet"]}},
+    #"Promoted Headers" = Table.PromoteHeaders({table_name}_Table, [PromoteAllScalars=true])
+in
+    #"Promoted Headers"'''
+        else:
+            # For other connections, use the LLM-generated M code
+            if not m_code.startswith('let'):
+                m_code = f'let\n    Source = {m_code}\nin\n    Source'
+        
+        # Unescape HTML entities
+        m_code = m_code.replace('&quot;', '"')
+        m_code = m_code.replace('&amp;', '&')
+        m_code = m_code.replace('&lt;', '<')
+        m_code = m_code.replace('&gt;', '>')
+        m_code = m_code.replace('&#x27;', "'")
+        
+        return MCodeResponse(
+            m_code=m_code,
+            confidence=1.0
+        )
+        
+    except Exception as e:
+        logger.error(f"Error generating M code: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/health")
 async def health_check():

@@ -92,6 +92,18 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             
         # Prepare template data
         print(f'\nDebug: Preparing template data for table {table.source_name}')
+        # Prepare partition data
+        print(f'\nDebug: Processing partitions for table {table.source_name}')
+        partitions_data = []
+        for partition in table.partitions:
+            print(f'Debug: Partition data - name: {partition.name}, source_type: {partition.source_type}')
+            partition_data = {
+                'name': partition.name,
+                'source_type': partition.source_type,
+                'expression': partition.expression
+            }
+            partitions_data.append(partition_data)
+
         template_data = {
             'source_name': table.source_name,
             'lineage_tag': table.lineage_tag if hasattr(table, 'lineage_tag') else None,
@@ -100,6 +112,7 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             'columns': columns_data,
             'measures': measures_data,
             'hierarchies': hierarchies_data,
+            'partitions': partitions_data,
             # Add widget serialization if needed
             'has_widget_serialization': False,  # Set to True if needed
             'visual_type': None,

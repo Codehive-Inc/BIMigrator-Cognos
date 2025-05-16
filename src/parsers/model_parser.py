@@ -64,7 +64,7 @@ class ModelParser(BaseParser):
                     pass  # Ignore annotation parsing errors
         
         # Extract desktop version from annotations
-        desktop_version = None
+        desktop_version = "2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729"
         if 'PBIDesktopVersion' in annotations:
             desktop_version = annotations['PBIDesktopVersion']
         
