@@ -145,16 +145,16 @@ def generate_m_partition(connection_node: Element, relation_node: Element) -> Di
     name = relation_node.get('name', '')
     return {
         'name': sanitize_identifier(name),
-        'source_type': 'M',
+        'source_type': 'm',  # Using lowercase 'm' to comply with PowerBI TMDL format requirements
         'expression': generate_m_code(connection_node, relation_node)
     }
 
-def format_m_code_indentation(m_code: str, base_indent: int = 1) -> str:
+def format_m_code_indentation(m_code: str, base_indent: int = 4) -> str:
     """
     Formats M code with proper indentation for TMDL files.
     Args:
         m_code: The M code to format
-        base_indent: Number of tabs for base indentation
+        base_indent: Number of spaces for base indentation (default: 4)
     Returns:
         Properly indented M code
     """
@@ -164,31 +164,65 @@ def format_m_code_indentation(m_code: str, base_indent: int = 1) -> str:
     # Split into lines
     lines = m_code.split('\n')
     
-    # Calculate indentation
-    base = '\t' * base_indent  # Base indentation for all lines
+    # Use tabs for indentation to match PowerBI's TMDL format
+    tab = '\t'
     
     # Process each line
     formatted_lines = []
-    for line in lines:
+    for i, line in enumerate(lines):
         stripped = line.strip()
         if not stripped:
             continue
         
-        # Add base indentation
-        if stripped.startswith('let'):
-            formatted_lines.append(f"{base*1}{stripped}")
+        # First line (let) gets indented with 1 tabs
+        if i == 0 and stripped.startswith('let'):
+            formatted_lines.append(f"{tab * 1}{stripped}")
+        # Last line (in) gets 4 tabs
         elif stripped.startswith('in'):
-            formatted_lines.append(f"{base*3}\t{stripped}")
+            formatted_lines.append(f"{tab * 4}{stripped}")
+        # All other lines get 5 tabs
         else:
-            # Add one more level of indentation for the content between let and in
-            formatted_lines.append(f"{base*4}\t{stripped}")
+            formatted_lines.append(f"{tab * 5}{stripped}")
     
     return '\n'.join(formatted_lines)
+
+def generate_excel_m_code(filename: str, sheet_name: str) -> str:
+    """
+    Generates M code for Excel connections using a standardized template.
+    
+    Args:
+        filename: Path to the Excel file
+        sheet_name: Name of the Excel sheet
+    
+    Returns:
+        Formatted M code for the Excel connection
+    """
+    # Create a standard Excel M query template with Promoted Headers and a generic Changed Type step
+    # This approach uses a dynamic type detection that will work with any Excel file structure
+    excel_m_template = (
+        "let\n"
+        "    Source = Excel.Workbook(File.Contents(\"{filename}\"), null, true),\n"
+        "    {sheet}_Sheet = Source{{[Item=\"{sheet}\",Kind=\"Sheet\"]}}[Data],\n"
+        "    #\"Promoted Headers\" = Table.PromoteHeaders({sheet}_Sheet, [PromoteAllScalars=true]),\n"
+        "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{}}),\n"
+        "    #\"Detected Types\" = Table.DetectColumnTypes(#\"Changed Type\")\n"
+        "in\n"
+        "    #\"Detected Types\""
+    )
+    
+    # Format the template with the connection info
+    m_code = excel_m_template.format(
+        filename=filename.replace('\\', '/'),
+        sheet=sheet_name.replace('$', '')
+    )
+    
+    return format_m_code_indentation(m_code)
 
 def generate_m_code(connection_node: Element, relation_node: Element, config: Dict = None) -> str:
     """
     Generates M code string for a table based on connection and relation information.
-    Uses the FastAPI service for LLM-assisted M code generation.
+    Uses the FastAPI service for LLM-assisted M code generation for non-Excel sources.
+    For Excel sources, uses a direct approach with a standardized template.
     
     Args:
         connection_node: XML Element containing connection information
@@ -274,7 +308,14 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
             conn_info['table'] = table_name
         else:
             conn_info['table'] = relation_node.get('name')
-    
+
+    # Direct handling for Excel connections - prioritized over API call
+    if conn_info['class_type'] == 'excel' and conn_info['filename']:
+        excel_filename = conn_info['filename']
+        sheet_name = conn_info.get('table', 'Sheet1')
+        return generate_excel_m_code(excel_filename, sheet_name)
+
+    # For non-Excel connections, use the API service
     try:
         # Call the FastAPI service if LLM is enabled
         if m_code_config.get('llm', {}).get('enabled', True):
@@ -294,7 +335,7 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
                         for entity, char in entity_map.items():
                             m_code = m_code.replace(entity, char)
                 
-                return format_m_code_indentation(m_code, m_code_config.get('formatting', {}).get('indentation', {}).get('base', 1))
+                return format_m_code_indentation(m_code)
                 
     except Exception as e:
         # Handle error based on configuration
@@ -314,7 +355,7 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
                         if conn_info.get('sql_query'):
                             conn_info['sql_query'] = conn_info['sql_query'].replace('"', '\\"')
                         m_code = template.format(**conn_info)
-                        return format_m_code_indentation(m_code, m_code_config.get('formatting', {}).get('indentation', {}).get('base', 1))
+                        return format_m_code_indentation(m_code)
                         
         elif fallback_strategy == 'error':
             raise Exception(f"Failed to generate M code for {conn_info['class_type']} connection")
