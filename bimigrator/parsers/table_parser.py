@@ -2,9 +2,9 @@
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, List
 
-from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure
+from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiPartition
+from bimigrator.converters import CalculationConverter, CalculationInfo
 from .base_parser import BaseParser
-from ..converters import CalculationConverter, CalculationInfo
 
 
 def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]:
@@ -44,6 +44,126 @@ class TableParser(BaseParser):
         super().__init__(twb_path, config, output_dir)
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
         self.calculation_converter = CalculationConverter(config)
+
+    def _extract_partition_info(self, ds_element: ET.Element, table_name: str) -> List[PowerBiPartition]:
+        """Extract partition information from a datasource element.
+
+        Args:
+            ds_element: Datasource element
+            table_name: Name of the table
+
+        Returns:
+            List of PowerBiPartition objects
+        """
+        partitions = []
+        try:
+            print(f"\n==== Processing table: {table_name} ====")
+            # Find the connection element
+            connection = ds_element.find('.//connection')
+            print(f"Debug: Connection element found: {connection is not None}")
+            if connection is not None:
+                print(f"Debug: Connection attributes: {connection.attrib}")
+
+                # Check if this is an Excel connection
+                is_excel = False
+                excel_filename = None
+                excel_sheet = None
+
+                # Check direct connection
+                if connection.get('class') == 'excel-direct':
+                    is_excel = True
+                    excel_filename = connection.get('filename')
+                    print(f"Debug: Found direct Excel connection with filename: {excel_filename}")
+
+                # Check federated connection with named connections
+                if not is_excel and connection.get('class') == 'federated':
+                    print(f"Debug: Found federated connection, checking for Excel connections...")
+                    named_conns = connection.findall('.//named-connection')
+                    print(f"Debug: Found {len(named_conns)} named connections")
+
+                    for named_conn in named_conns:
+                        print(f"Debug: Named connection attributes: {named_conn.attrib}")
+                        conn = named_conn.find('.//connection')
+                        if conn is not None:
+                            print(f"Debug: Nested connection attributes: {conn.attrib}")
+                            if conn.get('class') == 'excel-direct':
+                                is_excel = True
+                                excel_filename = conn.get('filename')
+                                print(
+                                    f"Debug: Found Excel connection in federated connection with filename: {excel_filename}")
+                                break
+
+                # Find relation elements - try both with and without namespaces
+                relations = connection.findall('.//relation')
+
+                # If no relations found, try with wildcard namespace
+                if not relations:
+                    # Try to find relation elements with any namespace
+                    for element in connection.findall('.//*'):
+                        if element.tag.endswith('relation'):
+                            relations.append(element)
+
+                print(f"Debug: Found {len(relations)} relation elements")
+
+                # If Excel connection and we have relations, get the sheet name
+                if is_excel and relations:
+                    print(f"Debug: Processing relations for Excel connection")
+                    for relation in relations:
+                        print(f"Debug: Relation attributes: {relation.attrib}")
+                        table_ref = relation.get('table', '')
+                        print(f"Debug: Table ref: {table_ref}")
+                        if table_ref and table_ref.startswith('[') and table_ref.endswith('$]'):
+                            excel_sheet = table_ref[1:-2]  # Remove [ and $]
+                            print(f"Debug: Extracted sheet name from table ref: {excel_sheet}")
+                            break
+                        else:
+                            excel_sheet = relation.get('name', 'Sheet1')
+                            print(f"Debug: Using relation name as sheet name: {excel_sheet}")
+
+                # Special handling for Excel connections - always create a partition even if M code generation fails
+                if is_excel and excel_filename:
+                    print(f"Debug: Generating Excel partition for {table_name}")
+                    from ..common.tableau_helpers import generate_excel_m_code
+                    sheet_name = excel_sheet or 'Sheet1'
+                    print(f"Debug: Using sheet name: {sheet_name}")
+                    m_code = generate_excel_m_code(excel_filename, sheet_name)
+                    print(f"Debug: Generated M code length: {len(m_code) if m_code else 0}")
+
+                    partition_name = table_name
+                    partition = PowerBiPartition(
+                        name=partition_name,
+                        expression=m_code,
+                        source_type='m',
+                        description=f"Excel partition for table {table_name}"
+                    )
+                    partitions.append(partition)
+                    print(f"Debug: Generated Excel partition for {table_name} with sheet {sheet_name}")
+                else:
+                    # Standard processing for non-Excel connections
+                    print(f"Debug: Processing standard (non-Excel) connections")
+                    for i, relation in enumerate(relations):
+                        print(f"Debug: Relation {i} attributes: {relation.attrib}")
+                        print(f"Debug: Relation {i} text: {relation.text}")
+                        # Generate M code for this relation
+                        from ..common.tableau_helpers import generate_m_code
+                        m_code = generate_m_code(connection, relation)
+                        print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
+                        if m_code:
+                            partition_name = table_name
+                            partition = PowerBiPartition(
+                                name=partition_name,
+                                expression=m_code,
+                                source_type='m',
+                                description=f"Partition {i + 1} for table {table_name}"
+                            )
+                            partitions.append(partition)
+        except Exception as e:
+            print(f"Error extracting partition info: {e}")
+            import traceback
+            print(traceback.format_exc())
+
+        print(f"Debug: Generated {len(partitions)} partitions")
+        return partitions
 
     def _map_datatype(self, tableau_type: str) -> str:
         """Map Tableau datatypes to Power BI datatypes.
@@ -96,6 +216,7 @@ class TableParser(BaseParser):
 
             # First pass: Process datasources and extract their basic information
             for ds_element in datasource_elements:
+                extracted_tables = []
                 try:
                     table_name_mapping = table_config_yaml.get('source_name', {})
 
@@ -134,6 +255,9 @@ class TableParser(BaseParser):
                         ds_element, columns_yaml_config, final_table_name
                     )
 
+                    # Extract partition information
+                    partitions = self._extract_partition_info(ds_element, final_table_name)
+
                     # Create the table object
                     table = PowerBiTable(
                         source_name=final_table_name,  # Use the de-duplicated name
@@ -142,13 +266,8 @@ class TableParser(BaseParser):
                         columns=pbi_columns,
                         measures=pbi_measures,
                         hierarchies=[],
-                        partitions=[],
-                        annotations={}
-                    )
-
-                    # Debug output
-                    print(
-                        f"Debug: Created table '{final_table_name}' with {len(pbi_columns)} columns and {len(pbi_measures)} measures")
+                        partitions=partitions,
+                        annotations={})
 
                     # Keep only the table with the most columns and measures
                     if final_table_name not in unique_tables or \
@@ -156,8 +275,7 @@ class TableParser(BaseParser):
                         unique_tables[final_table_name].measures):
                         unique_tables[final_table_name] = table
                 except Exception as e:
-                    # Print the error for debugging
-                    print(f"Error processing datasource: {str(e)}")
+
                     # Continue to next datasource if there's an error
                     continue
 
@@ -166,33 +284,26 @@ class TableParser(BaseParser):
             if relation_config:
                 relation_xpath = relation_config.get('source_xpath')
                 if relation_xpath:
-                    print(f"\nDebug: Looking for relations using XPath: {relation_xpath}")
-                    print(f"Debug: Found {len(datasource_info)} datasources to process for relations")
 
                     for ds_id, ds_info in datasource_info.items():
                         ds_element = ds_info['element']
-                        print(f"Debug: Processing datasource '{ds_info['name']}' (ID: {ds_id}) for relations")
+
                         try:
                             # Find relations within this datasource
                             relation_elements = ds_element.findall(relation_xpath, namespaces=self.namespaces)
-                            print(
-                                f"Debug: Found {len(relation_elements)} relation elements in datasource '{ds_info['name']}'")
 
                             # If no relations found directly, try a more generic approach
                             if not relation_elements:
-                                print(
-                                    f"Debug: Trying alternate approach to find relations in datasource '{ds_info['name']}'")
                                 # Try to find any relation elements anywhere in this datasource
                                 relation_elements = ds_element.findall(".//relation", namespaces=self.namespaces)
-                                print(
-                                    f"Debug: Found {len(relation_elements)} relation elements with alternate approach")
 
                                 # If still no relations, try without namespaces
                                 if not relation_elements:
                                     relation_elements = ds_element.findall(".//relation")
-                                    print(f"Debug: Found {len(relation_elements)} relation elements without namespaces")
 
                             for rel_element in relation_elements:
+                                seen_table_names = set()
+
                                 # Process relation based on its type
                                 table_type_attr = relation_config.get('table_type', {}).get('source_attribute')
                                 rel_type = rel_element.get(table_type_attr) if table_type_attr else None
@@ -264,11 +375,7 @@ class TableParser(BaseParser):
             columns_yaml_config: Dict,
             pbi_table_name: str  # For DAX expressions in measures
     ):  # -> Tuple[List[PowerBiColumn], List[PowerBiMeasure]]
-        # For debugging
-        ds_name = ds_element.get('caption') or ds_element.get('name')
-        print(f"Debug: Processing datasource '{ds_name}'")
-        print(f"Debug: Datasource element tag: {ds_element.tag}")
-        print(f"Debug: Datasource element attributes: {ds_element.attrib}")
+
         """Extract columns and measures from a datasource element.
         
         Args:
@@ -356,23 +463,6 @@ class TableParser(BaseParser):
 
                     column_elements_from_ds.append(meta_record)
                     print("Debug: Added synthetic metadata record for Tab_module")
-
-                if 'PUAT_Module' in sql:
-                    # Create a synthetic metadata record for PUAT_Module
-                    meta_record = ET.Element('metadata-record')
-                    meta_record.set('class', 'column')
-
-                    remote_name = ET.SubElement(meta_record, 'remote-name')
-                    remote_name.text = 'PUAT_Module'
-
-                    local_name = ET.SubElement(meta_record, 'local-name')
-                    local_name.text = '[PUAT_Module]'
-
-                    remote_type = ET.SubElement(meta_record, 'remote-type')
-                    remote_type.text = '130'  # String type
-
-                    column_elements_from_ds.append(meta_record)
-                    print("Debug: Added synthetic metadata record for PUAT_Module")
 
         # Print the first few metadata records for debugging
         for i, meta_col in enumerate(column_elements_from_ds[:5]):
@@ -655,6 +745,25 @@ class TableParser(BaseParser):
 
                 # Initialize annotations
                 annotations = {}
+
+                # Check for explicit aggregation in Tableau XML to set SummarizationSetBy annotation
+                has_explicit_aggregation = False
+
+                # Instead of trying to detect the aggregation element directly,
+                # use the summarize_by value that's already been determined
+                # If summarize_by is anything other than 'none', it means there's an explicit aggregation
+                has_explicit_aggregation = summarize_by != 'none'
+
+                # Set SummarizationSetBy annotation based on whether there's explicit aggregation
+                annotations['SummarizationSetBy'] = 'User' if has_explicit_aggregation else 'Automatic'
+
+                # Add PBI_FormatHint annotation for numeric columns
+                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
+                    # For numeric columns, add the format hint
+                    annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
+
+                print(
+                    f"Debug: Column '{final_col_name}': summarize_by={summarize_by}, SummarizationSetBy={annotations['SummarizationSetBy']}")
 
                 # Handle calculated fields (measures and calculated columns)
                 if formula:

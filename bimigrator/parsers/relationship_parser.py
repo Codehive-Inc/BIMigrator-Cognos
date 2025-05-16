@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from typing import Dict, Any, List, Tuple
 
 from bimigrator.config.data_classes import PowerBiRelationship
-from .base_parser import BaseParser
+from bimigrator.parsers.base_parser import BaseParser
 
 
 class RelationshipParser(BaseParser):
@@ -168,14 +168,14 @@ class RelationshipParser(BaseParser):
             cardinality = self._get_mapping_value(
                 self.relationship_config.get('cardinality', {}),
                 join_element,
-                'manyToOne'  # Default to manyToOne
+                'one'  # Default to one
             )
 
             # Get cross filter behavior using configured value
             cross_filter = self._get_mapping_value(
                 self.relationship_config.get('cross_filter_behavior', {}),
                 join_element,
-                'oneWay'  # Default to oneWay
+                'bothDirections'  # Default to bothDirections
             )
 
             # Create PowerBiRelationship object

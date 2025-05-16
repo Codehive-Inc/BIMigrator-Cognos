@@ -14,6 +14,7 @@ api_settings:
   # Endpoints
   endpoints:
     tableau_to_dax: "/convert/tableau-to-dax"
+    tableau_to_m: "/convert/tableau-to-m-code"
     # Add more endpoints as needed
 
 # --- Template Mappings ---
@@ -22,8 +23,8 @@ Templates:
   mappings:
     # --- Project Files ---
     version:
-      template: version.txt
-      output: version.txt
+      template: Version.txt
+      output: Version.txt
       config: PowerBiVersion
       dataclass: PowerBiVersion
 
@@ -128,8 +129,14 @@ PowerBiModel:
 
 # --- Table Settings ---
 PowerBiTable:
-  # Target datasource elements that are inline and not Parameters
-  source_xpath: "//datasources/datasource[@inline='true' and not(@name='Parameters')]"
+  # Target datasource elements that have actual connections
+  source_xpath: |
+    //datasources/datasource[
+      @inline='true' and
+      not(@name='Parameters') and
+      not(@hasconnection='false') and
+      .//connection[@class and @class!='tableau']
+    ]
   source_name:
     # 'caption' is often the user-friendly name
     source_attribute: caption
@@ -141,10 +148,26 @@ PowerBiTable:
     source_attribute: hidden
     default: false
 
+  # Connection configuration
+  connection_config:
+    # Primary connection types
+    primary_xpath: "connection[@class!='tableau']"
+    named_connection_xpath: "connection/named-connections/named-connection/connection"
+    # Connection class mapping
+    class_mapping:
+      federated: "named-connection"
+      dremio: "dremio"
+      oracle: "oracle"
+      sqlserver: "sqlserver"
+      excel: "excel-direct"
+
   # Relation configuration to find actual tables within datasources
   relation_config:
-    # Find relations within connections in datasources
-    source_xpath: "connection/relation | connection/_.fcp.ObjectModelEncapsulateLegacy.false...relation | relation"
+    # Find relations within connections in datasources, handling both legacy and new formats
+    source_xpath: |
+      connection/relation[@type='table' or @type='text'] |
+      connection/_.fcp.ObjectModelEncapsulateLegacy.false...relation[@type='table' or @type='text' or @type='join'] |
+      relation[@type='table' or @type='text']
     table_name:
       source_attribute: name
       optional: true
@@ -158,6 +181,11 @@ PowerBiTable:
       # For text type relations that contain SQL queries
       source_xpath: "text()"
       optional: true
+    # Handle join relations
+    join_config:
+      source_xpath: "clause[@type='join']/expression[@op='=']"
+      left_table_xpath: "expression[1]/text()"
+      right_table_xpath: "expression[2]/text()"
 
   # Columns configuration
   columns_config:
@@ -473,10 +501,196 @@ PowerBiHierarchy:
     level_column_attribute: name # Reference the column itself
 
 PowerBiPartition: # Definition within PowerBiTable mapping applies
+  m_code_generation:
+    api:
+      base_url: "http://localhost:8000"
+      timeout_seconds: 30
+      endpoints:
+        m_code: "/convert/tableau-to-m-code"
+    
+    connection_types:
+      federated:
+        xpath:
+          named_connection: ".//named-connection"
+          connection: ".//connection"
+        fallback_template: |
+          let
+              Source = Sql.Database("{server}", "{database}"),
+              Query = "{sql_query}",
+              Output = Value.NativeQuery(Source, Query)
+          in
+              Output
+      
+      dremio:
+        fallback_template: |
+          let
+              Source = Odbc.DataSource("DREMIO"),
+              Query = "{sql_query}",
+              Output = Value.NativeQuery(Source, Query)
+          in
+              Output
+      
+      oracle:
+        fallback_template: |
+          let
+              Source = Oracle.Database("{server}", "{database}"),
+              Query = "{sql_query}",
+              Output = Value.NativeQuery(Source, Query)
+          in
+              Output
+
+      excel-direct:
+        xpath:
+          connection: ".//connection[@class='excel-direct']"
+        fallback_template: |
+          let
+              Source = Excel.Workbook(File.Contents("{filename}"), null, true),
+              {table}_Table = Source{[Item="{table}", Kind="Sheet"]},
+              #"Promoted Headers" = Table.PromoteHeaders({table}_Table, [PromoteAllScalars=true])
+          in
+              #"Promoted Headers"
+    
+    connection_info_mapping:
+      standard_fields:
+        server: "server"
+        database: "dbname"
+        schema: "schema"
+        table: ["table", "name"]
+        sql_query: "text()"
+      
+      computed_fields:
+        sql_query:
+          condition: "relation_node.text is not None and relation_node.get('type') == 'text'"
+          value: "relation_node.text.strip()"
+    
+    formatting:
+      html_unescape:
+        enabled: true
+        entities:
+          - {"&#13;": "\n"}
+          - {"&apos;": "'"}
+      indentation:
+        base: 1
+    
+    error_handling:
+      log_errors: true
+      fallback_strategy: "template"
+      fallback_conditions:
+        dremio: ["class_type == 'dremio' or 'dremio' in conn_info['additional_properties'].get('class', '')"]
+        oracle: ["class_type == 'oracle' or 'oracle' in conn_info['additional_properties'].get('class', '')"]
+        federated: ["class_type == 'federated'"]
+  
   name:
     source_attribute: name # From the relation element
+    template: "{schema}_{table}" # Template for partition name
   source_type:
     default: m
+  m_code_generation:
+    api:
+      base_url: "${TABLEAU_TO_DAX_API_URL}" # Environment variable
+      timeout_seconds: 30
+      endpoints:
+        m_code: "/convert/tableau-to-m-code"
+    
+    # Connection type configurations
+    connection_types:
+      sqlserver:
+        class_type: "sqlserver"
+        required_attributes: [server, database, table]
+        optional_attributes: [schema]
+        fallback_template: |
+          let
+              Source = Sql.Database("{server}", "{database}"),
+              {schema}_{table} = Source{[Schema="{schema}",Item="{table}"]}
+          in
+              {schema}_{table}
+      
+      excel:
+        class_type: "excel-direct"
+        xpath:
+          connection: ".//named-connection//connection[@class='excel-direct']"
+        required_attributes: [filename]
+        optional_attributes: [sheet]
+        fallback_template: |
+          let
+              Source = Excel.Workbook(File.Contents("{filename}")),
+              {table} = Source{[Item="{table}"]}[Data]
+          in
+              {table}
+      
+      federated:
+        class_type: "federated"
+        xpath:
+          named_connection: ".//named-connection"
+    
+    # Connection info mapping
+    connection_info_mapping:
+      standard_fields:
+        class_type: class
+        server: server
+        database: dbname
+        schema: schema
+        table: [table, name] # Try table first, then name
+        filename: filename
+      computed_fields:
+        sql_query:
+          condition: "relation_node.get('type') == 'text'"
+          value: "relation_node.text"
+    
+    # M code formatting
+    formatting:
+      indentation:
+        base: 1
+        let_statement: 1
+        in_statement: 4
+        content: 5
+      html_unescape:
+        enabled: true
+        entities:
+          - "&quot;": '"'
+          - "&amp;": "&"
+          - "&lt;": "<"
+          - "&gt;": ">"
+          - "&#x27;": "'"
+    
+    # Error handling
+    error_handling:
+      log_errors: true
+      fallback_strategy: "template" # Options: template, empty, error
+      fallback_conditions:
+        sqlserver:
+          - "conn_info['class_type'] == 'sqlserver'"
+          - "conn_info['server']"
+          - "conn_info['database']"
+          - "conn_info['table']"
+    
+    # LLM Integration
+    llm:
+      enabled: true
+      prompt_template: |
+        Generate Power BI M code for the following Tableau connection:
+        Connection Type: {class_type}
+        {connection_details}
+        
+        Rules:
+        1. Use only valid Power BI M code syntax
+        2. Include proper error handling where appropriate
+        3. Follow Power BI best practices for data source connections
+        4. Return only the M code, no explanations
+        5. Use proper variable names and formatting
+        6. For Excel files, use Excel.Workbook and specify the table name in Item
+        7. For federated connections to Excel, use the Excel.Workbook function
+      
+      context_attributes:
+        - class_type
+        - server
+        - database
+        - schema
+        - table
+        - sql_query
+        - filename
+        - connection_type
+  
   expression: # M Code
     derived_rule: generate_m_code # Complex function using connection/relation info
     source_connection_xpath: ../connection

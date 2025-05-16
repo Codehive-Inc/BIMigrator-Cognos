@@ -1,0 +1,491 @@
+table 'Custom SQL Query (dlh_nsec.objdb)'
+
+
+    column 'weekday'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            ISOWEEKDAY('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE])
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'max Week Flag'
+        dataType: boolean
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241837174785] = 'Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'Week Start Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            VAR MinFiscalDate =
+    MINX(
+        VALUES('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK]),
+        'Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE]
+    )
+RETURN
+    MinFiscalDate
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'diff flag'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            IF(
+    'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241840762884] = 0,
+    "Gold",
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241840762884] > ('Parameters'[Parameter 1] / 100),
+        "Flag",
+        "Normal"
+    )
+)
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'help'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            'Help'
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'Golden Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            IF(
+    'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241839083523],
+    'Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE],
+    BLANK()
+)
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'Subject'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            "Data Load below " & FORMAT(LOOKUPVALUE('Custom SQL Query (dlh_nsec.objdb)'[Parameters].[Parameter 1], 'Custom SQL Query (dlh_nsec.objdb)'[Parameters], 'Custom SQL Query (dlh_nsec.objdb)'[Parameters].[Parameter 1]), "0%") & "% Of Golden Data Range"
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'Avg Range'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            INT('Custom SQL Query (dlh_nsec.objdb)'[AVG_DATA])
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'Week End Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+        sourceColumn = ```
+            
+            CALCULATE(
+    MAX('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE]),
+    VALUES('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK])
+)
+            
+            ```
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        
+    column 'Tab_module'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: Tab_module
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'asup_date'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: asup_date
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'dt'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: dt
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'serial_count'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: serial_count
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'FISCAL_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: FISCAL_DATE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_MONTH'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: FISCAL_MONTH
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'FISCAL_QTR'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: FISCAL_QTR
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'FISCAL_YEAR'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: FISCAL_YEAR
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'FISCAL_WEEK'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: FISCAL_WEEK
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'FT'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: FT
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'OBJ_SMF_TABLES'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: OBJ_SMF_TABLES
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'AVG_DATA'
+        dataType: string
+        summarizeBy: count
+        sourceColumn: AVG_DATA
+
+        annotation SummarizationSetBy = User
+
+        
+
+    measure 'Weekly count' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', { FIXED [FISCAL_WEEK]:SUM(IF [Calculation_1420604241832890368]=6 or [Calculation_1420604241832890368]=7 THEN [serial_count] END)})
+			```
+
+    measure '% diff' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', 1-[Calculation_1420604241837174785]/[Weekly count (copy)_1420604241838956546])
+			```
+
+    measure 'Body' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', "Date of Load "+STR(MIN([Calculation_1420604242555215877]))+"
+"+
+"System Count: "+STR(SUM(serial_count))+"
+
+"
+
++"Golden Data Value: "+STR(MAX([Weekly count (copy)_1420604241838956546]))+"
+
+
+"+
+"
+Regards,
+PUAT Data Load")
+			```
+
+    measure '1500 flag' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', IF MIN([Calculation_1857734887845101576])-SUM([serial_count])>1500 THEN 'Flag'
+ELSE 'Normal'
+END)
+			```
+
+    measure 'Measure vs Golden' = ```
+			/* Original TWB: MIN([Calculation_1857734887806193665])-SUM([serial_count]) */ MIN([Calculation_1857734887806193665])-SUM([serial_count])
+			```
+
+    measure 'Diffrence' = ```
+			/* Original TWB: MIN([Calculation_1857734887845101576])-SUM([serial_count]) */ MIN([Calculation_1857734887845101576])-SUM([serial_count])
+			```
+
+    measure 'Max\Avg' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', IF [Parameters].[Parameter 3]='Max' THEN [Weekly count (copy)_1420604241838956546]
+ELSEIF [Parameters].[Parameter 3]='Avg' THEN [Calculation_1857734887806193665] END)
+			```
+
+    measure 'Diffrence flag' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', IF  MIN([Calculation_1857734887845101576])-SUM([serial_count])>1500 THEN 'Flag'
+ELSEIF MIN([Calculation_1857734887845101576])-SUM([serial_count])>=0 AND MIN([Calculation_1857734887845101576])-SUM([serial_count])<=1500 THEN 'Normal'
+ELSEIF MIN([Calculation_1857734887845101576])-SUM([serial_count])<0 THEN 'Spike' END)
+			```
+
+    measure 'Max Weekly count' = ```
+			SUMX('Custom SQL Query (dlh_nsec.objdb)', {MAX({ FIXED [FISCAL_WEEK]:SUM(IF [Calculation_1420604241832890368]=6 or [Calculation_1420604241832890368]=7 THEN [serial_count] END)})})
+			```
+
+
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					Authentication="auth-user-pass",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					], [
+					HierarchicalNavigation=true
+					]),
+					dlh_nsec_objdb = Source{[Schema="dlh_nsec.objdb",Kind="Schema"]}[Data]
+				in
+					dlh_nsec_objdb
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database("dlh-prd.corp.netapp.com", 31011, [HierarchicalNavigation=true]),
+					dbo_DREMIO = Source{[Name="DREMIO"]}[Data],
+					sql_query = "select 'System' Tab_module,asup_month as asup_date,dt,count(*) as serial_count from
+					(select 'System' PUAT_Module,substring(a.asup_id,1,8) as asup_month,a.dt,sys_serial_no from dlh_nsec.objdb.""system"" a
+					join dlh_nsec.objdb.asup b on a.asup_id = b.asup_id
+					where a.dt >>= '20240301' and a.dt <<= '20240530'
+					and b.dt >>= '20240301' and b.dt <<= '20240530'
+					and lower(b.asup_subject) like '%weekly%'
+					and upper(b.asup_type) = 'DOT-REGULAR'
+					and a.asup_id='2022050100000239'
+					and upper(cfo_node_state) not in ('TAKEOVER','DOWN'))
+					group by asup_month,dt",
+					result = try dbo_DREMIO{[Name="sql_query",Query=sql_query]}[Data] otherwise null
+				in
+					result
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					AuthenticationKind="Basic",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					]),
+					Query = Source{[Schema="dlh_nsec.objdb",Item="select fd.*,to_char(fiscal_date,'yyyymmdd') as ft from fiscaltime fd"]}[Data],
+					#"Changed Type" = Table.TransformColumnTypes(Query,{{"FISCAL_DATE", type datetime}, {"FISCAL_YEAR", Int64.Type}, {"FISCAL_QUARTER", Int64.Type}, {"FISCAL_MONTH", Int64.Type}, {"FISCAL_WEEK", Int64.Type}, {"FISCAL_DAY", Int64.Type}, {"FT", type text}}),
+					#"Added Conditional Column" = Table.AddColumn(#"Changed Type", "Data Source", each "Dremio")
+				in
+					#"Added Conditional Column"
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database("dlh-prd.corp.netapp.com:31011", "DREMIO", [HierarchicalNavigation=true]),
+					dbo_dlh_nsec_objdb = Source{[Schema="dlh_nsec.objdb",Kind="Section"]}[Data],
+					Query =
+					dbo_dlh_nsec_objdb{[
+					Name="puat_avg_table_counts",
+					Query="select CASE OBJ_SMF_TABLES WHEN 'cmstatsweeklydb_wafl_count' THEN 'CMS Stats wafl Count'
+					WHEN 'cmstatsweeklydb_wafl_sys' THEN 'CMS Stats wafl Sys'
+					WHEN 'cmstatsweeklydb_volume_count' THEN 'CMS Stats Volume Count'
+					WHEN 'cmstatsweeklydb_volume_sys' THEN 'CMS Stats Volume Sys'
+					WHEN 'Snaplock_volume' THEN 'Snaplock Volume'
+					WHEN 'Igroup' THEN 'igroup'
+					WHEN 'Snapmirror_policy' THEN 'snapmirror policy'
+					WHEN 'Snapmirror_destination' THEN 'SnapMirror Destination'
+					WHEN 'Volume' THEN 'SMFDBV2 Volume'
+					ELSE OBJ_SMF_TABLES END AS OBJ_SMF_TABLES,AVG_DATA
+					from dlh_reporting_s3.asuprep.puat_avg_table_counts"
+					]}[Data],
+					#"Changed Type" = Table.TransformColumnTypes(Query,{{"OBJ_SMF_TABLES", type text}, {"AVG_DATA", type number}})
+				in
+					#"Changed Type"
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					Authentication="auth-user-pass",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					],
+					[
+					HierarchicalNavigation=true,
+					Query="select * from `dlh_nsec.objdb`"
+					]),
+					#"Navigation" = Source{[Name="dlh_nsec.objdb"]}[Data],
+					#"Removed Other Columns" = Table.SelectColumns(#"Navigation",{"Column1", "Column2", ...})
+				in
+					#"Removed Other Columns"
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					AuthenticationMethod="UsernamePassword",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					],
+					[
+					HierarchicalNavigation=true,
+					Query="select 'System' Tab_module,asup_month as asup_date,dt,count(*) as serial_count from
+					(select 'System' PUAT_Module,substring(a.asup_id,1,8) as asup_month,a.dt,sys_serial_no from dlh_nsec.objdb.`system` a
+					join dlh_nsec.objdb.asup b on a.asup_id = b.asup_id
+					where a.dt >>= '20240301' and a.dt <<= '20240530'
+					and b.dt >>= '20240301' and b.dt <<= '20240530'
+					and lower(b.asup_subject) like '%weekly%'
+					and upper(b.asup_type) = 'DOT-REGULAR'
+					and a.asup_id='2022050100000239'
+					and upper(cfo_node_state) not in ('TAKEOVER','DOWN'))
+					group by asup_month,dt",
+					NavigationRoot="dlh_nsec.objdb"
+					]
+					),
+					#"Changed Type" = Table.TransformColumnTypes(Source,{{"Tab_module", type text}, {"asup_date", type text}, {"dt", Int64.Type}, {"serial_count", Int64.Type}}),
+					#"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([serial_count] > 0))
+				in
+					#"Filtered Rows"
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					AuthenticationKind="Basic",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					]),
+					Query = Source{[Schema="dlh_nsec.objdb",Item="select fd.*,to_char(fiscal_date,'yyyymmdd') as ft from fiscaltime fd"]}[Data],
+					#"Changed Type" = Table.TransformColumnTypes(Query,{{"FISCAL_DATE", type datetime}, {"FISCAL_YEAR", Int64.Type}, {"FISCAL_QUARTER", Int64.Type}, {"FISCAL_MONTH", Int64.Type}, {"FISCAL_WEEK", Int64.Type}, {"FISCAL_DAY", Int64.Type}, {"FT", type text}}),
+					#"Added Conditional Column" = Table.AddColumn(#"Changed Type", "Data Source", each "Dremio")
+				in
+					#"Added Conditional Column"
+        
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Databases("dlh-prd.corp.netapp.com", 31011, [HierarchicalNavigation=true]),
+					DREMIO = Source{[Name="DREMIO"]}[Data],
+					Query =
+					"select CASE OBJ_SMF_TABLES WHEN 'cmstatsweeklydb_wafl_count' THEN 'CMS Stats wafl Count'
+					WHEN 'cmstatsweeklydb_wafl_sys' THEN 'CMS Stats wafl Sys'
+					WHEN 'cmstatsweeklydb_volume_count' THEN 'CMS Stats Volume Count'
+					WHEN 'cmstatsweeklydb_volume_sys' THEN 'CMS Stats Volume Sys'
+					WHEN 'Snaplock_volume' THEN 'Snaplock Volume'
+					WHEN 'Igroup' THEN 'igroup'
+					WHEN 'Snapmirror_policy' THEN 'snapmirror policy'
+					WHEN 'Snapmirror_destination' THEN 'SnapMirror Destination'
+					WHEN 'Volume' THEN 'SMFDBV2 Volume'
+					ELSE OBJ_SMF_TABLES END AS OBJ_SMF_TABLES,AVG_DATA
+					from dlh_reporting_s3.asuprep.puat_avg_table_counts",
+					Data = Value.NativeQuery(DREMIO, Query, [HierarchicalNavigation=true]),
+					#"Changed Type" = Table.TransformColumnTypes(Data,{{"OBJ_SMF_TABLES", type text}, {"AVG_DATA", type number}})
+				in
+					#"Changed Type"
+        
+
+
+
+    annotation PBI_ResultType = Table

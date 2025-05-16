@@ -1,4 +1,4 @@
-﻿model Model
+model Model
 	culture: en-IN
 	defaultPowerBIDataSourceVersion: powerBI_V3
 	sourceQueryCulture: en-IN
@@ -10,7 +10,7 @@ annotation PBI_QueryOrder = ["Custom SQL Query (dlh_nsec_objdb)","Custom SQL Que
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
+annotation PBIDesktopVersion = 2.120.7013.10 (Main)
 
 ref table 'Custom SQL Query (dlh_nsec_objdb)'
 ref table DateTableTemplate_442d4026-c44b-4a36-989e-95bb9de47053

@@ -17,6 +17,7 @@ class TemplateMapping:
     multiple: bool = False
     name_from: Optional[str] = None
 
+
 TEMPLATE_DIR = Path(__file__).resolve().parent.parent / 'templates'
 
 
@@ -60,7 +61,7 @@ class BaseTemplateGenerator:
         """Get compiled template, using cache if available."""
         if template_name not in self._template_cache:
             template_path = self.template_dir / template_name
-            with open(template_path, 'r') as f:
+            with open(template_path, 'r', encoding='utf-8') as f:
                 source = f.read()
             self._template_cache[template_name] = self.compiler.compile(source)
         return self._template_cache[template_name]
@@ -94,7 +95,7 @@ class BaseTemplateGenerator:
             # Create intermediate dir in output/input_name/extracted
             self.extracted_dir.mkdir(parents=True, exist_ok=True)
             intermediate_file = self.extracted_dir / f"{template_type}.json"
-            with open(intermediate_file, 'w') as f:
+            with open(intermediate_file, 'w', encoding='utf-8') as f:
                 if hasattr(context, '__dict__'):
                     json.dump(context.__dict__, f, indent=2)
                 else:
@@ -119,7 +120,7 @@ class BaseTemplateGenerator:
         content = self.render_template(mapping['template'], context)
 
         # Write to file
-        with open(output_path, 'w') as f:
+        with open(output_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
         return output_path
