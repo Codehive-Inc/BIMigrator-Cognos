@@ -197,17 +197,15 @@ def generate_excel_m_code(filename: str, sheet_name: str) -> str:
     Returns:
         Formatted M code for the Excel connection
     """
-    # Create a standard Excel M query template with Promoted Headers and a generic Changed Type step
-    # This approach uses a dynamic type detection that will work with any Excel file structure
+    # Create a standard Excel M query template with Promoted Headers and Changed Type steps
     excel_m_template = (
         "let\n"
         "    Source = Excel.Workbook(File.Contents(\"{filename}\"), null, true),\n"
         "    {sheet}_Sheet = Source{{[Item=\"{sheet}\",Kind=\"Sheet\"]}}[Data],\n"
         "    #\"Promoted Headers\" = Table.PromoteHeaders({sheet}_Sheet, [PromoteAllScalars=true]),\n"
-        "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{}}),\n"
-        "    #\"Detected Types\" = Table.DetectColumnTypes(#\"Changed Type\")\n"
+        "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{}})\n"
         "in\n"
-        "    #\"Detected Types\""
+        "    #\"Changed Type\""
     )
     
     # Format the template with the connection info

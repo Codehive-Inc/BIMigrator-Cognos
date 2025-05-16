@@ -88,10 +88,9 @@ table 'Sheet1 (sample_sales_data)'
 					Source = Excel.Workbook(File.Contents("C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx"), null, true),
 					Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {}),
-					#"Detected Types" = Table.DetectColumnTypes(#"Changed Type")
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {})
 				in
-					#"Detected Types"
+					#"Changed Type"
         
 
 
