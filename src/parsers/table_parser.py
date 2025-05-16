@@ -61,32 +61,109 @@ class TableParser(BaseParser):
         """
         partitions = []
         try:
+            print(f"\n==== Processing table: {table_name} ====")
             # Find the connection element
             connection = ds_element.find('.//connection')
             print(f"Debug: Connection element found: {connection is not None}")
             if connection is not None:
                 print(f"Debug: Connection attributes: {connection.attrib}")
-                # Find relation elements
+                
+                # Check if this is an Excel connection
+                is_excel = False
+                excel_filename = None
+                excel_sheet = None
+                
+                # Check direct connection
+                if connection.get('class') == 'excel-direct':
+                    is_excel = True
+                    excel_filename = connection.get('filename')
+                    print(f"Debug: Found direct Excel connection with filename: {excel_filename}")
+                
+                # Check federated connection with named connections
+                if not is_excel and connection.get('class') == 'federated':
+                    print(f"Debug: Found federated connection, checking for Excel connections...")
+                    named_conns = connection.findall('.//named-connection')
+                    print(f"Debug: Found {len(named_conns)} named connections")
+                    
+                    for named_conn in named_conns:
+                        print(f"Debug: Named connection attributes: {named_conn.attrib}")
+                        conn = named_conn.find('.//connection')
+                        if conn is not None:
+                            print(f"Debug: Nested connection attributes: {conn.attrib}")
+                            if conn.get('class') == 'excel-direct':
+                                is_excel = True
+                                excel_filename = conn.get('filename')
+                                print(f"Debug: Found Excel connection in federated connection with filename: {excel_filename}")
+                                break
+                
+                # Find relation elements - try both with and without namespaces
                 relations = connection.findall('.//relation')
+                
+                # If no relations found, try with wildcard namespace
+                if not relations:
+                    # Try to find relation elements with any namespace
+                    for element in connection.findall('.//*'):
+                        if element.tag.endswith('relation'):
+                            relations.append(element)
+                
                 print(f"Debug: Found {len(relations)} relation elements")
-                for i, relation in enumerate(relations):
-                    print(f"Debug: Relation {i} attributes: {relation.attrib}")
-                    print(f"Debug: Relation {i} text: {relation.text}")
-                    # Generate M code for this relation
-                    from ..common.tableau_helpers import generate_m_code
-                    m_code = generate_m_code(connection, relation)
-                    print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
-                    if m_code:
-                        partition_name = table_name
-                        partition = PowerBiPartition(
-                            name=partition_name,
-                            expression=m_code,
-                            source_type='m',
-                            description=f"Partition {i+1} for table {table_name}"
-                        )
-                        partitions.append(partition)
+                
+                # If Excel connection and we have relations, get the sheet name
+                if is_excel and relations:
+                    print(f"Debug: Processing relations for Excel connection")
+                    for relation in relations:
+                        print(f"Debug: Relation attributes: {relation.attrib}")
+                        table_ref = relation.get('table', '')
+                        print(f"Debug: Table ref: {table_ref}")
+                        if table_ref and table_ref.startswith('[') and table_ref.endswith('$]'):
+                            excel_sheet = table_ref[1:-2]  # Remove [ and $]
+                            print(f"Debug: Extracted sheet name from table ref: {excel_sheet}")
+                            break
+                        else:
+                            excel_sheet = relation.get('name', 'Sheet1')
+                            print(f"Debug: Using relation name as sheet name: {excel_sheet}")
+                
+                # Special handling for Excel connections - always create a partition even if M code generation fails
+                if is_excel and excel_filename:
+                    print(f"Debug: Generating Excel partition for {table_name}")
+                    from ..common.tableau_helpers import generate_excel_m_code
+                    sheet_name = excel_sheet or 'Sheet1'
+                    print(f"Debug: Using sheet name: {sheet_name}")
+                    m_code = generate_excel_m_code(excel_filename, sheet_name)
+                    print(f"Debug: Generated M code length: {len(m_code) if m_code else 0}")
+                    
+                    partition_name = table_name
+                    partition = PowerBiPartition(
+                        name=partition_name,
+                        expression=m_code,
+                        source_type='m',
+                        description=f"Excel partition for table {table_name}"
+                    )
+                    partitions.append(partition)
+                    print(f"Debug: Generated Excel partition for {table_name} with sheet {sheet_name}")
+                else:
+                    # Standard processing for non-Excel connections
+                    print(f"Debug: Processing standard (non-Excel) connections")
+                    for i, relation in enumerate(relations):
+                        print(f"Debug: Relation {i} attributes: {relation.attrib}")
+                        print(f"Debug: Relation {i} text: {relation.text}")
+                        # Generate M code for this relation
+                        from ..common.tableau_helpers import generate_m_code
+                        m_code = generate_m_code(connection, relation)
+                        print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
+                        if m_code:
+                            partition_name = table_name
+                            partition = PowerBiPartition(
+                                name=partition_name,
+                                expression=m_code,
+                                source_type='m',
+                                description=f"Partition {i+1} for table {table_name}"
+                            )
+                            partitions.append(partition)
         except Exception as e:
             print(f"Error extracting partition info: {e}")
+            import traceback
+            print(traceback.format_exc())
         
         print(f"Debug: Generated {len(partitions)} partitions")
         return partitions
