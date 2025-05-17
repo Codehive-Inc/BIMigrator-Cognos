@@ -4,12 +4,15 @@ import json
 import yaml
 import os
 
+def json_helper(this, options, value):
+    return json.dumps(value)
+
 class PbiFromData:
-	def __init__(self, project_name: str):
+	def __init__(self, project_name: str, output_dir: str = 'output'):
 		self.config_yaml_path = 'config/twb-to-pbi.yaml'
 		self.template_dir = 'templates'
 		self.sample_data_path = 'generators/pbi/data_template_mapping.json'
-		self.output_dir = f'output/{project_name}'
+		self.output_dir = f'{output_dir}/{project_name}'
 
 	@staticmethod
 	def __generate_pbi_from_data(template: str, data: Dict[str, Any]) -> str:
@@ -131,5 +134,7 @@ if __name__ == "__main__":
 	)
 	args = parser.parse_args()
 	project_name = args.project_name if args.project_name else "default_project"
+
+
 	pbi_generator = PbiFromData(project_name)
 	pbi_generator.pbi_from_data()
