@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Dict, Optional, Any, Literal
-import uuid
 
 
 # --- Project Objects ---
@@ -247,9 +246,8 @@ class PowerBiRelationship:
     to_table: str
     from_column: str
     to_column: str
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    cardinality: Literal['one', 'many'] = 'many'
-    cross_filter_behavior: Literal['bothDirections', 'oneWay', 'automatic'] = 'bothDirections'
+    cardinality: Literal['one_to_one', 'one_to_many', 'many_to_one', 'many_to_many'] = 'many_to_one'
+    cross_filter_behavior: Literal['both', 'one', 'none'] = 'both'
     is_active: bool = True
     join_on_date_behavior: Optional[str] = None
     type: Optional[str] = None
@@ -340,9 +338,7 @@ class CultureInfo:
     culture: str
     linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata)
 
-
 # --- Model Objects (Targeting TMDL Files) ---
-
 @dataclass
 class PowerBiColumn:
     """Represents a column within a Power BI table for TMDL."""
@@ -415,11 +411,9 @@ class PowerBiRelationship:
     from_column: str
     to_table: str
     to_column: str
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    description: Optional[str] = None
     is_active: bool = True
-    cardinality: Literal['one', 'many'] = 'many'
-    cross_filter_behavior: Literal['bothDirections', 'oneWay', 'automatic'] = 'bothDirections'
+    cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
+    cross_filter_behavior: Literal['oneWay', 'bothDirections', 'automatic'] = 'automatic'
     annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
 
 
@@ -429,7 +423,6 @@ class PowerBiTable:
     source_name: str
     description: Optional[str] = None
     is_hidden: bool = False
-    source_filename: Optional[str] = None  # Path to the source file
     partitions: List[PowerBiPartition] = field(default_factory=list)
     columns: List[PowerBiColumn] = field(default_factory=list)
     measures: List[PowerBiMeasure] = field(default_factory=list)

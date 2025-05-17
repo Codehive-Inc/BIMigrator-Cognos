@@ -1,0 +1,45 @@
+{
+  "culture": "en-US",
+  "version": "1.0.0",
+  "language": "English",
+  "dynamic_improvement": "None",
+  "entities": [
+    {
+      "key": "Customer",
+      "binding": {
+        "conceptual_entity": "CustomerEntity",
+        "conceptual_property": "CustomerName"
+      },
+      "state": "active",
+      "hidden": false,
+      "terms": [
+        {
+          "term": "Customer",
+          "state": "active",
+          "type": "string",
+          "weight": 1.0
+        },
+        {
+          "term": "Client",
+          "state": "synonym",
+          "type": "string",
+          "weight": 0.8
+        }
+      ]
+    },
+    {
+      "key": "Order",
+      "binding": {
+        "conceptual_entity": "OrderEntity"
+      },
+      "state": "inactive",
+      "hidden": true,
+      "terms": [
+        {
+          "term": "Order",
+          "state": "active"
+        }
+      ]
+    }
+  ]
+}

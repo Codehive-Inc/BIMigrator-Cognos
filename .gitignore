@@ -1,5 +1,5 @@
 .env
-#output
+output
 .venv
 venv
 extracted
@@ -7,6 +7,23 @@ __pycache__
 
 src/generators/__pycache__
 src/parsers/__pycache__
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.egg-info
+*.egg
+*.log
+*.coverage
+*.mypy_cache
+*.pytest_cache
+*.hypothesis
+*.tox
+*.coverage.*
+*.coverage.*
+*.hypothesis.*
 build
 *.egg-info
 dist

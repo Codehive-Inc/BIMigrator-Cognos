@@ -24,9 +24,9 @@
       ]
     },
     "layout": {
-      "width": {{width}},
-      "height": {{height}},
-      "displayOption": "{{display_option}}"
+      "width": {{layout.width}},
+      "height": {{layout.height}},
+      "displayOption": "{{layout.display_option}}"
     }
   }
 }
