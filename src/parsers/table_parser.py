@@ -9,7 +9,9 @@ import logging
 from .base_parser import BaseParser
 from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel, PowerBiPartition
 from ..converters import CalculationConverter, CalculationInfo
-from .base_parser import BaseParser
+from .column_parser import ColumnParser
+from .connections.connection_factory import ConnectionParserFactory
+from ..generators.tmdl_generator import TMDLGenerator
 
 
 def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]:
@@ -41,13 +43,21 @@ def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]
     
     return calc_info
 
+
 class TableParser(BaseParser):
     """Parser for extracting table information from Tableau workbooks."""
     
     def __init__(self, twb_path: str, config: Dict[str, Any]):
+        """Initialize the table parser.
+        
+        Args:
+            twb_path: Path to the TWB file
+            config: Configuration dictionary
+        """
         super().__init__(twb_path, config)
-        self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
-        self.calculation_converter = CalculationConverter(config)
+        self.column_parser = ColumnParser(config)
+        self.connection_factory = ConnectionParserFactory(config)
+        self.tmdl_generator = TMDLGenerator(config)
     
     def _extract_partition_info(
         self,
@@ -67,340 +77,165 @@ class TableParser(BaseParser):
         """
         partitions = []
         try:
-            print(f"\n==== Processing table: {table_name} ====")
             # Find the connection element
             connection = ds_element.find('.//connection')
-            print(f"Debug: Connection element found: {connection is not None}")
             if connection is not None:
-                print(f"Debug: Connection attributes: {connection.attrib}")
-                
-                # Check if this is an Excel connection
-                is_excel = False
-                excel_filename = None
-                excel_sheet = None
-                
-                # Check direct connection
-                if connection.get('class') == 'excel-direct':
-                    is_excel = True
-                    excel_filename = connection.get('filename')
-                    print(f"Debug: Found direct Excel connection with filename: {excel_filename}")
-                
-                # Check federated connection with named connections
-                if not is_excel and connection.get('class') == 'federated':
-                    print(f"Debug: Found federated connection, checking for Excel connections...")
-                    named_conns = connection.findall('.//named-connection')
-                    print(f"Debug: Found {len(named_conns)} named connections")
-                    
-                    for named_conn in named_conns:
-                        print(f"Debug: Named connection attributes: {named_conn.attrib}")
-                        conn = named_conn.find('.//connection')
-                        if conn is not None:
-                            print(f"Debug: Nested connection attributes: {conn.attrib}")
-                            if conn.get('class') == 'excel-direct':
-                                is_excel = True
-                                excel_filename = conn.get('filename')
-                                print(f"Debug: Found Excel connection in federated connection with filename: {excel_filename}")
-                                break
+                # Get the appropriate connection parser
+                parser = self.connection_factory.get_parser(connection)
                 
                 # Find relation elements - try both with and without namespaces
                 relations = connection.findall('.//relation')
                 
                 # If no relations found, try with wildcard namespace
                 if not relations:
-                    # Try to find relation elements with any namespace
                     for element in connection.findall('.//*'):
                         if element.tag.endswith('relation'):
                             relations.append(element)
-                
-                print(f"Debug: Found {len(relations)} relation elements")
-                
-                # If Excel connection and we have relations, get the sheet name
-                if is_excel and relations:
-                    print(f"Debug: Processing relations for Excel connection")
-                    for relation in relations:
-                        print(f"Debug: Relation attributes: {relation.attrib}")
-                        table_ref = relation.get('table', '')
-                        print(f"Debug: Table ref: {table_ref}")
-                        if table_ref and table_ref.startswith('[') and table_ref.endswith('$]'):
-                            excel_sheet = table_ref[1:-2]  # Remove [ and $]
-                            print(f"Debug: Extracted sheet name from table ref: {excel_sheet}")
-                            break
-                        else:
-                            excel_sheet = relation.get('name', 'Sheet1')
-                            print(f"Debug: Using relation name as sheet name: {excel_sheet}")
-                
-                # Special handling for Excel connections - always create a partition even if M code generation fails
-                if is_excel and excel_filename:
-                    print(f"Debug: Generating Excel partition for {table_name}")
-                    from ..common.tableau_helpers import generate_excel_m_code
-                    sheet_name = excel_sheet or 'Sheet1'
-                    print(f"Debug: Using sheet name: {sheet_name}")
-                    
-                    # Use column data from PowerBiColumn objects if available
-                    columns_data = []
-                    if columns:
-                        for col in columns:
-                            col_data = {
-                                'source_name': col.source_name,
-                                'datatype': col.pbi_datatype
-                            }
-                            columns_data.append(col_data)
-                    
-                    m_code = generate_excel_m_code(excel_filename, sheet_name, columns_data)
-                    print(f"Debug: Generated M code length: {len(m_code) if m_code else 0}")
-                    
-                    # Use the relation name for both table and partition
-                    relation_name = relation.get('name', 'Sheet1')
-                    partition = PowerBiPartition(
-                        name=relation_name,
-                        expression=m_code,
-                        source_type='m',
-                        description=f"Excel partition for table {relation_name}"
+                            
+                # Process each relation
+                for relation in relations:
+                    partitions.extend(
+                        parser.extract_partition_info(connection, relation, table_name, columns)
                     )
-                    partitions.append(partition)
-                    print(f"Debug: Generated Excel partition for {table_name} with sheet {sheet_name}")
-                else:
-                    # Standard processing for non-Excel connections
-                    print(f"Debug: Processing standard (non-Excel) connections")
-                    for i, relation in enumerate(relations):
-                        print(f"Debug: Relation {i} attributes: {relation.attrib}")
-                        print(f"Debug: Relation {i} text: {relation.text}")
-                        # Generate M code for this relation
-                        from ..common.tableau_helpers import generate_m_code
-                        m_code = generate_m_code(connection, relation)
-                        print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
-                        if m_code:
-                            # Use the relation name for both table and partition
-                            relation_name = relation.get('name', f'Table{i+1}')
-                            partition = PowerBiPartition(
-                                name=relation_name,
-                                expression=m_code,
-                                source_type='m',
-                                description=f"Partition for table {relation_name}"
-                            )
-                            partitions.append(partition)
+                    
         except Exception as e:
-            print(f"Error extracting partition info: {e}")
-            import traceback
-            print(traceback.format_exc())
-        
-        print(f"Debug: Generated {len(partitions)} partitions")
+            logging.error(f"Error extracting partition info: {str(e)}", exc_info=True)
+            
         return partitions
 
-    def _map_datatype(self, tableau_type: str) -> str:
-        """Map Tableau datatypes to Power BI datatypes.
+    def _get_datasource_id(self, ds_element: ET.Element) -> str:
+        """Get a unique ID for a datasource element.
         
         Args:
-            tableau_type: Tableau datatype string
+            ds_element: Datasource element
             
         Returns:
-            Power BI datatype string
+            Unique ID string
         """
-        if not tableau_type or not isinstance(tableau_type, str):
-            print(f"Warning: Invalid datatype '{tableau_type}', using 'string' as default")
-            return 'string'
-            
-        return self.tableau_to_tmdl_datatypes.get(tableau_type.lower(), 'string')
-    
+        # Try to get existing ID
+        ds_id = ds_element.get('id') or ds_element.get('name')
+        if not ds_id:
+            # Generate a new UUID if no ID exists
+            ds_id = str(uuid.uuid4())
+        return ds_id
+
     def extract_all_tables(self) -> List[PowerBiTable]:
         """Extract all table information from the workbook based on datasources and their relations.
         
         Returns:
             List[PowerBiTable]: List of extracted tables
         """
+        tables = []
         try:
-            table_config_yaml = self.config.get('PowerBiTable')
-            if not table_config_yaml:
-                print("Error: 'PowerBiTable' configuration not found.")
-                return []
-
-            datasource_xpath = table_config_yaml.get('source_xpath')
-            if not datasource_xpath:
-                print("Error: 'source_xpath' for PowerBiTable (datasources) not defined.")
-                return []
-
-            datasource_elements = self._find_elements(datasource_xpath)
+            # Get all datasources
+            datasources = self.root.findall('.//datasource')
+            logging.info(f"Found {len(datasources)} datasources")
             
-            # Initialize default datatype mapping if not provided in config
-            if not self.tableau_to_tmdl_datatypes:
-                self.tableau_to_tmdl_datatypes = {
-                    'string': 'string',
-                    'integer': 'int64',
-                    'real': 'double',
-                    'boolean': 'boolean',
-                    'date': 'dateTime',
-                    'datetime': 'dateTime'
-                }
-
-            # Use a dictionary to track unique tables by name, keeping only the one with most columns
-            unique_tables = {}
-            datasource_info = {}  # Store datasource info for relation processing
-
-            # First pass: Process datasources and extract their basic information
-            for ds_element in datasource_elements:
-                try:
-                    table_name_mapping = table_config_yaml.get('source_name', {})
-                    
-                    # Try 'source_attribute' (e.g., caption)
-                    table_name = self._get_mapping_value(table_name_mapping, ds_element)
-                    
-                    # Fallback to 'fallback_attribute' (e.g., name) if primary is None or empty
-                    if not table_name and 'fallback_attribute' in table_name_mapping:
-                        fallback_attr = table_name_mapping['fallback_attribute']
-                        table_name = ds_element.get(fallback_attr)
-
-                    if not table_name:
-                        continue
-                    
-                    # Check if this is a federated datasource
-                    connection = ds_element.find('.//connection')
-                    if connection is not None:
-                        if connection.get('class') == 'federated':
-                            # For federated datasources, get the relation name
-                            relation = ds_element.find('.//relation[@type="table"]')
-                            if relation is not None:
-                                final_table_name = relation.get('name')
-                                if not final_table_name:
-                                    continue
-                            else:
-                                continue
-                        else:
-                            # For non-federated datasources, use the table name
-                            final_table_name = table_name
-                    else:
-                        continue
-                    
-                    # Store datasource information using the table name
-                    datasource_info[final_table_name] = {
-                        'name': final_table_name,
-                        'element': ds_element
-                    }
-
-                    description_mapping = table_config_yaml.get('description', {})
-                    description = self._get_mapping_value(description_mapping, ds_element)
-
-                    is_hidden_mapping = table_config_yaml.get('is_hidden', {})
-                    is_hidden = self._get_mapping_value(is_hidden_mapping, ds_element, default_value=False)
-
-                    # Extract Columns for this Datasource
-                    columns_yaml_config = table_config_yaml.get('columns_config', {})
-                    pbi_columns, pbi_measures = self._extract_columns_and_measures_for_datasource(
-                        ds_element, columns_yaml_config, final_table_name
-                    )
-
-                    # Extract partition information
-                    partitions = self._extract_partition_info(ds_element, final_table_name, pbi_columns)
-
-                    # Create the table object
-                    table = PowerBiTable(
-                        source_name=final_table_name,  # Use the de-duplicated name
-                        description=description,
-                        is_hidden=is_hidden,
-                        columns=pbi_columns,
-                        measures=pbi_measures,
-                        hierarchies=[],
-                        partitions=partitions,
-                        annotations={})
-
-                    # Keep only the table with the most columns and measures
-                    if final_table_name not in unique_tables or \
-                       len(pbi_columns) + len(pbi_measures) > len(unique_tables[final_table_name].columns) + len(unique_tables[final_table_name].measures):
-                        unique_tables[final_table_name] = table
-                except Exception as e:
-
-                    # Continue to next datasource if there's an error
+            # Track unique table names to avoid duplicates
+            seen_table_names = set()
+            
+            # Process each datasource
+            for ds_element in datasources:
+                # Get datasource name and caption
+                ds_name = ds_element.get('name', '')
+                ds_caption = ds_element.get('caption', ds_name)
+                logging.info(f"Processing datasource: {ds_name} (caption: {ds_caption})")
+                
+                # Skip datasources without a connection
+                connection = ds_element.find('.//connection')
+                if connection is None:
+                    logging.info(f"Skipping datasource {ds_name} - no connection found")
                     continue
-
-            # Second pass: Process relations within datasources if configured
-            relation_config = table_config_yaml.get('relation_config')
-            if relation_config:
-                relation_xpath = relation_config.get('source_xpath')
-                if relation_xpath:
-
+                
+                # Get datasource ID for deduplication
+                ds_id = self._get_datasource_id(ds_element)
+                
+                # Extract columns and measures
+                columns_yaml_config = self.config.get('PowerBiColumn', {})
+                columns, measures = self.column_parser.extract_columns_and_measures(
+                    ds_element,
+                    columns_yaml_config,
+                    ds_caption  # Use caption as table name for DAX expressions
+                )
+                
+                # Get table name - use caption if available, otherwise use name
+                table_name = ds_caption or ds_name
+                
+                # Handle federated datasources
+                if connection.get('class') == 'federated':
+                    # For federated datasources, use relation name as table name
+                    relations = connection.findall('.//relation')
+                    for relation in relations:
+                        rel_name = relation.get('name')
+                        if rel_name:
+                            table_name = rel_name
+                            break
+                
+                # Create a unique table name if needed
+                final_table_name = table_name
+                counter = 1
+                while final_table_name in seen_table_names:
+                    final_table_name = f"{table_name}_{counter}"
+                    counter += 1
+                seen_table_names.add(final_table_name)
+                
+                # Extract partition information
+                partitions = self._extract_partition_info(ds_element, final_table_name, columns)
+                
+                # Create PowerBiTable
+                table = PowerBiTable(
+                    source_name=final_table_name,
+                    description=f"Imported from Tableau datasource: {ds_name}",
+                    columns=columns,
+                    measures=measures,
+                    hierarchies=[],
+                    partitions=partitions
+                )
+                
+                tables.append(table)
+                logging.info(f"Added table {final_table_name} with {len(columns)} columns, {len(measures)} measures, and {len(partitions)} partitions")
+                
+            # Deduplicate tables based on name and datasource_id
+            unique_tables = {}
+            for table in tables:
+                key = table.source_name
+                if key in unique_tables:
+                    existing_table = unique_tables[key]
+                    # Keep the table with more columns/measures
+                    existing_complexity = len(existing_table.columns) + len(existing_table.measures)
+                    new_complexity = len(table.columns) + len(table.measures)
+                    if new_complexity > existing_complexity:
+                        unique_tables[key] = table
+                else:
+                    unique_tables[key] = table
                     
-                    for ds_id, ds_info in datasource_info.items():
-                        ds_element = ds_info['element']
+            tables = list(unique_tables.values())
+            logging.info(f"After deduplication, found {len(tables)} unique tables")
+            
+        except Exception as e:
+            logging.error(f"Error extracting tables: {str(e)}", exc_info=True)
+            
+        return tables
 
-                        try:
-                            # Find relations within this datasource
-                            relation_elements = ds_element.findall(relation_xpath, namespaces=self.namespaces)
-
-                            
-                            # If no relations found directly, try a more generic approach
-                            if not relation_elements:
-                                # Try to find any relation elements anywhere in this datasource
-                                relation_elements = ds_element.findall(".//relation", namespaces=self.namespaces)
-                                
-                                # If still no relations, try without namespaces
-                                if not relation_elements:
-                                    relation_elements = ds_element.findall(".//relation")
-                            
-                            
-                            for rel_element in relation_elements:
-                                # Process relation based on its type
-                                table_type_attr = relation_config.get('table_type', {}).get('source_attribute')
-                                rel_type = rel_element.get(table_type_attr) if table_type_attr else None
-                                
-                                # Get table name from relation
-                                table_name_attr = relation_config.get('table_name', {}).get('source_attribute')
-                                rel_table_name = rel_element.get(table_name_attr) if table_name_attr else None
-                                
-                                # If no name, try to generate one based on type
-                                if not rel_table_name:
-                                    if rel_type == 'table':
-                                        rel_table_name = f"Table_{len(extracted_tables)}"
-                                    elif rel_type == 'text':
-                                        rel_table_name = f"SQL_Query_{len(extracted_tables)}"
-                                    elif rel_type == 'join':
-                                        rel_table_name = f"Join_{len(extracted_tables)}"
-                                    else:
-                                        rel_table_name = f"Relation_{len(extracted_tables)}"
-                                
-                                # Create a unique name for this relation
-                                rel_final_name = f"{ds_info['name']} - {rel_table_name}"
-                                counter = 1
-                                while rel_final_name in seen_table_names:
-                                    rel_final_name = f"{ds_info['name']} - {rel_table_name}_{counter}"
-                                    counter += 1
-                                seen_table_names.add(rel_final_name)
-                                
-                                # Handle SQL queries (text type relations)
-                                description = f"Table {rel_table_name} from datasource {ds_info['name']}"
-                                if rel_type == 'text':
-                                    # Try to extract SQL query text
-                                    sql_query_xpath = relation_config.get('sql_query', {}).get('source_xpath')
-                                    if sql_query_xpath:
-                                        try:
-                                            sql_text = rel_element.text
-                                            if sql_text and len(sql_text) > 10:  # Basic validation
-                                                # Truncate long SQL for description
-                                                sql_preview = sql_text[:100] + '...' if len(sql_text) > 100 else sql_text
-                                                description = f"SQL Query: {sql_preview}"
-                                        except Exception:
-                                            pass
-                                
-                                # Create a table entry for this relation
-                                rel_table = PowerBiTable(
-                                    source_name=rel_final_name,
-                                    description=description,
-                                    is_hidden=False,
-                                    columns=[],  # Could extract columns if needed
-                                    measures=[],
-                                    hierarchies=[],
-                                    partitions=[],
-                                    annotations={'relation_type': rel_type or 'unknown'}
-                                )
-                                extracted_tables.append(rel_table)
-                        except Exception:
-                            # Silently continue if there's an error processing relations
-                            continue
-
-            # Convert dictionary values to list for return
-            return list(unique_tables.values())
-        except Exception:
-            # Return empty list if there's an error in the overall process
-            return []
-    
+    def parse_workbook(self, twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
+        """Parse a Tableau workbook file.
+        
+        Args:
+            twb_path: Path to the TWB file
+            config: Configuration dictionary
+            
+        Returns:
+            Dict containing extracted table information
+        """
+        self.twb_path = twb_path
+        self.config = config
+        self.workbook = self._load_workbook()
+        
+        tables = self.extract_all_tables()
+        
+        return {
+            'tables': tables
+        }
     def _extract_columns_and_measures_for_datasource(
         self, 
         ds_element: ET.Element, 
