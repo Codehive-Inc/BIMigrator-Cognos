@@ -129,7 +129,17 @@ class TableParser(BaseParser):
                     from ..common.tableau_helpers import generate_excel_m_code
                     sheet_name = excel_sheet or 'Sheet1'
                     print(f"Debug: Using sheet name: {sheet_name}")
-                    m_code = generate_excel_m_code(excel_filename, sheet_name)
+                    
+                    # Extract column data from the datasource
+                    columns_data = []
+                    for column in ds_element.findall('.//column'):
+                        col_data = {
+                            'source_name': column.get('name', '').strip('[]'),
+                            'datatype': column.get('datatype', 'string')
+                        }
+                        columns_data.append(col_data)
+                    
+                    m_code = generate_excel_m_code(excel_filename, sheet_name, columns_data)
                     print(f"Debug: Generated M code length: {len(m_code) if m_code else 0}")
                     
                     partition_name = table_name
