@@ -212,16 +212,22 @@ def generate_excel_m_code(filename: str, sheet_name: str, columns: List[Dict[str
         }
         
         # Build type conversion pairs
+        seen_columns = set()  # Track unique columns to avoid duplicates
         conversion_pairs = []
         for col in columns:
             source_name = col.get('source_name')
+            # Skip internal Tableau columns and duplicates
+            if not source_name or '__tableau_internal_object_id__' in source_name or source_name in seen_columns:
+                continue
+                
             datatype = col.get('datatype', 'string').lower()
-            if source_name:
-                m_type = type_mapping.get(datatype, 'type text')
-                conversion_pairs.append(f'{"{"}{source_name}{"}"}, {m_type}')
+            m_type = type_mapping.get(datatype, 'type text')
+            # Format column name with proper quotes
+            conversion_pairs.append(f'"{source_name}", {m_type}')
+            seen_columns.add(source_name)
         
         if conversion_pairs:
-            type_conversions = "{" + ", ".join(f"{{{pair}}}" for pair in conversion_pairs) + "}"
+            type_conversions = "{" + ", ".join("{" + pair + "}" for pair in conversion_pairs) + "}"
     
     # Create a standard Excel M query template with Promoted Headers and Changed Type steps
     excel_m_template = (

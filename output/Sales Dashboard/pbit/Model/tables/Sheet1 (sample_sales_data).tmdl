@@ -88,7 +88,7 @@ table 'Sheet1 (sample_sales_data)'
 					Source = Excel.Workbook(File.Contents("C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx"), null, true),
 					Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{{Order ID}, type text}, {{Order Date}, type text}, {{Region}, type text}, {{Product Category}, type text}, {{Product Name}, type text}, {{Sales}, type text}, {{Quantity}, type text}, {{Discount}, type text}, {{Profit}, type text}, {{Order ID}, type text}, {{__tableau_internal_object_id__].[Sheet1_D037C255B3114ACAA4B284556B1F986B}, type text}, {{Order ID}, type text}, {{Order Date}, type text}, {{Region}, type text}, {{Product Category}, type text}, {{Product Name}, type text}, {{Sales}, type text}, {{Quantity}, type text}, {{Discount}, type text}, {{Profit}, type text}})
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Order ID", Int64.Type}, {"Order Date", type datetime}, {"Region", type text}, {"Product Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
 				in
 					#"Changed Type"
         

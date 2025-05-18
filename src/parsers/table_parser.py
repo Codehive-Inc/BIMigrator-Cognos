@@ -49,12 +49,18 @@ class TableParser(BaseParser):
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
         self.calculation_converter = CalculationConverter(config)
     
-    def _extract_partition_info(self, ds_element: ET.Element, table_name: str) -> List[PowerBiPartition]:
+    def _extract_partition_info(
+        self,
+        ds_element: ET.Element,
+        table_name: str,
+        columns: Optional[List[PowerBiColumn]] = None
+    ) -> List[PowerBiPartition]:
         """Extract partition information from a datasource element.
         
         Args:
             ds_element: Datasource element
             table_name: Name of the table
+            columns: Optional list of PowerBiColumn objects with type information
             
         Returns:
             List of PowerBiPartition objects
@@ -130,14 +136,15 @@ class TableParser(BaseParser):
                     sheet_name = excel_sheet or 'Sheet1'
                     print(f"Debug: Using sheet name: {sheet_name}")
                     
-                    # Extract column data from the datasource
+                    # Use column data from PowerBiColumn objects if available
                     columns_data = []
-                    for column in ds_element.findall('.//column'):
-                        col_data = {
-                            'source_name': column.get('name', '').strip('[]'),
-                            'datatype': column.get('datatype', 'string')
-                        }
-                        columns_data.append(col_data)
+                    if columns:
+                        for col in columns:
+                            col_data = {
+                                'source_name': col.source_name,
+                                'datatype': col.pbi_datatype
+                            }
+                            columns_data.append(col_data)
                     
                     m_code = generate_excel_m_code(excel_filename, sheet_name, columns_data)
                     print(f"Debug: Generated M code length: {len(m_code) if m_code else 0}")
@@ -268,7 +275,7 @@ class TableParser(BaseParser):
                     )
 
                     # Extract partition information
-                    partitions = self._extract_partition_info(ds_element, final_table_name)
+                    partitions = self._extract_partition_info(ds_element, final_table_name, pbi_columns)
 
                     # Create the table object
                     table = PowerBiTable(
