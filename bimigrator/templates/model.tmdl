@@ -7,12 +7,14 @@ model {{model_name}}
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation __PBI_TimeIntelligenceEnabled = {{time_intelligence_enabled}}
-annotation PBIDesktopVersion = {{desktop_version}}
 annotation PBI_QueryOrder = {{{query_order_list}}}
 
+annotation __PBI_TimeIntelligenceEnabled = {{time_intelligence_enabled}}
+
+annotation PBIDesktopVersion = {{desktop_version}}
+
 {{#each tables}}
-ref table {{this}}
+ref table '{{this}}'
 {{/each}}
 
 ref cultureInfo {{default_culture}}

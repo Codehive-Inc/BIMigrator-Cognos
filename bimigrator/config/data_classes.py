@@ -338,9 +338,7 @@ class CultureInfo:
     culture: str
     linguistic_metadata: LinguisticMetadata = field(default_factory=LinguisticMetadata)
 
-
 # --- Model Objects (Targeting TMDL Files) ---
-
 @dataclass
 class PowerBiColumn:
     """Represents a column within a Power BI table for TMDL."""
@@ -413,7 +411,6 @@ class PowerBiRelationship:
     from_column: str
     to_table: str
     to_column: str
-    description: Optional[str] = None
     is_active: bool = True
     cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
     cross_filter_behavior: Literal['oneWay', 'bothDirections', 'automatic'] = 'automatic'
@@ -426,7 +423,6 @@ class PowerBiTable:
     source_name: str
     description: Optional[str] = None
     is_hidden: bool = False
-    source_filename: Optional[str] = None  # Path to the source file
     partitions: List[PowerBiPartition] = field(default_factory=list)
     columns: List[PowerBiColumn] = field(default_factory=list)
     measures: List[PowerBiMeasure] = field(default_factory=list)

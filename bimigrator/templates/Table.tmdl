@@ -1,14 +1,11 @@
-table {{source_name}}
-    lineageTag: {{lineage_tag}}
-    {{#if description}}
-    description: {{description}}
-    {{/if}}
+table '{{source_name}}'
+
     {{#if is_hidden}}
     isHidden
     {{/if}}
 
     {{#each columns}}
-    column {{source_name}}
+    column '{{source_name}}'
         dataType: {{datatype}}
         {{#if format_string}}
         formatString: {{format_string}}
@@ -20,11 +17,17 @@ table {{source_name}}
         type: calculated
         {{/if}}
         {{#if source_column}}
+        {{#if is_calculated}}
+        sourceColumn = ```
+            
+            {{{source_column}}}
+            
+            ```
+        {{else}}
         sourceColumn: {{{source_column}}}
         {{/if}}
-        {{#if description}}
-        description: {{description}}
         {{/if}}
+
         {{#if is_hidden}}
         isHidden
         {{/if}}
@@ -34,24 +37,26 @@ table {{source_name}}
         {{#if is_data_type_inferred}}
         isDataTypeInferred: {{is_data_type_inferred}}
         {{/if}}
-        {{#if annotations}}
-        annotations
-            {{#each annotations}}
-            {{@key}}: {{{this}}}
-            {{/each}}
+        {{#if annotations.SummarizationSetBy}}
+        annotation SummarizationSetBy = {{annotations.SummarizationSetBy}}
+        {{else}}
+        annotation SummarizationSetBy = Automatic
+        {{/if}}
+
+        {{#if annotations.PBI_FormatHint}}
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         {{/if}}
         
     {{/each}}
 
     {{#each measures}}
-    measure {{source_name}}
-        expression: {{{expression}}}
+    measure '{{source_name}}' = ```
+			{{{expression}}}
+			```
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
-        {{#if description}}
-        description: {{description}}
-        {{/if}}
+
         {{#if is_hidden}}
         isHidden
         {{/if}}
@@ -59,9 +64,7 @@ table {{source_name}}
 
     {{#each hierarchies}}
     hierarchy {{name}}
-        {{#if description}}
-        description: {{description}}
-        {{/if}}
+
         {{#if is_hidden}}
         isHidden
         {{/if}}
@@ -75,10 +78,12 @@ table {{source_name}}
     {{/each}}
 
     {{#each partitions}}
-    partition {{name}} = {{expression}}
-        {{#if description}}
-        description: {{description}}
-        {{/if}}
+    partition '{{name}}' = {{source_type}}
+        mode: import
+        source = 
+            {{{expression}}}
+        
+
     {{/each}}
 
     {{#if has_widget_serialization}}
@@ -88,3 +93,5 @@ table {{source_name}}
           "Columns": {{column_settings}}
         }
     {{/if}}
+
+    annotation PBI_ResultType = Table
