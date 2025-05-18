@@ -18,6 +18,18 @@ class ColumnParser:
         """
         self.config = config
         self.calculation_converter = CalculationConverter(config)
+        self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
+        
+        # Initialize default datatype mapping if not provided in config
+        if not self.tableau_to_tmdl_datatypes:
+            self.tableau_to_tmdl_datatypes = {
+                'string': 'string',
+                'integer': 'int64',
+                'real': 'double',
+                'boolean': 'boolean',
+                'date': 'datetime',
+                'datetime': 'datetime'
+            }
         
     def extract_columns_and_measures(
         self,
@@ -116,15 +128,28 @@ class ColumnParser:
                     measures.append(measure)
                 else:
                     # Create regular column
+                    # For numeric columns, set summarize_by to 'sum'
+                    summarize_by = "sum" if self._map_datatype(twb_datatype).lower() in ["int64", "double", "decimal", "currency"] else "none"
+                    
+                    # Set annotations
+                    annotations = {
+                        'SummarizationSetBy': 'User' if summarize_by == "sum" else 'Automatic',
+                        'DAXExpression': dax_expression
+                    }
+                    
+                    # Add PBI_FormatHint for numeric columns
+                    if self._map_datatype(twb_datatype).lower() in ["int64", "double", "decimal", "currency"]:
+                        annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
+                    
                     column = PowerBiColumn(
                         source_name=col_name,
                         pbi_datatype=self._map_datatype(twb_datatype),
                         description=f"Converted from Tableau calculation: {formula}",
                         is_calculated=True,
-                        is_data_type_inferred=True
+                        is_data_type_inferred=True,
+                        summarize_by=summarize_by,
+                        annotations=annotations
                     )
-                    # Store DAX expression in annotations
-                    column.annotations['DAXExpression'] = dax_expression
                     columns.append(column)
                     
             seen_col_names.add(col_name)
@@ -138,9 +163,24 @@ class ColumnParser:
             twb_datatype = rel_col.get(relation_datatype_attr, 'string')
             pbi_datatype = self._map_datatype(twb_datatype)
             
+            # For numeric columns, set summarize_by to 'sum'
+            summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] else "none"
+            
+            # Set annotations
+            annotations = {
+                'SummarizationSetBy': 'User' if summarize_by == "sum" else 'Automatic'
+            }
+            
+            # Add PBI_FormatHint for numeric columns
+            if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
+                annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
+            
             column = PowerBiColumn(
                 source_name=col_name,
-                pbi_datatype=pbi_datatype
+                pbi_datatype=pbi_datatype,
+                source_column=col_name,  # Regular columns use their name as the source column
+                summarize_by=summarize_by,
+                annotations=annotations
             )
             columns.append(column)
             seen_col_names.add(col_name)
@@ -190,9 +230,24 @@ class ColumnParser:
                 
             pbi_datatype = self._map_datatype(twb_datatype)
             
+            # For numeric columns, set summarize_by to 'sum'
+            summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] else "none"
+            
+            # Set annotations
+            annotations = {
+                'SummarizationSetBy': 'User' if summarize_by == "sum" else 'Automatic'
+            }
+            
+            # Add PBI_FormatHint for numeric columns
+            if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
+                annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
+            
             column = PowerBiColumn(
                 source_name=col_name,
-                pbi_datatype=pbi_datatype
+                pbi_datatype=pbi_datatype,
+                source_column=col_name,  # Regular columns use their name as the source column
+                summarize_by=summarize_by,
+                annotations=annotations
             )
             columns.append(column)
             seen_col_names.add(col_name)
@@ -208,9 +263,7 @@ class ColumnParser:
         Returns:
             Power BI datatype string
         """
-        tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
         if not tableau_type or not isinstance(tableau_type, str):
             return 'string'
             
-        tableau_type = tableau_type.lower()
-        return tableau_to_tmdl_datatypes.get(tableau_type, 'string')
+        return self.tableau_to_tmdl_datatypes.get(tableau_type.lower(), 'string')

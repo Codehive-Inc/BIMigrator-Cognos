@@ -186,13 +186,25 @@ table 'Custom SQL Query (dlh_nsec.objdb)'
 
     measure 'Body' = ```
 			"Date of Load " &
-MIN('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604242555215877]) &
+STR(
+    MINX(
+        VALUES('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604242555215877]),
+        'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604242555215877]
+    )
+) &
 "
 System Count: " &
-SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count]) &
+STR(
+    SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count])
+) &
 "
 Golden Data Value: " &
-MAX('Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]) &
+STR(
+    MAXX(
+        VALUES('Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]),
+        'Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]
+    )
+) &
 "
 
 Regards,

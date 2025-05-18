@@ -3,14 +3,17 @@ table 'Sheet1 (sample_sales_data)'
 
     column 'Order ID'
         dataType: int64
-        summarizeBy: none
+        summarizeBy: sum
+        sourceColumn: Order ID
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Order Date'
         dataType: datetime
         summarizeBy: none
+        sourceColumn: Order Date
 
         annotation SummarizationSetBy = Automatic
 
@@ -18,6 +21,7 @@ table 'Sheet1 (sample_sales_data)'
     column 'Region'
         dataType: string
         summarizeBy: none
+        sourceColumn: Region
 
         annotation SummarizationSetBy = Automatic
 
@@ -25,6 +29,7 @@ table 'Sheet1 (sample_sales_data)'
     column 'Product Category'
         dataType: string
         summarizeBy: none
+        sourceColumn: Product Category
 
         annotation SummarizationSetBy = Automatic
 
@@ -32,37 +37,46 @@ table 'Sheet1 (sample_sales_data)'
     column 'Product Name'
         dataType: string
         summarizeBy: none
+        sourceColumn: Product Name
 
         annotation SummarizationSetBy = Automatic
 
         
     column 'Sales'
         dataType: double
-        summarizeBy: none
+        summarizeBy: sum
+        sourceColumn: Sales
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Quantity'
         dataType: int64
-        summarizeBy: none
+        summarizeBy: sum
+        sourceColumn: Quantity
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Discount'
         dataType: double
-        summarizeBy: none
+        summarizeBy: sum
+        sourceColumn: Discount
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Profit'
         dataType: double
-        summarizeBy: none
+        summarizeBy: sum
+        sourceColumn: Profit
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
 

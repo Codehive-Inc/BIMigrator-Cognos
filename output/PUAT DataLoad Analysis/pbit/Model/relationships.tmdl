@@ -1,10 +1,10 @@
-relationship d5844a9f-5441-4299-9b3d-54b134f7f806
+relationship a6d477c0-f7a8-44be-9a94-bb3f5ac32b73
 	fromColumn: 'Custom SQL Query'.Tab_module
 	toColumn: 'Custom SQL Query2'.OBJ_SMF_TABLES
 	crossFilteringBehavior: bothDirections
 	fromCardinality: one
 	isActive: true
-relationship ccaffb4e-8204-49f9-9200-118aeb45ff3d
+relationship d6e9c5ca-33b6-468f-aeb0-c77121b87c76
 	fromColumn: 'Custom SQL Query'.PUAT_Module
 	toColumn: 'Custom SQL Query2'.OBJ_SMF_TABLES
 	crossFilteringBehavior: bothDirections

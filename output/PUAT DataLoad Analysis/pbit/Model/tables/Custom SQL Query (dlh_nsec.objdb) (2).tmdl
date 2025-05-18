@@ -261,14 +261,14 @@ table 'Custom SQL Query (dlh_nsec.objdb) (2)'
         SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
         FILTER(
             'Custom SQL Query (dlh_nsec.objdb) (2)',
-            COUNTROWS(VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])) = -4
+            COUNTROWS(FILTER('Custom SQL Query (dlh_nsec.objdb) (2)', 'Custom SQL Query (dlh_nsec.objdb) (2)'[Measure] <> BLANK())) = -4
         )
     ) / SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
 )
 			```
 
     measure 'dip flag' = ```
-			IF('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] > 'Parameters'[Parameter 1], TRUE(), FALSE())
+			IF('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] > 'Custom SQL Query (dlh_nsec.objdb) (2)'[Parameters].[Parameter 1], TRUE(), FALSE())
 			```
 
     measure 'Avg Data?' = ```
@@ -424,12 +424,22 @@ MIN(
 			```
 
     measure 'Golden diff system' = ```
-			IF(
-    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
-        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < -[Parameters].[Parameter 4],
-    -(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])),
-    BLANK()
+			VAR MinCalc = MINX(
+    FILTER(
+        'Custom SQL Query (dlh_nsec.objdb) (2)',
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+    ),
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]
 )
+VAR SumMeasure = SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
+VAR Parameter4 = 'Parameters'[Parameter 4]
+RETURN
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+            && MinCalc - SumMeasure < -Parameter4,
+        -(MinCalc - SumMeasure),
+        BLANK()
+    )
 			```
 
     measure 'Golden diff' = ```
