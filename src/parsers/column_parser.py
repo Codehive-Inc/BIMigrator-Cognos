@@ -3,6 +3,7 @@ from typing import Dict, Any, List, Tuple, Optional
 import xml.etree.ElementTree as ET
 
 from config.data_classes import PowerBiColumn, PowerBiMeasure
+from ..converters.calculation_converter import CalculationInfo
 from ..converters import CalculationConverter
 
 
@@ -79,34 +80,51 @@ class ColumnParser:
             twb_datatype = calc_field.get(calc_datatype_attr, 'string')
             role = calc_field.get('role', '')
             
+            # Common aggregation functions
+            agg_functions = ['SUM', 'AVERAGE', 'AVG', 'COUNT', 'MIN', 'MAX', 'COUNTD', 'ATTR']
+            
             # Extract calculation formula
             calc_elem = calc_field.find('calculation')
             if calc_elem is not None and calc_elem.get('formula'):
                 formula = calc_elem.get('formula')
                 
+                # Auto-detect measures based on aggregation functions
+                formula_upper = formula.upper()
+                for agg_func in agg_functions:
+                    if formula_upper.startswith(agg_func + '('):
+                        role = 'measure'
+                        break
+                
                 # Convert to DAX
-                dax_expression = self.calculation_converter.to_dax(
-                    formula,
-                    pbi_table_name,
-                    twb_datatype
+                dax_expression = self.calculation_converter.convert_to_dax(
+                    CalculationInfo(
+                        formula=formula,
+                        caption=col_name,
+                        datatype=twb_datatype,
+                        role=role
+                    ),
+                    pbi_table_name
                 )
                 
                 if role == 'measure':
                     # Create measure
                     measure = PowerBiMeasure(
-                        name=col_name,
-                        expression=dax_expression,
+                        source_name=col_name,
+                        dax_expression=dax_expression,
                         description=f"Converted from Tableau calculation: {formula}"
                     )
                     measures.append(measure)
                 else:
-                    # Create calculated column
+                    # Create regular column
                     column = PowerBiColumn(
                         source_name=col_name,
                         pbi_datatype=self._map_datatype(twb_datatype),
-                        expression=dax_expression,
-                        description=f"Converted from Tableau calculation: {formula}"
+                        description=f"Converted from Tableau calculation: {formula}",
+                        is_calculated=True,
+                        is_data_type_inferred=True
                     )
+                    # Store DAX expression in annotations
+                    column.annotations['DAXExpression'] = dax_expression
                     columns.append(column)
                     
             seen_col_names.add(col_name)
@@ -173,7 +191,6 @@ class ColumnParser:
             pbi_datatype = self._map_datatype(twb_datatype)
             
             column = PowerBiColumn(
-                name=col_name,
                 source_name=col_name,
                 pbi_datatype=pbi_datatype
             )

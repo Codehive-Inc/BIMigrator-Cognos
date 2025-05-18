@@ -181,7 +181,27 @@ class TableParser(BaseParser):
                 seen_table_names.add(final_table_name)
                 
                 # Extract partition information
-                partitions = self._extract_partition_info(ds_element, final_table_name, columns)
+                all_partitions = self._extract_partition_info(ds_element, final_table_name, columns)
+                
+                # Deduplicate partitions based on name and source file
+                seen_partitions = {}
+                for partition in all_partitions:
+                    # Extract file name from M code
+                    file_key = None
+                    if 'File.Contents' in partition.expression:
+                        start = partition.expression.find('File.Contents("') + len('File.Contents("')
+                        end = partition.expression.find('"', start)
+                        if start > -1 and end > -1:
+                            file_key = partition.expression[start:end]
+                    
+                    # Create unique key from file name and partition name
+                    key = (file_key, partition.name) if file_key else partition.name
+                    
+                    if key not in seen_partitions:
+                        seen_partitions[key] = partition
+                
+                # Use unique partitions
+                partitions = list(seen_partitions.values())
                 
                 # Create PowerBiTable
                 table = PowerBiTable(

@@ -1,0 +1,260 @@
+table 'Custom SQL Query (dlh_nsec.objdb)'
+
+
+    column 'weekday'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'max Week Flag'
+        dataType: boolean
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Week Start Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'diff flag'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'help'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Golden Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Subject'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Range'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Week End Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Tab_module'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup_date'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'dt'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'serial_count'
+        dataType: int64
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_DATE'
+        dataType: dateTime
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_MONTH'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_QTR'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_YEAR'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_WEEK'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FT'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OBJ_SMF_TABLES'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AVG_DATA'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'Weekly count' = ```
+			CALCULATE(
+    SUM(
+        IF(
+            'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241832890368] = 6 || 'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241832890368] = 7,
+            'Custom SQL Query (dlh_nsec.objdb)'[serial_count],
+            0
+        )
+    ),
+    VALUES('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK])
+)
+			```
+
+    measure '% diff' = ```
+			1 - 'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241837174785] / 'Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]
+			```
+
+    measure 'Body' = ```
+			"Date of Load " &
+MIN('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604242555215877]) &
+"
+System Count: " &
+SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count]) &
+"
+Golden Data Value: " &
+MAX('Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]) &
+"
+
+Regards,
+PUAT Data Load"
+			```
+
+    measure '1500 flag' = ```
+			IF(
+    MIN('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1857734887845101576]) - SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count]) > 1500,
+    "Flag",
+    "Normal"
+)
+			```
+
+    measure 'Measure vs Golden' = ```
+			MIN('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1857734887806193665]) - SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count])
+			```
+
+    measure 'Diffrence' = ```
+			MIN('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1857734887845101576]) - SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count])
+			```
+
+    measure 'Max\Avg' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb)'[Parameters].[Parameter 3] = 'Max',
+    'Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546],
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb)'[Parameters].[Parameter 3] = 'Avg',
+        'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1857734887806193665],
+        BLANK()
+    )
+)
+			```
+
+    measure 'Diffrence flag' = ```
+			VAR MinCalc = MINX('Custom SQL Query (dlh_nsec.objdb)', 'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1857734887845101576])
+VAR SumSerialCount = SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count])
+RETURN
+    IF (
+        MinCalc - SumSerialCount > 1500,
+        "Flag",
+        IF (
+            MinCalc - SumSerialCount >= 0 && MinCalc - SumSerialCount <= 1500,
+            "Normal",
+            "Spike"
+        )
+    )
+			```
+
+    measure 'Max Weekly count' = ```
+			CALCULATE(
+    MAX('Custom SQL Query (dlh_nsec.objdb)'[serial_count]),
+    FILTER(
+        'Custom SQL Query (dlh_nsec.objdb)',
+        'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241832890368] = 6 || 'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604241832890368] = 7
+    ),
+    VALUES('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK])
+)
+			```
+
+
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,533 @@
+table 'Custom SQL Query (dlh_nsec.objdb) (2)'
+
+
+    column 'Subject'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Weekday'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Min Of Fis Week'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Data by Module'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max Fiscal Week Measure'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Date'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Week Num'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Golden Data Label'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Data Load Metrics'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'help'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max\Avg'
+        dataType: int64
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'tooltip'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Fiscal Date'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Period'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Week'
+        dataType: string
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MaxFiscal Week'
+        dataType: boolean
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max Of Fis Week'
+        dataType: dateTime
+        summarizeBy: none
+        type: calculated
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PUAT_Module'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup_month'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'date'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Measure'
+        dataType: int64
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_DATE'
+        dataType: dateTime
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_MONTH'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_QTR'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_YEAR'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_WEEK'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FT'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OBJ_SMF_TABLES'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AVG_DATA'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max_data'
+        dataType: string
+        summarizeBy: none
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure '% Prev Week Diff' = ```
+			1 - (
+    CALCULATE(
+        SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
+        FILTER(
+            'Custom SQL Query (dlh_nsec.objdb) (2)',
+            COUNTROWS(VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])) = -4
+        )
+    ) / SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
+)
+			```
+
+    measure 'dip flag' = ```
+			IF('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] > 'Parameters'[Parameter 1], TRUE(), FALSE())
+			```
+
+    measure 'Avg Data?' = ```
+			SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) = SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284])
+			```
+
+    measure 'Golden Flag' = ```
+			SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) = SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284])
+			```
+
+    measure '% Diff' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> "System",
+    -(1 - (SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) / MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]))),
+    BLANK()
+)
+			```
+
+    measure 'diff flag' = ```
+			VAR Parameter2Value = 'Parameters'[Parameter 2] / 100
+RETURN
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] = 0,
+        "Gold",
+        IF(
+            -('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607]) > Parameter2Value,
+            "Flag",
+            IF(
+                -('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607]) < Parameter2Value,
+                "Normal",
+                BLANK()
+            )
+        )
+    )
+			```
+
+    measure 'unicode' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970530209800] = "Flag",
+    "⚠",
+    BLANK()
+)
+			```
+
+    measure 'size' = ```
+			MIN(1)
+			```
+
+    measure 'flag diff' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] < -('Parameters'[Parameter 2] / 100)
+        && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] != 0,
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607],
+    BLANK()
+)
+			```
+
+    measure 'Table Measure' = ```
+			SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
+			```
+
+    measure 'up' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> "System"
+        && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > CALCULATE(
+            MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]),
+            ALLSELECTED('Custom SQL Query (dlh_nsec.objdb) (2)')
+        ),
+    "⬆",
+    BLANK()
+)
+			```
+
+    measure 'axis' = ```
+			1
+			```
+
+    measure 'Module_Week Measure' = ```
+			CALCULATE(
+    SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
+    VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module]),
+    VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[FISCAL_WEEK])
+)
+			```
+
+    measure 'Diff vs Golden data' = ```
+			MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
+			```
+
+    measure 'Week-min' = ```
+			VAR MinWeekNum = CALCULATE(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]), ALLSELECTED('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]))
+RETURN
+    CALCULATE(
+        MinWeekNum,
+        DATESBETWEEN(
+            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272],
+            STARTOFMONTH(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])),
+            ENDOFMONTH(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]))
+        )
+    )
+			```
+
+    measure 'Measure by Week' = ```
+			CALCULATE(
+    SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
+    VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module]),
+    VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893971550199837])
+)
+			```
+
+    measure 'dif b/w g&amp;m' = ```
+			1 - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) / MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284])
+			```
+
+    measure 'color legend' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[down (copy)_1857734887864430610] = "⬇",
+    "0-" + FORMAT('Custom SQL Query (dlh_nsec.objdb) (2)'[Parameters].[Parameter 4], "0") + "dip",
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[flag down  (copy)_1857734887864967187] = "⬇",
+        ">" + FORMAT('Custom SQL Query (dlh_nsec.objdb) (2)'[Parameters].[Parameter 4], "0") + "dip",
+        IF(
+            'Custom SQL Query (dlh_nsec.objdb) (2)'[up (copy)_1857734887863640081] = "⬆",
+            "No dip ",
+            IF(
+                'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] >= 0 && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] < 0.05,
+                "0-5%",
+                IF(
+                    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] >= 0.05 && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] < 0.1,
+                    "5-10%",
+                    IF(
+                        'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] >= 0.1 && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] < 0.15,
+                        "10-15%",
+                        IF(
+                            'Custom SQL Query (dlh_nsec.objdb) (
+			```
+
+    measure 'System Diff' = ```
+			SUM(
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System",
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[Measure],
+        BLANK()
+    )
+) -
+MIN(
+    IF(
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System",
+        'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133],
+        BLANK()
+    )
+)
+			```
+
+    measure 'Golden diff system' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < -[Parameters].[Parameter 4],
+    -(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])),
+    BLANK()
+)
+			```
+
+    measure 'Golden diff' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] >= 0.15,
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607],
+    BLANK()
+)
+			```
+
+    measure 'Normal diff system' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < [Parameters].[Parameter 4]
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) >= -[Parameters].[Parameter 4],
+    MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
+    BLANK()
+)
+			```
+
+    measure 'flag down ' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> "System"
+    && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284])
+    && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] < -0.05,
+    "⬇",
+    BLANK()
+)
+			```
+
+    measure 'down system' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) >= 0
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) <= [Parameters].[Parameter 4],
+    "⬇",
+    BLANK()
+)
+			```
+
+    measure 'Normal diff' = ```
+			IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] >= -('Parameters'[Parameter 2] / 100)
+    && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] < 0.15
+    && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] != 0,
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607],
+    BLANK()
+)
+			```
+
+    measure 'flag diff system' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > [Parameters].[Parameter 4],
+    MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
+    BLANK()
+)
+			```
+
+    measure 'flag down system' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > [Parameters].[Parameter 4],
+    "⬇",
+    BLANK()
+)
+			```
+
+    measure 'unicode system' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > [Parameters].[Parameter 4],
+    "⚠",
+    BLANK()
+)
+			```
+
+    measure 'up-System' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < 0,
+    "⬆",
+    BLANK()
+)
+			```
+
+    measure 'down' = ```
+			IF (
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> "System"
+    && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284])
+    && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970529177607] > -0.05,
+    "⬇",
+    BLANK()
+)
+			```
+
+
+
+
+
+    annotation PBI_ResultType = Table
