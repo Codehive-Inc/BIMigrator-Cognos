@@ -163,13 +163,14 @@ class TableParser(BaseParser):
                 
                 # Handle federated datasources
                 if connection.get('class') == 'federated':
-                    # For federated datasources, use relation name as table name
-                    relations = connection.findall('.//relation')
-                    for relation in relations:
-                        rel_name = relation.get('name')
-                        if rel_name:
-                            table_name = rel_name
-                            break
+                    # For federated datasources, try both encapsulated and non-encapsulated formats
+                    relations = [
+                        *connection.findall('.//relation'),
+                        *connection.findall('./_.fcp.ObjectModelEncapsulateLegacy.false...relation'),
+                        *connection.findall('./_.fcp.ObjectModelEncapsulateLegacy.true...relation')
+                    ]
+                    # Always use caption/name as the table name
+                    # The relation name is just for internal use
                 
                 # Create a unique table name if needed
                 final_table_name = table_name
@@ -195,7 +196,7 @@ class TableParser(BaseParser):
                 tables.append(table)
                 logging.info(f"Added table {final_table_name} with {len(columns)} columns, {len(measures)} measures, and {len(partitions)} partitions")
                 
-            # Deduplicate tables based on name and datasource_id
+            # Deduplicate tables based on source_name
             unique_tables = {}
             for table in tables:
                 key = table.source_name

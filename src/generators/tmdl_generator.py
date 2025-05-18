@@ -28,7 +28,7 @@ class TMDLGenerator:
         """
         tmdl_lines = [
             'table {',
-            f'    name: "{table.name}"'
+            f'    name: "{table.source_name}"'
         ]
         
         # Add description if present
