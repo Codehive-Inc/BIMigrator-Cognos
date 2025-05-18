@@ -149,12 +149,13 @@ class TableParser(BaseParser):
                     m_code = generate_excel_m_code(excel_filename, sheet_name, columns_data)
                     print(f"Debug: Generated M code length: {len(m_code) if m_code else 0}")
                     
-                    partition_name = table_name
+                    # Use the relation name for both table and partition
+                    relation_name = relation.get('name', 'Sheet1')
                     partition = PowerBiPartition(
-                        name=partition_name,
+                        name=relation_name,
                         expression=m_code,
                         source_type='m',
-                        description=f"Excel partition for table {table_name}"
+                        description=f"Excel partition for table {relation_name}"
                     )
                     partitions.append(partition)
                     print(f"Debug: Generated Excel partition for {table_name} with sheet {sheet_name}")
@@ -169,12 +170,13 @@ class TableParser(BaseParser):
                         m_code = generate_m_code(connection, relation)
                         print(f"Debug: Generated M code for relation {i}: {m_code is not None}")
                         if m_code:
-                            partition_name = table_name
+                            # Use the relation name for both table and partition
+                            relation_name = relation.get('name', f'Table{i+1}')
                             partition = PowerBiPartition(
-                                name=partition_name,
+                                name=relation_name,
                                 expression=m_code,
                                 source_type='m',
-                                description=f"Partition {i+1} for table {table_name}"
+                                description=f"Partition for table {relation_name}"
                             )
                             partitions.append(partition)
         except Exception as e:
@@ -250,17 +252,29 @@ class TableParser(BaseParser):
                     if not table_name:
                         continue
                     
-                    # Store datasource information for later use
-                    ds_id = ds_element.get('name')
-                    if ds_id:
-                        datasource_info[ds_id] = {
-                            'name': table_name,
-                            'element': ds_element
-                        }
+                    # Check if this is a federated datasource
+                    connection = ds_element.find('.//connection')
+                    if connection is not None:
+                        if connection.get('class') == 'federated':
+                            # For federated datasources, get the relation name
+                            relation = ds_element.find('.//relation[@type="table"]')
+                            if relation is not None:
+                                final_table_name = relation.get('name')
+                                if not final_table_name:
+                                    continue
+                            else:
+                                continue
+                        else:
+                            # For non-federated datasources, use the table name
+                            final_table_name = table_name
+                    else:
+                        continue
                     
-                    # Use the original table name without adding suffixes
-                    # This ensures we only have one table per datasource
-                    final_table_name = table_name
+                    # Store datasource information using the table name
+                    datasource_info[final_table_name] = {
+                        'name': final_table_name,
+                        'element': ds_element
+                    }
 
                     description_mapping = table_config_yaml.get('description', {})
                     description = self._get_mapping_value(description_mapping, ds_element)

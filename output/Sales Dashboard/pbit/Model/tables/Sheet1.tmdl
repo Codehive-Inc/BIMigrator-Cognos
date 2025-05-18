@@ -1,4 +1,4 @@
-table 'Sheet1 (sample_sales_data)'
+table 'Sheet1'
 
 
     column 'Order ID'
@@ -81,7 +81,7 @@ table 'Sheet1 (sample_sales_data)'
 
 
 
-    partition 'Sheet1 (sample_sales_data)' = m
+    partition 'Sheet1' = m
         mode: import
         source = 
             	let

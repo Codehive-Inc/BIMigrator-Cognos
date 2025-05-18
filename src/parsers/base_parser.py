@@ -141,15 +141,22 @@ class BaseParser:
                     elem_path = parts[0] if parts[0] else '.'
                     attr_name = parts[1]
                     
-                    # Find the element relative to context_element
-                    target_elem = context_element.find(elem_path, self.namespaces)
-                    if target_elem is not None:
-                        value = target_elem.get(attr_name)
+                    # Find all matching elements relative to context_element
+                    target_elems = context_element.findall(elem_path, self.namespaces)
+                    if target_elems:
+                        # Use the first element that has the attribute
+                        for elem in target_elems:
+                            if attr_name in elem.attrib:
+                                value = elem.get(attr_name)
+                                break
                 else:
-                    # Path targets an element, get its text
-                    target_elem = context_element.find(xpath, self.namespaces)
-                    if target_elem is not None:
-                        value = target_elem.text
+                    # Path targets elements, get text from first non-empty one
+                    target_elems = context_element.findall(xpath, self.namespaces)
+                    if target_elems:
+                        for elem in target_elems:
+                            if elem.text and elem.text.strip():
+                                value = elem.text
+                                break
             except Exception as e:
                 print(f"Warning: XPath error for '{xpath}': {e}")
                 value = None
