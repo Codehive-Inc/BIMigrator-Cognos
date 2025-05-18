@@ -1,0 +1,133 @@
+{
+  "projectionOrdering": {
+    "Category": [
+      0
+    ],
+    "Y": [
+      1
+    ],
+    "Series": [
+      2
+    ]
+  },
+  "projectionActiveItems": {
+    "Category": [
+      {
+        "queryRef": "Sheet1.Order Date",
+        "suppressConcat": false
+      }
+    ]
+  },
+  "queryMetadata": {
+    "Select": [
+      {
+        "Restatement": "Order Date",
+        "Name": "Sheet1.Order Date",
+        "Type": 3,
+        "Format": "0"
+      },
+      {
+        "Restatement": "Sum of Sales",
+        "Name": "Sum(Sheet1.Sales)",
+        "Type": 1
+      },
+      {
+        "Restatement": "Region",
+        "Name": "Sheet1.Region",
+        "Type": 2048
+      }
+    ]
+  },
+  "visualElements": [
+    {
+      "DataRoles": [
+        {
+          "Name": "Category",
+          "Projection": 0,
+          "isActive": true
+        },
+        {
+          "Name": "Y",
+          "Projection": 1,
+          "isActive": false
+        },
+        {
+          "Name": "Series",
+          "Projection": 2,
+          "isActive": false
+        }
+      ]
+    }
+  ],
+  "selects": [
+    {
+      "displayName": "Order Date",
+      "format": "0",
+      "queryName": "Sheet1.Order Date",
+      "roles": {
+        "Category": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 260
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Order Date"
+        }
+      }
+    },
+    {
+      "displayName": "Sum of Sales",
+      "queryName": "Sum(Sheet1.Sales)",
+      "roles": {
+        "Y": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 259
+      },
+      "expr": {
+        "Aggregation": {
+          "Expression": {
+            "Column": {
+              "Expression": {
+                "SourceRef": {
+                  "Entity": "Sheet1"
+                }
+              },
+              "Property": "Sales"
+            }
+          },
+          "Function": 0
+        }
+      }
+    },
+    {
+      "displayName": "Region",
+      "queryName": "Sheet1.Region",
+      "roles": {
+        "Series": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 1
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "Sheet1"
+            }
+          },
+          "Property": "Region"
+        }
+      }
+    }
+  ]
+}
