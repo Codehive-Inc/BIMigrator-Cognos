@@ -1,0 +1,24 @@
+{
+  "name": "Overview",
+  "display_name": "Overview Section",
+  "filters": [
+    {
+      "type": "basic",
+      "table": "Sales",
+      "column": "Amount",
+      "value": 100
+    }
+  ],
+  "visuals": [
+    {
+      "id": "v1",
+      "type": "BarChart",
+      "properties": {"color": "blue"}
+    }
+  ],
+  "layout": {
+    "width": 1280,
+    "height": 720,
+    "display_option": "fitToPage"
+  }
+}

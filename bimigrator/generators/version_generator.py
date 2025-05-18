@@ -1,0 +1,18 @@
+from pathlib import Path
+from typing import Optional
+
+from bimigrator.config.data_classes import PowerBiVersion
+from .base_template_generator import BaseTemplateGenerator
+
+
+class VersionGenerator(BaseTemplateGenerator):
+    """Generator for version information."""
+
+    def generate_version(self, version_info: PowerBiVersion, output_dir: Optional[Path] = None) -> Path:
+        """Generate the version file."""
+        if output_dir:
+            self.output_dir = output_dir.parent
+            self.pbit_dir = output_dir
+            self.extracted_dir = self.output_dir / 'extracted'
+
+        return self.generate_file('version', version_info)
