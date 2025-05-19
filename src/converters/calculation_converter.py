@@ -5,6 +5,7 @@ import httpx
 import json
 from pathlib import Path
 import os
+import logging
 
 @dataclass
 class CalculationInfo:
@@ -63,11 +64,20 @@ class CalculationConverter:
                 from html import unescape
                 dax_expression = unescape(dax_expression)
                 
+                # Log the conversion
+                logging.info(f"Tableau Formula: {calc_info.formula}")
+                logging.info(f"DAX Expression: {dax_expression}")
+                
                 return dax_expression
                     
         except Exception as e:
             # Create a DAX comment with the error
             error_msg = str(e).replace('*/', '* /')  # Escape any */ in the error message
+            
+            # Log the error
+            logging.error(f"Failed to convert Tableau formula: {calc_info.formula}")
+            logging.error(f"Error: {error_msg}")
+            
             return (
                 f"/* ERROR: Could not convert Tableau formula: {calc_info.formula} */\n"
                 f"/* Error details: {error_msg} */\n"

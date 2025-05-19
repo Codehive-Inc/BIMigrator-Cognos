@@ -127,23 +127,27 @@ class ColumnParser:
                     )
                     measures.append(measure)
                 else:
-                    # Create regular column
-                    # For numeric columns, set summarize_by to 'sum'
-                    summarize_by = "sum" if self._map_datatype(twb_datatype).lower() in ["int64", "double", "decimal", "currency"] else "none"
+                    # Create calculated column
+                    pbi_datatype = self._map_datatype(twb_datatype)
+                    
+                    # For numeric calculated columns, set summarize_by to 'sum'
+                    summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] else "none"
                     
                     # Set annotations
                     annotations = {
-                        'SummarizationSetBy': 'User' if summarize_by == "sum" else 'Automatic',
-                        'DAXExpression': dax_expression
+                        'SummarizationSetBy': 'Automatic'
                     }
                     
                     # Add PBI_FormatHint for numeric columns
-                    if self._map_datatype(twb_datatype).lower() in ["int64", "double", "decimal", "currency"]:
+                    if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
                         annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
                     
+                    # For calculated columns, we need to set the source_name to just the column name
+                    # and put the DAX expression in the source_column field
                     column = PowerBiColumn(
                         source_name=col_name,
-                        pbi_datatype=self._map_datatype(twb_datatype),
+                        pbi_datatype=pbi_datatype,
+                        source_column=dax_expression,  # Put DAX expression in source_column
                         description=f"Converted from Tableau calculation: {formula}",
                         is_calculated=True,
                         is_data_type_inferred=True,

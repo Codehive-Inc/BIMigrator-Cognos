@@ -13,9 +13,7 @@ table '{{source_name}}'
         {{#if summarize_by}}
         summarizeBy: {{summarize_by}}
         {{/if}}
-        {{#if is_calculated}}
-        type: calculated
-        {{/if}}
+
         {{#if source_column}}
         {{#if is_calculated}}
         sourceColumn = ```
