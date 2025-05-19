@@ -75,15 +75,17 @@ class ExcelConnectionParser(BaseConnectionParser):
             else:
                 excel_sheet = relation_node.get('name', 'Sheet1')
                 
-            # Prepare column data for M code generation
+            # Prepare column data for M code generation - only include non-calculated columns
             columns_data = []
             if columns:
                 for col in columns:
-                    col_data = {
-                        'source_name': col.source_name,
-                        'datatype': col.pbi_datatype
-                    }
-                    columns_data.append(col_data)
+                    # Skip calculated columns as they're not in the source data
+                    if not getattr(col, 'is_calculated', False):
+                        col_data = {
+                            'source_name': col.source_name,
+                            'datatype': col.pbi_datatype
+                        }
+                        columns_data.append(col_data)
                     
             # Generate M code
             m_code = generate_excel_m_code(excel_filename, excel_sheet, columns_data)

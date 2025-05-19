@@ -1,7 +1,7 @@
 table 'Sheet1 (sample_sales_data)'
 
 
-    column 'Region Sales' = 'Sheet1 (sample_sales_data)'[Region] & " Sales"
+    column 'Region Sales' = Sheet1[Region] & " Sales"
         dataType: string
         summarizeBy: none
 
@@ -10,7 +10,7 @@ table 'Sheet1 (sample_sales_data)'
 
         
     column 'Region Split' = SWITCH(
-    'Sheet1 (sample_sales_data)'[Calculation_606860061092720640],
+    Sheet1[Calculation_606860061092720640],
     "North Sales", "North East",
     "East Sales", "North East",
     "South Sales", "South West",
@@ -102,7 +102,7 @@ table 'Sheet1 (sample_sales_data)'
         
 
     measure 'Units' = ```
-			'Sheet1 (sample_sales_data)'[Sales] / 'Sheet1 (sample_sales_data)'[Quantity]
+			Sheet1[Sales] / Sheet1[Quantity]
 			```
 
 
@@ -111,8 +111,9 @@ table 'Sheet1 (sample_sales_data)'
         annotation SummarizationSetBy = Automatic
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
     measure 'Units Measure' = ```
-			SUM('Sheet1 (sample_sales_data)'[Calculation_606860061096038402])
+			SUM(Sheet1[Calculation_606860061096038402])
 			```
 
 
@@ -121,6 +122,7 @@ table 'Sheet1 (sample_sales_data)'
         annotation SummarizationSetBy = Automatic
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Sheet1' = m
@@ -130,7 +132,7 @@ table 'Sheet1 (sample_sales_data)'
 					Source = Excel.Workbook(File.Contents("C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx"), null, true),
 					Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Region Sales", type text}, {"Region Split", type text}, {"Order ID", Int64.Type}, {"Order Date", type datetime}, {"Region", type text}, {"Product Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Order ID", Int64.Type}, {"Order Date", type datetime}, {"Region", type text}, {"Product Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
 				in
 					#"Changed Type"
         
