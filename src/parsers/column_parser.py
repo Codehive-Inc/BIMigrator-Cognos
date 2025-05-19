@@ -120,10 +120,18 @@ class ColumnParser:
                 
                 if role == 'measure':
                     # Create measure
+                    # Set annotations for measures
+                    annotations = {
+                        'SummarizationSetBy': 'Automatic',  # Add SummarizationSetBy
+                    }
+                    
+                    # PBI_FormatHint is now hardcoded in the template for measures
+                    
                     measure = PowerBiMeasure(
                         source_name=col_name,
                         dax_expression=dax_expression,
-                        description=f"Converted from Tableau calculation: {formula}"
+                        description=f"Converted from Tableau calculation: {formula}",
+                        annotations=annotations
                     )
                     measures.append(measure)
                 else:

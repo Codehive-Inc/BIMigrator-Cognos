@@ -55,8 +55,8 @@ class TMDLGenerator:
             tmdl_lines.append('    measures: {')
             for measure in table.measures:
                 tmdl_lines.append(f'        {measure.name}: {{')
-                if measure.expression:
-                    tmdl_lines.append(f'            expression: "{measure.expression}"')
+                if measure.dax_expression:
+                    tmdl_lines.append(f'            expression: "{measure.dax_expression}"')
                 if measure.description:
                     tmdl_lines.append(f'            description: "{measure.description}"')
                 tmdl_lines.append('        }')

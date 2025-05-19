@@ -126,10 +126,22 @@ table 'Sheet1 (sample_sales_data)'
 			'Sheet1 (sample_sales_data)'[Sales] / 'Sheet1 (sample_sales_data)'[Quantity]
 			```
 
+
+        summarizeBy: sum
+
+        annotation SummarizationSetBy = Automatic
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
     measure 'Units Measure' = ```
 			SUM('Sheet1 (sample_sales_data)'[Calculation_606860061096038402])
 			```
 
+
+        summarizeBy: sum
+
+        annotation SummarizationSetBy = Automatic
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 
     partition 'Sheet1' = m
