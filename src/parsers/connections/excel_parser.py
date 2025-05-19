@@ -90,12 +90,12 @@ class ExcelConnectionParser(BaseConnectionParser):
             # Generate M code
             m_code = generate_excel_m_code(excel_filename, excel_sheet, columns_data)
             
-            # Create partition
+            # Create partition using sheet name
             partition = PowerBiPartition(
-                name=excel_sheet,
+                name=excel_sheet,  # Use sheet name for partition
                 expression=m_code,
                 source_type='m',
-                description=f"Excel partition for table {excel_sheet}"
+                description=f"Excel partition for sheet {excel_sheet}"
             )
             partitions.append(partition)
             

@@ -64,8 +64,8 @@ class CalculationConverter:
                 from html import unescape
                 dax_expression = unescape(dax_expression)
                 
-                # Replace table name in expression
-                dax_expression = dax_expression.replace("'Sheet1 (sample_sales_data)'", "Sheet1")
+                # Replace table name in expression with the actual table name
+                dax_expression = dax_expression.replace(f"'{table_name} (sample_sales_data)'", table_name)
                 
                 # Log the conversion
                 logging.info(f"Tableau Formula: {calc_info.formula}")

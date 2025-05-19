@@ -6,7 +6,9 @@ table '{{source_name}}'
 
     {{#each columns}}
     {{#if is_calculated}}
-    column '{{source_name}}' = {{{source_column}}}
+    column '{{source_name}}' = ```
+            {{{source_column}}}
+    ```
         dataType: {{datatype}}
         {{#if summarize_by}}
         summarizeBy: {{summarize_by}}
@@ -48,8 +50,8 @@ table '{{source_name}}'
 
     {{#each measures}}
     measure '{{source_name}}' = ```
-			{{{expression}}}
-			```
+            {{{expression}}}
+    ```
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
@@ -57,10 +59,6 @@ table '{{source_name}}'
         {{#if is_hidden}}
         isHidden
         {{/if}}
-
-        summarizeBy: sum
-
-        annotation SummarizationSetBy = Automatic
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         

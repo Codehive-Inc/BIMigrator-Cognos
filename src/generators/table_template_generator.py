@@ -104,8 +104,10 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             }
             partitions_data.append(partition_data)
 
+        # Use consistent table name throughout
         template_data = {
             'source_name': table.source_name,
+            'name': table.source_name,  # Use source_name directly
             'lineage_tag': table.lineage_tag if hasattr(table, 'lineage_tag') else None,
             'description': table.description,
             'is_hidden': table.is_hidden,
@@ -118,12 +120,10 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             'visual_type': None,
             'column_settings': None
         }
-        print(f'Debug: Template data - source_name: {template_data["source_name"]}')
+        print(f'Debug: Template data - table name: {template_data["name"]}')
         print(f'Debug: Template data - columns: {len(columns_data)}, measures: {len(measures_data)}, hierarchies: {len(hierarchies_data)}')
         
-        # Add name to template_data for handlebars
-        template_data['name'] = template_data['source_name']
-        print(f'Debug: Added name to template data: {template_data["name"]}')
+        # Generate the file with consistent table name
         return self.generate_file('table', template_data, name=table.source_name)
     
     def generate_all_tables(self, tables: List[PowerBiTable], output_dir: Optional[Path] = None) -> List[Path]:

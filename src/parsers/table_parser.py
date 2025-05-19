@@ -150,16 +150,23 @@ class TableParser(BaseParser):
                 # Get datasource ID for deduplication
                 ds_id = self._get_datasource_id(ds_element)
                 
+                # Get table name from relation element for Excel sheets
+                table_name = ds_caption or ds_name
+                if connection.get('class') == 'excel-direct':
+                    # Find the relation element
+                    relation = connection.find('.//relation')
+                    if relation is not None:
+                        sheet_name = relation.get('name')
+                        if sheet_name:
+                            table_name = sheet_name
+                
                 # Extract columns and measures
                 columns_yaml_config = self.config.get('PowerBiColumn', {})
                 columns, measures = self.column_parser.extract_columns_and_measures(
                     ds_element,
                     columns_yaml_config,
-                    ds_caption  # Use caption as table name for DAX expressions
+                    table_name  # Use consistent table name for DAX expressions
                 )
-                
-                # Get table name - use caption if available, otherwise use name
-                table_name = ds_caption or ds_name
                 
                 # Handle federated datasources
                 if connection.get('class') == 'federated':
