@@ -150,6 +150,10 @@ class ColumnParser:
                     if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
                         annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
                     
+                    # Format the DAX expression - keep simple expressions on one line
+                    if '\n' not in formula and len(formula) < 100:
+                        dax_expression = dax_expression.strip()
+                    
                     # For calculated columns, we need to set the source_name to just the column name
                     # and put the DAX expression in the source_column field
                     column = PowerBiColumn(

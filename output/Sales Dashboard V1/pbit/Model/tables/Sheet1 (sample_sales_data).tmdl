@@ -1,35 +1,23 @@
 table 'Sheet1 (sample_sales_data)'
 
 
-    column 'Region Sales'
+    column 'Region Sales' = 'Sheet1 (sample_sales_data)'[Region] & " Sales"
         dataType: string
         summarizeBy: none
-
-        sourceColumn = ```
-            
-            'Sheet1 (sample_sales_data)'[Region] & " Sales"
-            
-            ```
 
         isDataTypeInferred: true
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Region Split'
-        dataType: string
-        summarizeBy: none
-
-        sourceColumn = ```
-            
-            SWITCH(
+    column 'Region Split' = SWITCH(
     'Sheet1 (sample_sales_data)'[Calculation_606860061092720640],
     "North Sales", "North East",
     "East Sales", "North East",
     "South Sales", "South West",
     "West Sales", "South West"
 )
-            
-            ```
+        dataType: string
+        summarizeBy: none
 
         isDataTypeInferred: true
         annotation SummarizationSetBy = Automatic
@@ -38,7 +26,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Order ID'
         dataType: int64
         summarizeBy: sum
-
         sourceColumn: Order ID
 
         annotation SummarizationSetBy = User
@@ -48,7 +35,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Order Date'
         dataType: datetime
         summarizeBy: none
-
         sourceColumn: Order Date
 
         annotation SummarizationSetBy = Automatic
@@ -57,7 +43,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Region'
         dataType: string
         summarizeBy: none
-
         sourceColumn: Region
 
         annotation SummarizationSetBy = Automatic
@@ -66,7 +51,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Product Category'
         dataType: string
         summarizeBy: none
-
         sourceColumn: Product Category
 
         annotation SummarizationSetBy = Automatic
@@ -75,7 +59,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Product Name'
         dataType: string
         summarizeBy: none
-
         sourceColumn: Product Name
 
         annotation SummarizationSetBy = Automatic
@@ -84,7 +67,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Sales'
         dataType: double
         summarizeBy: sum
-
         sourceColumn: Sales
 
         annotation SummarizationSetBy = User
@@ -94,7 +76,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Quantity'
         dataType: int64
         summarizeBy: sum
-
         sourceColumn: Quantity
 
         annotation SummarizationSetBy = User
@@ -104,7 +85,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Discount'
         dataType: double
         summarizeBy: sum
-
         sourceColumn: Discount
 
         annotation SummarizationSetBy = User
@@ -114,7 +94,6 @@ table 'Sheet1 (sample_sales_data)'
     column 'Profit'
         dataType: double
         summarizeBy: sum
-
         sourceColumn: Profit
 
         annotation SummarizationSetBy = User
