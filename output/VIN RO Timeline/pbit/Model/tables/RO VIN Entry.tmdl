@@ -3913,16 +3913,9 @@ table 'RO VIN Entry'
 					Source = Oracle.Database(Server="10.78.194.25:1521/OPDBSRW", [HierarchicalNavigation=true]),
 					#"Naviguated to Schema" = Source{[Schema="DBSRW_SYS",Kind="Schema"]}[Data],
 					#"Specified View" = #"Naviguated to Schema"{[Name="TBUDBSRW",Kind="View"]}[Data],
-					#"Native Query" = let
-					Source = #"Specified View",
-					Query = Value.NativeQuery(Source, "
-					query
-					", meta [Type="Native"]),
-					NavigationStep = Query[CreateNavigationStep]
+					#"Removed Columns" = Table.RemoveColumns(#"Specified View",{"Kind"})
 				in
-					Query
-				in
-					#"Native Query"
+					#"Removed Columns"
         
 
 

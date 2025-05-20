@@ -1,74 +1,74 @@
 {
   "relationships": [
     {
+      "id": "580f70bc-1fcf-480a-9d35-84e7e436b4f3",
       "from_table": "RPR_ORDR",
-      "from_column": "VIN_ID",
       "to_table": "SVC_VHCL",
-      "to_column": "VIN_ID",
-      "is_active": true,
-      "cardinality": "manyToOne",
-      "cross_filter_behavior": "oneWay",
-      "annotations": {}
-    },
-    {
-      "from_table": "SLS_DSTRCT",
-      "from_column": "SLS_ARA_CD",
-      "to_table": "SLS_ARA",
-      "to_column": "SLS_ARA_CD",
-      "is_active": true,
-      "cardinality": "manyToOne",
-      "cross_filter_behavior": "oneWay",
-      "annotations": {}
-    },
-    {
-      "from_table": "DLR",
-      "from_column": "SLS_DSTRCT_CD",
-      "to_table": "SLS_DSTRCT",
-      "to_column": "SLS_DSTRCT_CD",
-      "is_active": true,
-      "cardinality": "manyToOne",
-      "cross_filter_behavior": "oneWay",
-      "annotations": {}
-    },
-    {
-      "from_table": "VHCL_CMPGN",
-      "from_column": "CMPGN_NB",
-      "to_table": "CMPGN_MSTR",
-      "to_column": "CMPGN_NB",
-      "is_active": true,
-      "cardinality": "manyToOne",
-      "cross_filter_behavior": "oneWay",
-      "annotations": {}
-    },
-    {
-      "from_table": "RPR_ORDR",
       "from_column": "VIN_ID",
-      "to_table": "VHCL_CMPGN",
       "to_column": "VIN_ID",
-      "is_active": true,
-      "cardinality": "manyToOne",
+      "cardinality": "one",
       "cross_filter_behavior": "oneWay",
-      "annotations": {}
+      "is_active": true
     },
     {
+      "id": "038a8c3b-80b9-4535-84a7-1b5b421a191c",
+      "from_table": "SLS_DSTRCT",
+      "to_table": "SLS_ARA",
+      "from_column": "SLS_ARA_CD",
+      "to_column": "SLS_ARA_CD",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "9cc32200-3f4a-447e-aa4d-de4cdae8b855",
+      "from_table": "DLR",
+      "to_table": "SLS_DSTRCT",
+      "from_column": "SLS_DSTRCT_CD",
+      "to_column": "SLS_DSTRCT_CD",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "8112775c-8401-4538-a31b-cef51ea3f69b",
+      "from_table": "VHCL_CMPGN",
+      "to_table": "CMPGN_MSTR",
+      "from_column": "CMPGN_NB",
+      "to_column": "CMPGN_NB",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "4576fee9-d7f9-4468-832a-756f5749f387",
       "from_table": "RPR_ORDR",
-      "from_column": "RFRNC_DLR_NB",
+      "to_table": "VHCL_CMPGN",
+      "from_column": "VIN_ID",
+      "to_column": "VIN_ID",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "8501449e-6fda-4681-a2b4-39d1e1c2ad06",
+      "from_table": "RPR_ORDR",
       "to_table": "DLR",
+      "from_column": "RFRNC_DLR_NB",
       "to_column": "RFRNC_DLR_NB",
-      "is_active": true,
-      "cardinality": "manyToOne",
+      "cardinality": "one",
       "cross_filter_behavior": "oneWay",
-      "annotations": {}
+      "is_active": true
     },
     {
+      "id": "62c95b90-9a52-43d2-81a6-0eb465df158b",
       "from_table": "RPR_ORDR",
-      "from_column": "RPR_ORDR_KY",
       "to_table": "RPR_ORDR_LN",
+      "from_column": "RPR_ORDR_KY",
       "to_column": "RPR_ORDR_KY",
-      "is_active": true,
-      "cardinality": "manyToOne",
+      "cardinality": "one",
       "cross_filter_behavior": "oneWay",
-      "annotations": {}
+      "is_active": true
     }
   ]
 }

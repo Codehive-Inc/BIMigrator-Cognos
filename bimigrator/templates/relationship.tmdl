@@ -6,13 +6,12 @@ relationship {{id}}
 	fromColumn: '{{from_table}}'.{{from_column}}
 	toColumn: '{{to_table}}'.{{to_column}}
 {{#if cross_filter_behavior}}
-	crossFilteringBehavior: bothDirections
+	crossFilteringBehavior: {{cross_filter_behavior}}
 {{/if}}
 {{#if cardinality}}
-	fromCardinality: one
+	fromCardinality: {{cardinality}}
 {{/if}}
 {{#if is_active}}
 	isActive: {{is_active}}
 {{/if}}
-
 {{/each}}

@@ -7899,7 +7899,7 @@
     {
       "name": "RO VIN Entry",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Native Query\" = let\n\t\t\t\t\tSource = #\"Specified View\",\n\t\t\t\t\tQuery = Value.NativeQuery(Source, \"\n\t\t\t\t\tquery\n\t\t\t\t\t\", meta [Type=\"Native\"]),\n\t\t\t\t\tNavigationStep = Query[CreateNavigationStep]\n\t\t\t\tin\n\t\t\t\t\tQuery\n\t\t\t\tin\n\t\t\t\t\t#\"Native Query\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Removed Columns\" = Table.RemoveColumns(#\"Specified View\",{\"Kind\"})\n\t\t\t\tin\n\t\t\t\t\t#\"Removed Columns\""
     }
   ],
   "has_widget_serialization": false,

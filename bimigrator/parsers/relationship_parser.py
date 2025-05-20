@@ -1,6 +1,7 @@
 """Parser for extracting relationships from Tableau workbooks."""
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, List, Tuple
+import uuid
 
 from bimigrator.config.data_classes import PowerBiRelationship
 from bimigrator.parsers.base_parser import BaseParser
@@ -195,14 +196,22 @@ class RelationshipParser(BaseParser):
                                     if rel_key not in seen_relationships:
                                         seen_relationships.add(rel_key)
                                         
+                                        # Determine cross filter behavior based on join type
+                                        join_type = relation.get('join', 'inner')
+                                        cross_filter = "bothDirections" if join_type == "inner" else "oneWay"
+                                        
+                                        # Generate unique ID for relationship
+                                        relationship_id = str(uuid.uuid4())
+                                        
                                         # Create relationship object
                                         relationship = PowerBiRelationship(
+                                            id=relationship_id,
                                             from_table=from_table,
                                             to_table=to_table,
                                             from_column=from_column,
                                             to_column=to_column,
-                                            cardinality="manyToOne",  # Default to many-to-one
-                                            cross_filter_behavior="oneWay",  # Default to one-way
+                                            cardinality="one",  # Set to one since we're on the 'from' side
+                                            cross_filter_behavior=cross_filter,
                                             is_active=True
                                         )
                                         relationships.append(relationship)
@@ -214,7 +223,19 @@ class RelationshipParser(BaseParser):
 
         # Save relationships to intermediate file
         if relationships:
-            self.save_intermediate({'relationships': [r.__dict__ for r in relationships]}, 'relationships')
+            # Convert relationships to dict and ensure id is included
+            relationship_dicts = [{
+                'id': r.id,  # Use id instead of relationship_id
+                'from_table': r.from_table,
+                'to_table': r.to_table,
+                'from_column': r.from_column,
+                'to_column': r.to_column,
+                'cardinality': r.cardinality,
+                'cross_filter_behavior': r.cross_filter_behavior,
+                'is_active': r.is_active
+            } for r in relationships]
+            
+            self.save_intermediate({'relationships': relationship_dicts}, 'relationships')
             print(f'Debug: Saved {len(relationships)} relationships')
 
         return relationships
