@@ -64,7 +64,44 @@ The system classifies formulas into different types:
    - Error handling is added for failed conversions
    - The result is formatted for TMDL output
 
-### 4. Special Cases
+### 4. Calculation Tracking
+
+The migration tool tracks all calculations and their conversions in a JSON file for monitoring and debugging purposes.
+
+1. **Storage Format**
+   ```json
+   {
+     "calculations": [
+       {
+         "TableName": "Sales",
+         "FormulaCaptionTableau": "Total Sales",
+         "CalculationName": "Calculation_123",
+         "TableauCalculationName": "Calculation_123",
+         "FormulaExpressionTableau": "SUM([Sales])",
+         "FormulaTypeTableau": "measure",
+         "PowerBIName": "Total Sales",
+         "DAXExpression": "SUM('Sales'[Sales])",
+         "ConversionStatus": "Converted"
+       }
+     ]
+   }
+   ```
+
+2. **Tracked Information**
+   - `TableName`: Source table containing the calculation
+   - `FormulaCaptionTableau`: Display name in Tableau
+   - `CalculationName`: Original calculation name from Tableau XML
+   - `TableauCalculationName`: Calculation name (for backward compatibility)
+   - `FormulaExpressionTableau`: Original Tableau formula
+   - `FormulaTypeTableau`: Type (measure/calculated_column)
+   - `PowerBIName`: Name in Power BI
+   - `DAXExpression`: Converted DAX expression
+   - `ConversionStatus`: Current status (Pending/Converted)
+
+3. **Location**
+   The calculations are stored in `extracted/calculations.json` under the output directory.
+
+### 5. Special Cases
 
 1. **Automatic Measure Detection**
    - If a formula starts with common aggregation functions (SUM, AVERAGE, COUNT, MIN, MAX), it's treated as a measure

@@ -41,11 +41,11 @@ class BaseParser:
         # Create intermediate directory if it doesn't exist
         if not self.intermediate_dir.exists():
             self.intermediate_dir.mkdir(parents=True)
-
+        
     def _get_attribute(self, element: ET.Element, attr_name: str, default: Any = None) -> Any:
         """Get attribute value, handling @ in attribute names."""
         return element.get(attr_name.replace('@', ''), default)
-
+    
     def _find_elements(self, xpath: Optional[str]) -> List[ET.Element]:
         """Find elements in the XML tree using XPath.
         
@@ -58,7 +58,7 @@ class BaseParser:
         if not xpath:
             print("Warning: Empty XPath provided to _find_elements")
             return []
-
+        
         # For complex XPath expressions with predicates, use a simpler approach
         if '[' in xpath and ']' in xpath:
             try:
@@ -76,7 +76,7 @@ class BaseParser:
                         try:
                             # Get all datasources
                             all_datasources = self.root.findall(".//datasource") or self.root.findall("//datasource")
-
+                            
                             # Filter out Parameters datasources
                             if "Parameters" in xpath:
                                 filtered = [ds for ds in all_datasources if ds.get("name") != "Parameters"]
@@ -85,11 +85,11 @@ class BaseParser:
                         except Exception:
                             pass
                     return []
-
+        
         # Make relative XPath if it's absolute
         if xpath.startswith('//'):
             xpath = '.' + xpath
-
+        
         try:
             # Handle attribute queries
             if '@' in xpath and not xpath.endswith('/'):
@@ -100,7 +100,7 @@ class BaseParser:
                     return [e for e in elements if attr in e.attrib]
                 except Exception:
                     return []
-
+            
             # Handle normal XPath queries
             elements = self.root.findall(xpath, self.namespaces)
             return elements
@@ -111,19 +111,18 @@ class BaseParser:
                 return elements
             except Exception:
                 return []
-
+    
     def _get_element_text(self, element: ET.Element, default: str = None) -> str:
         if element is not None and element.text is not None:
             return element.text
         return default
-
-    # def _get_attribute(self, element: ET.Element, attribute: str, default: Any = None) -> Any:
-    #     if element is not None and attribute in element.attrib:
-    #         return element.attrib[attribute]
-    #     return default
-
-    def _get_mapping_value(self, mapping_config: Dict[str, Any], context_element: ET.Element,
-                           default_value: Any = None) -> Any:
+    
+    def _get_attribute(self, element: ET.Element, attribute: str, default: Any = None) -> Any:
+        if element is not None and attribute in element.attrib:
+            return element.attrib[attribute]
+        return default
+    
+    def _get_mapping_value(self, mapping_config: Dict[str, Any], context_element: ET.Element, default_value: Any = None) -> Any:
         """Get a value from an element based on mapping configuration.
         
         Args:
@@ -138,7 +137,7 @@ class BaseParser:
             return default_value
 
         value = None
-
+        
         # Try source_xpath first if present (can be relative to context_element)
         if 'source_xpath' in mapping_config:
             xpath = mapping_config['source_xpath']
@@ -149,16 +148,23 @@ class BaseParser:
                     parts = xpath.rsplit('/@', 1)
                     elem_path = parts[0] if parts[0] else '.'
                     attr_name = parts[1]
-
-                    # Find the element relative to context_element
-                    target_elem = context_element.find(elem_path, self.namespaces)
-                    if target_elem is not None:
-                        value = target_elem.get(attr_name)
+                    
+                    # Find all matching elements relative to context_element
+                    target_elems = context_element.findall(elem_path, self.namespaces)
+                    if target_elems:
+                        # Use the first element that has the attribute
+                        for elem in target_elems:
+                            if attr_name in elem.attrib:
+                                value = elem.get(attr_name)
+                                break
                 else:
-                    # Path targets an element, get its text
-                    target_elem = context_element.find(xpath, self.namespaces)
-                    if target_elem is not None:
-                        value = target_elem.text
+                    # Path targets elements, get text from first non-empty one
+                    target_elems = context_element.findall(xpath, self.namespaces)
+                    if target_elems:
+                        for elem in target_elems:
+                            if elem.text and elem.text.strip():
+                                value = elem.text
+                                break
             except Exception as e:
                 print(f"Warning: XPath error for '{xpath}': {e}")
                 value = None
@@ -172,7 +178,7 @@ class BaseParser:
         if value is None and 'fallback_attribute' in mapping_config:
             attr_name = mapping_config['fallback_attribute']
             value = context_element.get(attr_name)
-
+        
         # Try alternative_xpath if defined and no value found yet
         if value is None and 'alternative_xpath' in mapping_config:
             xpath = mapping_config['alternative_xpath']
@@ -191,24 +197,24 @@ class BaseParser:
             except Exception as e:
                 print(f"Warning: Alternative XPath error for '{xpath}': {e}")
                 value = None
-
+        
         # Apply formatting/conversion if a value was found
         if value is not None:
             if mapping_config.get('format') == 'boolean':
                 if isinstance(value, str):
                     return value.lower() == 'true'
                 return bool(value)  # Basic cast for non-string values
-
+            
             if mapping_config.get('format') == 'identifier' and isinstance(value, str):
                 # Clean up identifier if needed
                 return value.strip()
-
+                
             # Default string handling: strip whitespace
             return value.strip() if isinstance(value, str) else value
 
         # If still no value, use default from config, then passed default_value
         return mapping_config.get('default', default_value)
-
+    
     def save_intermediate(self, data: Dict[str, Any], name: str) -> None:
         """Save intermediate data to JSON file.
         
@@ -218,7 +224,7 @@ class BaseParser:
         """
         if not self.intermediate_dir.exists():
             self.intermediate_dir.mkdir(parents=True)
-
+            
         output_path = self.intermediate_dir / f'{name}.json'
         with open(output_path, 'w') as f:
             json.dump(data, f, indent=2)

@@ -138,9 +138,10 @@ PowerBiTable:
       .//connection[@class and @class!='tableau']
     ]
   source_name:
-    # 'caption' is often the user-friendly name
-    source_attribute: caption
-    fallback_attribute: name # Fallback to internal name if caption is missing
+    # Get the table name from the table relation element's name attribute
+    source_xpath: .//relation[@type='table']
+    source_attribute: name
+    fallback_attribute: caption # Fallback to datasource caption if relation name is missing
   description:
     source_attribute: caption
     default: null

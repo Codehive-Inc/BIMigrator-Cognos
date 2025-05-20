@@ -81,14 +81,14 @@ table 'Sheet1 (sample_sales_data)'
 
 
 
-    partition 'Sheet1 (sample_sales_data)' = m
+    partition 'Sheet1' = m
         mode: import
         source = 
             	let
 					Source = Excel.Workbook(File.Contents("C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx"), null, true),
 					Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {})
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Order ID", Int64.Type}, {"Order Date", type datetime}, {"Region", type text}, {"Product Category", type text}, {"Product Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
 				in
 					#"Changed Type"
         

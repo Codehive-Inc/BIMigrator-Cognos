@@ -186,24 +186,56 @@ def format_m_code_indentation(m_code: str, base_indent: int = 4) -> str:
     
     return '\n'.join(formatted_lines)
 
-def generate_excel_m_code(filename: str, sheet_name: str) -> str:
+def generate_excel_m_code(filename: str, sheet_name: str, columns: List[Dict[str, Any]] = None) -> str:
     """
     Generates M code for Excel connections using a standardized template.
     
     Args:
         filename: Path to the Excel file
         sheet_name: Name of the Excel sheet
+        columns: List of column information including name and datatype
     
     Returns:
         Formatted M code for the Excel connection
     """
+    # Create type conversion pairs based on column data
+    type_conversions = "{}"
+    if columns:
+        # Map Power BI datatypes to M language types
+        type_mapping = {
+            "int64": "Int64.Type",
+            "double": "type number",
+            "string": "type text",
+            "datetime": "type datetime",
+            "boolean": "type logical",
+            "decimal": "type number"
+        }
+        
+        # Build type conversion pairs
+        seen_columns = set()  # Track unique columns to avoid duplicates
+        conversion_pairs = []
+        for col in columns:
+            source_name = col.get('source_name')
+            # Skip internal Tableau columns and duplicates
+            if not source_name or '__tableau_internal_object_id__' in source_name or source_name in seen_columns:
+                continue
+                
+            datatype = col.get('datatype', 'string').lower()
+            m_type = type_mapping.get(datatype, 'type text')
+            # Format column name with proper quotes
+            conversion_pairs.append(f'"{source_name}", {m_type}')
+            seen_columns.add(source_name)
+        
+        if conversion_pairs:
+            type_conversions = "{" + ", ".join("{" + pair + "}" for pair in conversion_pairs) + "}"
+    
     # Create a standard Excel M query template with Promoted Headers and Changed Type steps
     excel_m_template = (
         "let\n"
         "    Source = Excel.Workbook(File.Contents(\"{filename}\"), null, true),\n"
         "    {sheet}_Sheet = Source{{[Item=\"{sheet}\",Kind=\"Sheet\"]}}[Data],\n"
         "    #\"Promoted Headers\" = Table.PromoteHeaders({sheet}_Sheet, [PromoteAllScalars=true]),\n"
-        "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{}})\n"
+        "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {type_conversions})\n"
         "in\n"
         "    #\"Changed Type\""
     )
@@ -211,7 +243,8 @@ def generate_excel_m_code(filename: str, sheet_name: str) -> str:
     # Format the template with the connection info
     m_code = excel_m_template.format(
         filename=filename.replace('\\', '/'),
-        sheet=sheet_name.replace('$', '')
+        sheet=sheet_name.replace('$', ''),
+        type_conversions=type_conversions
     )
     
     return format_m_code_indentation(m_code)
@@ -311,7 +344,18 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
     if conn_info['class_type'] == 'excel' and conn_info['filename']:
         excel_filename = conn_info['filename']
         sheet_name = conn_info.get('table', 'Sheet1')
-        return generate_excel_m_code(excel_filename, sheet_name)
+        
+        # Extract column data from connection info
+        columns_data = []
+        if 'additional_properties' in conn_info and 'columns' in conn_info['additional_properties']:
+            for col in conn_info['additional_properties']['columns']:
+                col_data = {
+                    'source_name': col.get('name', '').strip('[]'),
+                    'datatype': col.get('datatype', 'string')
+                }
+                columns_data.append(col_data)
+        
+        return generate_excel_m_code(excel_filename, sheet_name, columns_data)
 
     # For non-Excel connections, use the API service
     try:

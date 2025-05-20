@@ -77,14 +77,14 @@ table 'Sheet1 (Ticket_tracker)'
 
 
 
-    partition 'Sheet1 (Ticket_tracker)' = m
+    partition 'Sheet1' = m
         mode: import
         source = 
             	let
 					Source = Excel.Workbook(File.Contents("Data/Tickets/Ticket_tracker.xlsx"), null, true),
 					Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {})
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Table Name", type text}, {"Date", type datetime}, {"Date2", type text}, {"raised date", type datetime}, {"% dips(compared to golden data)", type number}, {"ticket number", type text}, {"ticket owner", type text}, {"status", type text}, {"followups", type text}})
 				in
 					#"Changed Type"
         

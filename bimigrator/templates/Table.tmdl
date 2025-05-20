@@ -5,27 +5,26 @@ table '{{source_name}}'
     {{/if}}
 
     {{#each columns}}
-    column '{{source_name}}'
+    {{#if is_calculated}}
+    column '{{source_name}}' = ```
+            {{{source_column}}}
+    ```
         dataType: {{datatype}}
-        {{#if format_string}}
-        formatString: {{format_string}}
-        {{/if}}
         {{#if summarize_by}}
         summarizeBy: {{summarize_by}}
         {{/if}}
-        {{#if is_calculated}}
-        type: calculated
+    {{else}}
+    column '{{source_name}}'
+        dataType: {{datatype}}
+        {{#if summarize_by}}
+        summarizeBy: {{summarize_by}}
         {{/if}}
         {{#if source_column}}
-        {{#if is_calculated}}
-        sourceColumn = ```
-            
-            {{{source_column}}}
-            
-            ```
-        {{else}}
         sourceColumn: {{{source_column}}}
         {{/if}}
+    {{/if}}
+        {{#if format_string}}
+        formatString: {{format_string}}
         {{/if}}
 
         {{#if is_hidden}}
@@ -51,8 +50,8 @@ table '{{source_name}}'
 
     {{#each measures}}
     measure '{{source_name}}' = ```
-			{{{expression}}}
-			```
+            {{{expression}}}
+    ```
         {{#if format_string}}
         formatString: {{format_string}}
         {{/if}}
@@ -60,6 +59,9 @@ table '{{source_name}}'
         {{#if is_hidden}}
         isHidden
         {{/if}}
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
     {{/each}}
 
     {{#each hierarchies}}
