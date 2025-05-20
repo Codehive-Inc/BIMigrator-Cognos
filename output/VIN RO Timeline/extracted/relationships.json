@@ -1,0 +1,14 @@
+{
+  "relationships": [
+    {
+      "from_table": "RPR_ORDR",
+      "from_column": "VIN_ID",
+      "to_table": "SVC_VHCL",
+      "to_column": "VIN_ID",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    }
+  ]
+}

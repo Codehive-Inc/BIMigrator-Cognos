@@ -45,17 +45,20 @@ def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]
 class TableParser(BaseParser):
     """Parser for extracting table information from Tableau workbooks."""
 
-    def __init__(self, twb_file, config: Dict[str, Any], output_dir: str = 'output'):
-        """Initialize the table parser.
-
+    def __init__(self, twb_file: str, config: Dict[str, Any], output_dir: str):
+        """
+        Initialize TableParser.
+        
         Args:
             twb_file: Path to the TWB file
             config: Configuration dictionary
+            output_dir: Output directory
         """
         super().__init__(twb_file, config, output_dir)
         self.column_parser = ColumnParser(config)
         self.connection_factory = ConnectionParserFactory(config)
         self.tmdl_generator = TMDLGenerator(config)
+        self.output_dir = output_dir
 
     def _extract_partition_info(
             self,
@@ -78,6 +81,39 @@ class TableParser(BaseParser):
             # Find the connection element
             connection = ds_element.find('.//connection')
             if connection is not None:
+                # Log connection details
+                conn_details = {
+                    'class': connection.get('class'),
+                    'server': connection.get('server'),
+                    'database': connection.get('dbname'),
+                    'schema': connection.get('schema'),
+                    'username': connection.get('username'),
+                    'port': connection.get('port'),
+                    'authentication': connection.get('authentication'),
+                    'table_name': table_name
+                }
+                
+                # Save connection details to extracted folder
+                import json
+                import os
+                extracted_dir = os.path.join(self.output_dir, 'extracted')
+                os.makedirs(extracted_dir, exist_ok=True)
+                partitions_file = os.path.join(extracted_dir, 'partitions.json')
+                
+                existing_data = {}
+                if os.path.exists(partitions_file):
+                    with open(partitions_file, 'r') as f:
+                        existing_data = json.load(f)
+                
+                if 'connections' not in existing_data:
+                    existing_data['connections'] = []
+                existing_data['connections'].append(conn_details)
+                
+                with open(partitions_file, 'w') as f:
+                    json.dump(existing_data, f, indent=2)
+                
+                logger.info(f"Connection details for table {table_name}: {json.dumps(conn_details, indent=2)}")
+                
                 # Get the appropriate connection parser
                 parser = self.connection_factory.get_parser(connection)
 
@@ -90,11 +126,12 @@ class TableParser(BaseParser):
                         if element.tag.endswith('relation'):
                             relations.append(element)
 
-                # Process each relation
+                # Process each relation and log
                 for relation in relations:
-                    partitions.extend(
-                        parser.extract_partition_info(connection, relation, table_name, columns)
-                    )
+                    logger.info(f"Processing relation for table {table_name}: {relation.attrib}")
+                    new_partitions = parser.extract_partition_info(connection, relation, table_name, columns)
+                    logger.info(f"Generated {len(new_partitions)} partitions for relation")
+                    partitions.extend(new_partitions)
 
         except Exception as e:
             logger.error(f"Error extracting partition info: {str(e)}", exc_info=True)

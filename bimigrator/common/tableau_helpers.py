@@ -1,6 +1,18 @@
 import re
+import logging
+import httpx
+import os
+from pathlib import Path
 from typing import Optional, List, Dict, Any
 from xml.etree.ElementTree import Element
+from dotenv import load_dotenv
+
+# Load environment variables from tableau-to-dax-api/.env
+api_env_path = Path(__file__).parent.parent.parent / 'tableau-to-dax-api' / '.env'
+if api_env_path.exists():
+    load_dotenv(api_env_path)
+
+logger = logging.getLogger(__name__)
 
 def sanitize_identifier(name: str) -> str:
     """
@@ -274,7 +286,10 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
     
     # Get API settings
     api_config = m_code_config.get('api', {})
-    api_base_url = os.getenv('TABLEAU_TO_DAX_API_URL', api_config.get('base_url', 'http://localhost:8000'))
+    api_base_url = os.getenv('TABLEAU_TO_DAX_API_URL') or api_config.get('base_url') or 'http://localhost:8000'
+    # Ensure URL has protocol
+    if not api_base_url.startswith(('http://', 'https://')):
+        api_base_url = 'http://' + api_base_url
     timeout = api_config.get('timeout_seconds', 30)
     m_code_endpoint = api_config.get('endpoints', {}).get('m_code', '/convert/tableau-to-m-code')
 
@@ -286,13 +301,14 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
     conn_info_mapping = m_code_config.get('connection_info_mapping', {})
     standard_fields = conn_info_mapping.get('standard_fields', {})
     
+    # Initialize conn_info before try block so it's available in except block
     conn_info: Dict[str, Any] = {
         'class_type': class_type,
-        'server': None,
-        'database': None,
-        'db_schema': None,
-        'table': None,
-        'sql_query': None,
+        'server': connection_node.get('server'),
+        'database': connection_node.get('dbname'),
+        'db_schema': connection_node.get('schema'),
+        'table': relation_node.get('table') if relation_node is not None else None,
+        'sql_query': relation_node.text.strip() if relation_node is not None and relation_node.get('type') == 'text' else None,
         'filename': None,
         'additional_properties': {}
     }
@@ -379,30 +395,16 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
                 
                 return format_m_code_indentation(m_code)
                 
+    except httpx.ConnectError as e:
+        error_msg = f"Error connecting to FastAPI service at {api_base_url}: {e}"
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
     except Exception as e:
-        # Handle error based on configuration
-        error_config = m_code_config.get('error_handling', {})
-        if error_config.get('log_errors', True):
-            print(f"Error generating M code: {e}")
-            
-        # Use fallback strategy from configuration
-        fallback_strategy = error_config.get('fallback_strategy', 'template')
-        if fallback_strategy == 'template':
-            # Check fallback conditions
-            for conn_type, conditions in error_config.get('fallback_conditions', {}).items():
-                if all(eval(cond) for cond in conditions):
-                    template = conn_types.get(conn_type, {}).get('fallback_template', '')
-                    if template:
-                        # Format SQL query for template
-                        if conn_info.get('sql_query'):
-                            conn_info['sql_query'] = conn_info['sql_query'].replace('"', '\\"')
-                        m_code = template.format(**conn_info)
-                        return format_m_code_indentation(m_code)
-                        
-        elif fallback_strategy == 'error':
-            raise Exception(f"Failed to generate M code for {conn_info['class_type']} connection")
-            
-    return ''
+        error_msg = f"Error generating M code: {e}"
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
+
+    return None
 
 def determine_viz_type(worksheet_node: Element) -> str:
     """

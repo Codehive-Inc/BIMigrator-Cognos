@@ -1,0 +1,9 @@
+relationship 
+    fromTable: RPR_ORDR
+    fromColumn: VIN_ID
+    toTable: SVC_VHCL
+    toColumn: VIN_ID
+    cardinality: manyToOne
+    crossFilteringBehavior: oneWay
+    isActive: true
+
