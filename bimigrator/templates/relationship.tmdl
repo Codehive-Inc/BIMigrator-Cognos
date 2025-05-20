@@ -13,5 +13,7 @@ relationship {{id}}
 {{/if}}
 {{#if is_active}}
 	isActive: {{is_active}}
+
 {{/if}}
+
 {{/each}}

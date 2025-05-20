@@ -58,7 +58,7 @@
       "datatype": "boolean",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "TRIM(SUBSTITUTE('Parameters'[Parameter 1], \" \", \"\")) = 'RO VIN Entry'[VIN_ID]",
+      "source_column": "TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]",
       "description": "Converted from Tableau calculation: TRIM([Parameters].[Parameter 1]) = [VIN_ID]",
       "is_hidden": false,
       "summarize_by": "none",
@@ -122,7 +122,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "RETURN",
+      "source_column": "-- No DAX expression needed --",
       "description": "Converted from Tableau calculation: \"Go back to Dashboard View\"",
       "is_hidden": false,
       "summarize_by": "none",
@@ -7899,7 +7899,7 @@
     {
       "name": "RO VIN Entry",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Removed Columns\" = Table.RemoveColumns(#\"Specified View\",{\"Kind\"})\n\t\t\t\tin\n\t\t\t\t\t#\"Removed Columns\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Native Query\" = let\n\t\t\t\t\tSource = #\"Specified View\",\n\t\t\t\t\tQuery = Value.NativeQuery(Source, \"\n\t\t\t\t\tquery\n\t\t\t\t\t\", meta [Type=\"SQL\", Representation=RowArray])\n\t\t\t\tin\n\t\t\t\t\tQuery,\n\t\t\t\t\t#\"Removed Other Columns\" = Table.SelectColumns(#\"Native Query\",{\"Column1\", \"Column2\"})\n\t\t\t\tin\n\t\t\t\t\t#\"Removed Other Columns\""
     }
   ],
   "has_widget_serialization": false,
