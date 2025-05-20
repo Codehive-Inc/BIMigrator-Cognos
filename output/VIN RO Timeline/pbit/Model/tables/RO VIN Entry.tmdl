@@ -43,7 +43,7 @@ table 'RO VIN Entry'
 
         
     column 'VIN Filter' = ```
-            TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]
+            TRIM(SUBSTITUTE('Parameters'[Parameter 1], " ", "")) = 'RO VIN Entry'[VIN_ID]
     ```
         dataType: boolean
         summarizeBy: none
@@ -86,7 +86,7 @@ table 'RO VIN Entry'
 
         
     column 'Go back' = ```
-            -- No DAX expression needed --
+            RETURN
     ```
         dataType: string
         summarizeBy: none
@@ -3917,14 +3917,12 @@ table 'RO VIN Entry'
 					Source = #"Specified View",
 					Query = Value.NativeQuery(Source, "
 					query
-					", meta [Type="SQL", Representation="StructureWithLanguage"])
+					", meta [Type="Native"]),
+					NavigationStep = Query[CreateNavigationStep]
 				in
-					Query,
-					#"Removed Other Queries" = #"Native Query"{0}[Data],
-					#"Changed Type" = Table.TransformColumnTypes(#"Removed Other Queries",{{"Column1", type text}, {"Column2", type number}, {"Column3", type date}}),
-					#"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "Name"}, {"Column2", "Age"}, {"Column3", "BirthDate"}})
+					Query
 				in
-					#"Renamed Columns"
+					#"Native Query"
         
 
 

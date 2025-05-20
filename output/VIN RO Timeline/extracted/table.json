@@ -58,7 +58,7 @@
       "datatype": "boolean",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]",
+      "source_column": "TRIM(SUBSTITUTE('Parameters'[Parameter 1], \" \", \"\")) = 'RO VIN Entry'[VIN_ID]",
       "description": "Converted from Tableau calculation: TRIM([Parameters].[Parameter 1]) = [VIN_ID]",
       "is_hidden": false,
       "summarize_by": "none",
@@ -122,7 +122,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "-- No DAX expression needed --",
+      "source_column": "RETURN",
       "description": "Converted from Tableau calculation: \"Go back to Dashboard View\"",
       "is_hidden": false,
       "summarize_by": "none",
@@ -7899,7 +7899,7 @@
     {
       "name": "RO VIN Entry",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Native Query\" = let\n\t\t\t\t\tSource = #\"Specified View\",\n\t\t\t\t\tQuery = Value.NativeQuery(Source, \"\n\t\t\t\t\tquery\n\t\t\t\t\t\", meta [Type=\"SQL\", Representation=\"StructureWithLanguage\"])\n\t\t\t\tin\n\t\t\t\t\tQuery,\n\t\t\t\t\t#\"Removed Other Queries\" = #\"Native Query\"{0}[Data],\n\t\t\t\t\t#\"Changed Type\" = Table.TransformColumnTypes(#\"Removed Other Queries\",{{\"Column1\", type text}, {\"Column2\", type number}, {\"Column3\", type date}}),\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(#\"Changed Type\",{{\"Column1\", \"Name\"}, {\"Column2\", \"Age\"}, {\"Column3\", \"BirthDate\"}})\n\t\t\t\tin\n\t\t\t\t\t#\"Renamed Columns\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Native Query\" = let\n\t\t\t\t\tSource = #\"Specified View\",\n\t\t\t\t\tQuery = Value.NativeQuery(Source, \"\n\t\t\t\t\tquery\n\t\t\t\t\t\", meta [Type=\"Native\"]),\n\t\t\t\t\tNavigationStep = Query[CreateNavigationStep]\n\t\t\t\tin\n\t\t\t\t\tQuery\n\t\t\t\tin\n\t\t\t\t\t#\"Native Query\""
     }
   ],
   "has_widget_serialization": false,

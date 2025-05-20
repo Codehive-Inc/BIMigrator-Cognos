@@ -9,6 +9,66 @@
       "cardinality": "manyToOne",
       "cross_filter_behavior": "oneWay",
       "annotations": {}
+    },
+    {
+      "from_table": "SLS_DSTRCT",
+      "from_column": "SLS_ARA_CD",
+      "to_table": "SLS_ARA",
+      "to_column": "SLS_ARA_CD",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    },
+    {
+      "from_table": "DLR",
+      "from_column": "SLS_DSTRCT_CD",
+      "to_table": "SLS_DSTRCT",
+      "to_column": "SLS_DSTRCT_CD",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    },
+    {
+      "from_table": "VHCL_CMPGN",
+      "from_column": "CMPGN_NB",
+      "to_table": "CMPGN_MSTR",
+      "to_column": "CMPGN_NB",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    },
+    {
+      "from_table": "RPR_ORDR",
+      "from_column": "VIN_ID",
+      "to_table": "VHCL_CMPGN",
+      "to_column": "VIN_ID",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    },
+    {
+      "from_table": "RPR_ORDR",
+      "from_column": "RFRNC_DLR_NB",
+      "to_table": "DLR",
+      "to_column": "RFRNC_DLR_NB",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    },
+    {
+      "from_table": "RPR_ORDR",
+      "from_column": "RPR_ORDR_KY",
+      "to_table": "RPR_ORDR_LN",
+      "to_column": "RPR_ORDR_KY",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
     }
   ]
 }

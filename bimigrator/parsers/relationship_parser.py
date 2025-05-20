@@ -61,7 +61,7 @@ class RelationshipParser(BaseParser):
             table_name = parts[0].strip('[]')
             # If it's a SQL query table, get the actual table name
             if table_name.startswith('Custom SQL Query'):
-                return self._get_sql_query_table_name(table_name)
+                table_name = self._get_sql_query_table_name(table_name)
             return table_name
         return ''
 
@@ -139,58 +139,82 @@ class RelationshipParser(BaseParser):
             List of PowerBiRelationship objects
         """
         relationships = []
+        seen_relationships = set()  # Track unique relationships
 
-        # Find all join relations using config XPath
-        xpath = self.relationship_config.get('source_xpath', '//datasources/datasource/relation[@type="join"]')
-        print(f'Debug: Using XPath: {xpath}')
-        join_elements = self._find_elements(xpath)
-        print(f'Debug: Found {len(join_elements)} join elements')
+        # Find all datasources
+        datasources = self.root.findall('.//datasource')
+        print(f'Debug: Found {len(datasources)} datasources')
 
-        for join_element in join_elements:
-            print(f'Debug: Processing join element: {join_element.tag}')
-            # Get join information
-            from_table, to_table, from_column, to_column = self._get_join_info(join_element)
-            print(f'Debug: Join info - from: {from_table}.{from_column} -> to: {to_table}.{to_column}')
+        for ds_element in datasources:
+            # Get datasource name
+            ds_name = ds_element.get('name', '')
+            print(f'Debug: Processing datasource: {ds_name}')
 
-            # Skip if we're missing any required information
-            if not all([from_table, to_table, from_column, to_column]):
-                print('Debug: Missing required join information, skipping')
+            try:
+                # Find connection element
+                connection = ds_element.find('.//connection')
+                if connection is None:
+                    continue
+
+                # Find relation elements
+                relations = connection.findall('.//relation')
+                if not relations:
+                    # Try with wildcard namespace
+                    for element in connection.findall('.//*'):
+                        if element.tag.endswith('relation'):
+                            relations.append(element)
+
+                # Process each relation
+                for relation in relations:
+                    print(f'Debug: Processing relation: {relation.attrib}')
+                    
+                    # Check for join clauses
+                    join_clauses = relation.findall('.//clause[@type="join"]')
+                    for join_clause in join_clauses:
+                        equals_expr = join_clause.find('.//expression[@op="="]')
+                        if equals_expr is not None:
+                            # Get left and right expressions
+                            left_expr = equals_expr.find('./expression[1]')
+                            right_expr = equals_expr.find('./expression[2]')
+                            
+                            if left_expr is not None and right_expr is not None:
+                                left_op = left_expr.get('op', '')
+                                right_op = right_expr.get('op', '')
+                                
+                                # Extract table and column names
+                                from_table = self._extract_table_name(left_op)
+                                to_table = self._extract_table_name(right_op)
+                                from_column = self._extract_column_name(left_op)
+                                to_column = self._extract_column_name(right_op)
+                                
+                                if all([from_table, to_table, from_column, to_column]):
+                                    # Create unique key for this relationship
+                                    rel_key = f"{from_table}:{from_column}:{to_table}:{to_column}"
+                                    
+                                    # Only add if we haven't seen this relationship before
+                                    if rel_key not in seen_relationships:
+                                        seen_relationships.add(rel_key)
+                                        
+                                        # Create relationship object
+                                        relationship = PowerBiRelationship(
+                                            from_table=from_table,
+                                            to_table=to_table,
+                                            from_column=from_column,
+                                            to_column=to_column,
+                                            cardinality="manyToOne",  # Default to many-to-one
+                                            cross_filter_behavior="oneWay",  # Default to one-way
+                                            is_active=True
+                                        )
+                                        relationships.append(relationship)
+                                        print(f'Debug: Found relationship: {from_table}.{from_column} -> {to_table}.{to_column}')
+
+            except Exception as e:
+                print(f'Error processing datasource {ds_name}: {str(e)}')
                 continue
 
-            # Get is_active value using configured XPath
-            is_active = self._get_mapping_value(
-                self.relationship_config.get('is_active', {}),
-                join_element,
-                True  # Default to True
-            )
-
-            # Get cardinality using configured rules
-            cardinality = self._get_mapping_value(
-                self.relationship_config.get('cardinality', {}),
-                join_element,
-                'one'  # Default to one
-            )
-
-            # Get cross filter behavior using configured value
-            cross_filter = self._get_mapping_value(
-                self.relationship_config.get('cross_filter_behavior', {}),
-                join_element,
-                'bothDirections'  # Default to bothDirections
-            )
-
-            # Create PowerBiRelationship object
-            relationship = PowerBiRelationship(
-                from_table=from_table,
-                to_table=to_table,
-                from_column=from_column,
-                to_column=to_column,
-                cardinality=cardinality,
-                cross_filter_behavior=cross_filter,
-                is_active=is_active
-            )
-            relationships.append(relationship)
-
-        # Save intermediate data
-        self.save_intermediate({'relationships': [r.__dict__ for r in relationships]}, 'relationships')
+        # Save relationships to intermediate file
+        if relationships:
+            self.save_intermediate({'relationships': [r.__dict__ for r in relationships]}, 'relationships')
+            print(f'Debug: Saved {len(relationships)} relationships')
 
         return relationships

@@ -1,9 +1,43 @@
 relationship 
-    fromTable: RPR_ORDR
-    fromColumn: VIN_ID
-    toTable: SVC_VHCL
-    toColumn: VIN_ID
-    cardinality: manyToOne
-    crossFilteringBehavior: oneWay
-    isActive: true
+	fromColumn: 'RPR_ORDR'.VIN_ID
+	toColumn: 'SVC_VHCL'.VIN_ID
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
+relationship 
+	fromColumn: 'SLS_DSTRCT'.SLS_ARA_CD
+	toColumn: 'SLS_ARA'.SLS_ARA_CD
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
+relationship 
+	fromColumn: 'DLR'.SLS_DSTRCT_CD
+	toColumn: 'SLS_DSTRCT'.SLS_DSTRCT_CD
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
+relationship 
+	fromColumn: 'VHCL_CMPGN'.CMPGN_NB
+	toColumn: 'CMPGN_MSTR'.CMPGN_NB
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
+relationship 
+	fromColumn: 'RPR_ORDR'.VIN_ID
+	toColumn: 'VHCL_CMPGN'.VIN_ID
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
+relationship 
+	fromColumn: 'RPR_ORDR'.RFRNC_DLR_NB
+	toColumn: 'DLR'.RFRNC_DLR_NB
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
+relationship 
+	fromColumn: 'RPR_ORDR'.RPR_ORDR_KY
+	toColumn: 'RPR_ORDR_LN'.RPR_ORDR_KY
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
 
