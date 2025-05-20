@@ -13,8 +13,8 @@ class CalculationTracker:
             output_dir: Output directory where the calculations.json will be stored
         """
         if output_dir:
-            # Create extracted directory if it doesn't exist
-            self.output_dir = output_dir / 'extracted'
+            # Use the provided output directory directly
+            self.output_dir = output_dir
             self.output_dir.mkdir(parents=True, exist_ok=True)
             
             # Set JSON file path

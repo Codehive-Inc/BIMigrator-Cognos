@@ -63,9 +63,10 @@ class TableParser(BaseParser):
         self.output_dir = output_dir
         # Initialize calculation tracker with the base output directory
         output_path = Path(output_dir)
-        if output_path.name == 'pbit':
+        # Strip off pbit or extracted directories to get base directory
+        if output_path.name == 'pbit' or output_path.name == 'extracted':
             output_path = output_path.parent
-        self.calculation_tracker = CalculationTracker(output_path)
+        self.calculation_tracker = CalculationTracker(output_path / 'extracted')
 
     def _extract_partition_info(
             self,
