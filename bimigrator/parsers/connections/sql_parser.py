@@ -2,9 +2,9 @@
 from typing import Dict, Any, List, Optional
 import xml.etree.ElementTree as ET
 
-from .base_connection import BaseConnectionParser
-from config.data_classes import PowerBiPartition, PowerBiColumn
-from ...common.tableau_helpers import generate_m_code
+from bimigrator.parsers.connections.base_connection import BaseConnectionParser
+from bimigrator.config.data_classes import PowerBiPartition, PowerBiColumn
+from bimigrator.common.tableau_helpers import generate_m_code
 
 
 class SQLConnectionParser(BaseConnectionParser):

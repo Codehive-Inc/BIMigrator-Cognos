@@ -3,7 +3,6 @@ import uuid
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, List, Optional
 
-from bimigrator.common import logging
 from bimigrator.common.logging import logger
 from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiPartition
 from bimigrator.converters import CalculationInfo
@@ -46,14 +45,14 @@ def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]
 class TableParser(BaseParser):
     """Parser for extracting table information from Tableau workbooks."""
 
-    def __init__(self, twb_path: str, config: Dict[str, Any]):
+    def __init__(self, twb_file, config: Dict[str, Any], output_dir: str = 'output'):
         """Initialize the table parser.
 
         Args:
-            twb_path: Path to the TWB file
+            twb_file: Path to the TWB file
             config: Configuration dictionary
         """
-        super().__init__(twb_path, config)
+        super().__init__(twb_file, config, output_dir)
         self.column_parser = ColumnParser(config)
         self.connection_factory = ConnectionParserFactory(config)
         self.tmdl_generator = TMDLGenerator(config)
@@ -128,7 +127,7 @@ class TableParser(BaseParser):
         try:
             # Get all datasources
             datasources = self.root.findall('.//datasource')
-            logging.info(f"Found {len(datasources)} datasources")
+            logger.info(f"Found {len(datasources)} datasources")
 
             # Track unique table names to avoid duplicates
             seen_table_names = set()
@@ -138,12 +137,12 @@ class TableParser(BaseParser):
                 # Get datasource name and caption
                 ds_name = ds_element.get('name', '')
                 ds_caption = ds_element.get('caption', ds_name)
-                logging.info(f"Processing datasource: {ds_name} (caption: {ds_caption})")
+                logger.info(f"Processing datasource: {ds_name} (caption: {ds_caption})")
 
                 # Skip datasources without a connection
                 connection = ds_element.find('.//connection')
                 if connection is None:
-                    logging.info(f"Skipping datasource {ds_name} - no connection found")
+                    logger.info(f"Skipping datasource {ds_name} - no connection found")
                     continue
 
                 # Get datasource ID for deduplication
@@ -220,7 +219,7 @@ class TableParser(BaseParser):
                 )
 
                 tables.append(table)
-                logging.info(
+                logger.info(
                     f"Added table {final_table_name} with {len(columns)} columns, {len(measures)} measures, and {len(partitions)} partitions")
 
             # Deduplicate tables based on source_name
@@ -238,10 +237,10 @@ class TableParser(BaseParser):
                     unique_tables[key] = table
 
             tables = list(unique_tables.values())
-            logging.info(f"After deduplication, found {len(tables)} unique tables")
+            logger.info(f"After deduplication, found {len(tables)} unique tables")
 
         except Exception as e:
-            logging.error(f"Error extracting tables: {str(e)}", exc_info=True)
+            logger.error(f"Error extracting tables: {str(e)}", exc_info=True)
 
         return tables
 

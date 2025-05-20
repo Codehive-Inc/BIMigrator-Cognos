@@ -3,7 +3,7 @@ import os
 from typing import Dict, Any, List
 from pathlib import Path
 
-from config.data_classes import PowerBiTable
+from bimigrator.config.data_classes import PowerBiTable
 
 
 class TMDLGenerator:

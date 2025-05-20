@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Any, List, Optional
 import xml.etree.ElementTree as ET
 
-from config.data_classes import PowerBiPartition, PowerBiColumn
+from bimigrator.config.data_classes import PowerBiPartition, PowerBiColumn
 
 
 class BaseConnectionParser(ABC):
