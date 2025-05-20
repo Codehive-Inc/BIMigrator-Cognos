@@ -1,6 +1,7 @@
 """Parser for extracting table information from Tableau workbooks."""
 import uuid
 import xml.etree.ElementTree as ET
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from bimigrator.common.logging import logger
@@ -96,9 +97,9 @@ class TableParser(BaseParser):
                 # Save connection details to extracted folder
                 import json
                 import os
-                extracted_dir = os.path.join(self.output_dir, 'extracted')
-                os.makedirs(extracted_dir, exist_ok=True)
-                partitions_file = os.path.join(extracted_dir, 'partitions.json')
+                # Use the intermediate_dir from BaseParser which is already properly configured
+                os.makedirs(self.intermediate_dir, exist_ok=True)
+                partitions_file = os.path.join(self.intermediate_dir, 'partitions.json')
                 
                 existing_data = {}
                 if os.path.exists(partitions_file):

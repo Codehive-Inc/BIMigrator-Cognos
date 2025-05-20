@@ -25,8 +25,12 @@ class ProjectStructureGenerator:
         """
         self.config = config
         self.template_mappings = self.config['Templates']['mappings']
-        self.base_dir = Path(output_dir) / 'pbit'  # TMDL files go in pbit subdirectory
-        self.extracted_dir = Path(output_dir) / 'extracted'  # Parser output goes in extracted subdirectory
+        self.output_dir = Path(output_dir)
+        self.base_dir = self.output_dir / 'pbit'  # TMDL files go in pbit subdirectory
+        self.extracted_dir = self.output_dir / 'extracted'  # Parser output goes in extracted subdirectory
+        # Ensure we don't create nested extracted directories
+        if self.extracted_dir.name == 'extracted' and self.extracted_dir.parent.name == 'extracted':
+            self.extracted_dir = self.extracted_dir.parent
 
     def create_directory_structure(self) -> Set[Path]:
         """Create the directory structure based on template mappings.
