@@ -1,8 +1,8 @@
 {
-  "source_name": "RO VIN Entry",
-  "name": "RO VIN Entry",
+  "source_name": "DBS_Snowflake",
+  "name": "DBS_Snowflake",
   "lineage_tag": null,
-  "description": "Imported from Tableau datasource: federated.1luf0dm0s4az7214qsvnz0flwlm6",
+  "description": "Imported from Tableau datasource: federated.0krch1n1efkt1u10r6b7i1muo1is",
   "is_hidden": false,
   "columns": [
     {
@@ -10,8 +10,8 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "IFERROR(\n    CONVERT(\n        DATEDIFF(\n            DAY,\n            'RO VIN Entry'[RPR_ORDR_OPN_DT],\n            'RO VIN Entry'[RPR_ORDR_CLOS_DT],\n            DAY\n        ),\n        WIDESTRING\n    ),\n    \"Missing Open/Close Date\"\n)",
-      "description": "Converted from Tableau calculation: IFNULL(STR(INT([RPR_ORDR_CLOS_DT] - [RPR_ORDR_OPN_DT])), \"Missing Open/Close Date\")",
+      "source_column": "IFERROR(\n    CONVERT(\n        DATEDIFF(\n            'DBS_Snowflake'[RPR_ORDR_CLOS_DT],\n            'DBS_Snowflake'[RPR_ORDR_OPN_DT],\n            DAY\n        ) + 1,\n        WHOLESCRIPTED\n    ),\n    \"Missing Open/Close Date\"\n)",
+      "description": "Converted from Tableau calculation: IFNULL(STR(INT([RPR_ORDR_CLOS_DT] - [RPR_ORDR_OPN_DT] + 1)), \"Missing Open/Close Date\")",
       "is_hidden": false,
       "summarize_by": "none",
       "data_category": null,
@@ -26,24 +26,8 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "'RO VIN Entry'[DLR_NB] & \" - \" & 'RO VIN Entry'[DLR_NM]",
+      "source_column": "'DBS_Snowflake'[DLR_NB] & \" - \" & 'DBS_Snowflake'[DLR_NM]",
       "description": "Converted from Tableau calculation: [DLR_NB] + \" - \"+[DLR_NM]",
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": true,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Coverage Code",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ISNULL(TRIM('RO VIN Entry'[CVRG_CD]), \" \")",
-      "description": "Converted from Tableau calculation: IFNULL([CVRG_CD], \" \")",
       "is_hidden": false,
       "summarize_by": "none",
       "data_category": null,
@@ -58,7 +42,7 @@
       "datatype": "boolean",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]",
+      "source_column": "TRIM('DBS_Snowflake'[Parameters].[Parameter 1]) = 'DBS_Snowflake'[VIN_ID]",
       "description": "Converted from Tableau calculation: TRIM([Parameters].[Parameter 1]) = [VIN_ID]",
       "is_hidden": false,
       "summarize_by": "none",
@@ -71,11 +55,27 @@
     },
     {
       "source_name": "RO Date",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "COALESCE(\n    'RO VIN Entry'[RPR_ORDR_OPN_DT],\n    'RO VIN Entry'[RPR_ORDR_CLOS_DT]\n)",
+      "source_column": "COALESCE('DBS_Snowflake'[RPR_ORDR_OPN_DT], 'DBS_Snowflake'[RPR_ORDR_CLOS_DT])",
       "description": "Converted from Tableau calculation: IFNULL([RPR_ORDR_OPN_DT],[RPR_ORDR_CLOS_DT])",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Correction ",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SWITCH(\n    TRUE(),\n    AND(ISBLANK('DBS_Snowflake'[CLAUS_DS]), ISBLANK('DBS_Snowflake'[CRCTN_DS]), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), BLANK(),\n    AND(ISBLANK('DBS_Snowflake'[CLAUS_DS]), ISBLANK('DBS_Snowflake'[CRCTN_DS]), NOT(ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX]))), 'DBS_Snowflake'[TCHNCN_NOTE_TX],\n    AND(NOT(ISBLANK('DBS_Snowflake'[CLAUS_DS])), ISBLANK('DBS_Snowflake'[CRCTN_DS]), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), 'DBS_Snowflake'[CLAUS_DS],\n    AND(ISBLANK('DBS_Snowflake'[CLAUS_DS]), NOT(ISBLANK('DBS_Snowflake'[CRCTN_DS])), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), 'DBS_Snowflake'[CRCTN_DS],\n    AND(NOT(ISBLANK('DBS_Snowflake'[CLAUS_DS])), NOT(ISBLANK('DBS_Snowflake'[CRCTN_DS])), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), 'DBS_Snowflake'[CLAUS_DS] & \" \" & 'DBS_Snowflake'[CRCTN_DS],\n    AND(NOT(ISBLANK('DBS_Snowflake'[CLAUS_DS])), ISBLANK('DBS_Snow",
+      "description": "Converted from Tableau calculation: IF ISNULL([CLAUS_DS]) and ISNULL([CRCTN_DS]) and ISNULL([TCHNCN_NOTE_TX]) THEN NULL \r\nELSEIF ISNULL([CLAUS_DS]) and ISNULL([CRCTN_DS]) and NOT ISNULL([TCHNCN_NOTE_TX]) THEN [TCHNCN_NOTE_TX]\r\nELSEIF NOT ISNULL([CLAUS_DS]) and ISNULL([CRCTN_DS]) and ISNULL([TCHNCN_NOTE_TX]) THEN [CLAUS_DS]\r\nELSEIF ISNULL([CLAUS_DS]) and NOT ISNULL([CRCTN_DS]) and ISNULL([TCHNCN_NOTE_TX]) THEN [CRCTN_DS]\r\nELSEIF NOT ISNULL([CLAUS_DS]) and NOT ISNULL([CRCTN_DS]) and ISNULL([TCHNCN_NOTE_TX]) then [CLAUS_DS]+\" \"+[CRCTN_DS]\r\nELSEIF NOT ISNULL([CLAUS_DS]) and ISNULL([CRCTN_DS]) and NOT ISNULL([TCHNCN_NOTE_TX]) then [CLAUS_DS]+\" \"+[TCHNCN_NOTE_TX]\r\nELSEIF NOT ISNULL([CLAUS_DS]) and NOT ISNULL([CRCTN_DS]) and NOT ISNULL([TCHNCN_NOTE_TX]) then [CLAUS_DS]+\" \"+[CRCTN_DS]+\" \"+[TCHNCN_NOTE_TX]\r\nELSEIF  ISNULl([CLAUS_DS]) and NOT ISNULL([CRCTN_DS]) and NOT ISNULL([TCHNCN_NOTE_TX]) then [CRCTN_DS]+ \" \"+[TCHNCN_NOTE_TX]\r\nEND",
       "is_hidden": false,
       "summarize_by": "none",
       "data_category": null,
@@ -90,7 +90,7 @@
       "datatype": "boolean",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "'RO VIN Entry'[INTRNL_EFCTV_DT] <= TODAY()",
+      "source_column": "'DBS_Snowflake'[INTRNL_EFCTV_DT] <= TODAY()",
       "description": "Converted from Tableau calculation: [INTRNL_EFCTV_DT] <= TODAY()",
       "is_hidden": false,
       "summarize_by": "none",
@@ -122,7 +122,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "-- No DAX expression needed --",
+      "source_column": "-- No DAX expression is needed for \"Go back to Dashboard View\" --",
       "description": "Converted from Tableau calculation: \"Go back to Dashboard View\"",
       "is_hidden": false,
       "summarize_by": "none",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "RPR_ORDR_KY",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RPR_ORDR_KY",
@@ -202,7 +202,7 @@
     },
     {
       "source_name": "MLG_UNT_ID",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MLG_UNT_ID",
@@ -301,7 +301,7 @@
     },
     {
       "source_name": "RPR_ORDR_OPN_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RPR_ORDR_OPN_DT",
@@ -317,7 +317,7 @@
     },
     {
       "source_name": "RPR_ORDR_CLOS_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RPR_ORDR_CLOS_DT",
@@ -333,7 +333,7 @@
     },
     {
       "source_name": "RPR_ORDR_CRNT_STS_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RPR_ORDR_CRNT_STS_DT",
@@ -540,7 +540,7 @@
     },
     {
       "source_name": "SVC_APNTMT_MADE_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SVC_APNTMT_MADE_DT",
@@ -556,7 +556,7 @@
     },
     {
       "source_name": "SVC_APNTMT_SCHDLD_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SVC_APNTMT_SCHDLD_DT",
@@ -1148,7 +1148,7 @@
     },
     {
       "source_name": "CSTMR_BRTH_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CSTMR_BRTH_DT",
@@ -1212,7 +1212,7 @@
     },
     {
       "source_name": "DESIRED_PKUP_DTTM",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESIRED_PKUP_DTTM",
@@ -1228,7 +1228,7 @@
     },
     {
       "source_name": "DROP_OFF_DTTM",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DROP_OFF_DTTM",
@@ -1487,7 +1487,7 @@
     },
     {
       "source_name": "FOREGIN_VHCL_IN_SVC_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "FOREGIN_VHCL_IN_SVC_DT",
@@ -1583,7 +1583,7 @@
     },
     {
       "source_name": "RNTL_EXPNS_TOTL_DY_NB",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RNTL_EXPNS_TOTL_DY_NB",
@@ -1621,7 +1621,7 @@
     },
     {
       "source_name": "VHCL_PK_UP_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "VHCL_PK_UP_DT",
@@ -1653,7 +1653,7 @@
     },
     {
       "source_name": "RPR_ORDR_INVC_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RPR_ORDR_INVC_DT",
@@ -3814,6 +3814,89 @@
       }
     },
     {
+      "source_name": "CSTMR_RMV_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_RMV_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CSTMR_RMV_DT",
+      "datatype": "datetime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_RMV_DT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CSTMR_RMV_USR_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_RMV_USR_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VHCL_MDL_YR_NB _RPR_ORDR_",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_MDL_YR_NB _RPR_ORDR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "VHCL_TRNMSN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_TRNMSN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "SEVICE_APNTMT_NOTE_TX",
       "datatype": "string",
       "format_string": null,
@@ -3830,11 +3913,142 @@
       }
     },
     {
+      "source_name": "CSTMR_DATA_NOTE_TX",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_DATA_NOTE_TX",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CSTMR_PGR_ORGNZN_PHN_CNTRY_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_PGR_ORGNZN_PHN_CNTRY_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CSTMR_PGR_ORGNZN_PHN_EXTNSN_NB",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_PGR_ORGNZN_PHN_EXTNSN_NB",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CSTMR_CMNCTN_CHNL_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_CMNCTN_CHNL_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CSTMR_RSDNC_PRVCY_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CSTMR_RSDNC_PRVCY_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SVC_ADVSR_SLUTN_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SVC_ADVSR_SLUTN_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CLOS_DT_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CLOS_DT_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "RPR_ORDR_LN_KY",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RPR_ORDR_LN_KY",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "RPR_ORDR_KY _RPR_ORDR_LN_",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RPR_ORDR_KY _RPR_ORDR_LN_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "sum",
@@ -3962,7 +4176,7 @@
     },
     {
       "source_name": "RETRNSLT_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RETRNSLT_DT",
@@ -4764,6 +4978,22 @@
       }
     },
     {
+      "source_name": "RPR_ORDR_MARITZ_KY _RPR_ORDR_L",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RPR_ORDR_MARITZ_KY _RPR_ORDR_L",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "CVRG_CD",
       "datatype": "string",
       "format_string": null,
@@ -4984,7 +5214,7 @@
     },
     {
       "source_name": "SPT_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SPT_DT",
@@ -5130,6 +5360,70 @@
       }
     },
     {
+      "source_name": "CRTE_TS _RPR_ORDR_LN_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _RPR_ORDR_LN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_TS _RPR_ORDR_LN_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _RPR_ORDR_LN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _RPR_ORDR_LN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _RPR_ORDR_LN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _RPR_ORDR_LN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _RPR_ORDR_LN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "JOB_CST_AM",
       "datatype": "double",
       "format_string": null,
@@ -5150,10 +5444,26 @@
     },
     {
       "source_name": "WRNTY_STRT_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WRNTY_STRT_DT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TCHNCN_NM_GRP_TX _RPR_ORDR_LN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TCHNCN_NM_GRP_TX _RPR_ORDR_LN_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -5390,6 +5700,121 @@
         "PBI_FormatHint": {
           "isGeneralNumber": true
         }
+      }
+    },
+    {
+      "source_name": "CMPGN_DSPSTN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CMPGN_DSPSTN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "JOB_STS_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "JOB_STS_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "JOB_CMPLTN_DT",
+      "datatype": "datetime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "JOB_CMPLTN_DT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "JOB_MSCLNS_TAX_AM",
+      "datatype": "double",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "JOB_MSCLNS_TAX_AM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "ATCHMT_STS_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ATCHMT_STS_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RFRNC_DLR_NB _DLR_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RFRNC_DLR_NB _DLR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
       }
     },
     {
@@ -6021,7 +6446,7 @@
     },
     {
       "source_name": "LST_FULL_PRT_RQST_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LST_FULL_PRT_RQST_DT",
@@ -6072,7 +6497,7 @@
     },
     {
       "source_name": "MRKT_GD_CAR_NB",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MRKT_GD_CAR_NB",
@@ -6091,7 +6516,7 @@
     },
     {
       "source_name": "MRKT_GD_TOTL_NB",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MRKT_GD_TOTL_NB",
@@ -6110,7 +6535,7 @@
     },
     {
       "source_name": "MRKT_GD_TRCK_NB",
-      "datatype": "double",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MRKT_GD_TRCK_NB",
@@ -6161,7 +6586,7 @@
     },
     {
       "source_name": "TRMNTN_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TRMNTN_DT",
@@ -6417,7 +6842,7 @@
     },
     {
       "source_name": "CTOVR_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CTOVR_DT",
@@ -6481,7 +6906,7 @@
     },
     {
       "source_name": "R2_CTOVR_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "R2_CTOVR_DT",
@@ -6561,7 +6986,7 @@
     },
     {
       "source_name": "PRT_ACTVTY_CTOVR_PRD",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PRT_ACTVTY_CTOVR_PRD",
@@ -6672,6 +7097,70 @@
       }
     },
     {
+      "source_name": "CRTE_TS _DLR_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _DLR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_TS _DLR_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _DLR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _DLR_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _DLR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _DLR_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _DLR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "VHCL_INVC_IN",
       "datatype": "string",
       "format_string": null,
@@ -6704,11 +7193,411 @@
       }
     },
     {
+      "source_name": "MNTHLY_PRT_ACTVTY_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MNTHLY_PRT_ACTVTY_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ASR_CTOVR_STS_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ASR_CTOVR_STS_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ASR_CTOVR_DT",
+      "datatype": "datetime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ASR_CTOVR_DT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ASR_CTOVR_UPDT_TS",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ASR_CTOVR_UPDT_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ASR_COLLECT_DATA_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ASR_COLLECT_DATA_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DLR_PRNCPL_FRST_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DLR_PRNCPL_FRST_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DLR_PRNCPL_MIDL_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DLR_PRNCPL_MIDL_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DLR_PRNCPL_LST_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DLR_PRNCPL_LST_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EXCTV_MGR_FRST_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EXCTV_MGR_FRST_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EXCTV_MGR_MIDL_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EXCTV_MGR_MIDL_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EXCTV_MGR_LST_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EXCTV_MGR_LST_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EXCTV_MGR_SPCL_DSGNTN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EXCTV_MGR_SPCL_DSGNTN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ASR_MNTHLY_DATA_POPLTN_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ASR_MNTHLY_DATA_POPLTN_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RCUT_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RCUT_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RCUT_STRT_TM",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RCUT_STRT_TM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MLNG_CTY_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MLNG_CTY_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LCV_FLG_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LCV_FLG_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VLDTN_ERR_LG_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VLDTN_ERR_LG_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DSP_SPCFCN_VRSN_NB",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DSP_SPCFCN_VRSN_NB",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AGMT_ACT_SCTN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AGMT_ACT_SCTN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DLR_SUB_CLAS_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DLR_SUB_CLAS_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PNDNG_EV_CRFCTN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PNDNG_EV_CRFCTN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CMPGN_NB _VHCL_CMPGN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CMPGN_NB _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VIN_ID _VHCL_CMPGN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VIN_ID _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "CMPGN_STS_CD",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CMPGN_STS_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_TS _VHCL_CMPGN_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _VHCL_CMPGN_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -6817,7 +7706,7 @@
     },
     {
       "source_name": "UNREACH_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UNREACH_DT",
@@ -6932,7 +7821,7 @@
     },
     {
       "source_name": "ML_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ML_DT",
@@ -7011,8 +7900,56 @@
       }
     },
     {
-      "source_name": "CMPGN_CLSD_DT",
+      "source_name": "UPDT_TS _VHCL_CMPGN_",
       "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _VHCL_CMPGN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _VHCL_CMPGN_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CMPGN_CLSD_DT",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CMPGN_CLSD_DT",
@@ -7043,11 +7980,75 @@
       }
     },
     {
+      "source_name": "RPR_ORDR_OPN_DT _VHCL_CMPGN_",
+      "datatype": "datetime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RPR_ORDR_OPN_DT _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RPR_ORDR_CLOS_DT _VHCL_CMPGN_",
+      "datatype": "datetime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RPR_ORDR_CLOS_DT _VHCL_CMPGN_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "WRNTY_SBMT_TS",
       "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WRNTY_SBMT_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VHCL_AD_TS",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_AD_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CMPGN_NB _CMPGN_MSTR_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CMPGN_NB _CMPGN_MSTR_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -7076,7 +8077,7 @@
     },
     {
       "source_name": "INTRNL_EFCTV_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "INTRNL_EFCTV_DT",
@@ -7092,7 +8093,7 @@
     },
     {
       "source_name": "EXTRNL_EFCTV_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "EXTRNL_EFCTV_DT",
@@ -7112,6 +8113,22 @@
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CMPGN_TYP_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_TS _CMPGN_MSTR_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _CMPGN_MSTR_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -7144,6 +8161,201 @@
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SRC_CMPGN_LCTN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_TS _CMPGN_MSTR_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _CMPGN_MSTR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _CMPGN_MSTR_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _CMPGN_MSTR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _CMPGN_MSTR_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _CMPGN_MSTR_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOP_SL_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOP_SL_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PRT_RSTCTN_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PRT_RSTCTN_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CMPGN_GRP_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CMPGN_GRP_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RTL_CMPGN_RPT_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RTL_CMPGN_RPT_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RTL_CMPGN_AGRMT_MSG_TX",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RTL_CMPGN_AGRMT_MSG_TX",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CMPGN_GRP_TYP_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CMPGN_GRP_TYP_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VHCL_CHNGD_IN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_CHNGD_IN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TOTL_VHCL_CN",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TOTL_VHCL_CN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "SLS_DSTRCT_CD _SLS_DSTRCT_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SLS_DSTRCT_CD _SLS_DSTRCT_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -7203,6 +8415,86 @@
       }
     },
     {
+      "source_name": "CRTE_TS _SLS_DSTRCT_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _SLS_DSTRCT_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_TS _SLS_DSTRCT_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _SLS_DSTRCT_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _SLS_DSTRCT_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _SLS_DSTRCT_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _SLS_DSTRCT_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _SLS_DSTRCT_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SLS_ARA_CD _SLS_ARA_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SLS_ARA_CD _SLS_ARA_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "SLS_RGN_CD",
       "datatype": "string",
       "format_string": null,
@@ -7251,11 +8543,123 @@
       }
     },
     {
+      "source_name": "CRTE_TS _SLS_ARA_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _SLS_ARA_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_TS _SLS_ARA_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _SLS_ARA_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _SLS_ARA_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _SLS_ARA_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _SLS_ARA_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _SLS_ARA_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VIN_ID _SVC_VHCL_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VIN_ID _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AFLT_CMPNY_CD _SVC_VHCL_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AFLT_CMPNY_CD _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "VHCL_LN_CD",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "VHCL_LN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VHCL_MK_CD _SVC_VHCL_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_MK_CD _SVC_VHCL_",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -7415,7 +8819,7 @@
     },
     {
       "source_name": "RTL_SLS_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RTL_SLS_DT",
@@ -7431,7 +8835,7 @@
     },
     {
       "source_name": "MNFCR_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MNFCR_DT",
@@ -7511,7 +8915,7 @@
     },
     {
       "source_name": "WRNTY_EXPRTN_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WRNTY_EXPRTN_DT",
@@ -7546,7 +8950,7 @@
     },
     {
       "source_name": "IN_SVC_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "IN_SVC_DT",
@@ -7581,7 +8985,7 @@
     },
     {
       "source_name": "LST_KNOW_MLG_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LST_KNOW_MLG_DT",
@@ -7712,7 +9116,7 @@
     },
     {
       "source_name": "PDI_DT",
-      "datatype": "dateTime",
+      "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PDI_DT",
@@ -7855,6 +9259,22 @@
       }
     },
     {
+      "source_name": "LCNS_PLAT_NB _SVC_VHCL_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LCNS_PLAT_NB _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "VHCL_MK_NM",
       "datatype": "string",
       "format_string": null,
@@ -7869,12 +9289,264 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
+    },
+    {
+      "source_name": "CRTE_TS _SVC_VHCL_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_TS _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_TS _SVC_VHCL_",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_TS _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CRTE_USR_ID _SVC_VHCL_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CRTE_USR_ID _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UPDT_USR_ID _SVC_VHCL_",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UPDT_USR_ID _SVC_VHCL_",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ENGN_PRFX_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ENGN_PRFX_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CYL_CN_TX",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CYL_CN_TX",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ENGN_LITRS_QT",
+      "datatype": "double",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ENGN_LITRS_QT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "ENGN_CUINE_QT",
+      "datatype": "double",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ENGN_CUINE_QT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "ENGN_HP_NB",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ENGN_HP_NB",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "VHCL_MDL_FUEL_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_MDL_FUEL_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VHCL_MDL_DTL_KY",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VHCL_MDL_DTL_KY",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "PDI_RPR_ORDR_DT",
+      "datatype": "datetime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PDI_RPR_ORDR_DT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PDI_RFRNC_DLR_NB",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PDI_RFRNC_DLR_NB",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PDI_RFRNC_DLR_NM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PDI_RFRNC_DLR_NM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DSTBTN_CD",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DSTBTN_CD",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
   "measures": [
     {
       "source_name": "Distinct ROs",
-      "expression": "COUNTROWS(DISTINCT('RO VIN Entry'[RPR_ORDR_KY]))",
+      "expression": "COUNTROWS(DISTINCT('DBS_Snowflake'[RPR_ORDR_KY]))",
       "format_string": null,
       "description": "Converted from Tableau calculation: COUNTD([RPR_ORDR_KY])",
       "is_hidden": false
@@ -7888,7 +9560,7 @@
     },
     {
       "source_name": "Campaign Age",
-      "expression": "DATEDIFF(DAY, 'RO VIN Entry'[INTRNL_EFCTV_DT], TODAY())",
+      "expression": "DATEDIFF(DAY, 'DBS_Snowflake'[INTRNL_EFCTV_DT], TODAY())",
       "format_string": null,
       "description": "Converted from Tableau calculation: DATEDIFF('day',[INTRNL_EFCTV_DT], TODAY())",
       "is_hidden": false
@@ -7897,9 +9569,9 @@
   "hierarchies": [],
   "partitions": [
     {
-      "name": "RO VIN Entry",
+      "name": "DBS_Snowflake",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Oracle.Database(Server=\"10.78.194.25:1521/OPDBSRW\", [HierarchicalNavigation=true]),\n\t\t\t\t\t#\"Naviguated to Schema\" = Source{[Schema=\"DBSRW_SYS\",Kind=\"Schema\"]}[Data],\n\t\t\t\t\t#\"Specified View\" = #\"Naviguated to Schema\"{[Name=\"TBUDBSRW\",Kind=\"View\"]}[Data],\n\t\t\t\t\t#\"Native Query\" = let\n\t\t\t\t\tSource = #\"Specified View\",\n\t\t\t\t\tQuery = Value.NativeQuery(Source, \"\n\t\t\t\t\tquery\n\t\t\t\t\t\", meta [Type=\"SQL\", Representation=\"StructureWithLanguage\"])\n\t\t\t\tin\n\t\t\t\t\tQuery,\n\t\t\t\t\t#\"Removed Other Queries\" = #\"Native Query\"{0}[Data],\n\t\t\t\t\t#\"Changed Type\" = Table.TransformColumnTypes(#\"Removed Other Queries\",{{\"Column1\", type text}, {\"Column2\", type number}, {\"Column3\", type date}}),\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(#\"Changed Type\",{{\"Column1\", \"Name\"}, {\"Column2\", \"Age\"}, {\"Column3\", \"BirthDate\"}})\n\t\t\t\tin\n\t\t\t\t\t#\"Renamed Columns\""
+      "expression": "\tlet Source = Snowflake.Databases(\"nissannextgen.us-east-1.privatelink.snowflakecomputing.com\", \"SPDBDBS\"),\n\t\t\t\t\tCredentials = Snowflake.Credentials(\"DBS_RPT_SVC_PRD\", \"SPDBDBS_ANT_B\"),\n\t\t\t\t\tQuery =\n\t\t\t\t\t\"SELECT \"\"RPR_ORDR\"\".\"\"RPR_ORDR_KY\"\" AS \"\"RPR_ORDR_KY\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"RPR_ORDR_STS_CD\"\" AS \"\"RPR_ORDR_STS_CD\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"CRNCY_CD\"\" AS \"\"CRNCY_CD\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"RFRNC_DLR_NB\"\" AS \"\"RFRNC_DLR_NB\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"MLG_UNT_ID\"\" AS \"\"MLG_UNT_ID\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"RPR_ORDR_TYP_CD\"\" AS \"\"RPR_ORDR_TYP_CD\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"CSTMR_LNG_CD\"\" AS \"\"CSTMR_LNG_CD\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"VIN_ID\"\" AS \"\"VIN_ID\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"RPR_ORDR_NB\"\" AS \"\"RPR_ORDR_NB\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"RPR_ORDR_TAG_NB\"\" AS \"\"RPR_ORDR_TAG_NB\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\"RPR_ORDR_OPN_DT\"\" AS \"\"RPR_ORDR_OPN_DT\"\",\n\t\t\t\t\t\"\"RPR_ORDR\"\".\"\""
     }
   ],
   "has_widget_serialization": false,

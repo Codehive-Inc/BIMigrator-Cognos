@@ -1,16 +1,15 @@
-table 'RO VIN Entry'
+table 'DBS_Snowflake'
 
 
     column 'Number Days Down' = ```
             IFERROR(
     CONVERT(
         DATEDIFF(
-            DAY,
-            'RO VIN Entry'[RPR_ORDR_OPN_DT],
-            'RO VIN Entry'[RPR_ORDR_CLOS_DT],
+            'DBS_Snowflake'[RPR_ORDR_CLOS_DT],
+            'DBS_Snowflake'[RPR_ORDR_OPN_DT],
             DAY
-        ),
-        WIDESTRING
+        ) + 1,
+        WHOLESCRIPTED
     ),
     "Missing Open/Close Date"
 )
@@ -23,17 +22,7 @@ table 'RO VIN Entry'
 
         
     column 'Dealer Code - Dealer Name' = ```
-            'RO VIN Entry'[DLR_NB] & " - " & 'RO VIN Entry'[DLR_NM]
-    ```
-        dataType: string
-        summarizeBy: none
-
-        isDataTypeInferred: true
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'Coverage Code' = ```
-            ISNULL(TRIM('RO VIN Entry'[CVRG_CD]), " ")
+            'DBS_Snowflake'[DLR_NB] & " - " & 'DBS_Snowflake'[DLR_NM]
     ```
         dataType: string
         summarizeBy: none
@@ -43,7 +32,7 @@ table 'RO VIN Entry'
 
         
     column 'VIN Filter' = ```
-            TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]
+            TRIM('DBS_Snowflake'[Parameters].[Parameter 1]) = 'DBS_Snowflake'[VIN_ID]
     ```
         dataType: boolean
         summarizeBy: none
@@ -53,12 +42,26 @@ table 'RO VIN Entry'
 
         
     column 'RO Date' = ```
-            COALESCE(
-    'RO VIN Entry'[RPR_ORDR_OPN_DT],
-    'RO VIN Entry'[RPR_ORDR_CLOS_DT]
-)
+            COALESCE('DBS_Snowflake'[RPR_ORDR_OPN_DT], 'DBS_Snowflake'[RPR_ORDR_CLOS_DT])
     ```
-        dataType: dateTime
+        dataType: datetime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Correction ' = ```
+            SWITCH(
+    TRUE(),
+    AND(ISBLANK('DBS_Snowflake'[CLAUS_DS]), ISBLANK('DBS_Snowflake'[CRCTN_DS]), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), BLANK(),
+    AND(ISBLANK('DBS_Snowflake'[CLAUS_DS]), ISBLANK('DBS_Snowflake'[CRCTN_DS]), NOT(ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX]))), 'DBS_Snowflake'[TCHNCN_NOTE_TX],
+    AND(NOT(ISBLANK('DBS_Snowflake'[CLAUS_DS])), ISBLANK('DBS_Snowflake'[CRCTN_DS]), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), 'DBS_Snowflake'[CLAUS_DS],
+    AND(ISBLANK('DBS_Snowflake'[CLAUS_DS]), NOT(ISBLANK('DBS_Snowflake'[CRCTN_DS])), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), 'DBS_Snowflake'[CRCTN_DS],
+    AND(NOT(ISBLANK('DBS_Snowflake'[CLAUS_DS])), NOT(ISBLANK('DBS_Snowflake'[CRCTN_DS])), ISBLANK('DBS_Snowflake'[TCHNCN_NOTE_TX])), 'DBS_Snowflake'[CLAUS_DS] & " " & 'DBS_Snowflake'[CRCTN_DS],
+    AND(NOT(ISBLANK('DBS_Snowflake'[CLAUS_DS])), ISBLANK('DBS_Snow
+    ```
+        dataType: string
         summarizeBy: none
 
         isDataTypeInferred: true
@@ -66,7 +69,7 @@ table 'RO VIN Entry'
 
         
     column 'IntEffDate Filter' = ```
-            'RO VIN Entry'[INTRNL_EFCTV_DT] <= TODAY()
+            'DBS_Snowflake'[INTRNL_EFCTV_DT] <= TODAY()
     ```
         dataType: boolean
         summarizeBy: none
@@ -86,7 +89,7 @@ table 'RO VIN Entry'
 
         
     column 'Go back' = ```
-            -- No DAX expression needed --
+            -- No DAX expression is needed for "Go back to Dashboard View" --
     ```
         dataType: string
         summarizeBy: none
@@ -96,7 +99,7 @@ table 'RO VIN Entry'
 
         
     column 'RPR_ORDR_KY'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: RPR_ORDR_KY
 
@@ -129,7 +132,7 @@ table 'RO VIN Entry'
 
         
     column 'MLG_UNT_ID'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: MLG_UNT_ID
 
@@ -178,7 +181,7 @@ table 'RO VIN Entry'
 
         
     column 'RPR_ORDR_OPN_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: RPR_ORDR_OPN_DT
 
@@ -186,7 +189,7 @@ table 'RO VIN Entry'
 
         
     column 'RPR_ORDR_CLOS_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: RPR_ORDR_CLOS_DT
 
@@ -194,7 +197,7 @@ table 'RO VIN Entry'
 
         
     column 'RPR_ORDR_CRNT_STS_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: RPR_ORDR_CRNT_STS_DT
 
@@ -295,7 +298,7 @@ table 'RO VIN Entry'
 
         
     column 'SVC_APNTMT_MADE_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: SVC_APNTMT_MADE_DT
 
@@ -303,7 +306,7 @@ table 'RO VIN Entry'
 
         
     column 'SVC_APNTMT_SCHDLD_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: SVC_APNTMT_SCHDLD_DT
 
@@ -599,7 +602,7 @@ table 'RO VIN Entry'
 
         
     column 'CSTMR_BRTH_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: CSTMR_BRTH_DT
 
@@ -631,7 +634,7 @@ table 'RO VIN Entry'
 
         
     column 'DESIRED_PKUP_DTTM'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: DESIRED_PKUP_DTTM
 
@@ -639,7 +642,7 @@ table 'RO VIN Entry'
 
         
     column 'DROP_OFF_DTTM'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: DROP_OFF_DTTM
 
@@ -768,7 +771,7 @@ table 'RO VIN Entry'
 
         
     column 'FOREGIN_VHCL_IN_SVC_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: FOREGIN_VHCL_IN_SVC_DT
 
@@ -816,7 +819,7 @@ table 'RO VIN Entry'
 
         
     column 'RNTL_EXPNS_TOTL_DY_NB'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: RNTL_EXPNS_TOTL_DY_NB
 
@@ -834,7 +837,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'VHCL_PK_UP_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: VHCL_PK_UP_DT
 
@@ -850,7 +853,7 @@ table 'RO VIN Entry'
 
         
     column 'RPR_ORDR_INVC_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: RPR_ORDR_INVC_DT
 
@@ -1879,6 +1882,47 @@ table 'RO VIN Entry'
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
+    column 'CSTMR_RMV_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RMV_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RMV_DT'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: CSTMR_RMV_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RMV_USR_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RMV_USR_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MDL_YR_NB _RPR_ORDR_'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: VHCL_MDL_YR_NB _RPR_ORDR_
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'VHCL_TRNMSN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_TRNMSN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'SEVICE_APNTMT_NOTE_TX'
         dataType: string
         summarizeBy: none
@@ -1887,10 +1931,75 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'CSTMR_DATA_NOTE_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_DATA_NOTE_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PGR_ORGNZN_PHN_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PGR_ORGNZN_PHN_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PGR_ORGNZN_PHN_EXTNSN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PGR_ORGNZN_PHN_EXTNSN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_CMNCTN_CHNL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_CMNCTN_CHNL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_PRVCY_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_PRVCY_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_ADVSR_SLUTN_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ADVSR_SLUTN_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLOS_DT_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLOS_DT_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'RPR_ORDR_LN_KY'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: RPR_ORDR_LN_KY
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_KY _RPR_ORDR_LN_'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: RPR_ORDR_KY _RPR_ORDR_LN_
 
         annotation SummarizationSetBy = User
 
@@ -1953,7 +2062,7 @@ table 'RO VIN Entry'
 
         
     column 'RETRNSLT_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: RETRNSLT_DT
 
@@ -2345,6 +2454,14 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'RPR_ORDR_MARITZ_KY _RPR_ORDR_L'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_MARITZ_KY _RPR_ORDR_L
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'CVRG_CD'
         dataType: string
         summarizeBy: none
@@ -2451,7 +2568,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'SPT_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: SPT_DT
 
@@ -2523,6 +2640,38 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'CRTE_TS _RPR_ORDR_LN_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _RPR_ORDR_LN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS _RPR_ORDR_LN_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _RPR_ORDR_LN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _RPR_ORDR_LN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _RPR_ORDR_LN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _RPR_ORDR_LN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _RPR_ORDR_LN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'JOB_CST_AM'
         dataType: double
         summarizeBy: sum
@@ -2533,9 +2682,17 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'WRNTY_STRT_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: WRNTY_STRT_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TCHNCN_NM_GRP_TX _RPR_ORDR_LN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TCHNCN_NM_GRP_TX _RPR_ORDR_LN_
 
         annotation SummarizationSetBy = Automatic
 
@@ -2647,6 +2804,63 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = User
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CMPGN_DSPSTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_DSPSTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_CMPLTN_DT'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: JOB_CMPLTN_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_MSCLNS_TAX_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_MSCLNS_TAX_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'ATCHMT_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ATCHMT_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RFRNC_DLR_NB _DLR_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RFRNC_DLR_NB _DLR_
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'DLR_TYP_CD'
         dataType: string
@@ -2962,7 +3176,7 @@ table 'RO VIN Entry'
 
         
     column 'LST_FULL_PRT_RQST_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: LST_FULL_PRT_RQST_DT
 
@@ -2987,7 +3201,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'MRKT_GD_CAR_NB'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: MRKT_GD_CAR_NB
 
@@ -2996,7 +3210,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'MRKT_GD_TOTL_NB'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: MRKT_GD_TOTL_NB
 
@@ -3005,7 +3219,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'MRKT_GD_TRCK_NB'
-        dataType: double
+        dataType: int64
         summarizeBy: sum
         sourceColumn: MRKT_GD_TRCK_NB
 
@@ -3030,7 +3244,7 @@ table 'RO VIN Entry'
 
         
     column 'TRMNTN_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: TRMNTN_DT
 
@@ -3158,7 +3372,7 @@ table 'RO VIN Entry'
 
         
     column 'CTOVR_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: CTOVR_DT
 
@@ -3190,7 +3404,7 @@ table 'RO VIN Entry'
 
         
     column 'R2_CTOVR_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: R2_CTOVR_DT
 
@@ -3230,7 +3444,7 @@ table 'RO VIN Entry'
 
         
     column 'PRT_ACTVTY_CTOVR_PRD'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: PRT_ACTVTY_CTOVR_PRD
 
@@ -3285,6 +3499,38 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'CRTE_TS _DLR_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _DLR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS _DLR_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _DLR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _DLR_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _DLR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _DLR_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _DLR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'VHCL_INVC_IN'
         dataType: string
         summarizeBy: none
@@ -3301,10 +3547,210 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'MNTHLY_PRT_ACTVTY_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MNTHLY_PRT_ACTVTY_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ASR_CTOVR_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ASR_CTOVR_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ASR_CTOVR_DT'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: ASR_CTOVR_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ASR_CTOVR_UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ASR_CTOVR_UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ASR_COLLECT_DATA_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ASR_COLLECT_DATA_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_PRNCPL_FRST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_PRNCPL_FRST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_PRNCPL_MIDL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_PRNCPL_MIDL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_PRNCPL_LST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_PRNCPL_LST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXCTV_MGR_FRST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXCTV_MGR_FRST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXCTV_MGR_MIDL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXCTV_MGR_MIDL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXCTV_MGR_LST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXCTV_MGR_LST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXCTV_MGR_SPCL_DSGNTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXCTV_MGR_SPCL_DSGNTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ASR_MNTHLY_DATA_POPLTN_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ASR_MNTHLY_DATA_POPLTN_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RCUT_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RCUT_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RCUT_STRT_TM'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RCUT_STRT_TM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MLNG_CTY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MLNG_CTY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LCV_FLG_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LCV_FLG_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VLDTN_ERR_LG_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VLDTN_ERR_LG_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSP_SPCFCN_VRSN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSP_SPCFCN_VRSN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AGMT_ACT_SCTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AGMT_ACT_SCTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_SUB_CLAS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_SUB_CLAS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PNDNG_EV_CRFCTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PNDNG_EV_CRFCTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_NB _VHCL_CMPGN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_NB _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VIN_ID _VHCL_CMPGN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VIN_ID _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'CMPGN_STS_CD'
         dataType: string
         summarizeBy: none
         sourceColumn: CMPGN_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_TS _VHCL_CMPGN_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _VHCL_CMPGN_
 
         annotation SummarizationSetBy = Automatic
 
@@ -3358,7 +3804,7 @@ table 'RO VIN Entry'
 
         
     column 'UNREACH_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: UNREACH_DT
 
@@ -3415,7 +3861,7 @@ table 'RO VIN Entry'
 
         
     column 'ML_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: ML_DT
 
@@ -3454,8 +3900,32 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'CMPGN_CLSD_DT'
+    column 'UPDT_TS _VHCL_CMPGN_'
         dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _VHCL_CMPGN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _VHCL_CMPGN_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_CLSD_DT'
+        dataType: datetime
         summarizeBy: none
         sourceColumn: CMPGN_CLSD_DT
 
@@ -3470,10 +3940,42 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'RPR_ORDR_OPN_DT _VHCL_CMPGN_'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_OPN_DT _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_CLOS_DT _VHCL_CMPGN_'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_CLOS_DT _VHCL_CMPGN_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'WRNTY_SBMT_TS'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: WRNTY_SBMT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_AD_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: VHCL_AD_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_NB _CMPGN_MSTR_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_NB _CMPGN_MSTR_
 
         annotation SummarizationSetBy = Automatic
 
@@ -3487,7 +3989,7 @@ table 'RO VIN Entry'
 
         
     column 'INTRNL_EFCTV_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: INTRNL_EFCTV_DT
 
@@ -3495,7 +3997,7 @@ table 'RO VIN Entry'
 
         
     column 'EXTRNL_EFCTV_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: EXTRNL_EFCTV_DT
 
@@ -3506,6 +4008,14 @@ table 'RO VIN Entry'
         dataType: string
         summarizeBy: none
         sourceColumn: CMPGN_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_TS _CMPGN_MSTR_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _CMPGN_MSTR_
 
         annotation SummarizationSetBy = Automatic
 
@@ -3522,6 +4032,103 @@ table 'RO VIN Entry'
         dataType: string
         summarizeBy: none
         sourceColumn: SRC_CMPGN_LCTN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS _CMPGN_MSTR_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _CMPGN_MSTR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _CMPGN_MSTR_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _CMPGN_MSTR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _CMPGN_MSTR_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _CMPGN_MSTR_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP_SL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP_SL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRT_RSTCTN_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRT_RSTCTN_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_GRP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_GRP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RTL_CMPGN_RPT_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RTL_CMPGN_RPT_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RTL_CMPGN_AGRMT_MSG_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RTL_CMPGN_AGRMT_MSG_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_GRP_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_GRP_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_CHNGD_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_CHNGD_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOTL_VHCL_CN'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: TOTL_VHCL_CN
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SLS_DSTRCT_CD _SLS_DSTRCT_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLS_DSTRCT_CD _SLS_DSTRCT_
 
         annotation SummarizationSetBy = Automatic
 
@@ -3550,6 +4157,46 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'CRTE_TS _SLS_DSTRCT_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _SLS_DSTRCT_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS _SLS_DSTRCT_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _SLS_DSTRCT_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _SLS_DSTRCT_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _SLS_DSTRCT_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _SLS_DSTRCT_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _SLS_DSTRCT_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLS_ARA_CD _SLS_ARA_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLS_ARA_CD _SLS_ARA_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'SLS_RGN_CD'
         dataType: string
         summarizeBy: none
@@ -3574,10 +4221,66 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'CRTE_TS _SLS_ARA_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _SLS_ARA_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS _SLS_ARA_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _SLS_ARA_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _SLS_ARA_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _SLS_ARA_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _SLS_ARA_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _SLS_ARA_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VIN_ID _SVC_VHCL_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VIN_ID _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AFLT_CMPNY_CD _SVC_VHCL_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AFLT_CMPNY_CD _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'VHCL_LN_CD'
         dataType: string
         summarizeBy: none
         sourceColumn: VHCL_LN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MK_CD _SVC_VHCL_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MK_CD _SVC_VHCL_
 
         annotation SummarizationSetBy = Automatic
 
@@ -3656,7 +4359,7 @@ table 'RO VIN Entry'
 
         
     column 'RTL_SLS_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: RTL_SLS_DT
 
@@ -3664,7 +4367,7 @@ table 'RO VIN Entry'
 
         
     column 'MNFCR_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: MNFCR_DT
 
@@ -3704,7 +4407,7 @@ table 'RO VIN Entry'
 
         
     column 'WRNTY_EXPRTN_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: WRNTY_EXPRTN_DT
 
@@ -3721,7 +4424,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'IN_SVC_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: IN_SVC_DT
 
@@ -3738,7 +4441,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'LST_KNOW_MLG_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: LST_KNOW_MLG_DT
 
@@ -3803,7 +4506,7 @@ table 'RO VIN Entry'
 
         
     column 'PDI_DT'
-        dataType: dateTime
+        dataType: datetime
         summarizeBy: none
         sourceColumn: PDI_DT
 
@@ -3874,6 +4577,14 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'LCNS_PLAT_NB _SVC_VHCL_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LCNS_PLAT_NB _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'VHCL_MK_NM'
         dataType: string
         summarizeBy: none
@@ -3882,9 +4593,133 @@ table 'RO VIN Entry'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'CRTE_TS _SVC_VHCL_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS _SVC_VHCL_'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID _SVC_VHCL_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID _SVC_VHCL_'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID _SVC_VHCL_
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENGN_PRFX_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ENGN_PRFX_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CYL_CN_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CYL_CN_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENGN_LITRS_QT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: ENGN_LITRS_QT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'ENGN_CUINE_QT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: ENGN_CUINE_QT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'ENGN_HP_NB'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: ENGN_HP_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'VHCL_MDL_FUEL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MDL_FUEL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MDL_DTL_KY'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: VHCL_MDL_DTL_KY
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'PDI_RPR_ORDR_DT'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: PDI_RPR_ORDR_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PDI_RFRNC_DLR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PDI_RFRNC_DLR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PDI_RFRNC_DLR_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PDI_RFRNC_DLR_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSTBTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSTBTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
     measure 'Distinct ROs' = ```
-            COUNTROWS(DISTINCT('RO VIN Entry'[RPR_ORDR_KY]))
+            COUNTROWS(DISTINCT('DBS_Snowflake'[RPR_ORDR_KY]))
     ```
 
 
@@ -3898,7 +4733,7 @@ table 'RO VIN Entry'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Campaign Age' = ```
-            DATEDIFF(DAY, 'RO VIN Entry'[INTRNL_EFCTV_DT], TODAY())
+            DATEDIFF(DAY, 'DBS_Snowflake'[INTRNL_EFCTV_DT], TODAY())
     ```
 
 
@@ -3906,25 +4741,15 @@ table 'RO VIN Entry'
         
 
 
-    partition 'RO VIN Entry' = m
+    partition 'DBS_Snowflake' = m
         mode: import
         source = 
-            	let
-					Source = Oracle.Database(Server="10.78.194.25:1521/OPDBSRW", [HierarchicalNavigation=true]),
-					#"Naviguated to Schema" = Source{[Schema="DBSRW_SYS",Kind="Schema"]}[Data],
-					#"Specified View" = #"Naviguated to Schema"{[Name="TBUDBSRW",Kind="View"]}[Data],
-					#"Native Query" = let
-					Source = #"Specified View",
-					Query = Value.NativeQuery(Source, "
-					query
-					", meta [Type="SQL", Representation="StructureWithLanguage"])
-				in
-					Query,
-					#"Removed Other Queries" = #"Native Query"{0}[Data],
-					#"Changed Type" = Table.TransformColumnTypes(#"Removed Other Queries",{{"Column1", type text}, {"Column2", type number}, {"Column3", type date}}),
-					#"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "Name"}, {"Column2", "Age"}, {"Column3", "BirthDate"}})
-				in
-					#"Renamed Columns"
+            	let Source = Snowflake.Databases("nissannextgen.us-east-1.privatelink.snowflakecomputing.com", "SPDBDBS"),
+					Credentials = Snowflake.Credentials("DBS_RPT_SVC_PRD", "SPDBDBS_ANT_B"),
+					Query = "SELECT * FROM {table}",
+                    Output = Value.NativeQuery(Source, Query, [Credentials=Credentials])
+                in
+                    Output
         
 
 
