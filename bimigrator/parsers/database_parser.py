@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 from bimigrator.config.data_classes import PowerBiDatabase
-from .base_parser import BaseParser
+from bimigrator.parsers.base_parser import BaseParser
 
 
 class DatabaseParser(BaseParser):

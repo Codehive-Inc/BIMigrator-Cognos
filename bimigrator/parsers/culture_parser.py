@@ -2,7 +2,7 @@ import io
 from typing import Dict, Any
 
 from bimigrator.config.data_classes import CultureInfo, LinguisticMetadata, EntityBinding, LinguisticTerm
-from .base_parser import BaseParser
+from bimigrator.parsers.base_parser import BaseParser
 
 
 class CultureParser(BaseParser):

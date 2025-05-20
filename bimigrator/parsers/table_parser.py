@@ -1,16 +1,16 @@
 """Parser for extracting table information from Tableau workbooks."""
+import uuid
 import xml.etree.ElementTree as ET
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
+from bimigrator.common import logging
+from bimigrator.common.logging import logger
 from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiPartition
-from bimigrator.converters import CalculationConverter, CalculationInfo
-from .base_parser import BaseParser
-from .base_parser import BaseParser
-from config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiHierarchy, PowerBiHierarchyLevel, PowerBiPartition
-from ..converters import CalculationConverter, CalculationInfo
-from .column_parser import ColumnParser
-from .connections.connection_factory import ConnectionParserFactory
-from ..generators.tmdl_generator import TMDLGenerator
+from bimigrator.converters import CalculationInfo
+from bimigrator.generators.tmdl_generator import TMDLGenerator
+from bimigrator.parsers.base_parser import BaseParser
+from bimigrator.parsers.column_parser import ColumnParser
+from bimigrator.parsers.connections.connection_factory import ConnectionParserFactory
 
 
 def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]:
@@ -25,10 +25,10 @@ def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]
     """
     if calculation_element is None:
         return {}
-    
+
     # Extract attributes from the calculation element
     calc_info = {}
-    
+
     # Handle different types of calculation elements
     if hasattr(calculation_element, 'get'):
         # XML element
@@ -39,13 +39,13 @@ def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]
     elif isinstance(calculation_element, dict):
         # Dictionary
         calc_info = calculation_element
-    
+
     return calc_info
 
 
 class TableParser(BaseParser):
     """Parser for extracting table information from Tableau workbooks."""
-    
+
     def __init__(self, twb_path: str, config: Dict[str, Any]):
         """Initialize the table parser.
 
@@ -59,10 +59,10 @@ class TableParser(BaseParser):
         self.tmdl_generator = TMDLGenerator(config)
 
     def _extract_partition_info(
-        self,
-        ds_element: ET.Element,
-        table_name: str,
-        columns: Optional[List[PowerBiColumn]] = None
+            self,
+            ds_element: ET.Element,
+            table_name: str,
+            columns: Optional[List[PowerBiColumn]] = None
     ) -> List[PowerBiPartition]:
         """Extract partition information from a datasource element.
         
@@ -81,10 +81,10 @@ class TableParser(BaseParser):
             if connection is not None:
                 # Get the appropriate connection parser
                 parser = self.connection_factory.get_parser(connection)
-                
+
                 # Find relation elements - try both with and without namespaces
                 relations = connection.findall('.//relation')
-                
+
                 # If no relations found, try with wildcard namespace
                 if not relations:
                     for element in connection.findall('.//*'):
@@ -98,7 +98,7 @@ class TableParser(BaseParser):
                     )
 
         except Exception as e:
-            logging.error(f"Error extracting partition info: {str(e)}", exc_info=True)
+            logger.error(f"Error extracting partition info: {str(e)}", exc_info=True)
 
         return partitions
 
@@ -220,7 +220,8 @@ class TableParser(BaseParser):
                 )
 
                 tables.append(table)
-                logging.info(f"Added table {final_table_name} with {len(columns)} columns, {len(measures)} measures, and {len(partitions)} partitions")
+                logging.info(
+                    f"Added table {final_table_name} with {len(columns)} columns, {len(measures)} measures, and {len(partitions)} partitions")
 
             # Deduplicate tables based on source_name
             unique_tables = {}
@@ -263,11 +264,12 @@ class TableParser(BaseParser):
         return {
             'tables': tables
         }
+
     def _extract_columns_and_measures_for_datasource(
-        self, 
-        ds_element: ET.Element, 
-        columns_yaml_config: Dict,
-        pbi_table_name: str  # For DAX expressions in measures
+            self,
+            ds_element: ET.Element,
+            columns_yaml_config: Dict,
+            pbi_table_name: str  # For DAX expressions in measures
     ):  # -> Tuple[List[PowerBiColumn], List[PowerBiMeasure]]
 
         """Extract columns and measures from a datasource element.
@@ -290,13 +292,13 @@ class TableParser(BaseParser):
 
         # Find metadata-records container first
         metadata_records_container = None
-        
+
         # First, look for metadata-records as a direct child of the datasource
         for child in ds_element:
             if child.tag.endswith('metadata-records'):
                 metadata_records_container = child
                 break
-        
+
         # If not found, look for connection elements that might contain metadata-records
         if metadata_records_container is None:
             # Try to find connection element
@@ -307,27 +309,27 @@ class TableParser(BaseParser):
                     if child.tag.endswith('metadata-records'):
                         metadata_records_container = child
                         break
-        
+
         # Initialize an empty list for column elements
         column_elements_from_ds = []
-        
+
         # If we found the metadata-records container, extract column metadata records
         if metadata_records_container is not None:
             for meta_record in metadata_records_container:
                 if meta_record.tag.endswith('metadata-record') and meta_record.get('class') == 'column':
                     column_elements_from_ds.append(meta_record)
-        
+
         print(f"Debug: Found {len(column_elements_from_ds)} metadata-record columns")
-        
+
         # If we still haven't found any columns, try a more aggressive approach
         if not column_elements_from_ds:
             # Look for all metadata-record elements with class='column' anywhere in the datasource
             for elem in ds_element.iter():
                 if elem.tag.endswith('metadata-record') and elem.get('class') == 'column':
                     column_elements_from_ds.append(elem)
-            
+
             print(f"Debug: Found {len(column_elements_from_ds)} metadata-record columns using aggressive search")
-            
+
         # Look specifically for Tab_module and PUAT_Module columns in SQL queries
         sql_queries = []
         for elem in ds_element.iter():
@@ -335,51 +337,52 @@ class TableParser(BaseParser):
                 sql_text = elem.text
                 if sql_text and ('Tab_module' in sql_text or 'PUAT_Module' in sql_text):
                     sql_queries.append(sql_text)
-        
+
         if sql_queries:
             print(f"Debug: Found {len(sql_queries)} SQL queries containing Tab_module or PUAT_Module")
-            
+
             # Extract column names from SQL queries
             for sql in sql_queries:
                 if 'Tab_module' in sql:
                     # Create a synthetic metadata record for Tab_module
                     meta_record = ET.Element('metadata-record')
                     meta_record.set('class', 'column')
-                    
+
                     remote_name = ET.SubElement(meta_record, 'remote-name')
                     remote_name.text = 'Tab_module'
-                    
+
                     local_name = ET.SubElement(meta_record, 'local-name')
                     local_name.text = '[Tab_module]'
-                    
+
                     remote_type = ET.SubElement(meta_record, 'remote-type')
                     remote_type.text = '130'  # String type
-                    
+
                     column_elements_from_ds.append(meta_record)
                     print("Debug: Added synthetic metadata record for Tab_module")
-        
+
         # Print the first few metadata records for debugging
         for i, meta_col in enumerate(column_elements_from_ds[:5]):
             remote_name = meta_col.find('remote-name')
             local_name = meta_col.find('local-name')
             parent_name = meta_col.find('parent-name')
-            
+
             remote_name_text = remote_name.text if remote_name is not None else 'None'
             local_name_text = local_name.text if local_name is not None else 'None'
             parent_name_text = parent_name.text if parent_name is not None else 'None'
-            
-            print(f"Debug: Metadata record {i}: remote_name={remote_name_text}, local_name={local_name_text}, parent_name={parent_name_text}")
+
+            print(
+                f"Debug: Metadata record {i}: remote_name={remote_name_text}, local_name={local_name_text}, parent_name={parent_name_text}")
 
         # Check for calculated fields directly under datasource
         calc_field_xpath = columns_yaml_config.get('calculated_fields_xpath', "column[calculation]")
         calculated_field_elements = ds_element.findall(calc_field_xpath, namespaces=self.namespaces)
-        
+
         # Look for columns in relation elements (for Excel and other direct connections)
         relation_column_elements = []
-        
+
         # Get relation column paths from configuration
         relation_paths = columns_yaml_config.get('relation_column_paths', [])
-        
+
         # If no paths defined in config, use default paths
         if not relation_paths:
             relation_paths = [
@@ -387,39 +390,39 @@ class TableParser(BaseParser):
                 ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column",
                 ".//relation//column"
             ]
-        
+
         for rel_path in relation_paths:
             rel_columns = ds_element.findall(rel_path, namespaces=self.namespaces)
             if rel_columns:
                 relation_column_elements.extend(rel_columns)
-        
+
         # Collect all column elements from different sources
         all_potential_column_elements = []
-        
+
         # Track names of columns already added to avoid duplicates with the same name
         added_column_names = set()
-        
+
         # Add calculated fields first
         for calc_field in calculated_field_elements:
             calc_name = calc_field.get('caption')
             if calc_name:
                 all_potential_column_elements.append(calc_field)
                 added_column_names.add(calc_name)
-        
+
         # Add relation columns
         for rel_col in relation_column_elements:
             rel_col_name = rel_col.get('name')
             if rel_col_name and rel_col_name not in added_column_names:
                 all_potential_column_elements.append(rel_col)
                 added_column_names.add(rel_col_name)
-        
+
         # Add metadata-record columns
         for meta_col in column_elements_from_ds:
             # Get the column name from the metadata record
             remote_name = meta_col.find('remote-name')
             local_name = meta_col.find('local-name')
             parent_name = meta_col.find('parent-name')
-            
+
             # Get the column name
             if remote_name is not None and remote_name.text:
                 col_name = remote_name.text
@@ -427,26 +430,26 @@ class TableParser(BaseParser):
                 col_name = local_name.text
             else:
                 col_name = meta_col.get('caption') or meta_col.get('local-name')
-            
+
             # Get the parent name (table or query name)
             parent_text = ''
             if parent_name is not None and parent_name.text:
                 parent_text = parent_name.text.strip('[]')
-                
+
             # Include all columns from this datasource
             # In Tableau, a datasource can contain multiple queries, so we include all columns
             include_column = True
-            
+
             # Debug output to help understand the column structure
             if col_name:
                 print(f"Debug: Found metadata column '{col_name}' with parent '{parent_text}'")
             else:
                 print(f"Debug: Found metadata column with no name, parent '{parent_text}'")
-                
+
             # Store the parent name in the metadata record as an attribute for later use
             if parent_name is not None and parent_name.text:
                 meta_col.set('parent_table', parent_text)
-            
+
             if col_name and col_name not in added_column_names and include_column:
                 all_potential_column_elements.append(meta_col)
                 added_column_names.add(col_name)
@@ -454,24 +457,25 @@ class TableParser(BaseParser):
         # Get relation column mappings from configuration
         relation_column_mappings = columns_yaml_config.get('relation_column_mappings', {})
         relation_name_attr = relation_column_mappings.get('name_attribute', 'name')
-        
+
         # Get calculated field mappings from configuration
         calc_field_mappings = columns_yaml_config.get('calculated_field_mappings', {})
         calc_name_attr = calc_field_mappings.get('name_attribute', 'caption')
-        
+
         for col_elem in all_potential_column_elements:
             # For calculated fields with calculation child element
-            if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(calc_name_attr):
+            if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(
+                    calc_name_attr):
                 col_name = col_elem.get(calc_name_attr)
                 # Mark this as a calculated column
                 col_elem.set('is_calculated', 'true')
-                
+
                 # Extract the calculation formula
                 calc_elem = col_elem.find('calculation')
                 if calc_elem is not None and calc_elem.get('formula'):
                     # Store the formula for later use
                     col_elem.set('calculation_formula', calc_elem.get('formula'))
-                    
+
                     # Check if this is a measure based on role attribute
                     role = col_elem.get('role')
                     if role == 'measure':
@@ -486,7 +490,7 @@ class TableParser(BaseParser):
             elif col_elem.tag.endswith('metadata-record'):
                 remote_name = col_elem.find('remote-name')
                 local_name = col_elem.find('local-name')
-                
+
                 if remote_name is not None and remote_name.text:
                     col_name = remote_name.text
                 elif local_name is not None and local_name.text:
@@ -499,7 +503,7 @@ class TableParser(BaseParser):
                 else:
                     # Fallback to attributes
                     col_name = col_elem.get('caption') or col_elem.get('name')
-            
+
             if not col_name:
                 continue
 
@@ -513,9 +517,10 @@ class TableParser(BaseParser):
 
             relation_datatype_attr = relation_column_mappings.get('datatype_attribute', 'datatype')
             calc_datatype_attr = calc_field_mappings.get('datatype_attribute', 'datatype')
-            
+
             # For calculated fields with calculation child element
-            if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(calc_datatype_attr):
+            if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(
+                    calc_datatype_attr):
                 twb_datatype = col_elem.get(calc_datatype_attr)
                 pbi_datatype = self._map_datatype(twb_datatype)
             # For relation columns, use the configured datatype attribute
@@ -526,7 +531,7 @@ class TableParser(BaseParser):
             elif col_elem.tag.endswith('metadata-record'):
                 local_type = col_elem.find('local-type')
                 remote_type = col_elem.find('remote-type')
-                
+
                 if local_type is not None and local_type.text:
                     twb_datatype = local_type.text
                     pbi_datatype = self._map_datatype(twb_datatype)
@@ -564,7 +569,7 @@ class TableParser(BaseParser):
 
             description_mapping_cfg = columns_yaml_config.get('description', {})
             description = self._get_mapping_value(description_mapping_cfg, col_elem)
-            
+
             is_hidden_mapping_cfg = columns_yaml_config.get('is_hidden', {})
             is_hidden = self._get_mapping_value(is_hidden_mapping_cfg, col_elem, default_value=False)
 
@@ -585,13 +590,14 @@ class TableParser(BaseParser):
                 dax_expression = None
                 if calculation_formula:
                     # Basic attempt to see if it's DAX-like or needs SUM wrapper
-                    if calculation_formula.strip().upper().startswith(("SUM(", "AVERAGE(", "COUNT(", "MIN(", "MAX(", "CALCULATE(")):
+                    if calculation_formula.strip().upper().startswith(
+                            ("SUM(", "AVERAGE(", "COUNT(", "MIN(", "MAX(", "CALCULATE(")):
                         dax_expression = f"/* Original TWB: {calculation_formula} */ {calculation_formula}"
                     else:
                         dax_expression = f"SUMX('{pbi_table_name}', {calculation_formula})"
                 else:
                     dax_expression = f"SUM('{pbi_table_name}'[{final_col_name}])"
-                
+
                 measure = PowerBiMeasure(
                     source_name=final_col_name,
                     dax_expression=dax_expression,
@@ -605,10 +611,10 @@ class TableParser(BaseParser):
                 is_calculated_column = col_elem.get('is_calculated_column') == 'true'
                 is_measure = col_elem.get('is_measure') == 'true'
                 is_calculated = col_elem.get('is_calculated') == 'true' or bool(calculation_formula)
-                
+
                 # Get the calculation formula from the element if available
                 formula = col_elem.get('calculation_formula') or calculation_formula
-                
+
                 # Extract summarize_by from configuration
                 summarize_by = "none"
                 summarize_by_config = columns_yaml_config.get('summarize_by', {})
@@ -625,34 +631,36 @@ class TableParser(BaseParser):
                             elif tableau_agg == 'none':
                                 summarize_by = 'none'
                             # Default to sum for numeric columns if no specific aggregation
-                            elif pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
+                            elif pbi_datatype.lower() in ["int64", "double", "decimal",
+                                                          "currency"] and not is_calculated_column:
                                 summarize_by = "sum"
                 else:
                     # For non-metadata records, use default logic
                     if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
                         summarize_by = "sum"
-                
+
                 # Initialize annotations
                 annotations = {}
-                
+
                 # Check for explicit aggregation in Tableau XML to set SummarizationSetBy annotation
                 has_explicit_aggregation = False
-                
+
                 # Instead of trying to detect the aggregation element directly,
                 # use the summarize_by value that's already been determined
                 # If summarize_by is anything other than 'none', it means there's an explicit aggregation
                 has_explicit_aggregation = summarize_by != 'none'
-                
+
                 # Set SummarizationSetBy annotation based on whether there's explicit aggregation
                 annotations['SummarizationSetBy'] = 'User' if has_explicit_aggregation else 'Automatic'
-                
+
                 # Add PBI_FormatHint annotation for numeric columns
                 if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
                     # For numeric columns, add the format hint
                     annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
-                    
-                print(f"Debug: Column '{final_col_name}': summarize_by={summarize_by}, SummarizationSetBy={annotations['SummarizationSetBy']}")
-                
+
+                print(
+                    f"Debug: Column '{final_col_name}': summarize_by={summarize_by}, SummarizationSetBy={annotations['SummarizationSetBy']}")
+
                 # Handle calculated fields (measures and calculated columns)
                 if formula:
                     # Create calculation info from configuration
@@ -662,10 +670,10 @@ class TableParser(BaseParser):
                         datatype=pbi_datatype,
                         role='measure' if is_measure else None
                     )
-                    
+
                     # Convert formula to DAX using the calculation converter
                     dax_expression = self.calculation_converter.convert_to_dax(calc_info, pbi_table_name)
-                    
+
                     if is_measure:
                         # Create PowerBI measure
                         measure = PowerBiMeasure(
@@ -678,15 +686,15 @@ class TableParser(BaseParser):
                         pbi_measures.append(measure)
                         print(f"Debug: Created measure '{final_col_name}' with expression: {dax_expression}")
                         continue
-                    
+
                     # For calculated columns, store the DAX expression in annotations
                     annotations.update({
                         'SummarizationSetBy': 'User',  # Calculated columns are always set by user
                         'CalculationFormula': dax_expression
                     })
-                    
+
                     print(f"Debug: Column '{final_col_name}' is a calculated column with expression: {dax_expression}")
-                    
+
                     column = PowerBiColumn(
                         source_name=final_col_name,
                         pbi_datatype=pbi_datatype,
@@ -717,9 +725,9 @@ class TableParser(BaseParser):
                 pbi_columns.append(column)
 
         return pbi_columns, pbi_measures
-    
+
     # The old extract_all_tables method has been replaced with a new implementation above
-        
+
     def _get_datasource_id(self, element: ET.Element) -> str:
         """Get the datasource ID for a table element to help with deduplication.
         
@@ -733,16 +741,16 @@ class TableParser(BaseParser):
         connection = element.get('connection', '')
         if connection:
             return connection
-            
+
         # Try to find the parent datasource element
         parent = element
         while parent is not None:
             if parent.tag.endswith('datasource'):
                 return parent.get('name', '')
             parent = parent.getparent() if hasattr(parent, 'getparent') else None
-            
+
         return ''
-        
+
     def _find_columns_for_datasource(self, datasource_name: str) -> List[ET.Element]:
         """Find columns associated with a specific datasource.
         
@@ -754,24 +762,24 @@ class TableParser(BaseParser):
         """
         # Try to find columns in datasource-dependencies sections
         columns = []
-        
+
         # Find all datasource-dependencies elements that reference this datasource
         dependency_xpath = f"//datasource-dependencies[@datasource='{datasource_name}']//column"
         try:
             columns.extend(self.root.findall(dependency_xpath, self.namespaces))
         except Exception as e:
             print(f"Debug: Error finding columns with dependency XPath: {str(e)}")
-        
+
         # Also look for columns directly in the datasource definition
         datasource_xpath = f"//datasource[@name='{datasource_name}']//column"
         try:
             columns.extend(self.root.findall(datasource_xpath, self.namespaces))
         except Exception as e:
             print(f"Debug: Error finding columns with datasource XPath: {str(e)}")
-            
+
         print(f"Debug: Found {len(columns)} columns for datasource '{datasource_name}'")
         return columns
-        
+
     def _extract_nested_tables(self, join_element) -> List[ET.Element]:
         """Extract table relations from a join relation element.
         
@@ -782,14 +790,14 @@ class TableParser(BaseParser):
             List of table relation elements
         """
         tables = []
-        
+
         # Find all relation elements within this join
         relations = join_element.findall('.//relation', self.namespaces)
-        
+
         for relation in relations:
             relation_type = relation.get('type', '')
             relation_name = relation.get('name', '')
-            
+
             if relation_type == 'table' and relation_name:
                 print(f'Debug: Found nested table: {relation_name}')
                 tables.append(relation)
@@ -797,9 +805,9 @@ class TableParser(BaseParser):
                 # Handle SQL query relations
                 print(f'Debug: Found SQL query table: {relation_name}')
                 tables.append(relation)
-                
+
         return tables
-    
+
     def _map_datatype(self, tableau_type: str) -> str:
         """Map Tableau datatypes to Power BI datatypes."""
         type_mapping = self.config.get('tableau_datatype_to_tmdl', {})
@@ -820,8 +828,8 @@ def parse_workbook(twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
     data = {
         'PowerBiTables': parser.extract_all_tables()
     }
-    
+
     # Save intermediate file
     parser.save_intermediate(data, 'tables')
-    
+
     return data

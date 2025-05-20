@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, Any
 
 from bimigrator.config.data_classes import PowerBiProject
-from .base_parser import BaseParser
+from bimigrator.parsers.base_parser import BaseParser
 
 
 class PbixprojParser(BaseParser):

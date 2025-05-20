@@ -1,10 +1,10 @@
 """Parser for extracting column information from Tableau workbooks."""
-from typing import Dict, Any, List, Tuple, Optional
 import xml.etree.ElementTree as ET
+from typing import Dict, Any, List, Tuple
 
-from config.data_classes import PowerBiColumn, PowerBiMeasure
-from ..converters.calculation_converter import CalculationInfo
-from ..converters import CalculationConverter
+from bimigrator.config.data_classes import PowerBiColumn, PowerBiMeasure
+from bimigrator.converters import CalculationConverter
+from bimigrator.converters.calculation_converter import CalculationInfo
 
 
 class ColumnParser:
@@ -19,7 +19,7 @@ class ColumnParser:
         self.config = config
         self.calculation_converter = CalculationConverter(config)
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
-        
+
         # Initialize default datatype mapping if not provided in config
         if not self.tableau_to_tmdl_datatypes:
             self.tableau_to_tmdl_datatypes = {
@@ -30,12 +30,12 @@ class ColumnParser:
                 'date': 'datetime',
                 'datetime': 'datetime'
             }
-        
+
     def extract_columns_and_measures(
-        self,
-        ds_element: ET.Element,
-        columns_yaml_config: Dict[str, Any],
-        pbi_table_name: str
+            self,
+            ds_element: ET.Element,
+            columns_yaml_config: Dict[str, Any],
+            pbi_table_name: str
     ) -> Tuple[List[PowerBiColumn], List[PowerBiMeasure]]:
         """Extract columns and measures from a datasource element.
         
@@ -50,14 +50,14 @@ class ColumnParser:
         columns = []
         measures = []
         seen_col_names = set()
-        
+
         # Get metadata-record columns
         column_elements_from_ds = ds_element.findall('.//metadata-record[@class="column"]')
-        
+
         # Get calculated fields
         calc_field_xpath = columns_yaml_config.get('calculated_fields_xpath', "column[calculation]")
         calculated_field_elements = ds_element.findall(calc_field_xpath)
-        
+
         # Get relation columns
         relation_column_elements = []
         relation_paths = columns_yaml_config.get('relation_column_paths', [])
@@ -67,46 +67,46 @@ class ColumnParser:
                 ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column",
                 ".//relation//column"
             ]
-            
+
         for rel_path in relation_paths:
             rel_columns = ds_element.findall(rel_path)
             if rel_columns:
                 relation_column_elements.extend(rel_columns)
-                
+
         # Get configuration mappings
         relation_column_mappings = columns_yaml_config.get('relation_column_mappings', {})
         relation_name_attr = relation_column_mappings.get('name_attribute', 'name')
         relation_datatype_attr = relation_column_mappings.get('datatype_attribute', 'datatype')
-        
+
         calc_field_mappings = columns_yaml_config.get('calculated_field_mappings', {})
         calc_name_attr = calc_field_mappings.get('name_attribute', 'caption')
         calc_datatype_attr = calc_field_mappings.get('datatype_attribute', 'datatype')
-        
+
         # Process calculated fields first
         for calc_field in calculated_field_elements:
             col_name = calc_field.get(calc_name_attr)
             if not col_name or col_name in seen_col_names:
                 continue
-                
+
             # Get datatype and role
             twb_datatype = calc_field.get(calc_datatype_attr, 'string')
             role = calc_field.get('role', '')
-            
+
             # Common aggregation functions
             agg_functions = ['SUM', 'AVERAGE', 'AVG', 'COUNT', 'MIN', 'MAX', 'COUNTD', 'ATTR']
-            
+
             # Extract calculation formula
             calc_elem = calc_field.find('calculation')
             if calc_elem is not None and calc_elem.get('formula'):
                 formula = calc_elem.get('formula')
-                
+
                 # Auto-detect measures based on aggregation functions
                 formula_upper = formula.upper()
                 for agg_func in agg_functions:
                     if formula_upper.startswith(agg_func + '('):
                         role = 'measure'
                         break
-                
+
                 # Convert to DAX
                 dax_expression = self.calculation_converter.convert_to_dax(
                     CalculationInfo(
@@ -117,16 +117,16 @@ class ColumnParser:
                     ),
                     pbi_table_name
                 )
-                
+
                 if role == 'measure':
                     # Create measure
                     # Set annotations for measures
                     annotations = {
                         'SummarizationSetBy': 'Automatic',  # Add SummarizationSetBy
                     }
-                    
+
                     # PBI_FormatHint is now hardcoded in the template for measures
-                    
+
                     measure = PowerBiMeasure(
                         source_name=col_name,
                         dax_expression=dax_expression,
@@ -137,19 +137,20 @@ class ColumnParser:
                 else:
                     # Create calculated column
                     pbi_datatype = self._map_datatype(twb_datatype)
-                    
+
                     # For numeric calculated columns, set summarize_by to 'sum'
-                    summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] else "none"
-                    
+                    summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal",
+                                                                     "currency"] else "none"
+
                     # Set annotations
                     annotations = {
                         'SummarizationSetBy': 'Automatic'
                     }
-                    
+
                     # Add PBI_FormatHint for numeric columns
                     if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
                         annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
-                    
+
                     # For calculated columns, we need to set the source_name to just the column name
                     # and put the DAX expression in the source_column field
                     column = PowerBiColumn(
@@ -163,30 +164,30 @@ class ColumnParser:
                         annotations=annotations
                     )
                     columns.append(column)
-                    
+
             seen_col_names.add(col_name)
-            
+
         # Process relation columns
         for rel_col in relation_column_elements:
             col_name = rel_col.get(relation_name_attr)
             if not col_name or col_name in seen_col_names:
                 continue
-                
+
             twb_datatype = rel_col.get(relation_datatype_attr, 'string')
             pbi_datatype = self._map_datatype(twb_datatype)
-            
+
             # For numeric columns, set summarize_by to 'sum'
             summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] else "none"
-            
+
             # Set annotations
             annotations = {
                 'SummarizationSetBy': 'User' if summarize_by == "sum" else 'Automatic'
             }
-            
+
             # Add PBI_FormatHint for numeric columns
             if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
                 annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
-            
+
             column = PowerBiColumn(
                 source_name=col_name,
                 pbi_datatype=pbi_datatype,
@@ -196,12 +197,12 @@ class ColumnParser:
             )
             columns.append(column)
             seen_col_names.add(col_name)
-            
+
         # Process metadata-record columns
         for meta_col in column_elements_from_ds:
             remote_name = meta_col.find('remote-name')
             local_name = meta_col.find('local-name')
-            
+
             if remote_name is not None and remote_name.text:
                 col_name = remote_name.text
             elif local_name is not None and local_name.text:
@@ -212,14 +213,14 @@ class ColumnParser:
                     col_name = local_name_text
             else:
                 col_name = meta_col.get('caption') or meta_col.get('name')
-                
+
             if not col_name or col_name in seen_col_names:
                 continue
-                
+
             # Get datatype
             local_type = meta_col.find('local-type')
             remote_type = meta_col.find('remote-type')
-            
+
             if local_type is not None and local_type.text:
                 twb_datatype = local_type.text
             elif remote_type is not None and remote_type.text:
@@ -239,21 +240,21 @@ class ColumnParser:
                     twb_datatype = 'string'
             else:
                 twb_datatype = meta_col.get('type', 'string')
-                
+
             pbi_datatype = self._map_datatype(twb_datatype)
-            
+
             # For numeric columns, set summarize_by to 'sum'
             summarize_by = "sum" if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] else "none"
-            
+
             # Set annotations
             annotations = {
                 'SummarizationSetBy': 'User' if summarize_by == "sum" else 'Automatic'
             }
-            
+
             # Add PBI_FormatHint for numeric columns
             if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
                 annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
-            
+
             column = PowerBiColumn(
                 source_name=col_name,
                 pbi_datatype=pbi_datatype,
@@ -263,9 +264,9 @@ class ColumnParser:
             )
             columns.append(column)
             seen_col_names.add(col_name)
-            
+
         return columns, measures
-        
+
     def _map_datatype(self, tableau_type: str) -> str:
         """Map Tableau datatypes to Power BI datatypes.
         
@@ -277,5 +278,5 @@ class ColumnParser:
         """
         if not tableau_type or not isinstance(tableau_type, str):
             return 'string'
-            
+
         return self.tableau_to_tmdl_datatypes.get(tableau_type.lower(), 'string')

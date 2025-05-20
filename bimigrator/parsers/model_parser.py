@@ -1,8 +1,8 @@
 from typing import Dict, Any, List
 
 from bimigrator.config.data_classes import PowerBiModel, DataAccessOptions
-from .base_parser import BaseParser
-from .table_parser import TableParser
+from bimigrator.parsers.base_parser import BaseParser
+from bimigrator.parsers.table_parser import TableParser
 
 
 class ModelParser(BaseParser):
