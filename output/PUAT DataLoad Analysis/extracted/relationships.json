@@ -1,0 +1,24 @@
+{
+  "relationships": [
+    {
+      "from_table": "Custom SQL Query",
+      "from_column": "Tab_module",
+      "to_table": "Custom SQL Query2",
+      "to_column": "OBJ_SMF_TABLES",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    },
+    {
+      "from_table": "Custom SQL Query",
+      "from_column": "PUAT_Module",
+      "to_table": "Custom SQL Query2",
+      "to_column": "OBJ_SMF_TABLES",
+      "is_active": true,
+      "cardinality": "manyToOne",
+      "cross_filter_behavior": "oneWay",
+      "annotations": {}
+    }
+  ]
+}

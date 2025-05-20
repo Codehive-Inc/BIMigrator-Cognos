@@ -47,8 +47,10 @@ class BaseTemplateGenerator:
 
         # Set output directory with input name
         self.output_dir = self.base_output_dir / self.input_name if self.input_name else self.base_output_dir
-        self.pbit_dir = self.output_dir / 'pbit' if self.input_name else self.output_dir
-        self.extracted_dir = self.output_dir / 'extracted' if self.input_name else self.output_dir / 'extracted'
+        # pbit directory is always under output_dir
+        self.pbit_dir = self.output_dir / 'pbit'
+        # extracted directory is always at the same level as pbit
+        self.extracted_dir = self.output_dir / 'extracted'
 
     def _load_template_mappings(self) -> Dict[str, TemplateMapping]:
         """Load template mappings from configuration."""

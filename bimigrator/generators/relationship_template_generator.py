@@ -21,9 +21,16 @@ class RelationshipTemplateGenerator(BaseTemplateGenerator):
             List containing the path to the generated file
         """
         if output_dir:
-            self.output_dir = output_dir.parent
+            # output_dir should be the pbit directory
             self.pbit_dir = output_dir
+            self.output_dir = output_dir.parent
+            # extracted directory should be at the same level as pbit
             self.extracted_dir = self.output_dir / 'extracted'
+            # Delete any extracted directory under pbit if it exists
+            pbit_extracted = self.pbit_dir / 'extracted'
+            if pbit_extracted.exists():
+                import shutil
+                shutil.rmtree(pbit_extracted)
         
         # Create context for all relationships
         relationship_contexts = []

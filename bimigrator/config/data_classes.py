@@ -407,6 +407,7 @@ class PowerBiPartition:
 @dataclass
 class PowerBiRelationship:
     """Represents a relationship between tables for TMDL."""
+    id: str
     from_table: str
     from_column: str
     to_table: str

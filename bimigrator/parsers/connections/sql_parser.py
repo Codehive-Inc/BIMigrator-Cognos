@@ -20,7 +20,7 @@ class SQLConnectionParser(BaseConnectionParser):
             True if this is a SQL connection, False otherwise
         """
         # List of SQL-based connection classes
-        sql_classes = {'sqlserver', 'mysql', 'postgresql', 'oracle', 'dremio'}
+        sql_classes = {'sqlserver', 'mysql', 'postgresql', 'oracle', 'dremio', 'snowflake'}
         
         # Check direct connection
         if connection_node.get('class') in sql_classes:
@@ -28,10 +28,16 @@ class SQLConnectionParser(BaseConnectionParser):
             
         # Check federated connection
         if connection_node.get('class') == 'federated':
+            # First check if there's a SQL connection inside
             for named_conn in connection_node.findall('.//named-connection'):
                 conn = named_conn.find('.//connection')
                 if conn is not None and conn.get('class') in sql_classes:
                     return True
+            
+            # If no SQL connection found but it's still federated, handle it anyway
+            # This ensures we handle federated connections even if we can't identify the specific type
+            return True
+            
         return False
         
     def extract_partition_info(

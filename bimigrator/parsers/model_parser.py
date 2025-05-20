@@ -10,7 +10,7 @@ class ModelParser(BaseParser):
 
     def __init__(self, twb_path: str, config: Dict[str, Any], output_dir: str = 'output'):
         super().__init__(twb_path, config, output_dir)
-        self.table_parser = TableParser(twb_path, config)
+        self.table_parser = TableParser(twb_path, config, output_dir)
 
     def extract_model_info(self) -> (PowerBiModel, List[Any]):
         """Extract model information from the workbook.

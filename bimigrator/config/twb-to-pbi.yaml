@@ -61,8 +61,7 @@ Templates:
       output: Model/relationships.tmdl
       config: PowerBiRelationship
       dataclass: PowerBiRelationship
-      multiple: true
-      name_from: id
+      multiple: false
     culture:
       template: culture.tmdl
       output: Model/cultures/{{culture}}.tmdl
