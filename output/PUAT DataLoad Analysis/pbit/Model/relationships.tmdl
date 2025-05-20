@@ -1,17 +1,12 @@
 relationship 
-    fromTable: Custom SQL Query
-    fromColumn: Tab_module
-    toTable: Custom SQL Query2
-    toColumn: OBJ_SMF_TABLES
-    cardinality: manyToOne
-    crossFilteringBehavior: oneWay
-    isActive: true
+	fromColumn: 'Custom SQL Query'.Tab_module
+	toColumn: 'Custom SQL Query2'.OBJ_SMF_TABLES
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true
 relationship 
-    fromTable: Custom SQL Query
-    fromColumn: PUAT_Module
-    toTable: Custom SQL Query2
-    toColumn: OBJ_SMF_TABLES
-    cardinality: manyToOne
-    crossFilteringBehavior: oneWay
-    isActive: true
-
+	fromColumn: 'Custom SQL Query'.PUAT_Module
+	toColumn: 'Custom SQL Query2'.OBJ_SMF_TABLES
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	isActive: true

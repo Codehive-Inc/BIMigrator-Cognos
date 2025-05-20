@@ -2,7 +2,7 @@ table 'Custom SQL Query (dlh_nsec.objdb)'
 
 
     column 'weekday' = ```
-            WEEKDAY('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE], 2)
+            ISOWEEKDAY('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE])
     ```
         dataType: int64
         summarizeBy: sum
@@ -23,10 +23,19 @@ table 'Custom SQL Query (dlh_nsec.objdb)'
 
         
     column 'Week Start Date' = ```
-            CALCULATE(
-    MIN('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE]),
-    VALUES('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK])
-)
+            VAR MinFiscalDate =
+    MINX(
+        FILTER(
+            'Custom SQL Query (dlh_nsec.objdb)',
+            ALLEXCEPT('Custom SQL Query (dlh_nsec.objdb)', 'Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK])
+        ),
+        'Custom SQL Query (dlh_nsec.objdb)'[FISCAL_DATE]
+    )
+RETURN
+    CALCULATE(
+        MinFiscalDate,
+        VALUES('Custom SQL Query (dlh_nsec.objdb)'[FISCAL_WEEK])
+    )
     ```
         dataType: dateTime
         summarizeBy: none
@@ -78,7 +87,7 @@ table 'Custom SQL Query (dlh_nsec.objdb)'
 
         
     column 'Subject' = ```
-            "Data Load below " & FORMAT(LOOKUPVALUE('Custom SQL Query (dlh_nsec.objdb)'[Parameters].[Parameter 1], 'Custom SQL Query (dlh_nsec.objdb)'[Parameters], 'Custom SQL Query (dlh_nsec.objdb)'[Parameters].[Parameter 1]), "0%") & "% Of Golden Data Range"
+            "Data Load below " & FORMAT(LOOKUPVALUE('Custom SQL Query (dlh_nsec.objdb)'[Parameters], 'Custom SQL Query (dlh_nsec.objdb)'[Parameters], "Parameter 1"), "0%") & "% Of Golden Data Range"
     ```
         dataType: string
         summarizeBy: none
@@ -235,25 +244,13 @@ table 'Custom SQL Query (dlh_nsec.objdb)'
         
     measure 'Body' = ```
             "Date of Load " &
-STR(
-    MINX(
-        'Custom SQL Query (dlh_nsec.objdb)',
-        'Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604242555215877]
-    )
-) &
+MIN('Custom SQL Query (dlh_nsec.objdb)'[Calculation_1420604242555215877]) &
 "
 System Count: " &
-STR(
-    SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count])
-) &
+SUM('Custom SQL Query (dlh_nsec.objdb)'[serial_count]) &
 "
 Golden Data Value: " &
-STR(
-    MAXX(
-        'Custom SQL Query (dlh_nsec.objdb)',
-        'Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]
-    )
-) &
+MAX('Custom SQL Query (dlh_nsec.objdb)'[Weekly count (copy)_1420604241838956546]) &
 "
 
 Regards,
@@ -336,6 +333,27 @@ RETURN
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
+
+    partition 'Custom SQL Query (dlh_nsec.objdb)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					Authentication="auth-user-pass",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					],
+					[
+					HierarchicalNavigation=true,
+					Query="select * from `dlh_nsec.objdb`"
+					]),
+					#"Navigation" = Source{[Name="dlh_nsec.objdb"]}[Data]
+				in
+					#"Navigation"
+        
 
 
 

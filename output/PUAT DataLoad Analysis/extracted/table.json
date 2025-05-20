@@ -10,7 +10,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "\"Data Load below \" & CONVERT(VARCHAR(10), [Parameters].[Parameter 1]) & \"% Of Golden Data Range\"",
+      "source_column": "\"Data Load below \" & CONVERT(VARCHAR, [Parameters].[Parameter 1]) & \"% Of Golden Data Range\"",
       "description": "Converted from Tableau calculation: \"Data Load below \"+STR([Parameters].[Parameter 1])+\"% Of Golden Data Range\"",
       "is_hidden": false,
       "summarize_by": "none",
@@ -61,7 +61,7 @@
       "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "VAR MinCalc =\n    MINX(\n        FILTER(\n            'Custom SQL Query (dlh_nsec.objdb) (2)',\n            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272] <> BLANK()\n        ),\n        'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]\n    )\nRETURN\n    CALCULATE(\n        MinCalc,\n        VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[FISCAL_WEEK])\n    )",
+      "source_column": "CALCULATE(\n    MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]),\n    VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[FISCAL_WEEK])\n)",
       "description": "Converted from Tableau calculation: { FIXED [FISCAL_WEEK]:MIN([Calculation_265993911338422272])}",
       "is_hidden": false,
       "summarize_by": "none",
@@ -115,7 +115,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "FILTER(\n    'Custom SQL Query (dlh_nsec.objdb) (2)',\n    'Custom SQL Query (dlh_nsec.objdb) (2)'[Date] >= DATE(2023, 2, 24)\n        && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Date] <= DATE(2023, 3, 17)\n)",
+      "source_column": "DATESBETWEEN(\n    'Custom SQL Query (dlh_nsec.objdb) (2)'[Date],\n    DATE(2023, 2, 24),\n    DATE(2023, 3, 17)\n)",
       "description": "Converted from Tableau calculation: \"from Feb 24 to Mar 17\"",
       "is_hidden": false,
       "summarize_by": "none",
@@ -179,7 +179,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CALCULATE(\n    COUNTROWS('Custom SQL Query (dlh_nsec.objdb) (2)'),\n    FILTER(\n        'Custom SQL Query (dlh_nsec.objdb) (2)',\n        'Custom SQL Query (dlh_nsec.objdb) (2)'[help] = \"help\"\n    )\n)",
+      "source_column": "\"help\"",
       "description": "Converted from Tableau calculation: 'help'",
       "is_hidden": false,
       "summarize_by": "none",
@@ -520,7 +520,7 @@
   "measures": [
     {
       "source_name": "% Prev Week Diff",
-      "expression": "1 - (\n    CALCULATE(\n        SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),\n        FILTER(\n            'Custom SQL Query (dlh_nsec.objdb) (2)',\n            COUNTROWS(FILTER('Custom SQL Query (dlh_nsec.objdb) (2)', 'Custom SQL Query (dlh_nsec.objdb) (2)'[Measure] <> BLANK())) = -4\n        )\n    ) / SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])\n)",
+      "expression": "1 - (\n    CALCULATE(\n        SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),\n        FILTER(\n            'Custom SQL Query (dlh_nsec.objdb) (2)',\n            COUNTROWS(VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])) = -4\n        )\n    ) / SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])\n)",
       "format_string": null,
       "description": "Converted from Tableau calculation: 1-(LOOKUP(SUM([Measure]),-4)/SUM([Measure]))",
       "is_hidden": false
@@ -590,7 +590,7 @@
     },
     {
       "source_name": "up",
-      "expression": "IF (\n    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> \"System\"\n        && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > MINX(\n            ALL('Custom SQL Query (dlh_nsec.objdb) (2)'),\n            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]\n        ),\n    \"\u2b06\",\n    BLANK()\n)",
+      "expression": "IF (\n    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> \"System\"\n        && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > CALCULATE(\n            MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]),\n            ALLSELECTED('Custom SQL Query (dlh_nsec.objdb) (2)')\n        ),\n    \"\u2b06\",\n    BLANK()\n)",
       "format_string": null,
       "description": "Converted from Tableau calculation: IF ATTR([PUAT_Module])!='System' AND\r\nSUM([Measure])>MIN([Calculation_1704893970521313284]) THEN '\u2b06' END",
       "is_hidden": false
@@ -618,7 +618,7 @@
     },
     {
       "source_name": "Week-min",
-      "expression": "VAR MinWeekNum = CALCULATE(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]), ALLSELECTED('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]))\nRETURN\n    CALCULATE(\n        MinWeekNum,\n        DATESBETWEEN(\n            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272],\n            STARTOFMONTH(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])),\n            ENDOFMONTH(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]))\n        )\n    )",
+      "expression": "VAR MinWeekNum = MINX(\n    CALCULATETABLE(\n        DISTINCT('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]),\n        REMOVEFILTERS('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])\n    ),\n    WEEKNUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272], 2)\n)\nRETURN\n    CALCULATE(\n        MinWeekNum,\n        DATESBETWEEN(\n            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272],\n            STARTOFMONTH('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]),\n            ENDOFMONTH('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])\n        )\n    )",
       "format_string": null,
       "description": "Converted from Tableau calculation: { FIXED MONTH([Calculation_265993911338422272]):MIN(DATEPART('week',[Calculation_265993911338422272]))}",
       "is_hidden": false
@@ -653,7 +653,7 @@
     },
     {
       "source_name": "Golden diff system",
-      "expression": "VAR MinCalc = MINX('Custom SQL Query (dlh_nsec.objdb) (2)', 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133])\nVAR SumMeasure = SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])\nVAR Param4 = 'Parameters'[Parameter 4]\nRETURN\n    IF (\n        'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = \"System\"\n            && MinCalc - SumMeasure < -Param4,\n        -(MinCalc - SumMeasure),\n        BLANK()\n    )",
+      "expression": "IF(\n    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = \"System\"\n        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < -[Parameters].[Parameter 4],\n    -(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])),\n    BLANK()\n)",
       "format_string": null,
       "description": "Converted from Tableau calculation: if  ATTR([PUAT_Module])='System' AND\r\nMIN([Calculation_1857734887858565133])-SUM([Measure])<-[Parameters].[Parameter 4]\r\n THEN -(MIN([Calculation_1857734887858565133])-SUM([Measure])) END",
       "is_hidden": false
@@ -730,7 +730,13 @@
     }
   ],
   "hierarchies": [],
-  "partitions": [],
+  "partitions": [
+    {
+      "name": "Custom SQL Query (dlh_nsec.objdb) (2)",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Dremio.Database(\n\t\t\t\t\t[\n\t\t\t\t\tServerAddress=\"dlh-prd.corp.netapp.com:31011\",\n\t\t\t\t\tDatabaseName=\"DREMIO\",\n\t\t\t\t\tAuthentication=\"auth-user-pass\",\n\t\t\t\t\tUsername=\"hshaik@netapp.com\",\n\t\t\t\t\tCreateNavigationProperties=true\n\t\t\t\t\t], [\n\t\t\t\t\tHierarchicalNavigation=true\n\t\t\t\t\t]),\n\t\t\t\t\tdlh_nsec_objdb = Source{[Schema=\"dlh_nsec.objdb\",Kind=\"Schema\"]}[Data]\n\t\t\t\tin\n\t\t\t\t\tdlh_nsec_objdb"
+    }
+  ],
   "has_widget_serialization": false,
   "visual_type": null,
   "column_settings": null

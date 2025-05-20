@@ -2,7 +2,7 @@ table 'Custom SQL Query (dlh_nsec.objdb) (2)'
 
 
     column 'Subject' = ```
-            "Data Load below " & CONVERT(VARCHAR(10), [Parameters].[Parameter 1]) & "% Of Golden Data Range"
+            "Data Load below " & CONVERT(VARCHAR, [Parameters].[Parameter 1]) & "% Of Golden Data Range"
     ```
         dataType: string
         summarizeBy: none
@@ -36,19 +36,10 @@ table 'Custom SQL Query (dlh_nsec.objdb) (2)'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Min Of Fis Week' = ```
-            VAR MinCalc =
-    MINX(
-        FILTER(
-            'Custom SQL Query (dlh_nsec.objdb) (2)',
-            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272] <> BLANK()
-        ),
-        'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]
-    )
-RETURN
-    CALCULATE(
-        MinCalc,
-        VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[FISCAL_WEEK])
-    )
+            CALCULATE(
+    MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]),
+    VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[FISCAL_WEEK])
+)
     ```
         dataType: dateTime
         summarizeBy: none
@@ -93,10 +84,10 @@ RETURN
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     column 'Avg Date' = ```
-            FILTER(
-    'Custom SQL Query (dlh_nsec.objdb) (2)',
-    'Custom SQL Query (dlh_nsec.objdb) (2)'[Date] >= DATE(2023, 2, 24)
-        && 'Custom SQL Query (dlh_nsec.objdb) (2)'[Date] <= DATE(2023, 3, 17)
+            DATESBETWEEN(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[Date],
+    DATE(2023, 2, 24),
+    DATE(2023, 3, 17)
 )
     ```
         dataType: string
@@ -145,13 +136,7 @@ RETURN
 
         
     column 'help' = ```
-            CALCULATE(
-    COUNTROWS('Custom SQL Query (dlh_nsec.objdb) (2)'),
-    FILTER(
-        'Custom SQL Query (dlh_nsec.objdb) (2)',
-        'Custom SQL Query (dlh_nsec.objdb) (2)'[help] = "help"
-    )
-)
+            "help"
     ```
         dataType: string
         summarizeBy: none
@@ -378,7 +363,7 @@ RETURN
         SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]),
         FILTER(
             'Custom SQL Query (dlh_nsec.objdb) (2)',
-            COUNTROWS(FILTER('Custom SQL Query (dlh_nsec.objdb) (2)', 'Custom SQL Query (dlh_nsec.objdb) (2)'[Measure] <> BLANK())) = -4
+            COUNTROWS(VALUES('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])) = -4
         )
     ) / SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
 )
@@ -480,9 +465,9 @@ RETURN
     measure 'up' = ```
             IF (
     'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] <> "System"
-        && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > MINX(
-            ALL('Custom SQL Query (dlh_nsec.objdb) (2)'),
-            'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]
+        && SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) > CALCULATE(
+            MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1704893970521313284]),
+            ALLSELECTED('Custom SQL Query (dlh_nsec.objdb) (2)')
         ),
     "⬆",
     BLANK()
@@ -518,14 +503,20 @@ RETURN
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Week-min' = ```
-            VAR MinWeekNum = CALCULATE(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]), ALLSELECTED('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]))
+            VAR MinWeekNum = MINX(
+    CALCULATETABLE(
+        DISTINCT('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]),
+        REMOVEFILTERS('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])
+    ),
+    WEEKNUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272], 2)
+)
 RETURN
     CALCULATE(
         MinWeekNum,
         DATESBETWEEN(
             'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272],
-            STARTOFMONTH(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])),
-            ENDOFMONTH(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]))
+            STARTOFMONTH('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272]),
+            ENDOFMONTH('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_265993911338422272])
         )
     )
     ```
@@ -598,16 +589,12 @@ MIN(
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Golden diff system' = ```
-            VAR MinCalc = MINX('Custom SQL Query (dlh_nsec.objdb) (2)', 'Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133])
-VAR SumMeasure = SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])
-VAR Param4 = 'Parameters'[Parameter 4]
-RETURN
-    IF (
-        'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
-            && MinCalc - SumMeasure < -Param4,
-        -(MinCalc - SumMeasure),
-        BLANK()
-    )
+            IF(
+    'Custom SQL Query (dlh_nsec.objdb) (2)'[PUAT_Module] = "System"
+        && MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure]) < -[Parameters].[Parameter 4],
+    -(MIN('Custom SQL Query (dlh_nsec.objdb) (2)'[Calculation_1857734887858565133]) - SUM('Custom SQL Query (dlh_nsec.objdb) (2)'[Measure])),
+    BLANK()
+)
     ```
 
 
@@ -738,6 +725,25 @@ RETURN
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
+
+    partition 'Custom SQL Query (dlh_nsec.objdb) (2)' = m
+        mode: import
+        source = 
+            	let
+					Source = Dremio.Database(
+					[
+					ServerAddress="dlh-prd.corp.netapp.com:31011",
+					DatabaseName="DREMIO",
+					Authentication="auth-user-pass",
+					Username="hshaik@netapp.com",
+					CreateNavigationProperties=true
+					], [
+					HierarchicalNavigation=true
+					]),
+					dlh_nsec_objdb = Source{[Schema="dlh_nsec.objdb",Kind="Schema"]}[Data]
+				in
+					dlh_nsec_objdb
+        
 
 
 
