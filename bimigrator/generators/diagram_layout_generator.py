@@ -31,19 +31,16 @@ class DiagramLayoutGenerator(BaseTemplateGenerator):
         # Map dictionary keys to template variables
         template_context = {
             'version': layout_dict['version'],
-            'tables': [
-                {
-                    'id': table['id'],
-                    'x': table['x'],
-                    'y': table['y']
-                }
-                for table in layout_dict['layout']['tables']
-            ]
+            'diagrams': layout_dict['diagrams']
         }
 
-        # Generate file using template
-        output_path = self.generate_file(
-            template_type='diagram_layout',
-            context=template_context
-        )
+        # Render template
+        rendered = self.render_template('diagram.layout.json', template_context)
+
+        # Write output
+        output_path = self.pbit_dir / 'DiagramLayout.json'
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, 'w') as f:
+            f.write(rendered)
+
         return output_path
