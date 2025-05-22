@@ -2,16 +2,28 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useToast } from "@/components/ui/use-toast";
+
 import { Upload, FileUp, Download, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface MigrationStatus {
-  status: 'idle' | 'uploading' | 'processing' | 'completed' | 'error';
+  status: 'idle' | 'uploading' | 'uploaded' | 'processing' | 'completed' | 'error';
   progress: number;
   message: string;
+  migrationId?: string;
   downloadUrl?: string;
-}
+};
+
+const getStatusColor = (status: MigrationStatus['status']) => {
+  switch (status) {
+    case 'error':
+      return 'bg-red-100 text-red-800 border-2 border-red-200';
+    case 'uploaded':
+      return 'bg-green-100 text-green-800 border-2 border-green-200';
+    default:
+      return 'bg-blue-100 text-blue-800 border-2 border-blue-200';
+  }
+};
 
 export default function MigrationUpload() {
   const [dragActive, setDragActive] = useState(false);
@@ -20,7 +32,6 @@ export default function MigrationUpload() {
     progress: 0,
     message: ''
   });
-  const { toast } = useToast();
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -43,50 +54,116 @@ export default function MigrationUpload() {
     }
   };
 
-  const handleFileUpload = async (file: File) => {
+  const checkFileExists = async (filename: string) => {
+    const response = await fetch(`/api/migration/check-file/${encodeURIComponent(filename)}`);
+    const data = await response.json();
+    return data.exists;
+  };
+
+  const handleFileUpload = async (uploadFile: File) => {
     try {
       setMigrationStatus({
         status: 'uploading',
         progress: 0,
-        message: 'Uploading Tableau workbook...'
+        message: 'Uploading file...'
       });
 
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', uploadFile);
 
-      // TODO: Replace with actual API endpoint
+      // Check if file exists
+      const exists = await checkFileExists(uploadFile.name);
+      
+      if (exists) {
+        const confirmOverwrite = window.confirm(
+          `A file named '${uploadFile.name}' already exists. Do you want to overwrite it?`
+        );
+        if (!confirmOverwrite) {
+          setMigrationStatus({
+            status: 'idle',
+            progress: 0,
+            message: 'Upload cancelled.'
+          });
+          return;
+        }
+      }
+
+      console.log('Uploading file:', uploadFile.name);
       const response = await fetch('/api/migration/upload', {
         method: 'POST',
         body: formData
       });
 
       if (!response.ok) {
-        throw new Error('Upload failed');
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to upload file');
       }
 
       const data = await response.json();
+      console.log('Upload response:', data);
       
-      // Start polling for migration status
-      pollMigrationStatus(data.migrationId);
+      if (!data.migration_id) {
+        throw new Error('No migration ID received from server');
+      }
 
-    } catch (error) {
+      // Update status to uploaded and store migration ID
+      setMigrationStatus({
+        status: 'uploaded',
+        progress: 0,
+        message: `File ${uploadFile.name} uploaded successfully. Ready to start migration.`,
+        migrationId: data.migration_id
+      });
+
+    } catch (err) {
+      console.error('Upload error:', err);
       setMigrationStatus({
         status: 'error',
         progress: 0,
-        message: 'Failed to upload file'
-      });
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to upload file. Please try again."
+        message: `Error: ${err instanceof Error ? err.message : 'Failed to upload file'}. Please try again.`
       });
     }
   };
 
-  const pollMigrationStatus = async (migrationId: string) => {
+  const startMigration = async () => {
+    if (!migrationStatus.migrationId) {
+      setMigrationStatus({
+        status: 'error',
+        progress: 0,
+        message: 'No migration ID found'
+      });
+      return;
+    }
+
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await fetch(`/api/migration/status/${migrationId}`);
+      const response = await fetch(`/api/migration/start/${migrationStatus.migrationId}`, {
+        method: 'POST'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to start migration');
+      }
+
+      setMigrationStatus(prev => ({
+        ...prev,
+        status: 'processing',
+        message: 'Migration started...'
+      }));
+
+      // Start polling for status
+      pollMigrationStatus(migrationStatus.migrationId);
+
+    } catch (err) {
+      setMigrationStatus(prev => ({
+        ...prev,
+        status: 'error',
+        message: err instanceof Error ? err.message : 'Failed to start migration'
+      }));
+    }
+  };
+
+  const pollMigrationStatus = async (id: string) => {
+    try {
+      const response = await fetch(`/api/migration/status/${id}`);
       const data = await response.json();
 
       setMigrationStatus({
@@ -97,14 +174,14 @@ export default function MigrationUpload() {
       });
 
       if (data.status === 'processing') {
-        setTimeout(() => pollMigrationStatus(migrationId), 2000);
+        setTimeout(() => pollMigrationStatus(id), 2000);
       } else if (data.status === 'completed') {
-        toast({
-          title: "Success",
-          description: "Migration completed successfully!"
-        });
+        setMigrationStatus(prev => ({
+          ...prev,
+          message: 'Migration completed successfully!'
+        }));
       }
-    } catch (error) {
+    } catch (err) {
       setMigrationStatus({
         status: 'error',
         progress: 0,
@@ -118,7 +195,13 @@ export default function MigrationUpload() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Tableau to Power BI Migration</h1>
       
-        <Card className="p-6">
+        {migrationStatus.message && (
+        <div className={`mb-4 p-4 rounded-lg text-center ${getStatusColor(migrationStatus.status)}`}>
+          <p className="text-lg">{migrationStatus.message}</p>
+        </div>
+      )}
+
+      <Card className="p-6">
         {migrationStatus.status === 'idle' && (
           <div
             className={`border-2 border-dashed rounded-lg p-12 text-center ${
@@ -164,15 +247,36 @@ export default function MigrationUpload() {
           </div>
         )}
 
-        {migrationStatus.status === 'completed' && (
+        {migrationStatus.status === 'uploaded' && (
           <div className="text-center space-y-4">
-            <h3 className="text-lg font-semibold text-green-600">
-              Migration Completed Successfully!
-            </h3>
+            <div className={`mb-4 p-4 rounded-lg text-center ${getStatusColor(migrationStatus.status)}`}>
+              {migrationStatus.message}
+            </div>
+            <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <p className="text-lg font-semibold mb-2">
+                  Ready to start migration
+                </p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Click the button below to start the migration process
+                </p>
+              </div>
+              <Button 
+                onClick={startMigration}
+                className="bg-green-600 hover:bg-green-700 text-white"
+              >
+                Start Migration
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {migrationStatus.status === 'completed' && migrationStatus.downloadUrl && (
+          <div className="text-center space-y-4">
             <Button asChild>
               <a href={migrationStatus.downloadUrl} download>
                 <Download className="mr-2 h-4 w-4" />
-                Download Power BI Files
+                Download Results
               </a>
             </Button>
           </div>
