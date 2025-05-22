@@ -88,7 +88,7 @@ Templates:
       dataclass: PowerBiReportSettings
     diagram_layout:
       template: diagram.layout.json
-      output: diagram.layout.json
+      output: DiagramLayout.json
       config: PowerBiDiagramLayout
       dataclass: PowerBiDiagramLayout
     report:
