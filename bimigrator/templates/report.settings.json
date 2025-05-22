@@ -1,17 +1,9 @@
 {
-  "version": "{{version}}",
-  "settings": {
-    "visualSettings": {
-      "defaultVisualStyle": "{{default_visual_style}}",
-      "showDataLabels": "{{show_data_labels}}"
-    },
-    "filterSettings": {
-      "persistentFilters": "{{persistent_filters}}",
-      "filterPaneEnabled": "{{filter_pane_enabled}}"
-    },
-    "interactionSettings": {
-      "drillEnabled": "{{drill_enabled}}",
-      "crossFilteringEnabled": "{{cross_filtering_enabled}}"
-    }
+  "Version": {{version}},
+  "ReportSettings": {},
+  "QueriesSettings": {
+    "TypeDetectionEnabled": {{type_detection_enabled}},
+    "RelationshipImportEnabled": {{relationship_import_enabled}},
+    "Version": "{{queries_settings_version}}"
   }
 }

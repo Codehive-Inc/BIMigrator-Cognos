@@ -23,6 +23,8 @@ from bimigrator.parsers.table_parser import TableParser
 from bimigrator.parsers.version_parser import VersionParser
 from bimigrator.parsers.report_metadata_parser import ReportMetadataParser
 from bimigrator.generators.report_metadata_generator import ReportMetadataGenerator
+from bimigrator.parsers.report_settings_parser import ReportSettingsParser
+from bimigrator.generators.report_settings_generator import ReportSettingsGenerator
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -199,20 +201,40 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
         report_metadata_generator = ReportMetadataGenerator(
             config,
-            filename,
+            twb_name,
             output_dir
         )
-        report_metadata_path = report_metadata_generator.generate_report_metadata(
+        metadata_path = report_metadata_generator.generate_report_metadata(
             report_metadata,
             output_dir=structure_generator.base_dir
         )
-        print(f'Generated report metadata: {report_metadata_path}')
+        print(f'Generated report metadata: {metadata_path}')
     except Exception as e:
         print(f'Failed to generate report metadata: {str(e)}')
         raise e
 
+    # Step 5: Generate report settings
+    print('\nStep 5: Generating report settings...')
+    try:
+        report_settings_parser = ReportSettingsParser(filename, config, output_dir)
+        report_settings = report_settings_parser.extract_report_settings()
+
+        report_settings_generator = ReportSettingsGenerator(
+            config,
+            twb_name,
+            output_dir
+        )
+        settings_path = report_settings_generator.generate_report_settings(
+            report_settings,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated report settings: {settings_path}')
+    except Exception as e:
+        print(f'Failed to generate report settings: {str(e)}')
+        raise e
+
     # Step 5: Generate model TMDL
-    print('\nStep 5: Generating model TMDL...')
+    print('\nStep 6: Generating model TMDL...')
     try:
         model_parser = ModelParser(filename, config, output_dir)
         model, tables = model_parser.extract_model_info()

@@ -78,12 +78,12 @@ Templates:
       dataclass: PowerBiReportConfig
     report_metadata:
       template: report.metadata.json
-      output: report.metadata.json
+      output: ReportMetadata.json
       config: PowerBiReportMetadata
       dataclass: PowerBiReportMetadata
     report_settings:
       template: report.settings.json
-      output: report.settings.json
+      output: ReportSettings.json
       config: PowerBiReportSettings
       dataclass: PowerBiReportSettings
     diagram_layout:
