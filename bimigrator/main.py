@@ -21,6 +21,8 @@ from bimigrator.parsers.model_parser import ModelParser
 from bimigrator.parsers.relationship_parser import RelationshipParser
 from bimigrator.parsers.table_parser import TableParser
 from bimigrator.parsers.version_parser import VersionParser
+from bimigrator.parsers.report_metadata_parser import ReportMetadataParser
+from bimigrator.generators.report_metadata_generator import ReportMetadataGenerator
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -189,8 +191,28 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate relationship TMDL files: {str(e)}')
         raise e
 
-    # Step 4: Generate model TMDL
-    print('\nStep 4: Generating model TMDL...')
+    # Step 4: Generate report metadata
+    print('\nStep 4: Generating report metadata...')
+    try:
+        report_metadata_parser = ReportMetadataParser(filename, config, output_dir)
+        report_metadata = report_metadata_parser.extract_metadata()
+
+        report_metadata_generator = ReportMetadataGenerator(
+            config,
+            filename,
+            output_dir
+        )
+        report_metadata_path = report_metadata_generator.generate_report_metadata(
+            report_metadata,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated report metadata: {report_metadata_path}')
+    except Exception as e:
+        print(f'Failed to generate report metadata: {str(e)}')
+        raise e
+
+    # Step 5: Generate model TMDL
+    print('\nStep 5: Generating model TMDL...')
     try:
         model_parser = ModelParser(filename, config, output_dir)
         model, tables = model_parser.extract_model_info()
