@@ -37,10 +37,17 @@ class ReportMetadataGenerator(BaseTemplateGenerator):
 
         # Convert metadata to dictionary using dataclasses.asdict
         metadata_dict = asdict(metadata)
+        
+        # Convert snake_case keys to PascalCase for PowerBI format
+        context = {
+            'version': metadata_dict['version'],
+            'created_from': metadata_dict['created_from'],
+            'created_from_release': metadata_dict['created_from_release']
+        }
 
         # Generate file using template
         output_path = self.generate_file(
             template_type='report_metadata',
-            context=metadata_dict
+            context=context
         )
         return output_path

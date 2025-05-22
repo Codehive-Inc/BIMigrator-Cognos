@@ -26,41 +26,8 @@ class ReportMetadataParser(BaseParser):
         Returns:
             PowerBiReportMetadata object containing extracted metadata
         """
-        # Extract workbook name
-        name = Path(self.filename).stem
-
-        # Get current timestamp for created/modified
-        now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-
-        # Extract owner from workbook if available, otherwise use system user
-        owner = self.tree.find('.//repository-location[@owner]')
-        owner = owner.get('owner') if owner is not None else 'Unknown'
-
-        # Extract description if available
-        description = ''
-        caption = self.tree.find('.//workbook[@caption]')
-        if caption is not None:
-            description = caption.get('caption', '')
-
-        # Extract any custom metadata
-        custom_metadata = {}
+        # Create metadata object with default values
+        # The PowerBiReportMetadata class now has default values for all fields
+        metadata = PowerBiReportMetadata()
         
-        # Extract tags if available
-        tags = []
-        tag_elements = self.tree.findall('.//tag')
-        if tag_elements:
-            tags = [tag.get('name') for tag in tag_elements if tag.get('name')]
-
-        # Create metadata object
-        metadata = PowerBiReportMetadata(
-            version='1.0',
-            name=name,
-            description=description,
-            owner=owner,
-            created=now,
-            modified=now,
-            tags=tags,
-            custom_metadata=custom_metadata
-        )
-
         return metadata
