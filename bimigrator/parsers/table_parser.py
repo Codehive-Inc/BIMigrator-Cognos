@@ -1,12 +1,14 @@
 """Parser for extracting table information from Tableau workbooks."""
 import uuid
 import xml.etree.ElementTree as ET
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from bimigrator.common.logging import logger
 from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiPartition
 from bimigrator.converters import CalculationInfo
 from bimigrator.generators.tmdl_generator import TMDLGenerator
+from bimigrator.helpers.calculation_tracker import CalculationTracker
 from bimigrator.parsers.base_parser import BaseParser
 from bimigrator.parsers.column_parser import ColumnParser
 from bimigrator.parsers.connections.connection_factory import ConnectionParserFactory
@@ -59,6 +61,12 @@ class TableParser(BaseParser):
         self.connection_factory = ConnectionParserFactory(config)
         self.tmdl_generator = TMDLGenerator(config)
         self.output_dir = output_dir
+        # Initialize calculation tracker with the base output directory
+        output_path = Path(output_dir)
+        # Strip off pbit or extracted directories to get base directory
+        if output_path.name == 'pbit' or output_path.name == 'extracted':
+            output_path = output_path.parent
+        self.calculation_tracker = CalculationTracker(output_path / 'extracted')
 
     def _extract_partition_info(
             self,
@@ -96,9 +104,9 @@ class TableParser(BaseParser):
                 # Save connection details to extracted folder
                 import json
                 import os
-                extracted_dir = os.path.join(self.output_dir, 'extracted')
-                os.makedirs(extracted_dir, exist_ok=True)
-                partitions_file = os.path.join(extracted_dir, 'partitions.json')
+                # Use the intermediate_dir from BaseParser which is already properly configured
+                os.makedirs(self.intermediate_dir, exist_ok=True)
+                partitions_file = os.path.join(self.intermediate_dir, 'partitions.json')
                 
                 existing_data = {}
                 if os.path.exists(partitions_file):
@@ -244,6 +252,27 @@ class TableParser(BaseParser):
 
                 # Use unique partitions
                 partitions = list(seen_partitions.values())
+
+                # Track calculations for this table
+                for column in columns:
+                    if column.is_calculated:
+                        self.calculation_tracker.add_calculation(
+                            table_name=final_table_name,
+                            formula_caption_tableau=column.source_name,
+                            formula_tableau=column.source_column,
+                            formula_dax=column.source_column,  # This will be the DAX expression
+                            data_type=column.pbi_datatype
+                        )
+                
+                for measure in measures:
+                    self.calculation_tracker.add_calculation(
+                        table_name=final_table_name,
+                        formula_caption_tableau=measure.source_name,
+                        formula_tableau=measure.dax_expression,
+                        formula_dax=measure.dax_expression,  # This will be the DAX expression
+                        data_type='double',  # Measures are always numeric in Power BI
+                        is_measure=True
+                    )
 
                 # Create PowerBiTable
                 table = PowerBiTable(

@@ -150,7 +150,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
     # Step 3: Generate table TMDL files
     print('\nStep 2: Generating table TMDL files...')
     try:
-        table_parser = TableParser(filename, config, output_dir)
+        table_parser = TableParser(filename, config, str(structure_generator.extracted_dir))
         tables = table_parser.extract_all_tables()
 
         table_generator = TableTemplateGenerator(

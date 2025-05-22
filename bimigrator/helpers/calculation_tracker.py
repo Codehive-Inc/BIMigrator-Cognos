@@ -13,8 +13,8 @@ class CalculationTracker:
             output_dir: Output directory where the calculations.json will be stored
         """
         if output_dir:
-            # Create extracted directory if it doesn't exist
-            self.output_dir = output_dir / 'extracted'
+            # Use the provided output directory directly
+            self.output_dir = output_dir
             self.output_dir.mkdir(parents=True, exist_ok=True)
             
             # Set JSON file path
@@ -40,6 +40,28 @@ class CalculationTracker:
             print(f"Error loading calculations: {str(e)}")
             self.calculations = {}
     
+    def add_calculation(self, table_name: str, formula_caption_tableau: str, formula_tableau: str, formula_dax: str, data_type: str, is_measure: bool = False):
+        """Add a calculation to the tracker.
+        
+        Args:
+            table_name: Name of the table containing the calculation
+            formula_caption_tableau: Display name of the calculation in Tableau
+            formula_tableau: Original Tableau formula
+            formula_dax: Converted DAX formula
+            data_type: Data type of the calculation
+            is_measure: Whether this is a measure (True) or calculated column (False)
+        """
+        key = f"{table_name}_{formula_caption_tableau}"
+        self.calculations[key] = {
+            'TableName': table_name,
+            'FormulaCaptionTableau': formula_caption_tableau,
+            'FormulaTableau': formula_tableau,
+            'FormulaDax': formula_dax,
+            'DataType': data_type,
+            'IsMeasure': is_measure
+        }
+        self._save_calculations()
+
     def _save_calculations(self):
         """Save calculations to JSON file."""
         try:

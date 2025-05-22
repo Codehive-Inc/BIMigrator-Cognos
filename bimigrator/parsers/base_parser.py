@@ -34,12 +34,17 @@ class BaseParser:
 
         # Initialize intermediate directory
         output_config = config.get('Output', {})
-        intermediate_dir = output_config.get('intermediate_dir', 'extracted')
-        # If output_dir ends with 'pbit', use its parent directory
         output_path = Path(output_dir)
-        if output_path.name == 'pbit':
-            output_path = output_path.parent
-        self.intermediate_dir = output_path / intermediate_dir
+        
+        # If the output_dir is already an 'extracted' directory, use it directly
+        if output_path.name == 'extracted':
+            self.intermediate_dir = output_path
+        else:
+            # Otherwise, create/use the 'extracted' directory in the appropriate location
+            if output_path.name == 'pbit':
+                output_path = output_path.parent
+            self.intermediate_dir = output_path / 'extracted'
+        
         self.validate_intermediate = output_config.get('validate_intermediate', True)
 
         # Create intermediate directory if it doesn't exist
