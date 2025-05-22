@@ -14,6 +14,7 @@ import {
 
 interface SidebarProps {
   open: boolean;
+  onClose: () => void;
 }
 
 interface NavItemProps {
@@ -38,25 +39,35 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => (
   </NavLink>
 );
 
-const Sidebar: React.FC<SidebarProps> = ({ open }) => {
+const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   return (
-    <aside 
-      className={cn(
-        "fixed inset-y-0 left-0 z-20 bg-white border-r border-gray-200 transition-all duration-300 pt-16",
-        open ? "w-64" : "w-0 -translate-x-full"
+    <>
+      {/* Mobile overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-gray-900/50 z-20 md:hidden"
+          onClick={onClose}
+        />
       )}
-    >
-      <div className="overflow-y-auto h-full p-3">
-        <nav className="space-y-1">
-          <NavItem to="/dashboard" icon={<Home size={20} />} label="Dashboard" />
-          <NavItem to="/connections" icon={<Database size={20} />} label="Connections" />
-          <NavItem to="/jobs" icon={<Truck size={20} />} label="Migration Jobs" />
-          <NavItem to="/monitoring" icon={<BarChart3 size={20} />} label="Monitoring" />
-          <NavItem to="/validation" icon={<ListChecks size={20} />} label="Validation" />
-          <NavItem to="/settings" icon={<Settings size={20} />} label="Settings" />
-        </nav>
-      </div>
-    </aside>
+      <aside 
+        className={cn(
+          "fixed md:sticky top-0 inset-y-0 left-0 z-30 bg-white border-r border-gray-200 transition-all duration-300 pt-16",
+          "w-64 md:w-64 transform md:translate-x-0",
+          !open && "-translate-x-full"
+        )}
+      >
+        <div className="overflow-y-auto h-full p-3">
+          <nav className="space-y-1">
+            <NavItem to="/dashboard" icon={<LayoutDashboard size={20} />} label="Dashboard" />
+            <NavItem to="/connections" icon={<Database size={20} />} label="Connections" />
+            <NavItem to="/jobs" icon={<Truck size={20} />} label="Migration Jobs" />
+            <NavItem to="/monitoring" icon={<BarChart3 size={20} />} label="Monitoring" />
+            <NavItem to="/tasks" icon={<ListChecks size={20} />} label="Tasks" />
+            <NavItem to="/settings" icon={<Settings size={20} />} label="Settings" />
+          </nav>
+        </div>
+      </aside>
+    </>
   );
 };
 

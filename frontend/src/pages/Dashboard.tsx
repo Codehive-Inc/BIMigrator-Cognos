@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
         <span className="text-sm text-gray-500">Welcome back, Admin</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
         {stats.map((stat, i) => (
           <Link to={stat.link} key={i}>
             <Card className="hover:shadow-md transition-shadow">
@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
 
       <h2 className="text-xl font-semibold text-gray-900 mb-6">Recent Migration Jobs</h2>
       
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-4 mb-4">
         {/* Start New Migration Button */}
         <Card className="border-2 border-primary hover:border-primary/80 cursor-pointer transition-all duration-200" onClick={handleStartMigration}>
           <CardContent className="flex items-center justify-between p-6">
@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
         </Card>
         {recentJobs.map((job) => (
           <Card key={job.id} className="overflow-hidden">
-            <CardContent className="p-4 sm:p-6">
+            <CardContent className="p-4 sm:p-6 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-3">
                     <span className="bg-enterprise-100 text-enterprise-700 text-xs font-semibold px-2.5 py-0.5 rounded">
@@ -120,7 +120,7 @@ const Dashboard: React.FC = () => {
                   <span className="text-sm text-gray-500">{job.date}</span>
                 </div>
               
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4 gap-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-y-2 sm:gap-x-4">
                 <div className="flex items-center space-x-6">
                   <div>
                     <p className="text-sm text-gray-500">Source</p>
