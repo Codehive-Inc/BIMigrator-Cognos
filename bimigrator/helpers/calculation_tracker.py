@@ -37,12 +37,12 @@ class CalculationTracker:
                 self.calculations = {}
                 for calc in data.get('calculations', []):
                     if 'TableauName' in calc and 'TableName' in calc:
+                        # Always use internal name (TableauName) for key
                         key = f"{calc['TableName']}_{calc['TableauName']}"
                         self.calculations[key] = calc
                     else:
-                        # Fallback for legacy data
-                        key = f"{calc['TableName']}_{calc['FormulaCaptionTableau']}"
-                        self.calculations[key] = calc
+                        # Skip legacy data without internal names
+                        continue
         except Exception as e:
             print(f"Error loading calculations: {str(e)}")
             self.calculations = {}
@@ -69,7 +69,8 @@ class CalculationTracker:
             print(f"Warning: Internal name same as caption for measure {formula_caption_tableau} in {table_name}")
             return
 
-        key = f"{table_name}_{formula_caption_tableau}"
+        # Use internal name for key if available, otherwise use caption
+        key = f"{table_name}_{tableau_name if tableau_name else formula_caption_tableau}"
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': formula_caption_tableau,

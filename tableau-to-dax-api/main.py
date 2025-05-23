@@ -131,7 +131,9 @@ RULES:
 2. Maintain the same logic and behavior
 3. Return ONLY the DAX expression, no explanations
 4. For column references:
-   - Use '{table_name}'[Column] for direct column references
+   - Use '[Column]' for columns in the current table
+   - Use 'TableName'[Column] for columns from other tables
+   - ALWAYS enclose table names in single quotes, e.g. 'TableName'[Column]
    - For calculation references, use their DAX expressions from DEPENDENCIES
 5. For Tableau functions:
    - SUM() -> SUM()
@@ -213,8 +215,8 @@ def clean_dax_expression(dax_expression: str) -> str:
     Returns:
         The cleaned DAX expression
     """
-    # Remove any markdown code block markers
-    dax_expression = dax_expression.replace('```dax', '').replace('```', '').strip()
+    # Remove any markdown code block markers and ensure no whitespace after ```
+    dax_expression = dax_expression.replace('```dax\n', '').replace('```\n', '').replace('```', '').strip()
     
     # Remove any leading/trailing quotes
     dax_expression = dax_expression.strip('"').strip("'")
