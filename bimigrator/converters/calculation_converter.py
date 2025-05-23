@@ -55,7 +55,8 @@ class CalculationConverter:
             table_name: Name of the table containing the calculation
             
         Returns:
-            DAX expression string
+            DAX expression string. If conversion fails, returns an error message
+            but does not modify the original formula.
             
         Raises:
             ValueError: If the calculation cannot be converted
@@ -122,8 +123,9 @@ class CalculationConverter:
             logging.error(f"Failed to convert Tableau formula: {calc_info.formula}")
             logging.error(f"Error: {error_msg}")
 
+            # Return error message without modifying original formula
             return (
-                f"/* ERROR: Could not convert Tableau formula: {calc_info.formula} */\n"
+                f"/* ERROR: Could not convert Tableau formula */\n"
                 f"/* Error details: {error_msg} */\n"
                 "ERROR(\"Conversion failed\")"  # Return ERROR() function for measures/columns
             )

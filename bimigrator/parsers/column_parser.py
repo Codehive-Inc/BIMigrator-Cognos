@@ -1,5 +1,6 @@
 """Parser for extracting column information from Tableau workbooks."""
 import xml.etree.ElementTree as ET
+from pathlib import Path
 from typing import Dict, Any, List, Tuple
 
 from bimigrator.config.data_classes import PowerBiColumn, PowerBiMeasure
@@ -24,6 +25,13 @@ class ColumnParser:
         if output_dir:
             config['output_dir'] = output_dir
         self.calculation_converter = CalculationConverter(config)
+
+        # Initialize CalculationTracker
+        if output_dir:
+            from bimigrator.helpers.calculation_tracker import CalculationTracker
+            self.calculation_tracker = CalculationTracker(Path(output_dir))
+        else:
+            self.calculation_tracker = None
 
         # Initialize default datatype mapping if not provided in config
         if not self.tableau_to_tmdl_datatypes:
@@ -115,17 +123,39 @@ class ColumnParser:
                         role = 'measure'
                         break
 
+                # Store original formula first
+                if self.calculation_tracker:
+                    # Only add if not already present
+                    key = f"{pbi_table_name}_{calculation_name}"
+                    if key not in self.calculation_tracker.calculations:
+                        self.calculation_tracker.add_tableau_calculation(
+                            table_name=pbi_table_name,
+                            caption=col_name,
+                            expression=formula,
+                            formula_type='measure' if role == 'measure' else 'calculated_column',
+                            calculation_name=calculation_name
+                        )
+
                 # Convert to DAX
                 dax_expression = self.calculation_converter.convert_to_dax(
                     CalculationInfo(
                         formula=formula,
-                        caption=col_name,
+                        caption=col_name,  # Use display name for caption
                         datatype=twb_datatype,
                         role=role,
-                        internal_name=calculation_name  # Pass the internal name
+                        internal_name=calculation_name  # Pass internal name for dependencies
                     ),
                     pbi_table_name
                 )
+
+                # Update with DAX expression
+                if self.calculation_tracker:
+                    self.calculation_tracker.update_powerbi_calculation(
+                        table_name=pbi_table_name,
+                        tableau_name=calculation_name,
+                        powerbi_name=col_name,
+                        dax_expression=dax_expression
+                    )
 
                 if role == 'measure':
                     # Create measure
@@ -176,6 +206,9 @@ class ColumnParser:
                     if calculation_name == col_name:
                         print(f"Warning: Internal name same as caption for calculated column {col_name}")
                         continue
+
+                    # Store calculation in tracker
+                    # This is now handled above before conversion
 
                     column = PowerBiColumn(
                         source_name=col_name,
