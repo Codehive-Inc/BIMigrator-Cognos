@@ -38,16 +38,19 @@ class DiagramLayoutParser(BaseParser):
         try:
             # Get basic attributes
             object_id = zone_elem.get('id', '')
-            object_type = zone_elem.get('type', '')
+            object_type = zone_elem.get('type-v2', zone_elem.get('type', ''))
             object_name = zone_elem.get('name', '')
             
             # Map Tableau types to our types
             type_mapping = {
-                'sheet': 'worksheet',
+                'layout-basic': 'container',
+                'layout-flow': 'container',
+                'text': 'text',
+                'color': 'legend',
+                'dashboard-object': 'dashboard-object',
+                'worksheet': 'worksheet',
                 'bitmap': 'image',
                 'web': 'webPage',
-                'layout': 'container',
-                'text': 'text',
                 'filter': 'filter',
                 'parameter': 'parameter'
             }
@@ -78,13 +81,25 @@ class DiagramLayoutParser(BaseParser):
             if mapped_type == 'worksheet':
                 layout_obj.worksheet_ref = object_name
             elif mapped_type == 'container':
-                layout_obj.container_type = zone_elem.find('layout-options').get('type') if zone_elem.find('layout-options') is not None else None
+                # Handle both layout-basic and layout-flow
+                layout_obj.container_type = zone_elem.get('param', '')
                 
                 # Recursively parse children
-                for child_elem in zone_elem.findall('zones/zone'):
+                for child_elem in zone_elem.findall('.//zone'):
                     child_obj = self._parse_layout_object(child_elem)
                     if child_obj:
                         layout_obj.children.append(child_obj)
+            elif mapped_type == 'legend':
+                # Store legend parameters
+                layout_obj.legend_params = {
+                    'pane_id': zone_elem.get('pane-specification-id', ''),
+                    'field': zone_elem.get('param', '')
+                }
+            elif mapped_type == 'text':
+                # Store text content if available
+                formatted_text = zone_elem.find('.//formatted-text')
+                if formatted_text is not None:
+                    layout_obj.text_content = formatted_text.text
             
             # Add any additional Tableau parameters
             params = zone_elem.findall('param')
@@ -97,6 +112,36 @@ class DiagramLayoutParser(BaseParser):
             logger.warning(f"Error parsing layout object: {e}")
             return None
 
+    def _process_zone(self, zone_elem: Optional[Any], parent_x: int = 0, parent_y: int = 0) -> List[TableauLayoutObject]:
+        """Process a zone element and its children recursively.
+        
+        Args:
+            zone_elem: Zone XML element
+            parent_x: X coordinate of parent zone
+            parent_y: Y coordinate of parent zone
+            
+        Returns:
+            List of TableauLayoutObject
+        """
+        if zone_elem is None:
+            return []
+            
+        layout_objects = []
+        layout_obj = self._parse_layout_object(zone_elem)
+        
+        if layout_obj:
+            # Adjust coordinates based on parent position
+            layout_obj.x += parent_x
+            layout_obj.y += parent_y
+            layout_objects.append(layout_obj)
+            
+            # Process child zones
+            for child_zone in zone_elem.findall('./zone'):
+                child_objects = self._process_zone(child_zone, layout_obj.x, layout_obj.y)
+                layout_objects.extend(child_objects)
+                
+        return layout_objects
+
     def extract_diagram_layout(self) -> PowerBiDiagramLayout:
         """Extract diagram layout from Tableau workbook."""
         # Get all dashboards
@@ -107,18 +152,28 @@ class DiagramLayoutParser(BaseParser):
 
         # Process the first dashboard
         dashboard = dashboards[0]
+        dashboard_name = dashboard.get('name', 'Dashboard')
 
-        # Extract layout objects
+        # Extract layout objects recursively
         layout_objects = []
-        zones = dashboard.findall('.//zones/zone')
-        for zone_elem in zones:
-            layout_obj = self._parse_layout_object(zone_elem)
-            if layout_obj:
-                layout_objects.append(layout_obj)
+        root_zone = dashboard.find('./zones/zone')
+        if root_zone is not None:
+            layout_objects = self._process_zone(root_zone)
 
         # Convert layout objects to nodes
         nodes = []
         for i, layout_obj in enumerate(layout_objects):
+            # Skip container zones that are just for layout
+            if layout_obj.object_type == 'container' and not layout_obj.object_name:
+                continue
+                
+            node = {
+                "location": {"x": layout_obj.x, "y": layout_obj.y},
+                "size": {"height": layout_obj.height, "width": layout_obj.width},
+                "zIndex": i
+            }
+            
+            # Generate node index based on object type
             if layout_obj.object_type == 'worksheet':
                 worksheet_elem = self.root.find(f".//worksheet[@name='{layout_obj.worksheet_ref}']")
                 if worksheet_elem is not None:
@@ -128,22 +183,40 @@ class DiagramLayoutParser(BaseParser):
                         if datasource.find(f".//worksheet[@name='{layout_obj.worksheet_ref}']"): 
                             datasource_name = datasource.get('caption') or datasource.get('name')
                             break
+                    node["nodeIndex"] = f"worksheet:{datasource_name or layout_obj.worksheet_ref}"
                     
-                    node = {
-                        "location": {"x": layout_obj.x, "y": layout_obj.y},
-                        "nodeIndex": datasource_name or layout_obj.worksheet_ref,
-                        "nodeLineageTag": str(uuid.uuid4()),
-                        "size": {"height": layout_obj.height, "width": layout_obj.width},
-                        "zIndex": i
-                    }
-                    nodes.append(node)
+                    # Add worksheet-specific properties
+                    visual_type = self._get_visual_type(worksheet_elem, layout_obj.worksheet_ref)
+                    node["visualType"] = visual_type
+                    node["visualConfig"] = self._generate_visual_config(worksheet_elem, visual_type, layout_obj.worksheet_ref)
+            elif layout_obj.object_type == 'text':
+                node["nodeIndex"] = f"text:{layout_obj.object_id}"
+                node["textContent"] = layout_obj.text_content
+            elif layout_obj.object_type == 'legend':
+                node["nodeIndex"] = f"legend:{layout_obj.object_id}"
+                if layout_obj.legend_params:
+                    node["legendProperties"] = layout_obj.legend_params
+            elif layout_obj.object_type == 'filter':
+                node["nodeIndex"] = f"filter:{layout_obj.object_id}"
+                if layout_obj.tableau_params:
+                    node["filterProperties"] = layout_obj.tableau_params
+            elif layout_obj.object_type == 'parameter':
+                node["nodeIndex"] = f"parameter:{layout_obj.object_id}"
+                if layout_obj.tableau_params:
+                    node["parameterProperties"] = layout_obj.tableau_params
+            else:
+                node["nodeIndex"] = f"{layout_obj.object_type}:{layout_obj.object_id}"
+            
+            # Generate unique lineage tag
+            node["nodeLineageTag"] = str(uuid.uuid4())
+            nodes.append(node)
 
         # Create diagram layout
         diagram = DiagramLayout(
             ordinal=0,
             scroll_position=ScrollPosition(x=0, y=0),
             nodes=nodes,
-            name="All tables",
+            name=dashboard_name,
             zoom_value=100,
             pin_key_fields_to_top=False,
             show_extra_header_info=False,
@@ -154,8 +227,8 @@ class DiagramLayoutParser(BaseParser):
         return PowerBiDiagramLayout(
             version="1.1.0",
             diagrams=[diagram],
-            selected_diagram="All tables",
-            default_diagram="All tables"
+            selected_diagram=dashboard_name,
+            default_diagram=dashboard_name
         )
 
     def _get_visual_type(self, worksheet_elem: Optional[Any], name: str) -> str:

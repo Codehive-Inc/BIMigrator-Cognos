@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "{{version}}",
   "diagrams": [
     {
       "ordinal": 0,
@@ -7,22 +7,23 @@
         "x": 0,
         "y": 0
       },
-      "nodes": [ {{#nodes}}
+      "nodes": [
+        {{#nodes}}
         {
-          "location":
-          {
-            "x":{{location.x}},
-            "y":{{location.y}}
+          "location": {
+            "x": {{location.x}},
+            "y": {{location.y}}
           },
-          "nodeIndex":"{{nodeIndex}}",
-          "nodeLineageTag":"{{nodeLineageTag}}",
-          "size":
-          {
-            "height":{{size.height}},
-            "width":{{size.width}}
+          "nodeIndex": "{{nodeIndex}}",
+          "nodeLineageTag": "{{nodeLineageTag}}",
+          "size": {
+            "height": {{size.height}},
+            "width": {{size.width}}
           },
-          "zIndex":{{zIndex}}
-        }{{#unless @last}},{{/unless}}{{/nodes}}],
+          "zIndex": {{zIndex}}
+        }{{#unless @last}},{{/unless}}
+        {{/nodes}}
+      ],
       "name": "All tables",
       "zoomValue": 100,
       "pinKeyFieldsToTop": false,
