@@ -17,8 +17,13 @@ class ColumnParser:
             config: Configuration dictionary
         """
         self.config = config
-        self.calculation_converter = CalculationConverter(config)
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
+        
+        # Initialize CalculationConverter with output_dir
+        output_dir = config.get('output_dir')
+        if output_dir:
+            config['output_dir'] = output_dir
+        self.calculation_converter = CalculationConverter(config)
 
         # Initialize default datatype mapping if not provided in config
         if not self.tableau_to_tmdl_datatypes:

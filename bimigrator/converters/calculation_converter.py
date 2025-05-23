@@ -31,6 +31,20 @@ class CalculationConverter:
         api_config = config.get('api_settings', {})
         self.api_base_url = api_config.get('base_url', 'http://localhost:8000')
         self.api_timeout = api_config.get('timeout_seconds', 30)
+        
+        # Load calculations from the extracted JSON if available
+        self.calculations = {}
+        output_dir = config.get('output_dir')
+        if output_dir:
+            calcs_path = f"{output_dir}/extracted/calculations.json"
+            try:
+                import json
+                with open(calcs_path) as f:
+                    data = json.load(f)
+                    for calc in data.get('calculations', []):
+                        self.calculations[calc['TableauName']] = calc
+            except Exception as e:
+                print(f"Warning: Could not load calculations from {calcs_path}: {e}")
     
     def convert_to_dax(self, calc_info: CalculationInfo, table_name: str) -> str:
         """Convert a Tableau calculation to DAX using the FastAPI service.
@@ -46,11 +60,28 @@ class CalculationConverter:
             ValueError: If the calculation cannot be converted
         """
         try:
+            # Find dependencies in the formula
+            import re
+            deps = re.findall(r'\[Calculation_\d+\]', calc_info.formula)
+            
+            # Build dependency information
+            dependencies = []
+            for dep in deps:
+                if dep in self.calculations:
+                    dep_info = self.calculations[dep]
+                    dependencies.append({
+                        "caption": dep_info["FormulaCaptionTableau"],
+                        "formula": dep_info["FormulaTableau"],
+                        "dax": dep_info["FormulaDax"],
+                        "tableau_name": dep_info["TableauName"]
+                    })
+            
             # Prepare the request payload
             payload = {
                 "tableau_formula": calc_info.formula,
                 "table_name": table_name,
-                "column_mappings": {}
+                "column_mappings": {},
+                "dependencies": dependencies
             }
             
             # Make API request
@@ -65,7 +96,14 @@ class CalculationConverter:
                 # Decode any HTML entities in the DAX expression
                 from html import unescape
                 dax_expression = unescape(dax_expression)
-
+                
+                # Replace Calculation_* references with their Power BI column names
+                for dep in dependencies:
+                    dax_expression = dax_expression.replace(
+                        f"[{dep['tableau_name'].strip('[]')}]",
+                        f"[{dep['caption']}]"
+                    )
+                
                 # Replace table name in expression with the actual table name
                 dax_expression = dax_expression.replace(f"'{table_name} (sample_sales_data)'", table_name)
 
