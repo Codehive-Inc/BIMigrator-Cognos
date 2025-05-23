@@ -52,11 +52,21 @@ class CalculationTracker:
             is_measure: Whether this is a measure (True) or calculated column (False)
             tableau_name: Original name of the calculation in Tableau
         """
+        # Validate tableau_name is provided for measures
+        if is_measure and not tableau_name:
+            print(f"Warning: Missing internal name for measure {formula_caption_tableau} in {table_name}")
+            return
+
+        # Validate tableau_name is different from caption for measures
+        if is_measure and tableau_name == formula_caption_tableau:
+            print(f"Warning: Internal name same as caption for measure {formula_caption_tableau} in {table_name}")
+            return
+
         key = f"{table_name}_{formula_caption_tableau}"
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': formula_caption_tableau,
-            'TableauName': tableau_name or formula_caption_tableau,
+            'TableauName': tableau_name or formula_caption_tableau,  # For non-measures, caption is ok as fallback
             'FormulaTableau': formula_tableau,
             'FormulaDax': formula_dax,
             'DataType': data_type,

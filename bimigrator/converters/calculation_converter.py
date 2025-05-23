@@ -16,6 +16,7 @@ class CalculationInfo:
     caption: str
     datatype: str
     role: Optional[str] = None
+    internal_name: Optional[str] = None  # Internal Tableau calculation name
 
 class CalculationConverter:
     """Converts Tableau calculations to Power BI DAX expressions using FastAPI."""

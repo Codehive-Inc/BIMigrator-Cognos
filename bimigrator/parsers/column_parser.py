@@ -121,7 +121,8 @@ class ColumnParser:
                         formula=formula,
                         caption=col_name,
                         datatype=twb_datatype,
-                        role=role
+                        role=role,
+                        internal_name=calculation_name  # Pass the internal name
                     ),
                     pbi_table_name
                 )
@@ -139,9 +140,15 @@ class ColumnParser:
                         source_name=col_name,
                         dax_expression=dax_expression,
                         description=f"Converted from Tableau calculation: {formula}",
-                        annotations=annotations
+                        annotations=annotations,
+                        tableau_name=calculation_name,  # Use internal calculation name
+                        formula_tableau=formula  # Store original Tableau formula
                     )
                     measures.append(measure)
+                    
+                    # Validate that tableau_name is always the internal name
+                    if not calculation_name or calculation_name == col_name:
+                        print(f"Warning: Missing or invalid internal name for measure {col_name}")
                 else:
                     # Create calculated column
                     pbi_datatype = self._map_datatype(twb_datatype)
