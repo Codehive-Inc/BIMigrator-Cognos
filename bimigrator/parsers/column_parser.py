@@ -88,6 +88,9 @@ class ColumnParser:
             if not col_name or col_name in seen_col_names:
                 continue
 
+            # Get calculation name (the internal name)
+            calculation_name = calc_field.get('name', col_name)
+
             # Get datatype and role
             twb_datatype = calc_field.get(calc_datatype_attr, 'string')
             role = calc_field.get('role', '')
@@ -161,7 +164,8 @@ class ColumnParser:
                         is_calculated=True,
                         is_data_type_inferred=True,
                         summarize_by=summarize_by,
-                        annotations=annotations
+                        annotations=annotations,
+                        tableau_name=calculation_name  # Add the internal calculation name
                     )
                     columns.append(column)
 

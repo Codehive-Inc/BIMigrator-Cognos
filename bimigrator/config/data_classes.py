@@ -350,6 +350,7 @@ class PowerBiColumn:
     # For calculated columns in TMDL format
     is_calculated: bool = False
     is_data_type_inferred: bool = False
+    tableau_name: Optional[str] = None  # Original name in Tableau
     # Example usage for annotations:
     # col.annotations["SummarizationSetBy"] = "Automatic" # or "User" or "None"
     # col.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}' # Store JSON as a string literal
