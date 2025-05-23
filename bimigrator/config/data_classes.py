@@ -16,15 +16,10 @@ class PowerBiProject:
 @dataclass
 class PowerBiReportMetadata:
     """Report metadata."""
-    version: str
-    name: str
-    description: str
-    owner: str
-    created: str
-    modified: str
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    tags: List[str] = field(default_factory=list)
-    custom_metadata: Dict[str, str] = field(default_factory=dict)
+    version: int = 5
+    auto_created_relationships: List[Any] = field(default_factory=list)
+    created_from: str = "Cloud"
+    created_from_release: str = "2025.03"
 
 
 @dataclass

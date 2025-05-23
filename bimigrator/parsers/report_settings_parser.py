@@ -19,7 +19,7 @@ class ReportSettingsParser(BaseParser):
         queries_settings = QueriesSettings(
             type_detection_enabled=True,
             relationship_import_enabled=True,
-            version="2.140.405.0"
+            version="2.142.580.0"
         )
 
         settings = PowerBiReportSettings(

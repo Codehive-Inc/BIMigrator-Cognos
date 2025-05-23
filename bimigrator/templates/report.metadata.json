@@ -1,22 +1,6 @@
 {
-  "version": "{{version}}",
-  "metadata": {
-    "createdDateTime": "{{created_date_time}}",
-    "modifiedDateTime": "{{modified_date_time}}",
-    "createdBy": "{{created_by}}",
-    "modifiedBy": "{{modified_by}}",
-    "customMetadata": {
-      {{#each custom_metadata}}
-      "{{key}}": "{{value}}"{{#unless @last}},{{/unless}}
-      {{/each}}
-    },
-    "name": "{{name}}",
-    "description": "{{description}}",
-    "owner": "{{owner}}",
-    "created": "{{created}}",
-    "modified": "{{modified}}",
-    "tags": [
-      {{#each tags}}"{{this}}"{{#unless @last}},{{/unless}}{{/each}}
-    ]
-  }
+  "Version": {{version}},
+  "AutoCreatedRelationships": [],
+  "CreatedFrom": "{{created_from}}",
+  "CreatedFromRelease": "{{created_from_release}}"
 }

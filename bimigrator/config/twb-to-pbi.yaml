@@ -88,7 +88,7 @@ Templates:
       dataclass: PowerBiReportSettings
     diagram_layout:
       template: diagram.layout.json
-      output: diagram.layout.json
+      output: DiagramLayout.json
       config: PowerBiDiagramLayout
       dataclass: PowerBiDiagramLayout
     report:
@@ -234,6 +234,78 @@ PowerBiTable:
     calculation_formula:
       source_xpath: "calculation/@formula"
       optional: true
+
+# --- Diagram Layout Settings ---
+PowerBiDiagramLayout:
+  source_xpath: //dashboards/dashboard
+  attributes:
+    dashboard_name:
+      source_attribute: name
+    tableau_width:
+      source_xpath: size/@maxwidth
+      format: integer
+      optional: true
+    tableau_height:
+      source_xpath: size/@maxheight
+      format: integer
+      optional: true
+  layout_objects:
+    source_xpath: zones/zone
+    attributes:
+      object_id:
+        source_attribute: id
+      object_type:
+        source_attribute: type
+        mappings:
+          sheet: worksheet
+          bitmap: image
+          web: webPage
+          layout: container
+          text: text
+          filter: filter
+          parameter: parameter
+      object_name:
+        source_attribute: name
+        alternative_xpath:
+          text: formatted-text/run/text()
+      position:
+        x:
+          source_attribute: x
+          format: integer
+          default: 0
+        y:
+          source_attribute: y
+          format: integer
+          default: 0
+        width:
+          source_attribute: w
+          format: integer
+          default: 300
+        height:
+          source_attribute: h
+          format: integer
+          default: 200
+      is_floating:
+        source_attribute: mode
+        value_equals: floating
+        default: false
+      worksheet_ref:
+        source_attribute: name
+        when_type: sheet
+        optional: true
+      container_type:
+        source_xpath: layout-options/@type
+        when_type: layout
+        optional: true
+      children:
+        source_xpath: zones/zone
+        when_type: layout
+        recursive: true
+        optional: true
+      tableau_params:
+        source_xpath: param
+        format: dict
+        optional: true
 
 # --- Culture Settings ---
 PowerBiCulture:

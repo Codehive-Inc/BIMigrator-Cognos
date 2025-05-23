@@ -1,12 +1,37 @@
 {
   "version": "{{version}}",
-  "layout": {
-    "tables": {{#each tables}}{
-      "id": "{{id}}",
-      "position": {
-        "x": {{x}},
-        "y": {{y}}
-      }
-    }{{#unless @last}},{{/unless}}{{/each}}
-  }
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {{#nodes}}
+        {
+          "location": {
+            "x": {{location.x}},
+            "y": {{location.y}}
+          },
+          "nodeIndex": "{{nodeIndex}}",
+          "nodeLineageTag": "{{nodeLineageTag}}",
+          "size": {
+            "height": {{size.height}},
+            "width": {{size.width}}
+          },
+          "zIndex": {{zIndex}}
+        }{{#unless @last}},{{/unless}}
+        {{/nodes}}
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
 }

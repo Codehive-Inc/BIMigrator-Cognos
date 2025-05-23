@@ -25,6 +25,8 @@ from bimigrator.parsers.report_metadata_parser import ReportMetadataParser
 from bimigrator.generators.report_metadata_generator import ReportMetadataGenerator
 from bimigrator.parsers.report_settings_parser import ReportSettingsParser
 from bimigrator.generators.report_settings_generator import ReportSettingsGenerator
+from bimigrator.parsers.diagram_layout_parser import DiagramLayoutParser
+from bimigrator.generators.diagram_layout_generator import DiagramLayoutGenerator
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -233,8 +235,28 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate report settings: {str(e)}')
         raise e
 
-    # Step 5: Generate model TMDL
-    print('\nStep 6: Generating model TMDL...')
+    # Step 6: Generate diagram layout
+    print('\nStep 6: Generating diagram layout...')
+    try:
+        diagram_layout_parser = DiagramLayoutParser(filename, config, output_dir)
+        diagram_layout = diagram_layout_parser.extract_diagram_layout()
+
+        diagram_layout_generator = DiagramLayoutGenerator(
+            config,
+            twb_name,
+            output_dir
+        )
+        layout_path = diagram_layout_generator.generate_diagram_layout(
+            diagram_layout,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated diagram layout: {layout_path}')
+    except Exception as e:
+        print(f'Failed to generate diagram layout: {str(e)}')
+        raise e
+
+    # Step 7: Generate model TMDL
+    print('\nStep 7: Generating model TMDL...')
     try:
         model_parser = ModelParser(filename, config, output_dir)
         model, tables = model_parser.extract_model_info()
