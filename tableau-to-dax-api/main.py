@@ -11,6 +11,7 @@ import json
 import logging
 from typing import Dict, List, Any, Optional
 from pydantic import BaseModel, Field
+from agentic.formula_resolver import FormulaResolver, FormulaAgent
 # Import python-dotenv correctly
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Depends, Request
@@ -58,6 +59,14 @@ class TableauFormula(BaseModel):
     tableau_formula: str
     table_name: str
     column_mappings: Optional[Dict[str, str]] = None
+    dependencies: Optional[List[Dict[str, str]]] = None  # List of dependent calculations with their formulas
+
+class CalculationsData(BaseModel):
+    calculations: List[Dict[str, Any]]
+
+class DependencyRequest(BaseModel):
+    calculations: List[Dict[str, Any]]
+    calculation_name: str
 
 class DAXResponse(BaseModel):
     dax_expression: str
@@ -84,7 +93,7 @@ class MCodeResponse(BaseModel):
     notes: Optional[str] = None
 
 # Helper function to create a prompt for the LLM
-def create_conversion_prompt(tableau_formula: str, table_name: str, column_mappings: Dict[str, str] = None) -> str:
+def create_conversion_prompt(tableau_formula: str, table_name: str, column_mappings: Dict[str, str] = None, dependencies: List[Dict[str, str]] = None) -> str:
     """
     Create a prompt for the LLM to convert a Tableau formula to DAX.
     
@@ -92,53 +101,60 @@ def create_conversion_prompt(tableau_formula: str, table_name: str, column_mappi
         tableau_formula: The Tableau formula to convert
         table_name: The name of the table containing the calculation
         column_mappings: Optional mapping of column names to their display names
+        dependencies: Optional list of dependent calculations with their formulas
         
     Returns:
         A prompt string for the LLM
     """
-    # Format column mappings for the prompt
-    column_context = ""
-    if column_mappings:
-        column_context = "Column mappings:\n"
-        for col_name, display_name in column_mappings.items():
-            column_context += f"- {col_name} → {display_name}\n"
-    
     # Create the prompt with examples and context
     prompt = f"""You are an expert in converting Tableau formulas to Power BI DAX expressions.
 
 TABLE CONTEXT:
 Table Name: {table_name}
-{column_context}
 
-TABLEAU FORMULA:
+"""
+
+    # Add dependencies if provided
+    if dependencies:
+        prompt += "DEPENDENCIES:\n"
+        for dep in dependencies:
+            prompt += f"[{dep['caption']}] = {dep['formula']}\n"
+            if 'dax' in dep and dep['dax']:
+                prompt += f"DAX: {dep['dax']}\n"
+        prompt += "\n"
+
+    prompt += f"""TABLEAU FORMULA TO CONVERT:
 {tableau_formula}
 
-Convert this Tableau formula to an equivalent DAX expression for Power BI.
-Follow these guidelines:
+RULES:
 1. Use proper DAX syntax and functions
-2. Reference columns as '{table_name}[ColumnName]'
-3. Properly handle Tableau's LOD expressions (FIXED, INCLUDE, EXCLUDE)
-4. Format the DAX expression for readability with appropriate indentation for complex expressions
-
-EXAMPLE CONVERSIONS:
-Tableau: {{ FIXED [Category]: SUM([Sales]) }}
-DAX: CALCULATE(SUM('{table_name}'[Sales]), VALUES('{table_name}'[Category]))
-
-Tableau: IF [Sales] > 1000 THEN "High" ELSE "Low" END
-DAX: IF('{table_name}'[Sales] > 1000, "High", "Low")
-
-Tableau: {{ FIXED [FISCAL_WEEK]:SUM(IF [Calculation_1420604241832890368]=6 or [Calculation_1420604241832890368]=7 THEN [serial_count] END)}}
-DAX: CALCULATE(
-    SUM('{table_name}'[serial_count]),
-    FILTER(
-        '{table_name}',
-        '{table_name}'[Calculation_1420604241832890368] = 6 || '{table_name}'[Calculation_1420604241832890368] = 7
-    ),
-    VALUES('{table_name}'[FISCAL_WEEK])
-)
-
-Return only the DAX expression without any additional explanation.
-"""
+2. Maintain the same logic and behavior
+3. Return ONLY the DAX expression, no explanations
+4. For column references:
+   - Use '{table_name}'[Column] for direct column references
+   - For calculation references, use their DAX expressions from DEPENDENCIES
+5. For Tableau functions:
+   - SUM() -> SUM()
+   - AVG() -> AVERAGE()
+   - MIN() -> MIN()
+   - MAX() -> MAX()
+   - COUNT() -> COUNT()
+   - COUNTD() -> DISTINCTCOUNT()
+   - ATTR() -> MIN()
+6. For string operations:
+   - Use & for concatenation
+   - Use CONCATENATE() for multiple strings
+7. For case statements:
+   - Use SWITCH(TRUE(), condition1, result1, condition2, result2, ...)"""
+    
+    # Add column mapping information if provided
+    if column_mappings:
+        prompt += "\n\nColumn mappings (Tableau -> DAX):\n"
+        for tableau_col, dax_col in column_mappings.items():
+            prompt += f"{tableau_col} -> {dax_col}\n"
+    
+    prompt += "\n\nProvide ONLY the DAX expression, no explanations or comments."
+    
     return prompt
 
 def create_m_code_prompt(connection: TableauConnection) -> str:
@@ -189,7 +205,7 @@ def create_m_code_prompt(connection: TableauConnection) -> str:
 # Function to call LLM API
 def clean_dax_expression(dax_expression: str) -> str:
     """
-    Clean the DAX expression from the LLM to ensure it's properly formatted.
+    Clean the DAX expression from the LLM to ensure it is properly formatted.
     
     Args:
         dax_expression: The DAX expression from the LLM
@@ -197,12 +213,33 @@ def clean_dax_expression(dax_expression: str) -> str:
     Returns:
         The cleaned DAX expression
     """
-    # Replace HTML entities with their actual characters if they exist
-    dax_expression = dax_expression.replace("&#x27;", "'")
-    dax_expression = dax_expression.replace("&quot;", '"')
-    dax_expression = dax_expression.replace("&amp;", "&")
-    dax_expression = dax_expression.replace("&lt;", "<")
-    dax_expression = dax_expression.replace("&gt;", ">")
+    # Remove any markdown code block markers
+    dax_expression = dax_expression.replace('```dax', '').replace('```', '').strip()
+    
+    # Remove any leading/trailing quotes
+    dax_expression = dax_expression.strip('"').strip("'")
+    
+    # Replace HTML entities with actual characters
+    html_entities = {
+        '&amp;': '&',
+        '&#x27;': "'",
+        '&quot;': '"',
+        '&lt;': '<',
+        '&gt;': '>'
+    }
+    for entity, char in html_entities.items():
+        dax_expression = dax_expression.replace(entity, char)
+    
+    # Clean up any double spaces
+    dax_expression = ' '.join(dax_expression.split())
+    
+    # Ensure proper spacing around operators
+    operators = ['+', '-', '*', '/', '=', '<', '>', '<=', '>=', '<>', '&']
+    for op in operators:
+        dax_expression = dax_expression.replace(op, f' {op} ')
+    
+    # Clean up any resulting double spaces
+    dax_expression = ' '.join(dax_expression.split())
     
     return dax_expression
 
@@ -329,17 +366,38 @@ async def convert_formula(formula_request: TableauFormula):
         The DAX expression response
     """
     try:
+        # Log the incoming request
+        logger.info(f"Converting formula: {formula_request.tableau_formula}")
+        logger.info(f"Table name: {formula_request.table_name}")
+        
+        # Validate the formula
+        if not formula_request.tableau_formula or not formula_request.tableau_formula.strip():
+            raise ValueError("Empty formula provided")
+            
         # Create the prompt for the LLM
         prompt = create_conversion_prompt(
             formula_request.tableau_formula,
             formula_request.table_name,
-            formula_request.column_mappings
+            formula_request.column_mappings,
+            formula_request.dependencies
         )
         
         # Call the LLM API if available
         if LLM_API_KEY:
             try:
+                # Log the conversion attempt
+                logger.info("Calling LLM API for conversion...")
+                
+                # Call LLM
                 dax_expression = await call_llm_api(prompt)
+                
+                # Basic validation of the response
+                if not dax_expression or not dax_expression.strip():
+                    raise ValueError("Empty response from LLM")
+                    
+                # Log success
+                logger.info(f"Successfully converted to: {dax_expression}")
+                
                 return DAXResponse(
                     dax_expression=dax_expression,
                     confidence=0.9,
@@ -347,10 +405,15 @@ async def convert_formula(formula_request: TableauFormula):
                 )
             except Exception as e:
                 logger.error(f"LLM conversion failed: {e}")
-                # Instead of falling back, return an error
+                # Return specific error message
+                error_msg = str(e)
+                if "Empty response" in error_msg:
+                    error_msg = "LLM returned empty response. Please try again."
+                elif "name 'caption' is not defined" in error_msg:
+                    error_msg = "Error accessing column name. Please check column references."
                 raise HTTPException(
                     status_code=500,
-                    detail=f"LLM conversion failed: {str(e)}"
+                    detail=error_msg
                 )
         else:
             # No LLM API key, return an error
@@ -359,6 +422,9 @@ async def convert_formula(formula_request: TableauFormula):
                 status_code=500,
                 detail="No LLM API key configured. Please set the LLM_API_KEY environment variable."
             )  
+    except ValueError as ve:
+        logger.error(f"Validation error: {ve}")
+        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         logger.error(f"Error converting formula: {e}")
         raise HTTPException(status_code=500, detail=f"Error converting formula: {str(e)}")
@@ -429,6 +495,94 @@ async def health_check():
     }
 
 # Run the server if executed directly
+@app.post("/resolve_dependencies")
+async def resolve_dependencies(request: DependencyRequest):
+    """
+    Resolve dependencies for a Tableau calculation using the agentic framework.
+    
+    Args:
+        request: The dependency resolution request containing calculations and target calculation name
+        
+    Returns:
+        The resolved dependencies and calculation chain with resolved formulas
+    """
+    try:
+        logger.info(f"Resolving dependencies for calculation: {request.calculation_name}")
+        
+        # Initialize resolver with calculations
+        resolver = FormulaResolver(calculations_data={"calculations": request.calculations})
+        
+        # Build a lookup map for calculations by caption
+        calc_by_caption = {}
+        calc_by_name = {}
+        for calc in request.calculations:
+            calc_by_caption[calc["FormulaCaptionTableau"]] = calc
+            calc_by_name[calc["TableauName"]] = calc
+            
+        # Find the target calculation
+        target_calc = None
+        for calc in request.calculations:
+            if (calc["FormulaCaptionTableau"] == request.calculation_name or 
+                calc["TableauName"] == request.calculation_name):
+                target_calc = calc
+                break
+                
+        if not target_calc:
+            raise HTTPException(
+                status_code=404, 
+                detail=f"Calculation not found: {request.calculation_name}"
+            )
+            
+        logger.info(f"Found target calculation: {target_calc['FormulaCaptionTableau']}")
+        
+        # Get the calculation chain
+        chain = resolver.resolve_calculation_chain(target_calc["TableauName"])
+        logger.info(f"Resolved chain length: {len(chain)}")
+        
+        # Process each calculation in the chain
+        processed_chain = []
+        dependencies = set()
+        for node in chain:
+            # Get the original calculation
+            orig_calc = calc_by_name.get(node.tableau_name)
+            if not orig_calc:
+                continue
+                
+            # Extract dependencies
+            node_deps = resolver.extract_dependencies(node.formula)
+            dependencies.update(node_deps)
+            
+            # Add to processed chain
+            processed_chain.append({
+                "caption": node.caption,
+                "formula": node.formula,
+                "dax": orig_calc.get("FormulaDax", "")
+            })
+            
+            logger.info(f"Processed calculation: {node.caption}")
+            logger.info(f"Dependencies found: {', '.join(node_deps) if node_deps else 'none'}")
+        
+        # Format response
+        response = {
+            "calculation": {
+                "caption": target_calc["FormulaCaptionTableau"],
+                "formula": target_calc["FormulaTableau"],
+                "dax": target_calc["FormulaDax"]
+            },
+            "dependencies": list(dependencies),
+            "chain": processed_chain
+        }
+        
+        logger.info(f"Successfully resolved dependencies for {request.calculation_name}")
+        return response
+        
+    except HTTPException as he:
+        logger.error(f"HTTP error during dependency resolution: {str(he)}")
+        raise
+    except Exception as e:
+        logger.error(f"Error during dependency resolution: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

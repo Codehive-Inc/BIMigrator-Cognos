@@ -1,5 +1,6 @@
 """Parser for extracting column information from Tableau workbooks."""
 import xml.etree.ElementTree as ET
+from pathlib import Path
 from typing import Dict, Any, List, Tuple
 
 from bimigrator.config.data_classes import PowerBiColumn, PowerBiMeasure
@@ -17,8 +18,20 @@ class ColumnParser:
             config: Configuration dictionary
         """
         self.config = config
-        self.calculation_converter = CalculationConverter(config)
         self.tableau_to_tmdl_datatypes = self.config.get('tableau_datatype_to_tmdl', {})
+        
+        # Initialize CalculationConverter with output_dir
+        output_dir = config.get('output_dir')
+        if output_dir:
+            config['output_dir'] = output_dir
+        self.calculation_converter = CalculationConverter(config)
+
+        # Initialize CalculationTracker
+        if output_dir:
+            from bimigrator.helpers.calculation_tracker import CalculationTracker
+            self.calculation_tracker = CalculationTracker(Path(output_dir))
+        else:
+            self.calculation_tracker = None
 
         # Initialize default datatype mapping if not provided in config
         if not self.tableau_to_tmdl_datatypes:
@@ -110,16 +123,39 @@ class ColumnParser:
                         role = 'measure'
                         break
 
+                # Store original formula first
+                if self.calculation_tracker:
+                    # Only add if not already present
+                    key = f"{pbi_table_name}_{calculation_name}"
+                    if key not in self.calculation_tracker.calculations:
+                        self.calculation_tracker.add_tableau_calculation(
+                            table_name=pbi_table_name,
+                            caption=col_name,
+                            expression=formula,
+                            formula_type='measure' if role == 'measure' else 'calculated_column',
+                            calculation_name=calculation_name
+                        )
+
                 # Convert to DAX
                 dax_expression = self.calculation_converter.convert_to_dax(
                     CalculationInfo(
                         formula=formula,
-                        caption=col_name,
+                        caption=col_name,  # Use display name for caption
                         datatype=twb_datatype,
-                        role=role
+                        role=role,
+                        internal_name=calculation_name  # Pass internal name for dependencies
                     ),
                     pbi_table_name
                 )
+
+                # Update with DAX expression
+                if self.calculation_tracker:
+                    self.calculation_tracker.update_powerbi_calculation(
+                        table_name=pbi_table_name,
+                        tableau_name=calculation_name,
+                        powerbi_name=col_name,
+                        dax_expression=dax_expression
+                    )
 
                 if role == 'measure':
                     # Create measure
@@ -134,9 +170,15 @@ class ColumnParser:
                         source_name=col_name,
                         dax_expression=dax_expression,
                         description=f"Converted from Tableau calculation: {formula}",
-                        annotations=annotations
+                        annotations=annotations,
+                        tableau_name=calculation_name,  # Use internal calculation name
+                        formula_tableau=formula  # Store original Tableau formula
                     )
                     measures.append(measure)
+                    
+                    # Validate that tableau_name is always the internal name
+                    if not calculation_name or calculation_name == col_name:
+                        print(f"Warning: Missing or invalid internal name for measure {col_name}")
                 else:
                     # Create calculated column
                     pbi_datatype = self._map_datatype(twb_datatype)
@@ -156,6 +198,18 @@ class ColumnParser:
 
                     # For calculated columns, we need to set the source_name to just the column name
                     # and put the DAX expression in the source_column field
+                    # Validate internal name for calculated columns
+                    if not calculation_name:
+                        print(f"Warning: Missing internal name for calculated column {col_name}")
+                        continue
+
+                    if calculation_name == col_name:
+                        print(f"Warning: Internal name same as caption for calculated column {col_name}")
+                        continue
+
+                    # Store calculation in tracker
+                    # This is now handled above before conversion
+
                     column = PowerBiColumn(
                         source_name=col_name,
                         pbi_datatype=pbi_datatype,
@@ -165,7 +219,8 @@ class ColumnParser:
                         is_data_type_inferred=True,
                         summarize_by=summarize_by,
                         annotations=annotations,
-                        tableau_name=calculation_name  # Add the internal calculation name
+                        tableau_name=calculation_name,  # Internal Tableau calculation name
+                        formula_tableau=formula  # Original Tableau formula
                     )
                     columns.append(column)
 

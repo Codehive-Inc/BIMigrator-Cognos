@@ -18,7 +18,9 @@ class CalculationTracker:
             self.output_dir.mkdir(parents=True, exist_ok=True)
             
             # Set JSON file path
-            self.json_path = self.output_dir / 'calculations.json'
+            extracted_dir = self.output_dir / 'extracted'
+            extracted_dir.mkdir(parents=True, exist_ok=True)
+            self.json_path = extracted_dir / 'calculations.json'
             self.calculations = {}
             
             # Create or load existing JSON
@@ -34,8 +36,13 @@ class CalculationTracker:
                 data = json.load(f)
                 self.calculations = {}
                 for calc in data.get('calculations', []):
-                    key = f"{calc['TableName']}_{calc['FormulaCaptionTableau']}"
-                    self.calculations[key] = calc
+                    if 'TableauName' in calc and 'TableName' in calc:
+                        key = f"{calc['TableName']}_{calc['TableauName']}"
+                        self.calculations[key] = calc
+                    else:
+                        # Fallback for legacy data
+                        key = f"{calc['TableName']}_{calc['FormulaCaptionTableau']}"
+                        self.calculations[key] = calc
         except Exception as e:
             print(f"Error loading calculations: {str(e)}")
             self.calculations = {}
@@ -52,11 +59,21 @@ class CalculationTracker:
             is_measure: Whether this is a measure (True) or calculated column (False)
             tableau_name: Original name of the calculation in Tableau
         """
+        # Validate tableau_name is provided for measures
+        if is_measure and not tableau_name:
+            print(f"Warning: Missing internal name for measure {formula_caption_tableau} in {table_name}")
+            return
+
+        # Validate tableau_name is different from caption for measures
+        if is_measure and tableau_name == formula_caption_tableau:
+            print(f"Warning: Internal name same as caption for measure {formula_caption_tableau} in {table_name}")
+            return
+
         key = f"{table_name}_{formula_caption_tableau}"
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': formula_caption_tableau,
-            'TableauName': tableau_name or formula_caption_tableau,
+            'TableauName': tableau_name or formula_caption_tableau,  # For non-measures, caption is ok as fallback
             'FormulaTableau': formula_tableau,
             'FormulaDax': formula_dax,
             'DataType': data_type,
@@ -65,8 +82,15 @@ class CalculationTracker:
         self._save_calculations()
 
     def _save_calculations(self):
-        """Save calculations to JSON file."""
+        """Save calculations to JSON."""
         try:
+            # Ensure output directory exists
+            if self.output_dir:
+                self.output_dir.mkdir(parents=True, exist_ok=True)
+                extracted_dir = self.output_dir / 'extracted'
+                extracted_dir.mkdir(parents=True, exist_ok=True)
+                self.json_path = extracted_dir / 'calculations.json'
+
             data = {'calculations': []}
             for key, calc in self.calculations.items():
                 data['calculations'].append(calc)
@@ -95,23 +119,38 @@ class CalculationTracker:
         if not hasattr(self, 'calculations'):
             return
             
-        key = f"{table_name}_{caption}"
+        # Validate internal name based on formula type
+        if formula_type in ['measure', 'calculated_column']:
+            if not calculation_name:
+                print(f"Warning: Missing internal name for {formula_type} {caption} in {table_name}")
+                return
+
+            if calculation_name == caption:
+                print(f"Warning: Internal name same as caption for {formula_type} {caption} in {table_name}")
+                return
+
+        if not calculation_name:
+            print(f"Warning: Missing TableauName for {formula_type} {caption} in {table_name}")
+            return
+
+        # Use TableName_TableauName as key
+        key = f"{table_name}_{calculation_name}"
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': caption,
-            'TableauName': calculation_name or caption,  # Use calculation_name if available, else caption
-            'FormulaExpressionTableau': expression,
+            'TableauName': calculation_name,  # Always use internal name
+            'FormulaTableau': expression,  # Store original formula
             'FormulaTypeTableau': formula_type,
             'PowerBIName': caption,
-            'DAXExpression': '',
-            'ConversionStatus': 'Pending'
+            'FormulaDax': '',  # Empty until conversion
+            'Status': 'extracted'  # Track calculation state: extracted -> converted/failed
         }
         self._save_calculations()
     
     def update_powerbi_calculation(
         self,
         table_name: str,
-        tableau_caption: str,
+        tableau_name: str,  # Use TableauName instead of caption
         powerbi_name: str,
         dax_expression: str
     ):
@@ -119,18 +158,21 @@ class CalculationTracker:
         
         Args:
             table_name: Name of the table containing the calculation
-            tableau_caption: Original Tableau caption
+            tableau_name: Internal Tableau name (e.g. [Calculation_123])
             powerbi_name: Name in Power BI
             dax_expression: Converted DAX expression
         """
         if not hasattr(self, 'calculations'):
             return
             
-        key = f"{table_name}_{tableau_caption}"
-        if key in self.calculations:
-            self.calculations[key].update({
-                'PowerBIName': powerbi_name,
-                'DAXExpression': dax_expression,
-                'ConversionStatus': 'Converted'
-            })
-            self._save_calculations()
+        # Find the calculation by TableauName
+        for k, calc in self.calculations.items():
+            if calc['TableName'] == table_name and calc['TableauName'] == tableau_name:
+                # Only update DAX-related fields, preserve original formula
+                self.calculations[k].update({
+                    'PowerBIName': powerbi_name,
+                    'FormulaDax': dax_expression,
+                    'Status': 'converted' if not dax_expression.startswith('/* ERROR') else 'failed'
+                })
+                break
+        self._save_calculations()

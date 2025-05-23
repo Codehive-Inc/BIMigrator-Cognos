@@ -338,7 +338,7 @@ class CultureInfo:
 class PowerBiColumn:
     """Represents a column within a Power BI table for TMDL."""
     source_name: str
-    pbi_datatype: str # e.g., "string", "int64", "double", "dateTime", "boolean"
+    pbi_datatype: str 
     source_column: Optional[str] = None
     description: Optional[str] = None
     format_string: Optional[str] = None
@@ -346,11 +346,11 @@ class PowerBiColumn:
     summarize_by: Literal['sum', 'count', 'min', 'max', 'average', 'distinctCount', 'none'] = 'none'
     sortByColumnName: Optional[str] = None
     dataCategory: Optional[str] = None
-    annotations: Dict[str, Any] = field(default_factory=dict) # <-- Added annotations dict
-    # For calculated columns in TMDL format
+    annotations: Dict[str, Any] = field(default_factory=dict) 
     is_calculated: bool = False
     is_data_type_inferred: bool = False
-    tableau_name: Optional[str] = None  # Original name in Tableau
+    tableau_name: Optional[str] = None  
+    formula_tableau: Optional[str] = None  
     # Example usage for annotations:
     # col.annotations["SummarizationSetBy"] = "Automatic" # or "User" or "None"
     # col.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}' # Store JSON as a string literal
@@ -366,7 +366,9 @@ class PowerBiMeasure:
     format_string: Optional[str] = None
     is_hidden: bool = False
     display_folder: Optional[str] = None
-    annotations: Dict[str, Any] = field(default_factory=dict)  # <-- Added annotations dict
+    annotations: Dict[str, Any] = field(default_factory=dict)
+    tableau_name: Optional[str] = None  # Internal Tableau calculation name
+    formula_tableau: Optional[str] = None  # Original Tableau formula  # <-- Added annotations dict
     # Example usage for annotations:
     # measure.annotations["PBI_FormatHint"] = '{"currencyCulture":"en-US"}'
 

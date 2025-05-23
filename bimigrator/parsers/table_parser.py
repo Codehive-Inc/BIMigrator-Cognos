@@ -57,16 +57,21 @@ class TableParser(BaseParser):
             output_dir: Output directory
         """
         super().__init__(twb_file, config, output_dir)
-        self.column_parser = ColumnParser(config)
-        self.connection_factory = ConnectionParserFactory(config)
-        self.tmdl_generator = TMDLGenerator(config)
-        self.output_dir = output_dir
         # Initialize calculation tracker with the base output directory
         output_path = Path(output_dir)
         # Strip off pbit or extracted directories to get base directory
         if output_path.name == 'pbit' or output_path.name == 'extracted':
             output_path = output_path.parent
-        self.calculation_tracker = CalculationTracker(output_path / 'extracted')
+        base_output_dir = output_path
+        
+        # Update config with output directory
+        config['output_dir'] = str(base_output_dir)
+        
+        self.column_parser = ColumnParser(config)
+        self.connection_factory = ConnectionParserFactory(config)
+        self.tmdl_generator = TMDLGenerator(config)
+        self.output_dir = output_dir
+        self.calculation_tracker = CalculationTracker(base_output_dir / 'extracted')
 
     def _extract_partition_info(
             self,
