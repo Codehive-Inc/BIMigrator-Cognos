@@ -66,8 +66,9 @@ class CalculationConverter:
             import re
             deps = re.findall(r'\[Calculation_\d+\]', calc_info.formula)
             
-            # Build dependency information
+            # Build dependency information and replace formula
             dependencies = []
+            formula = calc_info.formula
             for dep in deps:
                 if dep in self.calculations:
                     dep_info = self.calculations[dep]
@@ -77,10 +78,12 @@ class CalculationConverter:
                         "dax": dep_info["FormulaDax"],
                         "tableau_name": dep_info["TableauName"]
                     })
+                    # Replace dependency with its DAX formula
+                    formula = formula.replace(dep, f"({dep_info['FormulaDax']})")
             
             # Prepare the request payload
             payload = {
-                "tableau_formula": calc_info.formula,
+                "tableau_formula": formula,  # Use modified formula with PowerBI names
                 "table_name": table_name,
                 "column_mappings": {},
                 "dependencies": dependencies
