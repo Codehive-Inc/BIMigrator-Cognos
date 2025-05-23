@@ -105,11 +105,21 @@ class CalculationTracker:
         if not hasattr(self, 'calculations'):
             return
             
+        # Validate internal name based on formula type
+        if formula_type in ['measure', 'calculated_column']:
+            if not calculation_name:
+                print(f"Warning: Missing internal name for {formula_type} {caption} in {table_name}")
+                return
+
+            if calculation_name == caption:
+                print(f"Warning: Internal name same as caption for {formula_type} {caption} in {table_name}")
+                return
+
         key = f"{table_name}_{caption}"
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': caption,
-            'TableauName': calculation_name or caption,  # Use calculation_name if available, else caption
+            'TableauName': calculation_name,  # Always use internal name
             'FormulaExpressionTableau': expression,
             'FormulaTypeTableau': formula_type,
             'PowerBIName': caption,

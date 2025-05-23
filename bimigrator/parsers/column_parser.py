@@ -168,6 +168,15 @@ class ColumnParser:
 
                     # For calculated columns, we need to set the source_name to just the column name
                     # and put the DAX expression in the source_column field
+                    # Validate internal name for calculated columns
+                    if not calculation_name:
+                        print(f"Warning: Missing internal name for calculated column {col_name}")
+                        continue
+
+                    if calculation_name == col_name:
+                        print(f"Warning: Internal name same as caption for calculated column {col_name}")
+                        continue
+
                     column = PowerBiColumn(
                         source_name=col_name,
                         pbi_datatype=pbi_datatype,
@@ -177,7 +186,8 @@ class ColumnParser:
                         is_data_type_inferred=True,
                         summarize_by=summarize_by,
                         annotations=annotations,
-                        tableau_name=calculation_name  # Add the internal calculation name
+                        tableau_name=calculation_name,  # Internal Tableau calculation name
+                        formula_tableau=formula  # Original Tableau formula
                     )
                     columns.append(column)
 
