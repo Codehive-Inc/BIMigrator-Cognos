@@ -31,7 +31,7 @@ class DiagramLayoutGenerator(BaseTemplateGenerator):
         # Map dictionary keys to template variables
         template_context = {
             'version': layout_dict['version'],
-            'diagrams': layout_dict['diagrams']
+            'nodes': layout_dict['diagrams'][0]['nodes']
         }
 
         # Render template

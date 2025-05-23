@@ -1,6 +1,7 @@
 """Parser for diagram layout."""
 import re
 import json
+import uuid
 import logging
 from typing import Any, List, Optional
 
@@ -8,7 +9,9 @@ from bimigrator.models.power_bi_diagram_layout import (
     DiagramLayout,
     PowerBiDiagramLayout,
     ScrollPosition,
-    TablePosition
+    Location,
+    Size,
+    Node
 )
 from bimigrator.models.tableau_layout import TableauDashboardLayout, TableauLayoutObject
 from bimigrator.parsers.base_parser import BaseParser
@@ -113,11 +116,11 @@ class DiagramLayoutParser(BaseParser):
             if layout_obj:
                 layout_objects.append(layout_obj)
 
-        # Convert layout objects to table positions
-        table_positions = []
-        for layout_obj in layout_objects:
+        # Convert layout objects to nodes
+        nodes = []
+        for i, layout_obj in enumerate(layout_objects):
             if layout_obj.object_type == 'worksheet':
-                worksheet_elem = self.root.find(f".//worksheet[@name='{layout_obj.worksheet_ref}']") 
+                worksheet_elem = self.root.find(f".//worksheet[@name='{layout_obj.worksheet_ref}']")
                 if worksheet_elem is not None:
                     # Get datasource name for the worksheet
                     datasource_name = None
@@ -126,23 +129,23 @@ class DiagramLayoutParser(BaseParser):
                             datasource_name = datasource.get('caption') or datasource.get('name')
                             break
                     
-                    table_position = TablePosition(
-                        id=datasource_name or layout_obj.worksheet_ref,
-                        x=layout_obj.x,
-                        y=layout_obj.y,
-                        width=layout_obj.width,
-                        height=layout_obj.height
-                    )
-                    table_positions.append(table_position)
+                    node = {
+                        "location": {"x": layout_obj.x, "y": layout_obj.y},
+                        "nodeIndex": datasource_name or layout_obj.worksheet_ref,
+                        "nodeLineageTag": str(uuid.uuid4()),
+                        "size": {"height": layout_obj.height, "width": layout_obj.width},
+                        "zIndex": i
+                    }
+                    nodes.append(node)
 
         # Create diagram layout
         diagram = DiagramLayout(
             ordinal=0,
             scroll_position=ScrollPosition(x=0, y=0),
-            tables=table_positions,
+            nodes=nodes,
             name="All tables",
             zoom_value=100,
-            pin_key_fields_to_top=True,
+            pin_key_fields_to_top=False,
             show_extra_header_info=False,
             hide_key_fields_when_collapsed=False,
             tables_locked=False
@@ -150,7 +153,9 @@ class DiagramLayoutParser(BaseParser):
 
         return PowerBiDiagramLayout(
             version="1.1.0",
-            diagrams=[diagram]
+            diagrams=[diagram],
+            selected_diagram="All tables",
+            default_diagram="All tables"
         )
 
     def _get_visual_type(self, worksheet_elem: Optional[Any], name: str) -> str:
