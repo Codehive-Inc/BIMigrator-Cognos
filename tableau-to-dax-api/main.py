@@ -133,8 +133,11 @@ RULES:
 4. For column references:
    - Use '[Column]' for columns in the current table
    - Use 'TableName'[Column] for columns from other tables
-   - ALWAYS enclose table names in single quotes, e.g. 'TableName'[Column]
+   - ALWAYS enclose table names in SINGLE quotes, e.g. 'TableName'[Column]
+   - NEVER use double quotes around table names
+   - NEVER add extra spaces inside table name quotes
    - For calculation references, use their DAX expressions from DEPENDENCIES
+   - When referencing the current table, use '{table_name}' as the table name
 5. For Tableau functions:
    - SUM() -> SUM()
    - AVG() -> AVERAGE()
@@ -215,33 +218,46 @@ def clean_dax_expression(dax_expression: str) -> str:
     Returns:
         The cleaned DAX expression
     """
-    # Remove any markdown code block markers and ensure no whitespace after ```
-    dax_expression = dax_expression.replace('```dax\n', '').replace('```\n', '').replace('```', '').strip()
+    # Remove any leading/trailing whitespace
+    dax_expression = dax_expression.strip()
     
-    # Remove any leading/trailing quotes
-    dax_expression = dax_expression.strip('"').strip("'")
+    # Remove any markdown code block markers
+    dax_expression = dax_expression.replace('```', '')
     
-    # Replace HTML entities with actual characters
-    html_entities = {
-        '&amp;': '&',
-        '&#x27;': "'",
-        '&quot;': '"',
-        '&lt;': '<',
-        '&gt;': '>'
-    }
-    for entity, char in html_entities.items():
-        dax_expression = dax_expression.replace(entity, char)
-    
-    # Clean up any double spaces
+    # Clean up any extra whitespace
     dax_expression = ' '.join(dax_expression.split())
     
     # Ensure proper spacing around operators
-    operators = ['+', '-', '*', '/', '=', '<', '>', '<=', '>=', '<>', '&']
+    operators = ['+', '-', '*', '/', '=', '<', '>', '<=', '>=']
     for op in operators:
         dax_expression = dax_expression.replace(op, f' {op} ')
     
-    # Clean up any resulting double spaces
+    # Clean up multiple spaces
     dax_expression = ' '.join(dax_expression.split())
+    
+    # Ensure proper spacing around parentheses
+    dax_expression = dax_expression.replace('( ', '(')
+    dax_expression = dax_expression.replace(' )', ')')
+    
+    # Fix table name quoting
+    import re
+    # Find table references like TableName[Column] and ensure they're quoted
+    table_refs = re.findall(r'([a-zA-Z0-9_]+)\[', dax_expression)
+    for table in table_refs:
+        # Replace unquoted table name with quoted version
+        dax_expression = re.sub(f'\b{table}\[', f"'{table}'[", dax_expression)
+    
+    # Remove any double quotes around table names
+    dax_expression = re.sub(r'"([^"]+)"\[', r"'\1'[", dax_expression)
+    
+    # Fix any double single quotes
+    dax_expression = dax_expression.replace("''", "'")
+    
+    # Remove spaces between quotes and table names
+    dax_expression = re.sub(r"'\s+([^']+)\s+'\[", r"'\1'[", dax_expression)
+    
+    # Clean up any remaining whitespace
+    dax_expression = dax_expression.strip()
     
     return dax_expression
 

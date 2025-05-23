@@ -109,8 +109,10 @@ class CalculationConverter:
                         f"[{dep['caption']}]"
                     )
                 
-                # Replace table name in expression with the actual table name
-                dax_expression = dax_expression.replace(f"'{table_name} (sample_sales_data)'", table_name)
+                # Ensure table name is properly quoted in DAX expressions
+                dax_expression = dax_expression.replace(f"'{table_name}'", f"'{table_name}'")
+                # Remove any extra single quotes around table names
+                dax_expression = dax_expression.replace("''", "'")
 
                 # Log the conversion
                 logging.info(f"Tableau Formula: {calc_info.formula}")
