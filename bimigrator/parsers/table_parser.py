@@ -261,7 +261,8 @@ class TableParser(BaseParser):
                             formula_caption_tableau=column.source_name,
                             formula_tableau=column.source_column,
                             formula_dax=column.source_column,  # This will be the DAX expression
-                            data_type=column.pbi_datatype
+                            data_type=column.pbi_datatype,
+                            tableau_name=column.tableau_name
                         )
                 
                 for measure in measures:
@@ -271,7 +272,8 @@ class TableParser(BaseParser):
                         formula_tableau=measure.dax_expression,
                         formula_dax=measure.dax_expression,  # This will be the DAX expression
                         data_type='double',  # Measures are always numeric in Power BI
-                        is_measure=True
+                        is_measure=True,
+                        tableau_name=measure.tableau_name if hasattr(measure, 'tableau_name') else None
                     )
 
                 # Create PowerBiTable

@@ -40,7 +40,7 @@ class CalculationTracker:
             print(f"Error loading calculations: {str(e)}")
             self.calculations = {}
     
-    def add_calculation(self, table_name: str, formula_caption_tableau: str, formula_tableau: str, formula_dax: str, data_type: str, is_measure: bool = False):
+    def add_calculation(self, table_name: str, formula_caption_tableau: str, formula_tableau: str, formula_dax: str, data_type: str, is_measure: bool = False, tableau_name: Optional[str] = None):
         """Add a calculation to the tracker.
         
         Args:
@@ -50,11 +50,13 @@ class CalculationTracker:
             formula_dax: Converted DAX formula
             data_type: Data type of the calculation
             is_measure: Whether this is a measure (True) or calculated column (False)
+            tableau_name: Original name of the calculation in Tableau
         """
         key = f"{table_name}_{formula_caption_tableau}"
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': formula_caption_tableau,
+            'TableauName': tableau_name or formula_caption_tableau,
             'FormulaTableau': formula_tableau,
             'FormulaDax': formula_dax,
             'DataType': data_type,
@@ -97,8 +99,7 @@ class CalculationTracker:
         self.calculations[key] = {
             'TableName': table_name,
             'FormulaCaptionTableau': caption,
-            'CalculationName': calculation_name,  # Store calculation name separately
-            'TableauCalculationName': calculation_name or caption,  # Keep this for backward compatibility
+            'TableauName': calculation_name or caption,  # Use calculation_name if available, else caption
             'FormulaExpressionTableau': expression,
             'FormulaTypeTableau': formula_type,
             'PowerBIName': caption,
