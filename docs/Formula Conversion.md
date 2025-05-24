@@ -42,29 +42,90 @@ The system classifies formulas into different types:
 
 ### 3. Conversion Flow
 
-1. **Pre-processing**
+1. **Dependency Resolution**
+   ```python
+   # Find dependencies in the formula
+   deps = re.findall(r'\[Calculation_\d+\]', calc_info.formula)
+   
+   # Build dependency information
+   dependencies = []
+   for dep in deps:
+       if dep in calculations:
+           dep_info = calculations[dep]
+           dependencies.append({
+               "caption": dep_info["FormulaCaptionTableau"],
+               "formula": dep_info["FormulaTableau"],
+               "dax": dep_info["FormulaDax"],
+               "tableau_name": dep_info["TableauName"]
+           })
+   ```
+   - Dependencies are extracted from the formula using regex
+   - Each dependency's information is collected for conversion
+   - Dependencies are ordered to ensure proper resolution
+
+2. **Pre-processing**
    ```python
    payload = {
-       "tableau_formula": calc_info.formula,
+       "tableau_formula": formula,
        "table_name": table_name,
-       "column_mappings": {}
+       "column_mappings": {},
+       "dependencies": dependencies
    }
    ```
    - The formula is extracted from the Tableau workbook
    - Table context is provided for proper column references
+   - Dependencies are included for proper resolution
    - Column mappings can be provided for custom name translations
 
-2. **API Request**
-   - The formula is sent to the FastAPI service
-   - The service uses advanced NLP to convert the formula
+3. **API Request**
+   - The formula and its dependencies are sent to the FastAPI service
+   - The service uses the FormulaResolver to handle dependencies
+   - The LLM converts the formula considering the dependency context
    - The response includes the DAX expression and any warnings/errors
 
-3. **Post-processing**
+4. **Post-processing**
+   - Dependencies are replaced with their DAX expressions or PowerBI names
    - HTML entities in the response are decoded
    - Error handling is added for failed conversions
    - The result is formatted for TMDL output
 
-### 4. Calculation Tracking
+### 4. Formula Resolution
+
+The FastAPI service uses an agentic formula resolver to handle complex dependencies:
+
+1. **FormulaResolver Class**
+   - Manages a graph of calculation dependencies
+   - Tracks converted formulas and their relationships
+   - Ensures proper ordering of formula conversions
+
+2. **Dependency Resolution**
+   ```python
+   def resolve_calculation_chain(self, calc_name: str):
+       chain = []
+       visited = set()
+       
+       def resolve_deps(name):
+           if name in visited:
+               return
+           visited.add(name)
+           node = self.calculations[name]
+           deps = self.extract_dependencies(node.formula)
+           node.dependencies = deps
+           for dep in deps:
+               if dep in self.calculations:
+                   resolve_deps(dep)
+           chain.append(node)
+   ```
+   - Recursively resolves dependencies
+   - Handles circular dependencies
+   - Builds a conversion chain
+
+3. **LLM Integration**
+   - The resolver works with an LLM to convert formulas
+   - Dependencies are provided as context
+   - The LLM understands the relationship between calculations
+
+### 5. Calculation Tracking
 
 The migration tool tracks all calculations and their conversions in a JSON file for monitoring and debugging purposes.
 

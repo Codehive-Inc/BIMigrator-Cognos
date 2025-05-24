@@ -258,28 +258,7 @@ class TableParser(BaseParser):
                 # Use unique partitions
                 partitions = list(seen_partitions.values())
 
-                # Track calculations for this table
-                for column in columns:
-                    if column.is_calculated:
-                        self.calculation_tracker.add_calculation(
-                            table_name=final_table_name,
-                            formula_caption_tableau=column.source_name,
-                            formula_tableau=column.source_column,
-                            formula_dax=column.source_column,  # This will be the DAX expression
-                            data_type=column.pbi_datatype,
-                            tableau_name=column.tableau_name
-                        )
-                
-                for measure in measures:
-                    self.calculation_tracker.add_calculation(
-                        table_name=final_table_name,
-                        formula_caption_tableau=measure.source_name,
-                        formula_tableau=measure.dax_expression,
-                        formula_dax=measure.dax_expression,  # This will be the DAX expression
-                        data_type='double',  # Measures are always numeric in Power BI
-                        is_measure=True,
-                        tableau_name=measure.tableau_name if hasattr(measure, 'tableau_name') else None
-                    )
+                # Calculation tracking is now handled in ColumnParser
 
                 # Create PowerBiTable
                 table = PowerBiTable(

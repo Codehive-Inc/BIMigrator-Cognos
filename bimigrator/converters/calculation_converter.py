@@ -66,20 +66,20 @@ class CalculationConverter:
             import re
             deps = re.findall(r'\[Calculation_\d+\]', calc_info.formula)
             
-            # Build dependency information and replace formula
+            # Build dependency information
             dependencies = []
             formula = calc_info.formula
             for dep in deps:
                 if dep in self.calculations:
                     dep_info = self.calculations[dep]
+                    # Only include dependency info, don't modify formula
                     dependencies.append({
                         "caption": dep_info["FormulaCaptionTableau"],
                         "formula": dep_info["FormulaTableau"],
                         "dax": dep_info["FormulaDax"],
-                        "tableau_name": dep_info["TableauName"]
+                        "tableau_name": dep_info["TableauName"],
+                        "powerbi_name": dep_info["PowerBIName"]
                     })
-                    # Replace dependency with its DAX formula
-                    formula = formula.replace(dep, f"({dep_info['FormulaDax']})")
             
             # Prepare the request payload
             payload = {
@@ -109,8 +109,10 @@ class CalculationConverter:
                         f"[{dep['caption']}]"
                     )
                 
-                # Replace table name in expression with the actual table name
-                dax_expression = dax_expression.replace(f"'{table_name} (sample_sales_data)'", table_name)
+                # Ensure table name is properly quoted in DAX expressions
+                dax_expression = dax_expression.replace(f"'{table_name}'", f"'{table_name}'")
+                # Remove any extra single quotes around table names
+                dax_expression = dax_expression.replace("''", "'")
 
                 # Log the conversion
                 logging.info(f"Tableau Formula: {calc_info.formula}")
