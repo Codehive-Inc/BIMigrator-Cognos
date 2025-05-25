@@ -12,7 +12,7 @@ table 'Sheet1 (sample_sales_data)'
 
         
     column 'Region Split' = ```
-            SWITCH(TRUE(), 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = "North Sales", "North East", 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = "East Sales", "North East", 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = "South Sales", "South West", 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = "West Sales", "South West")
+            SWITCH(TRUE(), 'Sheet1 (sample_sales_data)'[Region Sales] = "North Sales", "North East", 'Sheet1 (sample_sales_data)'[Region Sales] = "East Sales", "North East", 'Sheet1 (sample_sales_data)'[Region Sales] = "South Sales", "South West", 'Sheet1 (sample_sales_data)'[Region Sales] = "West Sales", "South West")
     ```
         dataType: string
         summarizeBy: none
@@ -107,7 +107,7 @@ table 'Sheet1 (sample_sales_data)'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Units Measure' = ```
-            SUM('Sheet1 (sample_sales_data)'[Calculation_606860061096038402])
+            SUM('Sheet1 (sample_sales_data)'[Units])
     ```
 
 

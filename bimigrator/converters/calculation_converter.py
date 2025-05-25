@@ -66,6 +66,14 @@ class CalculationConverter:
             import re
             deps = re.findall(r'\[Calculation_\d+\]', calc_info.formula)
             
+            # Log found dependencies
+            if deps:
+                logging.info(f"Found {len(deps)} dependencies in formula: {calc_info.formula}")
+                for dep in deps:
+                    logging.info(f"Dependency found: {dep}")
+            else:
+                logging.info(f"No dependencies found in formula: {calc_info.formula}")
+            
             # Build dependency information
             dependencies = []
             formula = calc_info.formula
@@ -80,6 +88,9 @@ class CalculationConverter:
                         "tableau_name": dep_info["TableauName"],
                         "powerbi_name": dep_info["PowerBIName"]
                     })
+                    logging.info(f"Resolved dependency {dep} to '{dep_info['PowerBIName']}' (caption: {dep_info['FormulaCaptionTableau']})")
+                else:
+                    logging.warning(f"Could not resolve dependency {dep} - not found in calculations dictionary")
             
             # Prepare the request payload
             payload = {
@@ -104,19 +115,31 @@ class CalculationConverter:
                 
                 # Replace Calculation_* references with their Power BI column names
                 for dep in dependencies:
+                    # Replace fully qualified references (with table name)
+                    dax_expression = dax_expression.replace(
+                        f"'{table_name}'[{dep['tableau_name'].strip('[]')}]",
+                        f"'{table_name}'[{dep['powerbi_name']}]"
+                    )
+                    # Also replace unqualified references (without table name)
                     dax_expression = dax_expression.replace(
                         f"[{dep['tableau_name'].strip('[]')}]",
-                        f"[{dep['caption']}]"
+                        f"[{dep['powerbi_name']}]"
                     )
+                    
+                    # Log the replacement for debugging
+                    logging.debug(f"Replaced dependency: {dep['tableau_name']} -> {dep['powerbi_name']}")
                 
                 # Ensure table name is properly quoted in DAX expressions
                 dax_expression = dax_expression.replace(f"'{table_name}'", f"'{table_name}'")
                 # Remove any extra single quotes around table names
                 dax_expression = dax_expression.replace("''", "'")
 
+                # Apply recursive dependency resolution to ensure all nested dependencies are resolved
+                dax_expression = self._resolve_nested_dependencies(dax_expression, table_name)
+                
                 # Log the conversion
                 logging.info(f"Tableau Formula: {calc_info.formula}")
-                logging.info(f"DAX Expression: {dax_expression}")
+                logging.info(f"Final DAX Expression: {dax_expression}")
 
                 return dax_expression
                     
@@ -134,3 +157,59 @@ class CalculationConverter:
                 f"/* Error details: {error_msg} */\n"
                 "ERROR(\"Conversion failed\")"  # Return ERROR() function for measures/columns
             )
+            
+    def _resolve_nested_dependencies(self, dax_expression: str, table_name: str) -> str:
+        """
+        Recursively resolve nested dependencies in a DAX expression.
+        
+        This method looks for any remaining Calculation_* references in the DAX expression
+        and replaces them with their corresponding Power BI column names.
+        
+        Args:
+            dax_expression: The DAX expression to process
+            table_name: The name of the table containing the calculation
+            
+        Returns:
+            The DAX expression with all dependencies resolved
+        """
+        import re
+        
+        # Find any remaining Calculation_* references in the expression
+        pattern = r'\[Calculation_\d+\]|\'{table_name}\'\[Calculation_\d+\]'
+        matches = re.findall(pattern, dax_expression)
+        
+        if not matches:
+            # No more dependencies to resolve
+            return dax_expression
+            
+        logging.info(f"Found {len(matches)} unresolved dependencies in DAX expression")
+        
+        # Process each unresolved dependency
+        for match in matches:
+            # Extract the calculation ID
+            calc_id = re.search(r'Calculation_\d+', match).group(0)
+            tableau_name = f"[{calc_id}]"
+            
+            if tableau_name in self.calculations:
+                dep_info = self.calculations[tableau_name]
+                powerbi_name = dep_info["PowerBIName"]
+                
+                # Replace in the expression
+                if "'" in match:  # Fully qualified reference
+                    dax_expression = dax_expression.replace(
+                        match,
+                        f"'{table_name}'[{powerbi_name}]"
+                    )
+                else:  # Unqualified reference
+                    dax_expression = dax_expression.replace(
+                        match,
+                        f"[{powerbi_name}]"
+                    )
+                    
+                logging.info(f"Resolved nested dependency: {tableau_name} -> {powerbi_name}")
+            else:
+                logging.warning(f"Could not resolve nested dependency {tableau_name} - not found in calculations dictionary")
+                
+        # Recursively resolve any remaining dependencies
+        # This handles cases where resolving one dependency might reveal others
+        return self._resolve_nested_dependencies(dax_expression, table_name)
