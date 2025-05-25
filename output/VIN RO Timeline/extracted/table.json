@@ -1,0 +1,29 @@
+{
+  "source_name": "CMPGN_MSTR",
+  "name": "CMPGN_MSTR",
+  "lineage_tag": null,
+  "description": "Table CMPGN_MSTR from datasource federated.1luf0dm0s4az7214qsvnz0flwlm6",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "id",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": null,
+      "description": "Relationship column from CMPGN_MSTR",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": "Uncategorized",
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": null
+    }
+  ],
+  "measures": [],
+  "hierarchies": [],
+  "partitions": [],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

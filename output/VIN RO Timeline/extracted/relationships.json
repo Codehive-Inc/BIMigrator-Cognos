@@ -1,0 +1,74 @@
+{
+  "relationships": [
+    {
+      "id": "e98c4f4f-e35a-4dba-aa6e-488cefa87a36",
+      "from_table": "RPR_ORDR",
+      "to_table": "SVC_VHCL",
+      "from_column": "VIN_ID",
+      "to_column": "VIN_ID",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "177ab6a7-b6c9-4c5b-8810-f43454d784a9",
+      "from_table": "SLS_DSTRCT",
+      "to_table": "SLS_ARA",
+      "from_column": "SLS_ARA_CD",
+      "to_column": "SLS_ARA_CD",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "21c8596f-530d-4c82-b19c-fd7369d12d9d",
+      "from_table": "DLR",
+      "to_table": "SLS_DSTRCT",
+      "from_column": "SLS_DSTRCT_CD",
+      "to_column": "SLS_DSTRCT_CD",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "3c22bf23-3d5e-41a7-9fb3-889bc63d2dae",
+      "from_table": "VHCL_CMPGN",
+      "to_table": "CMPGN_MSTR",
+      "from_column": "CMPGN_NB",
+      "to_column": "CMPGN_NB",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "d9f1d1f8-17c6-49b6-bf69-3c9cb70d498f",
+      "from_table": "RPR_ORDR",
+      "to_table": "VHCL_CMPGN",
+      "from_column": "VIN_ID",
+      "to_column": "VIN_ID",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "feebfb22-3b6d-4d4c-a838-402392891699",
+      "from_table": "RPR_ORDR",
+      "to_table": "DLR",
+      "from_column": "RFRNC_DLR_NB",
+      "to_column": "RFRNC_DLR_NB",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    },
+    {
+      "id": "a9f692a7-c01e-41b3-b18b-0c4d78b321e9",
+      "from_table": "RPR_ORDR",
+      "to_table": "RPR_ORDR_LN",
+      "from_column": "RPR_ORDR_KY",
+      "to_column": "RPR_ORDR_KY",
+      "cardinality": "one",
+      "cross_filter_behavior": "oneWay",
+      "is_active": true
+    }
+  ]
+}
