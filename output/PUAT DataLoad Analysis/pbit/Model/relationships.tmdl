@@ -1,14 +1,14 @@
-relationship cee2134f-967a-4c77-9983-db75f2d1e5ec
+relationship 08821971-1775-4442-8f9a-21075ef37478
 	fromColumn: 'Custom SQL Query'.asup_date
 	toColumn: 'Custom SQL Query1'.FT
-	crossFilteringBehavior: bothDirections
+	crossFilteringBehavior: BothDirections
 	fromCardinality: one
 	isActive: true
 
-relationship 3d50ef64-b6ce-4560-aa3c-4ecc40931514
+relationship af22d127-a973-492e-bc39-45c145af4729
 	fromColumn: 'Custom SQL Query'.asup_month
 	toColumn: 'Custom SQL Query1'.FT
-	crossFilteringBehavior: oneWay
+	crossFilteringBehavior: OneDirection
 	fromCardinality: one
 	isActive: true
 

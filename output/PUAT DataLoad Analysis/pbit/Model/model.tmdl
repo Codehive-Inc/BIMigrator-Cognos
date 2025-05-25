@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Sheet1 (Ticket_tracker)", "Custom SQL Query (dlh_nsec.objdb)", "Custom SQL Query (dlh_nsec.objdb) (2)"]
+annotation PBI_QueryOrder = ["Sheet1 (Ticket_tracker)", "Custom SQL Query (dlh_nsec.objdb)", "Custom SQL Query (dlh_nsec.objdb) (2)", "Custom SQL Query", "Custom SQL Query1", "Sheet1$"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -15,5 +15,8 @@ annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96b
 ref table 'Sheet1 (Ticket_tracker)'
 ref table 'Custom SQL Query (dlh_nsec.objdb)'
 ref table 'Custom SQL Query (dlh_nsec.objdb) (2)'
+ref table 'Custom SQL Query'
+ref table 'Custom SQL Query1'
+ref table 'Sheet1$'
 
 ref cultureInfo en-US

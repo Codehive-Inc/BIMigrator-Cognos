@@ -203,7 +203,7 @@ class RelationshipParser(BaseParser):
                                         # Generate unique ID for relationship
                                         relationship_id = str(uuid.uuid4())
                                         
-                                        # Create relationship object
+                                        # Create relationship object with datasource information
                                         relationship = PowerBiRelationship(
                                             id=relationship_id,
                                             from_table=from_table,
@@ -212,7 +212,12 @@ class RelationshipParser(BaseParser):
                                             to_column=to_column,
                                             cardinality="one",  # Set to one since we're on the 'from' side
                                             cross_filter_behavior=cross_filter,
-                                            is_active=True
+                                            is_active=True,
+                                            # Add datasource information
+                                            from_datasource_id=ds_element.get('name', ''),
+                                            from_datasource_caption=ds_element.get('caption', ds_element.get('name', '')),
+                                            to_datasource_id=ds_element.get('name', ''),
+                                            to_datasource_caption=ds_element.get('caption', ds_element.get('name', ''))
                                         )
                                         relationships.append(relationship)
                                         print(f'Debug: Found relationship: {from_table}.{from_column} -> {to_table}.{to_column}')
@@ -232,7 +237,12 @@ class RelationshipParser(BaseParser):
                 'to_column': r.to_column,
                 'cardinality': r.cardinality,
                 'cross_filter_behavior': r.cross_filter_behavior,
-                'is_active': r.is_active
+                'is_active': r.is_active,
+                # Include datasource information
+                'from_datasource_id': getattr(r, 'from_datasource_id', ''),
+                'from_datasource_caption': getattr(r, 'from_datasource_caption', ''),
+                'to_datasource_id': getattr(r, 'to_datasource_id', ''),
+                'to_datasource_caption': getattr(r, 'to_datasource_caption', '')
             } for r in relationships]
             
             self.save_intermediate({'relationships': relationship_dicts}, 'relationships')

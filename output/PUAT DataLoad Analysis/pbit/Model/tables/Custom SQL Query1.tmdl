@@ -1,0 +1,17 @@
+table 'Custom SQL Query1'
+
+
+    column 'FT'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

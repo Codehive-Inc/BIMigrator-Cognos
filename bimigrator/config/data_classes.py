@@ -413,7 +413,12 @@ class PowerBiRelationship:
     is_active: bool = True
     cardinality: Literal['oneToOne', 'oneToMany', 'manyToOne', 'manyToMany'] = 'manyToOne'
     cross_filter_behavior: Literal['oneWay', 'bothDirections', 'automatic'] = 'automatic'
-    annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
+    annotations: Dict[str, Any] = field(default_factory=dict)
+    # Datasource information to help with table deduplication
+    from_datasource_id: str = ''
+    from_datasource_caption: str = ''
+    to_datasource_id: str = ''
+    to_datasource_caption: str = ''  # Annotations can apply here too
 
 
 @dataclass

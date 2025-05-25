@@ -1,0 +1,29 @@
+{
+  "source_name": "Custom SQL Query",
+  "name": "Custom SQL Query",
+  "lineage_tag": null,
+  "description": "Table from federated join",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "asup_date",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": null,
+      "description": "Relationship column from Custom SQL Query",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": "Uncategorized",
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {}
+    }
+  ],
+  "measures": [],
+  "hierarchies": [],
+  "partitions": [],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

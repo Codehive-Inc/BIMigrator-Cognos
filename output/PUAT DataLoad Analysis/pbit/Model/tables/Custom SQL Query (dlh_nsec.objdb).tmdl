@@ -1,0 +1,297 @@
+table 'Custom SQL Query (dlh_nsec.objdb)'
+
+
+    column 'weekday' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'max Week Flag' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: boolean
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Week Start Date' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'diff flag' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'help' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Golden Date' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Subject' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Range' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'Week End Date' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Tab_module'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Tab_module
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup_date'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: asup_date
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'dt'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: dt
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'serial_count'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: serial_count
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'FISCAL_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: FISCAL_DATE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_MONTH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_MONTH
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_QTR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_QTR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_YEAR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_YEAR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_WEEK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_WEEK
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OBJ_SMF_TABLES'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OBJ_SMF_TABLES
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AVG_DATA'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AVG_DATA
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'Weekly count' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '% diff' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Body' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '1500 flag' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Measure vs Golden' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Diffrence' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Max\Avg' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Diffrence flag' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Max Weekly count' = ```
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+
+
+    annotation PBI_ResultType = Table

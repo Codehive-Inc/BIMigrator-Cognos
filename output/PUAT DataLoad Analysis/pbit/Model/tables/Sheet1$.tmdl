@@ -1,0 +1,17 @@
+table 'Sheet1$'
+
+
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

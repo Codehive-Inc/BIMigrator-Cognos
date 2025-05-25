@@ -98,7 +98,7 @@ class TableRelationParser(TableParserBase):
             'tables': tables
         }
 
-    def extract_relationships(self) -> List[Dict[str, str]]:
+    def extract_relationships(self) -> List[Dict[str, Any]]:
         """Extract relationships between tables.
         
         Returns:
@@ -108,6 +108,12 @@ class TableRelationParser(TableParserBase):
         try:
             # Find all datasources
             for ds in self.root.findall('.//datasource'):
+                # Get datasource information
+                ds_id = ds.get('name', '')
+                ds_caption = ds.get('caption', ds_id)
+                
+                logger.debug(f"Processing datasource: {ds_caption} (id: {ds_id})")
+                
                 # Get all table relations
                 result = self.extract_table_relations(ds)
                 relations = result['relations']
@@ -121,8 +127,12 @@ class TableRelationParser(TableParserBase):
                             logger.debug(f"Found table from relation: {table_name}")
                             # Create a mock relationship just to keep track of the table
                             relationship = {
+                                'from_datasource_id': ds_id,
+                                'from_datasource_caption': ds_caption,
                                 'from_table': table_name,
                                 'from_column': 'id',  # Mock column
+                                'to_datasource_id': ds_id,
+                                'to_datasource_caption': ds_caption,
                                 'to_table': table_name,
                                 'to_column': 'id'  # Mock column
                             }
@@ -144,16 +154,20 @@ class TableRelationParser(TableParserBase):
                             table2 = op2.split('].[')[0].strip('[')
                             column2 = op2.split('].[')[1].strip(']')
                             
-                            # Create relationship
+                            # Create relationship with datasource information
                             relationship = {
+                                'from_datasource_id': ds_id,
+                                'from_datasource_caption': ds_caption,
                                 'from_table': table1,
                                 'from_column': column1,
+                                'to_datasource_id': ds_id,
+                                'to_datasource_caption': ds_caption,
                                 'to_table': table2,
                                 'to_column': column2
                             }
                             relationships.append(relationship)
                             
-                            logger.debug(f"Found relationship: {table1}.{column1} -> {table2}.{column2}")
+                            logger.debug(f"Found relationship: {ds_caption}.{table1}.{column1} -> {ds_caption}.{table2}.{column2}")
                 
                 # Finally, look for relationships in relation elements
                 for relation in relations:
@@ -166,25 +180,31 @@ class TableRelationParser(TableParserBase):
                                 if other_relation.get('type') == 'table' and other_relation != relation:
                                     other_table = other_relation.get('table', '').split('.')[-1].strip('[]')
                                     if other_table:
-                                        # Create a relationship between these tables
+                                        # Create a relationship between these tables with datasource information
                                         relationship = {
+                                            'from_datasource_id': ds_id,
+                                            'from_datasource_caption': ds_caption,
                                             'from_table': table_name,
                                             'from_column': 'id',  # Mock column
+                                            'to_datasource_id': ds_id,
+                                            'to_datasource_caption': ds_caption,
                                             'to_table': other_table,
                                             'to_column': 'id'  # Mock column
                                         }
                                         relationships.append(relationship)
                                         
-                                        logger.debug(f"Found table relationship: {table_name} -> {other_table}")
+                                        logger.debug(f"Found table relationship: {ds_caption}.{table_name} -> {ds_caption}.{other_table}")
 
         except Exception as e:
             logger.error(f"Error extracting relationships: {str(e)}", exc_info=True)
             
-        # Deduplicate relationships based on from_table and to_table
+        # Deduplicate relationships based on datasource, from_table, and to_table
         seen = set()
         unique_relationships = []
         for rel in relationships:
-            key = (rel['from_table'], rel['to_table'])
+            # Create a more specific key that includes datasource information
+            key = (rel.get('from_datasource_id', ''), rel['from_table'], rel['from_column'],
+                   rel.get('to_datasource_id', ''), rel['to_table'], rel['to_column'])
             if key not in seen:
                 seen.add(key)
                 unique_relationships.append(rel)
