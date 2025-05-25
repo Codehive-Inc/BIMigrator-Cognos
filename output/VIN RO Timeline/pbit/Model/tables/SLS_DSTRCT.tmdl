@@ -9,11 +9,59 @@ table 'SLS_DSTRCT'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'id'
+    column 'CRTE_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID'
         dataType: string
         summarizeBy: none
+        sourceColumn: CRTE_USR_ID
 
-        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSTRCT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSTRCT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSTRCT_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSTRCT_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLS_DSTRCT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLS_DSTRCT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID
+
         annotation SummarizationSetBy = Automatic
 
         

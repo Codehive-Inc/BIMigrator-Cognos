@@ -1,0 +1,693 @@
+﻿table RPR_ORDR_LN
+
+	column ADD_ON_RPR_IN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ADD_ON_RPR_IN
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLAUS_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLAUS_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_GOG_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_GOG_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_GOG_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_GOG_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_LBR_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_LBR_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_LBR_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_LBR_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_MSCLNS_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_MSCLNS_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_MSCLNS_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_MSCLNS_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_PRT_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_PRT_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_PRT_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_PRT_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_SBLT_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_SBLT_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLCLTD_JOB_SBLT_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLCLTD_JOB_SBLT_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLM_NB
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLM_NB
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLM_TYP_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CLM_TYP_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column CMPGN_IN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CMPGN_IN
+
+		annotation SummarizationSetBy = Automatic
+
+	column CMPGN_NB
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CMPGN_NB
+
+		annotation SummarizationSetBy = Automatic
+
+	column CMPLNT_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CMPLNT_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRCTN_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CRCTN_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRTE_TS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CRTE_TS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRTE_USR_ID
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CRTE_USR_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CVRG_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CVRG_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CVRG_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CVRG_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column DDCTBL_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DDCTBL_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column DDCTBL_RQSTD_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DDCTBL_RQSTD_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column DFCT_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DFCT_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column DGNS_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DGNS_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column DLR_JOB_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DLR_JOB_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column DLR_OPRTN_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DLR_OPRTN_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column DLR_OPRTN_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DLR_OPRTN_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column ESTMTD_JOB_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ESTMTD_JOB_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_DENIAL_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_DENIAL_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_DENIAL_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_DENIAL_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_EXPNS_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_EXPNS_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_EXPNS_DSCNT_RT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_EXPNS_DSCNT_RT
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_EXPNS_TAX_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_EXPNS_TAX_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_FRGHT_CHRG_TYP_NM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_FRGHT_CHRG_TYP_NM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_FRGHT_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_FRGHT_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_FRGHT_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_FRGHT_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_GDWL_IN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_GDWL_IN
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_GOG_CHRG_TYP_NM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_GOG_CHRG_TYP_NM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_GOG_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_GOG_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_GOG_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_GOG_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_GOG_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_GOG_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_HR_CN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_HR_CN
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LBR_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LBR_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LBR_DSCNT_RT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LBR_DSCNT_RT
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LBR_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LBR_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LBR_TAX_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LBR_TAX_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LN_ATHRZN_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LN_ATHRZN_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LN_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LN_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LN_CLM_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LN_CLM_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_LN_CMPNT_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_LN_CMPNT_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_MSCLNS_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_MSCLNS_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_MSCLNS_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_MSCLNS_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_MSCLNS_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_MSCLNS_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_MSCLNS_TYP_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_MSCLNS_TYP_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PNT_CHRG_TYP_NM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PNT_CHRG_TYP_NM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PNT_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PNT_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PNT_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PNT_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PRT_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PRT_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PRT_DSCNT_RT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PRT_DSCNT_RT
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PRT_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PRT_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_PRT_TAX_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_PRT_TAX_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_SBLT_CST_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_SBLT_CST_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_SBLT_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_SBLT_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_SHOP_CHRG_TYP_NM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_SHOP_CHRG_TYP_NM
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_SHOP_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_SHOP_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column JOB_SHOP_PRC_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: JOB_SHOP_PRC_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	column MSCLNS_NOTE_TX
+		dataType: string
+		summarizeBy: none
+		sourceColumn: MSCLNS_NOTE_TX
+
+		annotation SummarizationSetBy = Automatic
+
+	column PAY_TYP_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: PAY_TYP_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column PFP_NB
+		dataType: string
+		summarizeBy: none
+		sourceColumn: PFP_NB
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRMRY_OPRTN_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: PRMRY_OPRTN_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRT_WRNTY_ODMTR_NB
+		dataType: string
+		summarizeBy: none
+		sourceColumn: PRT_WRNTY_ODMTR_NB
+
+		annotation SummarizationSetBy = Automatic
+
+	column RETRNSLT_DT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RETRNSLT_DT
+
+		annotation SummarizationSetBy = Automatic
+
+	column RPEAT_RPR_IN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RPEAT_RPR_IN
+
+		annotation SummarizationSetBy = Automatic
+
+	column RPR_ORDR_KY
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RPR_ORDR_KY
+
+		annotation SummarizationSetBy = Automatic
+
+	column RPR_ORDR_LN_KY
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RPR_ORDR_LN_KY
+
+		annotation SummarizationSetBy = Automatic
+
+	column RPR_ORDR_LN_MARITZ_KY
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RPR_ORDR_LN_MARITZ_KY
+
+		annotation SummarizationSetBy = Automatic
+
+	column RPR_ORDR_LN_NB
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RPR_ORDR_LN_NB
+
+		annotation SummarizationSetBy = Automatic
+
+	column RPR_ORDR_MARITZ_KY
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RPR_ORDR_MARITZ_KY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SPT_DT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SPT_DT
+
+		annotation SummarizationSetBy = Automatic
+
+	column SPT_INVC_NB
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SPT_INVC_NB
+
+		annotation SummarizationSetBy = Automatic
+
+	column STNDRD_OPRTN_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: STNDRD_OPRTN_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column STNDRD_OPRTN_CD_DS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: STNDRD_OPRTN_CD_DS
+
+		annotation SummarizationSetBy = Automatic
+
+	column SYMPTM_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SYMPTM_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column TCHNCN_NM_GRP_TX
+		dataType: string
+		summarizeBy: none
+		sourceColumn: TCHNCN_NM_GRP_TX
+
+		annotation SummarizationSetBy = Automatic
+
+	column TCHNCN_NOTE_TX
+		dataType: string
+		summarizeBy: none
+		sourceColumn: TCHNCN_NOTE_TX
+
+		annotation SummarizationSetBy = Automatic
+
+	column TST_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: TST_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPDT_TS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: UPDT_TS
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPDT_USR_ID
+		dataType: string
+		summarizeBy: none
+		sourceColumn: UPDT_USR_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WRNTY_APPEAL_IN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: WRNTY_APPEAL_IN
+
+		annotation SummarizationSetBy = Automatic
+
+	column WRNTY_STRT_DT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: WRNTY_STRT_DT
+
+		annotation SummarizationSetBy = Automatic
+
+	column WRNTY_TAX_AM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: WRNTY_TAX_AM
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RPR_ORDR_LN = m
+		mode: import
+		source =
+				let
+				Source = Snowflake.Databases("BPRGHLX-WY77207.snowflakecomputing.com","COMPUTE_WH"){[Name="SPDBDBS",Kind="Database"]}[Data]{[Name="DBSRW_SYS",Kind="Schema"]}[Data]{[Name="RPR_ORDR_LN",Kind="Table"]}[Data]
+				, Kept_First_Rows = Table.FirstN(Source,10)
+				in Kept_First_Rows
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

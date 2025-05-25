@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from typing import List, Dict, Any
 
 from bimigrator.common.logging import logger
+from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn
 from bimigrator.parsers.table_parser_base import TableParserBase
 
 
