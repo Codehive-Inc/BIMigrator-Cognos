@@ -37,15 +37,43 @@ class CalculationConverter:
         self.calculations = {}
         output_dir = config.get('output_dir')
         if output_dir:
-            calcs_path = f"{output_dir}/extracted/calculations.json"
+            self._load_calculations(output_dir)
+    
+    def _load_calculations(self, output_dir: str):
+        """
+        Load existing calculations from the output directory
+        
+        Args:
+            output_dir: The output directory where calculations.json is located
+        """
+        self.calcs_path = os.path.join(output_dir, 'extracted', 'calculations.json')
+        self.calculations = {}
+        
+        if os.path.exists(self.calcs_path):
             try:
-                import json
-                with open(calcs_path) as f:
-                    data = json.load(f)
-                    for calc in data.get('calculations', []):
-                        self.calculations[calc['TableauName']] = calc
+                self._reload_calculations()
             except Exception as e:
-                print(f"Warning: Could not load calculations from {calcs_path}: {e}")
+                print(f"Warning: Could not load calculations from {self.calcs_path}: {e}")
+                
+    def _reload_calculations(self):
+        """
+        Reload calculations from the calculations.json file
+        """
+        if not os.path.exists(self.calcs_path):
+            return
+            
+        try:
+            with open(self.calcs_path) as f:
+                data = json.load(f)
+                self.calculations = {}
+                for calc in data.get('calculations', []):
+                    # Store by TableauName with brackets
+                    self.calculations[calc['TableauName']] = calc
+                    # Also store by TableauName without brackets for easier lookup
+                    clean_name = calc['TableauName'].strip('[]')
+                    self.calculations[clean_name] = calc
+        except Exception as e:
+            logging.error(f"Error reloading calculations: {e}")
     
     def convert_to_dax(self, calc_info: CalculationInfo, table_name: str) -> str:
         """Convert a Tableau calculation to DAX using the FastAPI service.
@@ -94,7 +122,7 @@ class CalculationConverter:
             
             # Prepare the request payload
             payload = {
-                "tableau_formula": formula,  # Use modified formula with PowerBI names
+                "tableau_formula": formula,  # Use original formula
                 "table_name": table_name,
                 "column_mappings": {},
                 "dependencies": dependencies
@@ -158,7 +186,7 @@ class CalculationConverter:
                 "ERROR(\"Conversion failed\")"  # Return ERROR() function for measures/columns
             )
             
-    def _resolve_nested_dependencies(self, dax_expression: str, table_name: str) -> str:
+    def _resolve_nested_dependencies(self, dax_expression: str, table_name: str, depth=0, processed=None) -> str:
         """
         Recursively resolve nested dependencies in a DAX expression.
         
@@ -168,38 +196,85 @@ class CalculationConverter:
         Args:
             dax_expression: The DAX expression to process
             table_name: The name of the table containing the calculation
+            depth: Current recursion depth to prevent infinite recursion
+            processed: Set of already processed calculation IDs
             
         Returns:
             The DAX expression with all dependencies resolved
         """
         import re
         
-        # Find any remaining Calculation_* references in the expression
-        pattern = r'\[Calculation_\d+\]|\'{table_name}\'\[Calculation_\d+\]'
-        matches = re.findall(pattern, dax_expression)
+        # Initialize processed set if not provided
+        if processed is None:
+            processed = set()
+            
+        # Prevent infinite recursion
+        if depth > 10:
+            logging.warning("Maximum recursion depth reached while resolving dependencies")
+            return dax_expression
+            
+        # If no expression to process, return as is
+        if not dax_expression or len(dax_expression.strip()) == 0:
+            return dax_expression
+            
+        # Make sure we have the latest calculations
+        if depth == 0:
+            self._reload_calculations()
         
-        if not matches:
+        # Find any remaining Calculation_* references in the expression
+        pattern = r'\[Calculation_\d+\]'
+        qualified_pattern = f"'{table_name}'\[Calculation_\d+\]"
+        
+        # Find both unqualified and qualified references
+        matches = re.findall(pattern, dax_expression)
+        qualified_matches = re.findall(qualified_pattern, dax_expression)
+        all_matches = matches + qualified_matches
+        
+        if not all_matches:
             # No more dependencies to resolve
             return dax_expression
             
-        logging.info(f"Found {len(matches)} unresolved dependencies in DAX expression")
+        logging.info(f"Found {len(all_matches)} unresolved dependencies in DAX expression (depth {depth})")
+        
+        # Track if we made any changes in this iteration
+        original_dax = dax_expression
         
         # Process each unresolved dependency
-        for match in matches:
+        for match in all_matches:
             # Extract the calculation ID
-            calc_id = re.search(r'Calculation_\d+', match).group(0)
+            calc_id_match = re.search(r'Calculation_(\d+)', match)
+            if not calc_id_match:
+                continue
+                
+            calc_id = f"Calculation_{calc_id_match.group(1)}"
             tableau_name = f"[{calc_id}]"
             
+            # Skip if we've already processed this dependency in this call chain
+            if tableau_name in processed:
+                continue
+                
+            processed.add(tableau_name)
+            
+            # Try multiple ways to find the dependency in the calculations dictionary
+            dep_info = None
             if tableau_name in self.calculations:
                 dep_info = self.calculations[tableau_name]
+            elif calc_id in self.calculations:
+                dep_info = self.calculations[calc_id]
+            
+            if dep_info:
                 powerbi_name = dep_info["PowerBIName"]
                 
                 # Replace in the expression
                 if "'" in match:  # Fully qualified reference
-                    dax_expression = dax_expression.replace(
-                        match,
-                        f"'{table_name}'[{powerbi_name}]"
-                    )
+                    # Extract the actual table name from the match
+                    table_match = re.search(r"'([^']+)'\[Calculation_\d+\]", match)
+                    if table_match:
+                        actual_table = table_match.group(1)
+                        dax_expression = dax_expression.replace(
+                            match,
+                            f"'{actual_table}'[{powerbi_name}]"
+                        )
                 else:  # Unqualified reference
                     dax_expression = dax_expression.replace(
                         match,
@@ -209,7 +284,10 @@ class CalculationConverter:
                 logging.info(f"Resolved nested dependency: {tableau_name} -> {powerbi_name}")
             else:
                 logging.warning(f"Could not resolve nested dependency {tableau_name} - not found in calculations dictionary")
-                
-        # Recursively resolve any remaining dependencies
-        # This handles cases where resolving one dependency might reveal others
-        return self._resolve_nested_dependencies(dax_expression, table_name)
+        
+        # If we made no changes in this iteration, return to prevent infinite recursion
+        if dax_expression == original_dax:
+            return dax_expression
+            
+        # Recursively resolve any remaining dependencies with increased depth
+        return self._resolve_nested_dependencies(dax_expression, table_name, depth + 1, processed)
