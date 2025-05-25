@@ -153,12 +153,14 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate database TMDL: {str(e)}')
         raise e
 
-    # Step 5: Generate table TMDL files
+    # Step 5: Generate table TMDL files and model TMDL
     print('\nStep 5: Generating table TMDL files...')
     try:
+        # Create a single table parser instance to be used by both table and model generation
         table_parser = TableParser(filename, config, str(structure_generator.extracted_dir))
         tables = table_parser.extract_all_tables()
 
+        # Generate table TMDL files
         table_generator = TableTemplateGenerator(
             config, twb_name, output_dir
         )
@@ -166,8 +168,24 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Generated {len(table_paths)} table TMDL files:')
         for path in table_paths:
             print(f'  - {path}')
+
+        # Generate model TMDL using the same tables
+        print('\nGenerating model TMDL...')
+        model_parser = ModelParser(filename, config, output_dir, table_parser)
+        model = model_parser.extract_model_info(tables)
+
+        model_generator = ModelTemplateGenerator(
+            config, twb_name, output_dir
+        )
+        model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
+        print(f'Generated model TMDL: {model_path}')
+        print(f'  Model name: {model.model_name}')
+        print(f'  Culture: {model.culture}')
+        print(f'  Number of tables: {len(model.tables)}')
+        if model.desktop_version:
+            print(f'  Desktop version: {model.desktop_version}')
     except Exception as e:
-        print(f'Failed to generate table TMDL files: {str(e)}')
+        print(f'Failed to generate table and model TMDL files: {str(e)}')
         raise e
 
     # Step 6: Generate relationships TMDL
@@ -253,26 +271,6 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Generated diagram layout: {layout_path}')
     except Exception as e:
         print(f'Failed to generate diagram layout: {str(e)}')
-        raise e
-
-    # Step 10: Generate model TMDL
-    print('\nStep 10: Generating model TMDL...')
-    try:
-        model_parser = ModelParser(filename, config, output_dir)
-        model, tables = model_parser.extract_model_info()
-
-        model_generator = ModelTemplateGenerator(
-            config, twb_name, output_dir
-        )
-        model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
-        print(f'Generated model TMDL: {model_path}')
-        print(f'  Model name: {model.model_name}')
-        print(f'  Culture: {model.culture}')
-        print(f'  Number of tables: {len(model.tables)}')
-        if model.desktop_version:
-            print(f'  Desktop version: {model.desktop_version}')
-    except Exception as e:
-        print(f'Failed to generate model TMDL: {str(e)}')
         raise e
 
     print('\nMigration completed successfully!')

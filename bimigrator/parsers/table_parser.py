@@ -129,6 +129,16 @@ class TableParser(TableParserBase):
             join_tables = self._extract_join_tables()
             logger.info(f"Found {len(join_tables)} tables from joins")
             
+            # Get tables referenced in relationships
+            relationship_tables = set()
+            for ds in self.root.findall('.//datasource'):
+                for clause in ds.findall('.//clause[@type="join"]'):
+                    for expr in clause.findall('.//expression'):
+                        op = expr.get('op', '')
+                        if '[' in op and '].[' in op:
+                            table_name = op.split('].[')[0].strip('[')
+                            relationship_tables.add(table_name)
+            
             # Combine tables, preferring datasource tables over join tables
             all_tables = {}
             
@@ -140,10 +150,10 @@ class TableParser(TableParserBase):
             for table in datasource_tables:
                 all_tables[table.source_name] = table
             
-            # Convert to list and remove duplicates
+            # Convert to list and remove duplicates, preserving relationship tables
             tables = list(all_tables.values())
-            tables = self.deduplicator.deduplicate_tables(tables)
-            logger.info(f"After deduplication, found {len(tables)} unique tables")
+            tables = self.deduplicator.deduplicate_tables(tables, relationship_tables)
+            logger.info(f"After deduplication, found {len(tables)} unique tables (including {len(relationship_tables)} from relationships)")
 
             # Deduplicate partitions in each table
             for table in tables:

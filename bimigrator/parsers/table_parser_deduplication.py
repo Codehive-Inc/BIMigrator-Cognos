@@ -8,11 +8,12 @@ class TableDeduplicator:
     """Handles deduplication of tables and partitions."""
 
     @staticmethod
-    def deduplicate_tables(tables: List[PowerBiTable]) -> List[PowerBiTable]:
-        """Deduplicate tables based on source_name.
+    def deduplicate_tables(tables: List[PowerBiTable], relationship_table_names: set = None) -> List[PowerBiTable]:
+        """Deduplicate tables based on source_name while preserving tables referenced in relationships.
         
         Args:
             tables: List of PowerBiTable objects
+            relationship_table_names: Set of table names referenced in relationships
             
         Returns:
             List of deduplicated PowerBiTable objects
@@ -20,7 +21,10 @@ class TableDeduplicator:
         unique_tables = {}
         for table in tables:
             key = table.source_name
-            if key in unique_tables:
+            # Always keep tables that are referenced in relationships
+            if relationship_table_names and key in relationship_table_names:
+                unique_tables[key] = table
+            elif key in unique_tables:
                 existing_table = unique_tables[key]
                 # Keep the table with more columns/measures
                 existing_complexity = len(existing_table.columns) + len(existing_table.measures)

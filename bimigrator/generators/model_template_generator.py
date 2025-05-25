@@ -59,7 +59,11 @@ class ModelTemplateGenerator(BaseTemplateGenerator):
         # Generate model.tmdl
         model_path = self.generate_file('model', template_data)
 
-        # Generate table TMDL files using table generator
-        table_paths = self.table_generator.generate_all_tables(tables)
+        # Get paths of already generated table TMDL files
+        table_paths = []
+        for table in tables:
+            table_file = self.pbit_dir / 'Model' / 'tables' / f'{table.source_name}.tmdl'
+            if table_file.exists():
+                table_paths.append(table_file)
 
         return model_path, table_paths
