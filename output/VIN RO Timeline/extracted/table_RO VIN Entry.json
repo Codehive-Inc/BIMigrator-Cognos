@@ -7908,7 +7908,7 @@
     {
       "name": "RO VIN Entry",
       "source_type": "m",
-      "expression": "\tlet Source = Oracle.Database(Server = \"10.78.194.25:1521 / OPDBSRW\", [HierarchicalNavigation = true]), #\"Naviguated to Schema\" = Source{[Schema = \"DBSRW_SYS\",Kind = \"Schema\"]}[Data], #\"Specified View\" = #\"Naviguated to Schema\"{[Name = \"TBUDBSRW\",Kind = \"View\"]}[Data], #\"View Options\" = [ UseRelationalView = true, ViewDefinitionCode = \"\", ViewDefinitionMacro = \"\" ], #\"View Navigation\" = #\"Specified View\" & #\"View Options\" in #\"View Navigation\"",
+      "expression": "\tlet Source = Oracle.Database(Server = \"10.78.194.25:1521 / OPDBSRW\", [HierarchicalNavigation = true]), #\"Naviguated to Schema\" = Source{[Schema = \"DBSRW_SYS\",Kind = \"Schema\"]}[Data], #\"Specified View\" = #\"Naviguated to Schema\"{[Name = \"TBUDBSRW\",Kind = \"View\"]}[Data], #\"Native Query\" = let Source = #\"Specified View\", Query = Value.NativeQuery(Source, \" query \", meta [Type = \"Native\"]) in Query, #\"Removed Other Columns\" = Table.SelectColumns(#\"Native Query\",{\"Column1\", \"Column2\"}) in #\"Removed Other Columns\"",
       "description": "SQL partition for table RO VIN Entry"
     }
   ],
