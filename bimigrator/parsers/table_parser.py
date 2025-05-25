@@ -220,6 +220,123 @@ class TableParser(TableParserBase):
 
         return tables
 
+    def save_tables_to_json(self, tables: List[PowerBiTable]) -> None:
+        """
+        Save all tables to the table.json file, preserving existing data.
+        
+        Args:
+            tables: List of PowerBiTable objects to save
+        """
+        import json
+        import os
+        from pathlib import Path
+        
+        # Create intermediate directory if it doesn't exist
+        Path(self.intermediate_dir).mkdir(parents=True, exist_ok=True)
+        
+        # Define the file path
+        file_path = os.path.join(self.intermediate_dir, 'table.json')
+        
+        # Initialize data structure as a list of tables
+        all_tables = []
+        
+        # Read existing data if file exists
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, 'r') as f:
+                    existing_data = json.load(f)
+                    
+                # If the existing data is a dictionary with a 'tables' key, use that
+                if isinstance(existing_data, dict) and 'tables' in existing_data:
+                    all_tables = existing_data['tables']
+                # If it's a single table object, convert to a list
+                elif isinstance(existing_data, dict) and 'source_name' in existing_data:
+                    all_tables = [existing_data]
+                # If it's already a list, use it directly
+                elif isinstance(existing_data, list):
+                    all_tables = existing_data
+            except Exception as e:
+                logger.error(f"Error reading existing table.json: {str(e)}")
+                # Start with an empty list if there was an error
+                all_tables = []
+        
+        # Track existing table names to avoid duplicates
+        existing_table_names = {table.get('source_name') for table in all_tables if isinstance(table, dict) and 'source_name' in table}
+        
+        # Convert each table to a dictionary and add to the list if not already present
+        for table in tables:
+            # Skip if this table is already in the file
+            if table.source_name in existing_table_names:
+                continue
+                
+            # Convert to dictionary and add to the list
+            table_dict = {
+                'source_name': table.source_name,
+                'name': table.name if hasattr(table, 'name') else table.source_name,
+                'lineage_tag': getattr(table, 'lineage_tag', None),
+                'description': table.description,
+                'is_hidden': getattr(table, 'is_hidden', False),
+                'columns': [
+                    {
+                        'source_name': col.source_name,
+                        'datatype': col.pbi_datatype,
+                        'format_string': getattr(col, 'format_string', None),
+                        'lineage_tag': getattr(col, 'lineage_tag', None),
+                        'source_column': getattr(col, 'source_column', None),
+                        'description': getattr(col, 'description', None),
+                        'is_hidden': getattr(col, 'is_hidden', False),
+                        'summarize_by': getattr(col, 'summarize_by', 'none'),
+                        'data_category': getattr(col, 'dataCategory', 'Uncategorized'),
+                        'is_calculated': getattr(col, 'is_calculated', False),
+                        'is_data_type_inferred': getattr(col, 'is_data_type_inferred', False),
+                        'annotations': getattr(col, 'annotations', None)
+                    } for col in table.columns
+                ],
+                'measures': [
+                    {
+                        'source_name': measure.source_name,
+                        'dax_expression': measure.dax_expression,
+                        'description': getattr(measure, 'description', None),
+                        'format_string': getattr(measure, 'format_string', None),
+                        'is_hidden': getattr(measure, 'is_hidden', False),
+                        'annotations': getattr(measure, 'annotations', None)
+                    } for measure in table.measures
+                ],
+                'hierarchies': [],  # Add hierarchy support if needed
+                'partitions': [
+                    {
+                        'name': partition.name,
+                        'source_type': getattr(partition, 'source_type', None),
+                        'expression': getattr(partition, 'expression', None),
+                        'description': getattr(partition, 'description', None)
+                    } for partition in table.partitions
+                ],
+                'has_widget_serialization': False,
+                'visual_type': None,
+                'column_settings': None
+            }
+            
+            all_tables.append(table_dict)
+            existing_table_names.add(table.source_name)
+        
+        # Create the final data structure with tables as an array under the 'tables' key
+        final_data = {
+            'tables': all_tables
+        }
+        
+        # Write all tables to the file
+        with open(file_path, 'w') as f:
+            json.dump(final_data, f, indent=2)
+        
+        logger.info(f"Saved {len(all_tables)} tables to {file_path}")
+        
+        # Also save each table individually for easier debugging
+        for table_dict in all_tables:
+            table_name = table_dict.get('source_name', 'unknown')
+            individual_file_path = os.path.join(self.intermediate_dir, f"table_{table_name}.json")
+            with open(individual_file_path, 'w') as f:
+                json.dump(table_dict, f, indent=2)
+
     def extract_all_tables(self) -> List[PowerBiTable]:
         """Extract all tables from the workbook.
         
@@ -331,6 +448,9 @@ class TableParser(TableParserBase):
             # Deduplicate partitions in each table
             for table in tables:
                 table.partitions = self.deduplicator.deduplicate_partitions(table.partitions)
+                
+            # Save all tables to table.json
+            self.save_tables_to_json(tables)
 
             return tables
 
