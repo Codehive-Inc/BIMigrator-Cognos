@@ -17,7 +17,7 @@
       "FormulaTableau": "case [Calculation_606860061092720640]\r\nwhen \"North Sales\" then \"North East\"\r\nwhen \"East Sales\" then \"North East\"\r\nwhen \"South Sales\" then \"South West\"\r\nwhen \"West Sales\" then \"South West\"\r\nend",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Region Split",
-      "FormulaDax": "SWITCH(TRUE(), 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = \"North Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = \"East Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = \"South Sales\", \"South West\", 'Sheet1 (sample_sales_data)'[Calculation_606860061092720640] = \"West Sales\", \"South West\")",
+      "FormulaDax": "SWITCH(TRUE(), 'Sheet1 (sample_sales_data)'[Region Sales] = \"North Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"East Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"South Sales\", \"South West\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"West Sales\", \"South West\")",
       "Status": "converted"
     },
     {
@@ -37,7 +37,7 @@
       "FormulaTableau": "SUM([Calculation_606860061096038402])",
       "FormulaTypeTableau": "measure",
       "PowerBIName": "Units Measure",
-      "FormulaDax": "SUM('Sheet1 (sample_sales_data)'[Calculation_606860061096038402])",
+      "FormulaDax": "SUM('Sheet1 (sample_sales_data)'[Units])",
       "Status": "converted"
     }
   ]
