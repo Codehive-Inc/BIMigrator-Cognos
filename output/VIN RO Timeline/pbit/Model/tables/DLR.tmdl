@@ -9,6 +9,14 @@ table 'DLR'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'AFLT_CMPNY_CD'
         dataType: string
         summarizeBy: none
@@ -691,6 +699,12 @@ table 'DLR'
         
 
 
+
+    partition 'DLR' = m
+        mode: import
+        source = 
+            let Source = Oracle.Database(Server = ":1521 / ", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
+        
 
 
 

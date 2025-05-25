@@ -1,6 +1,14 @@
 table 'VHCL_CMPGN'
 
 
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'ADD_DT'
         dataType: dateTime
         summarizeBy: none
@@ -243,6 +251,12 @@ table 'VHCL_CMPGN'
         
 
 
+
+    partition 'VHCL_CMPGN' = m
+        mode: import
+        source = 
+            let Source = Oracle.Database(Server = ":1521 / ", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
+        
 
 
 

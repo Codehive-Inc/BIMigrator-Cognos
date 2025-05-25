@@ -1,6 +1,14 @@
 table 'CMPGN_MSTR'
 
 
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'CMPGN_DS'
         dataType: string
         summarizeBy: none
@@ -91,6 +99,12 @@ table 'CMPGN_MSTR'
         
 
 
+
+    partition 'CMPGN_MSTR' = m
+        mode: import
+        source = 
+            let Source = Oracle.Database(Server = ":1521 / ", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
+        
 
 
 

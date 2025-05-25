@@ -20,6 +20,20 @@
       "annotations": {}
     },
     {
+      "source_name": "id",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": null,
+      "description": "Relationship column from DLR",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": "Uncategorized",
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {}
+    },
+    {
       "source_name": "AFLT_CMPNY_CD",
       "datatype": "string",
       "format_string": null,
@@ -1212,7 +1226,14 @@
   ],
   "measures": [],
   "hierarchies": [],
-  "partitions": [],
+  "partitions": [
+    {
+      "name": "DLR",
+      "source_type": "m",
+      "expression": "let Source = Oracle.Database(Server = \":1521 / \", [HierarchicalNavigation = true]), #\"Naviguated to Schema\" = Source{[Schema = \"\",Kind = \"Schema\"]}[Data], #\"Filtered Rows\" = Table.SelectRows(#\"Naviguated to Schema\", each true) in #\"Filtered Rows\"",
+      "description": null
+    }
+  ],
   "has_widget_serialization": false,
   "visual_type": null,
   "column_settings": null

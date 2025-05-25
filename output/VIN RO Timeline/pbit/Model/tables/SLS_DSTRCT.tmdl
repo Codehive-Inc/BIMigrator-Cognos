@@ -9,6 +9,14 @@ table 'SLS_DSTRCT'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'CRTE_TS'
         dataType: dateTime
         summarizeBy: none
@@ -67,6 +75,12 @@ table 'SLS_DSTRCT'
         
 
 
+
+    partition 'SLS_DSTRCT' = m
+        mode: import
+        source = 
+            let Source = Oracle.Database(Server = ":1521 / ", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
+        
 
 
 

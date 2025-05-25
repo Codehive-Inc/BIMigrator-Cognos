@@ -2,9 +2,23 @@
   "source_name": "RPR_ORDR_LN",
   "name": "RPR_ORDR_LN",
   "lineage_tag": null,
-  "description": "Table RPR_ORDR_LN from datasource federated.1luf0dm0s4az7214qsvnz0flwlm6",
+  "description": "Table from relationship",
   "is_hidden": false,
   "columns": [
+    {
+      "source_name": "id",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": null,
+      "description": "Relationship column from RPR_ORDR_LN",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": "Uncategorized",
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {}
+    },
     {
       "source_name": "ADD_ON_RPR_IN",
       "datatype": "boolean",
@@ -1366,7 +1380,14 @@
   ],
   "measures": [],
   "hierarchies": [],
-  "partitions": [],
+  "partitions": [
+    {
+      "name": "RPR_ORDR_LN",
+      "source_type": "m",
+      "expression": "let Source = Oracle.Database(Server = \":1521 / \", [HierarchicalNavigation = true]), #\"Naviguated to Schema\" = Source{[Schema = \"\",Kind = \"Schema\"]}[Data], #\"Filtered Rows\" = Table.SelectRows(#\"Naviguated to Schema\", each true) in #\"Filtered Rows\"",
+      "description": null
+    }
+  ],
   "has_widget_serialization": false,
   "visual_type": null,
   "column_settings": null

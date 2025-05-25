@@ -1,6 +1,14 @@
 table 'RPR_ORDR_LN'
 
 
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'ADD_ON_RPR_IN'
         dataType: boolean
         summarizeBy: none
@@ -779,6 +787,12 @@ table 'RPR_ORDR_LN'
         
 
 
+
+    partition 'RPR_ORDR_LN' = m
+        mode: import
+        source = 
+            let Source = Oracle.Database(Server = ":1521 / ", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
+        
 
 
 

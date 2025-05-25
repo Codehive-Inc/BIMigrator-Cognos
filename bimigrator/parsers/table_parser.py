@@ -539,13 +539,20 @@ class TableParser(TableParserBase):
                 
                 # Extract partitions if not already present
                 if not table.partitions:
+                    # First try to find a datasource element for this table
                     ds_element = self.root.find(f".//datasource[@name='{name}']")
                     if ds_element is not None:
+                        # Extract partitions from the datasource element
                         partitions = self.partition_parser._extract_partition_info(
                             ds_element,
                             name,
                             table.columns
                         )
+                        table.partitions = partitions
+                    else:
+                        # If no datasource element found, use the extract_partitions_for_table method
+                        # This will create partitions for tables in join relationships
+                        partitions = self.partition_parser.extract_partitions_for_table(name)
                         table.partitions = partitions
             
             # Process federated datasources

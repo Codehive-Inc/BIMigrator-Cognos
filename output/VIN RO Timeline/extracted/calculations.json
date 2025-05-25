@@ -7,8 +7,8 @@
       "FormulaTableau": "IFNULL(STR(INT([RPR_ORDR_CLOS_DT] - [RPR_ORDR_OPN_DT])), \"Missing Open/Close Date\")",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Number Days Down",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "IF(ISBLANK('RO VIN Entry'[RPR_ORDR_CLOS_DT]) || ISBLANK('RO VIN Entry'[RPR_ORDR_OPN_DT]), \"Missing Open / Close Date\", CONCATENATE(NUMBERSTRING(INT('RO VIN Entry'[RPR_ORDR_CLOS_DT] - 'RO VIN Entry'[RPR_ORDR_OPN_DT]))))",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -17,8 +17,8 @@
       "FormulaTableau": "[DLR_NB] + \" - \"+[DLR_NM]",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Dealer Code - Dealer Name",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "'RO VIN Entry'[DLR_NB] & \" - \" & 'RO VIN Entry'[DLR_NM]",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -27,8 +27,8 @@
       "FormulaTableau": "IFNULL([CVRG_CD], \" \")",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Coverage Code",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "IIF(ISBLANK('RO VIN Entry'[CVRG_CD]), \" \", 'RO VIN Entry'[CVRG_CD])",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -37,8 +37,8 @@
       "FormulaTableau": "TRIM([Parameters].[Parameter 1]) = [VIN_ID]",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "VIN Filter",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -47,8 +47,8 @@
       "FormulaTableau": "COUNTD([RPR_ORDR_KY])",
       "FormulaTypeTableau": "measure",
       "PowerBIName": "Distinct ROs",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "DISTINCTCOUNT('RO VIN Entry'[RPR_ORDR_KY])",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -57,8 +57,8 @@
       "FormulaTableau": "IFNULL([RPR_ORDR_OPN_DT],[RPR_ORDR_CLOS_DT])",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "RO Date",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "COALESCE('RO VIN Entry'[RPR_ORDR_OPN_DT], 'RO VIN Entry'[RPR_ORDR_CLOS_DT])",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -67,8 +67,8 @@
       "FormulaTableau": "MIN(0)",
       "FormulaTypeTableau": "measure",
       "PowerBIName": "Placeholder",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "MIN(0)",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -77,8 +77,8 @@
       "FormulaTableau": "DATEDIFF('day',[INTRNL_EFCTV_DT], TODAY())",
       "FormulaTypeTableau": "measure",
       "PowerBIName": "Campaign Age",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "DATEDIFF(DAY, 'RO VIN Entry'[INTRNL_EFCTV_DT], TODAY())",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -87,8 +87,8 @@
       "FormulaTableau": "[INTRNL_EFCTV_DT] <= TODAY()",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "IntEffDate Filter",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "'RO VIN Entry'[INTRNL_EFCTV_DT] < = TODAY()",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -97,8 +97,8 @@
       "FormulaTableau": "\"Click here for a detailed view for exporting.\"",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Go to Export",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "\"Click here for a detailed view for exporting.\"",
+      "Status": "converted"
     },
     {
       "TableName": "RO VIN Entry",
@@ -107,8 +107,8 @@
       "FormulaTableau": "\"Go back to Dashboard View\"",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Go back",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "\"Go back to Dashboard View\"",
+      "Status": "converted"
     }
   ]
 }

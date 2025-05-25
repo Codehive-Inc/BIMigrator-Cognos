@@ -2,9 +2,7 @@ table 'RO VIN Entry'
 
 
     column 'Number Days Down' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            IF(ISBLANK('RO VIN Entry'[RPR_ORDR_CLOS_DT]) || ISBLANK('RO VIN Entry'[RPR_ORDR_OPN_DT]), "Missing Open / Close Date", CONCATENATE(NUMBERSTRING(INT('RO VIN Entry'[RPR_ORDR_CLOS_DT] - 'RO VIN Entry'[RPR_ORDR_OPN_DT]))))
     ```
         dataType: string
         summarizeBy: none
@@ -14,9 +12,7 @@ ERROR("Conversion failed")
 
         
     column 'Dealer Code - Dealer Name' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            'RO VIN Entry'[DLR_NB] & " - " & 'RO VIN Entry'[DLR_NM]
     ```
         dataType: string
         summarizeBy: none
@@ -26,9 +22,7 @@ ERROR("Conversion failed")
 
         
     column 'Coverage Code' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            IIF(ISBLANK('RO VIN Entry'[CVRG_CD]), " ", 'RO VIN Entry'[CVRG_CD])
     ```
         dataType: string
         summarizeBy: none
@@ -38,9 +32,7 @@ ERROR("Conversion failed")
 
         
     column 'VIN Filter' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]
     ```
         dataType: boolean
         summarizeBy: none
@@ -50,9 +42,7 @@ ERROR("Conversion failed")
 
         
     column 'RO Date' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            COALESCE('RO VIN Entry'[RPR_ORDR_OPN_DT], 'RO VIN Entry'[RPR_ORDR_CLOS_DT])
     ```
         dataType: dateTime
         summarizeBy: none
@@ -62,9 +52,7 @@ ERROR("Conversion failed")
 
         
     column 'IntEffDate Filter' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            'RO VIN Entry'[INTRNL_EFCTV_DT] < = TODAY()
     ```
         dataType: boolean
         summarizeBy: none
@@ -74,9 +62,7 @@ ERROR("Conversion failed")
 
         
     column 'Go to Export' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            "Click here for a detailed view for exporting."
     ```
         dataType: string
         summarizeBy: none
@@ -86,9 +72,7 @@ ERROR("Conversion failed")
 
         
     column 'Go back' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            "Go back to Dashboard View"
     ```
         dataType: string
         summarizeBy: none
@@ -3886,33 +3870,33 @@ ERROR("Conversion failed")
         
 
     measure 'Distinct ROs' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            DISTINCTCOUNT('RO VIN Entry'[RPR_ORDR_KY])
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Placeholder' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            MIN(0)
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Campaign Age' = ```
-            /* ERROR: Could not convert Tableau formula */
-/* Error details: [Errno 61] Connection refused */
-ERROR("Conversion failed")
+            DATEDIFF(DAY, 'RO VIN Entry'[INTRNL_EFCTV_DT], TODAY())
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
+
+    partition 'RO VIN Entry' = m
+        mode: import
+        source = 
+            	let Source = Oracle.Database(Server = "10.78.194.25:1521 / OPDBSRW", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "DBSRW_SYS",Kind = "Schema"]}[Data], #"Specified View" = #"Naviguated to Schema"{[Name = "TBUDBSRW",Kind = "View"]}[Data], #"Native Query" = let Source = #"Specified View", Query = Value.NativeQuery(Source, " query ", meta [Type = "SQL", Representation = "StructureWithRows"]) in Query, #"Removed Other Columns" = Table.SelectColumns(#"Native Query",{"Column1", "Column2"}) in #"Removed Other Columns"
+        
 
 
 
