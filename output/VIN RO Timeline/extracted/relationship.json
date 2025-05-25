@@ -1,80 +1,80 @@
 {
   "relationships": [
     {
-      "id": "3a3e6f59-3571-4cef-8f32-beb0067c8abc",
+      "id": "86e7bfac-f137-4638-b661-c2364cd0feda",
       "from_table": "RPR_ORDR",
       "from_column": "VIN_ID",
       "to_table": "SVC_VHCL",
       "to_column": "VIN_ID",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     },
     {
-      "id": "5fc6fa26-6c36-4c61-ae91-8a8df537d08d",
+      "id": "643452ee-c64b-448c-aa01-1c1d79e91c5b",
       "from_table": "SLS_DSTRCT",
       "from_column": "SLS_ARA_CD",
       "to_table": "SLS_ARA",
       "to_column": "SLS_ARA_CD",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     },
     {
-      "id": "8c61cf89-eb41-4540-b8e4-5a84eb81a8e8",
+      "id": "b9ef5cd5-27b9-4f18-ae79-382b16ab2550",
       "from_table": "DLR",
       "from_column": "SLS_DSTRCT_CD",
       "to_table": "SLS_DSTRCT",
       "to_column": "SLS_DSTRCT_CD",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     },
     {
-      "id": "4d2de4c5-5a2b-48c7-bec1-122dcc7e2a38",
+      "id": "007518b4-6b50-42da-a3a4-03aab8370bb7",
       "from_table": "VHCL_CMPGN",
       "from_column": "CMPGN_NB",
       "to_table": "CMPGN_MSTR",
       "to_column": "CMPGN_NB",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     },
     {
-      "id": "3e1d17cc-3478-45bb-ad9b-f6fddc71150f",
+      "id": "fb8d75ed-0c42-4a1d-86bf-5ae4c7a37997",
       "from_table": "RPR_ORDR",
       "from_column": "VIN_ID",
       "to_table": "VHCL_CMPGN",
       "to_column": "VIN_ID",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     },
     {
-      "id": "79a8dae9-9b1c-4589-8265-f48ca7f08644",
+      "id": "347d53b2-1fac-4250-ae23-5521bb0a6d7c",
       "from_table": "RPR_ORDR",
       "from_column": "RFRNC_DLR_NB",
       "to_table": "DLR",
       "to_column": "RFRNC_DLR_NB",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     },
     {
-      "id": "3ca9f4b4-507a-4411-9f48-709e493dd99d",
+      "id": "43c7f556-d5c0-4417-8334-bbfa8a455863",
       "from_table": "RPR_ORDR",
       "from_column": "RPR_ORDR_KY",
       "to_table": "RPR_ORDR_LN",
       "to_column": "RPR_ORDR_KY",
       "is_active": true,
       "cardinality": "one",
-      "cross_filter_behavior": "oneWay",
+      "cross_filter_behavior": "OneDirection",
       "annotations": {}
     }
   ]

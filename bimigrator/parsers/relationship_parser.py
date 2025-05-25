@@ -198,7 +198,7 @@ class RelationshipParser(BaseParser):
                                         
                                         # Determine cross filter behavior based on join type
                                         join_type = relation.get('join', 'inner')
-                                        cross_filter = "bothDirections" if join_type == "inner" else "oneWay"
+                                        cross_filter = "BothDirections" if join_type == "inner" else "OneDirection"
                                         
                                         # Generate unique ID for relationship
                                         relationship_id = str(uuid.uuid4())

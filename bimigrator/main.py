@@ -29,6 +29,8 @@ from bimigrator.parsers.diagram_layout_parser import DiagramLayoutParser
 from bimigrator.generators.diagram_layout_generator import DiagramLayoutGenerator
 from bimigrator.parsers.report_parser import ReportParser
 from bimigrator.generators.report_generator import ReportGenerator
+from bimigrator.parsers.report_config_parser import ReportConfigParser
+from bimigrator.generators.report_config_generator import ReportConfigGenerator
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -302,6 +304,26 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Generated report.json: {report_path}')
     except Exception as e:
         print(f'Failed to generate report.json: {str(e)}')
+        raise e
+        
+    # Step 11: Generate report config.json
+    print('\nStep 11: Generating report config.json...')
+    try:
+        report_config_parser = ReportConfigParser(filename, config, output_dir)
+        report_config = report_config_parser.extract_report_config()
+
+        report_config_generator = ReportConfigGenerator(
+            config,
+            twb_name,
+            output_dir
+        )
+        config_path = report_config_generator.generate_report_config(
+            report_config,
+            output_dir=structure_generator.base_dir
+        )
+        print(f'Generated report config.json: {config_path}')
+    except Exception as e:
+        print(f'Failed to generate report config.json: {str(e)}')
         raise e
 
     print('\nMigration completed successfully!')
