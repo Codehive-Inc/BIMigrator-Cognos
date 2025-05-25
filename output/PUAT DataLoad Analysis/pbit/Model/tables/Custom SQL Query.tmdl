@@ -9,6 +9,30 @@ table 'Custom SQL Query'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'Tab_module'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup_month'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PUAT_Module'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 

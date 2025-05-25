@@ -1,13 +1,27 @@
-relationship 08821971-1775-4442-8f9a-21075ef37478
+relationship 719e2167-3680-47e7-bb4d-4b424e5b0901
 	fromColumn: 'Custom SQL Query'.asup_date
 	toColumn: 'Custom SQL Query1'.FT
 	crossFilteringBehavior: BothDirections
 	fromCardinality: one
 	isActive: true
 
-relationship af22d127-a973-492e-bc39-45c145af4729
+relationship c6e86dde-eaca-4774-b043-55686d1d2642
+	fromColumn: 'Custom SQL Query'.Tab_module
+	toColumn: 'Custom SQL Query2'.OBJ_SMF_TABLES
+	crossFilteringBehavior: OneDirection
+	fromCardinality: one
+	isActive: true
+
+relationship 50b41c97-de01-4469-8daa-0a3e8b5b1d08
 	fromColumn: 'Custom SQL Query'.asup_month
 	toColumn: 'Custom SQL Query1'.FT
+	crossFilteringBehavior: OneDirection
+	fromCardinality: one
+	isActive: true
+
+relationship 37954a19-343f-4e2f-a677-b9f141d0a2a6
+	fromColumn: 'Custom SQL Query'.PUAT_Module
+	toColumn: 'Custom SQL Query2'.OBJ_SMF_TABLES
 	crossFilteringBehavior: OneDirection
 	fromCardinality: one
 	isActive: true

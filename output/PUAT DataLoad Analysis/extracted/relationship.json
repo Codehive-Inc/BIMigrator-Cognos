@@ -1,7 +1,7 @@
 {
   "relationships": [
     {
-      "id": "08821971-1775-4442-8f9a-21075ef37478",
+      "id": "719e2167-3680-47e7-bb4d-4b424e5b0901",
       "from_table": "Custom SQL Query",
       "from_column": "asup_date",
       "to_table": "Custom SQL Query1",
@@ -16,11 +16,41 @@
       "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)"
     },
     {
-      "id": "af22d127-a973-492e-bc39-45c145af4729",
+      "id": "c6e86dde-eaca-4774-b043-55686d1d2642",
+      "from_table": "Custom SQL Query",
+      "from_column": "Tab_module",
+      "to_table": "Custom SQL Query2",
+      "to_column": "OBJ_SMF_TABLES",
+      "is_active": true,
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "annotations": {},
+      "from_datasource_id": "federated.1242tbk1be63hz15hrb781ajfc6g",
+      "from_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)",
+      "to_datasource_id": "federated.1242tbk1be63hz15hrb781ajfc6g",
+      "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)"
+    },
+    {
+      "id": "50b41c97-de01-4469-8daa-0a3e8b5b1d08",
       "from_table": "Custom SQL Query",
       "from_column": "asup_month",
       "to_table": "Custom SQL Query1",
       "to_column": "FT",
+      "is_active": true,
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "annotations": {},
+      "from_datasource_id": "federated.04xumdg0o9ttvt13wv5pa1dh3f4y",
+      "from_datasource_caption": "Custom SQL Query (dlh_nsec.objdb) (2)",
+      "to_datasource_id": "federated.04xumdg0o9ttvt13wv5pa1dh3f4y",
+      "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb) (2)"
+    },
+    {
+      "id": "37954a19-343f-4e2f-a677-b9f141d0a2a6",
+      "from_table": "Custom SQL Query",
+      "from_column": "PUAT_Module",
+      "to_table": "Custom SQL Query2",
+      "to_column": "OBJ_SMF_TABLES",
       "is_active": true,
       "cardinality": "one",
       "cross_filter_behavior": "OneDirection",
