@@ -1,55 +1,22 @@
-"""Parser for extracting table information from Tableau workbooks."""
-import uuid
+"""Main table parser that orchestrates the parsing of different table components."""
 import xml.etree.ElementTree as ET
-from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
 from bimigrator.common.logging import logger
-from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure, PowerBiPartition
-from bimigrator.converters import CalculationInfo
-from bimigrator.generators.tmdl_generator import TMDLGenerator
-from bimigrator.helpers.calculation_tracker import CalculationTracker
-from bimigrator.parsers.base_parser import BaseParser
+from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn
+from bimigrator.parsers.table_parser_base import TableParserBase
+from bimigrator.parsers.table_parser_datasource import DatasourceParser
+from bimigrator.parsers.table_parser_deduplication import TableDeduplicator
+from bimigrator.parsers.table_parser_partition import TablePartitionParser
+from bimigrator.parsers.table_parser_relation import TableRelationParser
 from bimigrator.parsers.column_parser import ColumnParser
-from bimigrator.parsers.connections.connection_factory import ConnectionParserFactory
 
 
-def extract_tableau_calculation_info(calculation_element: Any) -> Dict[str, Any]:
-    """
-    Extract information from a Tableau calculation element.
-    
-    Args:
-        calculation_element: The Tableau calculation element
-        
-    Returns:
-        A dictionary containing the calculation information
-    """
-    if calculation_element is None:
-        return {}
-
-    # Extract attributes from the calculation element
-    calc_info = {}
-
-    # Handle different types of calculation elements
-    if hasattr(calculation_element, 'get'):
-        # XML element
-        calc_info['formula'] = calculation_element.get('formula', '')
-        calc_info['caption'] = calculation_element.get('caption', '')
-        calc_info['datatype'] = calculation_element.get('datatype', '')
-        calc_info['role'] = calculation_element.get('role', '')
-    elif isinstance(calculation_element, dict):
-        # Dictionary
-        calc_info = calculation_element
-
-    return calc_info
-
-
-class TableParser(BaseParser):
-    """Parser for extracting table information from Tableau workbooks."""
+class TableParser(TableParserBase):
+    """Main parser that orchestrates the parsing of tables from Tableau workbooks."""
 
     def __init__(self, twb_file: str, config: Dict[str, Any], output_dir: str):
-        """
-        Initialize TableParser.
+        """Initialize TableParser.
         
         Args:
             twb_file: Path to the TWB file
@@ -57,248 +24,590 @@ class TableParser(BaseParser):
             output_dir: Output directory
         """
         super().__init__(twb_file, config, output_dir)
-        # Initialize calculation tracker with the base output directory
-        output_path = Path(output_dir)
-        # Strip off pbit or extracted directories to get base directory
-        if output_path.name == 'pbit' or output_path.name == 'extracted':
-            output_path = output_path.parent
-        base_output_dir = output_path
-        
-        # Update config with output directory
-        config['output_dir'] = str(base_output_dir)
-        
+        self.datasource_parser = DatasourceParser(twb_file, config, output_dir)
+        self.relationship_parser = TableRelationParser(twb_file, config, output_dir)
+        self.partition_parser = TablePartitionParser(twb_file, config, output_dir)
         self.column_parser = ColumnParser(config)
-        self.connection_factory = ConnectionParserFactory(config)
-        self.tmdl_generator = TMDLGenerator(config)
-        self.output_dir = output_dir
-        self.calculation_tracker = CalculationTracker(base_output_dir / 'extracted')
+        self.deduplicator = TableDeduplicator()
 
-    def _extract_partition_info(
-            self,
-            ds_element: ET.Element,
-            table_name: str,
-            columns: Optional[List[PowerBiColumn]] = None
-    ) -> List[PowerBiPartition]:
-        """Extract partition information from a datasource element.
+    def _extract_join_tables(self) -> Dict[str, PowerBiTable]:
+        """Extract tables from join relationships.
         
-        Args:
-            ds_element: Datasource element
-            table_name: Name of the table
-            columns: Optional list of PowerBiColumn objects with type information
-
         Returns:
-            List of PowerBiPartition objects
+            Dictionary mapping table names to PowerBiTable objects
         """
-        partitions = []
+        tables = {}
         try:
-            # Find the connection element
-            connection = ds_element.find('.//connection')
-            if connection is not None:
-                # Log connection details
-                conn_details = {
-                    'class': connection.get('class'),
-                    'server': connection.get('server'),
-                    'database': connection.get('dbname'),
-                    'schema': connection.get('schema'),
-                    'username': connection.get('username'),
-                    'port': connection.get('port'),
-                    'authentication': connection.get('authentication'),
-                    'table_name': table_name
-                }
-                
-                # Save connection details to extracted folder
-                import json
-                import os
-                # Use the intermediate_dir from BaseParser which is already properly configured
-                os.makedirs(self.intermediate_dir, exist_ok=True)
-                partitions_file = os.path.join(self.intermediate_dir, 'partitions.json')
-                
-                existing_data = {}
-                if os.path.exists(partitions_file):
-                    with open(partitions_file, 'r') as f:
-                        existing_data = json.load(f)
-                
-                if 'connections' not in existing_data:
-                    existing_data['connections'] = []
-                existing_data['connections'].append(conn_details)
-                
-                with open(partitions_file, 'w') as f:
-                    json.dump(existing_data, f, indent=2)
-                
-                logger.info(f"Connection details for table {table_name}: {json.dumps(conn_details, indent=2)}")
-                
-                # Get the appropriate connection parser
-                parser = self.connection_factory.get_parser(connection)
-
-                # Find relation elements - try both with and without namespaces
-                relations = connection.findall('.//relation')
-
-                # If no relations found, try with wildcard namespace
-                if not relations:
-                    for element in connection.findall('.//*'):
-                        if element.tag.endswith('relation'):
-                            relations.append(element)
-
-                # Process each relation and log
-                for relation in relations:
-                    logger.info(f"Processing relation for table {table_name}: {relation.attrib}")
-                    new_partitions = parser.extract_partition_info(connection, relation, table_name, columns)
-                    logger.info(f"Generated {len(new_partitions)} partitions for relation")
-                    partitions.extend(new_partitions)
-
-        except Exception as e:
-            logger.error(f"Error extracting partition info: {str(e)}", exc_info=True)
-
-        return partitions
-
-    def _get_datasource_id(self, ds_element: ET.Element) -> str:
-        """Get a unique ID for a datasource element.
-        
-        Args:
-            ds_element: Datasource element
-            
-        Returns:
-            Unique ID string
-        """
-        # Try to get existing ID
-        ds_id = ds_element.get('id') or ds_element.get('name')
-        if not ds_id:
-            # Generate a new UUID if no ID exists
-            ds_id = str(uuid.uuid4())
-        return ds_id
-
-    def extract_all_tables(self) -> List[PowerBiTable]:
-        """Extract all table information from the workbook based on datasources and their relations.
-        
-        Returns:
-            List[PowerBiTable]: List of extracted tables
-        """
-        tables = []
-        try:
-            # Get all datasources
+            # Find all datasources with connections
             datasources = self.root.findall('.//datasource')
-            logger.info(f"Found {len(datasources)} datasources")
-
-            # Track unique table names to avoid duplicates
-            seen_table_names = set()
-
-            # Process each datasource
-            for ds_element in datasources:
-                # Get datasource name and caption
-                ds_name = ds_element.get('name', '')
-                ds_caption = ds_element.get('caption', ds_name)
-                logger.info(f"Processing datasource: {ds_name} (caption: {ds_caption})")
-
-                # Skip datasources without a connection
-                connection = ds_element.find('.//connection')
+            for ds in datasources:
+                connection = ds.find('.//connection')
                 if connection is None:
-                    logger.info(f"Skipping datasource {ds_name} - no connection found")
                     continue
 
-                # Get datasource ID for deduplication
-                ds_id = self._get_datasource_id(ds_element)
+                # Get connection details
+                conn_class = connection.get('class', '')
+                server = connection.get('server', '')
+                schema = connection.get('schema', '')
+                service = connection.get('service', '')
 
-                # Get table name from relation element for Excel sheets
-                table_name = ds_caption or ds_name
-                if connection.get('class') == 'excel-direct':
-                    # Find the relation element
-                    relation = connection.find('.//relation')
-                    if relation is not None:
-                        sheet_name = relation.get('name')
-                        if sheet_name:
-                            table_name = sheet_name
+                # Find all relations
+                relations = connection.findall('.//relation')
+                for relation in relations:
+                    # Look for table references in join clauses
+                    clauses = relation.findall('.//clause[@type="join"]')
+                    for clause in clauses:
+                        exprs = clause.findall('.//expression')
+                        for expr in exprs:
+                            # Extract table and column from expressions like [Table].[Column]
+                            op = expr.get('op', '')
+                            if '[' in op and '].[' in op:
+                                table_name = op.split('].[')[0].strip('[')
+                                column_name = op.split('].[')[1].strip(']')
 
-                # Extract columns and measures
-                columns_yaml_config = self.config.get('PowerBiColumn', {})
-                columns, measures = self.column_parser.extract_columns_and_measures(
-                    ds_element,
-                    columns_yaml_config,
-                    table_name  # Use consistent table name for DAX expressions
-                )
+                                if table_name not in tables:
+                                    # Create a mock datasource element with connection info
+                                    mock_ds = ET.Element('datasource')
+                                    mock_conn = ET.SubElement(mock_ds, 'connection')
+                                    mock_conn.set('class', conn_class)
+                                    mock_conn.set('server', server)
+                                    mock_conn.set('schema', schema)
+                                    mock_conn.set('service', service)
 
-                # Handle federated datasources
-                if connection.get('class') == 'federated':
-                    # For federated datasources, try both encapsulated and non-encapsulated formats
-                    relations = [
-                        *connection.findall('.//relation'),
-                        *connection.findall('./_.fcp.ObjectModelEncapsulateLegacy.false...relation'),
-                        *connection.findall('./_.fcp.ObjectModelEncapsulateLegacy.true...relation')
-                    ]
-                    # Always use caption/name as the table name
-                    # The relation name is just for internal use
+                                    # Use partition parser to extract partition info
+                                    partitions = self.partition_parser._extract_partition_info(
+                                        mock_ds,
+                                        table_name,
+                                        None  # No columns yet
+                                    )
 
-                # Create a unique table name if needed
-                final_table_name = table_name
-                counter = 1
-                while final_table_name in seen_table_names:
-                    final_table_name = f"{table_name}_{counter}"
-                    counter += 1
-                seen_table_names.add(final_table_name)
+                                    # Create table with the column used in join
+                                    column = PowerBiColumn(
+                                        source_name=column_name,
+                                        pbi_datatype="string",  # Default to string, can be refined later
+                                        dataCategory="Uncategorized",
+                                        description=f"Relationship column from {table_name}"
+                                    )
 
-                # Extract partition information
-                all_partitions = self._extract_partition_info(ds_element, final_table_name, columns)
-
-                # Deduplicate partitions based on name and source file
-                seen_partitions = {}
-                for partition in all_partitions:
-                    # Extract file name from M code
-                    file_key = None
-                    if 'File.Contents' in partition.expression:
-                        start = partition.expression.find('File.Contents("') + len('File.Contents("')
-                        end = partition.expression.find('"', start)
-                        if start > -1 and end > -1:
-                            file_key = partition.expression[start:end]
-
-                    # Create unique key from file name and partition name
-                    key = (file_key, partition.name) if file_key else partition.name
-
-                    if key not in seen_partitions:
-                        seen_partitions[key] = partition
-
-                # Use unique partitions
-                partitions = list(seen_partitions.values())
-
-                # Calculation tracking is now handled in ColumnParser
-
-                # Create PowerBiTable
-                table = PowerBiTable(
-                    source_name=final_table_name,
-                    description=f"Imported from Tableau datasource: {ds_name}",
-                    columns=columns,
-                    measures=measures,
-                    hierarchies=[],
-                    partitions=partitions
-                )
-
-                tables.append(table)
-                logger.info(
-                    f"Added table {final_table_name} with {len(columns)} columns, {len(measures)} measures, and {len(partitions)} partitions")
-
-            # Deduplicate tables based on source_name
-            unique_tables = {}
-            for table in tables:
-                key = table.source_name
-                if key in unique_tables:
-                    existing_table = unique_tables[key]
-                    # Keep the table with more columns/measures
-                    existing_complexity = len(existing_table.columns) + len(existing_table.measures)
-                    new_complexity = len(table.columns) + len(table.measures)
-                    if new_complexity > existing_complexity:
-                        unique_tables[key] = table
-                else:
-                    unique_tables[key] = table
-
-            tables = list(unique_tables.values())
-            logger.info(f"After deduplication, found {len(tables)} unique tables")
+                                    tables[table_name] = PowerBiTable(
+                                        source_name=table_name,
+                                        description=f"Table from {conn_class} join",
+                                        columns=[column],
+                                        measures=[],
+                                        hierarchies=[],
+                                        partitions=partitions
+                                    )
+                                else:
+                                    # Add column if it doesn't exist
+                                    existing_cols = {c.source_name for c in tables[table_name].columns}
+                                    if column_name not in existing_cols:
+                                        column = PowerBiColumn(
+                                            source_name=column_name,
+                                            name=column_name,
+                                            data_type="string",
+                                            data_category="Uncategorized",
+                                            description=f"Join column from {table_name}"
+                                        )
+                                        tables[table_name].columns.append(column)
 
         except Exception as e:
-            logger.error(f"Error extracting tables: {str(e)}", exc_info=True)
+            logger.error(f"Error extracting join tables: {str(e)}", exc_info=True)
 
         return tables
 
+    def _extract_relationship_tables(self) -> Dict[str, PowerBiTable]:
+        """Extract tables that are referenced in relationships.
+        
+        Returns:
+            Dictionary mapping table names to PowerBiTable objects
+        """
+        tables = {}
+        try:
+            # Get connection details from first datasource
+            connection = None
+            for ds in self.root.findall('.//datasource'):
+                conn = ds.find('.//connection')
+                if conn is not None:
+                    connection = conn
+                    break
+            
+            conn_class = connection.get('class', '') if connection is not None else ''
+            server = connection.get('server', '') if connection is not None else ''
+            schema = connection.get('schema', '') if connection is not None else ''
+            service = connection.get('service', '') if connection is not None else ''
+            
+            # First, get all tables from relations
+            for ds in self.root.findall('.//datasource'):
+                result = self.relationship_parser.extract_table_relations(ds)
+            relationships = self.relationship_parser.extract_relationships()
+            
+            # Create tables for each relationship
+            for rel in relationships:
+                # Create from_table if it doesn't exist
+                if rel['from_table'] not in tables:
+                    # Get partitions for this table
+                    partitions = self.partition_parser.extract_partitions_for_table(rel['from_table'])
+                    
+                    # Create PowerBiTable object
+                    tables[rel['from_table']] = PowerBiTable(
+                        source_name=rel['from_table'],
+                        description=f"Table from relationship",
+                        columns=[],
+                        measures=[],
+                        hierarchies=[],
+                        partitions=partitions
+                    )
+                
+                # Create to_table if it doesn't exist
+                if rel['to_table'] not in tables:
+                    # Get partitions for this table
+                    partitions = self.partition_parser.extract_partitions_for_table(rel['to_table'])
+                    
+                    # Create PowerBiTable object
+                    tables[rel['to_table']] = PowerBiTable(
+                        source_name=rel['to_table'],
+                        description=f"Table from relationship",
+                        columns=[],
+                        measures=[],
+                        hierarchies=[],
+                        partitions=partitions
+                    )
+                
+                # Add from_column
+                if rel['from_column'] not in {c.source_name for c in tables[rel['from_table']].columns}:
+                    column = PowerBiColumn(
+                        source_name=rel['from_column'],
+                        pbi_datatype="string",  # Default to string, can be refined later
+                        dataCategory="Uncategorized",
+                        description=f"Relationship column from {rel['from_table']}"
+                    )
+                    tables[rel['from_table']].columns.append(column)
+                
+                # Add to_column
+                if rel['to_column'] not in {c.source_name for c in tables[rel['to_table']].columns}:
+                    column = PowerBiColumn(
+                        source_name=rel['to_column'],
+                        pbi_datatype="string",  # Default to string, can be refined later
+                        dataCategory="Uncategorized",
+                        description=f"Relationship column from {rel['to_table']}"
+                    )
+                    tables[rel['to_table']].columns.append(column)
+            
+            # Extract additional columns from <map> elements for each table
+            # Find the main datasource element that contains the column mappings
+            for ds_element in self.root.findall('.//datasource'):
+                if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
+                    # This is the main federated datasource with column mappings
+                    cols_element = ds_element.find('.//cols')
+                    if cols_element is not None:
+                        # Process each map element to extract column information
+                        for map_element in cols_element.findall('.//map'):
+                            key = map_element.get('key')
+                            value = map_element.get('value')
+                            
+                            if key and value and '[' in value and ']' in value:
+                                # Extract table name and column name from value
+                                # Format is typically [TABLE_NAME].[COLUMN_NAME]
+                                parts = value.split('.')
+                                if len(parts) == 2:
+                                    table_name = parts[0].strip('[]')
+                                    column_name = parts[1].strip('[]')
+                                    
+                                    # Skip if this is not a relationship table
+                                    if table_name not in tables:
+                                        continue
+                                    
+                                    # Skip if column already exists
+                                    if column_name in {c.source_name for c in tables[table_name].columns}:
+                                        continue
+                                    
+                                    # Determine datatype based on column name patterns
+                                    pbi_datatype = "string"  # Default
+                                    summarize_by = "none"
+                                    
+                                    # Apply simple datatype inference based on column name
+                                    if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
+                                        pbi_datatype = "double"
+                                        summarize_by = "sum"
+                                    elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
+                                        pbi_datatype = "dateTime"
+                                    elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
+                                        pbi_datatype = "boolean"
+                                    
+                                    # Create column object
+                                    column = PowerBiColumn(
+                                        source_name=column_name,
+                                        pbi_datatype=pbi_datatype,
+                                        source_column=column_name,
+                                        summarize_by=summarize_by,
+                                        description=f"Column from {table_name}"
+                                    )
+                                    tables[table_name].columns.append(column)
+
+        except Exception as e:
+            logger.error(f"Error extracting relationship tables: {str(e)}", exc_info=True)
+
+        return tables
+
+    def save_tables_to_json(self, tables: List[PowerBiTable]) -> None:
+        """
+        Save all tables to the table.json file, preserving existing data.
+        
+        Args:
+            tables: List of PowerBiTable objects to save
+        """
+        import json
+        import os
+        from pathlib import Path
+        
+        # Create intermediate directory if it doesn't exist
+        Path(self.intermediate_dir).mkdir(parents=True, exist_ok=True)
+        
+        # Define the file path
+        file_path = os.path.join(self.intermediate_dir, 'table.json')
+        
+        # Initialize data structure as a list of tables
+        all_tables = []
+        
+        # Read existing data if file exists
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, 'r') as f:
+                    existing_data = json.load(f)
+                    
+                # If the existing data is a dictionary with a 'tables' key, use that
+                if isinstance(existing_data, dict) and 'tables' in existing_data:
+                    all_tables = existing_data['tables']
+                # If it's a single table object, convert to a list
+                elif isinstance(existing_data, dict) and 'source_name' in existing_data:
+                    all_tables = [existing_data]
+                # If it's already a list, use it directly
+                elif isinstance(existing_data, list):
+                    all_tables = existing_data
+            except Exception as e:
+                logger.error(f"Error reading existing table.json: {str(e)}")
+                # Start with an empty list if there was an error
+                all_tables = []
+        
+        # Create a dictionary of tables for easier lookup
+        tables_dict = {table.source_name: table for table in tables}
+        
+        # Extract columns from <map> elements for all tables
+        # Find the main datasource element that contains the column mappings
+        for ds_element in self.root.findall('.//datasource'):
+            if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
+                # This is the main federated datasource with column mappings
+                cols_element = ds_element.find('.//cols')
+                if cols_element is not None:
+                    # Process each map element to extract column information
+                    for map_element in cols_element.findall('.//map'):
+                        key = map_element.get('key')
+                        value = map_element.get('value')
+                        
+                        if key and value and '[' in value and ']' in value:
+                            # Extract table name and column name from value
+                            # Format is typically [TABLE_NAME].[COLUMN_NAME]
+                            parts = value.split('.')
+                            if len(parts) == 2:
+                                table_name = parts[0].strip('[]')
+                                column_name = parts[1].strip('[]')
+                                
+                                # Skip if this table doesn't exist
+                                if table_name not in tables_dict:
+                                    continue
+                                
+                                # Get the table
+                                table = tables_dict[table_name]
+                                
+                                # Skip if column already exists
+                                if column_name in {c.source_name for c in table.columns}:
+                                    continue
+                                
+                                # Determine datatype based on column name patterns
+                                pbi_datatype = "string"  # Default
+                                summarize_by = "none"
+                                
+                                # Apply simple datatype inference based on column name
+                                if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
+                                    pbi_datatype = "double"
+                                    summarize_by = "sum"
+                                elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
+                                    pbi_datatype = "dateTime"
+                                elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
+                                    pbi_datatype = "boolean"
+                                
+                                # Create column object
+                                column = PowerBiColumn(
+                                    source_name=column_name,
+                                    pbi_datatype=pbi_datatype,
+                                    source_column=column_name,
+                                    summarize_by=summarize_by,
+                                    description=f"Column from {table_name}"
+                                )
+                                table.columns.append(column)
+        
+        # Track existing table names to avoid duplicates
+        existing_table_names = {table.get('source_name') for table in all_tables if isinstance(table, dict) and 'source_name' in table}
+        
+        # Convert each table to a dictionary and add to the list if not already present
+        for table in tables:
+            # Skip if this table is already in the file
+            if table.source_name in existing_table_names:
+                continue
+                
+            # Convert to dictionary and add to the list
+            table_dict = {
+                'source_name': table.source_name,
+                'name': table.name if hasattr(table, 'name') else table.source_name,
+                'lineage_tag': getattr(table, 'lineage_tag', None),
+                'description': table.description,
+                'is_hidden': getattr(table, 'is_hidden', False),
+                'columns': [
+                    {
+                        'source_name': col.source_name,
+                        'datatype': col.pbi_datatype,
+                        'format_string': getattr(col, 'format_string', None),
+                        'lineage_tag': getattr(col, 'lineage_tag', None),
+                        'source_column': getattr(col, 'source_column', None),
+                        'description': getattr(col, 'description', None),
+                        'is_hidden': getattr(col, 'is_hidden', False),
+                        'summarize_by': getattr(col, 'summarize_by', 'none'),
+                        'data_category': getattr(col, 'dataCategory', 'Uncategorized'),
+                        'is_calculated': getattr(col, 'is_calculated', False),
+                        'is_data_type_inferred': getattr(col, 'is_data_type_inferred', False),
+                        'annotations': getattr(col, 'annotations', None)
+                    } for col in table.columns
+                ],
+                'measures': [
+                    {
+                        'source_name': measure.source_name,
+                        'dax_expression': measure.dax_expression,
+                        'description': getattr(measure, 'description', None),
+                        'format_string': getattr(measure, 'format_string', None),
+                        'is_hidden': getattr(measure, 'is_hidden', False),
+                        'annotations': getattr(measure, 'annotations', None)
+                    } for measure in table.measures
+                ],
+                'hierarchies': [],  # Add hierarchy support if needed
+                'partitions': [
+                    {
+                        'name': partition.name,
+                        'source_type': getattr(partition, 'source_type', None),
+                        'expression': getattr(partition, 'expression', None),
+                        'description': getattr(partition, 'description', None)
+                    } for partition in table.partitions
+                ],
+                'has_widget_serialization': False,
+                'visual_type': None,
+                'column_settings': None
+            }
+            
+            all_tables.append(table_dict)
+            existing_table_names.add(table.source_name)
+        
+        # Create the final data structure with tables as an array under the 'tables' key
+        final_data = {
+            'tables': all_tables
+        }
+        
+        # Write all tables to the file
+        with open(file_path, 'w') as f:
+            json.dump(final_data, f, indent=2)
+        
+        logger.info(f"Saved {len(all_tables)} tables to {file_path}")
+        
+        # Also save each table individually for easier debugging
+        for table_dict in all_tables:
+            table_name = table_dict.get('source_name', 'unknown')
+            individual_file_path = os.path.join(self.intermediate_dir, f"table_{table_name}.json")
+            with open(individual_file_path, 'w') as f:
+                json.dump(table_dict, f, indent=2)
+
+    def extract_all_tables(self) -> List[PowerBiTable]:
+        """Extract all tables from the workbook.
+        
+        Returns:
+            List of PowerBiTable objects
+        """
+        try:
+            # Extract tables from datasources first
+            datasource_tables = self.datasource_parser.extract_all_tables()
+            logger.info(f"Found {len(datasource_tables)} tables from datasources")
+            
+            # Create initial map with datasource tables
+            all_tables = {table.source_name: table for table in datasource_tables}
+            
+            # Extract tables from joins
+            join_tables = self._extract_join_tables()
+            logger.info(f"Found {len(join_tables)} tables from joins")
+            
+            # Add join tables
+            for name, table in join_tables.items():
+                if name not in all_tables:
+                    all_tables[name] = table
+                else:
+                    # Merge columns and measures if table already exists
+                    existing_table = all_tables[name]
+                    existing_cols = {c.source_name for c in existing_table.columns}
+                    for col in table.columns:
+                        if col.source_name not in existing_cols:
+                            existing_table.columns.append(col)
+            
+            # Extract tables from relationships
+            relationship_tables = self._extract_relationship_tables()
+            logger.info(f"Found {len(relationship_tables)} tables from relationships")
+            
+            # Add relationship tables
+            for name, table in relationship_tables.items():
+                if name not in all_tables:
+                    all_tables[name] = table
+                else:
+                    # Merge columns and measures if table already exists
+                    existing_table = all_tables[name]
+                    existing_cols = {c.source_name for c in existing_table.columns}
+                    for col in table.columns:
+                        if col.source_name not in existing_cols:
+                            existing_table.columns.append(col)
+            
+            # Extract columns from <map> elements for all tables
+            # Find the main datasource element that contains the column mappings
+            for ds_element in self.root.findall('.//datasource'):
+                if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
+                    # This is the main federated datasource with column mappings
+                    cols_element = ds_element.find('.//cols')
+                    if cols_element is not None:
+                        # Process each map element to extract column information
+                        for map_element in cols_element.findall('.//map'):
+                            key = map_element.get('key')
+                            value = map_element.get('value')
+                            
+                            if key and value and '[' in value and ']' in value:
+                                # Extract table name and column name from value
+                                # Format is typically [TABLE_NAME].[COLUMN_NAME]
+                                parts = value.split('.')
+                                if len(parts) == 2:
+                                    table_name = parts[0].strip('[]')
+                                    column_name = parts[1].strip('[]')
+                                    
+                                    # Skip if this table doesn't exist
+                                    if table_name not in all_tables:
+                                        continue
+                                    
+                                    # Get the table
+                                    table = all_tables[table_name]
+                                    
+                                    # Skip if column already exists
+                                    if column_name in {c.source_name for c in table.columns}:
+                                        continue
+                                    
+                                    # Determine datatype based on column name patterns
+                                    pbi_datatype = "string"  # Default
+                                    summarize_by = "none"
+                                    
+                                    # Apply simple datatype inference based on column name
+                                    if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
+                                        pbi_datatype = "double"
+                                        summarize_by = "sum"
+                                    elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
+                                        pbi_datatype = "dateTime"
+                                    elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
+                                        pbi_datatype = "boolean"
+                                    
+                                    # Create column object
+                                    column = PowerBiColumn(
+                                        source_name=column_name,
+                                        pbi_datatype=pbi_datatype,
+                                        source_column=column_name,
+                                        summarize_by=summarize_by,
+                                        description=f"Column from {table_name}"
+                                    )
+                                    table.columns.append(column)
+            
+            # Process each table to ensure it has columns and partitions
+            for name, table in all_tables.items():
+                # Extract columns if not already present
+                if not table.columns:
+                    ds_element = self.root.find(f".//datasource[@name='{name}']")
+                    if ds_element is not None:
+                        columns, measures = self.column_parser.extract_columns_and_measures(
+                            ds_element,
+                            self.config.get('PowerBiColumn', {}),
+                            name
+                        )
+                        table.columns = columns
+                        table.measures = measures
+                
+                # Extract partitions if not already present
+                if not table.partitions:
+                    # First try to find a datasource element for this table
+                    ds_element = self.root.find(f".//datasource[@name='{name}']")
+                    if ds_element is not None:
+                        # Extract partitions from the datasource element
+                        partitions = self.partition_parser._extract_partition_info(
+                            ds_element,
+                            name,
+                            table.columns
+                        )
+                        table.partitions = partitions
+                    else:
+                        # If no datasource element found, use the extract_partitions_for_table method
+                        # This will create partitions for tables in join relationships
+                        partitions = self.partition_parser.extract_partitions_for_table(name)
+                        table.partitions = partitions
+            
+            # Process federated datasources
+            for ds_element in self.root.findall('.//datasource'):
+                connection = ds_element.find('.//connection')
+                if connection is not None and connection.get('class') == 'federated':
+                    # Get tables from relations
+                    result = self.relationship_parser.extract_table_relations(ds_element)
+                    relations = result['relations']
+                    relation_tables = result['tables']
+                    
+                    # Add each table from the relations
+                    for table_name, relation_table in relation_tables.items():
+                        if table_name not in all_tables:
+                            # Extract columns and partitions
+                            ds_element = self.root.find(f".//datasource[@name='{table_name}']")
+                            if ds_element is not None:
+                                columns, measures = self.column_parser.extract_columns_and_measures(
+                                    ds_element,
+                                    self.config.get('PowerBiColumn', {}),
+                                    table_name
+                                )
+                                relation_table.columns = columns
+                                relation_table.measures = measures
+                                
+                                partitions = self.partition_parser._extract_partition_info(
+                                    ds_element,
+                                    table_name,
+                                    columns
+                                )
+                                relation_table.partitions = partitions
+                            
+                            all_tables[table_name] = relation_table
+            
+            # Convert to list and deduplicate
+            tables = list(all_tables.values())
+            tables = self.deduplicator.deduplicate_tables(tables, set(relationship_tables.keys()))
+            logger.info(f"After deduplication, found {len(tables)} unique tables (including {len(relationship_tables)} from relationships)")
+
+            # Deduplicate partitions in each table
+            for table in tables:
+                table.partitions = self.deduplicator.deduplicate_partitions(table.partitions)
+                
+            # Save all tables to table.json
+            self.save_tables_to_json(tables)
+
+            return tables
+
+        except Exception as e:
+            logger.error(f"Error extracting tables: {str(e)}", exc_info=True)
+            return []
+
     def parse_workbook(self, twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
         """Parse a Tableau workbook file.
-
+        
         Args:
             twb_path: Path to the TWB file
             config: Configuration dictionary
@@ -316,571 +625,3 @@ class TableParser(BaseParser):
             'tables': tables
         }
 
-    def _extract_columns_and_measures_for_datasource(
-            self,
-            ds_element: ET.Element,
-            columns_yaml_config: Dict,
-            pbi_table_name: str  # For DAX expressions in measures
-    ):  # -> Tuple[List[PowerBiColumn], List[PowerBiMeasure]]
-
-        """Extract columns and measures from a datasource element.
-        
-        Args:
-            ds_element: Datasource element
-            columns_yaml_config: YAML configuration for columns
-            pbi_table_name: Table name for DAX expressions
-            
-        Returns:
-            Tuple of (columns, measures)
-        """
-        pbi_columns = []
-        pbi_measures = []
-        seen_col_names = set()
-
-        col_list_xpath = columns_yaml_config.get('source_xpath')
-        if not col_list_xpath:
-            return pbi_columns, pbi_measures
-
-        # Find metadata-records container first
-        metadata_records_container = None
-
-        # First, look for metadata-records as a direct child of the datasource
-        for child in ds_element:
-            if child.tag.endswith('metadata-records'):
-                metadata_records_container = child
-                break
-
-        # If not found, look for connection elements that might contain metadata-records
-        if metadata_records_container is None:
-            # Try to find connection element
-            connection_elem = ds_element.find('.//connection', namespaces=self.namespaces)
-            if connection_elem is not None:
-                # Look for metadata-records within the connection
-                for child in connection_elem.iter():
-                    if child.tag.endswith('metadata-records'):
-                        metadata_records_container = child
-                        break
-
-        # Initialize an empty list for column elements
-        column_elements_from_ds = []
-
-        # If we found the metadata-records container, extract column metadata records
-        if metadata_records_container is not None:
-            for meta_record in metadata_records_container:
-                if meta_record.tag.endswith('metadata-record') and meta_record.get('class') == 'column':
-                    column_elements_from_ds.append(meta_record)
-
-        print(f"Debug: Found {len(column_elements_from_ds)} metadata-record columns")
-
-        # If we still haven't found any columns, try a more aggressive approach
-        if not column_elements_from_ds:
-            # Look for all metadata-record elements with class='column' anywhere in the datasource
-            for elem in ds_element.iter():
-                if elem.tag.endswith('metadata-record') and elem.get('class') == 'column':
-                    column_elements_from_ds.append(elem)
-
-            print(f"Debug: Found {len(column_elements_from_ds)} metadata-record columns using aggressive search")
-
-        # Look specifically for Tab_module and PUAT_Module columns in SQL queries
-        sql_queries = []
-        for elem in ds_element.iter():
-            if elem.tag.endswith('relation') and elem.get('type') == 'text':
-                sql_text = elem.text
-                if sql_text and ('Tab_module' in sql_text or 'PUAT_Module' in sql_text):
-                    sql_queries.append(sql_text)
-
-        if sql_queries:
-            print(f"Debug: Found {len(sql_queries)} SQL queries containing Tab_module or PUAT_Module")
-
-            # Extract column names from SQL queries
-            for sql in sql_queries:
-                if 'Tab_module' in sql:
-                    # Create a synthetic metadata record for Tab_module
-                    meta_record = ET.Element('metadata-record')
-                    meta_record.set('class', 'column')
-
-                    remote_name = ET.SubElement(meta_record, 'remote-name')
-                    remote_name.text = 'Tab_module'
-
-                    local_name = ET.SubElement(meta_record, 'local-name')
-                    local_name.text = '[Tab_module]'
-
-                    remote_type = ET.SubElement(meta_record, 'remote-type')
-                    remote_type.text = '130'  # String type
-
-                    column_elements_from_ds.append(meta_record)
-                    print("Debug: Added synthetic metadata record for Tab_module")
-
-        # Print the first few metadata records for debugging
-        for i, meta_col in enumerate(column_elements_from_ds[:5]):
-            remote_name = meta_col.find('remote-name')
-            local_name = meta_col.find('local-name')
-            parent_name = meta_col.find('parent-name')
-
-            remote_name_text = remote_name.text if remote_name is not None else 'None'
-            local_name_text = local_name.text if local_name is not None else 'None'
-            parent_name_text = parent_name.text if parent_name is not None else 'None'
-
-            print(
-                f"Debug: Metadata record {i}: remote_name={remote_name_text}, local_name={local_name_text}, parent_name={parent_name_text}")
-
-        # Check for calculated fields directly under datasource
-        calc_field_xpath = columns_yaml_config.get('calculated_fields_xpath', "column[calculation]")
-        calculated_field_elements = ds_element.findall(calc_field_xpath, namespaces=self.namespaces)
-
-        # Look for columns in relation elements (for Excel and other direct connections)
-        relation_column_elements = []
-
-        # Get relation column paths from configuration
-        relation_paths = columns_yaml_config.get('relation_column_paths', [])
-
-        # If no paths defined in config, use default paths
-        if not relation_paths:
-            relation_paths = [
-                ".//_.fcp.ObjectModelEncapsulateLegacy.false...relation//column",
-                ".//_.fcp.ObjectModelEncapsulateLegacy.true...relation//column",
-                ".//relation//column"
-            ]
-
-        for rel_path in relation_paths:
-            rel_columns = ds_element.findall(rel_path, namespaces=self.namespaces)
-            if rel_columns:
-                relation_column_elements.extend(rel_columns)
-
-        # Collect all column elements from different sources
-        all_potential_column_elements = []
-
-        # Track names of columns already added to avoid duplicates with the same name
-        added_column_names = set()
-
-        # Add calculated fields first
-        for calc_field in calculated_field_elements:
-            calc_name = calc_field.get('caption')
-            if calc_name:
-                all_potential_column_elements.append(calc_field)
-                added_column_names.add(calc_name)
-
-        # Add relation columns
-        for rel_col in relation_column_elements:
-            rel_col_name = rel_col.get('name')
-            if rel_col_name and rel_col_name not in added_column_names:
-                all_potential_column_elements.append(rel_col)
-                added_column_names.add(rel_col_name)
-
-        # Add metadata-record columns
-        for meta_col in column_elements_from_ds:
-            # Get the column name from the metadata record
-            remote_name = meta_col.find('remote-name')
-            local_name = meta_col.find('local-name')
-            parent_name = meta_col.find('parent-name')
-
-            # Get the column name
-            if remote_name is not None and remote_name.text:
-                col_name = remote_name.text
-            elif local_name is not None and local_name.text:
-                col_name = local_name.text
-            else:
-                col_name = meta_col.get('caption') or meta_col.get('local-name')
-
-            # Get the parent name (table or query name)
-            parent_text = ''
-            if parent_name is not None and parent_name.text:
-                parent_text = parent_name.text.strip('[]')
-
-            # Include all columns from this datasource
-            # In Tableau, a datasource can contain multiple queries, so we include all columns
-            include_column = True
-
-            # Debug output to help understand the column structure
-            if col_name:
-                print(f"Debug: Found metadata column '{col_name}' with parent '{parent_text}'")
-            else:
-                print(f"Debug: Found metadata column with no name, parent '{parent_text}'")
-
-            # Store the parent name in the metadata record as an attribute for later use
-            if parent_name is not None and parent_name.text:
-                meta_col.set('parent_table', parent_text)
-
-            if col_name and col_name not in added_column_names and include_column:
-                all_potential_column_elements.append(meta_col)
-                added_column_names.add(col_name)
-
-        # Get relation column mappings from configuration
-        relation_column_mappings = columns_yaml_config.get('relation_column_mappings', {})
-        relation_name_attr = relation_column_mappings.get('name_attribute', 'name')
-
-        # Get calculated field mappings from configuration
-        calc_field_mappings = columns_yaml_config.get('calculated_field_mappings', {})
-        calc_name_attr = calc_field_mappings.get('name_attribute', 'caption')
-
-        for col_elem in all_potential_column_elements:
-            # For calculated fields with calculation child element
-            if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(
-                    calc_name_attr):
-                col_name = col_elem.get(calc_name_attr)
-                # Mark this as a calculated column
-                col_elem.set('is_calculated', 'true')
-
-                # Extract the calculation formula
-                calc_elem = col_elem.find('calculation')
-                if calc_elem is not None and calc_elem.get('formula'):
-                    # Store the formula for later use
-                    col_elem.set('calculation_formula', calc_elem.get('formula'))
-
-                    # Check if this is a measure based on role attribute
-                    role = col_elem.get('role')
-                    if role == 'measure':
-                        col_elem.set('is_measure', 'true')
-                    else:
-                        # It's a calculated column
-                        col_elem.set('is_calculated_column', 'true')
-            # For relation columns, use the configured name attribute
-            elif col_elem.tag.endswith('column') and col_elem.get(relation_name_attr):
-                col_name = col_elem.get(relation_name_attr)
-            # For metadata-record columns, extract from remote-name or local-name
-            elif col_elem.tag.endswith('metadata-record'):
-                remote_name = col_elem.find('remote-name')
-                local_name = col_elem.find('local-name')
-
-                if remote_name is not None and remote_name.text:
-                    col_name = remote_name.text
-                elif local_name is not None and local_name.text:
-                    # Strip brackets from local name if present
-                    local_name_text = local_name.text
-                    if local_name_text.startswith('[') and local_name_text.endswith(']'):
-                        col_name = local_name_text[1:-1]
-                    else:
-                        col_name = local_name_text
-                else:
-                    # Fallback to attributes
-                    col_name = col_elem.get('caption') or col_elem.get('name')
-
-            if not col_name:
-                continue
-
-            # Deduplicate column names within the Power BI table
-            final_col_name = col_name
-            counter = 1
-            while final_col_name in seen_col_names:
-                final_col_name = f"{col_name}_{counter}"
-                counter += 1
-            seen_col_names.add(final_col_name)
-
-            relation_datatype_attr = relation_column_mappings.get('datatype_attribute', 'datatype')
-            calc_datatype_attr = calc_field_mappings.get('datatype_attribute', 'datatype')
-
-            # For calculated fields with calculation child element
-            if col_elem.tag.endswith('column') and col_elem.find('calculation') is not None and col_elem.get(
-                    calc_datatype_attr):
-                twb_datatype = col_elem.get(calc_datatype_attr)
-                pbi_datatype = self._map_datatype(twb_datatype)
-            # For relation columns, use the configured datatype attribute
-            elif col_elem.tag.endswith('column') and col_elem.get(relation_datatype_attr):
-                twb_datatype = col_elem.get(relation_datatype_attr)
-                pbi_datatype = self._map_datatype(twb_datatype)
-            # For metadata-record columns, extract from local-type
-            elif col_elem.tag.endswith('metadata-record'):
-                local_type = col_elem.find('local-type')
-                remote_type = col_elem.find('remote-type')
-
-                if local_type is not None and local_type.text:
-                    twb_datatype = local_type.text
-                    pbi_datatype = self._map_datatype(twb_datatype)
-                elif remote_type is not None and remote_type.text:
-                    # Map remote-type (which is usually a number) to a string datatype
-                    remote_type_num = remote_type.text.strip()
-                    # Basic mapping of common remote types
-                    if remote_type_num in ['129', '130']:  # VARCHAR, WSTR
-                        twb_datatype = 'string'
-                    elif remote_type_num in ['5', '6', '131']:  # FLOAT, DOUBLE, NUMERIC
-                        twb_datatype = 'real'
-                    elif remote_type_num in ['3', '4', '20']:  # INT, LONG, BIGINT
-                        twb_datatype = 'integer'
-                    elif remote_type_num in ['7', '135']:  # DATE, TIMESTAMP
-                        twb_datatype = 'datetime'
-                    elif remote_type_num in ['11']:  # BOOLEAN
-                        twb_datatype = 'boolean'
-                    else:
-                        twb_datatype = 'string'  # Default to string for unknown types
-                    pbi_datatype = self._map_datatype(twb_datatype)
-                else:
-                    # Try to get the type from the parent element or attributes
-                    type_attr = col_elem.get('type')
-                    if type_attr:
-                        twb_datatype = type_attr
-                    else:
-                        # Default to string if no type information is available
-                        twb_datatype = 'string'
-                    pbi_datatype = self._map_datatype(twb_datatype)
-            else:
-                # For other column types, use the configured mapping
-                datatype_mapping_cfg = columns_yaml_config.get('datatype', {})
-                twb_datatype = self._get_mapping_value(datatype_mapping_cfg, col_elem, default_value='string')
-                pbi_datatype = self._map_datatype(twb_datatype)
-
-            description_mapping_cfg = columns_yaml_config.get('description', {})
-            description = self._get_mapping_value(description_mapping_cfg, col_elem)
-
-            is_hidden_mapping_cfg = columns_yaml_config.get('is_hidden', {})
-            is_hidden = self._get_mapping_value(is_hidden_mapping_cfg, col_elem, default_value=False)
-
-            format_string_mapping_cfg = columns_yaml_config.get('format_string', {})
-            format_string = self._get_mapping_value(format_string_mapping_cfg, col_elem)
-
-            role_mapping_cfg = columns_yaml_config.get('role', {})
-            role = self._get_mapping_value(role_mapping_cfg, col_elem)
-
-            calc_formula_mapping_cfg = columns_yaml_config.get('calculation_formula', {})
-            calculation_formula = self._get_mapping_value(calc_formula_mapping_cfg, col_elem)
-
-            # Decide if it's a measure or a column
-            is_measure_role = (role == 'measure')
-            is_calculated_measure_candidate = bool(calculation_formula) and role != 'dimension'
-
-            if is_measure_role or is_calculated_measure_candidate:
-                dax_expression = None
-                if calculation_formula:
-                    # Basic attempt to see if it's DAX-like or needs SUM wrapper
-                    if calculation_formula.strip().upper().startswith(
-                            ("SUM(", "AVERAGE(", "COUNT(", "MIN(", "MAX(", "CALCULATE(")):
-                        dax_expression = f"/* Original TWB: {calculation_formula} */ {calculation_formula}"
-                    else:
-                        dax_expression = f"SUMX('{pbi_table_name}', {calculation_formula})"
-                else:
-                    dax_expression = f"SUM('{pbi_table_name}'[{final_col_name}])"
-
-                measure = PowerBiMeasure(
-                    source_name=final_col_name,
-                    dax_expression=dax_expression,
-                    description=description,
-                    is_hidden=is_hidden,
-                    format_string=format_string
-                )
-                pbi_measures.append(measure)
-            else:
-                # Check if it's a calculated column, measure, or regular column
-                is_calculated_column = col_elem.get('is_calculated_column') == 'true'
-                is_measure = col_elem.get('is_measure') == 'true'
-                is_calculated = col_elem.get('is_calculated') == 'true' or bool(calculation_formula)
-
-                # Get the calculation formula from the element if available
-                formula = col_elem.get('calculation_formula') or calculation_formula
-
-                # Extract summarize_by from configuration
-                summarize_by = "none"
-                summarize_by_config = columns_yaml_config.get('summarize_by', {})
-                if col_elem.tag.endswith('metadata-record'):
-                    # Try to get aggregation from the element using XPath
-                    agg_xpath = summarize_by_config.get('source_xpath')
-                    if agg_xpath:
-                        agg_elem = col_elem.find(agg_xpath.replace('/text()', ''))
-                        if agg_elem is not None and agg_elem.text:
-                            tableau_agg = agg_elem.text.lower()
-                            # Map Tableau aggregation to Power BI summarization
-                            if tableau_agg in ['sum', 'avg', 'min', 'max', 'count']:
-                                summarize_by = tableau_agg
-                            elif tableau_agg == 'none':
-                                summarize_by = 'none'
-                            # Default to sum for numeric columns if no specific aggregation
-                            elif pbi_datatype.lower() in ["int64", "double", "decimal",
-                                                          "currency"] and not is_calculated_column:
-                                summarize_by = "sum"
-                else:
-                    # For non-metadata records, use default logic
-                    if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"] and not is_calculated_column:
-                        summarize_by = "sum"
-
-                # Initialize annotations
-                annotations = {}
-
-                # Check for explicit aggregation in Tableau XML to set SummarizationSetBy annotation
-                has_explicit_aggregation = False
-
-                # Instead of trying to detect the aggregation element directly,
-                # use the summarize_by value that's already been determined
-                # If summarize_by is anything other than 'none', it means there's an explicit aggregation
-                has_explicit_aggregation = summarize_by != 'none'
-
-                # Set SummarizationSetBy annotation based on whether there's explicit aggregation
-                annotations['SummarizationSetBy'] = 'User' if has_explicit_aggregation else 'Automatic'
-
-                # Add PBI_FormatHint annotation for numeric columns
-                if pbi_datatype.lower() in ["int64", "double", "decimal", "currency"]:
-                    # For numeric columns, add the format hint
-                    annotations['PBI_FormatHint'] = {"isGeneralNumber": True}
-
-                print(
-                    f"Debug: Column '{final_col_name}': summarize_by={summarize_by}, SummarizationSetBy={annotations['SummarizationSetBy']}")
-
-                # Handle calculated fields (measures and calculated columns)
-                if formula:
-                    # Create calculation info from configuration
-                    calc_info = CalculationInfo(
-                        formula=formula,
-                        caption=final_col_name,
-                        datatype=pbi_datatype,
-                        role='measure' if is_measure else None
-                    )
-
-                    # Convert formula to DAX using the calculation converter
-                    dax_expression = self.calculation_converter.convert_to_dax(calc_info, pbi_table_name)
-
-                    if is_measure:
-                        # Create PowerBI measure
-                        measure = PowerBiMeasure(
-                            source_name=final_col_name,
-                            dax_expression=dax_expression,
-                            description=description,
-                            is_hidden=is_hidden,
-                            format_string=format_string
-                        )
-                        pbi_measures.append(measure)
-                        print(f"Debug: Created measure '{final_col_name}' with expression: {dax_expression}")
-                        continue
-
-                    # For calculated columns, store the DAX expression in annotations
-                    annotations.update({
-                        'SummarizationSetBy': 'User',  # Calculated columns are always set by user
-                        'CalculationFormula': dax_expression
-                    })
-
-                    print(f"Debug: Column '{final_col_name}' is a calculated column with expression: {dax_expression}")
-
-                    column = PowerBiColumn(
-                        source_name=final_col_name,
-                        pbi_datatype=pbi_datatype,
-                        # For calculated columns in TMDL, the sourceColumn holds the DAX expression
-                        source_column=dax_expression,
-                        description=description,
-                        is_hidden=is_hidden,
-                        format_string=format_string,
-                        summarize_by=summarize_by,
-                        annotations=annotations,
-                        # Set is_calculated to True for calculated columns
-                        is_calculated=True,
-                        # Data type is inferred from the DAX expression
-                        is_data_type_inferred=True
-                    )
-                else:
-                    # Regular column
-                    column = PowerBiColumn(
-                        source_name=final_col_name,
-                        pbi_datatype=pbi_datatype,
-                        source_column=final_col_name,  # Regular columns use their name as the source column
-                        description=description,
-                        is_hidden=is_hidden,
-                        format_string=format_string,
-                        summarize_by=summarize_by,
-                        annotations=annotations
-                    )
-                pbi_columns.append(column)
-
-        return pbi_columns, pbi_measures
-
-    # The old extract_all_tables method has been replaced with a new implementation above
-
-    def _get_datasource_id(self, element: ET.Element) -> str:
-        """Get the datasource ID for a table element to help with deduplication.
-        
-        Args:
-            element: The table element
-            
-        Returns:
-            Datasource ID or empty string if not found
-        """
-        # Try to find the connection attribute which often contains the datasource ID
-        connection = element.get('connection', '')
-        if connection:
-            return connection
-
-        # Try to find the parent datasource element
-        parent = element
-        while parent is not None:
-            if parent.tag.endswith('datasource'):
-                return parent.get('name', '')
-            parent = parent.getparent() if hasattr(parent, 'getparent') else None
-
-        return ''
-
-    def _find_columns_for_datasource(self, datasource_name: str) -> List[ET.Element]:
-        """Find columns associated with a specific datasource.
-        
-        Args:
-            datasource_name: The name of the datasource
-            
-        Returns:
-            List of column elements associated with the datasource
-        """
-        # Try to find columns in datasource-dependencies sections
-        columns = []
-
-        # Find all datasource-dependencies elements that reference this datasource
-        dependency_xpath = f"//datasource-dependencies[@datasource='{datasource_name}']//column"
-        try:
-            columns.extend(self.root.findall(dependency_xpath, self.namespaces))
-        except Exception as e:
-            print(f"Debug: Error finding columns with dependency XPath: {str(e)}")
-
-        # Also look for columns directly in the datasource definition
-        datasource_xpath = f"//datasource[@name='{datasource_name}']//column"
-        try:
-            columns.extend(self.root.findall(datasource_xpath, self.namespaces))
-        except Exception as e:
-            print(f"Debug: Error finding columns with datasource XPath: {str(e)}")
-
-        print(f"Debug: Found {len(columns)} columns for datasource '{datasource_name}'")
-        return columns
-
-    def _extract_nested_tables(self, join_element) -> List[ET.Element]:
-        """Extract table relations from a join relation element.
-        
-        Args:
-            join_element: The join relation element
-            
-        Returns:
-            List of table relation elements
-        """
-        tables = []
-
-        # Find all relation elements within this join
-        relations = join_element.findall('.//relation', self.namespaces)
-
-        for relation in relations:
-            relation_type = relation.get('type', '')
-            relation_name = relation.get('name', '')
-
-            if relation_type == 'table' and relation_name:
-                print(f'Debug: Found nested table: {relation_name}')
-                tables.append(relation)
-            elif relation_type == 'text' and relation_name:
-                # Handle SQL query relations
-                print(f'Debug: Found SQL query table: {relation_name}')
-                tables.append(relation)
-
-        return tables
-
-    def _map_datatype(self, tableau_type: str) -> str:
-        """Map Tableau datatypes to Power BI datatypes."""
-        type_mapping = self.config.get('tableau_datatype_to_tmdl', {})
-        return type_mapping.get(tableau_type.lower(), 'string')
-
-
-def parse_workbook(twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
-    """Parse a Tableau workbook file.
-    
-    Args:
-        twb_path: Path to the TWB file
-        config: Configuration dictionary
-        
-    Returns:
-        Dict containing extracted table information
-    """
-    parser = TableParser(twb_path, config)
-    data = {
-        'PowerBiTables': parser.extract_all_tables()
-    }
-
-    # Save intermediate file
-    parser.save_intermediate(data, 'tables')
-
-    return data

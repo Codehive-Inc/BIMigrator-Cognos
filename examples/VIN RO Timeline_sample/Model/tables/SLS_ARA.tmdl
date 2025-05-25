@@ -1,0 +1,70 @@
+﻿table SLS_ARA
+
+	column ARA_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ARA_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column ARA_NM
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ARA_NM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRTE_TS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CRTE_TS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CRTE_USR_ID
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CRTE_USR_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SLS_ARA_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SLS_ARA_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column SLS_RGN_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SLS_RGN_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPDT_TS
+		dataType: string
+		summarizeBy: none
+		sourceColumn: UPDT_TS
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPDT_USR_ID
+		dataType: string
+		summarizeBy: none
+		sourceColumn: UPDT_USR_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SLS_ARA = m
+		mode: import
+		source =
+				let
+				Source = Snowflake.Databases("BPRGHLX-WY77207.snowflakecomputing.com","COMPUTE_WH"){[Name="SPDBDBS",Kind="Database"]}[Data]{[Name="DBSRW_SYS",Kind="Schema"]}[Data]{[Name="SLS_ARA",Kind="Table"]}[Data]
+				, Kept_First_Rows = Table.FirstN(Source,10)
+				in Kept_First_Rows
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

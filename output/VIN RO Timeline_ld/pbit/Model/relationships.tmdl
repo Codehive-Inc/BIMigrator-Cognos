@@ -1,0 +1,50 @@
+relationship 5c30c448-bf25-4781-abae-b1169acf1d26
+	fromColumn: 'RPR_ORDR'.VIN_ID
+	toColumn: 'SVC_VHCL'.VIN_ID
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+relationship 55590645-303d-4aad-b542-1474fa38f45b
+	fromColumn: 'SLS_DSTRCT'.SLS_ARA_CD
+	toColumn: 'SLS_ARA'.SLS_ARA_CD
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+relationship 0085f82f-2b50-449e-bc60-3cc30fb3ce7a
+	fromColumn: 'DLR'.SLS_DSTRCT_CD
+	toColumn: 'SLS_DSTRCT'.SLS_DSTRCT_CD
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+relationship 809d454f-169e-4cf7-8218-dfc181c2d02e
+	fromColumn: 'VHCL_CMPGN'.CMPGN_NB
+	toColumn: 'CMPGN_MSTR'.CMPGN_NB
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+relationship 7f1a4377-f27a-4b80-9aa9-16fcb8a0aff4
+	fromColumn: 'RPR_ORDR'.VIN_ID
+	toColumn: 'VHCL_CMPGN'.VIN_ID
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+relationship e04ea810-a93a-453c-8e8d-cca07ff141bc
+	fromColumn: 'RPR_ORDR'.RFRNC_DLR_NB
+	toColumn: 'DLR'.RFRNC_DLR_NB
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+relationship 6c871a71-3915-4916-a359-c6fce2170d3d
+	fromColumn: 'RPR_ORDR'.RPR_ORDR_KY
+	toColumn: 'RPR_ORDR_LN'.RPR_ORDR_KY
+	crossFilteringBehavior: oneWay
+	fromCardinality: one
+	isActive: true
+
+

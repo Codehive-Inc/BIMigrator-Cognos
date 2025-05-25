@@ -1,7 +1,7 @@
 """Generator for table TMDL files."""
+import json
 from typing import Dict, Any, Optional, List
 from pathlib import Path
-from typing import Optional, List
 
 from bimigrator.config.data_classes import PowerBiTable
 from .base_template_generator import BaseTemplateGenerator
@@ -130,11 +130,12 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         # Generate the file with consistent table name
         return self.generate_file('table', template_data, name=table.source_name)
 
-    def generate_all_tables(self, tables: List[PowerBiTable], output_dir: Optional[Path] = None) -> List[Path]:
+    def generate_all_tables(self, tables: List[PowerBiTable], relationships: Optional[List[Dict[str, Any]]] = None, output_dir: Optional[Path] = None) -> List[Path]:
         """Generate TMDL files for all tables.
         
         Args:
             tables: List of PowerBiTable instances
+            relationships: Optional list of relationship dictionaries
             output_dir: Optional output directory override
             
         Returns:
@@ -147,12 +148,24 @@ class TableTemplateGenerator(BaseTemplateGenerator):
             self.extracted_dir = self.output_dir / 'extracted'
             print(f'Debug: Using output directory: {output_dir}')
 
+        # Get tables referenced in relationships
+        relationship_tables = set()
+        if relationships:
+            for rel in relationships:
+                relationship_tables.add(rel.from_table)
+                relationship_tables.add(rel.to_table)
+                print(f'Debug: Found relationship table: {rel.from_table} -> {rel.to_table}')
+
         # Create a dictionary to track unique table names
         # This ensures we don't generate duplicate TMDL files for tables with the same name
         unique_tables = {}
         for table in tables:
-            # If we have multiple tables with the same name, we'll use the one with more columns/measures
-            if table.source_name in unique_tables:
+            # Always keep tables that are referenced in relationships
+            if table.source_name in relationship_tables:
+                unique_tables[table.source_name] = table
+                print(f'Debug: Keeping table {table.source_name} (referenced in relationships)')
+            # For other tables, use complexity-based deduplication
+            elif table.source_name in unique_tables:
                 existing_table = unique_tables[table.source_name]
                 existing_complexity = len(existing_table.columns) + len(existing_table.measures)
                 new_complexity = len(table.columns) + len(table.measures)
@@ -166,7 +179,7 @@ class TableTemplateGenerator(BaseTemplateGenerator):
 
         # Use the unique tables dictionary
         unique_table_list = list(unique_tables.values())
-        print(f'Debug: Processing {len(unique_table_list)} unique tables')
+        print(f'Debug: Processing {len(unique_table_list)} unique tables (including {len(relationship_tables)} from relationships)')
 
         table_paths = []
         for i, table in enumerate(unique_table_list, 1):

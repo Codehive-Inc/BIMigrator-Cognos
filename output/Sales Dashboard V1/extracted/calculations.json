@@ -1,0 +1,44 @@
+{
+  "calculations": [
+    {
+      "TableName": "Sheet1 (sample_sales_data)",
+      "FormulaCaptionTableau": "Region Sales",
+      "TableauName": "[Calculation_606860061092720640]",
+      "FormulaTableau": "[Region] + \" Sales\"",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Region Sales",
+      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "Status": "failed"
+    },
+    {
+      "TableName": "Sheet1 (sample_sales_data)",
+      "FormulaCaptionTableau": "Region Split",
+      "TableauName": "[Calculation_606860061093117953]",
+      "FormulaTableau": "case [Calculation_606860061092720640]\r\nwhen \"North Sales\" then \"North East\"\r\nwhen \"East Sales\" then \"North East\"\r\nwhen \"South Sales\" then \"South West\"\r\nwhen \"West Sales\" then \"South West\"\r\nend",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Region Split",
+      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "Status": "failed"
+    },
+    {
+      "TableName": "Sheet1 (sample_sales_data)",
+      "FormulaCaptionTableau": "Units",
+      "TableauName": "[Calculation_606860061096038402]",
+      "FormulaTableau": "[Sales]/[Quantity]",
+      "FormulaTypeTableau": "measure",
+      "PowerBIName": "Units",
+      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "Status": "failed"
+    },
+    {
+      "TableName": "Sheet1 (sample_sales_data)",
+      "FormulaCaptionTableau": "Units Measure",
+      "TableauName": "[Calculation_606860061097861123]",
+      "FormulaTableau": "SUM([Calculation_606860061096038402])",
+      "FormulaTypeTableau": "measure",
+      "PowerBIName": "Units Measure",
+      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "Status": "failed"
+    }
+  ]
+}

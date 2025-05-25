@@ -1,0 +1,114 @@
+{
+  "calculations": [
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Number Days Down",
+      "TableauName": "[Calculation_429530866587791360]",
+      "FormulaTableau": "IFNULL(STR(INT([RPR_ORDR_CLOS_DT] - [RPR_ORDR_OPN_DT])), \"Missing Open/Close Date\")",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Number Days Down",
+      "FormulaDax": "IF(ISBLANK('RO VIN Entry'[RPR_ORDR_CLOS_DT]) || ISBLANK('RO VIN Entry'[RPR_ORDR_OPN_DT]), \"Missing Open / Close Date\", CONCATENATE(NUMBERSTRING(INT('RO VIN Entry'[RPR_ORDR_CLOS_DT] - 'RO VIN Entry'[RPR_ORDR_OPN_DT]))))",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Dealer Code - Dealer Name",
+      "TableauName": "[Calculation_429530866589396993]",
+      "FormulaTableau": "[DLR_NB] + \" - \"+[DLR_NM]",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Dealer Code - Dealer Name",
+      "FormulaDax": "'RO VIN Entry'[DLR_NB] & \" - \" & 'RO VIN Entry'[DLR_NM]",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Coverage Code",
+      "TableauName": "[Calculation_429530866589745154]",
+      "FormulaTableau": "IFNULL([CVRG_CD], \" \")",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Coverage Code",
+      "FormulaDax": "IIF(ISBLANK('RO VIN Entry'[CVRG_CD]), \" \", 'RO VIN Entry'[CVRG_CD])",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "VIN Filter",
+      "TableauName": "[Calculation_643170368954662912]",
+      "FormulaTableau": "TRIM([Parameters].[Parameter 1]) = [VIN_ID]",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "VIN Filter",
+      "FormulaDax": "TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Distinct ROs",
+      "TableauName": "[Calculation_643170368956063745]",
+      "FormulaTableau": "COUNTD([RPR_ORDR_KY])",
+      "FormulaTypeTableau": "measure",
+      "PowerBIName": "Distinct ROs",
+      "FormulaDax": "DISTINCTCOUNT('RO VIN Entry'[RPR_ORDR_KY])",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "RO Date",
+      "TableauName": "[Calculation_643170368956375042]",
+      "FormulaTableau": "IFNULL([RPR_ORDR_OPN_DT],[RPR_ORDR_CLOS_DT])",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "RO Date",
+      "FormulaDax": "COALESCE('RO VIN Entry'[RPR_ORDR_OPN_DT], 'RO VIN Entry'[RPR_ORDR_CLOS_DT])",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Placeholder",
+      "TableauName": "[Calculation_643170368958738435]",
+      "FormulaTableau": "MIN(0)",
+      "FormulaTypeTableau": "measure",
+      "PowerBIName": "Placeholder",
+      "FormulaDax": "MIN(0)",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Campaign Age",
+      "TableauName": "[Calculation_643170369011646473]",
+      "FormulaTableau": "DATEDIFF('day',[INTRNL_EFCTV_DT], TODAY())",
+      "FormulaTypeTableau": "measure",
+      "PowerBIName": "Campaign Age",
+      "FormulaDax": "DATEDIFF(DAY, 'RO VIN Entry'[INTRNL_EFCTV_DT], TODAY())",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "IntEffDate Filter",
+      "TableauName": "[Calculation_814025680241115136]",
+      "FormulaTableau": "[INTRNL_EFCTV_DT] <= TODAY()",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "IntEffDate Filter",
+      "FormulaDax": "'RO VIN Entry'[INTRNL_EFCTV_DT] < = TODAY()",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Go to Export",
+      "TableauName": "[Calculation_977562646258507776]",
+      "FormulaTableau": "\"Click here for a detailed view for exporting.\"",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Go to Export",
+      "FormulaDax": "\"Click here for a detailed view for exporting.\"",
+      "Status": "converted"
+    },
+    {
+      "TableName": "RO VIN Entry",
+      "FormulaCaptionTableau": "Go back",
+      "TableauName": "[Calculation_977562646261112833]",
+      "FormulaTableau": "\"Go back to Dashboard View\"",
+      "FormulaTypeTableau": "calculated_column",
+      "PowerBIName": "Go back",
+      "FormulaDax": "\"Go back to Dashboard View\"",
+      "Status": "converted"
+    }
+  ]
+}

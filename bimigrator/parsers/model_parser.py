@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 from bimigrator.config.data_classes import PowerBiModel, DataAccessOptions
 from bimigrator.parsers.base_parser import BaseParser
@@ -8,16 +8,18 @@ from bimigrator.parsers.table_parser import TableParser
 class ModelParser(BaseParser):
     """Parser for extracting model information from Tableau workbooks."""
 
-    def __init__(self, twb_path: str, config: Dict[str, Any], output_dir: str = 'output'):
+    def __init__(self, twb_path: str, config: Dict[str, Any], output_dir: str = 'output', table_parser: Optional[TableParser] = None):
         super().__init__(twb_path, config, output_dir)
-        self.table_parser = TableParser(twb_path, config, output_dir)
+        self.table_parser = table_parser or TableParser(twb_path, config, output_dir)
 
-    def extract_model_info(self) -> (PowerBiModel, List[Any]):
+    def extract_model_info(self, tables: Optional[List[Any]] = None) -> PowerBiModel:
         """Extract model information from the workbook.
+        
+        Args:
+            tables: Optional list of pre-extracted tables. If not provided, will extract tables.
         
         Returns:
             PowerBiModel: The extracted model information
-            List[Any]: The extracted tables
         """
         mapping = self.config['PowerBiModel']
 
@@ -64,8 +66,10 @@ class ModelParser(BaseParser):
         if 'PBIDesktopVersion' in annotations:
             desktop_version = annotations['PBIDesktopVersion']
 
-        # Extract tables using table parser
-        tables = self.table_parser.extract_all_tables()
+        # Extract tables if not provided
+        if tables is None:
+            tables = self.table_parser.extract_all_tables()
+            
         # Deduplicate table names while preserving order
         seen = set()
         table_names = [x for x in (table.source_name for table in tables) if not (x in seen or seen.add(x))]
@@ -78,7 +82,7 @@ class ModelParser(BaseParser):
             time_intelligence_enabled=time_intelligence_enabled,
             tables=table_names,
             desktop_version=desktop_version
-        ), tables
+        )
 
     def extract_all(self) -> Dict[str, Any]:
         """Extract all model information.
@@ -86,7 +90,8 @@ class ModelParser(BaseParser):
         Returns:
             Dict containing PowerBiModel information
         """
-        model, tables = self.extract_model_info()
+        tables = self.table_parser.extract_all_tables()
+        model = self.extract_model_info(tables)
         return {
             'PowerBiModel': model,
             'PowerBiTables': tables
