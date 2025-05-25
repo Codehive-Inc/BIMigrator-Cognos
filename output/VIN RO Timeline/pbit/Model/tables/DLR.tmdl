@@ -1,0 +1,17 @@
+table 'DLR'
+
+
+    column 'SLS_DSTRCT_CD'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

@@ -160,11 +160,20 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         table_parser = TableParser(filename, config, str(structure_generator.extracted_dir))
         tables = table_parser.extract_all_tables()
 
+        # Extract relationships first
+        relationship_parser = RelationshipParser(filename, config, output_dir)
+        relationships = relationship_parser.extract_relationships()
+
         # Generate table TMDL files
         table_generator = TableTemplateGenerator(
             config, twb_name, output_dir
         )
-        table_paths = table_generator.generate_all_tables(tables, output_dir=structure_generator.base_dir)
+        # Pass relationships to table generator
+        table_paths = table_generator.generate_all_tables(
+            tables, 
+            relationships=relationships,
+            output_dir=structure_generator.base_dir
+        )
         print(f'Generated {len(table_paths)} table TMDL files:')
         for path in table_paths:
             print(f'  - {path}')

@@ -9,7 +9,7 @@ from bimigrator.config.data_classes import PowerBiColumn, PowerBiPartition
 from bimigrator.parsers.table_parser_base import TableParserBase
 
 
-class PartitionParser(TableParserBase):
+class TablePartitionParser(TableParserBase):
     """Parser for extracting partition information from Tableau workbooks."""
 
     def _extract_partition_info(

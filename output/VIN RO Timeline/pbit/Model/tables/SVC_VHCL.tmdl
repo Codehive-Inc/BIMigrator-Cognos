@@ -1,0 +1,17 @@
+table 'SVC_VHCL'
+
+
+    column 'VIN_ID'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

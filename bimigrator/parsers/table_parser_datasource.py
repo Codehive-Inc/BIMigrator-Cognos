@@ -6,7 +6,7 @@ from typing import Dict, Any, List, Tuple
 from bimigrator.common.logging import logger
 from bimigrator.config.data_classes import PowerBiTable, PowerBiColumn, PowerBiMeasure
 from bimigrator.parsers.table_parser_base import TableParserBase
-from bimigrator.parsers.table_parser_partition import PartitionParser
+from bimigrator.parsers.table_parser_partition import TablePartitionParser
 from bimigrator.parsers.table_parser_relation import TableRelationParser
 
 
@@ -22,7 +22,7 @@ class DatasourceParser(TableParserBase):
             output_dir: Output directory
         """
         super().__init__(twb_file, config, output_dir)
-        self.partition_parser = PartitionParser(twb_file, config, output_dir)
+        self.partition_parser = TablePartitionParser(twb_file, config, output_dir)
         self.relation_parser = TableRelationParser(twb_file, config, output_dir)
 
     def _get_datasource_id(self, ds_element: ET.Element) -> str:

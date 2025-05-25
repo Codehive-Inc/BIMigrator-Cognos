@@ -1,7 +1,7 @@
 """Generator for table TMDL files."""
+import json
 from typing import Dict, Any, Optional, List
 from pathlib import Path
-from typing import Optional, List
 
 from bimigrator.config.data_classes import PowerBiTable
 from .base_template_generator import BaseTemplateGenerator
@@ -130,11 +130,12 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         # Generate the file with consistent table name
         return self.generate_file('table', template_data, name=table.source_name)
 
-    def generate_all_tables(self, tables: List[PowerBiTable], output_dir: Optional[Path] = None) -> List[Path]:
+    def generate_all_tables(self, tables: List[PowerBiTable], relationships: Optional[List[Dict[str, Any]]] = None, output_dir: Optional[Path] = None) -> List[Path]:
         """Generate TMDL files for all tables.
         
         Args:
             tables: List of PowerBiTable instances
+            relationships: Optional list of relationship dictionaries
             output_dir: Optional output directory override
             
         Returns:
@@ -149,17 +150,11 @@ class TableTemplateGenerator(BaseTemplateGenerator):
 
         # Get tables referenced in relationships
         relationship_tables = set()
-        try:
-            extracted_dir = self.output_dir / 'extracted'
-            relationship_file = extracted_dir / 'relationship.json'
-            if relationship_file.exists():
-                with open(relationship_file) as f:
-                    relationships = json.load(f)
-                    for rel in relationships:
-                        relationship_tables.add(rel.get('from_table', ''))
-                        relationship_tables.add(rel.get('to_table', ''))
-        except Exception as e:
-            print(f'Debug: Error reading relationships: {str(e)}')
+        if relationships:
+            for rel in relationships:
+                relationship_tables.add(rel.from_table)
+                relationship_tables.add(rel.to_table)
+                print(f'Debug: Found relationship table: {rel.from_table} -> {rel.to_table}')
 
         # Create a dictionary to track unique table names
         # This ensures we don't generate duplicate TMDL files for tables with the same name

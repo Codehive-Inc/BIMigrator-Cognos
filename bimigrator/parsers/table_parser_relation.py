@@ -76,3 +76,48 @@ class TableRelationParser(TableParserBase):
             logger.error(f"Error extracting table relations: {str(e)}", exc_info=True)
 
         return relations
+
+    def extract_relationships(self) -> List[Dict[str, str]]:
+        """Extract relationships between tables.
+        
+        Returns:
+            List of dictionaries containing relationship information
+        """
+        relationships = []
+        try:
+            # Find all datasources
+            for ds in self.root.findall('.//datasource'):
+                # Get all table relations
+                relations = self.extract_table_relations(ds)
+                
+                # Look for join clauses
+                for clause in ds.findall('.//clause[@type="join"]'):
+                    # Extract tables from expressions
+                    expressions = clause.findall('.//expression')
+                    if len(expressions) == 2:  # We need two expressions for a relationship
+                        expr1, expr2 = expressions
+                        op1 = expr1.get('op', '')
+                        op2 = expr2.get('op', '')
+                        
+                        if '[' in op1 and '].[' in op1 and '[' in op2 and '].[' in op2:
+                            # Extract table and column names
+                            table1 = op1.split('].[')[0].strip('[')
+                            column1 = op1.split('].[')[1].strip(']')
+                            table2 = op2.split('].[')[0].strip('[')
+                            column2 = op2.split('].[')[1].strip(']')
+                            
+                            # Create relationship
+                            relationship = {
+                                'from_table': table1,
+                                'from_column': column1,
+                                'to_table': table2,
+                                'to_column': column2
+                            }
+                            relationships.append(relationship)
+                            
+                            logger.debug(f"Found relationship: {table1}.{column1} -> {table2}.{column2}")
+
+        except Exception as e:
+            logger.error(f"Error extracting relationships: {str(e)}", exc_info=True)
+            
+        return relationships

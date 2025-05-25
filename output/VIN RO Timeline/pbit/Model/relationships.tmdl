@@ -1,46 +1,46 @@
-relationship d188f8dd-eb1f-4798-8106-eba7349c2746
+relationship 27a206c3-9002-43b1-b048-e4be68a13fbc
 	fromColumn: 'RPR_ORDR'.VIN_ID
 	toColumn: 'SVC_VHCL'.VIN_ID
 	crossFilteringBehavior: oneWay
 	fromCardinality: one
 	isActive: true
 
-relationship 67e9899b-f444-46cc-a874-49f4b1f3630f
+relationship 78f3c4ff-3114-4bd1-9b57-4c6fa8785b06
 	fromColumn: 'SLS_DSTRCT'.SLS_ARA_CD
 	toColumn: 'SLS_ARA'.SLS_ARA_CD
 	crossFilteringBehavior: oneWay
 	fromCardinality: one
 	isActive: true
 
-relationship 43320b2b-211b-49bc-8df1-99b647e760b4
+relationship 2cd61d75-fa60-4cd6-98ff-fc43f22aa0bc
 	fromColumn: 'DLR'.SLS_DSTRCT_CD
 	toColumn: 'SLS_DSTRCT'.SLS_DSTRCT_CD
 	crossFilteringBehavior: oneWay
 	fromCardinality: one
 	isActive: true
 
-relationship 457d6fec-8531-45e2-a13d-936102bd9c51
+relationship 62fafdcf-d568-46f7-8e10-d2f8fbde3f65
 	fromColumn: 'VHCL_CMPGN'.CMPGN_NB
 	toColumn: 'CMPGN_MSTR'.CMPGN_NB
 	crossFilteringBehavior: oneWay
 	fromCardinality: one
 	isActive: true
 
-relationship 696e6447-4f9c-495b-9805-eded37b65af5
+relationship 13bd26cf-e02f-4ed6-a6cd-c680538973a3
 	fromColumn: 'RPR_ORDR'.VIN_ID
 	toColumn: 'VHCL_CMPGN'.VIN_ID
 	crossFilteringBehavior: oneWay
 	fromCardinality: one
 	isActive: true
 
-relationship 8c5d5c95-f2f3-4d0d-8247-adbd39b97b43
+relationship 2d1e9f8a-b1f0-41f6-8d4d-90aad83cda00
 	fromColumn: 'RPR_ORDR'.RFRNC_DLR_NB
 	toColumn: 'DLR'.RFRNC_DLR_NB
 	crossFilteringBehavior: oneWay
 	fromCardinality: one
 	isActive: true
 
-relationship ea2e2b5e-dd60-47e9-a979-a5460874e1e3
+relationship 32241f31-a49b-4aaa-80ee-89cac25bc39f
 	fromColumn: 'RPR_ORDR'.RPR_ORDR_KY
 	toColumn: 'RPR_ORDR_LN'.RPR_ORDR_KY
 	crossFilteringBehavior: oneWay
