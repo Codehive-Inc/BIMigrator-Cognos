@@ -7,8 +7,8 @@
       "FormulaTableau": "[Region] + \" Sales\"",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Region Sales",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "'Sheet1 (sample_sales_data)'[Region] & \" Sales\"",
+      "Status": "converted"
     },
     {
       "TableName": "Sheet1 (sample_sales_data)",
@@ -17,8 +17,8 @@
       "FormulaTableau": "case [Calculation_606860061092720640]\r\nwhen \"North Sales\" then \"North East\"\r\nwhen \"East Sales\" then \"North East\"\r\nwhen \"South Sales\" then \"South West\"\r\nwhen \"West Sales\" then \"South West\"\r\nend",
       "FormulaTypeTableau": "calculated_column",
       "PowerBIName": "Region Split",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "SWITCH(TRUE(), 'Sheet1 (sample_sales_data)'[Region Sales] = \"North Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"East Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"South Sales\", \"South West\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"West Sales\", \"South West\")",
+      "Status": "converted"
     },
     {
       "TableName": "Sheet1 (sample_sales_data)",
@@ -27,8 +27,8 @@
       "FormulaTableau": "[Sales]/[Quantity]",
       "FormulaTypeTableau": "measure",
       "PowerBIName": "Units",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "'Sheet1 (sample_sales_data)'[Sales] / 'Sheet1 (sample_sales_data)'[Quantity]",
+      "Status": "converted"
     },
     {
       "TableName": "Sheet1 (sample_sales_data)",
@@ -37,8 +37,8 @@
       "FormulaTableau": "SUM([Calculation_606860061096038402])",
       "FormulaTypeTableau": "measure",
       "PowerBIName": "Units Measure",
-      "FormulaDax": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
-      "Status": "failed"
+      "FormulaDax": "SUM('Sheet1 (sample_sales_data)'[Units])",
+      "Status": "converted"
     }
   ]
 }

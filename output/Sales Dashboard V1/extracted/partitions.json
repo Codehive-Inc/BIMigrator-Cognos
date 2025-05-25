@@ -179,6 +179,16 @@
       "port": null,
       "authentication": null,
       "table_name": "Sheet1$"
+    },
+    {
+      "class": "federated",
+      "server": null,
+      "database": null,
+      "schema": null,
+      "username": null,
+      "port": null,
+      "authentication": null,
+      "table_name": "Sheet1 (sample_sales_data)"
     }
   ]
 }
