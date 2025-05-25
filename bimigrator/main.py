@@ -78,8 +78,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
     structure_generator.create_directory_structure()
     output_dir = structure_generator.base_dir
 
-    # Step 0: Generate version.txt
-    print('\nStep 0: Generating version.txt...')
+    # Step 1: Generate version.txt
+    print('\nStep 1: Generating version.txt...')
     try:
         version_parser = VersionParser(filename, config, output_dir)
         version_info = version_parser.extract_version()
@@ -91,8 +91,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate version.txt: {str(e)}')
         return
 
-    # Step 1: Generate culture TMDL
-    print('\nStep 1: Generating culture TMDL...')
+    # Step 2: Generate culture TMDL
+    print('\nStep 2: Generating culture TMDL...')
     try:
         culture_parser = CultureParser(filename, config, output_dir)
         culture_info = culture_parser.extract_culture_info()
@@ -120,8 +120,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate culture TMDL: {str(e)}')
         raise e
 
-    # Step 2: Generate .pbixproj.json
-    print('\nStep 2: Generating .pbixproj.json...')
+    # Step 3: Generate .pbixproj.json
+    print('\nStep 3: Generating .pbixproj.json...')
     try:
         from bimigrator.parsers.pbixproj_parser import PbixprojParser
         from bimigrator.generators.pbixproj_generator import PbixprojGenerator
@@ -137,8 +137,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate .pbixproj.json: {str(e)}')
         raise e
 
-    # Step 2: Generate database TMDL
-    print('\nStep 1: Generating database TMDL...')
+    # Step 4: Generate database TMDL
+    print('\nStep 4: Generating database TMDL...')
     try:
         db_parser = DatabaseParser(filename, config, output_dir)
         db_info = db_parser.extract_database_info()
@@ -153,8 +153,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate database TMDL: {str(e)}')
         raise e
 
-    # Step 3: Generate table TMDL files
-    print('\nStep 2: Generating table TMDL files...')
+    # Step 5: Generate table TMDL files
+    print('\nStep 5: Generating table TMDL files...')
     try:
         table_parser = TableParser(filename, config, str(structure_generator.extracted_dir))
         tables = table_parser.extract_all_tables()
@@ -170,8 +170,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate table TMDL files: {str(e)}')
         raise e
 
-    # Step 3: Generate relationships TMDL
-    print('\nStep 3: Generating relationship TMDL files...')
+    # Step 6: Generate relationships TMDL
+    print('\nStep 6: Generating relationship TMDL files...')
     try:
         print('Debug: Creating relationship parser...')
         relationship_parser = RelationshipParser(filename, config, output_dir)
@@ -195,8 +195,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate relationship TMDL files: {str(e)}')
         raise e
 
-    # Step 4: Generate report metadata
-    print('\nStep 4: Generating report metadata...')
+    # Step 7: Generate report metadata
+    print('\nStep 7: Generating report metadata...')
     try:
         report_metadata_parser = ReportMetadataParser(filename, config, output_dir)
         report_metadata = report_metadata_parser.extract_metadata()
@@ -215,8 +215,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate report metadata: {str(e)}')
         raise e
 
-    # Step 5: Generate report settings
-    print('\nStep 5: Generating report settings...')
+    # Step 8: Generate report settings
+    print('\nStep 8: Generating report settings...')
     try:
         report_settings_parser = ReportSettingsParser(filename, config, output_dir)
         report_settings = report_settings_parser.extract_report_settings()
@@ -235,8 +235,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate report settings: {str(e)}')
         raise e
 
-    # Step 6: Generate diagram layout
-    print('\nStep 6: Generating diagram layout...')
+    # Step 9: Generate diagram layout
+    print('\nStep 9: Generating diagram layout...')
     try:
         diagram_layout_parser = DiagramLayoutParser(filename, config, output_dir)
         diagram_layout = diagram_layout_parser.extract_diagram_layout()
@@ -255,8 +255,8 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         print(f'Failed to generate diagram layout: {str(e)}')
         raise e
 
-    # Step 7: Generate model TMDL
-    print('\nStep 7: Generating model TMDL...')
+    # Step 10: Generate model TMDL
+    print('\nStep 10: Generating model TMDL...')
     try:
         model_parser = ModelParser(filename, config, output_dir)
         model, tables = model_parser.extract_model_info()
