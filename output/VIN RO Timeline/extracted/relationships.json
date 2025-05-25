@@ -1,7 +1,7 @@
 {
   "relationships": [
     {
-      "id": "81ff432c-c860-45ff-acd2-e2a4cf12b0f8",
+      "id": "3a3e6f59-3571-4cef-8f32-beb0067c8abc",
       "from_table": "RPR_ORDR",
       "to_table": "SVC_VHCL",
       "from_column": "VIN_ID",
@@ -11,7 +11,7 @@
       "is_active": true
     },
     {
-      "id": "816f702d-26ad-4ff2-9358-4c8606e2aef2",
+      "id": "5fc6fa26-6c36-4c61-ae91-8a8df537d08d",
       "from_table": "SLS_DSTRCT",
       "to_table": "SLS_ARA",
       "from_column": "SLS_ARA_CD",
@@ -21,7 +21,7 @@
       "is_active": true
     },
     {
-      "id": "44c5e96d-ac3d-4778-8502-c3bda0bf6d88",
+      "id": "8c61cf89-eb41-4540-b8e4-5a84eb81a8e8",
       "from_table": "DLR",
       "to_table": "SLS_DSTRCT",
       "from_column": "SLS_DSTRCT_CD",
@@ -31,7 +31,7 @@
       "is_active": true
     },
     {
-      "id": "2403a641-d9ec-4914-b45d-c7df8edfdf78",
+      "id": "4d2de4c5-5a2b-48c7-bec1-122dcc7e2a38",
       "from_table": "VHCL_CMPGN",
       "to_table": "CMPGN_MSTR",
       "from_column": "CMPGN_NB",
@@ -41,7 +41,7 @@
       "is_active": true
     },
     {
-      "id": "1ad091c5-3b6c-414a-a71b-cb2e1905af04",
+      "id": "3e1d17cc-3478-45bb-ad9b-f6fddc71150f",
       "from_table": "RPR_ORDR",
       "to_table": "VHCL_CMPGN",
       "from_column": "VIN_ID",
@@ -51,7 +51,7 @@
       "is_active": true
     },
     {
-      "id": "e5a20d4d-e8c5-4136-bec9-8bd0b0575c73",
+      "id": "79a8dae9-9b1c-4589-8265-f48ca7f08644",
       "from_table": "RPR_ORDR",
       "to_table": "DLR",
       "from_column": "RFRNC_DLR_NB",
@@ -61,7 +61,7 @@
       "is_active": true
     },
     {
-      "id": "65407389-8cc2-4643-9374-26319c3ba8cf",
+      "id": "3ca9f4b4-507a-4411-9f48-709e493dd99d",
       "from_table": "RPR_ORDR",
       "to_table": "RPR_ORDR_LN",
       "from_column": "RPR_ORDR_KY",

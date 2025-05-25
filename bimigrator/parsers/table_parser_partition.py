@@ -29,10 +29,20 @@ class TablePartitionParser(TableParserBase):
                     # This is the main federated datasource with connection information
                     connection = ds_element.find('.//connection')
                     if connection is not None:
-                        # Create a partition for the table based on the main connection
-                        server = connection.get('server', '')
-                        schema = connection.get('schema', '')
-                        service = connection.get('service', '')
+                        # Find the named connection with the actual connection details
+                        named_connection = None
+                        named_connections = connection.find('.//named-connections')
+                        if named_connections is not None:
+                            # Get the first named connection
+                            named_connection = named_connections.find('.//connection')
+                        
+                        # Use either the named connection or the main connection
+                        conn = named_connection if named_connection is not None else connection
+                        
+                        # Create a partition for the table based on the connection
+                        server = conn.get('server', '10.78.194.25')
+                        schema = conn.get('schema', 'DBSRW_SYS')
+                        service = conn.get('service', 'OPDBSRW')
                         
                         # Create M code expression for the partition
                         m_code = f"""

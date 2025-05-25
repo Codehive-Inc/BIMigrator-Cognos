@@ -3895,7 +3895,7 @@ table 'RO VIN Entry'
     partition 'RO VIN Entry' = m
         mode: import
         source = 
-            	let Source = Oracle.Database(Server = "10.78.194.25:1521 / OPDBSRW", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "DBSRW_SYS",Kind = "Schema"]}[Data], #"Specified View" = #"Naviguated to Schema"{[Name = "TBUDBSRW",Kind = "View"]}[Data], #"Native Query" = let Source = #"Specified View", Query = Value.NativeQuery(Source, " query ", meta [Type = "SQL", Representation = "StructureWithRows"]) in Query, #"Removed Other Columns" = Table.SelectColumns(#"Native Query",{"Column1", "Column2"}) in #"Removed Other Columns"
+            	let Source = Oracle.Database(Server = "10.78.194.25:1521 / OPDBSRW", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "DBSRW_SYS",Kind = "Schema"]}[Data], #"Specified View" = #"Naviguated to Schema"{[Name = "TBUDBSRW",Kind = "View"]}[Data], #"View Options" = [ UseRelationalView = true, ViewDefinitionCode = "", ViewDefinitionMacro = "" ], #"View Navigation" = #"Specified View" & #"View Options" in #"View Navigation"
         
 
 

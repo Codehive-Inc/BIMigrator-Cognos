@@ -79,7 +79,7 @@ table 'SLS_ARA'
     partition 'SLS_ARA' = m
         mode: import
         source = 
-            let Source = Oracle.Database(Server = ":1521 / ", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
+            let Source = Oracle.Database(Server = "10.78.194.25:1521 / OPDBSRW", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "DBSRW_SYS",Kind = "Schema"]}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
         
 
 
