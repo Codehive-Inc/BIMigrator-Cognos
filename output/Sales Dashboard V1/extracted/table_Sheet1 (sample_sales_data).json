@@ -10,7 +10,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "source_column": "'Sheet1 (sample_sales_data)'[Region] & \" Sales\"",
       "description": "Converted from Tableau calculation: [Region] + \" Sales\"",
       "is_hidden": false,
       "summarize_by": "none",
@@ -26,7 +26,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "source_column": "SWITCH(TRUE(), 'Sheet1 (sample_sales_data)'[Region Sales] = \"North Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"East Sales\", \"North East\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"South Sales\", \"South West\", 'Sheet1 (sample_sales_data)'[Region Sales] = \"West Sales\", \"South West\")",
       "description": "Converted from Tableau calculation: case [Calculation_606860061092720640]\r\nwhen \"North Sales\" then \"North East\"\r\nwhen \"East Sales\" then \"North East\"\r\nwhen \"South Sales\" then \"South West\"\r\nwhen \"West Sales\" then \"South West\"\r\nend",
       "is_hidden": false,
       "summarize_by": "none",
@@ -200,7 +200,7 @@
   "measures": [
     {
       "source_name": "Units",
-      "dax_expression": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "dax_expression": "'Sheet1 (sample_sales_data)'[Sales] / 'Sheet1 (sample_sales_data)'[Quantity]",
       "description": "Converted from Tableau calculation: [Sales]/[Quantity]",
       "format_string": null,
       "is_hidden": false,
@@ -210,7 +210,7 @@
     },
     {
       "source_name": "Units Measure",
-      "dax_expression": "/* ERROR: Could not convert Tableau formula */\n/* Error details: [Errno 61] Connection refused */\nERROR(\"Conversion failed\")",
+      "dax_expression": "SUM('Sheet1 (sample_sales_data)'[Units])",
       "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
       "format_string": null,
       "is_hidden": false,
