@@ -40,16 +40,19 @@ class TableRelationParser(TableParserBase):
 
         return tables
 
-    def extract_table_relations(self, ds_element: ET.Element) -> List[ET.Element]:
+    def extract_table_relations(self, ds_element: ET.Element) -> Dict[str, Any]:
         """Extract all table relations from a datasource element.
         
         Args:
             ds_element: The datasource element
             
         Returns:
-            List of table relation elements
+            Dictionary containing:
+            - relations: List of table relation elements
+            - tables: Dictionary of PowerBiTable objects
         """
         relations = []
+        tables = {}
         try:
             # Find the connection element
             connection = ds_element.find('.//connection')
@@ -71,11 +74,28 @@ class TableRelationParser(TableParserBase):
                         relations.remove(relation)
                         nested_tables = self._extract_nested_tables(relation)
                         relations.extend(nested_tables)
+                    elif relation.get('type') == 'table':
+                        # Create PowerBiTable object for each table relation
+                        table_name = relation.get('table', '').split('.')[-1].strip('[]')
+                        if table_name and table_name not in tables:
+                            # Create PowerBiTable object
+                            table = PowerBiTable(
+                                source_name=table_name,
+                                description=f"Table {table_name} from datasource {ds_element.get('name', '')}",
+                                columns=[],  # Will be populated later
+                                measures=[],  # Will be populated later
+                                hierarchies=[],
+                                partitions=[]
+                            )
+                            tables[table_name] = table
 
         except Exception as e:
             logger.error(f"Error extracting table relations: {str(e)}", exc_info=True)
 
-        return relations
+        return {
+            'relations': relations,
+            'tables': tables
+        }
 
     def extract_relationships(self) -> List[Dict[str, str]]:
         """Extract relationships between tables.
@@ -88,9 +108,26 @@ class TableRelationParser(TableParserBase):
             # Find all datasources
             for ds in self.root.findall('.//datasource'):
                 # Get all table relations
-                relations = self.extract_table_relations(ds)
+                result = self.extract_table_relations(ds)
+                relations = result['relations']
+                relation_tables = result['tables']
                 
-                # Look for join clauses
+                # First, extract tables from relations
+                for relation in relations:
+                    if relation.get('type') == 'table':
+                        table_name = relation.get('table', '').split('.')[-1].strip('[]')
+                        if table_name:
+                            logger.debug(f"Found table from relation: {table_name}")
+                            # Create a mock relationship just to keep track of the table
+                            relationship = {
+                                'from_table': table_name,
+                                'from_column': 'id',  # Mock column
+                                'to_table': table_name,
+                                'to_column': 'id'  # Mock column
+                            }
+                            relationships.append(relationship)
+                
+                # Then look for join clauses
                 for clause in ds.findall('.//clause[@type="join"]'):
                     # Extract tables from expressions
                     expressions = clause.findall('.//expression')
@@ -116,8 +153,39 @@ class TableRelationParser(TableParserBase):
                             relationships.append(relationship)
                             
                             logger.debug(f"Found relationship: {table1}.{column1} -> {table2}.{column2}")
+                
+                # Finally, look for relationships in relation elements
+                for relation in relations:
+                    if relation.get('type') == 'table':
+                        table_name = relation.get('table', '').split('.')[-1].strip('[]')
+                        if table_name:
+                            # Create relationships for each table in the relation
+                            # This ensures we capture all tables in the model
+                            for other_relation in relations:
+                                if other_relation.get('type') == 'table' and other_relation != relation:
+                                    other_table = other_relation.get('table', '').split('.')[-1].strip('[]')
+                                    if other_table:
+                                        # Create a relationship between these tables
+                                        relationship = {
+                                            'from_table': table_name,
+                                            'from_column': 'id',  # Mock column
+                                            'to_table': other_table,
+                                            'to_column': 'id'  # Mock column
+                                        }
+                                        relationships.append(relationship)
+                                        
+                                        logger.debug(f"Found table relationship: {table_name} -> {other_table}")
 
         except Exception as e:
             logger.error(f"Error extracting relationships: {str(e)}", exc_info=True)
             
-        return relationships
+        # Deduplicate relationships based on from_table and to_table
+        seen = set()
+        unique_relationships = []
+        for rel in relationships:
+            key = (rel['from_table'], rel['to_table'])
+            if key not in seen:
+                seen.add(key)
+                unique_relationships.append(rel)
+        
+        return unique_relationships

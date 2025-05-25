@@ -2,7 +2,9 @@ table 'RO VIN Entry'
 
 
     column 'Number Days Down' = ```
-            IF(ISBLANK('RO VIN Entry'[RPR_ORDR_CLOS_DT]) || ISBLANK('RO VIN Entry'[RPR_ORDR_OPN_DT]), "Missing Open / Close Date", CONCATENATE(NUMBERSTRING(INT('RO VIN Entry'[RPR_ORDR_CLOS_DT] - 'RO VIN Entry'[RPR_ORDR_OPN_DT]))))
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -12,7 +14,9 @@ table 'RO VIN Entry'
 
         
     column 'Dealer Code - Dealer Name' = ```
-            'RO VIN Entry'[DLR_NB] & " - " & 'RO VIN Entry'[DLR_NM]
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -22,7 +26,9 @@ table 'RO VIN Entry'
 
         
     column 'Coverage Code' = ```
-            IIF(ISBLANK('RO VIN Entry'[CVRG_CD]), " ", 'RO VIN Entry'[CVRG_CD])
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -32,7 +38,9 @@ table 'RO VIN Entry'
 
         
     column 'VIN Filter' = ```
-            TRIM('Parameters'[Parameter 1]) = 'RO VIN Entry'[VIN_ID]
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: boolean
         summarizeBy: none
@@ -42,7 +50,9 @@ table 'RO VIN Entry'
 
         
     column 'RO Date' = ```
-            COALESCE('RO VIN Entry'[RPR_ORDR_OPN_DT], 'RO VIN Entry'[RPR_ORDR_CLOS_DT])
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: dateTime
         summarizeBy: none
@@ -52,7 +62,9 @@ table 'RO VIN Entry'
 
         
     column 'IntEffDate Filter' = ```
-            'RO VIN Entry'[INTRNL_EFCTV_DT] < = TODAY()
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: boolean
         summarizeBy: none
@@ -62,7 +74,9 @@ table 'RO VIN Entry'
 
         
     column 'Go to Export' = ```
-            "Click here for a detailed view for exporting."
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -72,7 +86,9 @@ table 'RO VIN Entry'
 
         
     column 'Go back' = ```
-            "Go back to Dashboard View"
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -3870,33 +3886,33 @@ table 'RO VIN Entry'
         
 
     measure 'Distinct ROs' = ```
-            DISTINCTCOUNT('RO VIN Entry'[RPR_ORDR_KY])
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Placeholder' = ```
-            MIN(0)
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Campaign Age' = ```
-            DATEDIFF(DAY, 'RO VIN Entry'[INTRNL_EFCTV_DT], TODAY())
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
-
-    partition 'RO VIN Entry' = m
-        mode: import
-        source = 
-            	let Source = Oracle.Database(Server = "10.78.194.25:1521 / OPDBSRW", [HierarchicalNavigation = true]), #"Navigue aux tables" = Navigation.NavigateToQuery(Source, [CreateNavigationQuery = true]), #"Convertir en tableau" = #"Navigue aux tables"{0}[Data], #"Promouvoir les en - têtes" = Table.PromoteHeaders(#"Convertir en tableau", [PromoteAllScalars = true]), #"Changer le type de colonne" = Table.TransformColumnTypes(#"Promouvoir les en - têtes",{"Kind", type text}) en #"Changer le type de colonne"
-        
 
 
 

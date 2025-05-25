@@ -1,14 +1,6 @@
-table 'RPR_ORDR'
+table 'CMPGN_MSTR'
 
 
-    column 'VIN_ID'
-        dataType: string
-        summarizeBy: none
-
-        dataCategory: Uncategorized
-        annotation SummarizationSetBy = Automatic
-
-        
     column 'id'
         dataType: string
         summarizeBy: none

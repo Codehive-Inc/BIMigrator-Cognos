@@ -6,17 +6,20 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["RPR_ORDR", "SVC_VHCL", "SLS_DSTRCT", "SLS_ARA", "DLR", "RO VIN Entry"]
+annotation PBI_QueryOrder = ["RO VIN Entry", "RPR_ORDR", "SVC_VHCL", "SLS_DSTRCT", "SLS_ARA", "DLR", "RPR_ORDR_LN", "VHCL_CMPGN", "CMPGN_MSTR"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
 
+ref table 'RO VIN Entry'
 ref table 'RPR_ORDR'
 ref table 'SVC_VHCL'
 ref table 'SLS_DSTRCT'
 ref table 'SLS_ARA'
 ref table 'DLR'
-ref table 'RO VIN Entry'
+ref table 'RPR_ORDR_LN'
+ref table 'VHCL_CMPGN'
+ref table 'CMPGN_MSTR'
 
 ref cultureInfo en-US

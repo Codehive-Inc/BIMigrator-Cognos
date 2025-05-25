@@ -6,12 +6,13 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Sheet1 (sample_sales_data)"]
+annotation PBI_QueryOrder = ["Sheet1 (sample_sales_data)", "Sheet1$"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
 
 ref table 'Sheet1 (sample_sales_data)'
+ref table 'Sheet1$'
 
 ref cultureInfo en-US

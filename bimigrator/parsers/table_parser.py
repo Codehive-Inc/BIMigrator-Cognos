@@ -123,9 +123,6 @@ class TableParser(TableParserBase):
         """
         tables = {}
         try:
-            # Get relationships from relationship parser
-            relationships = self.relationship_parser.extract_relationships()
-            
             # Get connection details from first datasource
             connection = None
             for ds in self.root.findall('.//datasource'):
@@ -139,10 +136,19 @@ class TableParser(TableParserBase):
             schema = connection.get('schema', '') if connection is not None else ''
             service = connection.get('service', '') if connection is not None else ''
             
-            # Create tables for each relationship
+            # First, get all tables from relations
+            for ds in self.root.findall('.//datasource'):
+                result = self.relationship_parser.extract_table_relations(ds)
+                for table_name, relation_table in result['tables'].items():
+                    if table_name not in tables:
+                        tables[table_name] = relation_table
+                        logger.debug(f"Found table from relation: {table_name}")
+            
+            # Then get tables from relationships
+            relationships = self.relationship_parser.extract_relationships()
             for rel in relationships:
                 # Process from_table
-                if rel.from_table not in tables:
+                if rel['from_table'] not in tables:
                     mock_ds = ET.Element('datasource')
                     mock_conn = ET.SubElement(mock_ds, 'connection')
                     mock_conn.set('class', conn_class)
@@ -152,12 +158,12 @@ class TableParser(TableParserBase):
                     
                     partitions = self.partition_parser._extract_partition_info(
                         mock_ds,
-                        rel.from_table,
+                        rel['from_table'],
                         None  # No columns yet
                     )
                     
-                    tables[rel.from_table] = PowerBiTable(
-                        source_name=rel.from_table,
+                    tables[rel['from_table']] = PowerBiTable(
+                        source_name=rel['from_table'],
                         description=f"Table from relationship",
                         columns=[],
                         measures=[],
@@ -166,17 +172,17 @@ class TableParser(TableParserBase):
                     )
                 
                 # Add from_column
-                if rel.from_column not in {c.source_name for c in tables[rel.from_table].columns}:
+                if rel['from_column'] not in {c.source_name for c in tables[rel['from_table']].columns}:
                     column = PowerBiColumn(
-                        source_name=rel.from_column,
+                        source_name=rel['from_column'],
                         pbi_datatype="string",  # Default to string, can be refined later
                         dataCategory="Uncategorized",
-                        description=f"Relationship column from {rel.from_table}"
+                        description=f"Relationship column from {rel['from_table']}"
                     )
-                    tables[rel.from_table].columns.append(column)
+                    tables[rel['from_table']].columns.append(column)
                 
                 # Process to_table
-                if rel.to_table not in tables:
+                if rel['to_table'] not in tables:
                     mock_ds = ET.Element('datasource')
                     mock_conn = ET.SubElement(mock_ds, 'connection')
                     mock_conn.set('class', conn_class)
@@ -186,12 +192,12 @@ class TableParser(TableParserBase):
                     
                     partitions = self.partition_parser._extract_partition_info(
                         mock_ds,
-                        rel.to_table,
+                        rel['to_table'],
                         None  # No columns yet
                     )
                     
-                    tables[rel.to_table] = PowerBiTable(
-                        source_name=rel.to_table,
+                    tables[rel['to_table']] = PowerBiTable(
+                        source_name=rel['to_table'],
                         description=f"Table from relationship",
                         columns=[],
                         measures=[],
@@ -200,18 +206,18 @@ class TableParser(TableParserBase):
                     )
                 
                 # Add to_column
-                if rel.to_column not in {c.source_name for c in tables[rel.to_table].columns}:
+                if rel['to_column'] not in {c.source_name for c in tables[rel['to_table']].columns}:
                     column = PowerBiColumn(
-                        source_name=rel.to_column,
+                        source_name=rel['to_column'],
                         pbi_datatype="string",  # Default to string, can be refined later
                         dataCategory="Uncategorized",
-                        description=f"Relationship column from {rel.to_table}"
+                        description=f"Relationship column from {rel['to_table']}"
                     )
-                    tables[rel.to_table].columns.append(column)
-                
+                    tables[rel['to_table']].columns.append(column)
+
         except Exception as e:
             logger.error(f"Error extracting relationship tables: {str(e)}", exc_info=True)
-            
+
         return tables
 
     def extract_all_tables(self) -> List[PowerBiTable]:
@@ -221,32 +227,101 @@ class TableParser(TableParserBase):
             List of PowerBiTable objects
         """
         try:
-            # Extract tables from datasources
+            # Extract tables from datasources first
             datasource_tables = self.datasource_parser.extract_all_tables()
             logger.info(f"Found {len(datasource_tables)} tables from datasources")
+            
+            # Create initial map with datasource tables
+            all_tables = {table.source_name: table for table in datasource_tables}
             
             # Extract tables from joins
             join_tables = self._extract_join_tables()
             logger.info(f"Found {len(join_tables)} tables from joins")
             
+            # Add join tables
+            for name, table in join_tables.items():
+                if name not in all_tables:
+                    all_tables[name] = table
+                else:
+                    # Merge columns and measures if table already exists
+                    existing_table = all_tables[name]
+                    existing_cols = {c.source_name for c in existing_table.columns}
+                    for col in table.columns:
+                        if col.source_name not in existing_cols:
+                            existing_table.columns.append(col)
+            
             # Extract tables from relationships
             relationship_tables = self._extract_relationship_tables()
             logger.info(f"Found {len(relationship_tables)} tables from relationships")
             
-            # Combine tables, preferring datasource tables over join/relationship tables
-            all_tables = {}
-            
-            # Add relationship tables first (lowest priority)
+            # Add relationship tables
             for name, table in relationship_tables.items():
-                all_tables[name] = table
+                if name not in all_tables:
+                    all_tables[name] = table
+                else:
+                    # Merge columns and measures if table already exists
+                    existing_table = all_tables[name]
+                    existing_cols = {c.source_name for c in existing_table.columns}
+                    for col in table.columns:
+                        if col.source_name not in existing_cols:
+                            existing_table.columns.append(col)
             
-            # Add join tables next (medium priority)
-            for name, table in join_tables.items():
-                all_tables[name] = table
+            # Process each table to ensure it has columns and partitions
+            for name, table in all_tables.items():
+                # Extract columns if not already present
+                if not table.columns:
+                    ds_element = self.root.find(f".//datasource[@name='{name}']")
+                    if ds_element is not None:
+                        columns, measures = self.column_parser.extract_columns_and_measures(
+                            ds_element,
+                            self.config.get('PowerBiColumn', {}),
+                            name
+                        )
+                        table.columns = columns
+                        table.measures = measures
                 
-            # Add datasource tables last (highest priority)
-            for table in datasource_tables:
-                all_tables[table.source_name] = table
+                # Extract partitions if not already present
+                if not table.partitions:
+                    ds_element = self.root.find(f".//datasource[@name='{name}']")
+                    if ds_element is not None:
+                        partitions = self.partition_parser._extract_partition_info(
+                            ds_element,
+                            name,
+                            table.columns
+                        )
+                        table.partitions = partitions
+            
+            # Process federated datasources
+            for ds_element in self.root.findall('.//datasource'):
+                connection = ds_element.find('.//connection')
+                if connection is not None and connection.get('class') == 'federated':
+                    # Get tables from relations
+                    result = self.relationship_parser.extract_table_relations(ds_element)
+                    relations = result['relations']
+                    relation_tables = result['tables']
+                    
+                    # Add each table from the relations
+                    for table_name, relation_table in relation_tables.items():
+                        if table_name not in all_tables:
+                            # Extract columns and partitions
+                            ds_element = self.root.find(f".//datasource[@name='{table_name}']")
+                            if ds_element is not None:
+                                columns, measures = self.column_parser.extract_columns_and_measures(
+                                    ds_element,
+                                    self.config.get('PowerBiColumn', {}),
+                                    table_name
+                                )
+                                relation_table.columns = columns
+                                relation_table.measures = measures
+                                
+                                partitions = self.partition_parser._extract_partition_info(
+                                    ds_element,
+                                    table_name,
+                                    columns
+                                )
+                                relation_table.partitions = partitions
+                            
+                            all_tables[table_name] = relation_table
             
             # Convert to list and deduplicate
             tables = list(all_tables.values())

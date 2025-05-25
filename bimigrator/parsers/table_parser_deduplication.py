@@ -21,16 +21,17 @@ class TableDeduplicator:
         unique_tables = {}
         for table in tables:
             key = table.source_name
-            # Always keep tables that are referenced in relationships
-            if relationship_table_names and key in relationship_table_names:
-                unique_tables[key] = table
-            elif key in unique_tables:
+            if key in unique_tables:
                 existing_table = unique_tables[key]
-                # Keep the table with more columns/measures
-                existing_complexity = len(existing_table.columns) + len(existing_table.measures)
-                new_complexity = len(table.columns) + len(table.measures)
-                if new_complexity > existing_complexity:
+                # If this is a relationship table, always keep it
+                if relationship_table_names and key in relationship_table_names:
                     unique_tables[key] = table
+                else:
+                    # Otherwise keep the table with more columns/measures
+                    existing_complexity = len(existing_table.columns) + len(existing_table.measures)
+                    new_complexity = len(table.columns) + len(table.measures)
+                    if new_complexity > existing_complexity:
+                        unique_tables[key] = table
             else:
                 unique_tables[key] = table
 

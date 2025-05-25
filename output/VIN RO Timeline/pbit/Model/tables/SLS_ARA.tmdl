@@ -9,6 +9,14 @@ table 'SLS_ARA'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
