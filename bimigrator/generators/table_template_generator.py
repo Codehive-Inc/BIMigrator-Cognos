@@ -190,6 +190,11 @@ class TableTemplateGenerator(BaseTemplateGenerator):
                 print(f'Debug: Skipping empty table {table.source_name} - no columns, measures, hierarchies, or partitions')
                 continue
                 
+            # Skip tables that only have a single "id" column that was created for relationships
+            if len(table.columns) == 1 and table.columns[0].source_name == 'id' and not table.measures and not table.hierarchies and not table.partitions:
+                print(f'Debug: Skipping table {table.source_name} - only has a mock "id" column')
+                continue
+                
             try:
                 table_path = self.generate_table_tmdl(table)
                 print(f'Debug: Generated TMDL file: {table_path}')
