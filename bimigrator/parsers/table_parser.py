@@ -435,6 +435,47 @@ class TableParser(TableParserBase):
         logger.info(f"Saved {len(all_tables)} tables to {file_path}")
         
         # Also save each table individually for easier debugging
+        # First, identify and remove tables that only have a mock "id" column
+        tables_to_remove = []
+        for table_dict in all_tables:
+            columns = table_dict.get('columns', [])
+            measures = table_dict.get('measures', [])
+            hierarchies = table_dict.get('hierarchies', [])
+            partitions = table_dict.get('partitions', [])
+            
+            # Check if this table only has a single "id" column or is completely empty
+            if ((len(columns) == 1 and columns[0].get('source_name') == 'id' and 
+                 not measures and not hierarchies and not partitions) or
+                (not columns and not measures and not hierarchies and not partitions)):
+                table_name = table_dict.get('source_name', 'unknown')
+                tables_to_remove.append(table_dict)
+                # Remove the individual table file if it exists
+                individual_file_path = os.path.join(self.intermediate_dir, f"table_{table_name}.json")
+                if os.path.exists(individual_file_path):
+                    try:
+                        os.remove(individual_file_path)
+                        if not columns:
+                            logger.info(f"Removed completely empty table file: {individual_file_path}")
+                        else:
+                            logger.info(f"Removed table file with only mock 'id' column: {individual_file_path}")
+                    except Exception as e:
+                        logger.error(f"Error removing table file: {str(e)}")
+        
+        # Remove these tables from the all_tables list
+        for table_dict in tables_to_remove:
+            all_tables.remove(table_dict)
+            columns = table_dict.get('columns', [])
+            if not columns:
+                logger.info(f"Removed completely empty table: {table_dict.get('source_name', 'unknown')}")
+            else:
+                logger.info(f"Removed table with only mock 'id' column: {table_dict.get('source_name', 'unknown')}")
+            
+        # Rewrite the main table.json file with the updated list (without mock tables)
+        with open(file_path, 'w') as f:
+            json.dump({'tables': all_tables}, f, indent=2)
+        logger.info(f"Updated main table.json file, removed {len(tables_to_remove)} tables with only mock 'id' columns")
+        
+        # Save the remaining tables individually
         for table_dict in all_tables:
             table_name = table_dict.get('source_name', 'unknown')
             individual_file_path = os.path.join(self.intermediate_dir, f"table_{table_name}.json")
@@ -605,8 +646,22 @@ class TableParser(TableParserBase):
                             
                             all_tables[table_name] = relation_table
             
+            # Filter out tables that only have a mock "id" column or are completely empty
+            filtered_tables = {}
+            for name, table in all_tables.items():
+                # Check if this table only has a single "id" column and no other content
+                if (len(table.columns) == 1 and table.columns[0].source_name == 'id' and 
+                    not table.measures and not table.hierarchies and not table.partitions):
+                    logger.info(f"Filtering out table {name} with only mock 'id' column")
+                # Check if this table is completely empty
+                elif (not table.columns and not table.measures and 
+                      not table.hierarchies and not table.partitions):
+                    logger.info(f"Filtering out completely empty table {name}")
+                else:
+                    filtered_tables[name] = table
+            
             # Convert to list and deduplicate
-            tables = list(all_tables.values())
+            tables = list(filtered_tables.values())
             tables = self.deduplicator.deduplicate_tables(tables, set(relationship_tables.keys()))
             logger.info(f"After deduplication, found {len(tables)} unique tables (including {len(relationship_tables)} from relationships)")
 
