@@ -193,6 +193,24 @@ class TableParser(TableParserBase):
                     )
                     tables[rel['to_table']].columns.append(column)
             
+            # Add tables that were found in relations but don't have relationships
+            # This is the replacement for the mock relationships with 'id' columns
+            if hasattr(self.relationship_parser, 'tables_from_relations'):
+                for table_name in self.relationship_parser.tables_from_relations:
+                    if table_name not in tables:
+                        # Get partitions for this table
+                        partitions = self.partition_parser.extract_partitions_for_table(table_name)
+                        
+                        # Create PowerBiTable object without any mock columns
+                        tables[table_name] = PowerBiTable(
+                            source_name=table_name,
+                            description=f"Table from relation",
+                            columns=[],  # No mock columns
+                            measures=[],
+                            hierarchies=[],
+                            partitions=partitions
+                        )
+            
             # Extract additional columns from <map> elements for each table
             # Find the main datasource element that contains the column mappings
             for ds_element in self.root.findall('.//datasource'):

@@ -167,6 +167,9 @@ class TableRelationParser(TableParserBase):
             List of dictionaries containing relationship information
         """
         relationships = []
+        # Track tables found in relations for later use
+        self.tables_from_relations = set()
+        
         try:
             # Find all datasources
             for ds in self.root.findall('.//datasource'):
@@ -187,18 +190,9 @@ class TableRelationParser(TableParserBase):
                         table_name = relation.get('table', '').split('.')[-1].strip('[]')
                         if table_name:
                             logger.debug(f"Found table from relation: {table_name}")
-                            # Create a mock relationship just to keep track of the table
-                            relationship = {
-                                'from_datasource_id': ds_id,
-                                'from_datasource_caption': ds_caption,
-                                'from_table': table_name,
-                                'from_column': 'id',  # Mock column
-                                'to_datasource_id': ds_id,
-                                'to_datasource_caption': ds_caption,
-                                'to_table': table_name,
-                                'to_column': 'id'  # Mock column
-                            }
-                            relationships.append(relationship)
+                            # Instead of creating a mock relationship with non-existent 'id' columns,
+                            # just track that we found this table
+                            self.tables_from_relations.add(table_name)
                 
                 # Process join relations (including nested ones)
                 self._process_join_relations(ds, ds_id, ds_caption, relationships)

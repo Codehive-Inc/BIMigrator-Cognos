@@ -184,6 +184,12 @@ class TableTemplateGenerator(BaseTemplateGenerator):
         table_paths = []
         for i, table in enumerate(unique_table_list, 1):
             print(f'\nDebug: Processing table {i}/{len(unique_table_list)}: {table.source_name}')
+            
+            # Skip empty tables (tables with no columns, measures, hierarchies, or partitions)
+            if not table.columns and not table.measures and not table.hierarchies and not table.partitions:
+                print(f'Debug: Skipping empty table {table.source_name} - no columns, measures, hierarchies, or partitions')
+                continue
+                
             try:
                 table_path = self.generate_table_tmdl(table)
                 print(f'Debug: Generated TMDL file: {table_path}')
