@@ -91,28 +91,30 @@ class RelationshipParser(BaseParser):
         Returns:
             Tuple of (from_table, to_table, from_column, to_column)
         """
-        # Look for join clause with equals expression
-        print('Debug: Looking for join clause with equals expression...')
-        equals_expr = join_element.find('.//clause[@type="join"]/expression[@op="="]')
-        if equals_expr is not None:
-            # Get the left and right expressions
-            left_expr = equals_expr.find('./expression[1]')
-            right_expr = equals_expr.find('./expression[2]')
+        # Find join clause
+        clause = join_element.find('.//clause[@type="join"]')
+        if clause is not None:
+            # Get expressions
+            expr = clause.find('./expression')
+            if expr is not None and expr.get('op') == '=':
+                # Get child expressions (left and right sides of the equation)
+                left_expr = expr.find('./expression[1]')
+                right_expr = expr.find('./expression[2]')
 
-            if left_expr is not None and right_expr is not None:
-                left_op = left_expr.get('op', '')
-                right_op = right_expr.get('op', '')
-                print(f'Debug: Found expressions - left: {left_op}, right: {right_op}')
+                if left_expr is not None and right_expr is not None:
+                    left_op = left_expr.get('op', '')
+                    right_op = right_expr.get('op', '')
+                    print(f'Debug: Found expressions - left: {left_op}, right: {right_op}')
 
-                from_table = self._extract_table_name(left_op)
-                to_table = self._extract_table_name(right_op)
-                from_column = self._extract_column_name(left_op)
-                to_column = self._extract_column_name(right_op)
+                    from_table = self._extract_table_name(left_op)
+                    to_table = self._extract_table_name(right_op)
+                    from_column = self._extract_column_name(left_op)
+                    to_column = self._extract_column_name(right_op)
 
-                if all([from_table, to_table, from_column, to_column]):
-                    result = (from_table, to_table, from_column, to_column)
-                    print(f'Debug: Found join info from expressions: {result}')
-                    return result
+                    if all([from_table, to_table, from_column, to_column]):
+                        result = (from_table, to_table, from_column, to_column)
+                        print(f'Debug: Found join info from expressions: {result}')
+                        return result
 
         # If no join clause found, try legacy format
         print('Debug: Trying legacy format...')
@@ -157,65 +159,59 @@ class RelationshipParser(BaseParser):
                 if connection is None:
                     continue
 
-                # Find relation elements
-                relations = connection.findall('.//relation')
-                if not relations:
-                    # Try with wildcard namespace
-                    for element in connection.findall('.//*'):
-                        if element.tag.endswith('relation'):
-                            relations.append(element)
-
-                # Process each relation
-                for relation in relations:
-                    print(f'Debug: Processing relation: {relation.attrib}')
+                # Process all join relations in this datasource (both standard and encapsulated legacy)
+                join_relations = []
+                
+                # Standard join relations
+                standard_joins = ds_element.findall('.//relation[@type="join"]')
+                join_relations.extend(standard_joins)
+                
+                # Encapsulated legacy join relations
+                legacy_joins = ds_element.findall('./_.fcp.ObjectModelEncapsulateLegacy.false...relation[@type="join"]')
+                join_relations.extend(legacy_joins)
+                
+                print(f'Debug: Found {len(join_relations)} join relations')
+                
+                for join_relation in join_relations:
+                    # Get join type
+                    join_type = join_relation.get('join', 'inner')
+                    print(f'Debug: Processing join relation with type: {join_type}')
                     
-                    # Check for join clauses
-                    join_clauses = relation.findall('.//clause[@type="join"]')
-                    for join_clause in join_clauses:
-                        equals_expr = join_clause.find('.//expression[@op="="]')
-                        if equals_expr is not None:
-                            # Get left and right expressions
-                            left_expr = equals_expr.find('./expression[1]')
-                            right_expr = equals_expr.find('./expression[2]')
+                    # Get table and column info
+                    from_table, to_table, from_column, to_column = self._get_join_info(join_relation)
+                    
+                    if all([from_table, to_table, from_column, to_column]):
+                        # Create unique key for this relationship
+                        rel_key = f"{from_table}:{from_column}:{to_table}:{to_column}"
+                        
+                        # Only add if we haven't seen this relationship before
+                        if rel_key not in seen_relationships:
+                            seen_relationships.add(rel_key)
                             
-                            if left_expr is not None and right_expr is not None:
-                                left_op = left_expr.get('op', '')
-                                right_op = right_expr.get('op', '')
-                                
-                                # Extract table and column names
-                                from_table = self._extract_table_name(left_op)
-                                to_table = self._extract_table_name(right_op)
-                                from_column = self._extract_column_name(left_op)
-                                to_column = self._extract_column_name(right_op)
-                                
-                                if all([from_table, to_table, from_column, to_column]):
-                                    # Create unique key for this relationship
-                                    rel_key = f"{from_table}:{from_column}:{to_table}:{to_column}"
-                                    
-                                    # Only add if we haven't seen this relationship before
-                                    if rel_key not in seen_relationships:
-                                        seen_relationships.add(rel_key)
-                                        
-                                        # Determine cross filter behavior based on join type
-                                        join_type = relation.get('join', 'inner')
-                                        cross_filter = "BothDirections" if join_type == "inner" else "OneDirection"
-                                        
-                                        # Generate unique ID for relationship
-                                        relationship_id = str(uuid.uuid4())
-                                        
-                                        # Create relationship object
-                                        relationship = PowerBiRelationship(
-                                            id=relationship_id,
-                                            from_table=from_table,
-                                            to_table=to_table,
-                                            from_column=from_column,
-                                            to_column=to_column,
-                                            cardinality="one",  # Set to one since we're on the 'from' side
-                                            cross_filter_behavior=cross_filter,
-                                            is_active=True
-                                        )
-                                        relationships.append(relationship)
-                                        print(f'Debug: Found relationship: {from_table}.{from_column} -> {to_table}.{to_column}')
+                            # Generate unique ID for relationship
+                            relationship_id = str(uuid.uuid4())
+                            
+                            # Determine cross filter direction based on join type
+                            cross_filter = "BothDirections" if join_type == "inner" else "OneDirection"
+                            
+                            # Create relationship object with datasource information
+                            relationship = PowerBiRelationship(
+                                id=relationship_id,
+                                from_table=from_table,
+                                to_table=to_table,
+                                from_column=from_column,
+                                to_column=to_column,
+                                cardinality="one",  # Set to one since we're on the 'from' side
+                                cross_filter_behavior=cross_filter,
+                                is_active=True,
+                                # Add datasource information
+                                from_datasource_id=ds_element.get('name', ''),
+                                from_datasource_caption=ds_element.get('caption', ds_element.get('name', '')),
+                                to_datasource_id=ds_element.get('name', ''),
+                                to_datasource_caption=ds_element.get('caption', ds_element.get('name', ''))
+                            )
+                            relationships.append(relationship)
+                            print(f'Debug: Found relationship: {from_table}.{from_column} -> {to_table}.{to_column}')
 
             except Exception as e:
                 print(f'Error processing datasource {ds_name}: {str(e)}')
@@ -232,7 +228,12 @@ class RelationshipParser(BaseParser):
                 'to_column': r.to_column,
                 'cardinality': r.cardinality,
                 'cross_filter_behavior': r.cross_filter_behavior,
-                'is_active': r.is_active
+                'is_active': r.is_active,
+                # Include datasource information
+                'from_datasource_id': getattr(r, 'from_datasource_id', ''),
+                'from_datasource_caption': getattr(r, 'from_datasource_caption', ''),
+                'to_datasource_id': getattr(r, 'to_datasource_id', ''),
+                'to_datasource_caption': getattr(r, 'to_datasource_caption', '')
             } for r in relationships]
             
             self.save_intermediate({'relationships': relationship_dicts}, 'relationships')

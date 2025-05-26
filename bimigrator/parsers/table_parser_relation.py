@@ -23,15 +23,14 @@ class TableRelationParser(TableParserBase):
         try:
             # Check if this is a join relation
             if join_element.get('type') == 'join':
-                # Get clauses
-                clauses = join_element.findall('.//clause')
-                for clause in clauses:
-                    # Extract expressions from clause
-                    expressions = clause.findall('.//expression')
-                    for expr in expressions:
-                        # Look for table relations within expressions
-                        relations = expr.findall('.//relation')
-                        tables.extend(relations)
+                # Extract nested relations
+                for relation in join_element.findall('./relation'):
+                    if relation.get('type') == 'table':
+                        # This is a table relation
+                        tables.append(relation)
+                    elif relation.get('type') == 'join':
+                        # This is a nested join relation, recursively extract tables
+                        tables.extend(self._extract_nested_tables(relation))
             else:
                 # Single table relation
                 tables.append(join_element)
@@ -40,6 +39,69 @@ class TableRelationParser(TableParserBase):
             logger.error(f"Error extracting nested tables: {str(e)}", exc_info=True)
 
         return tables
+
+    def _process_join_relations(self, ds_element: ET.Element, ds_id: str, ds_caption: str, relationships: List[Dict[str, Any]]):
+        """Process join relations in a datasource element, including nested joins.
+        
+        Args:
+            ds_element: The datasource element
+            ds_id: Datasource ID
+            ds_caption: Datasource caption
+            relationships: List to append relationships to
+        """
+        # Process all join relations (including nested ones with ObjectModelEncapsulateLegacy)
+        join_relations = []
+        
+        # Standard join relations
+        join_relations.extend(ds_element.findall('.//relation[@type="join"]'))
+        
+        # Encapsulated legacy join relations
+        legacy_joins = ds_element.findall('./_.fcp.ObjectModelEncapsulateLegacy.false...relation[@type="join"]')
+        join_relations.extend(legacy_joins)
+        
+        # Process each join relation
+        for join_relation in join_relations:
+            # Get join type
+            join_type = join_relation.get('join', 'inner')
+            
+            # Process all join clauses in this relation
+            for clause in join_relation.findall('.//clause[@type="join"]'):
+                # Extract tables from expressions
+                expressions = clause.findall('.//expression')
+                if len(expressions) >= 2:  # We need at least two expressions for a relationship
+                    # Get the parent expression that contains the operator
+                    parent_expr = clause.find('./expression')
+                    if parent_expr is not None:
+                        op = parent_expr.get('op', '=')
+                        
+                        # Get the child expressions (left and right sides of the equation)
+                        child_exprs = parent_expr.findall('./expression')
+                        if len(child_exprs) >= 2:
+                            expr1, expr2 = child_exprs[0], child_exprs[1]
+                            op1 = expr1.get('op', '')
+                            op2 = expr2.get('op', '')
+                            
+                            if '[' in op1 and '].[' in op1 and '[' in op2 and '].[' in op2:
+                                # Extract table and column names
+                                table1 = op1.split('].[')[0].strip('[') 
+                                column1 = op1.split('].[')[1].strip(']')
+                                table2 = op2.split('].[')[0].strip('[')
+                                column2 = op2.split('].[')[1].strip(']')
+                                
+                                # Create relationship with datasource information
+                                relationship = {
+                                    'from_datasource_id': ds_id,
+                                    'from_datasource_caption': ds_caption,
+                                    'from_table': table1,
+                                    'from_column': column1,
+                                    'to_datasource_id': ds_id,
+                                    'to_datasource_caption': ds_caption,
+                                    'to_table': table2,
+                                    'to_column': column2
+                                }
+                                relationships.append(relationship)
+                                
+                                logger.debug(f"Found relationship: {table1}.{column1} -> {table2}.{column2}")
 
     def extract_table_relations(self, ds_element: ET.Element) -> Dict[str, Any]:
         """Extract all table relations from a datasource element.
@@ -98,16 +160,25 @@ class TableRelationParser(TableParserBase):
             'tables': tables
         }
 
-    def extract_relationships(self) -> List[Dict[str, str]]:
+    def extract_relationships(self) -> List[Dict[str, Any]]:
         """Extract relationships between tables.
         
         Returns:
             List of dictionaries containing relationship information
         """
         relationships = []
+        # Track tables found in relations for later use
+        self.tables_from_relations = set()
+        
         try:
             # Find all datasources
             for ds in self.root.findall('.//datasource'):
+                # Get datasource information
+                ds_id = ds.get('name', '')
+                ds_caption = ds.get('caption', ds_id)
+                
+                logger.debug(f"Processing datasource: {ds_caption} (id: {ds_id})") 
+                
                 # Get all table relations
                 result = self.extract_table_relations(ds)
                 relations = result['relations']
@@ -119,41 +190,12 @@ class TableRelationParser(TableParserBase):
                         table_name = relation.get('table', '').split('.')[-1].strip('[]')
                         if table_name:
                             logger.debug(f"Found table from relation: {table_name}")
-                            # Create a mock relationship just to keep track of the table
-                            relationship = {
-                                'from_table': table_name,
-                                'from_column': 'id',  # Mock column
-                                'to_table': table_name,
-                                'to_column': 'id'  # Mock column
-                            }
-                            relationships.append(relationship)
+                            # Instead of creating a mock relationship with non-existent 'id' columns,
+                            # just track that we found this table
+                            self.tables_from_relations.add(table_name)
                 
-                # Then look for join clauses
-                for clause in ds.findall('.//clause[@type="join"]'):
-                    # Extract tables from expressions
-                    expressions = clause.findall('.//expression')
-                    if len(expressions) == 2:  # We need two expressions for a relationship
-                        expr1, expr2 = expressions
-                        op1 = expr1.get('op', '')
-                        op2 = expr2.get('op', '')
-                        
-                        if '[' in op1 and '].[' in op1 and '[' in op2 and '].[' in op2:
-                            # Extract table and column names
-                            table1 = op1.split('].[')[0].strip('[')
-                            column1 = op1.split('].[')[1].strip(']')
-                            table2 = op2.split('].[')[0].strip('[')
-                            column2 = op2.split('].[')[1].strip(']')
-                            
-                            # Create relationship
-                            relationship = {
-                                'from_table': table1,
-                                'from_column': column1,
-                                'to_table': table2,
-                                'to_column': column2
-                            }
-                            relationships.append(relationship)
-                            
-                            logger.debug(f"Found relationship: {table1}.{column1} -> {table2}.{column2}")
+                # Process join relations (including nested ones)
+                self._process_join_relations(ds, ds_id, ds_caption, relationships)
                 
                 # Finally, look for relationships in relation elements
                 for relation in relations:
@@ -166,25 +208,31 @@ class TableRelationParser(TableParserBase):
                                 if other_relation.get('type') == 'table' and other_relation != relation:
                                     other_table = other_relation.get('table', '').split('.')[-1].strip('[]')
                                     if other_table:
-                                        # Create a relationship between these tables
+                                        # Create a relationship between these tables with datasource information
                                         relationship = {
+                                            'from_datasource_id': ds_id,
+                                            'from_datasource_caption': ds_caption,
                                             'from_table': table_name,
                                             'from_column': 'id',  # Mock column
+                                            'to_datasource_id': ds_id,
+                                            'to_datasource_caption': ds_caption,
                                             'to_table': other_table,
                                             'to_column': 'id'  # Mock column
                                         }
                                         relationships.append(relationship)
                                         
-                                        logger.debug(f"Found table relationship: {table_name} -> {other_table}")
+                                        logger.debug(f"Found table relationship: {ds_caption}.{table_name} -> {ds_caption}.{other_table}")
 
         except Exception as e:
             logger.error(f"Error extracting relationships: {str(e)}", exc_info=True)
             
-        # Deduplicate relationships based on from_table and to_table
+        # Deduplicate relationships based on datasource, from_table, and to_table
         seen = set()
         unique_relationships = []
         for rel in relationships:
-            key = (rel['from_table'], rel['to_table'])
+            # Create a more specific key that includes datasource information
+            key = (rel.get('from_datasource_id', ''), rel['from_table'], rel['from_column'],
+                   rel.get('to_datasource_id', ''), rel['to_table'], rel['to_column'])
             if key not in seen:
                 seen.add(key)
                 unique_relationships.append(rel)
