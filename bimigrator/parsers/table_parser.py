@@ -10,6 +10,7 @@ from bimigrator.parsers.table_parser_deduplication import TableDeduplicator
 from bimigrator.parsers.table_parser_partition import TablePartitionParser
 from bimigrator.parsers.table_parser_relation import TableRelationParser
 from bimigrator.parsers.column_parser import ColumnParser
+from bimigrator.parsers.table_metadata_mapper import TableMetadataMapper
 
 
 class TableParser(TableParserBase):
@@ -29,6 +30,7 @@ class TableParser(TableParserBase):
         self.partition_parser = TablePartitionParser(twb_file, config, output_dir)
         self.column_parser = ColumnParser(config)
         self.deduplicator = TableDeduplicator()
+        self.table_mapper = TableMetadataMapper(config, self.column_parser)
 
     def _extract_join_tables(self) -> Dict[str, PowerBiTable]:
         """Extract tables from join relationships.
@@ -489,12 +491,13 @@ class TableParser(TableParserBase):
             List of PowerBiTable objects
         """
         try:
-            # Extract tables from datasources first
-            datasource_tables = self.datasource_parser.extract_all_tables()
-            logger.info(f"Found {len(datasource_tables)} tables from datasources")
+            # Use the new table mapper to extract tables from datasources
+            logger.info("Using TableMetadataMapper to extract tables from datasources")
+            mapper_tables = self.table_mapper.map_datasources_to_tables(self.root)
+            logger.info(f"TableMetadataMapper found {len(mapper_tables)} tables")
             
-            # Create initial map with datasource tables
-            all_tables = {table.source_name: table for table in datasource_tables}
+            # Create initial map with mapper tables
+            all_tables = {table.source_name: table for table in mapper_tables}
             
             # Extract tables from joins
             join_tables = self._extract_join_tables()
@@ -528,74 +531,8 @@ class TableParser(TableParserBase):
                         if col.source_name not in existing_cols:
                             existing_table.columns.append(col)
             
-            # Extract columns from <map> elements for all tables
-            # Find the main datasource element that contains the column mappings
-            for ds_element in self.root.findall('.//datasource'):
-                if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
-                    # This is the main federated datasource with column mappings
-                    cols_element = ds_element.find('.//cols')
-                    if cols_element is not None:
-                        # Process each map element to extract column information
-                        for map_element in cols_element.findall('.//map'):
-                            key = map_element.get('key')
-                            value = map_element.get('value')
-                            
-                            if key and value and '[' in value and ']' in value:
-                                # Extract table name and column name from value
-                                # Format is typically [TABLE_NAME].[COLUMN_NAME]
-                                parts = value.split('.')
-                                if len(parts) == 2:
-                                    table_name = parts[0].strip('[]')
-                                    column_name = parts[1].strip('[]')
-                                    
-                                    # Skip if this table doesn't exist
-                                    if table_name not in all_tables:
-                                        continue
-                                    
-                                    # Get the table
-                                    table = all_tables[table_name]
-                                    
-                                    # Skip if column already exists
-                                    if column_name in {c.source_name for c in table.columns}:
-                                        continue
-                                    
-                                    # Determine datatype based on column name patterns
-                                    pbi_datatype = "string"  # Default
-                                    summarize_by = "none"
-                                    
-                                    # Apply simple datatype inference based on column name
-                                    if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
-                                        pbi_datatype = "double"
-                                        summarize_by = "sum"
-                                    elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
-                                        pbi_datatype = "dateTime"
-                                    elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
-                                        pbi_datatype = "boolean"
-                                    
-                                    # Create column object
-                                    column = PowerBiColumn(
-                                        source_name=column_name,
-                                        pbi_datatype=pbi_datatype,
-                                        source_column=column_name,
-                                        summarize_by=summarize_by,
-                                        description=f"Column from {table_name}"
-                                    )
-                                    table.columns.append(column)
-            
-            # Process each table to ensure it has columns and partitions
+            # Process each table to ensure it has partitions
             for name, table in all_tables.items():
-                # Extract columns if not already present
-                if not table.columns:
-                    ds_element = self.root.find(f".//datasource[@name='{name}']")
-                    if ds_element is not None:
-                        columns, measures = self.column_parser.extract_columns_and_measures(
-                            ds_element,
-                            self.config.get('PowerBiColumn', {}),
-                            name
-                        )
-                        table.columns = columns
-                        table.measures = measures
-                
                 # Extract partitions if not already present
                 if not table.partitions:
                     # First try to find a datasource element for this table
@@ -613,38 +550,6 @@ class TableParser(TableParserBase):
                         # This will create partitions for tables in join relationships
                         partitions = self.partition_parser.extract_partitions_for_table(name)
                         table.partitions = partitions
-            
-            # Process federated datasources
-            for ds_element in self.root.findall('.//datasource'):
-                connection = ds_element.find('.//connection')
-                if connection is not None and connection.get('class') == 'federated':
-                    # Get tables from relations
-                    result = self.relationship_parser.extract_table_relations(ds_element)
-                    relations = result['relations']
-                    relation_tables = result['tables']
-                    
-                    # Add each table from the relations
-                    for table_name, relation_table in relation_tables.items():
-                        if table_name not in all_tables:
-                            # Extract columns and partitions
-                            ds_element = self.root.find(f".//datasource[@name='{table_name}']")
-                            if ds_element is not None:
-                                columns, measures = self.column_parser.extract_columns_and_measures(
-                                    ds_element,
-                                    self.config.get('PowerBiColumn', {}),
-                                    table_name
-                                )
-                                relation_table.columns = columns
-                                relation_table.measures = measures
-                                
-                                partitions = self.partition_parser._extract_partition_info(
-                                    ds_element,
-                                    table_name,
-                                    columns
-                                )
-                                relation_table.partitions = partitions
-                            
-                            all_tables[table_name] = relation_table
             
             # Filter out tables that only have a mock "id" column or are completely empty
             filtered_tables = {}
