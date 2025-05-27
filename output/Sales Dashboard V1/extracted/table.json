@@ -197,7 +197,22 @@
       }
     }
   ],
-  "measures": [],
+  "measures": [
+    {
+      "source_name": "Units",
+      "expression": "'Sheet1'[Sales] / 'Sheet1'[Quantity]",
+      "format_string": null,
+      "description": "Converted from Tableau calculation: [Sales]/[Quantity]",
+      "is_hidden": false
+    },
+    {
+      "source_name": "Units Measure",
+      "expression": "SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))",
+      "format_string": null,
+      "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
+      "is_hidden": false
+    }
+  ],
   "hierarchies": [],
   "partitions": [
     {

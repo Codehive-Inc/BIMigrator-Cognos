@@ -99,6 +99,20 @@ table 'Sheet1'
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
 
+    measure 'Units' = ```
+            'Sheet1'[Sales] / 'Sheet1'[Quantity]
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Units Measure' = ```
+            SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Sheet1' = m

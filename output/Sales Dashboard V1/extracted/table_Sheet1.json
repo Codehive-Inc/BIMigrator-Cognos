@@ -197,7 +197,28 @@
       }
     }
   ],
-  "measures": [],
+  "measures": [
+    {
+      "source_name": "Units",
+      "dax_expression": "'Sheet1'[Sales] / 'Sheet1'[Quantity]",
+      "description": "Converted from Tableau calculation: [Sales]/[Quantity]",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Units Measure",
+      "dax_expression": "SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))",
+      "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
   "hierarchies": [],
   "partitions": [
     {

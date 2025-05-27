@@ -262,6 +262,11 @@ class TableMetadataMapper:
             final_table_name
         )
         
+        # Log the measures found
+        logger.info(f"Found {len(measures)} measures for table {final_table_name}")
+        for measure in measures:
+            logger.info(f"  - Measure: {measure.source_name}, DAX: {measure.dax_expression[:50]}...")
+        
         # Extract partitions
         partitions = self._extract_partitions(ds_element, final_table_name, columns)
         
@@ -311,13 +316,19 @@ class TableMetadataMapper:
         while final_table_name in seen_table_names:
             final_table_name = f"{table_name}_{counter}"
             counter += 1
+        seen_table_names.add(final_table_name)
         
-        # Extract columns
+        # Extract columns and measures
         columns, measures = self.column_parser.extract_columns_and_measures(
             ds_element,
             self.config.get('PowerBiColumn', {}),
             final_table_name
         )
+        
+        # Log the measures found
+        logger.info(f"Found {len(measures)} measures for table {final_table_name}")
+        for measure in measures:
+            logger.info(f"  - Measure: {measure.source_name}, DAX: {measure.dax_expression[:50] if hasattr(measure, 'dax_expression') else 'No DAX'}...")
         
         # Get the SQL query for description
         connection = ds_element.find('.//connection')
@@ -582,19 +593,29 @@ class TableMetadataMapper:
                     else:
                         # For other types, just extract columns directly
                         columns, measures = self.column_parser.extract_columns_and_measures(
-                            source_ds,
+                            ds_element,
                             self.config.get('PowerBiColumn', {}),
-                            final_table_name
+                            table_name
                         )
                         
-                        # Extract partitions
-                        partitions = self._extract_partitions(source_ds, final_table_name, columns)
+                        # Log the measures found
+                        logger.info(f"Found {len(measures)} measures for table {table_name}")
+                        for measure in measures:
+                            logger.info(f"  - Measure: {measure.source_name}, DAX: {measure.dax_expression[:50]}...")
                         
+                        # Filter columns that belong to this table
+                        table_columns = self._associate_columns_with_table(columns, table_name)
+                        table_measures = self._associate_measures_with_table(measures, table_name)
+                        
+                        # Extract partitions
+                        partitions = self._extract_partitions(ds_element, final_table_name, table_columns)
+                        
+                        # Create a simple table from the relation
                         table = PowerBiTable(
                             source_name=final_table_name,
-                            description=f"Table from federated datasource: {ds_name}",
-                            columns=columns,
-                            measures=measures,
+                            description=f"Table from federated relation: {table_name}",
+                            columns=table_columns,
+                            measures=table_measures,
                             hierarchies=[],
                             partitions=partitions
                         )
@@ -607,6 +628,11 @@ class TableMetadataMapper:
                         self.config.get('PowerBiColumn', {}),
                         final_table_name
                     )
+                    
+                    # Log the measures found
+                    logger.info(f"Found {len(measures)} measures for table {final_table_name}")
+                    for measure in measures:
+                        logger.info(f"  - Measure: {measure.source_name}, DAX: {measure.dax_expression[:50]}...")
                     
                     # Filter columns that belong to this table
                     table_columns = self._associate_columns_with_table(columns, table_name)
@@ -635,6 +661,11 @@ class TableMetadataMapper:
                 self.config.get('PowerBiColumn', {}),
                 ""  # No table name prefix yet
             )
+            
+            # Log the measures found
+            logger.info(f"Found {len(all_measures)} measures in datasource {ds_name}")
+            for measure in all_measures:
+                logger.info(f"  - Measure: {measure.source_name}, DAX: {measure.dax_expression[:50] if hasattr(measure, 'dax_expression') else 'No DAX'}...")
             
             # Use datasource name for the table
             ds_caption = ds_element.get('caption', ds_name)
@@ -685,12 +716,17 @@ class TableMetadataMapper:
             counter += 1
         seen_table_names.add(final_table_name)
         
-        # Extract columns
+        # Extract columns and measures
         columns, measures = self.column_parser.extract_columns_and_measures(
             ds_element,
             self.config.get('PowerBiColumn', {}),
             final_table_name
         )
+        
+        # Log the measures found
+        logger.info(f"Found {len(measures)} measures for table {final_table_name}")
+        for measure in measures:
+            logger.info(f"  - Measure: {measure.source_name}, DAX: {measure.dax_expression[:50] if hasattr(measure, 'dax_expression') else 'No DAX'}...")
         
         # Extract partitions
         partitions = self._extract_partitions(ds_element, final_table_name, columns)
@@ -775,17 +811,28 @@ class TableMetadataMapper:
         for measure in measures:
             # Check if measure belongs to this table
             
-            # Case 1: Measure expression references this table
-            if hasattr(measure, 'expression') and measure.expression:
-                if f"[{table_name}]" in measure.expression or f"'{table_name}'" in measure.expression:
+            # Case 1: Measure has a TableName attribute that matches this table
+            if hasattr(measure, 'TableName') and measure.TableName == table_name:
+                table_measures.append(measure)
+                continue
+                
+            # Case 2: Measure dax_expression references this table
+            if hasattr(measure, 'dax_expression') and measure.dax_expression:
+                if f"[{table_name}]" in measure.dax_expression or f"'{table_name}'" in measure.dax_expression:
                     table_measures.append(measure)
                     continue
             
-            # Case 2: Measure description mentions the table
+            # Case 3: Measure description mentions the table
             if hasattr(measure, 'description') and measure.description:
                 if f"from {table_name}" in measure.description:
                     table_measures.append(measure)
                     continue
+                    
+            # Case 4: If we don't have many tables, include all measures
+            # This is a fallback for simple workbooks with a single table
+            if table_name == 'Sheet1':
+                table_measures.append(measure)
+                continue
         
         return table_measures
     
