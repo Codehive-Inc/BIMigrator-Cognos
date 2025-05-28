@@ -1,0 +1,24 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["RPR_ORDR", "RPR_ORDR_LN", "DLR", "VHCL_CMPGN", "CMPGN_MSTR", "SLS_DSTRCT", "SLS_ARA", "SVC_VHCL"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
+
+ref table 'RPR_ORDR'
+ref table 'RPR_ORDR_LN'
+ref table 'DLR'
+ref table 'VHCL_CMPGN'
+ref table 'CMPGN_MSTR'
+ref table 'SLS_DSTRCT'
+ref table 'SLS_ARA'
+ref table 'SVC_VHCL'
+
+ref cultureInfo en-US

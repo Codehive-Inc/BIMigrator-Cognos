@@ -1,0 +1,21 @@
+table 'Sheet1$'
+
+
+
+
+
+    partition 'Sheet1' = m
+        mode: import
+        source = 
+            	let
+					Source = Excel.Workbook(File.Contents("C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx"), null, true),
+					Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {})
+				in
+					#"Changed Type"
+        
+
+
+
+    annotation PBI_ResultType = Table
