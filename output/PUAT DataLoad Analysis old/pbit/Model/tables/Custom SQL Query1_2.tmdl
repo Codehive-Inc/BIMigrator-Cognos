@@ -1,0 +1,304 @@
+table 'Custom SQL Query1_2'
+
+
+    column 'Subject' = ```
+            "Data Load below " & CONCATENATE(CONCATENATE("", 'Parameters'[Parameter 1]), "% Of Golden Data Range")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup date' = ```
+            CALCULATE(SUM('Custom SQL Query1_2'[Fiscal Date]), FILTER(ALLSELECTED('Custom SQL Query1_2'), 'Custom SQL Query1_2'[Fiscal Date] = SWITCH(TRUE(), 'Custom SQL Query1_2'[FISCAL_DATE] = #31 - AUG - 2024#, #01 - SEP - 2024#, 'Custom SQL Query1_2'[FISCAL_DATE] = #01 - DEC - 2024#, #30 - NOV - 2024#, 'Custom SQL Query1_2'[FISCAL_DATE])))
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Weekday' = ```
+            WEEKDAY('Custom SQL Query1_2'[asup date],2)
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'Min Of Fis Week' = ```
+            MIN('Custom SQL Query1_2'[Fiscal Date])
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Data by Module' = ```
+            MIN(SWITCH(TRUE(), 'Custom SQL Query1_2'[PUAT_Module] = "System", [Max\Avg], INT(AVERAGE('Custom SQL Query1_2'[AVG_DATA]))))
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'Max Fiscal Week Measure' = ```
+            VAR MaxFiscalWeek = CALCULATE(MAX('Custom SQL Query1_2'[FISCAL_WEEK]), ALLSELECTED('Custom SQL Query1_2')) RETURN IF('Custom SQL Query1_2'[FISCAL_WEEK] = MaxFiscalWeek, 'Custom SQL Query1_2'[Measure], BLANK())
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'Avg Date' = ```
+            DATESBETWEEN('Custom SQL Query1_2'[Date], DATE(2023,2,24), DATE(2023,3,17))
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Week Num' = ```
+            SWITCH(TRUE(), DATEPART('week', 'Custom SQL Query1_2'[Fiscal Date]) = [Week - min], "Week 1", DATEPART('week', 'Custom SQL Query1_2'[Fiscal Date]) = [Week - min] + 1, "Week 2", DATEPART('week', 'Custom SQL Query1_2'[Fiscal Date]) = [Week - min] + 2, "Week 3", DATEPART('week', 'Custom SQL Query1_2'[Fiscal Date]) = [Week - min] + 3, "Week 4", DATEPART('week', 'Custom SQL Query1_2'[Fiscal Date]) = [Week - min] + 4, "Week 5", DATEPART('week', 'Custom SQL Query1_2'[Fiscal Date]) = [Week - min] + 5, "Week 6")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Golden Data Label' = ```
+            'Parameters'[Parameter 3] & " Data Values"
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Data Load Metrics' = ```
+            "Data Load Values"
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'help' = ```
+            "help"
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max\Avg' = ```
+            SWITCH(TRUE(), 'Custom SQL Query1_2'[PUAT_Module] = "System" && 'Parameters'[Parameter 3] = "Max", 'Custom SQL Query1_2'[Max_data], INT('Custom SQL Query1_2'[AVG_DATA]))
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'tooltip' = ```
+            SWITCH(TRUE(), 'Parameters'[Parameter 3] = "Max", "Max Sys Count for Selected Duration", 'Parameters'[Parameter 3] = "Avg", "Avg Sys Count for last 4 weeks")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Fiscal Date' = ```
+            SWITCH(TRUE(), 'Custom SQL Query1_2'[FISCAL_DATE] = #31 - AUG - 2024#, #01 - SEP - 2024#, 'Custom SQL Query1_2'[FISCAL_DATE] = #01 - DEC - 2024#, #30 - NOV - 2024#, 'Custom SQL Query1_2'[FISCAL_DATE])
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Period' = ```
+            'Custom SQL Query1_2'[Data Load Time]
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Week' = ```
+            MIN(SWITCH(TRUE(), 'Custom SQL Query1_2'[Avg Data by Module] = 'Custom SQL Query1_2'[Module_Week Measure], 'Custom SQL Query1_2'[FISCAL_WEEK]))
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MaxFiscal Week' = ```
+            CALCULATE(MAX('Custom SQL Query1_2'[FISCAL_WEEK]), ALLEXCEPT('Custom SQL Query1_2', 'Custom SQL Query1_2'[PUAT_Module]))
+    ```
+        dataType: boolean
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max Of Fis Week' = ```
+            CALCULATE(MAX('Custom SQL Query1_2'[Fiscal Date]), ALLSELECTED('Custom SQL Query1_2'[FISCAL_WEEK]))
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PUAT_Module'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PUAT_Module
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup_month'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: asup_month
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'date'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: date
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Measure'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: Measure
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'FISCAL_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: FISCAL_DATE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_MONTH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_MONTH
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_QTR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_QTR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_YEAR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_YEAR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_WEEK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_WEEK
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OBJ_SMF_TABLES'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OBJ_SMF_TABLES
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AVG_DATA'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AVG_DATA
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Max_data'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Max_data
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Custom SQL Query1_2' = m
+        mode: import
+        source = 
+            	let Source = Dremio.Database([ ServerAddress = "dlh - prd.corp.netapp.com:31011", DatabaseName = "DREMIO", Authentication = "auth - user - pass", Username = "hshaik@netapp.com", CreateNavigationProperties = true ], [ HierarchicalNavigation = true, Query = "dlh_nsec.objdb" ]), #"Navigation" = Source{[Name = "dlh_nsec.objdb"]}[Data] in #"Navigation"
+        
+
+
+
+    annotation PBI_ResultType = Table

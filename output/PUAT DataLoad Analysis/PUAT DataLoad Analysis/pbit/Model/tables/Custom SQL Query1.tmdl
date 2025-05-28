@@ -1,0 +1,267 @@
+table 'Custom SQL Query1'
+
+
+    column 'weekday' = ```
+            ISOWEEKDAY('Custom SQL Query1'[FISCAL_DATE])
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'max Week Flag' = ```
+            = 'Custom SQL Query1'[Weekly count] = [Weekly count]
+    ```
+        dataType: boolean
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Week Start Date' = ```
+            VAR MinDate = MINX(FILTER('Custom SQL Query1', 'Custom SQL Query1'[FISCAL_WEEK] = MIN('Custom SQL Query1'[FISCAL_WEEK])), 'Custom SQL Query1'[FISCAL_DATE]) RETURN MinDate
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'diff flag' = ```
+            SWITCH(TRUE(), 'Custom SQL Query1'[% diff] = 0, "Gold", 'Custom SQL Query1'[% diff] > ([Parameters].[Parameter 1] / 100), "Flag", 'Custom SQL Query1'[% diff] < ([Parameters].[Parameter 1] / 100), "Normal")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'help' = ```
+            "Help"
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Golden Date' = ```
+            SWITCH(TRUE(), 'Custom SQL Query1'[max Week Flag], 'Custom SQL Query1'[FISCAL_DATE])
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Subject' = ```
+            "Data Load below " & CONCATENATE(" ", STR([Parameters].[Parameter 1]), "% Of Golden Data Range")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Avg Range' = ```
+            INT('Custom SQL Query1'[AVG_DATA])
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'Week End Date' = ```
+            CALCULATE(MAX('Custom SQL Query1'[FISCAL_DATE]), ALLEXCEPT('Custom SQL Query1', 'Custom SQL Query1'[FISCAL_WEEK]))
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Tab_module'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Tab_module
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'asup_date'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: asup_date
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'dt'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: dt
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'serial_count'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: serial_count
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'FISCAL_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: FISCAL_DATE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_MONTH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_MONTH
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_QTR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_QTR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_YEAR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_YEAR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FISCAL_WEEK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FISCAL_WEEK
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OBJ_SMF_TABLES'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OBJ_SMF_TABLES
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AVG_DATA'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AVG_DATA
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'Weekly count' = ```
+            SUM(SWITCH(TRUE(), 'Custom SQL Query1'[weekday] = 6 || 'Custom SQL Query1'[weekday] = 7, 'Custom SQL Query1'[serial_count]))
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '% diff' = ```
+            1 - DIVIDE('Custom SQL Query1'[Weekly count], SUM(SWITCH(TRUE(), 'Custom SQL Query1'[weekday] = 6 || 'Custom SQL Query1'[weekday] = 7, 'Custom SQL Query1'[serial_count])))
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Body' = ```
+            "Date of Load " & CONCATENATE(STR(MIN('Custom SQL Query1'[Week Start Date])), " System Count: ", STR(SUM('Custom SQL Query1'[serial_count])), " Golden Data Value: ", STR(MAX('Custom SQL Query1'[Weekly count (copy)_1420604241838956546])), " Regards, PUAT Data Load")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '1500 flag' = ```
+            SWITCH(TRUE(), MIN('Custom SQL Query1'[Max\Avg]) - SUM('Custom SQL Query1'[serial_count]) > 1500, "Flag", "Normal")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Measure vs Golden' = ```
+            MIN('Custom SQL Query1'[Avg Range]) - SUM('Custom SQL Query1'[serial_count])
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Diffrence' = ```
+            MIN([Avg Range]) - SUM('Custom SQL Query1'[serial_count])
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Max\Avg' = ```
+            SWITCH(TRUE(), 'Parameters'[Parameter 3] = "Max", 'Custom SQL Query1'[Weekly count (copy)_1420604241838956546], 'Parameters'[Parameter 3] = "Avg", INT('Custom SQL Query1'[AVG_DATA]))
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Diffrence flag' = ```
+            SWITCH(TRUE(), MIN('Custom SQL Query1'[Max\Avg]) - SUM('Custom SQL Query1'[serial_count]) > 1500, "Flag", MIN('Custom SQL Query1'[Max\Avg]) - SUM('Custom SQL Query1'[serial_count]) > = 0 && MIN('Custom SQL Query1'[Max\Avg]) - SUM('Custom SQL Query1'[serial_count]) < = 1500, "Normal", MIN('Custom SQL Query1'[Max\Avg]) - SUM('Custom SQL Query1'[serial_count]) < 0, "Spike")
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Max Weekly count' = ```
+            MAX(CALCULATETABLE(SUMX(FILTER('Custom SQL Query1', 'Custom SQL Query1'[weekday] = 6 || 'Custom SQL Query1'[weekday] = 7), 'Custom SQL Query1'[serial_count]), ALLEXCEPT('Custom SQL Query1', 'Custom SQL Query1'[FISCAL_WEEK])))
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'Custom SQL Query1' = m
+        mode: import
+        source = 
+            	let Source = Dremio.Database("dlh - prd.corp.netapp.com:31011", [HierarchicalNavigation = true]), dbo_DREMIO = Source{[Name = "DREMIO",Kind = "Database"]}[Data], dlh_nsec_objdb = dbo_DREMIO{[Name = "dlh_nsec.objdb",Kind = "Schema"]}[Data], #"Changed Type" = Table.TransformColumnTypes(dlh_nsec_objdb,{{"COLUMN_NAME", type text}, {"DATA_TYPE", type text}, {"TYPE_NAME", type text}, {"COLUMN_SIZE", Int64.Type}, {"BUFFER_LENGTH", Int64.Type}, {"DECIMAL_DIGITS", Int64.Type}, {"NUM_PREC_RADIX", Int64.Type}, {"NULLABLE", Int64.Type}, {"REMARKS", type text}, {"COLUMN_DEF", type text}, {"SQL_DATA_TYPE", Int64.Type}, {"SQL_DATETIME_SUB", Int64.Type}, {"CHAR_OCTET_LENGTH", Int64.Type}, {"ORDINAL_POSITION", Int64.Type}, {"IS_NULLABLE", type text}, {"SCOPE_CATALOG", type text}, {"SCOPE_SCHEMA", type text}, {"SCOPE_TABLE", type text}, {"SOURCE_DATA_TYPE", type text}}), #"Authentication" = #"Changed Type"{[#"Authentication" = AuthenticationKind.UsernamePassword,#"Username" = "hshaik@netapp.com",#"WorkgroupAuthMode" = "prompt"]} in #"Changed Type"
+        
+
+
+
+    annotation PBI_ResultType = Table

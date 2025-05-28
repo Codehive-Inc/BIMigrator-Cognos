@@ -2,7 +2,7 @@
 import json
 import os
 import xml.etree.ElementTree as ET
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Set
 
 from bimigrator.common.logging import logger
 from bimigrator.config.data_classes import PowerBiColumn, PowerBiPartition
@@ -22,43 +22,35 @@ class TablePartitionParser(TableParserBase):
             List of PowerBiPartition objects
         """
         partitions = []
+        processed_datasources: Set[str] = set()
+        
         try:
-            # Find the main datasource element with connection information
+            # Find all datasource elements
             for ds_element in self.root.findall('.//datasource'):
-                if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
-                    # This is the main federated datasource with connection information
-                    connection = ds_element.find('.//connection')
-                    if connection is not None:
-                        # Find the named connection with the actual connection details
-                        named_connection = None
-                        named_connections = connection.find('.//named-connections')
-                        if named_connections is not None:
-                            # Get the first named connection
-                            named_connection = named_connections.find('.//connection')
-                        
-                        # Use either the named connection or the main connection
-                        conn = named_connection if named_connection is not None else connection
-                        
-                        # Create a partition for the table based on the connection
-                        server = conn.get('server', '10.78.194.25')
-                        schema = conn.get('schema', 'DBSRW_SYS')
-                        service = conn.get('service', 'OPDBSRW')
-                        
-                        # Create M code expression for the partition
-                        m_code = f"""
-                let Source = Oracle.Database(Server = "{server}:1521 / {service}", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{{[Schema = "{schema}",Kind = "Schema"]}}[Data], #"Filtered Rows" = Table.SelectRows(#"Naviguated to Schema", each true) in #"Filtered Rows"
-                """
-                        
-                        # Create partition object
-                        partition = PowerBiPartition(
-                            name=table_name,
-                            source_type="m",
-                            expression=m_code.strip()
-                        )
-                        partitions.append(partition)
-                        break
+                ds_name = ds_element.get('name', '')
+                ds_caption = ds_element.get('caption', '')
+                
+                # Skip already processed datasources
+                if ds_name in processed_datasources:
+                    continue
+                processed_datasources.add(ds_name)
+                
+                # Log the datasource being processed
+                logger.info(f"Processing datasource for partitions: {ds_caption or ds_name}")
+                
+                # Extract partition information for this datasource
+                ds_partitions = self._extract_partition_info(ds_element, table_name)
+                
+                # Add partitions if any were found
+                if ds_partitions:
+                    partitions.extend(ds_partitions)
+                    logger.info(f"Found {len(ds_partitions)} partitions for table {table_name} in datasource {ds_caption or ds_name}")
+                
         except Exception as e:
             logger.error(f"Error extracting partitions for table {table_name}: {str(e)}", exc_info=True)
+        
+        # Log the total number of partitions found
+        logger.info(f"Total partitions found for table {table_name}: {len(partitions)}")
         
         return partitions
 
@@ -83,7 +75,10 @@ class TablePartitionParser(TableParserBase):
             # Find the connection element
             connection = ds_element.find('.//connection')
             if connection is not None:
-                # Log connection details
+                # Extract SQL queries from all relation elements
+                sql_queries = self._extract_sql_queries(connection)
+                
+                # Log connection details with SQL queries
                 conn_details = {
                     'class': connection.get('class'),
                     'server': connection.get('server'),
@@ -92,10 +87,11 @@ class TablePartitionParser(TableParserBase):
                     'username': connection.get('username'),
                     'port': connection.get('port'),
                     'authentication': connection.get('authentication'),
-                    'table_name': table_name
+                    'table_name': table_name,
+                    'sql_queries': sql_queries
                 }
                 
-                # Save connection details to extracted folder
+                # Save enhanced connection details to extracted folder
                 os.makedirs(self.intermediate_dir, exist_ok=True)
                 partitions_file = os.path.join(self.intermediate_dir, 'partitions.json')
                 
@@ -136,3 +132,65 @@ class TablePartitionParser(TableParserBase):
             logger.error(f"Error extracting partition info: {str(e)}", exc_info=True)
 
         return partitions
+        
+    def _extract_sql_queries(self, connection: ET.Element) -> List[Dict[str, str]]:
+        """Extract SQL queries from all relation elements in a connection.
+        
+        Args:
+            connection: Connection element
+            
+        Returns:
+            List of dictionaries containing relation name and SQL query
+        """
+        sql_queries = []
+        
+        try:
+            # Find all relation elements
+            relations = []
+            
+            # Try direct relation elements
+            direct_relations = connection.findall('.//relation')
+            if direct_relations:
+                relations.extend(direct_relations)
+            
+            # Try with wildcard namespace
+            for element in connection.findall('.//*'):
+                if element.tag.endswith('relation') and element not in relations:
+                    relations.append(element)
+            
+            # Process each relation
+            for relation in relations:
+                relation_name = relation.get('name', '')
+                relation_type = relation.get('type', '')
+                
+                # Extract SQL query if it's a text relation
+                if relation_type == 'text' and relation.text:
+                    sql_query = relation.text.strip()
+                    # Clean up the SQL query
+                    sql_query = sql_query.replace('&#13;', '\n').replace('&apos;', "'")
+                    
+                    sql_queries.append({
+                        'name': relation_name,
+                        'type': relation_type,
+                        'sql_query': sql_query
+                    })
+                    logger.info(f"Extracted SQL query from relation {relation_name}")
+                
+                # Handle custom SQL queries in child elements
+                custom_sql = relation.find('.//custom-sql')
+                if custom_sql is not None and custom_sql.text:
+                    sql_query = custom_sql.text.strip()
+                    # Clean up the SQL query
+                    sql_query = sql_query.replace('&#13;', '\n').replace('&apos;', "'")
+                    
+                    sql_queries.append({
+                        'name': relation_name,
+                        'type': 'custom-sql',
+                        'sql_query': sql_query
+                    })
+                    logger.info(f"Extracted custom SQL query from relation {relation_name}")
+        
+        except Exception as e:
+            logger.error(f"Error extracting SQL queries: {str(e)}", exc_info=True)
+        
+        return sql_queries

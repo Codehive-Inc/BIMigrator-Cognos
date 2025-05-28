@@ -340,7 +340,12 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
     if relation_node.get('type') == 'text':
         sql_query = relation_node.text
         if sql_query:
-            conn_info['sql_query'] = sql_query.strip().replace('&#13;', '\n').replace('&apos;', "'")
+            # Clean up the SQL query
+            cleaned_sql = sql_query.strip().replace('&#13;', '\n').replace('&apos;', "'")
+            conn_info['sql_query'] = cleaned_sql
+            
+            # Log the extracted SQL query
+            logger.info(f"Extracted SQL query from relation: {cleaned_sql[:100]}...")
     elif relation_node.get('type') == 'table':
         # Handle Excel table references
         table_ref = relation_node.get('table', '')
@@ -355,6 +360,13 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
             conn_info['table'] = table_name
         else:
             conn_info['table'] = relation_node.get('name')
+            
+    # Check for custom SQL in child elements
+    custom_sql = relation_node.find('.//custom-sql')
+    if custom_sql is not None and custom_sql.text:
+        cleaned_sql = custom_sql.text.strip().replace('&#13;', '\n').replace('&apos;', "'")
+        conn_info['sql_query'] = cleaned_sql
+        logger.info(f"Extracted custom SQL from relation: {cleaned_sql[:100]}...")
 
     # Direct handling for Excel connections - prioritized over API call
     if conn_info['class_type'] == 'excel' and conn_info['filename']:
@@ -377,6 +389,14 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
     try:
         # Call the FastAPI service if LLM is enabled
         if m_code_config.get('llm', {}).get('enabled', True):
+            # Add additional metadata to help with SQL query preservation
+            if conn_info.get('sql_query'):
+                # Create a more descriptive connection info for better M code generation
+                conn_info['additional_properties']['sql_description'] = f"SQL Query: {conn_info['sql_query'][:100]}..."
+                
+                # Log that we're sending a SQL query to the API
+                logger.info(f"Sending SQL query to API for M code generation: {conn_info['sql_query'][:100]}...")
+            
             with httpx.Client(timeout=timeout) as client:
                 response = client.post(
                     f"{api_base_url}{m_code_endpoint}",
@@ -392,6 +412,15 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
                     for entity_map in entities:
                         for entity, char in entity_map.items():
                             m_code = m_code.replace(entity, char)
+                
+                # Ensure SQL query is preserved in the M code if it's not already included
+                if conn_info.get('sql_query') and 'SELECT' in conn_info['sql_query'] and 'SELECT' not in m_code:
+                    # If the M code doesn't contain the SQL query, add it as a comment
+                    sql_preview = conn_info['sql_query'][:100] + "..." if len(conn_info['sql_query']) > 100 else conn_info['sql_query']
+                    m_code = f"// SQL Query: {sql_preview}\n{m_code}"
+                    
+                    # Log that we're adding the SQL query as a comment
+                    logger.info("Added SQL query as a comment to M code")
                 
                 return format_m_code_indentation(m_code)
                 

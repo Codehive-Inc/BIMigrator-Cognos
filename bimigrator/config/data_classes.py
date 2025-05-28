@@ -400,6 +400,7 @@ class PowerBiPartition:
     description: Optional[str] = None
     source_type: Literal['m', 'calculated', 'query'] = 'm'
     annotations: Dict[str, Any] = field(default_factory=dict)  # Annotations can apply here too
+    metadata: Dict[str, Any] = field(default_factory=dict)  # Metadata for deduplication and tracking
 
 
 @dataclass

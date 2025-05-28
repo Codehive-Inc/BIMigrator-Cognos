@@ -69,6 +69,7 @@ class SQLConnectionParser(BaseConnectionParser):
             'db_schema': connection_node.get('schema'),
             'table': None,
             'sql_query': None,
+            'filename': None,
             'additional_properties': {}
         }
         
@@ -83,17 +84,34 @@ class SQLConnectionParser(BaseConnectionParser):
                         conn_info['server'] = conn.get('server')
                         conn_info['database'] = conn.get('dbname')
                         conn_info['db_schema'] = conn.get('schema')
+                        conn_info['filename'] = conn.get('filename')
                         for key, value in conn.attrib.items():
                             conn_info['additional_properties'][key] = value
                         break
+        
+        # Generate a unique key for the relation to use for deduplication
+        relation_key = self._generate_relation_key(relation_node, conn_info)
+        conn_info['relation_key'] = relation_key
                         
         # Handle SQL queries in relations
         if relation_node.get('type') == 'text':
             sql_query = relation_node.text
             if sql_query:
-                conn_info['sql_query'] = sql_query.strip().replace('&#13;', '\n').replace('&apos;', "'")
+                # Clean up the SQL query
+                cleaned_sql = sql_query.strip().replace('&#13;', '\n').replace('&apos;', "'")
+                conn_info['sql_query'] = cleaned_sql
+                
+                # Add SQL query to description for better traceability
+                conn_info['additional_properties']['sql_description'] = f"SQL Query: {cleaned_sql[:100]}..."
         elif relation_node.get('type') == 'table':
             conn_info['table'] = relation_node.get('name')
+        
+        # Check for custom SQL in child elements
+        custom_sql = relation_node.find('.//custom-sql')
+        if custom_sql is not None and custom_sql.text:
+            cleaned_sql = custom_sql.text.strip().replace('&#13;', '\n').replace('&apos;', "'")
+            conn_info['sql_query'] = cleaned_sql
+            conn_info['additional_properties']['sql_description'] = f"Custom SQL: {cleaned_sql[:100]}..."
             
         # Add column information
         if columns:
@@ -108,15 +126,78 @@ class SQLConnectionParser(BaseConnectionParser):
         # Generate M code
         m_code = generate_m_code(connection_node, relation_node, self.config)
         if m_code:
+            # Create a unique partition name based on table name and relation key
+            partition_name = f"{table_name}_{relation_key}" if relation_key else table_name
+            
+            # Create the partition with the SQL query included in the description
+            description = f"SQL partition for table {table_name}"
+            if conn_info.get('sql_query'):
+                # Add truncated SQL query to description (first 100 chars)
+                sql_preview = conn_info['sql_query'][:100] + "..." if len(conn_info['sql_query']) > 100 else conn_info['sql_query']
+                description += f"\nSQL Query: {sql_preview}"
+            
             partition = PowerBiPartition(
-                name=table_name,
+                name=table_name,  # Keep the table name for display purposes
                 expression=m_code,
                 source_type='m',
-                description=f"SQL partition for table {table_name}"
+                description=description,
+                # Add metadata to help with deduplication
+                metadata={
+                    'relation_key': relation_key,
+                    'connection_class': conn_info['class_type'],
+                    'server': conn_info.get('server'),
+                    'database': conn_info.get('database'),
+                    'schema': conn_info.get('db_schema'),
+                    'has_sql_query': 'true' if conn_info.get('sql_query') else 'false'
+                }
             )
             partitions.append(partition)
             
         return partitions
+        
+    def _generate_relation_key(self, relation_node: ET.Element, conn_info: Dict[str, Any]) -> str:
+        """Generate a unique key for a relation to use for deduplication.
+        
+        Args:
+            relation_node: Relation element
+            conn_info: Connection information dictionary
+            
+        Returns:
+            A string key that uniquely identifies this relation
+        """
+        # Start with relation name if available
+        key_parts = []
+        relation_name = relation_node.get('name', '')
+        if relation_name:
+            key_parts.append(relation_name)
+        
+        # Add table name if available
+        table_name = relation_node.get('table', '')
+        if table_name:
+            key_parts.append(table_name)
+            
+        # For SQL queries, use a hash of the query
+        if relation_node.get('type') == 'text' and relation_node.text:
+            sql_query = relation_node.text.strip().replace('&#13;', '\n').replace('&apos;', "'")
+            # Use first 50 chars of SQL as part of the key
+            if sql_query:
+                sql_part = sql_query[:50].replace(' ', '').replace('\n', '')
+                key_parts.append(f"sql_{sql_part}")
+        
+        # Add connection info if available
+        if conn_info.get('server'):
+            key_parts.append(conn_info['server'])
+        if conn_info.get('database'):
+            key_parts.append(conn_info['database'])
+        if conn_info.get('db_schema'):
+            key_parts.append(conn_info['db_schema'])
+            
+        # Join all parts with underscore
+        if key_parts:
+            return '_'.join(key_parts).replace(' ', '_').lower()
+        
+        # Fallback to a generic key
+        return f"relation_{id(relation_node)}"
         
     def extract_columns(
         self,
@@ -210,3 +291,58 @@ class SQLConnectionParser(BaseConnectionParser):
             
         tableau_type = tableau_type.lower()
         return tableau_to_tmdl_datatypes.get(tableau_type, 'string')
+        
+    def get_relation_tables(self, connection_node: ET.Element) -> List[Dict[str, Any]]:
+        """Extract all tables from a connection's relations.
+        
+        Args:
+            connection_node: Connection element
+            
+        Returns:
+            List of dictionaries containing table information
+        """
+        tables = []
+        
+        # Find all relation elements
+        relations = []
+        
+        # Try direct relation elements
+        direct_relations = connection_node.findall('.//relation')
+        if direct_relations:
+            relations.extend(direct_relations)
+        
+        # Try with wildcard namespace
+        for element in connection_node.findall('.//*'):
+            if element.tag.endswith('relation') and element not in relations:
+                relations.append(element)
+        
+        # Process each relation
+        for relation in relations:
+            relation_name = relation.get('name', '')
+            relation_type = relation.get('type', '')
+            
+            table_info = {
+                'name': relation_name,
+                'type': relation_type,
+                'connection_class': connection_node.get('class'),
+                'server': connection_node.get('server'),
+                'database': connection_node.get('dbname'),
+                'schema': connection_node.get('schema')
+            }
+            
+            # Extract SQL query if it's a text relation
+            if relation_type == 'text' and relation.text:
+                sql_query = relation.text.strip().replace('&#13;', '\n').replace('&apos;', "'")
+                table_info['sql_query'] = sql_query
+            
+            # Handle table references
+            if relation_type == 'table':
+                table_info['table_ref'] = relation.get('table', '')
+            
+            # Generate a unique key for deduplication
+            relation_key = self._generate_relation_key(relation, table_info)
+            table_info['relation_key'] = relation_key
+            
+            tables.append(table_info)
+        
+        return tables
