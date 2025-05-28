@@ -1,0 +1,102 @@
+{
+  "relationships": [
+    {
+      "id": "03f783f1-3021-443c-846e-f06ff2fe33f8",
+      "from_table": "RPR_ORDR",
+      "to_table": "SVC_VHCL",
+      "from_column": "VIN_ID",
+      "to_column": "VIN_ID",
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    },
+    {
+      "id": "4b45d515-7eb3-4726-a99b-d1f0343f63c6",
+      "from_table": "SLS_DSTRCT",
+      "to_table": "SLS_ARA",
+      "from_column": "SLS_ARA_CD",
+      "to_column": "SLS_ARA_CD",
+      "cardinality": "one",
+      "cross_filter_behavior": "BothDirections",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    },
+    {
+      "id": "f6d124ba-9af1-4de5-ae3b-6ddfca5eef68",
+      "from_table": "DLR",
+      "to_table": "SLS_DSTRCT",
+      "from_column": "SLS_DSTRCT_CD",
+      "to_column": "SLS_DSTRCT_CD",
+      "cardinality": "one",
+      "cross_filter_behavior": "BothDirections",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    },
+    {
+      "id": "d4908f93-2eaa-43da-97af-4e92a03b8cef",
+      "from_table": "VHCL_CMPGN",
+      "to_table": "CMPGN_MSTR",
+      "from_column": "CMPGN_NB",
+      "to_column": "CMPGN_NB",
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    },
+    {
+      "id": "aa5007ec-b229-468a-b4c3-a0c707b3ea68",
+      "from_table": "RPR_ORDR",
+      "to_table": "VHCL_CMPGN",
+      "from_column": "VIN_ID",
+      "to_column": "VIN_ID",
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    },
+    {
+      "id": "7b281bd5-ceef-4c05-b00d-30f318ef05ab",
+      "from_table": "RPR_ORDR",
+      "to_table": "DLR",
+      "from_column": "RFRNC_DLR_NB",
+      "to_column": "RFRNC_DLR_NB",
+      "cardinality": "one",
+      "cross_filter_behavior": "BothDirections",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    },
+    {
+      "id": "16b02782-c459-401c-a7a7-0a608d101831",
+      "from_table": "RPR_ORDR",
+      "to_table": "RPR_ORDR_LN",
+      "from_column": "RPR_ORDR_KY",
+      "to_column": "RPR_ORDR_KY",
+      "cardinality": "one",
+      "cross_filter_behavior": "BothDirections",
+      "is_active": true,
+      "from_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "from_datasource_caption": "RO VIN Entry",
+      "to_datasource_id": "federated.1luf0dm0s4az7214qsvnz0flwlm6",
+      "to_datasource_caption": "RO VIN Entry"
+    }
+  ]
+}

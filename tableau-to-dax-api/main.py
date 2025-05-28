@@ -181,6 +181,9 @@ def create_m_code_prompt(connection: TableauConnection) -> str:
         "5. Use proper variable names and formatting",
         "6. For Excel files, use Excel.Workbook and specify the table name in Item",
         "7. For federated connections to Excel, use the Excel.Workbook function",
+        "8. IMPORTANT: If a SQL query is provided, use it directly in the M code",
+        "9. For SQL connections, use the appropriate connector (Sql.Database, Oracle.Database, etc.)",
+        "10. Preserve the exact SQL query in the M code, do not modify it",
         "",
         "Connection details:"
     ]
@@ -196,14 +199,29 @@ def create_m_code_prompt(connection: TableauConnection) -> str:
         prompt.append(f"Schema: {connection.db_schema}")
     if connection.table:
         prompt.append(f"Table: {connection.table}")
+    
+    # Emphasize SQL query if present
     if connection.sql_query:
-        prompt.append(f"SQL Query:\n{connection.sql_query}")
+        prompt.append("")
+        prompt.append("=== SQL QUERY (USE THIS EXACT QUERY IN THE M CODE) ===")
+        prompt.append(connection.sql_query)
+        prompt.append("=== END SQL QUERY ===")
+        prompt.append("")
+        prompt.append("IMPORTANT: Use the exact SQL query above in the M code.")
+    
     if connection.filename:
         prompt.append(f"File: {connection.filename}")
+    
+    # Add additional properties
     if connection.additional_properties:
+        prompt.append("")
         prompt.append("Additional properties:")
         for key, value in connection.additional_properties.items():
-            prompt.append(f"  {key}: {value}")
+            # Special handling for SQL descriptions
+            if key == 'sql_description' and isinstance(value, str):
+                prompt.append(f"  IMPORTANT - {key}: {value}")
+            else:
+                prompt.append(f"  {key}: {value}")
     
     return "\n".join(prompt)
 
@@ -461,26 +479,79 @@ async def generate_m_code(connection: TableauConnection) -> MCodeResponse:
         # Create prompt for LLM
         prompt = create_m_code_prompt(connection)
         
-        # Call LLM API
-        m_code = await call_llm_api(prompt)
-        
-        # Clean and validate the M code
-        m_code = m_code.strip()
+        # Log the connection type and SQL query status
+        logger.info(f"Generating M code for connection type: {connection.class_type}")
+        if connection.sql_query:
+            logger.info(f"SQL query present, length: {len(connection.sql_query)}")
         
         # For Excel connections, generate M code directly
-        if connection.class_type == 'excel-direct':
-            filename = connection.filename.replace('\\', '/')
-            table_name = connection.table.strip('[]')
+        if connection.class_type == 'excel-direct' or connection.class_type == 'excel':
+            filename = connection.filename.replace('\\', '/') if connection.filename else ""
+            table_name = connection.table.strip('[]') if connection.table else "Sheet1"
             m_code = f'''let
     Source = Excel.Workbook(File.Contents("{filename}"), null, true),
     {table_name}_Table = Source{{[Item="{table_name}", Kind="Sheet"]}},
     #"Promoted Headers" = Table.PromoteHeaders({table_name}_Table, [PromoteAllScalars=true])
 in
     #"Promoted Headers"'''
+            
+            logger.info("Generated M code directly for Excel connection")
         else:
-            # For other connections, use the LLM-generated M code
-            if not m_code.startswith('let'):
-                m_code = f'let\n    Source = {m_code}\nin\n    Source'
+            # For SQL connections with direct queries, generate structured M code
+            if connection.sql_query and (connection.class_type in ['sqlserver', 'mysql', 'postgresql', 'oracle', 'dremio', 'snowflake'] or 
+                                      connection.class_type.startswith('sql')):
+                # Generate appropriate M code based on connection type
+                server = connection.server or ""
+                database = connection.database or ""
+                schema = connection.db_schema or ""
+                sql_query = connection.sql_query.replace('"', '\"')  # Escape double quotes
+                
+                if connection.class_type == 'sqlserver':
+                    m_code = f'''let
+    Source = Sql.Database("{server}", "{database}"),
+    Custom_SQL = Value.NativeQuery(Source, "{sql_query}")
+in
+    Custom_SQL'''
+                elif connection.class_type == 'oracle':
+                    m_code = f'''let
+    Source = Oracle.Database(Server = "{server}", [HierarchicalNavigation = true]),
+    Custom_SQL = Value.NativeQuery(Source, "{sql_query}")
+in
+    Custom_SQL'''
+                elif connection.class_type == 'dremio':
+                    m_code = f'''let
+    Source = Odbc.DataSource("DRIVER={{Dremio Connector}};SERVER={server};DATABASE={database}"),
+    Custom_SQL = Value.NativeQuery(Source, "{sql_query}")
+in
+    Custom_SQL'''
+                else:  # Generic SQL connection
+                    m_code = f'''let
+    Source = Sql.Database("{server}", "{database}"),
+    Custom_SQL = Value.NativeQuery(Source, "{sql_query}")
+in
+    Custom_SQL'''
+                
+                logger.info(f"Generated structured M code for {connection.class_type} connection with SQL query")
+            else:
+                # Call LLM API for other connection types
+                logger.info("Calling LLM API for M code generation")
+                m_code = await call_llm_api(prompt)
+                
+                # Clean and validate the M code
+                m_code = m_code.strip()
+                
+                # Ensure proper M code structure
+                if not m_code.startswith('let'):
+                    m_code = f'let\n    Source = {m_code}\nin\n    Source'
+                
+                # If SQL query exists but isn't in the M code, add it as a comment
+                if connection.sql_query and 'Value.NativeQuery' not in m_code and '"SELECT' not in m_code:
+                    sql_preview = connection.sql_query.replace('"', '\"')  # Escape double quotes
+                    m_code = f'''// Original SQL Query:
+// {sql_preview}
+
+{m_code}'''
+                    logger.info("Added SQL query as comment to LLM-generated M code")
         
         # Unescape HTML entities
         m_code = m_code.replace('&quot;', '"')
@@ -488,6 +559,9 @@ in
         m_code = m_code.replace('&lt;', '<')
         m_code = m_code.replace('&gt;', '>')
         m_code = m_code.replace('&#x27;', "'")
+        
+        # Log success
+        logger.info(f"Successfully generated M code, length: {len(m_code)}")
         
         return MCodeResponse(
             m_code=m_code,

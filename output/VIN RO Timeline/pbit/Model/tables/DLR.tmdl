@@ -1,0 +1,3904 @@
+table 'DLR'
+
+
+    column 'Number Days Down' = ```
+            IF(AND(ISBLANK('DLR'[RPR_ORDR_CLOS_DT]), ISBLANK('DLR'[RPR_ORDR_OPN_DT])), "Missing Open / Close Date", CONCATENATE(NUMBERVALUE(INT(('DLR'[RPR_ORDR_CLOS_DT] - 'DLR'[RPR_ORDR_OPN_DT]))), " "))
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Dealer Code - Dealer Name' = ```
+            'DLR'[DLR_NB] & " - " & 'DLR'[DLR_NM]
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Coverage Code' = ```
+            IFERROR('DLR'[CVRG_CD], " ")
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VIN Filter' = ```
+            TRIM(Parameters[Parameter 1]) = 'DLR'[VIN_ID]
+    ```
+        dataType: boolean
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RO Date' = ```
+            COALESCE('DLR'[RPR_ORDR_OPN_DT], 'DLR'[RPR_ORDR_CLOS_DT])
+    ```
+        dataType: dateTime
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IntEffDate Filter' = ```
+            'DLR'[INTRNL_EFCTV_DT] < = TODAY()
+    ```
+        dataType: boolean
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Go to Export' = ```
+            "Click here for a detailed view for exporting."
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Go back' = ```
+            "Go back to Dashboard View"
+    ```
+        dataType: string
+        summarizeBy: none
+
+        isDataTypeInferred: true
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_KY'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RPR_ORDR_KY
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRNCY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRNCY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RFRNC_DLR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RFRNC_DLR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MLG_UNT_ID'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: MLG_UNT_ID
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_LNG_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_LNG_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VIN_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VIN_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_TAG_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_TAG_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_OPN_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_OPN_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_CLOS_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_CLOS_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_CRNT_STS_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_CRNT_STS_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_IN_MLG_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: SVC_IN_MLG_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SVC_OUT_MLG_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: SVC_OUT_MLG_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SVC_ADVSR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ADVSR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_ADVSR_FRST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ADVSR_FRST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_ADVSR_LST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ADVSR_LST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OPRTN_SVC_CTGRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OPRTN_SVC_CTGRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_CMNT_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_CMNT_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_WRNTY_PAY_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RPR_ORDR_WRNTY_PAY_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_INTRNL_PAY_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RPR_ORDR_INTRNL_PAY_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_CSTMR_PAY_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RPR_ORDR_CSTMR_PAY_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_INTRNL_RMRK_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_INTRNL_RMRK_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_APNTMT_MADE_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SVC_APNTMT_MADE_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_APNTMT_SCHDLD_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SVC_APNTMT_SCHDLD_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_APNTMT_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_APNTMT_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_APNTMT_SRC_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_APNTMT_SRC_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_APNTMT_FL_CNTNT_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_APNTMT_FL_CNTNT_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LNR_RQSTD_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LNR_RQSTD_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LNR_AVLBL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LNR_AVLBL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DMS_CSTMR_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DMS_CSTMR_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_FRST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_FRST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_LST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_LST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_MIDL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_MIDL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPNY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPNY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_ADRS_LN_1_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_ADRS_LN_1_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_ADRS_LN_2_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_ADRS_LN_2_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_CTY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_CTY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_ST_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_ST_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PSTL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PSTL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_DY_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_DY_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_EVNG_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_EVNG_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_EML_ADRS_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_EML_ADRS_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'HS_RCRD_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: HS_RCRD_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_CRTE_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_CRTE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_MARITZ_KY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_MARITZ_KY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_DY_PHN_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_DY_PHN_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_DY_PHN_EXTNSN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_DY_PHN_EXTNSN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_EVNG_PHN_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_EVNG_PHN_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_EVNG_PHN_EXTNSN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_EVNG_PHN_EXTNSN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PRVCY_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PRVCY_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LCNS_PLAT_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LCNS_PLAT_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_CNTRCT_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_CNTRCT_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_PAY_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_PAY_TYP
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_APNTMT_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_APNTMT_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_CELL_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_CELL_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_SLUTN_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_SLUTN_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_SFX_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_SFX_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_BRTH_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CSTMR_BRTH_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_CELL_PHN_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_CELL_PHN_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PRSNEL_EML_ADRS_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PRSNEL_EML_ADRS_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESIRED_PKUP_DTTM'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DESIRED_PKUP_DTTM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DROP_OFF_DTTM'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DROP_OFF_DTTM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ESTMTD_RPR_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: ESTMTD_RPR_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CSTMR_GNDR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_GNDR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RQSTD_CSLTNT_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RQSTD_CSLTNT_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APNTMT_CNFMTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APNTMT_CNFMTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ALTRNT_TRNPTN_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ALTRNT_TRNPTN_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_FAX_PHN_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_FAX_PHN_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_TTL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_TTL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_ADRS_LN_1_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_ADRS_LN_1_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_ADRS_LN_2_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_ADRS_LN_2_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_CTY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_CTY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_PSTL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_PSTL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_ST_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_ST_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_CNTY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_CNTY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FRGN_VHCL_PRCHS_CNTRY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FRGN_VHCL_PRCHS_CNTRY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FOREGIN_VHCL_IN_SVC_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: FOREGIN_VHCL_IN_SVC_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FOREGIN_VHCL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FOREGIN_VHCL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_ADVSR_MIDL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ADVSR_MIDL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_ADVSR_NM_SFX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ADVSR_NM_SFX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PYMNT_MTHD_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PYMNT_MTHD_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DPRTMT_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DPRTMT_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RNTL_EXPNS_TOTL_DY_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RNTL_EXPNS_TOTL_DY_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RENT_DLY_RT_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RENT_DLY_RT_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'VHCL_PK_UP_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: VHCL_PK_UP_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_APNTMT_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_APNTMT_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_INVC_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_INVC_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_CNTCT_MTHD_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_CNTCT_MTHD_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RNTL_EXPNS_CLAS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RNTL_EXPNS_CLAS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_FAX_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_FAX_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_FAX_PHN_EXTNSN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_FAX_PHN_EXTNSN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_RSDNC_CNTY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_RSDNC_CNTY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CRTE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRTE_USR_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRTE_USR_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_USR_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_USR_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PGR_ORGNZN_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PGR_ORGNZN_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CSTMR_PGR_PRSN_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CSTMR_PGR_PRSN_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TAX_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TAX_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SPCFD_ORGNZN_CMPNY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SPCFD_ORGNZN_CMPNY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TCHNCN_NM_GRP_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TCHNCN_NM_GRP_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLCLTD_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TAX_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TAX_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_ACTL_LBR_HR_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_ACTL_LBR_HR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INVCD_LBR_HR_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INVCD_LBR_HR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INVCD_LBR_HR_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INVCD_LBR_HR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_ACTL_LBR_HR_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_ACTL_LBR_HR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_RPR_ORDR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_RPR_ORDR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_CSTMR_RPR_ORDR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_CSTMR_RPR_ORDR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_RPR_ORDR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_RPR_ORDR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_WRNTY_RPR_ORDR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_WRNTY_RPR_ORDR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_RPR_ORDR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_RPR_ORDR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TOTL_INTRNL_RPR_ORDR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: TOTL_INTRNL_RPR_ORDR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_CSTMR_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_CSTMR_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_CSTMR_RPR_ORDR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_CSTMR_RPR_ORDR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_CSTMR_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_CSTMR_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_CSTMR_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_CSTMR_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_CSTMR_RPR_ORDR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_CSTMR_RPR_ORDR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_WRNTY_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_WRNTY_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_WRNTY_RPR_ORDR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_WRNTY_RPR_ORDR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_WRNTY_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_WRNTY_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_WRNTY_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_WRNTY_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_WRNTY_RPR_ORDR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_WRNTY_RPR_ORDR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_PRTS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_PRTS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_INTRNL_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_INTRNL_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_INTRNL_RPR_ORDR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_INTRNL_RPR_ORDR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_PRTS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_PRTS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_INTRNL_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_INTRNL_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_TOTL_INTRNL_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_TOTL_INTRNL_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_INTRNL_RPR_ORDR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_INTRNL_RPR_ORDR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SEVICE_APNTMT_NOTE_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SEVICE_APNTMT_NOTE_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_LN_KY'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RPR_ORDR_LN_KY
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'PAY_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PAY_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_JOB_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_JOB_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_ORDR_LN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_LN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_OPRTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_OPRTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_OPRTN_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_OPRTN_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STNDRD_OPRTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STNDRD_OPRTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STNDRD_OPRTN_CD_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STNDRD_OPRTN_CD_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RETRNSLT_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RETRNSLT_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADD_ON_RPR_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADD_ON_RPR_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_GDWL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_GDWL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPEAT_RPR_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPEAT_RPR_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLAUS_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLAUS_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPLNT_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPLNT_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRCTN_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRCTN_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MSCLNS_NOTE_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MSCLNS_NOTE_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TCHNCN_NOTE_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TCHNCN_NOTE_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_DENIAL_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_DENIAL_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_LBR_TAX_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_LBR_TAX_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_LBR_DSCNT_RT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_LBR_DSCNT_RT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_PRT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_PRT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_PRT_TAX_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_PRT_TAX_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_PRT_DSCNT_RT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_PRT_DSCNT_RT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_EXPNS_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_EXPNS_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_EXPNS_TAX_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_EXPNS_TAX_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_EXPNS_DSCNT_RT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_EXPNS_DSCNT_RT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_MSCLNS_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_MSCLNS_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_MSCLNS_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_MSCLNS_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_GOG_CHRG_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_GOG_CHRG_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_GOG_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_GOG_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_PNT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_PNT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_PNT_CHRG_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_PNT_CHRG_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_PNT_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_PNT_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_SHOP_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_SHOP_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_SHOP_CHRG_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_SHOP_CHRG_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_SHOP_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_SHOP_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_FRGHT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_FRGHT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_FRGHT_CHRG_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_FRGHT_CHRG_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_FRGHT_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_FRGHT_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_LN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_LN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_LN_CMPNT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_LN_CMPNT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_LN_ATHRZN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_LN_ATHRZN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_LN_CLM_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_LN_CLM_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYMPTM_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYMPTM_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DGNS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DGNS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLM_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLM_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PFP_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PFP_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_TAX_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: WRNTY_TAX_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_HR_CN'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_HR_CN
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'RPR_ORDR_LN_MARITZ_KY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_ORDR_LN_MARITZ_KY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CVRG_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CVRG_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DDCTBL_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: DDCTBL_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'PRMRY_OPRTN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRMRY_OPRTN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CVRG_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CVRG_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_PRT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_PRT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'JOB_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'ESTMTD_JOB_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: ESTMTD_JOB_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SPT_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SPT_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_APPEAL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WRNTY_APPEAL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRT_WRNTY_ODMTR_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: PRT_WRNTY_ODMTR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'TST_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TST_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DDCTBL_RQSTD_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DDCTBL_RQSTD_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_DENIAL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_DENIAL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLM_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLM_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SPT_INVC_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SPT_INVC_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DFCT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DFCT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: JOB_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'WRNTY_STRT_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: WRNTY_STRT_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLCLTD_JOB_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_LBR_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_LBR_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_MSCLNS_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_MSCLNS_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_GOG_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_GOG_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_SBLT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_SBLT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_PRT_PRC_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_PRT_PRC_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_PRT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_PRT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_LBR_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_LBR_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_MSCLNS_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_MSCLNS_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_GOG_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_GOG_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_SBLT_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_SBLT_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'CLCLTD_JOB_CST_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: CLCLTD_JOB_CST_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'DLR_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_ONRSHP_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_ONRSHP_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_SYSTM_PRVDR_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_SYSTM_PRVDR_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PHYSCL_PSTL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PHYSCL_PSTL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ML_PSTL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ML_PSTL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TM_ZN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TM_ZN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LNG_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LNG_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MK_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MK_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AFLT_CMPNY_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AFLT_CMPNY_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PHYSCL_ST_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PHYSCL_ST_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ML_ST_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ML_ST_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLS_DSTRCT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLS_DSTRCT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_CLAS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_CLAS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DMS_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DMS_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DOM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CNTRY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CNTRY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_DBA_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_DBA_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NMAC_DLR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NMAC_DLR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NMAC_RGN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NMAC_RGN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NMAC_DSTRCT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NMAC_DSTRCT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'INTNET_SLS_MGR_FRST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: INTNET_SLS_MGR_FRST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'INTNET_SLS_MGR_MIDL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: INTNET_SLS_MGR_MIDL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'INTNET_SLS_MGR_LST_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: INTNET_SLS_MGR_LST_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SL_PONT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SL_PONT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_PDC_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_PDC_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DMS_CHIP_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DMS_CHIP_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RNTL_SRCHRG_AM'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: RNTL_SRCHRG_AM
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'FLT_WRNTY_STN_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FLT_WRNTY_STN_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXCTV_MGR_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXCTV_MGR_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_PRNCPL_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_PRNCPL_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MNRTY_DLR_EXCTV_MGR_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MNRTY_DLR_EXCTV_MGR_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MNRTY_DLR_PRNCPL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MNRTY_DLR_PRNCPL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PHYSCL_CTY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PHYSCL_CTY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PHYSCL_ADRS_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PHYSCL_ADRS_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ML_ADRS_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ML_ADRS_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRMRY_PHN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRMRY_PHN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRMRY_FAX_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRMRY_FAX_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LST_FULL_PRT_RQST_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LST_FULL_PRT_RQST_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_STS_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_STS_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_LBR_RT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: WRNTY_LBR_RT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'MRKT_GD_CAR_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: MRKT_GD_CAR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'MRKT_GD_TOTL_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: MRKT_GD_TOTL_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'MRKT_GD_TRCK_NB'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: MRKT_GD_TRCK_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'PRMRY_MRKT_ARA_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRMRY_MRKT_ARA_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TCHNCL_SVC_BLTN_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TCHNCL_SVC_BLTN_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRMNTN_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: TRMNTN_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_1ST_VNDR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_1ST_VNDR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_1ST_SCRTY_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_1ST_SCRTY_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_1ST_DVC_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_1ST_DVC_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_2ND_VNDR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_2ND_VNDR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_2ND_SCRTY_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_2ND_SCRTY_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_2ND_DVC_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_2ND_DVC_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_3RD_VNDR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_3RD_VNDR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_3RD_DVC_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_3RD_DVC_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_3RD_SCRTY_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_3RD_SCRTY_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_4TH_VNDR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_4TH_VNDR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_4TH_SCRTY_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_4TH_SCRTY_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_4TH_DVC_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_4TH_DVC_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRTS_ARA_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRTS_ARA_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_ARA_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SVC_ARA_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DFLT_VLU_CHNG_MASK_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DFLT_VLU_CHNG_MASK_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CTOVR_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CTOVR_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CTOVR_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CTOVR_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CTOVR_RCV_THRSLD_TM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CTOVR_RCV_THRSLD_TM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CTOVR_UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CTOVR_UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'R2_CTOVR_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: R2_CTOVR_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'R2_CTOVR_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: R2_CTOVR_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'R2_CTOVR_RCV_THRSLD_TM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: R2_CTOVR_RCV_THRSLD_TM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'R2_CTOVR_UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: R2_CTOVR_UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ASR_DLR_FLG'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ASR_DLR_FLG
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRT_ACTVTY_CTOVR_PRD'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: PRT_ACTVTY_CTOVR_PRD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SBLT_MAPNG_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SBLT_MAPNG_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PSTL_CD_FLG'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PSTL_CD_FLG
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ORGNL_PSTL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ORGNL_PSTL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDTD_TM'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UPDTD_TM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SND_DMI_DATA_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SND_DMI_DATA_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'USD_VHCL_IVNTRY_FLG'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: USD_VHCL_IVNTRY_FLG
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_INVC_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_INVC_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FLT_WRNTY_OWNR_TYP_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FLT_WRNTY_OWNR_TYP_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLM_PD_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLM_PD_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LCTN_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LCTN_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MDL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MDL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSTRBR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSTRBR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PORT_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PORT_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNREACH_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNREACH_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNREACH_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: UNREACH_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VEHICKE_MK_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VEHICKE_MK_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DLR_SBMTNG_CLM_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DLR_SBMTNG_CLM_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UPDT_DT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UPDT_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADD_DT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADD_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MDL_YR'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: VHCL_MDL_YR
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'VHCL_MDL_LN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MDL_LN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ML_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ML_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RPR_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RPR_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WRNTY_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NNA_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NNA_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EFCTV_STS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EFCTV_STS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_CLSD_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CMPGN_CLSD_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLD_CMPGN_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLD_CMPGN_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_SBMT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: WRNTY_SBMT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'INTRNL_EFCTV_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: INTRNL_EFCTV_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXTRNL_EFCTV_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: EXTRNL_EFCTV_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CMPGN_TYP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CMPGN_TYP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NHTSA_CAMPAGIN_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NHTSA_CAMPAGIN_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SRC_CMPGN_LCTN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SRC_CMPGN_LCTN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLS_ARA_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLS_ARA_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSTRCT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSTRCT_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSTRCT_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSTRCT_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLS_RGN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLS_RGN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ARA_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ARA_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ARA_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ARA_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_LN_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_LN_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MDL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MDL_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MDL_YR_NB'
+        dataType: int64
+        summarizeBy: sum
+        sourceColumn: VHCL_MDL_YR_NB
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'SL_TYP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SL_TYP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRDCTN_MNTH_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRDCTN_MNTH_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STK_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STK_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_BDY_CLR_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_BDY_CLR_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_BDY_CLR_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_BDY_CLR_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_TRM_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_TRM_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_TRM_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_TRM_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RTL_SLS_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RTL_SLS_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MNFCR_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: MNFCR_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLD_BY_DLR_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLD_BY_DLR_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLD_BY_DLR_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLD_BY_DLR_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLD_BY_DLR_CTY_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLD_BY_DLR_CTY_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SLD_BY_DLR_ST_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SLD_BY_DLR_ST_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_EXPRTN_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: WRNTY_EXPRTN_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WRNTY_EXPRTN_MLG_QT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: WRNTY_EXPRTN_MLG_QT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'IN_SVC_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: IN_SVC_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IN_SVC_MLG_QT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: IN_SVC_MLG_QT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'LST_KNOW_MLG_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LST_KNOW_MLG_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LST_KNOWN_MLG_QT'
+        dataType: double
+        summarizeBy: sum
+        sourceColumn: LST_KNOWN_MLG_QT
+
+        annotation SummarizationSetBy = User
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    column 'EMSNS_CRFCTN_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EMSNS_CRFCTN_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PLNT_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PLNT_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_VHCL_CRTE_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SVC_VHCL_CRTE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SVC_VHCL_UPDT_TS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SVC_VHCL_UPDT_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_LN_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_LN_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MDL_DS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MDL_DS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PDI_DT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: PDI_DT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRNMSN_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRNMSN_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FRGN_DSTBTN_VHCL_IN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FRGN_DSTBTN_VHCL_IN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OPTN_GRP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OPTN_GRP_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENGN_NUBMER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ENGN_NUBMER
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENGN_PRFX_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ENGN_PRFX_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENGN_SRS_NB'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ENGN_SRS_NB
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRM_LVL_TX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRM_LVL_TX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_CLAS_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_CLAS_CD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VHCL_MK_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VHCL_MK_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'id'
+        dataType: string
+        summarizeBy: none
+
+        dataCategory: Uncategorized
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'Distinct ROs' = ```
+            DISTINCTCOUNT('DLR'[RPR_ORDR_KY])
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'Campaign Age' = ```
+            DATEDIFF('DLR'[INTRNL_EFCTV_DT], TODAY(), DAY)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'DLR' = m
+        mode: import
+        source = 
+            	let Source = Oracle.Database(Server = "10.78.194.25:1521 / OPDBSRW", [HierarchicalNavigation = true]), #"Naviguated to Schema" = Source{[Schema = "DBSRW_SYS",Kind = "Schema"]}[Data], #"Promoted Headers" = Table.PromoteHeaders(#"Naviguated to Schema", [PromoteAllScalars = true]) in #"Promoted Headers"
+        
+
+
+
+    annotation PBI_ResultType = Table
