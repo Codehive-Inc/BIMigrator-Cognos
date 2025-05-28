@@ -195,6 +195,11 @@ class TableTemplateGenerator(BaseTemplateGenerator):
                 print(f'Debug: Skipping table {table.source_name} - only has a mock "id" column')
                 continue
                 
+            # Skip tables that have partitions but no columns or measures
+            if not table.columns and not table.measures and table.partitions:
+                print(f'Debug: Skipping table {table.source_name} - has partitions but no columns or measures')
+                continue
+                
             try:
                 table_path = self.generate_table_tmdl(table)
                 print(f'Debug: Generated TMDL file: {table_path}')
