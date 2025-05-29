@@ -2,7 +2,9 @@ table 'Sheet1'
 
 
     column 'Region Sales' = ```
-            'Sheet1'[Region] & " Sales"
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -12,7 +14,9 @@ table 'Sheet1'
 
         
     column 'Region Split' = ```
-            SWITCH(TRUE(), 'Sheet1'[Region Sales] = "North Sales", "North East", 'Sheet1'[Region Sales] = "East Sales", "North East", 'Sheet1'[Region Sales] = "South Sales", "South West", 'Sheet1'[Region Sales] = "West Sales", "South West")
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
         dataType: string
         summarizeBy: none
@@ -100,14 +104,18 @@ table 'Sheet1'
         
 
     measure 'Units' = ```
-            'Sheet1'[Sales] / 'Sheet1'[Quantity]
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
     measure 'Units Measure' = ```
-            SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))
+            /* ERROR: Could not convert Tableau formula */
+/* Error details: [Errno 61] Connection refused */
+ERROR("Conversion failed")
     ```
 
 
