@@ -2,6 +2,9 @@
 import argparse
 import io
 import json
+import logging
+import os
+import sys
 import uuid
 from pathlib import Path
 from typing import Dict, Any
@@ -31,6 +34,10 @@ from bimigrator.parsers.report_parser import ReportParser
 from bimigrator.generators.report_generator import ReportGenerator
 from bimigrator.parsers.report_config_parser import ReportConfigParser
 from bimigrator.generators.report_config_generator import ReportConfigGenerator
+from bimigrator.licensing.license_manager import LicenseManager
+from bimigrator.licensing.exceptions import (
+    LicenseError, LicenseExpiredError, LicenseLimitError, LicenseConnectionError
+)
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -55,7 +62,7 @@ def generate_version_file(filename, config, output_dir):
     return
 
 
-def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None) -> None:
+def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None, skip_license_check: bool = False) -> None:
     """Migrate Tableau workbook to Power BI TMDL format.
 
     Args:
@@ -63,10 +70,50 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         # parsed_data: Content of the TWB file parsed to dict.
         config: Dict containing configuration data
         output_dir: Optional output directory
+        skip_license_check: If True, skip license validation (for testing only)
 
     Returns:
         Dictionary mapping file types to their generated paths
     """
+    # Validate license before proceeding (unless skipped for testing)
+    if not skip_license_check:
+        try:
+            # Get license ID from environment variable or use default
+            license_id = os.environ.get('BIMIGRATOR_LICENSE_ID')
+            license_id = int(license_id) if license_id else None
+            
+            # Create license manager and validate license
+            license_manager = LicenseManager(license_id)
+            license_manager.validate_license()
+            
+            # Log license status
+            license_info = license_manager.get_license_info()
+            print(f"\nLicense Status: {license_info['status_message']}")
+            print(f"Migrations Remaining: {license_info['migrations_remaining']} of {license_info['max_migrations']}")
+            print(f"License Expires: {license_info['expires_at_formatted']} ({license_info['days_remaining']} days remaining)")
+            
+        except LicenseExpiredError as e:
+            print(f"\nERROR: {str(e)}")
+            print("Please renew your license to continue using BIMigrator.")
+            sys.exit(1)
+        except LicenseLimitError as e:
+            print(f"\nERROR: {str(e)}")
+            print("Please upgrade your license to perform more migrations.")
+            sys.exit(1)
+        except LicenseConnectionError as e:
+            print(f"\nERROR: Unable to connect to license database: {str(e)}")
+            print("Please check your database connection settings and try again.")
+            print("Required environment variables:")
+            print("  BIMIGRATOR_DB_HOST - PostgreSQL host (default: localhost)")
+            print("  BIMIGRATOR_DB_PORT - PostgreSQL port (default: 5432)")
+            print("  BIMIGRATOR_DB_NAME - PostgreSQL database name (default: bimigrator_db)")
+            print("  BIMIGRATOR_DB_USER - PostgreSQL username (default: app_user)")
+            print("  BIMIGRATOR_DB_PASSWORD - PostgreSQL password (required)")
+            sys.exit(1)
+        except LicenseError as e:
+            print(f"\nERROR: License validation failed: {str(e)}")
+            sys.exit(1)
+    
     if not config:
         config = get_default_config()
 
@@ -348,8 +395,45 @@ def main():
         help='Output directory',
         default='output'
     )
+    parser.add_argument(
+        '--skip-license-check',
+        action='store_true',
+        help='Skip license validation (for testing only)'
+    )
+    parser.add_argument(
+        '--check-license',
+        action='store_true',
+        help='Check license status and exit'
+    )
 
     args = parser.parse_args()
+
+    # Configure logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+    # Check license status if requested
+    if args.check_license:
+        try:
+            license_id = os.environ.get('BIMIGRATOR_LICENSE_ID')
+            license_id = int(license_id) if license_id else None
+            
+            license_manager = LicenseManager(license_id)
+            license_info = license_manager.get_license_info()
+            
+            print("\nBIMigrator License Status:")
+            print(f"Status: {license_info['status_message']}")
+            print(f"Migrations Used: {license_info['migrations_used']}")
+            print(f"Migrations Remaining: {license_info['migrations_remaining']}")
+            print(f"Migration Limit: {license_info['max_migrations']}")
+            print(f"License Expires: {license_info['expires_at_formatted']}")
+            print(f"Days Remaining: {license_info['days_remaining']}")
+            sys.exit(0)
+        except Exception as e:
+            print(f"\nError checking license: {str(e)}")
+            sys.exit(1)
 
     try:
         # Load configuration
@@ -361,6 +445,7 @@ def main():
             args.filename,
             output_dir=args.output,
             config=config,
+            skip_license_check=args.skip_license_check
         )
         print("\nMigration completed successfully!")
     except Exception as e:

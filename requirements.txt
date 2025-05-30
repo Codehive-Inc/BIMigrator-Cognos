@@ -44,3 +44,7 @@ tqdm==4.67.1
 transformers==4.52.3
 uvicorn
 websockets==15.0.1
+
+# Additional requirements for BIMigrator licensing system
+psycopg2-binary>=2.9.5
+python-dotenv>=0.21.0

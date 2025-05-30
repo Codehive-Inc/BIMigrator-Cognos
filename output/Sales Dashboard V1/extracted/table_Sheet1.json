@@ -200,23 +200,17 @@
   "measures": [
     {
       "source_name": "Units",
-      "dax_expression": "'Sheet1'[Sales] / 'Sheet1'[Quantity]",
-      "description": "Converted from Tableau calculation: [Sales]/[Quantity]",
+      "expression": "'Sheet1'[Sales] / 'Sheet1'[Quantity]",
       "format_string": null,
-      "is_hidden": false,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
+      "description": "Converted from Tableau calculation: [Sales]/[Quantity]",
+      "is_hidden": false
     },
     {
       "source_name": "Units Measure",
-      "dax_expression": "SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))",
-      "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
+      "expression": "SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))",
       "format_string": null,
-      "is_hidden": false,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
+      "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
+      "is_hidden": false
     }
   ],
   "hierarchies": [],
@@ -224,8 +218,7 @@
     {
       "name": "Sheet1",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Excel.Workbook(File.Contents(\"C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx\"), null, true),\n\t\t\t\t\tSheet1_Sheet = Source{[Item=\"Sheet1\",Kind=\"Sheet\"]}[Data],\n\t\t\t\t\t#\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),\n\t\t\t\t\t#\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Order ID\", Int64.Type}, {\"Order Date\", type datetime}, {\"Region\", type text}, {\"Product Category\", type text}, {\"Product Name\", type text}, {\"Sales\", type number}, {\"Quantity\", Int64.Type}, {\"Discount\", type number}, {\"Profit\", type number}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Type\"",
-      "description": "Excel partition for sheet Sheet1"
+      "expression": "\tlet\n\t\t\t\t\tSource = Excel.Workbook(File.Contents(\"C:/Users/CodehiveBIVM/Desktop/Datasets/sample_sales_data.xlsx\"), null, true),\n\t\t\t\t\tSheet1_Sheet = Source{[Item=\"Sheet1\",Kind=\"Sheet\"]}[Data],\n\t\t\t\t\t#\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),\n\t\t\t\t\t#\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\", {{\"Order ID\", Int64.Type}, {\"Order Date\", type datetime}, {\"Region\", type text}, {\"Product Category\", type text}, {\"Product Name\", type text}, {\"Sales\", type number}, {\"Quantity\", Int64.Type}, {\"Discount\", type number}, {\"Profit\", type number}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Type\""
     }
   ],
   "has_widget_serialization": false,
