@@ -1,0 +1,64 @@
+{
+  "relationships": [
+    {
+      "id": "c6015d5c-359d-4daf-bc9d-9a3be6e5b80b",
+      "from_table": "Custom SQL Query",
+      "from_column": "asup_date",
+      "to_table": "Custom SQL Query1",
+      "to_column": "FT",
+      "is_active": true,
+      "cardinality": "one",
+      "cross_filter_behavior": "BothDirections",
+      "annotations": {},
+      "from_datasource_id": "federated.1242tbk1be63hz15hrb781ajfc6g",
+      "from_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)",
+      "to_datasource_id": "federated.1242tbk1be63hz15hrb781ajfc6g",
+      "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)"
+    },
+    {
+      "id": "468c3e90-fea1-424e-9426-caf0249940ab",
+      "from_table": "Custom SQL Query",
+      "from_column": "Tab_module",
+      "to_table": "Custom SQL Query2",
+      "to_column": "OBJ_SMF_TABLES",
+      "is_active": true,
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "annotations": {},
+      "from_datasource_id": "federated.1242tbk1be63hz15hrb781ajfc6g",
+      "from_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)",
+      "to_datasource_id": "federated.1242tbk1be63hz15hrb781ajfc6g",
+      "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb)"
+    },
+    {
+      "id": "ea1ec837-44ed-49fb-9686-a4a09cee0fd0",
+      "from_table": "Custom SQL Query",
+      "from_column": "asup_month",
+      "to_table": "Custom SQL Query1",
+      "to_column": "FT",
+      "is_active": true,
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "annotations": {},
+      "from_datasource_id": "federated.04xumdg0o9ttvt13wv5pa1dh3f4y",
+      "from_datasource_caption": "Custom SQL Query (dlh_nsec.objdb) (2)",
+      "to_datasource_id": "federated.04xumdg0o9ttvt13wv5pa1dh3f4y",
+      "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb) (2)"
+    },
+    {
+      "id": "03f80e58-1918-4fb7-92c1-cd7bddeff8f2",
+      "from_table": "Custom SQL Query",
+      "from_column": "PUAT_Module",
+      "to_table": "Custom SQL Query2",
+      "to_column": "OBJ_SMF_TABLES",
+      "is_active": true,
+      "cardinality": "one",
+      "cross_filter_behavior": "OneDirection",
+      "annotations": {},
+      "from_datasource_id": "federated.04xumdg0o9ttvt13wv5pa1dh3f4y",
+      "from_datasource_caption": "Custom SQL Query (dlh_nsec.objdb) (2)",
+      "to_datasource_id": "federated.04xumdg0o9ttvt13wv5pa1dh3f4y",
+      "to_datasource_caption": "Custom SQL Query (dlh_nsec.objdb) (2)"
+    }
+  ]
+}

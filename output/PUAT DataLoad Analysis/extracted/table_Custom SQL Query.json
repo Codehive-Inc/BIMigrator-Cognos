@@ -1,0 +1,486 @@
+{
+  "source_name": "Custom SQL Query",
+  "name": "Custom SQL Query",
+  "lineage_tag": null,
+  "description": "Table from federated relation: Custom SQL Query",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "weekday",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ISOWEEKDAY('Custom SQL Query'[FISCAL_DATE])",
+      "description": "Converted from Tableau calculation: ISOWEEKDAY([FISCAL_DATE])",
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "max Week Flag",
+      "datatype": "boolean",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Weekly count] = [Weekly count]",
+      "description": "Converted from Tableau calculation: [Calculation_1420604241837174785]=[Weekly count (copy)_1420604241838956546]",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Week Start Date",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VAR MinFiscalDate = MINX(FILTER('Custom SQL Query', 'Custom SQL Query'[FISCAL_WEEK] = MAX('Custom SQL Query'[FISCAL_WEEK])), 'Custom SQL Query'[FISCAL_DATE]) RETURN MinFiscalDate",
+      "description": "Converted from Tableau calculation: { FIXED [FISCAL_WEEK]:MIN([FISCAL_DATE])}",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "diff flag",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SWITCH(TRUE(), 'Custom SQL Query'[% diff] = 0, \"Gold\", 'Custom SQL Query'[% diff] > ([Parameters].[Parameter 1] / 100), \"Flag\", 'Custom SQL Query'[% diff] < ([Parameters].[Parameter 1] / 100), \"Normal\")",
+      "description": "Converted from Tableau calculation: if [Calculation_1420604241840762884]=0 THEN 'Gold'\r\nELSEIF ([Calculation_1420604241840762884])>([Parameters].[Parameter 1]/100) THEN 'Flag'\r\nELSEIF  ([Calculation_1420604241840762884])<([Parameters].[Parameter 1]/100) THEN 'Normal' END",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "help",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "\"Help\"",
+      "description": "Converted from Tableau calculation: 'Help'",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Golden Date",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "IF 'Custom SQL Query'[max Week Flag] = TRUE() THEN 'Custom SQL Query'[FISCAL_DATE] END",
+      "description": "Converted from Tableau calculation: IF [Calculation_1420604241839083523]=TRUE then [FISCAL_DATE] END",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Subject",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "\"Data Load below \" & CONCATENATE(\" \", STR([Parameters].[Parameter 1]), \"% Of Golden Data Range\")",
+      "description": "Converted from Tableau calculation: \"Data Load below \"+STR([Parameters].[Parameter 1])+\"% Of Golden Data Range\"",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Avg Range",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "INT('Custom SQL Query'[AVG_DATA])",
+      "description": "Converted from Tableau calculation: INT([AVG_DATA])",
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "Week End Date",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CALCULATE(MAX('Custom SQL Query'[FISCAL_DATE]), ALLEXCEPT('Custom SQL Query', 'Custom SQL Query'[FISCAL_WEEK]))",
+      "description": "Converted from Tableau calculation: { FIXED [FISCAL_WEEK]:MAX([FISCAL_DATE])}",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Tab_module",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Tab_module",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "asup_date",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "asup_date",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "dt",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "dt",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "serial_count",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "serial_count",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "User",
+        "PBI_FormatHint": {
+          "isGeneralNumber": true
+        }
+      }
+    },
+    {
+      "source_name": "FISCAL_DATE",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FISCAL_DATE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "FISCAL_MONTH",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FISCAL_MONTH",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "FISCAL_QTR",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FISCAL_QTR",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "FISCAL_YEAR",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FISCAL_YEAR",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "FISCAL_WEEK",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FISCAL_WEEK",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "FT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "OBJ_SMF_TABLES",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "OBJ_SMF_TABLES",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AVG_DATA",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AVG_DATA",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "asup_month",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": null,
+      "description": "Relationship column from Custom SQL Query",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": "Uncategorized",
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {}
+    },
+    {
+      "source_name": "PUAT_Module",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": null,
+      "description": "Relationship column from Custom SQL Query",
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": "Uncategorized",
+      "is_calculated": false,
+      "is_data_type_inferred": false,
+      "annotations": {}
+    }
+  ],
+  "measures": [
+    {
+      "source_name": "Weekly count",
+      "dax_expression": "SUM(SWITCH(TRUE(), 'Custom SQL Query'[weekday] = 6 || 'Custom SQL Query'[weekday] = 7, 'Custom SQL Query'[serial_count]))",
+      "description": "Converted from Tableau calculation: { FIXED [FISCAL_WEEK]:SUM(IF [Calculation_1420604241832890368]=6 or [Calculation_1420604241832890368]=7 THEN [serial_count] END)}",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "% diff",
+      "dax_expression": "1 - 'Custom SQL Query'[serial_count] / SUM(SWITCH(TRUE(), 'Custom SQL Query'[weekday] = 6 || 'Custom SQL Query'[weekday] = 7, 'Custom SQL Query'[serial_count]))",
+      "description": "Converted from Tableau calculation: 1-[Calculation_1420604241837174785]/[Weekly count (copy)_1420604241838956546]",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Body",
+      "dax_expression": "\"Date of Load \" & CONCATENATE(MIN([Week Start Date]), \" System Count: \", CONCATENATE(SUM('Custom SQL Query'[serial_count]), \" Golden Data Value: \", CONCATENATE(MAX('Custom SQL Query'[Weekly count (copy)_1420604241838956546]), \" Regards, PUAT Data Load\"))",
+      "description": "Converted from Tableau calculation: \"Date of Load \"+STR(MIN([Calculation_1420604242555215877]))+\"\r\n\"+\r\n\"System Count: \"+STR(SUM(serial_count))+\"\r\n\r\n\"\r\n\r\n+\"Golden Data Value: \"+STR(MAX([Weekly count (copy)_1420604241838956546]))+\"\r\n\r\n\r\n\"+\r\n\"\r\nRegards,\r\nPUAT Data Load\"",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "1500 flag",
+      "dax_expression": "SWITCH(MIN('Custom SQL Query'[Calculation_1857734887845101576]) - SUM('Custom SQL Query'[serial_count]) > 1500, \"Flag\", \"Normal\")",
+      "description": "Converted from Tableau calculation: IF MIN([Calculation_1857734887845101576])-SUM([serial_count])>1500 THEN 'Flag'\r\nELSE 'Normal'\r\nEND",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Measure vs Golden",
+      "dax_expression": "MIN(INT('Custom SQL Query'[AVG_DATA])) - SUM('Custom SQL Query'[serial_count])",
+      "description": "Converted from Tableau calculation: MIN([Calculation_1857734887806193665])-SUM([serial_count])",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Diffrence",
+      "dax_expression": "MIN('Custom SQL Query'[Calculation_1857734887845101576]) - SUM('Custom SQL Query'[serial_count])",
+      "description": "Converted from Tableau calculation: MIN([Calculation_1857734887845101576])-SUM([serial_count])",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Max\\Avg",
+      "dax_expression": "SWITCH(TRUE(), 'Parameters'[Parameter 3] = \"Max\", 'Custom SQL Query'[Weekly count (copy)_1420604241838956546], 'Parameters'[Parameter 3] = \"Avg\", [Avg Range])",
+      "description": "Converted from Tableau calculation: IF [Parameters].[Parameter 3]='Max' THEN [Weekly count (copy)_1420604241838956546]\r\nELSEIF [Parameters].[Parameter 3]='Avg' THEN [Calculation_1857734887806193665] END",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Diffrence flag",
+      "dax_expression": "SWITCH(TRUE(), MIN('Custom SQL Query'[Max\\Avg]) - SUM('Custom SQL Query'[serial_count]) > 1500, \"Flag\", MIN('Custom SQL Query'[Max\\Avg]) - SUM('Custom SQL Query'[serial_count]) > = 0 && MIN('Custom SQL Query'[Max\\Avg]) - SUM('Custom SQL Query'[serial_count]) < = 1500, \"Normal\", MIN('Custom SQL Query'[Max\\Avg]) - SUM('Custom SQL Query'[serial_count]) < 0, \"Spike\")",
+      "description": "Converted from Tableau calculation: IF  MIN([Calculation_1857734887845101576])-SUM([serial_count])>1500 THEN 'Flag'\r\nELSEIF MIN([Calculation_1857734887845101576])-SUM([serial_count])>=0 AND MIN([Calculation_1857734887845101576])-SUM([serial_count])<=1500 THEN 'Normal'\r\nELSEIF MIN([Calculation_1857734887845101576])-SUM([serial_count])<0 THEN 'Spike' END",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Max Weekly count",
+      "dax_expression": "MAX(FIXED 'Custom SQL Query'[FISCAL_WEEK], SUM(SWITCH(TRUE(), ISOWEEKDAY('Custom SQL Query'[FISCAL_DATE]) = 6 || ISOWEEKDAY('Custom SQL Query'[FISCAL_DATE]) = 7, 'Custom SQL Query'[serial_count])))",
+      "description": "Converted from Tableau calculation: {MAX({ FIXED [FISCAL_WEEK]:SUM(IF [Calculation_1420604241832890368]=6 or [Calculation_1420604241832890368]=7 THEN [serial_count] END)})}",
+      "format_string": null,
+      "is_hidden": false,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Custom SQL Query",
+      "source_type": "m",
+      "expression": "\tlet Source = Dremio.Database(\"dlh - prd.corp.netapp.com:31011\", [HierarchicalNavigation = true]), dbo_DREMIO = Source{[Name = \"DREMIO\",Kind = \"Database\"]}[Data], dlh_nsec_objdb = dbo_DREMIO{[Name = \"dlh_nsec.objdb\",Kind = \"Schema\"]}[Data], #\"Changed Type\" = Table.TransformColumnTypes(dlh_nsec_objdb,{{\"COLUMN_NAME\", type text}, {\"DATA_TYPE\", type text}, {\"TYPE_NAME\", type text}, {\"COLUMN_SIZE\", Int64.Type}, {\"BUFFER_LENGTH\", Int64.Type}, {\"DECIMAL_DIGITS\", Int64.Type}, {\"NUM_PREC_RADIX\", Int64.Type}, {\"NULLABLE\", Int64.Type}, {\"REMARKS\", type text}, {\"COLUMN_DEF\", type text}, {\"SQL_DATA_TYPE\", Int64.Type}, {\"SQL_DATETIME_SUB\", Int64.Type}, {\"CHAR_OCTET_LENGTH\", Int64.Type}, {\"ORDINAL_POSITION\", Int64.Type}, {\"IS_NULLABLE\", type text}, {\"SCOPE_CATALOG\", type text}, {\"SCOPE_SCHEMA\", type text}, {\"SCOPE_TABLE\", type text}, {\"SOURCE_DATA_TYPE\", type text}}), #\"Filtered Rows\" = Table.SelectRows(#\"Changed Type\", each ([SCOPE_TABLE] < > null)) in #\"Filtered Rows\"",
+      "description": "SQL partition for table Custom SQL Query"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}
