@@ -35,6 +35,12 @@ from bimigrator.parsers.report_parser import ReportParser
 from bimigrator.generators.report_generator import ReportGenerator
 from bimigrator.parsers.report_config_parser import ReportConfigParser
 from bimigrator.generators.report_config_generator import ReportConfigGenerator
+from bimigrator.parsers.page_section_parser import PageSectionParser
+from bimigrator.parsers.page_config_parser import PageConfigParser
+from bimigrator.parsers.page_filters_parser import PageFiltersParser
+from bimigrator.generators.page_section_generator import PageSectionGenerator
+from bimigrator.generators.page_config_generator import PageConfigGenerator
+from bimigrator.generators.page_filters_generator import PageFiltersGenerator
 from bimigrator.licensing.license_manager import LicenseManager
 from bimigrator.licensing.exceptions import (
     LicenseError, LicenseExpiredError, LicenseLimitError, LicenseConnectionError
@@ -391,6 +397,83 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
     except Exception as e:
         print(f'Failed to generate report config.json: {str(e)}')
         raise e
+        
+    # Step 12: Generate page section, config, and filters files
+    print('\nStep 12: Generating page section, config, and filters files...')
+    try:
+        # Extract page sections
+        page_section_parser = PageSectionParser(filename, config, output_dir)
+        page_sections = page_section_parser.extract_all_sections()
+        
+        # Create generators
+        page_section_generator = PageSectionGenerator(config, twb_name, output_dir)
+        page_config_generator = PageConfigGenerator(config, twb_name, output_dir)
+        page_filters_generator = PageFiltersGenerator(config, twb_name, output_dir)
+        
+        # Generate files for each section
+        for i, section in enumerate(page_sections):
+            # Create section directory path
+            # Use 'Page 1' format for the directory name
+            page_number = i + 1  # Start from 1 instead of 0
+            section_dir_name = f"{i:03d}_Page {page_number}"
+            section_dir = structure_generator.base_dir / 'Report' / 'sections' / section_dir_name
+            section_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Set the pbit_dir for each generator to point to the section directory
+            page_section_generator.pbit_dir = section_dir
+            page_config_generator.pbit_dir = section_dir
+            page_filters_generator.pbit_dir = section_dir
+            
+            # Update context with section-specific data
+            section_context = {
+                'name': section.name,
+                'display_name': section.display_name,
+                'ordinal': i,
+                'width': section.layout.width,
+                'height': section.layout.height,
+                'display_option': 1
+            }
+            
+            # Generate section.json directly in the section directory
+            section_path = section_dir / 'section.json'
+            with open(section_path, 'w', encoding='utf-8') as f:
+                f.write(page_section_generator.render_template('page.section.json', section_context))
+            print(f'Generated section.json: {section_path}')
+            
+            # Extract and generate config.json
+            page_config_parser = PageConfigParser(filename, config, output_dir)
+            page_config = page_config_parser.extract_page_config(section.display_name)
+            
+            # Generate config.json directly in the section directory
+            config_path = section_dir / 'config.json'
+            config_context = {
+                'visuals': [],
+                'layout': {
+                    'width': section.layout.width,
+                    'height': section.layout.height,
+                    'display_option': '1'
+                }
+            }
+            with open(config_path, 'w', encoding='utf-8') as f:
+                f.write(page_config_generator.render_template('page.config.json', config_context))
+            print(f'Generated config.json: {config_path}')
+            
+            # Extract and generate filters.json
+            page_filters_parser = PageFiltersParser(filename, config, output_dir)
+            page_filters = page_filters_parser.extract_page_filters(section.display_name)
+            
+            # Generate filters.json directly in the section directory
+            filters_path = section_dir / 'filters.json'
+            filters_context = {'filters': page_filters or []}
+            with open(filters_path, 'w', encoding='utf-8') as f:
+                f.write(page_filters_generator.render_template('page.filters.json', filters_context))
+            print(f'Generated filters.json: {filters_path}')
+            print(f'Generated filters.json: {filters_path}')
+    except Exception as e:
+        print(f'Failed to generate page files: {str(e)}')
+        print(f'Error details: {e}')
+        # Continue with migration even if page files generation fails
+        print('Continuing with migration...')
 
     print('\nMigration completed successfully!')
 

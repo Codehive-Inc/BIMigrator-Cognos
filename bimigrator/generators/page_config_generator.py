@@ -57,7 +57,6 @@ class PageConfigGenerator(BaseTemplateGenerator):
         # Generate file using template
         output_path = self.generate_file(
             template_type='page_config',
-            context=context,
-            output_dir=output_dir
+            context=context
         )
         return output_path
