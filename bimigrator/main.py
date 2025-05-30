@@ -3,6 +3,7 @@ import argparse
 import io
 import json
 import logging
+from bimigrator.common.log_utils import configure_logging, log_info, log_debug, log_warning, log_error, log_file_generated
 import os
 import sys
 import uuid
@@ -62,19 +63,33 @@ def generate_version_file(filename, config, output_dir):
     return
 
 
-def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None, skip_license_check: bool = False) -> None:
-    """Migrate Tableau workbook to Power BI TMDL format.
+# Remove these functions as they're now provided by our log_utils module
 
+
+def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None, skip_license_check: bool = False):
+    """Migrate a Tableau workbook to Power BI TMDL format.
+    
     Args:
-        filename: Name of the twb_file
-        # parsed_data: Content of the TWB file parsed to dict.
-        config: Dict containing configuration data
-        output_dir: Optional output directory
-        skip_license_check: If True, skip license validation (for testing only)
-
+        filename: Path to the Tableau workbook file or BytesIO object
+        output_dir: Output directory for the migration
+        config: Optional configuration dictionary
+        skip_license_check: Whether to skip license validation
+        
     Returns:
         Dictionary mapping file types to their generated paths
     """
+    # Get workbook name for logging
+    if isinstance(filename, (Path, str)):
+        twb_name = Path(filename).stem
+    else:
+        twb_name = Path(getattr(filename, 'name', uuid.uuid4().hex)).stem
+    
+    # Configure logging with workbook name
+    configure_logging(twb_name)
+    
+    log_info(f"Starting migration for workbook: {twb_name}")
+    log_info(f"Output directory: {output_dir}")
+    
     # Validate license before proceeding (unless skipped for testing)
     if not skip_license_check:
         try:
@@ -137,6 +152,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
         version_generator = VersionGenerator(config, output_dir)
         version_path = version_generator.generate_version(version_info, output_dir)
+        log_file_generated(str(version_path))
         print(f'Generated version.txt: {version_path}')
     except Exception as e:
         print(f'Failed to generate version.txt: {str(e)}')
@@ -166,6 +182,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         culture_path = culture_generator.generate_culture_tmdl(
             culture_info, output_dir
         )
+        log_file_generated(str(culture_path))
         print(f'Generated culture TMDL: {culture_path}')
     except Exception as e:
         print(f'Failed to generate culture TMDL: {str(e)}')
@@ -183,6 +200,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             config, twb_name, output_dir
         )
         pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
+        log_file_generated(str(pbixproj_path))
         print(f'Generated .pbixproj.json: {pbixproj_path}')
     except Exception as e:
         print(f'Failed to generate .pbixproj.json: {str(e)}')
@@ -198,6 +216,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             config, twb_name, output_dir
         )
         database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
+        log_file_generated(str(database_path))
         print(f'Generated database TMDL: {database_path}')
         print(f'  Database name: {db_info.name}')
     except Exception as e:
@@ -408,11 +427,10 @@ def main():
 
     args = parser.parse_args()
 
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
+    # Configure logging using our custom logging utility
+    from bimigrator.common.log_utils import configure_logging, log_info, log_debug, log_warning, log_error, log_file_generated
+
+    configure_logging()
 
     # Check license status if requested
     if args.check_license:

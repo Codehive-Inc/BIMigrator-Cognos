@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, Any, List
 
 from bimigrator.config.data_classes import PowerBiTable
-from bimigrator.common.logging import logger
+from bimigrator.common.log_utils import log_info, log_debug, log_warning, log_error
 from bimigrator.parsers.base_parser import BaseParser
 from bimigrator.parsers.column_parser import ColumnParser
 from bimigrator.parsers.connections.connection_factory import ConnectionParserFactory
@@ -38,7 +38,14 @@ class TableParserBase(BaseParser):
         self.connection_factory = ConnectionParserFactory(config)
         self.tmdl_generator = TMDLGenerator(config)
         self.output_dir = output_dir
-        self.calculation_tracker = CalculationTracker(base_output_dir / 'extracted')
+        # Get workbook name for logging
+        if isinstance(twb_file, (Path, str)):
+            self.workbook_name = Path(twb_file).stem
+        else:
+            self.workbook_name = "Unknown"
+            
+        # Initialize calculation tracker with workbook name
+        self.calculation_tracker = CalculationTracker(base_output_dir / 'extracted', self.workbook_name)
 
     def parse_workbook(self, twb_path: str, config: Dict[str, Any]) -> Dict[str, Any]:
         """Parse a Tableau workbook file.

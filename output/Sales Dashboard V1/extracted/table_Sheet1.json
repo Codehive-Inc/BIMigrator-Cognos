@@ -207,7 +207,7 @@
     },
     {
       "source_name": "Units Measure",
-      "expression": "SUM(DIVIDE('Sheet1'[Sales], 'Sheet1'[Quantity]))",
+      "expression": "SUM('Sheet1'[Units])",
       "format_string": null,
       "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
       "is_hidden": false
