@@ -1,17 +1,23 @@
 """Helper class to track and manage calculation conversions."""
 import json
+import logging
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Optional, Any, Union
+
+from bimigrator.common.log_utils import log_file_saved, log_error
 
 class CalculationTracker:
     """Tracks and manages calculation conversions between Tableau and Power BI."""
     
-    def __init__(self, output_dir: Optional[Path]):
+    def __init__(self, output_dir: Optional[Path], workbook_name: Optional[str] = None):
         """Initialize the calculation tracker.
         
         Args:
             output_dir: Output directory where the calculations.json will be stored
+            workbook_name: Optional name of the workbook being processed
         """
+        self.logger = logging.getLogger(__name__)
+        self.workbook_name = workbook_name
         if output_dir:
             # Use the provided output directory directly
             self.output_dir = output_dir
@@ -97,7 +103,11 @@ class CalculationTracker:
                 data['calculations'].append(calc)
             with open(self.json_path, 'w') as f:
                 json.dump(data, f, indent=2)
+                
+            # Log the file save operation
+            log_file_saved(str(self.json_path), f"{len(self.calculations)} calculations")
         except Exception as e:
+            log_error(f"Error saving calculations", e)
             print(f"Error saving calculations: {str(e)}")
     
     def add_tableau_calculation(
