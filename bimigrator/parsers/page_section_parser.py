@@ -1,5 +1,7 @@
 """Parser for extracting page section information from Tableau workbooks."""
 import datetime
+import hashlib
+import uuid
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
@@ -31,9 +33,15 @@ class PageSectionParser(BaseParser):
             PowerBiReportSection object containing extracted page information
         """
         # Create a default section with basic information
+        page_display_name = dashboard_name or f"Page {ordinal + 1}"
+        
+        # Generate a unique ID for the name field similar to the example
+        # This creates a hash-like string that will be consistent for the same input
+        unique_id = hashlib.md5(f"{page_display_name}_{uuid.uuid4()}".encode()).hexdigest()[:20]
+        
         section = PowerBiReportSection(
-            name=f"page_{ordinal}",
-            display_name=dashboard_name or f"Page {ordinal + 1}",
+            name=unique_id,
+            display_name=page_display_name,
             filters=[],
             objects={"visuals": []},
             layout=PowerBiSectionLayout(
