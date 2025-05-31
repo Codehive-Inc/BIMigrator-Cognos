@@ -103,6 +103,30 @@ Templates:
       dataclass: PowerBiReportSection
       multiple: true
       name_from: name
+      
+    page_section:
+      template: page.section.json
+      output: Report/sections/{{ordinal}}_{{display_name}}/section.json
+      config: PowerBiPageSection
+      dataclass: PowerBiPageSection
+      multiple: true
+      name_from: display_name
+      
+    page_config:
+      template: page.config.json
+      output: Report/sections/{{ordinal}}_{{display_name}}/config.json
+      config: PowerBiPageConfig
+      dataclass: PowerBiPageConfig
+      multiple: true
+      name_from: display_name
+      
+    page_filters:
+      template: page.filters.json
+      output: Report/sections/{{ordinal}}_{{display_name}}/filters.json
+      config: PowerBiPageFilters
+      dataclass: PowerBiPageFilters
+      multiple: true
+      name_from: display_name
 
 # --- Model Settings ---
 PowerBiModel:
