@@ -26,7 +26,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "SWITCH(TRUE(), 'Sheet1'[Region] & \" Sales\" = \"North Sales\", \"North East\", 'Sheet1'[Region] & \" Sales\" = \"East Sales\", \"North East\", 'Sheet1'[Region] & \" Sales\" = \"South Sales\", \"South West\", 'Sheet1'[Region] & \" Sales\" = \"West Sales\", \"South West\")",
+      "source_column": "SWITCH(TRUE(), 'Sheet1'[Region Sales] = \"North Sales\", \"North East\", 'Sheet1'[Region Sales] = \"East Sales\", \"North East\", 'Sheet1'[Region Sales] = \"South Sales\", \"South West\", 'Sheet1'[Region Sales] = \"West Sales\", \"South West\")",
       "description": "Converted from Tableau calculation: case [Calculation_606860061092720640]\r\nwhen \"North Sales\" then \"North East\"\r\nwhen \"East Sales\" then \"North East\"\r\nwhen \"South Sales\" then \"South West\"\r\nwhen \"West Sales\" then \"South West\"\r\nend",
       "is_hidden": false,
       "summarize_by": "none",
@@ -207,7 +207,7 @@
     },
     {
       "source_name": "Units Measure",
-      "expression": "SUM('Sheet1'[Sales] / 'Sheet1'[Quantity])",
+      "expression": "SUM('Sheet1'[Units])",
       "format_string": null,
       "description": "Converted from Tableau calculation: SUM([Calculation_606860061096038402])",
       "is_hidden": false
