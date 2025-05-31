@@ -7,7 +7,7 @@ Output:
 
 # --- API Settings ---
 api_settings:
-  # Base URL for the FastAPI service
+  # Base URL for the FastAPI service at 8080 port
   base_url: "http://localhost:8080"
   # Timeout in seconds for API requests
   timeout_seconds: 30
