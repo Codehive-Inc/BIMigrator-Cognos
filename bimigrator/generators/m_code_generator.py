@@ -125,7 +125,13 @@ def generate_m_code(
     
     # Get API settings
     api_config = m_code_config.get('api', {})
-    api_base_url = os.getenv('DAX_API_URL') or os.getenv('TABLEAU_TO_DAX_API_URL') or api_config.get('base_url', 'http://localhost:8000')
+    base_url = os.getenv('DAX_API_URL') or os.getenv('TABLEAU_TO_DAX_API_URL') or api_config.get('base_url', 'http://localhost:8000')
+    
+    # Ensure the URL has a protocol
+    if base_url and not (base_url.startswith('http://') or base_url.startswith('https://')):
+        base_url = 'http://' + base_url
+        
+    api_base_url = base_url
     timeout = api_config.get('timeout_seconds', 30)
     m_code_endpoint = api_config.get('endpoints', {}).get('m_code', '/convert/tableau-to-m-code')
     

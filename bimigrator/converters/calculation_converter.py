@@ -31,7 +31,13 @@ class CalculationConverter:
         self.config = config
         # Get API settings from config or use defaults
         api_config = config.get('api_settings', {})
-        self.api_base_url = os.getenv('DAX_API_URL') or api_config.get('base_url', 'http://localhost:8000')
+        base_url = os.getenv('DAX_API_URL') or api_config.get('base_url', 'http://localhost:8000')
+        
+        # Ensure the URL has a protocol
+        if base_url and not (base_url.startswith('http://') or base_url.startswith('https://')):
+            base_url = 'http://' + base_url
+            
+        self.api_base_url = base_url
         self.api_timeout = api_config.get('timeout_seconds', 30)
         
         # Load calculations from the extracted JSON if available
