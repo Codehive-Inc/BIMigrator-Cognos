@@ -214,55 +214,54 @@ class TableParser(TableParserBase):
                         )
             
             # Extract additional columns from <map> elements for each table
-            # Find the main datasource element that contains the column mappings
+            # Process all datasource elements that contain column mappings
             for ds_element in self.root.findall('.//datasource'):
-                if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
-                    # This is the main federated datasource with column mappings
-                    cols_element = ds_element.find('.//cols')
-                    if cols_element is not None:
-                        # Process each map element to extract column information
-                        for map_element in cols_element.findall('.//map'):
-                            key = map_element.get('key')
-                            value = map_element.get('value')
-                            
-                            if key and value and '[' in value and ']' in value:
-                                # Extract table name and column name from value
-                                # Format is typically [TABLE_NAME].[COLUMN_NAME]
-                                parts = value.split('.')
-                                if len(parts) == 2:
-                                    table_name = parts[0].strip('[]')
-                                    column_name = parts[1].strip('[]')
-                                    
-                                    # Skip if this is not a relationship table
-                                    if table_name not in tables:
-                                        continue
-                                    
-                                    # Skip if column already exists
-                                    if column_name in {c.source_name for c in tables[table_name].columns}:
-                                        continue
-                                    
-                                    # Determine datatype based on column name patterns
-                                    pbi_datatype = "string"  # Default
-                                    summarize_by = "none"
-                                    
-                                    # Apply simple datatype inference based on column name
-                                    if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
-                                        pbi_datatype = "double"
-                                        summarize_by = "sum"
-                                    elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
-                                        pbi_datatype = "dateTime"
-                                    elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
-                                        pbi_datatype = "boolean"
-                                    
-                                    # Create column object
-                                    column = PowerBiColumn(
-                                        source_name=column_name,
-                                        pbi_datatype=pbi_datatype,
-                                        source_column=column_name,
-                                        summarize_by=summarize_by,
-                                        description=f"Column from {table_name}"
-                                    )
-                                    tables[table_name].columns.append(column)
+                # Process any datasource that has column mappings
+                cols_element = ds_element.find('.//cols')
+                if cols_element is not None:
+                    # Process each map element to extract column information
+                    for map_element in cols_element.findall('.//map'):
+                        key = map_element.get('key')
+                        value = map_element.get('value')
+                        
+                        if key and value and '[' in value and ']' in value:
+                            # Extract table name and column name from value
+                            # Format is typically [TABLE_NAME].[COLUMN_NAME]
+                            parts = value.split('.')
+                            if len(parts) == 2:
+                                table_name = parts[0].strip('[]')
+                                column_name = parts[1].strip('[]')
+                                
+                                # Skip if this is not a relationship table
+                                if table_name not in tables:
+                                    continue
+                                
+                                # Skip if column already exists
+                                if column_name in {c.source_name for c in tables[table_name].columns}:
+                                    continue
+                                
+                                # Determine datatype based on column name patterns
+                                pbi_datatype = "string"  # Default
+                                summarize_by = "none"
+                                
+                                # Apply simple datatype inference based on column name
+                                if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
+                                    pbi_datatype = "double"
+                                    summarize_by = "sum"
+                                elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
+                                    pbi_datatype = "dateTime"
+                                elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
+                                    pbi_datatype = "boolean"
+                                
+                                # Create column object
+                                column = PowerBiColumn(
+                                    source_name=column_name,
+                                    pbi_datatype=pbi_datatype,
+                                    source_column=column_name,
+                                    summarize_by=summarize_by,
+                                    description=f"Column from {table_name}"
+                                )
+                                tables[table_name].columns.append(column)
 
         except Exception as e:
             logger.error(f"Error extracting relationship tables: {str(e)}", exc_info=True)
@@ -313,58 +312,57 @@ class TableParser(TableParserBase):
         tables_dict = {table.source_name: table for table in tables}
         
         # Extract columns from <map> elements for all tables
-        # Find the main datasource element that contains the column mappings
+        # Process all datasource elements that contain column mappings
         for ds_element in self.root.findall('.//datasource'):
-            if ds_element.get('caption') == 'RO VIN Entry' or ds_element.get('name') == 'federated.1luf0dm0s4az7214qsvnz0flwlm6':
-                # This is the main federated datasource with column mappings
-                cols_element = ds_element.find('.//cols')
-                if cols_element is not None:
-                    # Process each map element to extract column information
-                    for map_element in cols_element.findall('.//map'):
-                        key = map_element.get('key')
-                        value = map_element.get('value')
-                        
-                        if key and value and '[' in value and ']' in value:
-                            # Extract table name and column name from value
-                            # Format is typically [TABLE_NAME].[COLUMN_NAME]
-                            parts = value.split('.')
-                            if len(parts) == 2:
-                                table_name = parts[0].strip('[]')
-                                column_name = parts[1].strip('[]')
-                                
-                                # Skip if this table doesn't exist
-                                if table_name not in tables_dict:
-                                    continue
-                                
-                                # Get the table
-                                table = tables_dict[table_name]
-                                
-                                # Skip if column already exists
-                                if column_name in {c.source_name for c in table.columns}:
-                                    continue
-                                
-                                # Determine datatype based on column name patterns
-                                pbi_datatype = "string"  # Default
-                                summarize_by = "none"
-                                
-                                # Apply simple datatype inference based on column name
-                                if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
-                                    pbi_datatype = "double"
-                                    summarize_by = "sum"
-                                elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
-                                    pbi_datatype = "dateTime"
-                                elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
-                                    pbi_datatype = "boolean"
-                                
-                                # Create column object
-                                column = PowerBiColumn(
-                                    source_name=column_name,
-                                    pbi_datatype=pbi_datatype,
-                                    source_column=column_name,
-                                    summarize_by=summarize_by,
-                                    description=f"Column from {table_name}"
-                                )
-                                table.columns.append(column)
+            # Process any datasource that has column mappings
+            cols_element = ds_element.find('.//cols')
+            if cols_element is not None:
+                # Process each map element to extract column information
+                for map_element in cols_element.findall('.//map'):
+                    key = map_element.get('key')
+                    value = map_element.get('value')
+                    
+                    if key and value and '[' in value and ']' in value:
+                        # Extract table name and column name from value
+                        # Format is typically [TABLE_NAME].[COLUMN_NAME]
+                        parts = value.split('.')
+                        if len(parts) == 2:
+                            table_name = parts[0].strip('[]')
+                            column_name = parts[1].strip('[]')
+                            
+                            # Skip if this table doesn't exist
+                            if table_name not in tables_dict:
+                                continue
+                            
+                            # Get the table
+                            table = tables_dict[table_name]
+                            
+                            # Skip if column already exists
+                            if column_name in {c.source_name for c in table.columns}:
+                                continue
+                            
+                            # Determine datatype based on column name patterns
+                            pbi_datatype = "string"  # Default
+                            summarize_by = "none"
+                            
+                            # Apply simple datatype inference based on column name
+                            if any(suffix in column_name.upper() for suffix in ['_AM', '_NB', '_QT', '_RT', '_CN']):
+                                pbi_datatype = "double"
+                                summarize_by = "sum"
+                            elif any(suffix in column_name.upper() for suffix in ['_DT', '_TM', '_TS']):
+                                pbi_datatype = "dateTime"
+                            elif any(suffix in column_name.upper() for suffix in ['_IN', '_FLG']):
+                                pbi_datatype = "boolean"
+                            
+                            # Create column object
+                            column = PowerBiColumn(
+                                source_name=column_name,
+                                pbi_datatype=pbi_datatype,
+                                source_column=column_name,
+                                summarize_by=summarize_by,
+                                description=f"Column from {table_name}"
+                            )
+                            table.columns.append(column)
         
         # Track existing table names to avoid duplicates
         existing_table_names = {table.get('source_name') for table in all_tables if isinstance(table, dict) and 'source_name' in table}
