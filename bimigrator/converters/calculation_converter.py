@@ -1,6 +1,7 @@
 """Converter for Tableau calculations to Power BI DAX expressions using FastAPI."""
 from dataclasses import dataclass
 from typing import Dict, Any, Optional
+import os
 
 import httpx
 
@@ -30,7 +31,7 @@ class CalculationConverter:
         self.config = config
         # Get API settings from config or use defaults
         api_config = config.get('api_settings', {})
-        self.api_base_url = api_config.get('base_url', 'http://localhost:8000')
+        self.api_base_url = os.getenv('DAX_API_URL') or api_config.get('base_url', 'http://localhost:8000')
         self.api_timeout = api_config.get('timeout_seconds', 30)
         
         # Load calculations from the extracted JSON if available

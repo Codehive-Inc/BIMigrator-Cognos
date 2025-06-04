@@ -286,7 +286,7 @@ def generate_m_code(connection_node: Element, relation_node: Element, config: Di
     
     # Get API settings
     api_config = m_code_config.get('api', {})
-    api_base_url = os.getenv('TABLEAU_TO_DAX_API_URL') or api_config.get('base_url') or 'http://localhost:8000'
+    api_base_url = os.getenv('DAX_API_URL') or os.getenv('TABLEAU_TO_DAX_API_URL') or api_config.get('base_url') or 'http://localhost:8000'
     # Ensure URL has protocol
     if not api_base_url.startswith(('http://', 'https://')):
         api_base_url = 'http://' + api_base_url

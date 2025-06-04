@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Default API endpoint (can be overridden with environment variable)
-API_ENDPOINT = os.getenv("TABLEAU_TO_DAX_API_ENDPOINT", "http://localhost:8000")
+API_ENDPOINT = os.getenv("DAX_API_URL") or os.getenv("TABLEAU_TO_DAX_API_ENDPOINT") or "http://localhost:8000"
 
 # Check if the API service is available
 try:
