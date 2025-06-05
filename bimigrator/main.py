@@ -4,11 +4,13 @@ import io
 import json
 import logging
 from bimigrator.common.log_utils import configure_logging, log_info, log_debug, log_warning, log_error, log_file_generated
+from bimigrator.common.websocket_client import logging_helper, set_task_info
 import os
 import sys
 import uuid
+import datetime
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import yaml
 
@@ -72,7 +74,7 @@ def generate_version_file(filename, config, output_dir):
 # Remove these functions as they're now provided by our log_utils module
 
 
-def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None, skip_license_check: bool = False):
+def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None, skip_license_check: bool = False, task_id: Optional[str] = None):
     """Migrate a Tableau workbook to Power BI TMDL format.
     
     Args:
@@ -90,10 +92,18 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
     else:
         twb_name = Path(getattr(filename, 'name', uuid.uuid4().hex)).stem
     
+    # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"migration_{uuid.uuid4().hex}"
+    
     # Configure logging with workbook name
     configure_logging(twb_name)
     
+    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+    set_task_info(task_id, total_steps=12)
+    
     log_info(f"Starting migration for workbook: {twb_name}")
+    logging_helper(f"Starting migration for workbook: {twb_name}", progress=0, message_type='info')
     log_info(f"Output directory: {output_dir}")
     
     # Validate license before proceeding (unless skipped for testing)
@@ -152,6 +162,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 1: Generate version.txt
     print('\nStep 1: Generating version.txt...')
+    logging_helper("Step 1: Generating version.txt", progress=8, message_type='info')
     try:
         version_parser = VersionParser(filename, config, output_dir)
         version_info = version_parser.extract_version()
@@ -159,6 +170,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         version_generator = VersionGenerator(config, output_dir)
         version_path = version_generator.generate_version(version_info, output_dir)
         log_file_generated(str(version_path))
+        logging_helper(f"Generated version.txt: {version_path}", progress=8, message_type='info')
         print(f'Generated version.txt: {version_path}')
     except Exception as e:
         print(f'Failed to generate version.txt: {str(e)}')
@@ -166,6 +178,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 2: Generate culture TMDL
     print('\nStep 2: Generating culture TMDL...')
+    logging_helper("Step 2: Generating culture TMDL", progress=16, message_type='info')
     try:
         culture_parser = CultureParser(filename, config, output_dir)
         culture_info = culture_parser.extract_culture_info()
@@ -189,6 +202,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             culture_info, output_dir
         )
         log_file_generated(str(culture_path))
+        logging_helper(f"Generated culture TMDL: {culture_path}", progress=16, message_type='info')
         print(f'Generated culture TMDL: {culture_path}')
     except Exception as e:
         print(f'Failed to generate culture TMDL: {str(e)}')
@@ -196,6 +210,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 3: Generate .pbixproj.json
     print('\nStep 3: Generating .pbixproj.json...')
+    logging_helper("Step 3: Generating .pbixproj.json", progress=24, message_type='info')
     try:
         from bimigrator.parsers.pbixproj_parser import PbixprojParser
         from bimigrator.generators.pbixproj_generator import PbixprojGenerator
@@ -207,6 +222,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         )
         pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
         log_file_generated(str(pbixproj_path))
+        logging_helper(f"Generated .pbixproj.json: {pbixproj_path}", progress=24, message_type='info')
         print(f'Generated .pbixproj.json: {pbixproj_path}')
     except Exception as e:
         print(f'Failed to generate .pbixproj.json: {str(e)}')
@@ -214,6 +230,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 4: Generate database TMDL
     print('\nStep 4: Generating database TMDL...')
+    logging_helper("Step 4: Generating database TMDL", progress=32, message_type='info')
     try:
         db_parser = DatabaseParser(filename, config, output_dir)
         db_info = db_parser.extract_database_info()
@@ -223,6 +240,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         )
         database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
         log_file_generated(str(database_path))
+        logging_helper(f"Generated database TMDL: {database_path}", progress=32, message_type='info')
         print(f'Generated database TMDL: {database_path}')
         print(f'  Database name: {db_info.name}')
     except Exception as e:
@@ -231,10 +249,12 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 5: Generate table TMDL files and model TMDL
     print('\nStep 5: Generating table TMDL files...')
+    logging_helper("Step 5: Generating table TMDL files", progress=40, message_type='info')
     try:
         # Create a single table parser instance to be used by both table and model generation
         table_parser = TableParser(filename, config, str(structure_generator.extracted_dir))
         tables = table_parser.extract_all_tables()
+        logging_helper(f"Extracted {len(tables)} tables", progress=45, message_type='info')
 
         # Extract relationships first
         relationship_parser = RelationshipParser(filename, config, output_dir)
@@ -256,6 +276,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
         # Generate model TMDL using the same tables
         print('\nGenerating model TMDL...')
+        logging_helper("Generating model TMDL", progress=48, message_type='info')
         model_parser = ModelParser(filename, config, output_dir, table_parser)
         model = model_parser.extract_model_info(tables)
 
@@ -263,6 +284,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             config, twb_name, output_dir
         )
         model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
+        logging_helper(f"Generated model TMDL: {model_path}", progress=50, message_type='info')
         print(f'Generated model TMDL: {model_path}')
         print(f'  Model name: {model.model_name}')
         print(f'  Culture: {model.culture}')
@@ -275,11 +297,13 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 6: Generate relationships TMDL
     print('\nStep 6: Generating relationship TMDL files...')
+    logging_helper("Step 6: Generating relationship TMDL files", progress=58, message_type='info')
     try:
         print('Debug: Creating relationship parser...')
         relationship_parser = RelationshipParser(filename, config, output_dir)
         print('Debug: Extracting relationships...')
         relationships = relationship_parser.extract_relationships()
+        logging_helper(f"Found {len(relationships)} relationships", progress=60, message_type='info')
         print(f'Debug: Found {len(relationships)} relationships')
 
         print('Debug: Creating relationship generator...')
@@ -291,6 +315,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             relationships,
             output_dir=structure_generator.base_dir
         )
+        logging_helper(f"Generated {len(relationship_paths)} relationship TMDL files", progress=62, message_type='info')
         print(f'Generated {len(relationship_paths)} relationship TMDL files:')
         for path in relationship_paths:
             print(f'  - {path}')
@@ -300,6 +325,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 7: Generate report metadata
     print('\nStep 7: Generating report metadata...')
+    logging_helper("Step 7: Generating report metadata", progress=66, message_type='info')
     try:
         report_metadata_parser = ReportMetadataParser(filename, config, output_dir)
         report_metadata = report_metadata_parser.extract_metadata()
@@ -313,6 +339,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             report_metadata,
             output_dir=structure_generator.base_dir
         )
+        logging_helper(f"Generated report metadata: {metadata_path}", progress=68, message_type='info')
         print(f'Generated report metadata: {metadata_path}')
     except Exception as e:
         print(f'Failed to generate report metadata: {str(e)}')
@@ -320,6 +347,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 8: Generate report settings
     print('\nStep 8: Generating report settings...')
+    logging_helper("Step 8: Generating report settings", progress=72, message_type='info')
     try:
         report_settings_parser = ReportSettingsParser(filename, config, output_dir)
         report_settings = report_settings_parser.extract_report_settings()
@@ -333,6 +361,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             report_settings,
             output_dir=structure_generator.base_dir
         )
+        logging_helper(f"Generated report settings: {settings_path}", progress=74, message_type='info')
         print(f'Generated report settings: {settings_path}')
     except Exception as e:
         print(f'Failed to generate report settings: {str(e)}')
@@ -340,6 +369,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
 
     # Step 9: Generate diagram layout
     print('\nStep 9: Generating diagram layout...')
+    logging_helper("Step 9: Generating diagram layout", progress=78, message_type='info')
     try:
         diagram_layout_parser = DiagramLayoutParser(filename, config, output_dir)
         diagram_layout = diagram_layout_parser.extract_diagram_layout()
@@ -353,6 +383,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             diagram_layout,
             output_dir=structure_generator.base_dir
         )
+        logging_helper(f"Generated diagram layout: {layout_path}", progress=80, message_type='info')
         print(f'Generated diagram layout: {layout_path}')
     except Exception as e:
         print(f'Failed to generate diagram layout: {str(e)}')
@@ -360,6 +391,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         
     # Step 10: Generate report.json
     print('\nStep 10: Generating report.json...')
+    logging_helper("Step 10: Generating report.json", progress=84, message_type='info')
     try:
         report_parser = ReportParser(filename, config, output_dir)
         report = report_parser.extract_report()
@@ -373,6 +405,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             report,
             output_dir=structure_generator.base_dir
         )
+        logging_helper(f"Generated report.json: {report_path}", progress=86, message_type='info')
         print(f'Generated report.json: {report_path}')
     except Exception as e:
         print(f'Failed to generate report.json: {str(e)}')
@@ -380,6 +413,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         
     # Step 11: Generate report config.json
     print('\nStep 11: Generating report config.json...')
+    logging_helper("Step 11: Generating report config.json", progress=88, message_type='info')
     try:
         report_config_parser = ReportConfigParser(filename, config, output_dir)
         report_config = report_config_parser.extract_report_config()
@@ -393,6 +427,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
             report_config,
             output_dir=structure_generator.base_dir
         )
+        logging_helper(f"Generated report config.json: {config_path}", progress=90, message_type='info')
         print(f'Generated report config.json: {config_path}')
     except Exception as e:
         print(f'Failed to generate report config.json: {str(e)}')
@@ -400,10 +435,12 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         
     # Step 12: Generate page section, config, and filters files
     print('\nStep 12: Generating page section, config, and filters files...')
+    logging_helper("Step 12: Generating page section, config, and filters files", progress=92, message_type='info')
     try:
         # Extract page sections
         page_section_parser = PageSectionParser(filename, config, output_dir)
         page_sections = page_section_parser.extract_all_sections()
+        logging_helper(f"Found {len(page_sections)} page sections", progress=94, message_type='info')
         
         # Create generators
         page_section_generator = PageSectionGenerator(config, twb_name, output_dir)
@@ -475,6 +512,7 @@ def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', conf
         # Continue with migration even if page files generation fails
         print('Continuing with migration...')
 
+    logging_helper("Migration completed successfully!", progress=100, message_type='info')
     print('\nMigration completed successfully!')
 
 
@@ -542,11 +580,15 @@ def main():
         if args.config:
             custom_config = load_config(args.config)
             config.update(custom_config)
+        # Generate a task ID for WebSocket logging
+        task_id = f"migration_{uuid.uuid4().hex}"
+        
         migrate_to_tmdl(
             args.filename,
             output_dir=args.output,
             config=config,
-            skip_license_check=args.skip_license_check
+            skip_license_check=args.skip_license_check,
+            task_id=task_id
         )
         print("\nMigration completed successfully!")
     except Exception as e:
