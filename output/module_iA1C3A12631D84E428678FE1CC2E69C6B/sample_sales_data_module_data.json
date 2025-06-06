@@ -1,0 +1,166 @@
+{
+  "source_name": "sample_sales_data",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "_row_id",
+      "source_column": "_row_id",
+      "datatype": "int64",
+      "is_calculated": false,
+      "is_hidden": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "PBI_FormatHint": "{\"isGeneralNumber\":true}",
+        "CognosUsage": "identifier",
+        "CognosRegularAggregate": "count"
+      },
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Order_ID",
+      "source_column": "Order_ID",
+      "datatype": "int64",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "PBI_FormatHint": "{\"isGeneralNumber\":true}",
+        "CognosUsage": "identifier",
+        "CognosRegularAggregate": "countDistinct"
+      },
+      "format_string": "General Number",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Order_Date",
+      "source_column": "Order_Date",
+      "datatype": "dateTime",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "CognosUsage": "identifier",
+        "CognosRegularAggregate": "countDistinct"
+      },
+      "format_string": "Short Date",
+      "data_category": "Date",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Region",
+      "source_column": "Region",
+      "datatype": "string",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "CognosUsage": "identifier",
+        "CognosRegularAggregate": "countDistinct"
+      },
+      "data_category": "Geography",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Product_Category",
+      "source_column": "Product_Category",
+      "datatype": "string",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "CognosUsage": "identifier",
+        "CognosRegularAggregate": "countDistinct"
+      },
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Product_Name",
+      "source_column": "Product_Name",
+      "datatype": "string",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "CognosUsage": "attribute",
+        "CognosRegularAggregate": "countDistinct"
+      },
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Sales",
+      "source_column": "Sales",
+      "datatype": "decimal",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "PBI_FormatHint": "{\"isGeneralNumber\":true}",
+        "CognosUsage": "fact",
+        "CognosRegularAggregate": "total"
+      },
+      "format_string": "General Number",
+      "summarize_by": "sum"
+    },
+    {
+      "source_name": "Quantity",
+      "source_column": "Quantity",
+      "datatype": "int64",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "PBI_FormatHint": "{\"isGeneralNumber\":true}",
+        "CognosUsage": "fact",
+        "CognosRegularAggregate": "total"
+      },
+      "format_string": "General Number",
+      "summarize_by": "sum"
+    },
+    {
+      "source_name": "Discount",
+      "source_column": "Discount",
+      "datatype": "decimal",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "PBI_FormatHint": "{\"isGeneralNumber\":true}",
+        "CognosUsage": "fact",
+        "CognosRegularAggregate": "total"
+      },
+      "format_string": "General Number",
+      "summarize_by": "sum"
+    },
+    {
+      "source_name": "Profit",
+      "source_column": "Profit",
+      "datatype": "decimal",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic",
+        "PBI_FormatHint": "{\"isGeneralNumber\":true}",
+        "CognosUsage": "fact",
+        "CognosRegularAggregate": "total"
+      },
+      "format_string": "General Number",
+      "summarize_by": "sum"
+    }
+  ],
+  "measures": [],
+  "hierarchies": [],
+  "partitions": [],
+  "has_widget_serialization": false,
+  "visual_type": "Table",
+  "column_settings": "[]"
+}

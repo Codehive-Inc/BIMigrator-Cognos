@@ -1,0 +1,21 @@
+{
+  "source_name": "Fiscal_Calendar_October_1",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "Sample_Column",
+      "source_column": "Sample_Column",
+      "datatype": "string",
+      "is_calculated": false,
+      "is_hidden": false,
+      "is_data_type_inferred": true,
+      "annotations": {}
+    }
+  ],
+  "measures": [],
+  "hierarchies": [],
+  "partitions": [],
+  "has_widget_serialization": false,
+  "visual_type": "Table",
+  "column_settings": "[]"
+}

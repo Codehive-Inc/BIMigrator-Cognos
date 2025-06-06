@@ -1,0 +1,496 @@
+"""
+Power BI project file generators using Jinja2 templating
+"""
+
+import os
+import json
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+import logging
+from datetime import datetime
+
+import jinja2
+
+from .models import (
+    DataModel, Table, Column, Relationship, Measure, 
+    Report, ReportPage, PowerBIProject, DataType
+)
+from .config import MigrationConfig
+
+
+class TemplateEngine:
+    """Jinja2 template engine wrapper (migrated from PyBars3)"""
+    
+    def __init__(self, template_directory: str):
+        self.template_directory = Path(template_directory)
+        self.env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(str(self.template_directory)),
+            autoescape=False,
+            trim_blocks=True,
+            lstrip_blocks=True
+        )
+        self.templates = {}
+        self.logger = logging.getLogger(__name__)
+        self._load_templates()
+    
+    def _load_templates(self):
+        """Load all template files"""
+        if not self.template_directory.exists():
+            raise FileNotFoundError(f"Template directory not found: {self.template_directory}")
+        
+        template_files = {
+            'database': 'database.tmdl',
+            'table': 'Table.tmdl',
+            'relationship': 'relationship.tmdl',
+            'model': 'model.tmdl',
+            'culture': 'culture.tmdl',
+            'expressions': 'expressions.tmdl',
+            'pbixproj': 'pbixproj.json',
+            'report_config': 'report.config.json',
+            'report': 'report.json',
+            'report_metadata': 'report.metadata.json',
+            'report_settings': 'report.settings.json',
+            'report_section': 'report.section.json',
+            'diagram_layout': 'diagram.layout.json',
+            'version': 'version.txt'
+        }
+        
+        for template_name, filename in template_files.items():
+            try:
+                self.templates[template_name] = self.env.get_template(filename)
+                self.logger.debug(f"Loaded template: {template_name}")
+            except jinja2.TemplateNotFound:
+                self.logger.warning(f"Template file not found: {filename}")
+            except Exception as e:
+                self.logger.error(f"Failed to load template {filename}: {e}")
+    
+    def render(self, template_name: str, context: Dict[str, Any]) -> str:
+        """Render template with context"""
+        if template_name not in self.templates:
+            raise ValueError(f"Template not found: {template_name}")
+        
+        try:
+            return self.templates[template_name].render(context)
+        except Exception as e:
+            self.logger.error(f"Failed to render template {template_name}: {e}")
+            raise
+
+
+class PowerBIProjectGenerator:
+    """Generates Power BI project files from data models"""
+    
+    def __init__(self, config: MigrationConfig):
+        self.config = config
+        self.template_engine = TemplateEngine(config.template_directory)
+        self.logger = logging.getLogger(__name__)
+    
+    def generate_project(self, project: PowerBIProject, output_path: str) -> bool:
+        """Generate complete Power BI project structure"""
+        try:
+            output_dir = Path(output_path)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Generate project file
+            self._generate_project_file(project, output_dir)
+            
+            # Generate model files
+            if project.data_model:
+                self._generate_model_files(project.data_model, output_dir)
+            
+            # Generate report files
+            if project.report:
+                self._generate_report_files(project.report, output_dir)
+            
+            # Generate metadata files
+            self._generate_metadata_files(project, output_dir)
+            
+            self.logger.info(f"Successfully generated Power BI project at: {output_dir}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Failed to generate Power BI project: {e}")
+            return False
+    
+    def _generate_project_file(self, project: PowerBIProject, output_dir: Path):
+        """Generate .pbixproj.json file"""
+        context = {
+            'version': project.version,
+            'created': project.created.isoformat(),
+            'last_modified': project.last_modified.isoformat()
+        }
+        
+        content = self.template_engine.render('pbixproj', context)
+        
+        project_file = output_dir / '.pbixproj.json'
+        with open(project_file, 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_model_files(self, data_model: DataModel, output_dir: Path):
+        """Generate model files (database, tables, relationships)"""
+        model_dir = output_dir / 'Model'
+        model_dir.mkdir(exist_ok=True)
+        
+        # Generate database.tmdl
+        self._generate_database_file(data_model, model_dir)
+        
+        # Generate model.tmdl
+        self._generate_model_file(data_model, model_dir)
+        
+        # Generate table files
+        self._generate_table_files(data_model.tables, model_dir)
+        
+        # Generate relationships.tmdl
+        if data_model.relationships:
+            self._generate_relationships_file(data_model.relationships, model_dir)
+        
+        # Generate expressions.tmdl
+        if data_model.measures:
+            self._generate_expressions_file(data_model.measures, model_dir)
+        
+        # Generate culture files
+        self._generate_culture_files(data_model, model_dir)
+    
+    def _generate_database_file(self, data_model: DataModel, model_dir: Path):
+        """Generate database.tmdl file"""
+        context = {
+            'name': data_model.name,
+            'compatibility_level': data_model.compatibility_level
+        }
+        
+        content = self.template_engine.render('database', context)
+        
+        with open(model_dir / 'database.tmdl', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_model_file(self, data_model: DataModel, model_dir: Path):
+        """Generate model.tmdl file"""
+        context = {
+            'name': data_model.name,
+            'compatibility_level': data_model.compatibility_level,
+            'culture': data_model.culture,
+            'annotations': data_model.annotations
+        }
+        
+        content = self.template_engine.render('model', context)
+        
+        with open(model_dir / 'model.tmdl', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_table_files(self, tables: List[Table], model_dir: Path):
+        """Generate table files"""
+        tables_dir = model_dir / 'tables'
+        tables_dir.mkdir(exist_ok=True)
+        
+        for table in tables:
+            context = self._build_table_context(table)
+            content = self.template_engine.render('table', context)
+            
+            # Clean filename for filesystem
+            safe_filename = self._sanitize_filename(table.name)
+            table_file = tables_dir / f'{safe_filename}.tmdl'
+            
+            with open(table_file, 'w', encoding='utf-8') as f:
+                f.write(content)
+    
+    def _build_table_context(self, table: Table) -> Dict[str, Any]:
+        """Build context for table template"""
+        columns_context = []
+        for column in table.columns:
+            columns_context.append({
+                'source_name': column.name,
+                'source_column': column.source_column,
+                'datatype': self._map_datatype_to_powerbi(column.data_type),
+                'summarize_by': column.summarize_by,
+                'format_string': column.format_string,
+                'is_hidden': False,  # Default
+                'is_calculated': False,  # Default for imported columns
+                'is_data_type_inferred': True,
+                'annotations': column.annotations
+            })
+        
+        measures_context = []
+        # Note: Measures are typically defined at model level, but can be table-specific
+        
+        partitions_context = []
+        if table.source_query:
+            partitions_context.append({
+                'name': f'{table.name}-partition',
+                'source_type': 'm',
+                'expression': self._build_m_expression(table)
+            })
+        
+        return {
+            'source_name': table.name,
+            'is_hidden': False,
+            'columns': columns_context,
+            'measures': measures_context,
+            'hierarchies': [],  # Would be populated if hierarchies exist
+            'partitions': partitions_context,
+            'has_widget_serialization': False,
+            'visual_type': 'Table',
+            'column_settings': '[]'
+        }
+    
+    def _build_m_expression(self, table: Table) -> str:
+        """Build M expression for table partition"""
+        if table.source_query:
+            # For SQL queries, wrap in appropriate M function
+            return f'let\n    Source = Sql.Database("server", "database", [Query="{table.source_query}"])\nin\n    Source'
+        else:
+            # For other sources, create a basic expression
+            return f'let\n    Source = Table.FromRows({{}})\nin\n    Source'
+    
+    def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
+        """Generate relationships.tmdl file"""
+        relationships_context = []
+        for rel in relationships:
+            relationships_context.append({
+                'name': rel.name,
+                'from_table': rel.from_table,
+                'from_column': rel.from_column,
+                'to_table': rel.to_table,
+                'to_column': rel.to_column,
+                'cardinality': rel.cardinality,
+                'cross_filter_direction': rel.cross_filter_direction,
+                'is_active': rel.is_active
+            })
+        
+        context = {
+            'relationships': relationships_context
+        }
+        
+        content = self.template_engine.render('relationship', context)
+        
+        with open(model_dir / 'relationships.tmdl', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_expressions_file(self, measures: List[Measure], model_dir: Path):
+        """Generate expressions.tmdl file"""
+        measures_context = []
+        for measure in measures:
+            measures_context.append({
+                'name': measure.name,
+                'expression': measure.expression,
+                'format_string': measure.format_string,
+                'is_hidden': measure.is_hidden,
+                'folder': measure.folder
+            })
+        
+        context = {
+            'measures': measures_context
+        }
+        
+        content = self.template_engine.render('expressions', context)
+        
+        with open(model_dir / 'expressions.tmdl', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_culture_files(self, data_model: DataModel, model_dir: Path):
+        """Generate culture files"""
+        cultures_dir = model_dir / 'cultures'
+        cultures_dir.mkdir(exist_ok=True)
+        
+        context = {
+            'culture': data_model.culture,
+            'name': data_model.name
+        }
+        
+        content = self.template_engine.render('culture', context)
+        
+        culture_file = cultures_dir / f'{data_model.culture}.tmdl'
+        with open(culture_file, 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_report_files(self, report: Report, output_dir: Path):
+        """Generate report files"""
+        report_dir = output_dir / 'Report'
+        report_dir.mkdir(exist_ok=True)
+        
+        # Generate report.json
+        self._generate_report_json(report, report_dir)
+        
+        # Generate config.json
+        self._generate_report_config(report, report_dir)
+        
+        # Generate sections
+        self._generate_report_sections(report.pages, report_dir)
+    
+    def _generate_report_json(self, report: Report, report_dir: Path):
+        """Generate report.json file"""
+        context = {
+            'name': report.name,
+            'pages': [self._build_page_context(page) for page in report.pages],
+            'config': report.config
+        }
+        
+        content = self.template_engine.render('report', context)
+        
+        with open(report_dir / 'report.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_report_config(self, report: Report, report_dir: Path):
+        """Generate config.json file"""
+        context = {
+            'theme': report.config.get('theme', 'CorporateTheme'),
+            'settings': report.settings
+        }
+        
+        content = self.template_engine.render('report_config', context)
+        
+        with open(report_dir / 'config.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_report_sections(self, pages: List[ReportPage], report_dir: Path):
+        """Generate report section files"""
+        sections_dir = report_dir / 'sections'
+        sections_dir.mkdir(exist_ok=True)
+        
+        for i, page in enumerate(pages):
+            section_name = f'{i:03d}_{self._sanitize_filename(page.name)}'
+            section_dir = sections_dir / section_name
+            section_dir.mkdir(exist_ok=True)
+            
+            context = self._build_page_context(page)
+            content = self.template_engine.render('report_section', context)
+            
+            with open(section_dir / 'section.json', 'w', encoding='utf-8') as f:
+                f.write(content)
+    
+    def _build_page_context(self, page: ReportPage) -> Dict[str, Any]:
+        """Build context for page template"""
+        return {
+            'name': page.name,
+            'display_name': page.display_name,
+            'width': page.width,
+            'height': page.height,
+            'visuals': page.visuals,
+            'filters': page.filters,
+            'config': page.config
+        }
+    
+    def _generate_metadata_files(self, project: PowerBIProject, output_dir: Path):
+        """Generate metadata files"""
+        # Generate Version.txt
+        with open(output_dir / 'Version.txt', 'w', encoding='utf-8') as f:
+            f.write(project.version)
+        
+        # Generate DiagramLayout.json
+        diagram_context = {
+            'version': 1,
+            'nodes': [],
+            'relationships': []
+        }
+        
+        content = self.template_engine.render('diagram_layout', diagram_context)
+        with open(output_dir / 'DiagramLayout.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        # Generate ReportMetadata.json
+        metadata_context = {
+            'version': project.version,
+            'created': project.created.isoformat()
+        }
+        
+        content = self.template_engine.render('report_metadata', metadata_context)
+        with open(output_dir / 'ReportMetadata.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        # Generate ReportSettings.json
+        settings_context = {
+            'theme': 'CorporateTheme'
+        }
+        
+        content = self.template_engine.render('report_settings', settings_context)
+        with open(output_dir / 'ReportSettings.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _map_datatype_to_powerbi(self, data_type: DataType) -> str:
+        """Map DataType enum to Power BI data type string"""
+        mapping = {
+            DataType.STRING: 'string',
+            DataType.INTEGER: 'int64',
+            DataType.DOUBLE: 'double',
+            DataType.BOOLEAN: 'boolean',
+            DataType.DATE: 'dateTime',
+            DataType.DECIMAL: 'decimal'
+        }
+        return mapping.get(data_type, 'string')
+    
+    def _sanitize_filename(self, filename: str) -> str:
+        """Sanitize filename for filesystem compatibility"""
+        # Replace invalid characters
+        invalid_chars = '<>:"/\\|?*'
+        for char in invalid_chars:
+            filename = filename.replace(char, '_')
+        
+        # Remove leading/trailing spaces and dots
+        filename = filename.strip(' .')
+        
+        # Limit length
+        if len(filename) > 100:
+            filename = filename[:100]
+        
+        return filename or 'Unnamed'
+
+
+class DocumentationGenerator:
+    """Generates migration documentation"""
+    
+    def __init__(self, config: MigrationConfig):
+        self.config = config
+        self.logger = logging.getLogger(__name__)
+    
+    def generate_migration_report(self, project: PowerBIProject, output_path: str) -> bool:
+        """Generate migration documentation"""
+        try:
+            doc_path = Path(output_path) / 'migration_report.md'
+            
+            with open(doc_path, 'w', encoding='utf-8') as f:
+                f.write(self._build_migration_report(project))
+            
+            self.logger.info(f"Generated migration report: {doc_path}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Failed to generate migration report: {e}")
+            return False
+    
+    def _build_migration_report(self, project: PowerBIProject) -> str:
+        """Build migration report content"""
+        report = f"""# Power BI Migration Report
+
+## Project Information
+- **Name**: {project.name}
+- **Version**: {project.version}
+- **Created**: {project.created}
+- **Last Modified**: {project.last_modified}
+
+## Data Model
+"""
+        
+        if project.data_model:
+            report += f"""
+### Tables ({len(project.data_model.tables)})
+"""
+            for table in project.data_model.tables:
+                report += f"""
+#### {table.name}
+- **Columns**: {len(table.columns)}
+- **Partition Mode**: {table.partition_mode}
+"""
+                if table.source_query:
+                    report += f"- **Source Query**: Present\n"
+        
+        if project.report:
+            report += f"""
+## Report
+- **Pages**: {len(project.report.pages)}
+"""
+            for page in project.report.pages:
+                report += f"""
+### {page.display_name}
+- **Visuals**: {len(page.visuals)}
+- **Filters**: {len(page.filters)}
+"""
+        
+        return report

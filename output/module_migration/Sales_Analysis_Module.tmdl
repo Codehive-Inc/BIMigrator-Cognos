@@ -1,0 +1,72 @@
+table 'Sales_Analysis_Module'
+
+
+column 'ProductID'
+    dataType: int64
+    summarizeBy: none
+    sourceColumn: ProductID
+
+    isDataTypeInferred: True
+    annotation SummarizationSetBy = Automatic
+
+    annotation PBI_FormatHint = {"isGeneralNumber":true}
+    
+column 'ProductName'
+    dataType: string
+    summarizeBy: none
+    sourceColumn: ProductName
+
+    isDataTypeInferred: True
+    annotation SummarizationSetBy = Automatic
+
+    
+column 'SalesAmount'
+    dataType: decimal
+    summarizeBy: sum
+    sourceColumn: SalesAmount
+    formatString: Currency
+
+    isDataTypeInferred: True
+    annotation SummarizationSetBy = Automatic
+
+    annotation PBI_FormatHint = {"isGeneralNumber":true}
+    
+column 'OrderDate'
+    dataType: dateTime
+    summarizeBy: none
+    sourceColumn: OrderDate
+
+    isDataTypeInferred: True
+    annotation SummarizationSetBy = Automatic
+
+    
+
+measure 'Total_Sales' = ```
+        SUM([SalesAmount])
+```
+    formatString: Currency
+
+
+    annotation PBI_FormatHint = {"isGeneralNumber":true}
+    
+measure 'Average_Sales' = ```
+        AVERAGE([SalesAmount])
+```
+    formatString: Currency
+
+
+    annotation PBI_FormatHint = {"isGeneralNumber":true}
+    
+
+
+partition 'Sales_Analysis_Module-partition' = m
+    mode: import
+    source = 
+        let
+    Source = Sql.Database("server", "database", [Query="SELECT ProductID, ProductName, SalesAmount, OrderDate FROM Sales"])
+in
+    Source
+    
+
+
+annotation PBI_ResultType = Table
