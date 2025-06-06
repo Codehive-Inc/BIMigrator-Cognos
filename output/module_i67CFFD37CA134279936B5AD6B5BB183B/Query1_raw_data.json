@@ -1,0 +1,399 @@
+{
+  "version": "17.0",
+  "container": "C",
+  "useSpec": [
+    {
+      "identifier": "M1",
+      "type": "module",
+      "searchPath": "/content/folder[@name='Test report']/module[@name='Sample Sales Data']",
+      "dataCacheExpiry": "0"
+    }
+  ],
+  "expressionLocale": "en-us",
+  "querySubject": [
+    {
+      "item": [
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Order Date]",
+            "identifier": "[Order Date]",
+            "label": "Order Date",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Order_Date]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "datetime",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Region]",
+            "identifier": "[Region]",
+            "label": "Region",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Region]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Product Category]",
+            "identifier": "[Product Category]",
+            "label": "Product Category",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Product_Category]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Product Name]",
+            "identifier": "[Product Name]",
+            "label": "Product Name",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Product_Name]",
+            "usage": "attribute",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Sales]",
+            "identifier": "[Sales]",
+            "label": "Sales",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Sales]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Profit]",
+            "identifier": "[Profit]",
+            "label": "Profit",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Profit]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Order ID]",
+            "identifier": "[Order ID]",
+            "label": "Order ID",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Order_ID]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "integer",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Quantity]",
+            "identifier": "[Quantity]",
+            "label": "Quantity",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Quantity]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Discount]",
+            "identifier": "[Discount]",
+            "label": "Discount",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Discount]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Profit Margin (%)]",
+            "identifier": "[Profit Margin (%)]",
+            "label": "Profit Margin (%)",
+            "expression": "([Profit]/[Sales])*100",
+            "usage": "fact",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Average Sales per Order]",
+            "identifier": "[Average Sales per Order]",
+            "label": "Average Sales per Order",
+            "expression": "[Sales] / count([Order ID] for [Order ID])",
+            "usage": "fact",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Sales per Unit]",
+            "identifier": "[Sales per Unit]",
+            "label": "Sales per Unit",
+            "expression": "[Sales] / [Quantity]",
+            "usage": "fact",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Discounted Sales]",
+            "identifier": "[Discounted Sales]",
+            "label": "Discounted Sales",
+            "expression": "[Sales] - ([Sales] * [Discount])",
+            "usage": "fact",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Profit per Unit]",
+            "identifier": "[Profit per Unit]",
+            "label": "Profit per Unit",
+            "expression": "[Profit] / [Quantity]",
+            "usage": "fact",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query1].[Discount Percentage]",
+            "identifier": "[Discount Percentage]",
+            "label": "Discount Percentage",
+            "expression": "[Discount] * 100",
+            "usage": "fact",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        }
+      ],
+      "identifier": "[Query1]",
+      "label": "Query1"
+    },
+    {
+      "item": [
+        {
+          "queryItem": {
+            "idForExpression": "[Query2].[Sales]",
+            "identifier": "[Sales]",
+            "label": "Sales",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Sales]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query2].[Region]",
+            "identifier": "[Region]",
+            "label": "Region",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Region]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query2].[Product Category]",
+            "identifier": "[Product Category]",
+            "label": "Product Category",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Product_Category]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        }
+      ],
+      "identifier": "[Query2]",
+      "label": "Query2"
+    },
+    {
+      "item": [
+        {
+          "queryItem": {
+            "idForExpression": "[Query3].[Sales]",
+            "identifier": "[Sales]",
+            "label": "Sales",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Sales]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query3].[Product Name]",
+            "identifier": "[Product Name]",
+            "label": "Product Name",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Product_Name]",
+            "usage": "attribute",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query3].[Region]",
+            "identifier": "[Region]",
+            "label": "Region",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Region]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        }
+      ],
+      "identifier": "[Query3]",
+      "label": "Query3"
+    },
+    {
+      "item": [
+        {
+          "queryItem": {
+            "idForExpression": "[Query4].[Product Category]",
+            "identifier": "[Product Category]",
+            "label": "Product Category",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Product_Category]",
+            "usage": "identifier",
+            "regularAggregate": "none",
+            "highlevelDatatype": "string",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        },
+        {
+          "queryItem": {
+            "idForExpression": "[Query4].[Sales]",
+            "identifier": "[Sales]",
+            "label": "Sales",
+            "expression": "[C].[C_Sample_data_module].[Sheet1].[Sales]",
+            "usage": "fact",
+            "regularAggregate": "total",
+            "highlevelDatatype": "decimal",
+            "facetDefinition": {
+              "enabled": "false"
+            },
+            "sourceCategory": "calculation"
+          }
+        }
+      ],
+      "identifier": "[Query4]",
+      "label": "Query4"
+    }
+  ],
+  "metadataTreeView": [
+    {
+      "folderItem": [
+        {
+          "ref": "[Query1]"
+        },
+        {
+          "ref": "[Query2]"
+        },
+        {
+          "ref": "[Query3]"
+        },
+        {
+          "ref": "[Query4]"
+        }
+      ]
+    }
+  ],
+  "identifier": "[Sales Dashboard_Test1]",
+  "label": "Sales Dashboard_Test1",
+  "comment": "This module was converted from a report using: com.ibm.bi.platform.moser.core.translator.report.Report"
+}

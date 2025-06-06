@@ -1,0 +1,19 @@
+{
+  "name": "Sample Cognos Migration",
+  "id": "12345678-1234-1234-1234-123456789012",
+  "pages": [
+    {
+      "name": "Page1",
+      "displayName": "Sample Page",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": []
+    }
+  ],
+  "sections": [
+    {
+      "name": "000_Page1",
+      "displayName": "Sample Page"
+    }
+  ]
+}

@@ -1,600 +1,279 @@
-"""Main entry point for the migration tool."""
-import argparse
-import io
-import json
-import logging
-from bimigrator.common.log_utils import configure_logging, log_info, log_debug, log_warning, log_error, log_file_generated
-from bimigrator.common.websocket_client import logging_helper, set_task_info
+"""
+Main entry point for Cognos to Power BI migration tool
+"""
+
 import os
 import sys
-import uuid
-import datetime
+import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import List, Optional
 
-import yaml
-
-from bimigrator.generators.culture_generator import CultureGenerator
-from bimigrator.generators.database_template_generator import DatabaseTemplateGenerator
-from bimigrator.generators.model_template_generator import ModelTemplateGenerator
-from bimigrator.generators.relationship_template_generator import RelationshipTemplateGenerator
-from bimigrator.generators.structure_generator import ProjectStructureGenerator
-from bimigrator.generators.table_template_generator import TableTemplateGenerator
-from bimigrator.generators.version_generator import VersionGenerator
-from bimigrator.parsers.culture_parser import CultureParser
-from bimigrator.parsers.database_parser import DatabaseParser
-from bimigrator.parsers.model_parser import ModelParser
-from bimigrator.parsers.relationship_parser import RelationshipParser
-from bimigrator.parsers.table_parser import TableParser
-from bimigrator.parsers.version_parser import VersionParser
-from bimigrator.parsers.report_metadata_parser import ReportMetadataParser
-from bimigrator.generators.report_metadata_generator import ReportMetadataGenerator
-from bimigrator.parsers.report_settings_parser import ReportSettingsParser
-from bimigrator.generators.report_settings_generator import ReportSettingsGenerator
-from bimigrator.parsers.diagram_layout_parser import DiagramLayoutParser
-from bimigrator.generators.diagram_layout_generator import DiagramLayoutGenerator
-from bimigrator.parsers.report_parser import ReportParser
-from bimigrator.generators.report_generator import ReportGenerator
-from bimigrator.parsers.report_config_parser import ReportConfigParser
-from bimigrator.generators.report_config_generator import ReportConfigGenerator
-from bimigrator.parsers.page_section_parser import PageSectionParser
-from bimigrator.parsers.page_config_parser import PageConfigParser
-from bimigrator.parsers.page_filters_parser import PageFiltersParser
-from bimigrator.generators.page_section_generator import PageSectionGenerator
-from bimigrator.generators.page_config_generator import PageConfigGenerator
-from bimigrator.generators.page_filters_generator import PageFiltersGenerator
-from bimigrator.licensing.license_manager import LicenseManager
-from bimigrator.licensing.exceptions import (
-    LicenseError, LicenseExpiredError, LicenseLimitError, LicenseConnectionError
-)
+from cognos_migrator.config import ConfigManager
+from cognos_migrator.migrator import CognosToPowerBIMigrator, MigrationBatch
 
 
-def load_config(path: str) -> Dict[str, Any]:
-    """Load configuration from YAML or JSON file."""
-    with open(path, 'r') as f:
-        if path.endswith('.yaml') or path.endswith('.yml'):
-            return yaml.safe_load(f)
-        return json.load(f)
+def setup_logging(log_level: str = "INFO"):
+    """Setup logging configuration"""
+    logging.basicConfig(
+        level=getattr(logging, log_level.upper()),
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+            logging.FileHandler('migration.log')
+        ]
+    )
 
 
-def get_default_config() -> dict[str, Any]:
-    """Retrieves the default config stored inside the config for all cases"""
-    config_path = Path(__file__).resolve().parent / 'config' / 'twb-to-pbi.yaml'
-    return load_config(str(config_path))
+def load_config():
+    """Load migration configuration"""
+    config_manager = ConfigManager()
+    return config_manager.load_config()
 
 
-def generate_version_file(filename, config, output_dir):
-    version_parser = VersionParser(filename, config)
-    version_info = version_parser.extract_version()
-    version_generator = VersionGenerator(config, output_dir)
-    version_path = version_generator.generate_version(version_info, output_dir)
-    return
-
-
-# Remove these functions as they're now provided by our log_utils module
-
-
-def migrate_to_tmdl(filename: str | io.BytesIO, output_dir: str = 'output', config: dict[str, Any] = None, skip_license_check: bool = False, task_id: Optional[str] = None):
-    """Migrate a Tableau workbook to Power BI TMDL format.
+def migrate_single_report(report_id: str, output_path: Optional[str] = None):
+    """Migrate a single Cognos report"""
+    logger = logging.getLogger(__name__)
     
-    Args:
-        filename: Path to the Tableau workbook file or BytesIO object
-        output_dir: Output directory for the migration
-        config: Optional configuration dictionary
-        skip_license_check: Whether to skip license validation
+    try:
+        # Load configuration
+        config = load_config()
         
-    Returns:
-        Dictionary mapping file types to their generated paths
-    """
-    # Get workbook name for logging
-    if isinstance(filename, (Path, str)):
-        twb_name = Path(filename).stem
-    else:
-        twb_name = Path(getattr(filename, 'name', uuid.uuid4().hex)).stem
-    
-    # Generate task_id if not provided
-    if task_id is None:
-        task_id = f"migration_{uuid.uuid4().hex}"
-    
-    # Configure logging with workbook name
-    configure_logging(twb_name)
-    
-    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
-    set_task_info(task_id, total_steps=12)
-    
-    log_info(f"Starting migration for workbook: {twb_name}")
-    logging_helper(f"Starting migration for workbook: {twb_name}", progress=0, message_type='info')
-    log_info(f"Output directory: {output_dir}")
-    
-    # Validate license before proceeding (unless skipped for testing)
-    if not skip_license_check:
-        try:
-            # Get license ID from environment variable or use default
-            license_id = os.environ.get('BIMIGRATOR_LICENSE_ID')
-            license_id = int(license_id) if license_id else None
-            
-            # Create license manager and validate license
-            license_manager = LicenseManager(license_id)
-            license_manager.validate_license()
-            
-            # Log license status
-            license_info = license_manager.get_license_info()
-            print(f"\nLicense Status: {license_info['status_message']}")
-            print(f"Migrations Remaining: {license_info['migrations_remaining']} of {license_info['max_migrations']}")
-            print(f"License Expires: {license_info['expires_at_formatted']} ({license_info['days_remaining']} days remaining)")
-            
-        except LicenseExpiredError as e:
-            print(f"\nERROR: {str(e)}")
-            print("Please renew your license to continue using BIMigrator.")
-            sys.exit(1)
-        except LicenseLimitError as e:
-            print(f"\nERROR: {str(e)}")
-            print("Please upgrade your license to perform more migrations.")
-            sys.exit(1)
-        except LicenseConnectionError as e:
-            print(f"\nERROR: Unable to connect to license database: {str(e)}")
-            print("Please check your database connection settings and try again.")
-            print("Required environment variables:")
-            print("  BIMIGRATOR_DB_HOST - PostgreSQL host (default: localhost)")
-            print("  BIMIGRATOR_DB_PORT - PostgreSQL port (default: 5432)")
-            print("  BIMIGRATOR_DB_NAME - PostgreSQL database name (default: bimigrator_db)")
-            print("  BIMIGRATOR_DB_USER - PostgreSQL username (default: app_user)")
-            print("  BIMIGRATOR_DB_PASSWORD - PostgreSQL password (required)")
-            sys.exit(1)
-        except LicenseError as e:
-            print(f"\nERROR: License validation failed: {str(e)}")
-            sys.exit(1)
-    
-    if not config:
-        config = get_default_config()
-
-    # Create output directories
-    output_path = Path(output_dir)
-    if isinstance(filename, (Path, str)):
-        twb_name = Path(filename).stem
-    else:
-        twb_name = Path(getattr(filename, 'name', uuid.uuid4().hex)).stem
-
-    # Create output directory structure
-    structure_generator = ProjectStructureGenerator(config, str(output_path / twb_name))
-    structure_generator.create_directory_structure()
-    output_dir = structure_generator.base_dir
-
-    # Step 1: Generate version.txt
-    print('\nStep 1: Generating version.txt...')
-    logging_helper("Step 1: Generating version.txt", progress=8, message_type='info')
-    try:
-        version_parser = VersionParser(filename, config, output_dir)
-        version_info = version_parser.extract_version()
-
-        version_generator = VersionGenerator(config, output_dir)
-        version_path = version_generator.generate_version(version_info, output_dir)
-        log_file_generated(str(version_path))
-        logging_helper(f"Generated version.txt: {version_path}", progress=8, message_type='info')
-        print(f'Generated version.txt: {version_path}')
-    except Exception as e:
-        print(f'Failed to generate version.txt: {str(e)}')
-        return
-
-    # Step 2: Generate culture TMDL
-    print('\nStep 2: Generating culture TMDL...')
-    logging_helper("Step 2: Generating culture TMDL", progress=16, message_type='info')
-    try:
-        culture_parser = CultureParser(filename, config, output_dir)
-        culture_info = culture_parser.extract_culture_info()
-
-        # Debug culture info
-        print(f'Debug: Culture info - culture: {culture_info.culture}')
-        if culture_info.linguistic_metadata:
-            print(
-                f'Debug: Linguistic metadata - entities: {len(culture_info.linguistic_metadata.entities) if culture_info.linguistic_metadata.entities else 0} entities')
-            if culture_info.linguistic_metadata.entities:
-                for key, entity in culture_info.linguistic_metadata.entities.items():
-                    print(
-                        f'Debug: Entity {key} - binding: {entity.binding.conceptual_entity if entity.binding else None}')
-
-        # Generate culture TMDL file
-        culture_generator = CultureGenerator(
-            config, twb_name, output_dir,
-        )
-        # Pass the correct output directory for culture TMDL
-        culture_path = culture_generator.generate_culture_tmdl(
-            culture_info, output_dir
-        )
-        log_file_generated(str(culture_path))
-        logging_helper(f"Generated culture TMDL: {culture_path}", progress=16, message_type='info')
-        print(f'Generated culture TMDL: {culture_path}')
-    except Exception as e:
-        print(f'Failed to generate culture TMDL: {str(e)}')
-        raise e
-
-    # Step 3: Generate .pbixproj.json
-    print('\nStep 3: Generating .pbixproj.json...')
-    logging_helper("Step 3: Generating .pbixproj.json", progress=24, message_type='info')
-    try:
-        from bimigrator.parsers.pbixproj_parser import PbixprojParser
-        from bimigrator.generators.pbixproj_generator import PbixprojGenerator
-        pbixproj_parser = PbixprojParser(filename, config, output_dir)
-        project_info = pbixproj_parser.extract_pbixproj_info()
-
-        pbixproj_generator = PbixprojGenerator(
-            config, twb_name, output_dir
-        )
-        pbixproj_path = pbixproj_generator.generate_pbixproj(project_info, output_dir=structure_generator.base_dir)
-        log_file_generated(str(pbixproj_path))
-        logging_helper(f"Generated .pbixproj.json: {pbixproj_path}", progress=24, message_type='info')
-        print(f'Generated .pbixproj.json: {pbixproj_path}')
-    except Exception as e:
-        print(f'Failed to generate .pbixproj.json: {str(e)}')
-        raise e
-
-    # Step 4: Generate database TMDL
-    print('\nStep 4: Generating database TMDL...')
-    logging_helper("Step 4: Generating database TMDL", progress=32, message_type='info')
-    try:
-        db_parser = DatabaseParser(filename, config, output_dir)
-        db_info = db_parser.extract_database_info()
-
-        database_generator = DatabaseTemplateGenerator(
-            config, twb_name, output_dir
-        )
-        database_path = database_generator.generate_database_tmdl(db_info, output_dir=structure_generator.base_dir)
-        log_file_generated(str(database_path))
-        logging_helper(f"Generated database TMDL: {database_path}", progress=32, message_type='info')
-        print(f'Generated database TMDL: {database_path}')
-        print(f'  Database name: {db_info.name}')
-    except Exception as e:
-        print(f'Failed to generate database TMDL: {str(e)}')
-        raise e
-
-    # Step 5: Generate table TMDL files and model TMDL
-    print('\nStep 5: Generating table TMDL files...')
-    logging_helper("Step 5: Generating table TMDL files", progress=40, message_type='info')
-    try:
-        # Create a single table parser instance to be used by both table and model generation
-        table_parser = TableParser(filename, config, str(structure_generator.extracted_dir))
-        tables = table_parser.extract_all_tables()
-        logging_helper(f"Extracted {len(tables)} tables", progress=45, message_type='info')
-
-        # Extract relationships first
-        relationship_parser = RelationshipParser(filename, config, output_dir)
-        relationships = relationship_parser.extract_relationships()
-
-        # Generate table TMDL files
-        table_generator = TableTemplateGenerator(
-            config, twb_name, output_dir
-        )
-        # Pass relationships to table generator
-        table_paths = table_generator.generate_all_tables(
-            tables, 
-            relationships=relationships,
-            output_dir=structure_generator.base_dir
-        )
-        print(f'Generated {len(table_paths)} table TMDL files:')
-        for path in table_paths:
-            print(f'  - {path}')
-
-        # Generate model TMDL using the same tables
-        print('\nGenerating model TMDL...')
-        logging_helper("Generating model TMDL", progress=48, message_type='info')
-        model_parser = ModelParser(filename, config, output_dir, table_parser)
-        model = model_parser.extract_model_info(tables)
-
-        model_generator = ModelTemplateGenerator(
-            config, twb_name, output_dir
-        )
-        model_path = model_generator.generate_model_tmdl(model, tables, output_dir=structure_generator.base_dir)
-        logging_helper(f"Generated model TMDL: {model_path}", progress=50, message_type='info')
-        print(f'Generated model TMDL: {model_path}')
-        print(f'  Model name: {model.model_name}')
-        print(f'  Culture: {model.culture}')
-        print(f'  Number of tables: {len(model.tables)}')
-        if model.desktop_version:
-            print(f'  Desktop version: {model.desktop_version}')
-    except Exception as e:
-        print(f'Failed to generate table and model TMDL files: {str(e)}')
-        raise e
-
-    # Step 6: Generate relationships TMDL
-    print('\nStep 6: Generating relationship TMDL files...')
-    logging_helper("Step 6: Generating relationship TMDL files", progress=58, message_type='info')
-    try:
-        print('Debug: Creating relationship parser...')
-        relationship_parser = RelationshipParser(filename, config, output_dir)
-        print('Debug: Extracting relationships...')
-        relationships = relationship_parser.extract_relationships()
-        logging_helper(f"Found {len(relationships)} relationships", progress=60, message_type='info')
-        print(f'Debug: Found {len(relationships)} relationships')
-
-        print('Debug: Creating relationship generator...')
-        relationship_generator = RelationshipTemplateGenerator(
-            config, twb_name, output_dir
-        )
-        print('Debug: Generating relationship TMDL files...')
-        relationship_paths = relationship_generator.generate_relationships(
-            relationships,
-            output_dir=structure_generator.base_dir
-        )
-        logging_helper(f"Generated {len(relationship_paths)} relationship TMDL files", progress=62, message_type='info')
-        print(f'Generated {len(relationship_paths)} relationship TMDL files:')
-        for path in relationship_paths:
-            print(f'  - {path}')
-    except Exception as e:
-        print(f'Failed to generate relationship TMDL files: {str(e)}')
-        raise e
-
-    # Step 7: Generate report metadata
-    print('\nStep 7: Generating report metadata...')
-    logging_helper("Step 7: Generating report metadata", progress=66, message_type='info')
-    try:
-        report_metadata_parser = ReportMetadataParser(filename, config, output_dir)
-        report_metadata = report_metadata_parser.extract_metadata()
-
-        report_metadata_generator = ReportMetadataGenerator(
-            config,
-            twb_name,
-            output_dir
-        )
-        metadata_path = report_metadata_generator.generate_report_metadata(
-            report_metadata,
-            output_dir=structure_generator.base_dir
-        )
-        logging_helper(f"Generated report metadata: {metadata_path}", progress=68, message_type='info')
-        print(f'Generated report metadata: {metadata_path}')
-    except Exception as e:
-        print(f'Failed to generate report metadata: {str(e)}')
-        raise e
-
-    # Step 8: Generate report settings
-    print('\nStep 8: Generating report settings...')
-    logging_helper("Step 8: Generating report settings", progress=72, message_type='info')
-    try:
-        report_settings_parser = ReportSettingsParser(filename, config, output_dir)
-        report_settings = report_settings_parser.extract_report_settings()
-
-        report_settings_generator = ReportSettingsGenerator(
-            config,
-            twb_name,
-            output_dir
-        )
-        settings_path = report_settings_generator.generate_report_settings(
-            report_settings,
-            output_dir=structure_generator.base_dir
-        )
-        logging_helper(f"Generated report settings: {settings_path}", progress=74, message_type='info')
-        print(f'Generated report settings: {settings_path}')
-    except Exception as e:
-        print(f'Failed to generate report settings: {str(e)}')
-        raise e
-
-    # Step 9: Generate diagram layout
-    print('\nStep 9: Generating diagram layout...')
-    logging_helper("Step 9: Generating diagram layout", progress=78, message_type='info')
-    try:
-        diagram_layout_parser = DiagramLayoutParser(filename, config, output_dir)
-        diagram_layout = diagram_layout_parser.extract_diagram_layout()
-
-        diagram_layout_generator = DiagramLayoutGenerator(
-            config,
-            twb_name,
-            output_dir
-        )
-        layout_path = diagram_layout_generator.generate_diagram_layout(
-            diagram_layout,
-            output_dir=structure_generator.base_dir
-        )
-        logging_helper(f"Generated diagram layout: {layout_path}", progress=80, message_type='info')
-        print(f'Generated diagram layout: {layout_path}')
-    except Exception as e:
-        print(f'Failed to generate diagram layout: {str(e)}')
-        raise e
+        # Initialize migrator
+        migrator = CognosToPowerBIMigrator(config)
         
-    # Step 10: Generate report.json
-    print('\nStep 10: Generating report.json...')
-    logging_helper("Step 10: Generating report.json", progress=84, message_type='info')
-    try:
-        report_parser = ReportParser(filename, config, output_dir)
-        report = report_parser.extract_report()
-
-        report_generator = ReportGenerator(
-            config,
-            twb_name,
-            output_dir
-        )
-        report_path = report_generator.generate_report(
-            report,
-            output_dir=structure_generator.base_dir
-        )
-        logging_helper(f"Generated report.json: {report_path}", progress=86, message_type='info')
-        print(f'Generated report.json: {report_path}')
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            return False
+        
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"report_{report_id}"
+        
+        # Perform migration
+        logger.info(f"Starting migration of report: {report_id}")
+        success = migrator.migrate_report(report_id, str(output_path))
+        
+        if success:
+            logger.info(f"✓ Successfully migrated report {report_id} to {output_path}")
+            
+            # Show migration status
+            status = migrator.get_migration_status(str(output_path))
+            logger.info(f"Migration status: {status}")
+            
+        else:
+            logger.error(f"✗ Failed to migrate report {report_id}")
+        
+        return success
+        
     except Exception as e:
-        print(f'Failed to generate report.json: {str(e)}')
-        raise e
-        
-    # Step 11: Generate report config.json
-    print('\nStep 11: Generating report config.json...')
-    logging_helper("Step 11: Generating report config.json", progress=88, message_type='info')
-    try:
-        report_config_parser = ReportConfigParser(filename, config, output_dir)
-        report_config = report_config_parser.extract_report_config()
+        logger.error(f"Error during migration: {e}")
+        return False
 
-        report_config_generator = ReportConfigGenerator(
-            config,
-            twb_name,
-            output_dir
-        )
-        config_path = report_config_generator.generate_report_config(
-            report_config,
-            output_dir=structure_generator.base_dir
-        )
-        logging_helper(f"Generated report config.json: {config_path}", progress=90, message_type='info')
-        print(f'Generated report config.json: {config_path}')
-    except Exception as e:
-        print(f'Failed to generate report config.json: {str(e)}')
-        raise e
-        
-    # Step 12: Generate page section, config, and filters files
-    print('\nStep 12: Generating page section, config, and filters files...')
-    logging_helper("Step 12: Generating page section, config, and filters files", progress=92, message_type='info')
-    try:
-        # Extract page sections
-        page_section_parser = PageSectionParser(filename, config, output_dir)
-        page_sections = page_section_parser.extract_all_sections()
-        logging_helper(f"Found {len(page_sections)} page sections", progress=94, message_type='info')
-        
-        # Create generators
-        page_section_generator = PageSectionGenerator(config, twb_name, output_dir)
-        page_config_generator = PageConfigGenerator(config, twb_name, output_dir)
-        page_filters_generator = PageFiltersGenerator(config, twb_name, output_dir)
-        
-        # Generate files for each section
-        for i, section in enumerate(page_sections):
-            # Create section directory path
-            # Use 'Page 1' format for the directory name
-            page_number = i + 1  # Start from 1 instead of 0
-            section_dir_name = f"{i:03d}_Page {page_number}"
-            section_dir = structure_generator.base_dir / 'Report' / 'sections' / section_dir_name
-            section_dir.mkdir(parents=True, exist_ok=True)
-            
-            # Set the pbit_dir for each generator to point to the section directory
-            page_section_generator.pbit_dir = section_dir
-            page_config_generator.pbit_dir = section_dir
-            page_filters_generator.pbit_dir = section_dir
-            
-            # Update context with section-specific data
-            section_context = {
-                'name': section.name,
-                'display_name': section.display_name,
-                'ordinal': i,
-                'width': section.layout.width,
-                'height': section.layout.height,
-                'display_option': 1
-            }
-            
-            # Generate section.json directly in the section directory
-            section_path = section_dir / 'section.json'
-            with open(section_path, 'w', encoding='utf-8') as f:
-                f.write(page_section_generator.render_template('page.section.json', section_context))
-            print(f'Generated section.json: {section_path}')
-            
-            # Extract and generate config.json
-            page_config_parser = PageConfigParser(filename, config, output_dir)
-            page_config = page_config_parser.extract_page_config(section.display_name)
-            
-            # Generate config.json directly in the section directory
-            config_path = section_dir / 'config.json'
-            config_context = {
-                'visuals': [],
-                'layout': {
-                    'width': section.layout.width,
-                    'height': section.layout.height,
-                    'display_option': '1'
-                }
-            }
-            with open(config_path, 'w', encoding='utf-8') as f:
-                f.write(page_config_generator.render_template('page.config.json', config_context))
-            print(f'Generated config.json: {config_path}')
-            
-            # Extract and generate filters.json
-            page_filters_parser = PageFiltersParser(filename, config, output_dir)
-            page_filters = page_filters_parser.extract_page_filters(section.display_name)
-            
-            # Generate filters.json directly in the section directory
-            filters_path = section_dir / 'filters.json'
-            filters_context = {'filters': page_filters or []}
-            with open(filters_path, 'w', encoding='utf-8') as f:
-                f.write(page_filters_generator.render_template('page.filters.json', filters_context))
-            print(f'Generated filters.json: {filters_path}')
-            print(f'Generated filters.json: {filters_path}')
-    except Exception as e:
-        print(f'Failed to generate page files: {str(e)}')
-        print(f'Error details: {e}')
-        # Continue with migration even if page files generation fails
-        print('Continuing with migration...')
 
-    logging_helper("Migration completed successfully!", progress=100, message_type='info')
-    print('\nMigration completed successfully!')
+def migrate_multiple_reports(report_ids: List[str], output_base_path: Optional[str] = None):
+    """Migrate multiple Cognos reports"""
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load configuration
+        config = load_config()
+        
+        # Initialize migrator
+        migrator = CognosToPowerBIMigrator(config)
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            return {}
+        
+        # Set output path
+        if not output_base_path:
+            output_base_path = config.output_directory
+        
+        # Perform migrations
+        logger.info(f"Starting migration of {len(report_ids)} reports")
+        results = migrator.migrate_multiple_reports(report_ids, output_base_path)
+        
+        # Summary
+        successful = sum(1 for success in results.values() if success)
+        total = len(results)
+        
+        logger.info(f"Migration completed: {successful}/{total} reports successful")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error during batch migration: {e}")
+        return {}
+
+
+def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive: bool = True):
+    """Migrate all reports in a Cognos folder"""
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load configuration
+        config = load_config()
+        
+        # Initialize migrator
+        migrator = CognosToPowerBIMigrator(config)
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            return {}
+        
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"folder_{folder_id}"
+        
+        # Perform migration
+        logger.info(f"Starting migration of folder: {folder_id}")
+        results = migrator.migrate_folder(folder_id, str(output_path), recursive)
+        
+        # Summary
+        successful = sum(1 for success in results.values() if success)
+        total = len(results)
+        
+        logger.info(f"Folder migration completed: {successful}/{total} reports successful")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error during folder migration: {e}")
+        return {}
+
+
+def create_and_execute_migration_plan(source_config: dict, output_path: Optional[str] = None):
+    """Create and execute a migration plan"""
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load configuration
+        config = load_config()
+        
+        # Initialize migrator and batch processor
+        migrator = CognosToPowerBIMigrator(config)
+        batch_processor = MigrationBatch(migrator)
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            return {}
+        
+        # Set output path
+        if not output_path:
+            output_path = config.output_directory
+        
+        # Create migration plan
+        logger.info("Creating migration plan...")
+        plan = batch_processor.create_migration_plan(source_config)
+        
+        logger.info(f"Migration plan created:")
+        logger.info(f"  - Plan ID: {plan['migration_id']}")
+        logger.info(f"  - Total reports: {len(plan['reports'])}")
+        logger.info(f"  - Estimated duration: {plan['estimated_duration']}")
+        
+        # Execute migration plan
+        logger.info("Executing migration plan...")
+        results = batch_processor.execute_migration_plan(plan, output_path)
+        
+        logger.info(f"Migration plan execution completed:")
+        logger.info(f"  - Successful: {results['successful']}")
+        logger.info(f"  - Failed: {results['failed']}")
+        logger.info(f"  - Success rate: {(results['successful']/results['total_reports']*100):.1f}%")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error during planned migration: {e}")
+        return {}
+
+
+def demo_migration():
+    """Demonstrate migration capabilities with sample data"""
+    logger = logging.getLogger(__name__)
+    
+    logger.info("=== Cognos to Power BI Migration Demo ===")
+    
+    # Example 1: Single report migration
+    logger.info("\n1. Single Report Migration Example")
+    logger.info("This would migrate a single report with ID 'sample_report_1'")
+    # Uncomment to run actual migration:
+    # migrate_single_report('sample_report_1')
+    
+    # Example 2: Multiple reports migration
+    logger.info("\n2. Multiple Reports Migration Example")
+    sample_report_ids = ['report_1', 'report_2', 'report_3']
+    logger.info(f"This would migrate reports: {sample_report_ids}")
+    # Uncomment to run actual migration:
+    # migrate_multiple_reports(sample_report_ids)
+    
+    # Example 3: Folder migration
+    logger.info("\n3. Folder Migration Example")
+    logger.info("This would migrate all reports in folder 'sample_folder_id'")
+    # Uncomment to run actual migration:
+    # migrate_folder('sample_folder_id')
+    
+    # Example 4: Planned migration
+    logger.info("\n4. Planned Migration Example")
+    sample_plan_config = {
+        'report_ids': ['report_1', 'report_2'],
+        'folder_ids': ['folder_1']
+    }
+    logger.info(f"This would execute a migration plan with config: {sample_plan_config}")
+    # Uncomment to run actual migration:
+    # create_and_execute_migration_plan(sample_plan_config)
+    
+    logger.info("\n=== Demo completed ===")
+    logger.info("To run actual migrations, uncomment the relevant function calls above")
+    logger.info("and ensure your .env file contains valid Cognos Analytics credentials")
 
 
 def main():
-    """Command line interface."""
-    parser = argparse.ArgumentParser(
-        description='Migrate Tableau workbook to Power BI TMDL format'
-    )
-    parser.add_argument(
-        'filename',
-        help='Path to input TWB file'
-    )
-    parser.add_argument(
-        '--config',
-        required=False,
-        help='Path to YAML configuration file'
-    )
-    parser.add_argument(
-        '--output',
-        help='Output directory',
-        default='output'
-    )
-    parser.add_argument(
-        '--skip-license-check',
-        action='store_true',
-        help='Skip license validation (for testing only)'
-    )
-    parser.add_argument(
-        '--check-license',
-        action='store_true',
-        help='Check license status and exit'
-    )
-
-    args = parser.parse_args()
-
-    # Configure logging using our custom logging utility
-    from bimigrator.common.log_utils import configure_logging, log_info, log_debug, log_warning, log_error, log_file_generated
-
-    configure_logging()
-
-    # Check license status if requested
-    if args.check_license:
-        try:
-            license_id = os.environ.get('BIMIGRATOR_LICENSE_ID')
-            license_id = int(license_id) if license_id else None
-            
-            license_manager = LicenseManager(license_id)
-            license_info = license_manager.get_license_info()
-            
-            print("\nBIMigrator License Status:")
-            print(f"Status: {license_info['status_message']}")
-            print(f"Migrations Used: {license_info['migrations_used']}")
-            print(f"Migrations Remaining: {license_info['migrations_remaining']}")
-            print(f"Migration Limit: {license_info['max_migrations']}")
-            print(f"License Expires: {license_info['expires_at_formatted']}")
-            print(f"Days Remaining: {license_info['days_remaining']}")
-            sys.exit(0)
-        except Exception as e:
-            print(f"\nError checking license: {str(e)}")
-            sys.exit(1)
-
-    try:
-        # Load configuration
-        config = get_default_config()
-        if args.config:
-            custom_config = load_config(args.config)
-            config.update(custom_config)
-        # Generate a task ID for WebSocket logging
-        task_id = f"migration_{uuid.uuid4().hex}"
+    """Main entry point"""
+    # Setup logging
+    setup_logging()
+    logger = logging.getLogger(__name__)
+    
+    # Check if we have command line arguments
+    if len(sys.argv) > 1:
+        command = sys.argv[1].lower()
         
-        migrate_to_tmdl(
-            args.filename,
-            output_dir=args.output,
-            config=config,
-            skip_license_check=args.skip_license_check,
-            task_id=task_id
-        )
-        print("\nMigration completed successfully!")
-    except Exception as e:
-        print(f"\nError during migration: {str(e)}")
-        raise e
+        if command == 'demo':
+            demo_migration()
+        
+        elif command == 'migrate-report' and len(sys.argv) > 2:
+            report_id = sys.argv[2]
+            output_path = sys.argv[3] if len(sys.argv) > 3 else None
+            migrate_single_report(report_id, output_path)
+        
+        elif command == 'migrate-folder' and len(sys.argv) > 2:
+            folder_id = sys.argv[2]
+            output_path = sys.argv[3] if len(sys.argv) > 3 else None
+            recursive = sys.argv[4].lower() == 'true' if len(sys.argv) > 4 else True
+            migrate_folder(folder_id, output_path, recursive)
+        
+        elif command == 'validate':
+            config = load_config()
+            migrator = CognosToPowerBIMigrator(config)
+            if migrator.validate_migration_prerequisites():
+                logger.info("✓ All prerequisites validated successfully")
+            else:
+                logger.error("✗ Prerequisites validation failed")
+        
+        else:
+            print("Usage:")
+            print("  python main.py demo                                    # Run demonstration")
+            print("  python main.py migrate-report <report_id> [output]    # Migrate single report")
+            print("  python main.py migrate-folder <folder_id> [output]    # Migrate folder")
+            print("  python main.py validate                               # Validate prerequisites")
+    
+    else:
+        # Run demo by default
+        demo_migration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
