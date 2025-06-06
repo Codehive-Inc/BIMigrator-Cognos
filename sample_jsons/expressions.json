@@ -1,6 +1,0 @@
-{
-  "expressions": [
-    {"name": "TotalSales", "expression": "SUM([Amount])", "description": "Sum of all sales"},
-    {"name": "OrderCount", "expression": "COUNT([OrderID])"}
-  ]
-}
