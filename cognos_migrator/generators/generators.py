@@ -277,16 +277,21 @@ class PowerBIProjectGenerator:
         """Build context for table template"""
         columns_context = []
         for column in table.columns:
+            # Set default format string for numeric types if not provided
+            format_string = column.format_string
+            if not format_string and self._map_datatype_to_powerbi(column.data_type) in ['int64', 'double', 'decimal']:
+                format_string = '0'
+                
             columns_context.append({
                 'source_name': column.name,
                 'source_column': column.source_column,
                 'datatype': self._map_datatype_to_powerbi(column.data_type),
                 'summarize_by': column.summarize_by,
-                'format_string': column.format_string,
+                'format_string': format_string,
                 'is_hidden': False,  # Default
                 'is_calculated': False,  # Default for imported columns
-                'is_data_type_inferred': True,
-                'annotations': column.annotations
+                'is_data_type_inferred': False,  # Match example file (no isDataTypeInferred)
+                'annotations': {'SummarizationSetBy': 'User'}  # Match example file
             })
         
         measures_context = []
