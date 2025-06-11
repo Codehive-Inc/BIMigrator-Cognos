@@ -285,7 +285,7 @@ class CognosMigrator:
         
         data_model = DataModel(
             name=model_name,
-            compatibility_level=1600,  # Power BI compatibility level
+            compatibility_level=1567,  # Match example file compatibility level
             culture="en-US",
             tables=tables,
             relationships=relationships,
