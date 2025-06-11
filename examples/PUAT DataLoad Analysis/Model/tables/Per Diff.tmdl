@@ -1,0 +1,25 @@
+﻿table 'Per Diff'
+
+	measure 'Per Diff Value' = SELECTEDVALUE('Per Diff'[Per Diff])
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Per Diff'
+		dataType: double
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition 'Per Diff' = calculated
+		mode: import
+		source = GENERATESERIES(0, 100, 5)
+
+	annotation PBI_Id = 95a2a7720eda4561be37726931168ef7
+

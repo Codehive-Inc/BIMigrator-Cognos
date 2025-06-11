@@ -1,0 +1,527 @@
+﻿table 'Custom SQL Query (dlh_nsec_objdb) (2)'
+
+	measure 'Module_week measures' =
+			CALCULATE(
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[Measure],
+			    ALLEXCEPT('Custom SQL Query (dlh_nsec_objdb) (2)', 'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_WEEK])
+			)
+		formatString: 0
+
+	measure 'dip flag' = IF([% diff]>SELECTEDVALUE('Diff Percentage'[Diff Percentage]), TRUE(), FALSE())
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+
+	measure 'avg data?' = SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932]) = AVERAGEX('Custom SQL Query (dlh_nsec_objdb) (2)', 'Custom SQL Query (dlh_nsec_objdb) (2)'[Avg_Date_By_Module])
+		formatString: 0
+
+	measure 'golden flag' = SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932]) = AVERAGEX(VALUES('Custom SQL Query (dlh_nsec_objdb) (2)'[Avg_Date_By_Module]), CALCULATE(SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[AVG_DATA])))
+		formatString: 0
+
+	measure '% diffe0d6' = ```
+			IF ( 
+			    SELECTEDVALUE ( 'Custom SQL Query (dlh_nsec_objdb)'[Tab_module] ) <> "System", 
+			    -( 1 - ( SUM ( 'Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932] ) / MIN ( 'Custom SQL Query (dlh_nsec_objdb) (2)'[Avg_Date_By_Module]) ) ) 
+			)
+			```
+		formatString: 0
+
+	measure 'diff flag' = ```
+			var perc_diff = VALUE ( 0.1 )
+			
+			var result = 
+			    IF ( 
+			        [% diff] = 0, 
+			        "Gold", 
+			        IF ( 
+			            -[% diff] > SELECTEDVALUE('Per Diff'[Per Diff])/100, 
+			            "Flag", 
+			            IF ( 
+			                -[% diff] < SELECTEDVALUE('Per Diff'[Per Diff])/100, 
+			                "Normal" 
+			            ) 
+			        ) 
+			    )
+			RETURN
+			    result
+			```
+
+	measure size = MIN('Custom SQL Query (dlh_nsec_objdb)'[serial_count])
+		formatString: 0
+
+	measure 'flag diff' = ```
+			
+			IF(
+			    [% Diff] < -([Per Diff Value] / 100) && [% Diff] <> 0, 
+			    [% Diff], 
+			    BLANK()
+			)
+			
+			```
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Measure = SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932])
+		formatString: 0
+
+	measure axis = 1
+		formatString: 0
+
+	measure Fixed_Sum_Per_Week = ```
+			
+			SUMX (
+			    SUMMARIZE ( 
+			        'Custom SQL Query (dlh_nsec_objdb) (2)', 
+			        'Custom SQL Query (dlh_nsec_objdb) (2)'[Table],  
+			        'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_WEEK] ,  
+			        "FixedSum", SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932])  
+			    ), 
+			    [FixedSum] 
+			)
+			
+			
+			
+			```
+		formatString: 0
+
+	measure 'diff vs golden data' = ```
+			
+			MIN('Custom SQL Query (dlh_nsec_objdb) (2)'[Avg_Date_By_Module]) - SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932])
+			
+			```
+		formatString: 0
+
+	measure Min_Week_Per_Month = ```
+			
+			VAR MinWeek =
+			    MINX (
+			        SUMMARIZE (
+			            'Custom SQL Query (dlh_nsec_objdb)',
+			            'Custom SQL Query (dlh_nsec_objdb)'[FISCAL_MONTH],  // Replace with the column representing the month
+			            "MinWeek", WEEKNUM('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_MONTH],1)  // 1 for Sunday-based week, change to 2 if Monday-based
+			        ),
+			        [MinWeek]
+			    )
+			RETURN
+			    MinWeek
+			
+			```
+		formatString: 0
+
+	measure 'measure by week' = ```
+			
+			SUMX(
+			    ALLEXCEPT('Custom SQL Query (dlh_nsec_objdb) (2)', 'Custom SQL Query (dlh_nsec_objdb) (2)'[week num]), 
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932]
+			)
+			```
+		formatString: 0
+
+	measure 'Dif b/w g&m' = ```
+			
+			1 - (SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932]) / MIN('Custom SQL Query (dlh_nsec_objdb) (2)'[Avg_Date_By_Module]))
+			
+			```
+		formatString: 0
+
+	measure 'System Diff' = ```
+			
+			VAR Sum_System = 
+			    CALCULATE(
+			        'Custom SQL Query (dlh_nsec_objdb) (2)'[Measure],
+			        'Custom SQL Query (dlh_nsec_objdb) (2)'[Table] = "System"
+			    )
+			
+			VAR Min_System = 
+			    CALCULATE(
+			        'Custom SQL Query (dlh_nsec_objdb)'[Max\Avg], 
+			        'Custom SQL Query (dlh_nsec_objdb) (2)'[Table] = "System"
+			    )
+			
+			RETURN 
+			    Sum_System - Min_System
+			```
+		formatString: 0
+
+	measure 'golden diff system' = ```
+			
+			VAR ConditionCheck = MIN('Custom SQL Query (dlh_nsec_objdb) (2)'[Max_data]) - SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Max\Avgf5932])
+			
+			RETURN 
+			IF(
+			    SELECTEDVALUE('Custom SQL Query (dlh_nsec_objdb) (2)'[Table]) = "System" &&
+			    ConditionCheck < - [System Dip threshold Value], 
+			    -ConditionCheck, 
+			    BLANK()
+			)
+			
+			```
+		formatString: 0
+
+	measure 'golden diff' = IF ( [% diffe0d6] >= 0.15, [% diffe0d6] )
+		formatString: 0
+
+	measure Normal_Diff_System = ```
+			
+			VAR DiffValue = MIN('Max\ Avg'[Max\ Avg])
+			VAR Threshold = [System Dip threshold Value]
+			
+			RETURN 
+			IF (
+			    SELECTEDVALUE('Max\ Avg'[Max\ Avg]) = "System" &&
+			    DiffValue < Threshold &&
+			    DiffValue >= -Threshold,
+			    DiffValue
+			)
+			
+			```
+		formatString: 0
+
+	measure 'Normal Diff' = ```
+			
+			IF (
+			    [% Diff] >= -([Per Diff Value] / 100) &&
+			    [% Diff] < 0.15 &&
+			    [% Diff] <> 0,
+			    [% Diff]
+			)
+			
+			```
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'flag diff system' = ```
+			IF ( 
+			    SELECTEDVALUE ( 'Custom SQL Query (dlh_nsec_objd) = "System" && 
+			    MIN ( 'Table'[max\avgf592] ) - SUM ( 'Custom SQL Query (dlh_nsec_objdb) (2)'[Measure] ) > [system dip threshold], 
+			    MIN ( 'Table'[max\avgf592] ) - SUM ( 'Custom SQL Query (dlh_nsec_objdb) (2)'[Measure] ) 
+			)
+			```
+
+	column asup_month
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: asup_month
+
+		variation Variation
+			isDefault
+			relationship: ac5dc3b0-9b1f-4544-ba4a-03e5c6675529
+			defaultHierarchy: LocalDateTable_9812cf11-0083-49e2-8cee-035c0b92d1ea.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: c64ee2cd-f95d-4f98-9bdd-ab57a7ee62aa
+			defaultHierarchy: LocalDateTable_479fa9cc-695b-45cb-ad52-1bac6002445d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FISCAL_MONTH
+		dataType: string
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_WEEK
+		dataType: string
+		summarizeBy: none
+		sourceColumn: FISCAL_WEEK
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_DATE
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		variation Variation
+			isDefault
+			relationship: 095c9319-29cc-415b-8bb4-6ba99e6f22c7
+			defaultHierarchy: LocalDateTable_3d1260f3-2717-4f51-a33c-425206c5b652.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_QTR
+		dataType: string
+		summarizeBy: none
+		sourceColumn: FISCAL_QTR
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_YEAR
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: FISCAL_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column FT
+		dataType: string
+		summarizeBy: none
+		sourceColumn: FT
+
+		annotation SummarizationSetBy = Automatic
+
+	column AVG_DATA
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: AVG_DATA
+
+		annotation SummarizationSetBy = Automatic
+
+	column Max_data
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: Max_data
+
+		annotation SummarizationSetBy = Automatic
+
+	column OBJ_SMF_TABL
+		dataType: string
+		summarizeBy: none
+		sourceColumn: OBJ_SMF_TABL
+
+		annotation SummarizationSetBy = Automatic
+
+	column Table
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Table
+
+		annotation SummarizationSetBy = Automatic
+
+	column Subject = ```
+			
+			"Data Load below " & FORMAT([Diff Percentage Value], "0.00") & "% Of Golden Data Range"
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'asup date' = 'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_DATE]
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WEEKDAY = WEEKDAY ('Custom SQL Query (dlh_nsec_objdb) (2)'[AVG_DATA])
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Min_Fiscal_Week = ```
+			
+			CALCULATE(
+			    MIN('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK]),
+			    ALL('Custom SQL Query (dlh_nsec_objdb)')
+			)
+			
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Avg_Date_By_Module = ```
+			
+			CALCULATE(
+			    MIN('Max\ Avg'[Max\ Avg]),  
+			    ALLEXCEPT('Max\ Avg', 'Max\ Avg'[Max\ Avg]
+			)
+			
+			)
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Max_Fiscal_Week = ```
+			
+			VAR MaxWeek = MAX('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK])
+			RETURN 
+			IF(
+			    SELECTEDVALUE('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK]) = MaxWeek,
+			    MAX('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK])
+			)
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'avg date' = DATE(2022, 2, 24) & " to " & DATE(2022, 3, 17)
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'week num' =
+			VAR CurrentWeek = WEEKNUM('Custom SQL Query (dlh_nsec_objdb) (2)'[fiscal date])
+			VAR MinWeek = MINX(ALL('Custom SQL Query (dlh_nsec_objdb)'), WEEKNUM('Custom SQL Query (dlh_nsec_objdb) (2)'[fiscal date]))
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    CurrentWeek = MinWeek, "Week 1",
+			    CurrentWeek = MinWeek + 1, "Week 2",
+			    CurrentWeek = MinWeek + 2, "Week 3",
+			    CurrentWeek = MinWeek + 3, "Week 4",
+			    CurrentWeek = MinWeek + 4, "Week 5",
+			    CurrentWeek = MinWeek + 5, "Week 6"
+			)
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'golden data label' = ```
+			
+			SELECTEDVALUE('Max\ Avg'[Max\ Avg Fields]) & " Data Values"
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data load metrics' = "Data Load Values"
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column helpb47d = "helpb47d"
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Max\Avgf5932 =
+			
+			// SUMMARIZE(
+			//     'Custom SQL Query (dlh_nsec_objdb) (2)',
+			//     'Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK],
+			//     "Fixed Measure", SUM('Custom SQL Query (dlh_nsec_objdb) (2)'[Measure])
+			// )
+			IF(
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[Table] = "System"
+			    && SELECTEDVALUE('Max\Avg'[display as]) = "Max",
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[Max_data],
+			    INT('Custom SQL Query (dlh_nsec_objdb) (2)'[AVG_DATA])
+			)
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tooltip = ```
+			
+			SWITCH(
+			    SELECTEDVALUE('Max\ Avg'[Max\ Avg Fields]),  
+			    "Max", "Max Sys Count for Selected Duration",  
+			    "Avg", "Avg Sys Count for last 4 weeks",  
+			    "Default Value" // Optional default value if neither condition is met
+			)
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'fiscal date' = ```
+			SWITCH(
+			    TRUE(),
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_DATE] = DATE(2024, 8, 31), DATE(2024, 9, 1),
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_DATE] = DATE(2024, 12, 1), DATE(2024, 11, 30),
+			    'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_DATE]
+			)
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column period = "Data Load Time"
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Avg Week' = ```
+			
+			VAR FilteredFiscalWeek =
+			    FILTER(
+			        'Custom SQL Query (dlh_nsec_objdb)',
+			        'Custom SQL Query (dlh_nsec_objdb)'[Weekday]= 
+			        'Custom SQL Query (dlh_nsec_objdb) (2)'[Avg_Date_By_Module]
+			    )
+			RETURN
+			    CALCULATE(
+			        MIN('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK]),
+			        ALLEXCEPT('Custom SQL Query (dlh_nsec_objdb)', 'Custom SQL Query (dlh_nsec_objdb)'[Weekday])
+			    )
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'maxfiscal week' =
+			
+			MAXX(ALL('Custom SQL Query (dlh_nsec_objdb) (2)'), 'Custom SQL Query (dlh_nsec_objdb) (2)'[FISCAL_WEEK])
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Max_Fiscal_Date_By_Week = ```
+			
+			CALCULATE(
+			    MAX('Custom SQL Query (dlh_nsec_objdb)'[FISCAL_DATE]),
+			    ALLEXCEPT('Custom SQL Query (dlh_nsec_objdb)', 'Custom SQL Query (dlh_nsec_objdb)'[FISCAL_WEEK])
+			)
+			
+			```
+		dataType: string
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Custom SQL Query (dlh_nsec_objdb) (2)' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Sphyzee 01\Downloads\PUAT DataLoad Analysis_.xlsx"), null, true),
+				    #"CustomSQLQuery(dlh_nsec.objdb)2_Sheet" = Source{[Item="CustomSQLQuery(dlh_nsec.objdb)2",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"CustomSQLQuery(dlh_nsec.objdb)2_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"asup_month", type date}, {"date", type date}, {"FISCAL_MONTH", type text}, {"FISCAL_WEEK", type text}, {"FISCAL_DATE", type datetime}, {"FISCAL_QTR", type text}, {"FISCAL_YEAR", Int64.Type}, {"FT", type text}, {"AVG_DATA", Int64.Type}, {"Max_data", Int64.Type}, {"OBJ_SMF_TABL", type text}, {"Table", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

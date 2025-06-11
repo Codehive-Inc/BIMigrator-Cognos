@@ -1,0 +1,45 @@
+table Data
+
+
+    column 'ID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ID
+
+        isDataTypeInferred: True
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Name
+
+        isDataTypeInferred: True
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Value'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Value
+
+        isDataTypeInferred: True
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Data-partition' = m
+        mode: import
+        source = 
+            let
+				Source = Sql.Database("server", "database", [Query="let Source = Cognos in Source"])
+			in
+				#"Changed Type"
+        
+
+
+
+    annotation PBI_ResultType = Table

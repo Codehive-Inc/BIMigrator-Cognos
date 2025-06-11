@@ -1,0 +1,18 @@
+{#{
+  "Version": {{ version }},
+  "ReportSettings": {},
+  "QueriesSettings": {
+    "TypeDetectionEnabled": {{ type_detection_enabled }},
+    "RelationshipImportEnabled": {{ relationship_import_enabled }},
+    "Version": "{{ queries_settings_version }}"
+  }
+}#}
+{
+  "Version": 4,
+  "ReportSettings": {},
+  "QueriesSettings": {
+    "TypeDetectionEnabled": true,
+    "RelationshipImportEnabled": true,
+    "Version": "2.140.405.0"
+  }
+}

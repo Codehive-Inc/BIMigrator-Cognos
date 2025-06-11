@@ -1,0 +1,124 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 568,
+            "y": 25
+          },
+          "nodeIndex": "Sheet1",
+          "nodeLineageTag": "4021ce40-1f54-41ed-aefa-db48a7b72ca7",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334,
+            "y": -27
+          },
+          "nodeIndex": "Custom SQL Query (dlh_nsec_objdb)",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -27
+          },
+          "nodeIndex": "Custom SQL Query (dlh_nsec_objdb) (2)",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 802,
+            "y": 62
+          },
+          "nodeIndex": "Diff Percentage",
+          "nodeLineageTag": "e5be62af-9f6a-4aff-b652-3c02585c2d23",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1036,
+            "y": 98
+          },
+          "nodeIndex": "Max\\Avg",
+          "nodeLineageTag": "6af0067f-1f5f-4c27-a1d4-bc55e9be6db9",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1270,
+            "y": 62
+          },
+          "nodeIndex": "Per Diff",
+          "nodeLineageTag": "f8ce5664-d267-4af2-a740-4fcf404bea9b",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1504,
+            "y": 62
+          },
+          "nodeIndex": "System Dip threshold",
+          "nodeLineageTag": "53b3970e-e04a-493f-9de4-8e88b7bdedb3",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1738,
+            "y": 98
+          },
+          "nodeIndex": "Max\\ Avg",
+          "nodeLineageTag": "97fe7141-8eb7-4424-92d5-5e161b1eba65",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

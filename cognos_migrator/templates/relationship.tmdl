@@ -1,0 +1,18 @@
+{% for relationship in relationships %}
+relationship {{ relationship.id }}
+	{% if relationship.join_on_date_behavior %}
+	joinOnDateBehavior: {{ relationship.join_on_date_behavior }}
+	{% endif %}
+	fromColumn: '{{ relationship.from_table }}'.{{ relationship.from_column }}
+	toColumn: '{{ relationship.to_table }}'.{{ relationship.to_column }}
+    {% if relationship.cross_filter_behavior %}
+	crossFilteringBehavior: {{ relationship.cross_filter_behavior }}
+    {% endif %}
+    {% if relationship.cardinality %}
+	fromCardinality: {{ relationship.cardinality }}
+    {% endif %}
+    {% if relationship.is_active %}
+	isActive: {{ relationship.is_active }}
+    {% endif %}
+
+{% endfor %}
