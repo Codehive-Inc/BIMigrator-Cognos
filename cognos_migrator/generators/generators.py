@@ -474,8 +474,10 @@ class PowerBIProjectGenerator:
         
         # Generate ReportMetadata.json
         metadata_context = {
-            'version': project.version,
-            'created': project.created.isoformat()
+            'version': 5,  # Fixed version number as per example
+            'file_description': "",  # Empty FileDescription as per example
+            'created_from': "Cloud",  # Standard value
+            'created_from_release': "2023.08"  # Match example file value
         }
         
         content = self.template_engine.render('report_metadata', metadata_context)
