@@ -131,7 +131,7 @@ class CognosMigrator:
             # Create Power BI project
             project = PowerBIProject(
                 name=cognos_report.name,
-                version="1.0.0",
+                version="1.0",  # Match the version format in example files
                 created=datetime.now(),
                 last_modified=datetime.now(),
                 data_model=data_model,

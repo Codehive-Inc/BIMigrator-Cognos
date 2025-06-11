@@ -182,10 +182,14 @@ class PowerBIProjectGenerator:
     
     def _generate_project_file(self, project: PowerBIProject, output_dir: Path):
         """Generate .pbixproj.json file"""
+        # Format datetime with timezone information to match Power BI format
+        created_formatted = project.created.strftime('%Y-%m-%dT%H:%M:%S.%f0000+00:00')
+        last_modified_formatted = project.last_modified.strftime('%Y-%m-%dT%H:%M:%S.%f0000+00:00')
+        
         context = {
             'version': project.version,
-            'created': project.created.isoformat(),
-            'last_modified': project.last_modified.isoformat()
+            'created': created_formatted,
+            'last_modified': last_modified_formatted
         }
         
         content = self.template_engine.render('pbixproj', context)
