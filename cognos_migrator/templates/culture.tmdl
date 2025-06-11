@@ -2,7 +2,7 @@ cultureInfo {{culture}}
 
 	linguisticMetadata =
 			{
-			  "Version": "1.0.0",
-			  "Language": "{{culture}}"
+			  "Version": "{{version}}",
+			  "Language": "{{culture}}",
+			  "DynamicImprovement": "HighConfidence"
 			}
-		contentType: json

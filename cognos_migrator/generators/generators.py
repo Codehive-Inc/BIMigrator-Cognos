@@ -373,7 +373,8 @@ class PowerBIProjectGenerator:
         
         context = {
             'culture': data_model.culture,
-            'name': data_model.name
+            'name': data_model.name,
+            'version': '1.2.0'  # Match example file version
         }
         
         content = self.template_engine.render('culture', context)
