@@ -1,0 +1,27 @@
+﻿model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["RPR_ORDR","RPR_ORDR_LN","DLR","VHCL_CMPGN","CMPGN_MSTR","SLS_DSTRCT","SLS_ARA","SVC_VHCL","RO VIN Entry","VIN"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.143.878.0 (25.05)+b20aa3b866ec1b70879135a4e60e4b1301c75b21
+
+ref table RPR_ORDR
+ref table RPR_ORDR_LN
+ref table DLR
+ref table VHCL_CMPGN
+ref table CMPGN_MSTR
+ref table SLS_DSTRCT
+ref table SLS_ARA
+ref table SVC_VHCL
+ref table 'RO VIN Entry'
+ref table VIN
+
+ref cultureInfo en-IN
+

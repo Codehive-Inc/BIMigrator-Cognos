@@ -1,0 +1,104 @@
+﻿table Sheet1
+
+	column '% dips(compared to golden data)'
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: % dips(compared to golden data)
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: b5772087-6d98-43e0-9b2a-9ab0ba122ebe
+			defaultHierarchy: LocalDateTable_cb90265a-6b85-4680-a06b-648cf822c4d3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Date2
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: Date2
+
+		variation Variation
+			isDefault
+			relationship: 078f35d8-7f27-4553-94e9-8efb45f7b954
+			defaultHierarchy: LocalDateTable_519cc021-1fea-4cc0-8b87-7b624c34e0d4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Table Name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Table Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column followups
+		dataType: string
+		summarizeBy: none
+		sourceColumn: followups
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'raised date'
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: raised date
+
+		variation Variation
+			isDefault
+			relationship: eecffb6f-f969-4784-b0b8-fa60ce8affad
+			defaultHierarchy: LocalDateTable_ff90cf03-2ee3-4e1a-bfa0-0f86323ef362.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column status
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ticket number'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ticket number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ticket owner'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ticket owner
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sheet1 = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\Sphyzee 01\Downloads\PUAT DataLoad Analysis_.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"% dips(compared to golden data)", Int64.Type}, {"Date", type date}, {"Date2", type date}, {"Table Name", type text}, {"followups", type text}, {"raised date", type date}, {"status", type logical}, {"ticket number", type text}, {"ticket owner", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
