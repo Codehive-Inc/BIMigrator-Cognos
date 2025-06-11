@@ -27,7 +27,7 @@ class CognosConfig:
 class MigrationConfig:
     """Configuration for migration process"""
     output_directory: str = "output"
-    template_directory: str = "bimigrator/templates"
+    template_directory: str = "templates"  # Path to template files, can be absolute or relative to project root
     preserve_structure: bool = True
     include_metadata: bool = True
     generate_documentation: bool = True
@@ -86,7 +86,7 @@ class ConfigManager:
         """Get migration configuration"""
         return MigrationConfig(
             output_directory=os.getenv('OUTPUT_DIR', 'output'),
-            template_directory=os.getenv('TEMPLATE_DIR', 'bimigrator/templates'),
+            template_directory=os.getenv('TEMPLATE_DIR', 'templates'), 
             preserve_structure=os.getenv('PRESERVE_STRUCTURE', 'true').lower() == 'true',
             include_metadata=os.getenv('INCLUDE_METADATA', 'true').lower() == 'true',
             generate_documentation=os.getenv('GENERATE_DOCS', 'true').lower() == 'true'
