@@ -24,6 +24,9 @@ class TemplateEngine:
     """Jinja2 template engine wrapper (migrated from PyBars3)"""
     
     def __init__(self, template_directory: str):
+        self.logger = logging.getLogger(__name__)
+        self.logger.info(f"Template directory passed to TemplateEngine: {template_directory}")
+        
         # Get the project root directory
         project_root = Path(__file__).parent.parent.parent
         
@@ -32,6 +35,10 @@ class TemplateEngine:
             Path(template_directory),  # Absolute path as specified in config
             project_root / template_directory,  # Relative to project root
         ]
+        
+        # Log the paths we're checking
+        for path in template_paths:
+            self.logger.debug(f"Checking template path: {path}, exists: {path.exists()}")
         
         # Use the first path that exists
         template_path = None
@@ -44,7 +51,6 @@ class TemplateEngine:
             raise FileNotFoundError(f"Template directory not found: {template_directory}. Please check your configuration.")
             
         self.template_directory = template_path
-        self.logger = logging.getLogger(__name__)
         self.logger.info(f"Using template directory: {self.template_directory}")
         
         
