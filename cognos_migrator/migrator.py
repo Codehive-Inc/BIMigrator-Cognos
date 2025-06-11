@@ -385,23 +385,29 @@ class CognosMigrator:
                 self.logger.error("Cannot connect to Cognos Analytics")
                 return False
             
-            # Check template directory - try paths based on configuration
+            # Check template directory - use the path from config
+            template_dir_from_config = self.config.template_directory
+            self.logger.info(f"Template directory from config: {template_dir_from_config}")
+            
+            # Try different ways to resolve the template directory
             project_root = Path(__file__).parent.parent
             template_paths = [
-                Path(self.config.template_directory),  # Absolute path as specified in config
-                project_root / self.config.template_directory,  # Relative to project root
+                Path(template_dir_from_config),  # Absolute path
+                project_root / template_dir_from_config,  # Relative to project root
             ]
             
+            # Find the first path that exists
             template_dir = None
             for path in template_paths:
+                self.logger.info(f"Checking template path: {path}, exists: {path.exists()}")
                 if path.exists():
                     template_dir = path
                     break
-                    
+            
             if not template_dir:
-                self.logger.error(f"Template directory not found: {self.config.template_directory}. Please check your configuration.")
+                self.logger.error(f"Template directory not found: {template_dir_from_config}")
                 return False
-                
+            
             # Update config with the resolved absolute path
             self.config.template_directory = str(template_dir)
             self.logger.info(f"Using template directory: {self.config.template_directory}")
