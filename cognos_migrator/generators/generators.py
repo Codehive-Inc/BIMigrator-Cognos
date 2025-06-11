@@ -182,10 +182,14 @@ class PowerBIProjectGenerator:
     
     def _generate_project_file(self, project: PowerBIProject, output_dir: Path):
         """Generate .pbixproj.json file"""
+        # Format datetime with timezone information to match Power BI format
+        created_formatted = project.created.strftime('%Y-%m-%dT%H:%M:%S.%f0000+00:00')
+        last_modified_formatted = project.last_modified.strftime('%Y-%m-%dT%H:%M:%S.%f0000+00:00')
+        
         context = {
             'version': project.version,
-            'created': project.created.isoformat(),
-            'last_modified': project.last_modified.isoformat()
+            'created': created_formatted,
+            'last_modified': last_modified_formatted
         }
         
         content = self.template_engine.render('pbixproj', context)
@@ -273,16 +277,21 @@ class PowerBIProjectGenerator:
         """Build context for table template"""
         columns_context = []
         for column in table.columns:
+            # Set default format string for numeric types if not provided
+            format_string = column.format_string
+            if not format_string and self._map_datatype_to_powerbi(column.data_type) in ['int64', 'double', 'decimal']:
+                format_string = '0'
+                
             columns_context.append({
                 'source_name': column.name,
                 'source_column': column.source_column,
                 'datatype': self._map_datatype_to_powerbi(column.data_type),
                 'summarize_by': column.summarize_by,
-                'format_string': column.format_string,
+                'format_string': format_string,
                 'is_hidden': False,  # Default
                 'is_calculated': False,  # Default for imported columns
-                'is_data_type_inferred': True,
-                'annotations': column.annotations
+                'is_data_type_inferred': False,  # Match example file (no isDataTypeInferred)
+                'annotations': {'SummarizationSetBy': 'User'}  # Match example file
             })
         
         measures_context = []
@@ -369,7 +378,8 @@ class PowerBIProjectGenerator:
         
         context = {
             'culture': data_model.culture,
-            'name': data_model.name
+            'name': data_model.name,
+            'version': '1.2.0'  # Match example file version
         }
         
         content = self.template_engine.render('culture', context)
@@ -452,13 +462,14 @@ class PowerBIProjectGenerator:
     
     def _generate_metadata_files(self, project: PowerBIProject, output_dir: Path):
         """Generate metadata files"""
-        # Generate Version.txt
+        # Generate Version.txt - use the template which has the correct Power BI version
+        content = self.template_engine.render('version', {})
         with open(output_dir / 'Version.txt', 'w', encoding='utf-8') as f:
-            f.write(project.version)
+            f.write(content)
         
         # Generate DiagramLayout.json
         diagram_context = {
-            'version': 1,
+            'version': "1.1.0",  # Match example file version
             'nodes': [],
             'relationships': []
         }
@@ -469,8 +480,10 @@ class PowerBIProjectGenerator:
         
         # Generate ReportMetadata.json
         metadata_context = {
-            'version': project.version,
-            'created': project.created.isoformat()
+            'version': 5,  # Fixed version number as per example
+            'file_description': "",  # Empty FileDescription as per example
+            'created_from': "Cloud",  # Standard value
+            'created_from_release': "2023.08"  # Match example file value
         }
         
         content = self.template_engine.render('report_metadata', metadata_context)
