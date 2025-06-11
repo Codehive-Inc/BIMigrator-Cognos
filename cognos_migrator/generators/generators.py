@@ -456,9 +456,10 @@ class PowerBIProjectGenerator:
     
     def _generate_metadata_files(self, project: PowerBIProject, output_dir: Path):
         """Generate metadata files"""
-        # Generate Version.txt
+        # Generate Version.txt - use the template which has the correct Power BI version
+        content = self.template_engine.render('version', {})
         with open(output_dir / 'Version.txt', 'w', encoding='utf-8') as f:
-            f.write(project.version)
+            f.write(content)
         
         # Generate DiagramLayout.json
         diagram_context = {
