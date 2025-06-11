@@ -11,11 +11,13 @@ from datetime import datetime
 
 import jinja2
 
-from .models import (
+from ..models import (
     DataModel, Table, Column, Relationship, Measure, 
     Report, ReportPage, PowerBIProject, DataType
 )
-from .config import MigrationConfig
+from ..config import MigrationConfig
+from ..visual_generator import VisualContainerGenerator, PowerBIVisualContainer
+from ..report_parser import CognosReportStructure, CognosVisual
 
 
 class TemplateEngine:
@@ -82,6 +84,7 @@ class PowerBIProjectGenerator:
     def __init__(self, config: MigrationConfig):
         self.config = config
         self.template_engine = TemplateEngine(config.template_directory)
+        self.visual_generator = VisualContainerGenerator()
         self.logger = logging.getLogger(__name__)
     
     def generate_project(self, project: PowerBIProject, output_path: str) -> bool:
@@ -109,6 +112,42 @@ class PowerBIProjectGenerator:
             
         except Exception as e:
             self.logger.error(f"Failed to generate Power BI project: {e}")
+            return False
+    
+    def generate_from_cognos_report(self, cognos_report: CognosReportStructure, 
+                                   data_model: DataModel, output_path: str) -> bool:
+        """Generate complete Power BI project from Cognos report structure"""
+        try:
+            output_dir = Path(output_path)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Generate project structure
+            project = PowerBIProject(
+                name=cognos_report.name,
+                data_model=data_model,
+                report=None  # Will be created below
+            )
+            
+            # Generate project file
+            self._generate_project_file(project, output_dir)
+            
+            # Generate model files
+            self._generate_model_files(data_model, output_dir)
+            
+            # Generate enhanced report files with visual containers
+            self._generate_enhanced_report_files(cognos_report, data_model, output_dir)
+            
+            # Generate metadata files
+            self._generate_metadata_files(project, output_dir)
+            
+            # Generate static resources
+            self._generate_static_resources(output_dir)
+            
+            self.logger.info(f"Successfully generated complete Power BI project from Cognos report at: {output_dir}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Failed to generate Power BI project from Cognos report: {e}")
             return False
     
     def _generate_project_file(self, project: PowerBIProject, output_dir: Path):
@@ -164,11 +203,19 @@ class PowerBIProjectGenerator:
     
     def _generate_model_file(self, data_model: DataModel, model_dir: Path):
         """Generate model.tmdl file"""
+        # Get table names for references
+        table_names = [table.name for table in data_model.tables]
+        
         context = {
-            'name': data_model.name,
+            'model_name': data_model.name,
+            'default_culture': data_model.culture or 'en-US',
             'compatibility_level': data_model.compatibility_level,
-            'culture': data_model.culture,
-            'annotations': data_model.annotations
+            'culture': data_model.culture or 'en-US',
+            'annotations': data_model.annotations,
+            'query_order_list': data_model.annotations.get('PBI_QueryOrder', '[]'),
+            'time_intelligence_enabled': data_model.annotations.get('__PBI_TimeIntelligenceEnabled', '1'),
+            'desktop_version': data_model.annotations.get('PBIDesktopVersion', '2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729'),
+            'tables': table_names
         }
         
         content = self.template_engine.render('model', context)
@@ -235,10 +282,10 @@ class PowerBIProjectGenerator:
         """Build M expression for table partition"""
         if table.source_query:
             # For SQL queries, wrap in appropriate M function
-            return f'let\n    Source = Sql.Database("server", "database", [Query="{table.source_query}"])\nin\n    Source'
+            return f'let\n\t\t\t\tSource = Sql.Database("server", "database", [Query="{table.source_query}"])\n\t\t\tin\n\t\t\t\t#"Changed Type"'
         else:
             # For other sources, create a basic expression
-            return f'let\n    Source = Table.FromRows({{}})\nin\n    Source'
+            return f'let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\t#"Changed Type"'
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""
@@ -365,7 +412,12 @@ class PowerBIProjectGenerator:
             'height': page.height,
             'visuals': page.visuals,
             'filters': page.filters,
-            'config': page.config
+            'config': page.config,
+            'layout': {
+                'width': page.width,
+                'height': page.height,
+                'display_option': 'FitToPage'
+            }
         }
     
     def _generate_metadata_files(self, project: PowerBIProject, output_dir: Path):
@@ -415,6 +467,191 @@ class PowerBIProjectGenerator:
             DataType.DECIMAL: 'decimal'
         }
         return mapping.get(data_type, 'string')
+    
+    def _generate_enhanced_report_files(self, cognos_report: CognosReportStructure, 
+                                       data_model: DataModel, output_dir: Path):
+        """Generate enhanced report files with visual containers"""
+        report_dir = output_dir / 'Report'
+        report_dir.mkdir(exist_ok=True)
+        
+        # Generate main report.json
+        self._generate_enhanced_report_json(cognos_report, report_dir)
+        
+        # Generate config.json
+        self._generate_enhanced_report_config(cognos_report, report_dir)
+        
+        # Generate sections with visual containers
+        self._generate_enhanced_report_sections(cognos_report, data_model, report_dir)
+    
+    def _generate_enhanced_report_json(self, cognos_report: CognosReportStructure, report_dir: Path):
+        """Generate enhanced report.json file"""
+        context = {
+            'name': cognos_report.name,
+            'pages': [self._build_enhanced_page_context(page) for page in cognos_report.pages],
+            'config': {
+                'theme': 'CorporateTheme',
+                'version': '1.0'
+            }
+        }
+        
+        content = self.template_engine.render('report', context)
+        
+        with open(report_dir / 'report.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_enhanced_report_config(self, cognos_report: CognosReportStructure, report_dir: Path):
+        """Generate enhanced config.json file"""
+        context = {
+            'theme': 'CorporateTheme',
+            'settings': {
+                'locale': 'en-US',
+                'dateFormat': 'MM/dd/yyyy'
+            }
+        }
+        
+        content = self.template_engine.render('report_config', context)
+        
+        with open(report_dir / 'config.json', 'w', encoding='utf-8') as f:
+            f.write(content)
+    
+    def _generate_enhanced_report_sections(self, cognos_report: CognosReportStructure, 
+                                          data_model: DataModel, report_dir: Path):
+        """Generate enhanced report section files with visual containers"""
+        sections_dir = report_dir / 'sections'
+        sections_dir.mkdir(exist_ok=True)
+        
+        # Build table mappings for visual generation
+        table_mappings = {table.name: table.name for table in data_model.tables}
+        
+        for i, page in enumerate(cognos_report.pages):
+            section_name = f'{i:03d}_{self._sanitize_filename(page.name)}'
+            section_dir = sections_dir / section_name
+            section_dir.mkdir(exist_ok=True)
+            
+            # Generate section.json
+            context = self._build_enhanced_page_context(page)
+            content = self.template_engine.render('report_section', context)
+            
+            with open(section_dir / 'section.json', 'w', encoding='utf-8') as f:
+                f.write(content)
+            
+            # Generate filters.json
+            filters_context = {
+                'filters': page.filters or []
+            }
+            with open(section_dir / 'filters.json', 'w', encoding='utf-8') as f:
+                json.dump(filters_context, f, indent=2)
+            
+            # Generate config.json for section
+            section_config = {
+                'name': page.name,
+                'displayName': page.name,
+                'width': page.width or 1280,
+                'height': page.height or 720
+            }
+            with open(section_dir / 'config.json', 'w', encoding='utf-8') as f:
+                json.dump(section_config, f, indent=2)
+            
+            # Generate visual containers
+            if page.visuals:
+                visual_containers_dir = section_dir / 'visualContainers'
+                visual_containers_dir.mkdir(exist_ok=True)
+                
+                for j, visual in enumerate(page.visuals):
+                    # The visual from report_parser should be compatible with visual_generator
+                    # It has all the required attributes: power_bi_type, name, position, fields
+                    visual_container = self.visual_generator.generate_visual_container(
+                        visual, j, table_mappings
+                    )
+                    
+                    # Create visual container directory
+                    container_name = visual_container.config.get('name', visual.name)[:6]
+                    visual_dir_name = f'{j:05d}_{visual.power_bi_type.value}_{container_name}'
+                    visual_dir = visual_containers_dir / visual_dir_name
+                    visual_dir.mkdir(exist_ok=True)
+                    
+                    # Write visual container files
+                    with open(visual_dir / 'visualContainer.json', 'w', encoding='utf-8') as f:
+                        json.dump(visual_container.visual_container, f, indent=2)
+                    
+                    with open(visual_dir / 'config.json', 'w', encoding='utf-8') as f:
+                        json.dump(visual_container.config, f, indent=2)
+                    
+                    if visual_container.query:
+                        with open(visual_dir / 'query.json', 'w', encoding='utf-8') as f:
+                            json.dump(visual_container.query, f, indent=2)
+                    
+                    if visual_container.data_transforms:
+                        with open(visual_dir / 'dataTransforms.json', 'w', encoding='utf-8') as f:
+                            json.dump(visual_container.data_transforms, f, indent=2)
+                    
+                    with open(visual_dir / 'filters.json', 'w', encoding='utf-8') as f:
+                        json.dump(visual_container.filters, f, indent=2)
+    
+    def _build_enhanced_page_context(self, page) -> Dict[str, Any]:
+        """Build enhanced context for page template"""
+        return {
+            'name': page.name,
+            'display_name': page.name,
+            'width': page.width or 1280,
+            'height': page.height or 720,
+            'visuals': [self._build_visual_summary(v) for v in (page.visuals or [])],
+            'filters': page.filters or [],
+            'layout': {
+                'width': page.width or 1280,
+                'height': page.height or 720,
+                'display_option': 'FitToPage'
+            },
+            'config': {
+                'theme': 'CorporateTheme',
+                'background': '#FFFFFF'
+            }
+        }
+    
+    def _build_visual_summary(self, visual) -> Dict[str, Any]:
+        """Build summary for visual in page context"""
+        return {
+            'id': f'visual_{hash(visual.name) % 10000:04d}',
+            'type': visual.power_bi_type.value,
+            'name': visual.name,
+            'x': visual.position.get('x', 0),
+            'y': visual.position.get('y', 0),
+            'width': visual.position.get('width', 200),
+            'height': visual.position.get('height', 200),
+            'properties': visual.properties or {}
+        }
+    
+    def _generate_static_resources(self, output_dir: Path):
+        """Generate static resources directory"""
+        static_dir = output_dir / 'StaticResources'
+        static_dir.mkdir(exist_ok=True)
+        
+        # Create SharedResources directory
+        shared_dir = static_dir / 'SharedResources'
+        shared_dir.mkdir(exist_ok=True)
+        
+        # Create BaseThemes directory
+        themes_dir = shared_dir / 'BaseThemes'
+        themes_dir.mkdir(exist_ok=True)
+        
+        # Generate default theme
+        default_theme = {
+            "name": "CorporateTheme",
+            "dataColors": [
+                "#118DFF", "#12239E", "#E66C37", "#6B007B", "#E044A7", 
+                "#744EC2", "#D9B300", "#D64550", "#197278", "#1AAB40"
+            ],
+            "background": "#FFFFFF",
+            "foreground": "#000000",
+            "tableAccent": "#118DFF"
+        }
+        
+        with open(themes_dir / 'CorporateTheme.json', 'w', encoding='utf-8') as f:
+            json.dump(default_theme, f, indent=2)
+        
+        # Create RegisteredResources directory if needed
+        registered_dir = static_dir / 'RegisteredResources'
+        registered_dir.mkdir(exist_ok=True)
     
     def _sanitize_filename(self, filename: str) -> str:
         """Sanitize filename for filesystem compatibility"""
