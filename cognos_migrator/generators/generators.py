@@ -463,7 +463,7 @@ class PowerBIProjectGenerator:
         
         # Generate DiagramLayout.json
         diagram_context = {
-            'version': 1,
+            'version': "1.1.0",  # Match example file version
             'nodes': [],
             'relationships': []
         }
