@@ -292,8 +292,8 @@ class CognosMigrator:
             measures=measures,
             annotations={
                 "PBI_QueryOrder": "[\"Query1\"]",
-                "PBIDesktopVersion": "2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729",
-                "PBI_ProTooling": "[\"DevMode\"]"
+                "PBIDesktopVersion": "2.142.928.0 (25.04)+de52df9f0bb74ad93a80d89c52d63fe6d07e0e1b",  # Use newer version from Sales Dashboard example
+                "__PBI_TimeIntelligenceEnabled": "0"  # Match example file setting
             }
         )
         
