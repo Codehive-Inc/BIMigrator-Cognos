@@ -31,6 +31,11 @@ class MigrationConfig:
     preserve_structure: bool = True
     include_metadata: bool = True
     generate_documentation: bool = True
+    
+    # LLM service configuration
+    llm_service_url: str = "http://localhost:8080"  # URL of the FastAPI LLM service
+    llm_service_api_key: Optional[str] = None  # Not needed when running in Docker network
+    llm_service_enabled: bool = True  # Enabled by default
 
 
 class ConfigManager:
