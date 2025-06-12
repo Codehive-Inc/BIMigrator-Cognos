@@ -1,6 +1,0 @@
-{
-  "config": "{\"name\": \"00002_tableEx (mx2io)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 0, \"y\": 370, \"width\": 1260, \"height\": 330}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.Customer Name\", \"active\": true}, {\"queryRef\": \"Query1.City\", \"active\": true}, {\"queryRef\": \"Query1.State\", \"active\": true}, {\"queryRef\": \"Query1.Customer Segment\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}, {\"queryRef\": \"Query1.Average Sale Amount\", \"active\": true}]}}}",
-  "filters": "[]",
-  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
-  "dataTransforms": "{\"projectionOrdering\": {}}"
-}
