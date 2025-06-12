@@ -73,7 +73,7 @@ class CognosMigrator:
                 return False
             
             # Step 4: Generate documentation
-            self.doc_generator.generate_migration_report(powerbi_project, str(output_dir))
+            self.doc_generator.generate_migration_report(powerbi_project, str(extracted_dir))
             
             self.logger.info(f"Successfully migrated report {report_id} to {output_path}")
             return True
