@@ -90,22 +90,32 @@ class PowerBIProjectGenerator:
     def generate_project(self, project: PowerBIProject, output_path: str) -> bool:
         """Generate complete Power BI project structure"""
         try:
+            # Create main output directory
             output_dir = Path(output_path)
             output_dir.mkdir(parents=True, exist_ok=True)
+
+            
+            # Create extracted directory for raw extracted data
+            extracted_dir = report_dir / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            # Create pbit directory for pbitools files
+            pbit_dir = report_dir / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
             
             # Generate project file
-            self._generate_project_file(project, output_dir)
+            self._generate_project_file(project, pbit_dir)
             
             # Generate model files
             if project.data_model:
-                self._generate_model_files(project.data_model, output_dir)
+                self._generate_model_files(project.data_model, pbit_dir)
             
             # Generate report files
             if project.report:
-                self._generate_report_files(project.report, output_dir)
+                self._generate_report_files(project.report, pbit_dir)
             
             # Generate metadata files
-            self._generate_metadata_files(project, output_dir)
+            self._generate_metadata_files(project, pbit_dir)
             
             self.logger.info(f"Successfully generated Power BI project at: {output_dir}")
             return True
@@ -118,8 +128,24 @@ class PowerBIProjectGenerator:
                                    data_model: DataModel, output_path: str) -> bool:
         """Generate complete Power BI project from Cognos report structure"""
         try:
+            # Create main output directory
             output_dir = Path(output_path)
             output_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Create report directory
+            report_dir = output_dir / "report"
+            report_dir.mkdir(exist_ok=True)
+            
+            # Create extracted directory for raw extracted data
+            extracted_dir = report_dir / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            # Create pbit directory for pbitools files
+            pbit_dir = report_dir / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
+            
+            # Save raw Cognos report data to extracted folder
+            self._save_extracted_data(cognos_report, extracted_dir)
             
             # Generate project structure
             project = PowerBIProject(
@@ -129,19 +155,19 @@ class PowerBIProjectGenerator:
             )
             
             # Generate project file
-            self._generate_project_file(project, output_dir)
+            self._generate_project_file(project, pbit_dir)
             
             # Generate model files
-            self._generate_model_files(data_model, output_dir)
+            self._generate_model_files(data_model, pbit_dir)
             
             # Generate enhanced report files with visual containers
-            self._generate_enhanced_report_files(cognos_report, data_model, output_dir)
+            self._generate_enhanced_report_files(cognos_report, data_model, pbit_dir)
             
             # Generate metadata files
-            self._generate_metadata_files(project, output_dir)
+            self._generate_metadata_files(project, pbit_dir)
             
             # Generate static resources
-            self._generate_static_resources(output_dir)
+            self._generate_static_resources(pbit_dir)
             
             self.logger.info(f"Successfully generated complete Power BI project from Cognos report at: {output_dir}")
             return True

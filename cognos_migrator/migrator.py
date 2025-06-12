@@ -38,11 +38,27 @@ class CognosMigrator:
         try:
             self.logger.info(f"Starting migration of report: {report_id}")
             
+            # Create output directory structure
+            from pathlib import Path
+            output_dir = Path(output_path)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Create extracted directory for raw extracted data
+            extracted_dir = output_dir / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            # Create pbit directory for pbitools files
+            pbit_dir = output_dir / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
+            
             # Step 1: Fetch Cognos report
             cognos_report = self.cognos_client.get_report(report_id)
             if not cognos_report:
                 self.logger.error(f"Failed to fetch Cognos report: {report_id}")
                 return False
+            
+            # Save raw Cognos report data to extracted folder
+            self._save_extracted_data(cognos_report, extracted_dir)
             
             # Step 2: Convert to Power BI structures
             powerbi_project = self._convert_cognos_to_powerbi(cognos_report)
@@ -51,13 +67,13 @@ class CognosMigrator:
                 return False
             
             # Step 3: Generate Power BI project files
-            success = self.project_generator.generate_project(powerbi_project, output_path)
+            success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
             if not success:
                 self.logger.error(f"Failed to generate Power BI project files")
                 return False
             
             # Step 4: Generate documentation
-            self.doc_generator.generate_migration_report(powerbi_project, output_path)
+            self.doc_generator.generate_migration_report(powerbi_project, str(output_dir))
             
             self.logger.info(f"Successfully migrated report {report_id} to {output_path}")
             return True
@@ -428,33 +444,79 @@ class CognosMigrator:
             self.logger.error(f"Failed to validate prerequisites: {e}")
             return False
     
+    def _save_extracted_data(self, cognos_report, extracted_dir):
+        """Save raw Cognos report data to the extracted folder"""
+        try:
+            import json
+            from pathlib import Path
+            
+            # Save report specification
+            if hasattr(cognos_report, 'specification') and cognos_report.specification:
+                spec_file = Path(extracted_dir) / 'report_specification.xml'
+                with open(spec_file, 'w', encoding='utf-8') as f:
+                    f.write(cognos_report.specification)
+            
+            # Save report metadata
+            if hasattr(cognos_report, 'metadata') and cognos_report.metadata:
+                metadata_file = Path(extracted_dir) / 'report_metadata.json'
+                with open(metadata_file, 'w', encoding='utf-8') as f:
+                    json.dump(cognos_report.metadata, f, indent=2)
+            
+            # Save report details
+            report_details = {
+                'id': cognos_report.id,
+                'name': cognos_report.name,
+                'path': cognos_report.path if hasattr(cognos_report, 'path') else None,
+                'type': cognos_report.type if hasattr(cognos_report, 'type') else None,
+                'created': str(cognos_report.created) if hasattr(cognos_report, 'created') else None,
+                'modified': str(cognos_report.modified) if hasattr(cognos_report, 'modified') else None
+            }
+            
+            details_file = Path(extracted_dir) / 'report_details.json'
+            with open(details_file, 'w', encoding='utf-8') as f:
+                json.dump(report_details, f, indent=2)
+                
+            self.logger.info(f"Saved extracted Cognos report data to {extracted_dir}")
+        except Exception as e:
+            self.logger.error(f"Failed to save extracted data: {e}")
+    
     def get_migration_status(self, output_path: str) -> Dict[str, Any]:
         """Get status of migration in output directory"""
+        status = {
+            'status': 'unknown',
+            'message': '',
+            'file_count': 0,
+            'last_modified': None
+        }
+        
         try:
-            output_dir = Path(output_path)
+            path = Path(output_path)
+            if not path.exists():
+                status['status'] = 'not_started'
+                status['message'] = 'Output directory does not exist'
+                return status
             
-            if not output_dir.exists():
-                return {"status": "not_started", "message": "Output directory does not exist"}
+            # Count files
+            file_count = sum(1 for _ in path.glob('**/*') if _.is_file())
+            status['file_count'] = file_count
             
-            # Check for project file
-            project_file = output_dir / '.pbixproj.json'
-            if not project_file.exists():
-                return {"status": "incomplete", "message": "Project file not found"}
+            # Get last modified time
+            if file_count > 0:
+                last_modified = max(_.stat().st_mtime for _ in path.glob('**/*') if _.is_file())
+                status['last_modified'] = datetime.fromtimestamp(last_modified)
             
-            # Check for model files
-            model_dir = output_dir / 'Model'
-            if not model_dir.exists():
-                return {"status": "incomplete", "message": "Model directory not found"}
+            # Determine status
+            if file_count == 0:
+                status['status'] = 'empty'
+                status['message'] = 'Output directory is empty'
+            elif path.joinpath('pbit/.pbixproj.json').exists() or path.joinpath('.pbixproj.json').exists():
+                status['status'] = 'completed'
+                status['message'] = 'Migration appears complete'
+            else:
+                status['status'] = 'in_progress'
+                status['message'] = 'Migration in progress'
             
-            # Count generated files
-            file_count = len(list(output_dir.rglob('*')))
-            
-            return {
-                "status": "completed",
-                "message": "Migration appears complete",
-                "file_count": file_count,
-                "last_modified": datetime.fromtimestamp(output_dir.stat().st_mtime)
-            }
+            return status
             
         except Exception as e:
             return {"status": "error", "message": f"Error checking status: {e}"}
