@@ -87,7 +87,7 @@ try:
         from cognos_migrator.generators import TemplateEngine
         
         template_engine = TemplateEngine("bimigrator/templates")
-        tmdl_content = template_engine.render('Table', table_json)
+        tmdl_content = template_engine.render('table', table_json)
         
         # Save TMDL file
         tmdl_file = output_dir / "Sales_Analysis_Module.tmdl"

@@ -1,6 +1,0 @@
-{
-  "config": "{\"name\": \"00004_pieChart (4ojlo)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 660, \"y\": 120, \"width\": 300, \"height\": 300}}], \"singleVisual\": {\"visualType\": \"pieChart\", \"projections\": {\"Series\": [{\"queryRef\": \"Query1.Region\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}]}}}",
-  "filters": "[]",
-  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
-  "dataTransforms": "{\"projectionOrdering\": {}}"
-}

@@ -157,41 +157,35 @@ def migrate_single_report_with_session_key(report_id: str, cognos_url: str, sess
      
 
 
-def migrate_single_report(report_id: str, output_path: Optional[str] = None):
+def migrate_single_report(report_id: str, output_path: Optional[str] = None, cpf_file_path: Optional[str] = None):
     """Migrate a single Cognos report"""
-    logger = logging.getLogger(__name__)
+    print("🚀 MIGRATING SINGLE REPORT")
+    print("=" * 50)
     
     try:
         # Load configuration
         config = load_config()
         
         # Initialize migrator
-        migrator = CognosToPowerBIMigrator(config)
+        migrator = CognosToPowerBIMigrator(config, cpf_file_path=cpf_file_path)
         
         # Validate prerequisites
         if not migrator.validate_migration_prerequisites():
-            logger.error("Migration prerequisites not met. Please check configuration.")
+            print("❌ Prerequisites validation failed")
             return False
         
-        # Set output path
-        if not output_path:
-            output_path = Path(config.output_directory) / f"report_{report_id}"
-        
-        # Perform migration
-        logger.info(f"Starting migration of report: {report_id}")
-        success = migrator.migrate_report(report_id, str(output_path))
+        # Migrate report
+        print(f"📊 Migrating report: {report_id}")
+        if cpf_file_path:
+            print(f"📄 Using CPF metadata from: {cpf_file_path}")
+            
+        success = migrator.migrate_report(report_id, output_path)
         
         if success:
-            logger.info(f"✓ Successfully migrated report {report_id} to {output_path}")
-            
-            # Show migration status
-            status = migrator.get_migration_status(str(output_path))
-            logger.info(f"Migration status: {status}")
-            
+            print(f"✅ Report {report_id} migrated successfully")
+            print(f"📁 Output path: {migrator.get_output_path(report_id, output_path)}")
         else:
-            logger.error(f"✗ Failed to migrate report {report_id}")
-        
-        return success
+            print(f"❌ Failed to migrate report {report_id}")
         
     except Exception as e:
         logger.error(f"Error during migration: {e}")
@@ -235,7 +229,7 @@ def migrate_multiple_reports(report_ids: List[str], output_base_path: Optional[s
         return {}
 
 
-def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive: bool = True):
+def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive: bool = True, cpf_file_path: Optional[str] = None):
     """Migrate all reports in a Cognos folder"""
     logger = logging.getLogger(__name__)
     
@@ -244,7 +238,7 @@ def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive:
         config = load_config()
         
         # Initialize migrator
-        migrator = CognosToPowerBIMigrator(config)
+        migrator = CognosToPowerBIMigrator(config, cpf_file_path=cpf_file_path)
         
         # Validate prerequisites
         if not migrator.validate_migration_prerequisites():
@@ -257,6 +251,9 @@ def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive:
         
         # Perform migration
         logger.info(f"Starting migration of folder: {folder_id}")
+        if cpf_file_path:
+            logger.info(f"Using CPF metadata from: {cpf_file_path}")
+            
         results = migrator.migrate_folder(folder_id, str(output_path), recursive)
         
         # Summary
@@ -372,15 +369,60 @@ def main():
             demo_migration()
         
         elif command == 'migrate-report' and len(sys.argv) > 2:
+            # Parse arguments
             report_id = sys.argv[2]
-            output_path = sys.argv[3] if len(sys.argv) > 3 else None
-            migrate_single_report(report_id, output_path)
+            args = sys.argv[3:]
+            output_path = None
+            cpf_file_path = None
+            
+            # Process optional arguments
+            i = 0
+            while i < len(args):
+                if args[i] == '--output' and i + 1 < len(args):
+                    output_path = args[i + 1]
+                    i += 2
+                elif args[i] == '--cpf-file' and i + 1 < len(args):
+                    cpf_file_path = args[i + 1]
+                    i += 2
+                else:
+                    # For backward compatibility
+                    if i == 0 and not args[i].startswith('--'):
+                        output_path = args[i]
+                    i += 1
+            
+            # Migrate report
+            migrate_single_report(report_id, output_path, cpf_file_path)
         
         elif command == 'migrate-folder' and len(sys.argv) > 2:
+            # Parse arguments
             folder_id = sys.argv[2]
-            output_path = sys.argv[3] if len(sys.argv) > 3 else None
-            recursive = sys.argv[4].lower() == 'true' if len(sys.argv) > 4 else True
-            migrate_folder(folder_id, output_path, recursive)
+            args = sys.argv[3:]
+            output_path = None
+            recursive = True
+            cpf_file_path = None
+            
+            # Process optional arguments
+            i = 0
+            while i < len(args):
+                if args[i] == '--output' and i + 1 < len(args):
+                    output_path = args[i + 1]
+                    i += 2
+                elif args[i] == '--recursive' and i + 1 < len(args):
+                    recursive = args[i + 1].lower() == 'true'
+                    i += 2
+                elif args[i] == '--cpf-file' and i + 1 < len(args):
+                    cpf_file_path = args[i + 1]
+                    i += 2
+                else:
+                    # For backward compatibility
+                    if i == 0 and not args[i].startswith('--'):
+                        output_path = args[i]
+                    elif i == 1 and not args[i].startswith('--'):
+                        recursive = args[i].lower() == 'true'
+                    i += 1
+            
+            # Migrate folder
+            migrate_folder(folder_id, output_path, recursive, cpf_file_path)
         
         elif command == 'validate':
             config = load_config()
@@ -395,11 +437,14 @@ def main():
         
         else:
             print("Usage:")
-            print("  python main.py demo                                    # Run demonstration")
-            print("  python main.py list                                    # List available reports and folders")
-            print("  python main.py migrate-report <report_id> [output]    # Migrate single report")
-            print("  python main.py migrate-folder <folder_id> [output]    # Migrate folder")
-            print("  python main.py validate                               # Validate prerequisites")
+            print("  python main.py demo                                                # Run demonstration")
+            print("  python main.py list                                                # List available reports and folders")
+            print("  python main.py migrate-report <report_id> [--output <path>]        # Migrate single report")
+            print("  python main.py migrate-report <report_id> [--cpf-file <cpf_path>]  # Migrate with CPF metadata")
+            print("  python main.py migrate-folder <folder_id> [--output <path>]          # Migrate folder")
+            print("  python main.py migrate-folder <folder_id> [--recursive true|false]    # Control recursive migration")
+            print("  python main.py migrate-folder <folder_id> [--cpf-file <cpf_path>]    # Migrate with CPF metadata")
+            print("  python main.py validate                                             # Validate prerequisites")
     
     else:
         folder_id = "i6765AFC28C0C471082E951F89A28C230"
