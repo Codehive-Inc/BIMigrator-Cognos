@@ -1,5 +1,5 @@
 """
-Power BI project file generators using Jinja2 templating
+Power BI project file generators using Jinja2 templating and Handlebars for specific templates
 """
 
 import os
@@ -10,6 +10,7 @@ import logging
 from datetime import datetime
 
 import jinja2
+import pybars
 
 from ..models import (
     DataModel, Table, Column, Relationship, Measure, 
@@ -21,7 +22,7 @@ from ..report_parser import CognosReportStructure, CognosVisual
 
 
 class TemplateEngine:
-    """Jinja2 template engine wrapper (migrated from PyBars3)"""
+    """Template engine wrapper supporting both Jinja2 and Handlebars"""
     
     def __init__(self, template_directory: str):
         self.logger = logging.getLogger(__name__)
@@ -53,15 +54,19 @@ class TemplateEngine:
         self.template_directory = template_path
         self.logger.info(f"Using template directory: {self.template_directory}")
         
-        
-        
-        self.env = jinja2.Environment(
+        # Initialize Jinja2 environment
+        self.jinja_env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(str(self.template_directory)),
             autoescape=False,
             trim_blocks=True,
             lstrip_blocks=True
         )
+        
+        # Initialize Handlebars compiler
+        self.handlebars_compiler = pybars.Compiler()
+        
         self.templates = {}
+        self.handlebars_templates = {}
         self.logger = logging.getLogger(__name__)
         self._load_templates()
     
@@ -69,6 +74,9 @@ class TemplateEngine:
         """Load all template files"""
         if not self.template_directory.exists():
             raise FileNotFoundError(f"Template directory not found: {self.template_directory}")
+        
+        # Define which templates use which engine
+        handlebars_templates = ['table']
         
         template_files = {
             'database': 'database.tmdl',
@@ -89,8 +97,20 @@ class TemplateEngine:
         
         for template_name, filename in template_files.items():
             try:
-                self.templates[template_name] = self.env.get_template(filename)
-                self.logger.debug(f"Loaded template: {template_name}")
+                if template_name in handlebars_templates:
+                    # Load as Handlebars template
+                    template_path = self.template_directory / filename
+                    if template_path.exists():
+                        with open(template_path, 'r') as f:
+                            template_source = f.read()
+                            self.handlebars_templates[template_name] = self.handlebars_compiler.compile(template_source)
+                            self.logger.debug(f"Loaded Handlebars template: {template_name}")
+                    else:
+                        self.logger.warning(f"Handlebars template file not found: {filename}")
+                else:
+                    # Load as Jinja2 template
+                    self.templates[template_name] = self.jinja_env.get_template(filename)
+                    self.logger.debug(f"Loaded Jinja2 template: {template_name}")
             except jinja2.TemplateNotFound:
                 self.logger.warning(f"Template file not found: {filename}")
             except Exception as e:
@@ -98,14 +118,23 @@ class TemplateEngine:
     
     def render(self, template_name: str, context: Dict[str, Any]) -> str:
         """Render template with context"""
-        if template_name not in self.templates:
+        # Check if it's a Handlebars template
+        if template_name in self.handlebars_templates:
+            try:
+                # Render with Handlebars
+                return self.handlebars_templates[template_name](context)
+            except Exception as e:
+                self.logger.error(f"Failed to render Handlebars template {template_name}: {e}")
+                raise
+        elif template_name in self.templates:
+            try:
+                # Render with Jinja2
+                return self.templates[template_name].render(context)
+            except Exception as e:
+                self.logger.error(f"Failed to render Jinja2 template {template_name}: {e}")
+                raise
+        else:
             raise ValueError(f"Template not found: {template_name}")
-        
-        try:
-            return self.templates[template_name].render(context)
-        except Exception as e:
-            self.logger.error(f"Failed to render template {template_name}: {e}")
-            raise
 
 
 class PowerBIProjectGenerator:
