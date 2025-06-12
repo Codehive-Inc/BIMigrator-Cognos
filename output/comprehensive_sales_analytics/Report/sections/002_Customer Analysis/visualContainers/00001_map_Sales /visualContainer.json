@@ -1,0 +1,6 @@
+{
+  "config": "{\"name\": \"00001_map (glviz)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 660, \"y\": 0, \"width\": 600, \"height\": 350}}], \"singleVisual\": {\"visualType\": \"map\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.State\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}]}}}",
+  "filters": "[]",
+  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
+  "dataTransforms": "{\"projectionOrdering\": {}}"
+}

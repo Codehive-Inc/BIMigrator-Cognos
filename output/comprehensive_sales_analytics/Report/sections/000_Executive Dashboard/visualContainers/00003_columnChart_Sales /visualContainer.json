@@ -1,0 +1,6 @@
+{
+  "config": "{\"name\": \"00003_columnChart (26cz1)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 0, \"y\": 120, \"width\": 640, \"height\": 300}}], \"singleVisual\": {\"visualType\": \"columnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.Month\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}]}}}",
+  "filters": "[]",
+  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
+  "dataTransforms": "{\"projectionOrdering\": {}}"
+}

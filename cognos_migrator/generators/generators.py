@@ -145,6 +145,19 @@ class PowerBIProjectGenerator:
         self.template_engine = TemplateEngine(config.template_directory)
         self.visual_generator = VisualContainerGenerator()
         self.logger = logging.getLogger(__name__)
+        
+        # Initialize LLM service client if enabled
+        self.llm_service = None
+        if hasattr(config, 'llm_service_enabled') and config.llm_service_enabled:
+            self.logger.warning("LLM service is enabled for M-query generation")
+            from ..llm_service import LLMServiceClient
+            self.llm_service = LLMServiceClient(
+                base_url=config.llm_service_url,
+                api_key=getattr(config, 'llm_service_api_key', None)
+            )
+            self.logger.warning(f"LLM service client initialized with URL: {config.llm_service_url}")
+        else:
+            self.logger.info("LLM service is disabled, using default M-query generation")
     
     def generate_project(self, project: PowerBIProject, output_path: str) -> bool:
         """Generate complete Power BI project structure"""
@@ -174,11 +187,22 @@ class PowerBIProjectGenerator:
             return False
     
     def generate_from_cognos_report(self, cognos_report: CognosReportStructure, 
-                                   data_model: DataModel, output_path: str) -> bool:
+                                    data_model: DataModel, output_path: str) -> bool:
         """Generate complete Power BI project from Cognos report structure"""
         try:
             output_dir = Path(output_path)
             output_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Store the report specification in the data model for LLM context
+            if hasattr(cognos_report, 'report_spec'):
+                self.logger.warning(f"Adding report_spec to data_model for LLM context")
+                # Add report_spec to each table's metadata for use in M-query generation
+                for table in data_model.tables:
+                    if not hasattr(table, 'metadata'):
+                        table.metadata = {}
+                    table.metadata['report_spec'] = cognos_report.report_spec
+            else:
+                self.logger.warning(f"No report_spec available in cognos_report")
             
             # Generate project structure
             project = PowerBIProject(
@@ -190,8 +214,8 @@ class PowerBIProjectGenerator:
             # Generate project file
             self._generate_project_file(project, output_dir)
             
-            # Generate model files
-            self._generate_model_files(data_model, output_dir)
+            # Generate model files with report spec context
+            self._generate_model_files(data_model, output_dir, cognos_report.report_spec if hasattr(cognos_report, 'report_spec') else None)
             
             # Generate enhanced report files with visual containers
             self._generate_enhanced_report_files(cognos_report, data_model, output_dir)
@@ -227,7 +251,7 @@ class PowerBIProjectGenerator:
         with open(project_file, 'w', encoding='utf-8') as f:
             f.write(content)
     
-    def _generate_model_files(self, data_model: DataModel, output_dir: Path):
+    def _generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None):
         """Generate model files (database, tables, relationships)"""
         model_dir = output_dir / 'Model'
         model_dir.mkdir(exist_ok=True)
@@ -238,8 +262,8 @@ class PowerBIProjectGenerator:
         # Generate model.tmdl
         self._generate_model_file(data_model, model_dir)
         
-        # Generate table files
-        self._generate_table_files(data_model.tables, model_dir)
+        # Generate table files with report spec context
+        self._generate_table_files(data_model.tables, model_dir, report_spec)
         
         # Generate relationships.tmdl
         if data_model.relationships:
@@ -286,13 +310,14 @@ class PowerBIProjectGenerator:
         with open(model_dir / 'model.tmdl', 'w', encoding='utf-8') as f:
             f.write(content)
     
-    def _generate_table_files(self, tables: List[Table], model_dir: Path):
+    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None):
         """Generate table files"""
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
         
         for table in tables:
-            context = self._build_table_context(table)
+            # Pass report_spec to _build_table_context
+            context = self._build_table_context(table, report_spec)
             content = self.template_engine.render('table', context)
             
             # Clean filename for filesystem
@@ -302,7 +327,7 @@ class PowerBIProjectGenerator:
             with open(table_file, 'w', encoding='utf-8') as f:
                 f.write(content)
     
-    def _build_table_context(self, table: Table) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
         columns_context = []
         for column in table.columns:
@@ -328,10 +353,19 @@ class PowerBIProjectGenerator:
         
         partitions_context = []
         if table.source_query:
+            # Get report_spec from table metadata if available and not provided directly
+            table_report_spec = None
+            if report_spec:
+                table_report_spec = report_spec
+            elif hasattr(table, 'metadata') and table.metadata and 'report_spec' in table.metadata:
+                table_report_spec = table.metadata['report_spec']
+                
+            self.logger.warning(f"Using report_spec for table {table.name}: {table_report_spec is not None}")
+            
             partitions_context.append({
                 'name': f'{table.name}-partition',
                 'source_type': 'm',
-                'expression': self._build_m_expression(table)
+                'expression': self._build_m_expression(table, table_report_spec)
             })
         
         return {
@@ -346,14 +380,76 @@ class PowerBIProjectGenerator:
             'column_settings': '[]'
         }
     
-    def _build_m_expression(self, table: Table) -> str:
-        """Build M expression for table partition"""
-        if table.source_query:
-            # For SQL queries, wrap in appropriate M function
-            return f'let\n\t\t\t\tSource = Sql.Database("server", "database", [Query="{table.source_query}"])\n\t\t\tin\n\t\t\t\t#"Changed Type"'
+    def _build_m_expression(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
+        """Build M expression for table partition using LLM service if available"""
+        # If LLM service is not configured, use the default implementation
+        self.logger.warning(f"Building M-expression for table: {table.name}")
+        self.logger.warning(f"LLM service available: {self.llm_service is not None}")
+        
+        # Check if table has source_query
+        if hasattr(table, 'source_query'):
+            self.logger.warning(f"Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
         else:
-            # For other sources, create a basic expression
-            return f'let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\t#"Changed Type"'
+            self.logger.warning(f"Table {table.name} does not have source_query attribute")
+        
+        if not self.llm_service:
+            self.logger.info(f"Using default M-query generation for table {table.name} (LLM service not configured)")
+            if table.source_query:
+                # For SQL queries, wrap in appropriate M function
+                return f'let\n\t\t\t\tSource = Sql.Database("server", "database", [Query="{table.source_query}"])\n\t\t\tin\n\t\t\t\t#"Changed Type"'
+            else:
+                # For other sources, create a basic expression
+                return f'let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\t#"Changed Type"'
+        
+        # Prepare context for LLM service
+        context = {
+            'table_name': table.name,
+            'columns': [{
+                'name': col.name,
+                'data_type': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type),
+                'description': col.description if hasattr(col, 'description') else None
+            } for col in table.columns],
+            'source_query': table.source_query,
+        }
+        
+        # Add report specification if available
+        if report_spec:
+            # Extract relevant parts of the report spec to keep context size manageable
+            context['report_spec'] = self._extract_relevant_report_spec(report_spec, table.name)
+        
+        # Add data sample if available
+        if data_sample:
+            context['data_sample'] = data_sample
+        
+        # Call LLM service to generate optimized M-query
+        self.logger.warning(f"Generating optimized M-query for table {table.name} using LLM service")
+        return self.llm_service.generate_m_query(context)
+        
+    def _extract_relevant_report_spec(self, report_spec: str, table_name: str) -> str:
+        """Extract relevant parts of the report specification for the given table"""
+        try:
+            # This is a simplified implementation - in a real-world scenario,
+            # you would parse the XML and extract only the relevant parts
+            # related to the table structure, data items, and calculations
+            import re
+            import xml.etree.ElementTree as ET
+            
+            # Find data items related to the table
+            root = ET.fromstring(report_spec)
+            data_items = root.findall('.//dataItem')
+            relevant_items = []
+            
+            for item in data_items:
+                # Check if the data item is related to the table
+                # This is a simplified check - you would need to adapt this
+                # based on your actual Cognos report structure
+                if table_name.lower() in ET.tostring(item, encoding='unicode').lower():
+                    relevant_items.append(ET.tostring(item, encoding='unicode'))
+            
+            return '\n'.join(relevant_items)
+        except Exception as e:
+            self.logger.warning(f"Failed to extract relevant report spec: {e}")
+            return ""
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""

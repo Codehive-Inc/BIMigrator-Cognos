@@ -1,0 +1,6 @@
+{
+  "config": "{\"name\": \"00001_barChart (4ktwb)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 620, \"y\": 0, \"width\": 400, \"height\": 400}}], \"singleVisual\": {\"visualType\": \"barChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.Category\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}]}}}",
+  "filters": "[]",
+  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
+  "dataTransforms": "{\"projectionOrdering\": {}}"
+}

@@ -86,6 +86,9 @@ class PowerBIProjectGenerator:
         self.config = config
         self.logger = logging.getLogger(__name__)
         
+        # Debug logging to identify which version of PowerBIProjectGenerator is being used
+        self.logger.warning("USING THE CORRECT PowerBIProjectGenerator WITH LLM INTEGRATION from cognos_migrator/generators.py")
+        
         # Initialize template engine
         template_dir = config.template_directory
         self.logger.info(f"Template directory passed to TemplateEngine: {template_dir}")
@@ -96,12 +99,12 @@ class PowerBIProjectGenerator:
         # Initialize LLM service client if enabled
         self.llm_service = None
         if hasattr(config, 'llm_service_enabled') and config.llm_service_enabled:
-            self.logger.info("LLM service is enabled for M-query generation")
+            self.logger.warning("LLM service is enabled for M-query generation")
             self.llm_service = LLMServiceClient(
                 base_url=config.llm_service_url,
                 api_key=getattr(config, 'llm_service_api_key', None)
             )
-            self.logger.info(f"LLM service client initialized with URL: {config.llm_service_url}")
+            self.logger.warning(f"LLM service client initialized with URL: {config.llm_service_url}")
         else:
             self.logger.info("LLM service is disabled, using default M-query generation")
     
@@ -336,11 +339,23 @@ class PowerBIProjectGenerator:
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
         """Build M expression for table partition using LLM service if available"""
         # If LLM service is not configured, use the default implementation
+        self.logger.warning(f"MAIN GENERATORS.PY: Building M-expression for table: {table.name}")
+        self.logger.warning(f"MAIN GENERATORS.PY: LLM service available: {self.llm_service is not None}")
+        
+        # Check if table has source_query
+        if hasattr(table, 'source_query'):
+            self.logger.warning(f"MAIN GENERATORS.PY: Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
+        else:
+            self.logger.warning(f"MAIN GENERATORS.PY: Table {table.name} does not have source_query attribute")
+        
         if not self.llm_service:
+            self.logger.info(f"Using default M-query generation for table {table.name} (LLM service not configured)")
             if table.source_query:
                 # For SQL queries, wrap in appropriate M function
+                self.logger.debug(f"Table {table.name} has source query: {table.source_query[:50]}...")
                 return f'let\n\t\t\t\tSource = Sql.Database("server", "database", [Query="{table.source_query}"])\n\t\t\tin\n\t\t\t\t#"Changed Type"'
             else:
+                self.logger.debug(f"Table {table.name} has no source query")
                 # For other sources, create a basic expression
                 return f'let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\t#"Changed Type"'
         

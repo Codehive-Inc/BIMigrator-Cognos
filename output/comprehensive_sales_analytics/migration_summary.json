@@ -1,0 +1,39 @@
+{
+  "migration_summary": {
+    "timestamp": "Wed Jun 11 21:46:41 EDT 2025",
+    "source": {
+      "report_name": "Comprehensive Sales Analytics",
+      "pages": 3,
+      "total_visuals": 12,
+      "data_sources": 2,
+      "parameters": 2
+    },
+    "target": {
+      "model_name": "Comprehensive Sales Model",
+      "tables": 4,
+      "relationships": 3,
+      "measures": 6,
+      "culture": "en-US"
+    },
+    "visual_mapping": {
+      "card": 3,
+      "columnChart": 2,
+      "pieChart": 1,
+      "tableEx": 2,
+      "barChart": 1,
+      "slicer": 1,
+      "lineChart": 1,
+      "map": 1
+    },
+    "capabilities": [
+      "Complete table structure migration",
+      "Visual container generation with all JSON files",
+      "Relationship detection and migration",
+      "Time intelligence measures",
+      "Theme and resource migration",
+      "Multi-page report support",
+      "Advanced visual types (cards, charts, tables, slicers)",
+      "Filter and parameter support"
+    ]
+  }
+}

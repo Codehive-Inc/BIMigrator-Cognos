@@ -561,8 +561,15 @@ def main():
     print(f"📅 Date: {os.popen('date').read().strip()}")
     print("=" * 80)
     
-    # Enable informational logging
-    logging.basicConfig(level=logging.INFO)
+    # Enable more verbose logging
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    
+    # Set specific loggers to DEBUG level
+    logging.getLogger('cognos_migrator.llm_service').setLevel(logging.DEBUG)
+    logging.getLogger('cognos_migrator.generators').setLevel(logging.DEBUG)
     
     success = True
     

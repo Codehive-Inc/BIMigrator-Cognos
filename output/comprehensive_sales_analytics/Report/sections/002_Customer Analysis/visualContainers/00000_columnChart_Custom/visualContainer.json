@@ -1,0 +1,6 @@
+{
+  "config": "{\"name\": \"00000_columnChart (mnsr7)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 0, \"y\": 0, \"width\": 640, \"height\": 350}}], \"singleVisual\": {\"visualType\": \"columnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.Customer Segment\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}, {\"queryRef\": \"Query1.Total Quantity\", \"active\": true}]}}}",
+  "filters": "[]",
+  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
+  "dataTransforms": "{\"projectionOrdering\": {}}"
+}

@@ -1,0 +1,6 @@
+{
+  "config": "{\"name\": \"00000_tableEx (bqptx)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 0, \"y\": 0, \"width\": 600, \"height\": 400}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.Product Name\", \"active\": true}, {\"queryRef\": \"Query1.Category\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}, {\"queryRef\": \"Query1.Total Quantity\", \"active\": true}]}}}",
+  "filters": "[]",
+  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
+  "dataTransforms": "{\"projectionOrdering\": {}}"
+}

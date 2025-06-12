@@ -1,0 +1,24 @@
+{
+  "Version": 2,
+  "From": [
+    {
+      "Name": "s",
+      "Entity": "Sales",
+      "Type": 0
+    }
+  ],
+  "Select": [
+    {
+      "Column": {
+        "Expression": {
+          "SourceRef": {
+            "Source": "s"
+          }
+        },
+        "Property": "Sales YTD"
+      },
+      "Name": "Sales.Sales YTD"
+    }
+  ],
+  "OrderBy": []
+}

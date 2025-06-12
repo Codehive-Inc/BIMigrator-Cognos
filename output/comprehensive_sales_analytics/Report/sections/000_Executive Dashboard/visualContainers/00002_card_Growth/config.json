@@ -1,0 +1,70 @@
+{
+  "name": "Growth KPI",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 440,
+        "y": 0,
+        "width": 200,
+        "height": 100,
+        "z": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "card",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "Query1.Sales Growth %",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "s",
+          "Entity": "Sales",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "s"
+              }
+            },
+            "Property": "Sales Growth %"
+          },
+          "Name": "Sales.Sales Growth %"
+        }
+      ],
+      "OrderBy": [
+        {
+          "Direction": 1,
+          "Expression": {
+            "Column": {
+              "Expression": {
+                "SourceRef": {
+                  "Source": "s"
+                }
+              },
+              "Property": "Sales Growth %"
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "categoryLabels": {
+        "show": true,
+        "color": "#666666"
+      }
+    }
+  }
+}

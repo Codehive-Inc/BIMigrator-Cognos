@@ -1,0 +1,86 @@
+{
+  "name": "Sales by State",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 660,
+        "y": 0,
+        "width": 600,
+        "height": 350,
+        "z": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "map",
+    "projections": {
+      "Category": [
+        {
+          "queryRef": "Query1.State",
+          "active": true
+        }
+      ],
+      "Values": [
+        {
+          "queryRef": "Query1.Total Sales",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "c",
+          "Entity": "Customer",
+          "Type": 0
+        },
+        {
+          "Name": "s",
+          "Entity": "Sales",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "State"
+          },
+          "Name": "Customer.State"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "s"
+              }
+            },
+            "Property": "Total Sales"
+          },
+          "Name": "Sales.Total Sales"
+        }
+      ],
+      "OrderBy": [
+        {
+          "Direction": 1,
+          "Expression": {
+            "Column": {
+              "Expression": {
+                "SourceRef": {
+                  "Source": "c"
+                }
+              },
+              "Property": "State"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

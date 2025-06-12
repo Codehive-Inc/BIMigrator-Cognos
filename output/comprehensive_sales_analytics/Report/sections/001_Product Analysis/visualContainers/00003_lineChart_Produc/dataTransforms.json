@@ -1,0 +1,32 @@
+{
+  "projectionOrdering": {
+    "Values": [
+      2
+    ],
+    "Category": [
+      0
+    ],
+    "Series": [
+      1
+    ],
+    "Y": [],
+    "X": []
+  },
+  "queryMetadata": {
+    "Select": [
+      {
+        "Restatement": "Date",
+        "Type": 0
+      },
+      {
+        "Restatement": "Category",
+        "Type": 0
+      },
+      {
+        "Restatement": "Total Sales",
+        "Type": 1
+      }
+    ]
+  },
+  "visualElements": []
+}

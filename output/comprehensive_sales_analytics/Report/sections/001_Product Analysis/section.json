@@ -1,0 +1,31 @@
+{
+  "name": "Product Analysis",
+  "displayName": "Product Analysis",
+  "filters": [  ],
+  "config": {
+    "objects": {
+      "visuals": [        {
+          "id": "visual_0082",
+          "type": "tableEx",
+          "properties": {}
+        },        {
+          "id": "visual_4224",
+          "type": "barChart",
+          "properties": {}
+        },        {
+          "id": "visual_0903",
+          "type": "slicer",
+          "properties": {}
+        },        {
+          "id": "visual_6212",
+          "type": "lineChart",
+          "properties": {}
+        }      ]
+    },
+    "layout": {
+      "width": 1280,
+      "height": 720,
+      "displayOption": "FitToPage"
+    }
+  }
+}

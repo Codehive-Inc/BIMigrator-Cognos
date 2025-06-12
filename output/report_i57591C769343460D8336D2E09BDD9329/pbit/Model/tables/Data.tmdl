@@ -33,10 +33,7 @@ table 'Data'
     partition 'Data-partition' = m
         mode: import
         source = 
-            let
-				Source = Sql.Database("server", "database", [Query="let Source = Cognos in Source"])
-			in
-				#"Changed Type"
+            let / / Source step to connect to the data source Source = Cognos, / / Ensure correct data types for optimal performance and query folding #"Changed Type" = Table.TransformColumnTypes(Source, { {"ID", Int64.Type}, {"Name", Text.Type}, {"Value", Int64.Type} }) in #"Changed Type"
         
 
 

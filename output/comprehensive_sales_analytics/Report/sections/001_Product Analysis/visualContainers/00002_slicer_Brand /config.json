@@ -1,0 +1,70 @@
+{
+  "name": "Brand Filter",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 0,
+        "y": 420,
+        "width": 200,
+        "height": 280,
+        "z": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "slicer",
+    "projections": {
+      "Filters": [
+        {
+          "queryRef": "Query1.Brand",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "p",
+          "Entity": "Product",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "p"
+              }
+            },
+            "Property": "Brand"
+          },
+          "Name": "Product.Brand"
+        }
+      ],
+      "OrderBy": [
+        {
+          "Direction": 1,
+          "Expression": {
+            "Column": {
+              "Expression": {
+                "SourceRef": {
+                  "Source": "p"
+                }
+              },
+              "Property": "Brand"
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "selection": {
+        "selectAllCheckboxEnabled": true,
+        "singleSelect": false
+      }
+    }
+  }
+}

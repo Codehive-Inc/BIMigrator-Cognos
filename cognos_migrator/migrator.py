@@ -10,6 +10,7 @@ from datetime import datetime
 from .config import CognosConfig, MigrationConfig, ConfigManager
 from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
+# Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
 from .generators import PowerBIProjectGenerator, DocumentationGenerator
 from .models import (
     CognosReport, PowerBIProject, DataModel, Report, 

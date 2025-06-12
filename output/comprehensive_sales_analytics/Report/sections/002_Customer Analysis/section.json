@@ -1,0 +1,27 @@
+{
+  "name": "Customer Analysis",
+  "displayName": "Customer Analysis",
+  "filters": [  ],
+  "config": {
+    "objects": {
+      "visuals": [        {
+          "id": "visual_1988",
+          "type": "columnChart",
+          "properties": {}
+        },        {
+          "id": "visual_9094",
+          "type": "map",
+          "properties": {}
+        },        {
+          "id": "visual_4453",
+          "type": "tableEx",
+          "properties": {}
+        }      ]
+    },
+    "layout": {
+      "width": 1280,
+      "height": 720,
+      "displayOption": "FitToPage"
+    }
+  }
+}

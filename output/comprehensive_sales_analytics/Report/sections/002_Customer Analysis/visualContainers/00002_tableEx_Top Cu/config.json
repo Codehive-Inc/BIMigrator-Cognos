@@ -1,0 +1,155 @@
+{
+  "name": "Top Customers",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 0,
+        "y": 370,
+        "width": 1260,
+        "height": 330,
+        "z": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "tableEx",
+    "projections": {
+      "Category": [
+        {
+          "queryRef": "Query1.Customer Name",
+          "active": true
+        },
+        {
+          "queryRef": "Query1.City",
+          "active": true
+        },
+        {
+          "queryRef": "Query1.State",
+          "active": true
+        },
+        {
+          "queryRef": "Query1.Customer Segment",
+          "active": true
+        }
+      ],
+      "Values": [
+        {
+          "queryRef": "Query1.Total Sales",
+          "active": true
+        },
+        {
+          "queryRef": "Query1.Average Sale Amount",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "c",
+          "Entity": "Customer",
+          "Type": 0
+        },
+        {
+          "Name": "s",
+          "Entity": "Sales",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Customer Name"
+          },
+          "Name": "Customer.Customer Name"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "City"
+          },
+          "Name": "Customer.City"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "State"
+          },
+          "Name": "Customer.State"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Customer Segment"
+          },
+          "Name": "Customer.Customer Segment"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "s"
+              }
+            },
+            "Property": "Total Sales"
+          },
+          "Name": "Sales.Total Sales"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "s"
+              }
+            },
+            "Property": "Average Sale Amount"
+          },
+          "Name": "Sales.Average Sale Amount"
+        }
+      ],
+      "OrderBy": [
+        {
+          "Direction": 1,
+          "Expression": {
+            "Column": {
+              "Expression": {
+                "SourceRef": {
+                  "Source": "c"
+                }
+              },
+              "Property": "Customer Name"
+            }
+          }
+        }
+      ]
+    },
+    "objects": {
+      "totals": {
+        "show": true
+      },
+      "grid": {
+        "outlineColor": "#B3B3B3",
+        "textSize": 8
+      }
+    }
+  }
+}

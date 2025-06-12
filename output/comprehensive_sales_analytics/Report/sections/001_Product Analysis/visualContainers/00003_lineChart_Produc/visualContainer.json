@@ -1,0 +1,6 @@
+{
+  "config": "{\"name\": \"00003_lineChart (d49kq)\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 220, \"y\": 420, \"width\": 800, \"height\": 280}}], \"singleVisual\": {\"visualType\": \"lineChart\", \"projections\": {\"Category\": [{\"queryRef\": \"Query1.Date\", \"active\": true}], \"Series\": [{\"queryRef\": \"Query1.Category\", \"active\": true}], \"Values\": [{\"queryRef\": \"Query1.Total Sales\", \"active\": true}]}}}",
+  "filters": "[]",
+  "query": "{\"Version\": 2, \"From\": [], \"Select\": []}",
+  "dataTransforms": "{\"projectionOrdering\": {}}"
+}

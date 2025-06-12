@@ -1,0 +1,46 @@
+{
+  "projectionOrdering": {
+    "Values": [
+      4,
+      5
+    ],
+    "Category": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "Series": [],
+    "Y": [],
+    "X": []
+  },
+  "queryMetadata": {
+    "Select": [
+      {
+        "Restatement": "Customer Name",
+        "Type": 0
+      },
+      {
+        "Restatement": "City",
+        "Type": 0
+      },
+      {
+        "Restatement": "State",
+        "Type": 0
+      },
+      {
+        "Restatement": "Customer Segment",
+        "Type": 0
+      },
+      {
+        "Restatement": "Total Sales",
+        "Type": 1
+      },
+      {
+        "Restatement": "Average Sale Amount",
+        "Type": 0
+      }
+    ]
+  },
+  "visualElements": []
+}
