@@ -1,0 +1,218 @@
+{
+  "Sales": {
+    "table_name": "Sales",
+    "columns": [
+      {
+        "name": "SaleID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "Sales.SaleID"
+      },
+      {
+        "name": "CustomerID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "Sales.CustomerID"
+      },
+      {
+        "name": "ProductID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "Sales.ProductID"
+      },
+      {
+        "name": "SaleDate",
+        "dataType": "xs:date",
+        "nullable": true,
+        "expression": "Sales.SaleDate"
+      },
+      {
+        "name": "Quantity",
+        "dataType": "xs:integer",
+        "nullable": true,
+        "expression": "Sales.Quantity"
+      },
+      {
+        "name": "UnitPrice",
+        "dataType": "xs:decimal",
+        "nullable": true,
+        "expression": "Sales.UnitPrice"
+      },
+      {
+        "name": "TotalAmount",
+        "dataType": "xs:decimal",
+        "nullable": true,
+        "expression": "Sales.Quantity * Sales.UnitPrice"
+      }
+    ],
+    "data_source": {},
+    "relationships": [
+      {
+        "targetTable": "Customers",
+        "cardinality": "manyToOne",
+        "sourceColumns": [
+          "CustomerID"
+        ],
+        "targetColumns": [
+          "CustomerID"
+        ]
+      },
+      {
+        "targetTable": "Products",
+        "cardinality": "manyToOne",
+        "sourceColumns": [
+          "ProductID"
+        ],
+        "targetColumns": [
+          "ProductID"
+        ]
+      }
+    ]
+  },
+  "Products": {
+    "table_name": "Products",
+    "columns": [
+      {
+        "name": "ProductID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "Products.ProductID"
+      },
+      {
+        "name": "ProductName",
+        "dataType": "xs:string",
+        "nullable": false,
+        "expression": "Products.ProductName"
+      },
+      {
+        "name": "Category",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "Products.Category"
+      },
+      {
+        "name": "UnitCost",
+        "dataType": "xs:decimal",
+        "nullable": true,
+        "expression": "Products.UnitCost"
+      },
+      {
+        "name": "UnitPrice",
+        "dataType": "xs:decimal",
+        "nullable": true,
+        "expression": "Products.UnitPrice"
+      }
+    ],
+    "data_source": {},
+    "relationships": []
+  },
+  "Customers": {
+    "table_name": "Customers",
+    "columns": [
+      {
+        "name": "CustomerID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "Customers.CustomerID"
+      },
+      {
+        "name": "FirstName",
+        "dataType": "xs:string",
+        "nullable": false,
+        "expression": "Customers.FirstName"
+      },
+      {
+        "name": "LastName",
+        "dataType": "xs:string",
+        "nullable": false,
+        "expression": "Customers.LastName"
+      },
+      {
+        "name": "Email",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "Customers.Email"
+      },
+      {
+        "name": "Phone",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "Customers.Phone"
+      },
+      {
+        "name": "CustomerType",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "Customers.CustomerType"
+      },
+      {
+        "name": "FullName",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "Customers.FirstName + ' ' + Customers.LastName"
+      }
+    ],
+    "data_source": {},
+    "relationships": [
+      {
+        "targetTable": "CustomerAddresses",
+        "cardinality": "oneToMany",
+        "sourceColumns": [
+          "CustomerID"
+        ],
+        "targetColumns": [
+          "CustomerID"
+        ]
+      }
+    ]
+  },
+  "CustomerAddresses": {
+    "table_name": "CustomerAddresses",
+    "columns": [
+      {
+        "name": "AddressID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "CustomerAddresses.AddressID"
+      },
+      {
+        "name": "CustomerID",
+        "dataType": "xs:integer",
+        "nullable": false,
+        "expression": "CustomerAddresses.CustomerID"
+      },
+      {
+        "name": "AddressType",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "CustomerAddresses.AddressType"
+      },
+      {
+        "name": "Street",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "CustomerAddresses.Street"
+      },
+      {
+        "name": "City",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "CustomerAddresses.City"
+      },
+      {
+        "name": "State",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "CustomerAddresses.State"
+      },
+      {
+        "name": "ZipCode",
+        "dataType": "xs:string",
+        "nullable": true,
+        "expression": "CustomerAddresses.ZipCode"
+      }
+    ],
+    "data_source": {},
+    "relationships": []
+  }
+}

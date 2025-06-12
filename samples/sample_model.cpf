@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:fm="http://developer.cognos.com/schemas/fmx/1/" 
+         xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <fm:dataSources>
+        <fm:dataSource id="DS1" name="SalesDB">
+            <fm:connectionString>jdbc:sqlserver://sales-server:1433;databaseName=SalesDB</fm:connectionString>
+            <fm:catalog>Sales</fm:catalog>
+            <fm:schema>dbo</fm:schema>
+            <fm:parameter name="type" value="JDBC"/>
+            <fm:parameter name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        </fm:dataSource>
+        <fm:dataSource id="DS2" name="CustomerDB">
+            <fm:connectionString>jdbc:sqlserver://customer-server:1433;databaseName=CustomerDB</fm:connectionString>
+            <fm:catalog>Customer</fm:catalog>
+            <fm:schema>dbo</fm:schema>
+            <fm:parameter name="type" value="JDBC"/>
+            <fm:parameter name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        </fm:dataSource>
+    </fm:dataSources>
+    
+    <fm:querySubjects>
+        <!-- Sales Database Tables -->
+        <fm:querySubject id="QS1" name="Sales" type="Table">
+            <fm:dataSourceRef refId="DS1"/>
+            <fm:table>Sales</fm:table>
+            <fm:queryItem id="QI1" name="SaleID" dataType="xs:integer" nullable="false">
+                <fm:expression>Sales.SaleID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI2" name="CustomerID" dataType="xs:integer" nullable="false">
+                <fm:expression>Sales.CustomerID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI3" name="ProductID" dataType="xs:integer" nullable="false">
+                <fm:expression>Sales.ProductID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI4" name="SaleDate" dataType="xs:date" nullable="true">
+                <fm:expression>Sales.SaleDate</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI5" name="Quantity" dataType="xs:integer" nullable="true">
+                <fm:expression>Sales.Quantity</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI6" name="UnitPrice" dataType="xs:decimal" nullable="true">
+                <fm:expression>Sales.UnitPrice</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI7" name="TotalAmount" dataType="xs:decimal" nullable="true">
+                <fm:expression>Sales.Quantity * Sales.UnitPrice</fm:expression>
+            </fm:queryItem>
+        </fm:querySubject>
+        
+        <fm:querySubject id="QS2" name="Products" type="Table">
+            <fm:dataSourceRef refId="DS1"/>
+            <fm:table>Products</fm:table>
+            <fm:queryItem id="QI8" name="ProductID" dataType="xs:integer" nullable="false">
+                <fm:expression>Products.ProductID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI9" name="ProductName" dataType="xs:string" nullable="false">
+                <fm:expression>Products.ProductName</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI10" name="Category" dataType="xs:string" nullable="true">
+                <fm:expression>Products.Category</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI11" name="UnitCost" dataType="xs:decimal" nullable="true">
+                <fm:expression>Products.UnitCost</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI12" name="UnitPrice" dataType="xs:decimal" nullable="true">
+                <fm:expression>Products.UnitPrice</fm:expression>
+            </fm:queryItem>
+        </fm:querySubject>
+        
+        <!-- Customer Database Tables -->
+        <fm:querySubject id="QS3" name="Customers" type="Table">
+            <fm:dataSourceRef refId="DS2"/>
+            <fm:table>Customers</fm:table>
+            <fm:queryItem id="QI13" name="CustomerID" dataType="xs:integer" nullable="false">
+                <fm:expression>Customers.CustomerID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI14" name="FirstName" dataType="xs:string" nullable="false">
+                <fm:expression>Customers.FirstName</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI15" name="LastName" dataType="xs:string" nullable="false">
+                <fm:expression>Customers.LastName</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI16" name="Email" dataType="xs:string" nullable="true">
+                <fm:expression>Customers.Email</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI17" name="Phone" dataType="xs:string" nullable="true">
+                <fm:expression>Customers.Phone</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI18" name="CustomerType" dataType="xs:string" nullable="true">
+                <fm:expression>Customers.CustomerType</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI19" name="FullName" dataType="xs:string" nullable="true">
+                <fm:expression>Customers.FirstName + ' ' + Customers.LastName</fm:expression>
+            </fm:queryItem>
+        </fm:querySubject>
+        
+        <fm:querySubject id="QS4" name="CustomerAddresses" type="Table">
+            <fm:dataSourceRef refId="DS2"/>
+            <fm:table>CustomerAddresses</fm:table>
+            <fm:queryItem id="QI20" name="AddressID" dataType="xs:integer" nullable="false">
+                <fm:expression>CustomerAddresses.AddressID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI21" name="CustomerID" dataType="xs:integer" nullable="false">
+                <fm:expression>CustomerAddresses.CustomerID</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI22" name="AddressType" dataType="xs:string" nullable="true">
+                <fm:expression>CustomerAddresses.AddressType</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI23" name="Street" dataType="xs:string" nullable="true">
+                <fm:expression>CustomerAddresses.Street</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI24" name="City" dataType="xs:string" nullable="true">
+                <fm:expression>CustomerAddresses.City</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI25" name="State" dataType="xs:string" nullable="true">
+                <fm:expression>CustomerAddresses.State</fm:expression>
+            </fm:queryItem>
+            <fm:queryItem id="QI26" name="ZipCode" dataType="xs:string" nullable="true">
+                <fm:expression>CustomerAddresses.ZipCode</fm:expression>
+            </fm:queryItem>
+        </fm:querySubject>
+    </fm:querySubjects>
+    
+    <!-- Relationships between tables -->
+    <fm:relationship id="R1" name="SalesToCustomers" cardinality="manyToOne">
+        <fm:source>
+            <fm:querySubjectRef refId="QS1"/>
+            <fm:queryItemRef refId="QI2"/>
+        </fm:source>
+        <fm:target>
+            <fm:querySubjectRef refId="QS3"/>
+            <fm:queryItemRef refId="QI13"/>
+        </fm:target>
+    </fm:relationship>
+    
+    <fm:relationship id="R2" name="SalesToProducts" cardinality="manyToOne">
+        <fm:source>
+            <fm:querySubjectRef refId="QS1"/>
+            <fm:queryItemRef refId="QI3"/>
+        </fm:source>
+        <fm:target>
+            <fm:querySubjectRef refId="QS2"/>
+            <fm:queryItemRef refId="QI8"/>
+        </fm:target>
+    </fm:relationship>
+    
+    <fm:relationship id="R3" name="CustomersToAddresses" cardinality="oneToMany">
+        <fm:source>
+            <fm:querySubjectRef refId="QS3"/>
+            <fm:queryItemRef refId="QI13"/>
+        </fm:source>
+        <fm:target>
+            <fm:querySubjectRef refId="QS4"/>
+            <fm:queryItemRef refId="QI21"/>
+        </fm:target>
+    </fm:relationship>
+    
+    <!-- Namespaces -->
+    <fm:namespace id="NS1" name="Sales">
+        <fm:querySubjectRef refId="QS1"/>
+        <fm:querySubjectRef refId="QS2"/>
+    </fm:namespace>
+    
+    <fm:namespace id="NS2" name="Customer">
+        <fm:querySubjectRef refId="QS3"/>
+        <fm:querySubjectRef refId="QS4"/>
+    </fm:namespace>
+</project>
