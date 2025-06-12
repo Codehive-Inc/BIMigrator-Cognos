@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 import logging
+import re
 from datetime import datetime
 
 import jinja2
@@ -423,8 +424,57 @@ class PowerBIProjectGenerator:
         
         # Call LLM service to generate optimized M-query
         self.logger.warning(f"Generating optimized M-query for table {table.name} using LLM service")
-        return self.llm_service.generate_m_query(context)
+        m_query = self.llm_service.generate_m_query(context)
         
+        # Clean the M-query by removing comments
+        cleaned_m_query = self._clean_m_query(m_query)
+        self.logger.warning(f"Cleaned M-query for table {table.name}")
+        return cleaned_m_query
+        
+    def _clean_m_query(self, m_query: str) -> str:
+        """Clean M-query by removing comments and fixing formatting"""
+        try:
+            # Log original query for debugging
+            self.logger.debug(f"Original M-query before cleaning: {m_query}")
+            
+            # Remove the leading 'm' if present (sometimes added by LLM)
+            if m_query.startswith('m '):
+                m_query = m_query[2:]
+            
+            # Parse the query to identify key components
+            # This is a more robust approach than using regex for comment removal
+            if 'let' in m_query and 'in' in m_query:
+                # Extract the parts between let and in
+                let_part = m_query.split('let')[1].split('in')[0]
+                in_part = m_query.split('in')[1]
+                
+                # Process the let part to remove comments but keep code
+                cleaned_let_part = ""
+                for line in let_part.split(','):
+                    # Remove comments (text after // or / /)
+                    code_part = re.sub(r'(/ /|//).*?(?=,|$)', '', line).strip()
+                    if code_part:
+                        cleaned_let_part += code_part + ", "
+                
+                # Remove trailing comma if present
+                cleaned_let_part = cleaned_let_part.rstrip(', ')
+                
+                # Clean the in part
+                cleaned_in_part = re.sub(r'(/ /|//).*', '', in_part).strip()
+                
+                # Reconstruct the query
+                m_query = f"let {cleaned_let_part} in {cleaned_in_part}"
+            
+            # Format the query nicely
+            m_query = m_query.replace('let ', 'let\n    ')
+            m_query = m_query.replace(' in ', '\nin    ')
+            
+            self.logger.debug(f"Cleaned M-query: {m_query}")
+            return m_query
+        except Exception as e:
+            self.logger.warning(f"Error cleaning M-query: {e}")
+            return m_query
+    
     def _extract_relevant_report_spec(self, report_spec: str, table_name: str) -> str:
         """Extract relevant parts of the report specification for the given table"""
         try:

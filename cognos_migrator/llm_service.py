@@ -95,6 +95,9 @@ class LLMServiceClient:
             response.raise_for_status()
             result = response.json()
             
+            # Log the complete API response structure
+            self.logger.info(f"Complete API response: {json.dumps(result, indent=2)}")
+            
             if 'm_query' in result:
                 self.logger.info(f"Successfully generated M-query for table {context.get('table_name', 'unknown')}")
                 # Log performance notes if available
