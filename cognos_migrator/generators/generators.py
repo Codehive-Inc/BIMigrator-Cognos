@@ -442,11 +442,10 @@ class PowerBIProjectGenerator:
                 m_query = m_query[2:]
             
             # Parse the query to identify key components
-            # This is a more robust approach than using regex for comment removal
             if 'let' in m_query and 'in' in m_query:
                 # Extract the parts between let and in
                 let_part = m_query.split('let')[1].split('in')[0]
-                in_part = m_query.split('in')[1]
+                in_part = m_query.split('in')[1].strip()
                 
                 # Process the let part to remove comments but keep code
                 cleaned_let_part = ""
@@ -465,12 +464,54 @@ class PowerBIProjectGenerator:
                 # Reconstruct the query
                 m_query = f"let {cleaned_let_part} in {cleaned_in_part}"
             
-            # Format the query nicely
-            m_query = m_query.replace('let ', 'let\n    ')
-            m_query = m_query.replace(' in ', '\nin    ')
-            
-            self.logger.debug(f"Cleaned M-query: {m_query}")
-            return m_query
+                # Now extract the steps and format them properly
+                steps = []
+                for step in m_query.split('let')[1].split('in')[0].split(','):
+                    step = step.strip()
+                    if step:
+                        steps.append(step)
+                
+                # Format the final M-query with proper indentation for TMDL
+                formatted_query = "let\n"
+                
+                # Process each step
+                for i, step in enumerate(steps):
+                    if '=' in step:
+                        parts = step.split('=', 1)
+                        step_name = parts[0].strip()
+                        step_content = parts[1].strip()
+                        
+                        # Handle SQL queries - keep them on one line
+                        if 'Value.NativeQuery' in step_content or 'Sql.Database' in step_content:
+                            # Ensure SQL query is on one line
+                            sql_pattern = r'"([^"]*?)"'
+                            sql_queries = re.findall(sql_pattern, step_content)
+                            for sql in sql_queries:
+                                cleaned_sql = sql.replace('\n', ' ').replace('\r', '')
+                                step_content = step_content.replace(f'"{sql}"', f'"{cleaned_sql}"')
+                        
+                        # Handle parameter arrays - keep them on one line
+                        if '{{' in step_content and '}}' in step_content:
+                            # Ensure parameter arrays are on one line
+                            step_content = re.sub(r'\s+', ' ', step_content)
+                        
+                        formatted_query += f"\t\t\t\t{step_name} = {step_content}"
+                        if i < len(steps) - 1:
+                            formatted_query += ",\n"
+                    else:
+                        formatted_query += f"\t\t\t\t{step}"
+                        if i < len(steps) - 1:
+                            formatted_query += ",\n"
+                
+                # Add the 'in' part
+                formatted_query += "\n\t\t\tin\n\t\t\t\t" + cleaned_in_part
+                
+                self.logger.debug(f"Cleaned M-query: {formatted_query}")
+                return formatted_query
+            else:
+                # If the query doesn't have let/in structure, just return it as is
+                self.logger.debug(f"Cleaned M-query (unchanged): {m_query}")
+                return m_query
         except Exception as e:
             self.logger.warning(f"Error cleaning M-query: {e}")
             return m_query
