@@ -1,6 +1,6 @@
 {
-  "id": {{report_id}},
-  "layoutOptimization": {{layout_optimization}},
+  "id": {{#if report_id}}{{report_id}}{{else}}0{{/if}},
+  "layoutOptimization": {{#if layout_optimization}}{{layout_optimization}}{{else}}0{{/if}},
   "resourcePackages": [
     {
       "resourcePackage": {
