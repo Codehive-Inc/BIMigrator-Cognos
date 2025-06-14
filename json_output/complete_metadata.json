@@ -1,0 +1,316 @@
+{
+  "dataSources": [
+    {
+      "id": "DS1",
+      "name": "SalesDB",
+      "type": "",
+      "connectionString": "jdbc:sqlserver://sales-server:1433;databaseName=SalesDB",
+      "catalog": "Sales",
+      "schema": "dbo",
+      "parameters": {
+        "type": "JDBC",
+        "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+      }
+    },
+    {
+      "id": "DS2",
+      "name": "CustomerDB",
+      "type": "",
+      "connectionString": "jdbc:sqlserver://customer-server:1433;databaseName=CustomerDB",
+      "catalog": "Customer",
+      "schema": "dbo",
+      "parameters": {
+        "type": "JDBC",
+        "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+      }
+    }
+  ],
+  "querySubjects": [
+    {
+      "id": "QS1",
+      "name": "Sales",
+      "type": "Table",
+      "dataSourceId": "DS1",
+      "tableName": "Sales",
+      "columns": [
+        {
+          "id": "QI1",
+          "name": "SaleID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "Sales.SaleID"
+        },
+        {
+          "id": "QI2",
+          "name": "CustomerID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "Sales.CustomerID"
+        },
+        {
+          "id": "QI3",
+          "name": "ProductID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "Sales.ProductID"
+        },
+        {
+          "id": "QI4",
+          "name": "SaleDate",
+          "dataType": "xs:date",
+          "nullable": true,
+          "expression": "Sales.SaleDate"
+        },
+        {
+          "id": "QI5",
+          "name": "Quantity",
+          "dataType": "xs:integer",
+          "nullable": true,
+          "expression": "Sales.Quantity"
+        },
+        {
+          "id": "QI6",
+          "name": "UnitPrice",
+          "dataType": "xs:decimal",
+          "nullable": true,
+          "expression": "Sales.UnitPrice"
+        },
+        {
+          "id": "QI7",
+          "name": "TotalAmount",
+          "dataType": "xs:decimal",
+          "nullable": true,
+          "expression": "Sales.Quantity * Sales.UnitPrice"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "R1",
+          "name": "SalesToCustomers",
+          "cardinality": "manyToOne",
+          "sourceQuerySubjectId": "QS1",
+          "targetQuerySubjectId": "QS3",
+          "sourceColumns": [
+            "QI2"
+          ],
+          "targetColumns": [
+            "QI13"
+          ]
+        },
+        {
+          "id": "R2",
+          "name": "SalesToProducts",
+          "cardinality": "manyToOne",
+          "sourceQuerySubjectId": "QS1",
+          "targetQuerySubjectId": "QS2",
+          "sourceColumns": [
+            "QI3"
+          ],
+          "targetColumns": [
+            "QI8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "QS2",
+      "name": "Products",
+      "type": "Table",
+      "dataSourceId": "DS1",
+      "tableName": "Products",
+      "columns": [
+        {
+          "id": "QI8",
+          "name": "ProductID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "Products.ProductID"
+        },
+        {
+          "id": "QI9",
+          "name": "ProductName",
+          "dataType": "xs:string",
+          "nullable": false,
+          "expression": "Products.ProductName"
+        },
+        {
+          "id": "QI10",
+          "name": "Category",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "Products.Category"
+        },
+        {
+          "id": "QI11",
+          "name": "UnitCost",
+          "dataType": "xs:decimal",
+          "nullable": true,
+          "expression": "Products.UnitCost"
+        },
+        {
+          "id": "QI12",
+          "name": "UnitPrice",
+          "dataType": "xs:decimal",
+          "nullable": true,
+          "expression": "Products.UnitPrice"
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "id": "QS3",
+      "name": "Customers",
+      "type": "Table",
+      "dataSourceId": "DS2",
+      "tableName": "Customers",
+      "columns": [
+        {
+          "id": "QI13",
+          "name": "CustomerID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "Customers.CustomerID"
+        },
+        {
+          "id": "QI14",
+          "name": "FirstName",
+          "dataType": "xs:string",
+          "nullable": false,
+          "expression": "Customers.FirstName"
+        },
+        {
+          "id": "QI15",
+          "name": "LastName",
+          "dataType": "xs:string",
+          "nullable": false,
+          "expression": "Customers.LastName"
+        },
+        {
+          "id": "QI16",
+          "name": "Email",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "Customers.Email"
+        },
+        {
+          "id": "QI17",
+          "name": "Phone",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "Customers.Phone"
+        },
+        {
+          "id": "QI18",
+          "name": "CustomerType",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "Customers.CustomerType"
+        },
+        {
+          "id": "QI19",
+          "name": "FullName",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "Customers.FirstName + ' ' + Customers.LastName"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "R3",
+          "name": "CustomersToAddresses",
+          "cardinality": "oneToMany",
+          "sourceQuerySubjectId": "QS3",
+          "targetQuerySubjectId": "QS4",
+          "sourceColumns": [
+            "QI13"
+          ],
+          "targetColumns": [
+            "QI21"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "QS4",
+      "name": "CustomerAddresses",
+      "type": "Table",
+      "dataSourceId": "DS2",
+      "tableName": "CustomerAddresses",
+      "columns": [
+        {
+          "id": "QI20",
+          "name": "AddressID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "CustomerAddresses.AddressID"
+        },
+        {
+          "id": "QI21",
+          "name": "CustomerID",
+          "dataType": "xs:integer",
+          "nullable": false,
+          "expression": "CustomerAddresses.CustomerID"
+        },
+        {
+          "id": "QI22",
+          "name": "AddressType",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "CustomerAddresses.AddressType"
+        },
+        {
+          "id": "QI23",
+          "name": "Street",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "CustomerAddresses.Street"
+        },
+        {
+          "id": "QI24",
+          "name": "City",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "CustomerAddresses.City"
+        },
+        {
+          "id": "QI25",
+          "name": "State",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "CustomerAddresses.State"
+        },
+        {
+          "id": "QI26",
+          "name": "ZipCode",
+          "dataType": "xs:string",
+          "nullable": true,
+          "expression": "CustomerAddresses.ZipCode"
+        }
+      ],
+      "relationships": []
+    }
+  ],
+  "namespaces": [
+    {
+      "id": "NS1",
+      "name": "Sales",
+      "querySubjects": [
+        "QS1",
+        "QS2"
+      ]
+    },
+    {
+      "id": "NS2",
+      "name": "Customer",
+      "querySubjects": [
+        "QS3",
+        "QS4"
+      ]
+    }
+  ],
+  "metadata": {
+    "fileName": "sample_model.cpf",
+    "filePath": "samples/sample_model.cpf",
+    "extractionTime": "2025-06-12 10:09:56.354495"
+  }
+}

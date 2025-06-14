@@ -33,9 +33,9 @@ class MigrationConfig:
     generate_documentation: bool = True
 
     # LLM service configuration
-    llm_service_url: str = "http://localhost:8080"  # URL of the FastAPI LLM service
+    llm_service_url: str = None  # URL of the FastAPI LLM service
     llm_service_api_key: Optional[str] = None  # Not needed when running in Docker network
-    llm_service_enabled: bool = True  # Enabled by default
+    llm_service_enabled: bool = None  # Enabled by default
 
 
 class ConfigManager:
@@ -95,7 +95,10 @@ class ConfigManager:
             template_directory=os.getenv('TEMPLATE_DIR', templates_dir),
             preserve_structure=os.getenv('PRESERVE_STRUCTURE', 'true').lower() == 'true',
             include_metadata=os.getenv('INCLUDE_METADATA', 'true').lower() == 'true',
-            generate_documentation=os.getenv('GENERATE_DOCS', 'true').lower() == 'true'
+            generate_documentation=os.getenv('GENERATE_DOCS', 'true').lower() == 'true',
+            llm_service_url=os.getenv('DAX_API_URL', 'http://localhost:8080'),
+            llm_service_api_key= None,
+            llm_service_enabled=True
         )
 
     def validate_config(self) -> bool:

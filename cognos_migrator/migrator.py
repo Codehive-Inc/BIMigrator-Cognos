@@ -16,12 +16,13 @@ from .models import (
     CognosReport, PowerBIProject, DataModel, Report, 
     Table, Column, Relationship, Measure, ReportPage
 )
+from .cpf_extractor import CPFExtractor
 
 
 class CognosMigrator:
     """Main orchestrator for Cognos to Power BI migration"""
     
-    def __init__(self, config: MigrationConfig, base_url: str = None, session_key: str = None):
+    def __init__(self, config: MigrationConfig, base_url: str = None, session_key: str = None, cpf_file_path: str = None):
         self.config = config
         self.logger = logging.getLogger(__name__)
         
@@ -33,6 +34,16 @@ class CognosMigrator:
         self.report_parser = CognosReportSpecificationParser()
         self.project_generator = PowerBIProjectGenerator(config)
         self.doc_generator = DocumentationGenerator(config)
+        
+        # Initialize CPF extractor if a CPF file path is provided
+        self.cpf_extractor = None
+        if cpf_file_path:
+            self.cpf_extractor = CPFExtractor(cpf_file_path)
+            if not self.cpf_extractor.metadata:
+                self.logger.warning(f"Failed to load CPF file: {cpf_file_path}")
+                self.cpf_extractor = None
+            else:
+                self.logger.info(f"Successfully loaded CPF file: {cpf_file_path}")
     
     def migrate_report(self, report_id: str, output_path: str) -> bool:
         """Migrate a single Cognos report to Power BI"""
@@ -67,6 +78,10 @@ class CognosMigrator:
                 self.logger.error(f"Failed to convert report: {report_id}")
                 return False
             
+            # If CPF metadata is available, enhance the Power BI project with it
+            if self.cpf_extractor:
+                self._enhance_with_cpf_metadata(powerbi_project)
+            
             # Step 3: Generate Power BI project files
             success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
             if not success:
@@ -75,6 +90,12 @@ class CognosMigrator:
             
             # Step 4: Generate documentation
             self.doc_generator.generate_migration_report(powerbi_project, str(extracted_dir))
+            
+            # If CPF metadata is available, save it to the extracted folder
+            if self.cpf_extractor:
+                cpf_metadata_path = extracted_dir / "cpf_metadata.json"
+                self.cpf_extractor.parser.save_metadata_to_json(str(cpf_metadata_path))
+                self.logger.info(f"Saved CPF metadata to: {cpf_metadata_path}")
             
             self.logger.info(f"Successfully migrated report {report_id} to {output_path}")
             return True
@@ -451,35 +472,143 @@ class CognosMigrator:
             import json
             from pathlib import Path
             
-            # Save report specification
-            if hasattr(cognos_report, 'specification') and cognos_report.specification:
-                spec_file = Path(extracted_dir) / 'report_specification.xml'
-                with open(spec_file, 'w', encoding='utf-8') as f:
-                    f.write(cognos_report.specification)
+            # Save report specification XML
+            spec_path = extracted_dir / "report_specification.xml"
+            with open(spec_path, "w", encoding="utf-8") as f:
+                f.write(cognos_report.specification)
             
-            # Save report metadata
-            if hasattr(cognos_report, 'metadata') and cognos_report.metadata:
-                metadata_file = Path(extracted_dir) / 'report_metadata.json'
-                with open(metadata_file, 'w', encoding='utf-8') as f:
-                    json.dump(cognos_report.metadata, f, indent=2)
+            # Save report metadata as JSON
+            metadata_path = extracted_dir / "report_metadata.json"
+            with open(metadata_path, "w", encoding="utf-8") as f:
+                json.dump(cognos_report.metadata, f, indent=2)
             
-            # Save report details
-            report_details = {
-                'id': cognos_report.id,
-                'name': cognos_report.name,
-                'path': cognos_report.path if hasattr(cognos_report, 'path') else None,
-                'type': cognos_report.type if hasattr(cognos_report, 'type') else None,
-                'created': str(cognos_report.created) if hasattr(cognos_report, 'created') else None,
-                'modified': str(cognos_report.modified) if hasattr(cognos_report, 'modified') else None
-            }
+            # Save report details as JSON
+            details_path = extracted_dir / "report_details.json"
+            with open(details_path, "w", encoding="utf-8") as f:
+                json.dump({
+                    "id": cognos_report.id,
+                    "name": cognos_report.name,
+                    "path": cognos_report.path,
+                    "type": cognos_report.type,
+                    "extractionTime": str(datetime.now())
+                }, f, indent=2)
             
-            details_file = Path(extracted_dir) / 'report_details.json'
-            with open(details_file, 'w', encoding='utf-8') as f:
-                json.dump(report_details, f, indent=2)
-                
             self.logger.info(f"Saved extracted Cognos report data to {extracted_dir}")
+            
         except Exception as e:
             self.logger.error(f"Failed to save extracted data: {e}")
+    
+    def _enhance_with_cpf_metadata(self, powerbi_project: PowerBIProject) -> None:
+        """Enhance Power BI project with metadata from CPF file"""
+        try:
+            if not self.cpf_extractor or not powerbi_project or not powerbi_project.data_model:
+                return
+            
+            self.logger.info("Enhancing Power BI project with CPF metadata")
+            
+            # Enhance tables with CPF metadata
+            for table in powerbi_project.data_model.tables:
+                table_name = table.name
+                
+                # Get table schema from CPF metadata
+                table_schema = self.cpf_extractor.get_table_schema(table_name)
+                if not table_schema or not table_schema.get('columns'):
+                    continue
+                
+                self.logger.info(f"Enhancing table: {table_name} with CPF metadata")
+                
+                # Update column metadata
+                for col in table.columns:
+                    # Find matching column in CPF metadata
+                    for cpf_col in table_schema.get('columns', []):
+                        if cpf_col.get('name') == col.name:
+                            # Update column data type if available
+                            if cpf_col.get('dataType'):
+                                col.data_type = self._map_cpf_data_type(cpf_col.get('dataType'))
+                            
+                            # Update column description if available
+                            if cpf_col.get('expression'):
+                                col.description = f"Expression: {cpf_col.get('expression')}"
+                            
+                            break
+                
+                # Add relationships if available
+                for rel in table_schema.get('relationships', []):
+                    target_table = self._find_table_by_name(powerbi_project.data_model, 
+                                                         self.cpf_extractor.get_query_subject_by_id(rel.get('targetQuerySubjectId', '')).get('name', ''))
+                    
+                    if target_table:
+                        # Get column names
+                        source_cols = [self.cpf_extractor.get_column_name_by_id(col_id) for col_id in rel.get('sourceColumns', [])]
+                        target_cols = [self.cpf_extractor.get_column_name_by_id(col_id) for col_id in rel.get('targetColumns', [])]
+                        
+                        # Create relationship if columns are found
+                        if source_cols and target_cols:
+                            new_rel = Relationship(
+                                from_table=table.name,
+                                from_column=source_cols[0],  # Use first column for now
+                                to_table=target_table.name,
+                                to_column=target_cols[0],    # Use first column for now
+                                cardinality=self._map_cpf_cardinality(rel.get('cardinality', ''))
+                            )
+                            
+                            # Add relationship if it doesn't already exist
+                            if not self._relationship_exists(powerbi_project.data_model, new_rel):
+                                powerbi_project.data_model.relationships.append(new_rel)
+                                self.logger.info(f"Added relationship: {table.name}.{source_cols[0]} -> {target_table.name}.{target_cols[0]}")
+            
+            # Add M-query context to the project for later use
+            powerbi_project.metadata['cpf_metadata'] = True
+            
+            self.logger.info("Successfully enhanced Power BI project with CPF metadata")
+            
+        except Exception as e:
+            self.logger.error(f"Error enhancing with CPF metadata: {e}")
+    
+    def _map_cpf_data_type(self, cpf_type: str) -> str:
+        """Map CPF data type to Power BI data type"""
+        type_mapping = {
+            'xs:string': 'Text',
+            'xs:integer': 'Int64',
+            'xs:decimal': 'Decimal',
+            'xs:double': 'Double',
+            'xs:float': 'Double',
+            'xs:boolean': 'Boolean',
+            'xs:date': 'Date',
+            'xs:time': 'Time',
+            'xs:dateTime': 'DateTime',
+            'xs:duration': 'Duration'
+        }
+        
+        return type_mapping.get(cpf_type, 'Text')  # Default to Text if unknown
+    
+    def _map_cpf_cardinality(self, cardinality: str) -> str:
+        """Map CPF cardinality to Power BI cardinality"""
+        cardinality_mapping = {
+            'oneToOne': 'OneToOne',
+            'oneToMany': 'OneToMany',
+            'manyToOne': 'ManyToOne',
+            'manyToMany': 'ManyToMany'
+        }
+        
+        return cardinality_mapping.get(cardinality, 'ManyToOne')  # Default to ManyToOne if unknown
+    
+    def _find_table_by_name(self, data_model, table_name: str):
+        """Find a table in the data model by name"""
+        for table in data_model.tables:
+            if table.name == table_name:
+                return table
+        return None
+    
+    def _relationship_exists(self, data_model, new_rel: Relationship) -> bool:
+        """Check if a relationship already exists in the data model"""
+        for rel in data_model.relationships:
+            if (rel.from_table == new_rel.from_table and 
+                rel.from_column == new_rel.from_column and 
+                rel.to_table == new_rel.to_table and 
+                rel.to_column == new_rel.to_column):
+                return True
+        return False
     
     def get_migration_status(self, output_path: str) -> Dict[str, Any]:
         """Get status of migration in output directory"""

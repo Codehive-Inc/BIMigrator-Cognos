@@ -1,0 +1,26 @@
+[
+  {
+    "id": "DS1",
+    "name": "SalesDB",
+    "type": "",
+    "connectionString": "jdbc:sqlserver://sales-server:1433;databaseName=SalesDB",
+    "catalog": "Sales",
+    "schema": "dbo",
+    "parameters": {
+      "type": "JDBC",
+      "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    }
+  },
+  {
+    "id": "DS2",
+    "name": "CustomerDB",
+    "type": "",
+    "connectionString": "jdbc:sqlserver://customer-server:1433;databaseName=CustomerDB",
+    "catalog": "Customer",
+    "schema": "dbo",
+    "parameters": {
+      "type": "JDBC",
+      "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    }
+  }
+]

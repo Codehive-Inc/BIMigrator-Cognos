@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.developer.cognos.com/schemas/cpf/1/">
+    <dataSources>
+        <dataSource id="DS1" name="TestDataSource">
+            <connectionProperties>
+                <connectionProperty name="type" value="JDBC"/>
+                <connectionProperty name="jdbcURL" value="jdbc:sqlserver://test-server:1433;databaseName=TestDB"/>
+            </connectionProperties>
+        </dataSource>
+    </dataSources>
+    <namespace id="NS1" name="TestNamespace">
+        <querySubject id="QS1" name="Customers">
+            <column id="C1" name="CustomerID" dataType="xs:integer"/>
+            <column id="C2" name="CustomerName" dataType="xs:string"/>
+            <column id="C3" name="Email" dataType="xs:string"/>
+        </querySubject>
+        <querySubject id="QS2" name="Orders">
+            <column id="C4" name="OrderID" dataType="xs:integer"/>
+            <column id="C5" name="CustomerID" dataType="xs:integer"/>
+            <column id="C6" name="OrderDate" dataType="xs:date"/>
+            <column id="C7" name="TotalAmount" dataType="xs:decimal"/>
+        </querySubject>
+        <relationship id="R1" name="CustomerOrders">
+            <sourceQuerySubject refId="QS1"/>
+            <targetQuerySubject refId="QS2"/>
+            <sourceColumn refId="C1"/>
+            <targetColumn refId="C5"/>
+            <cardinality>oneToMany</cardinality>
+        </relationship>
+    </namespace>
+</project>
