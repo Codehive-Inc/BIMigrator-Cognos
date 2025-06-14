@@ -1,16 +1,41 @@
+# Hatchling is a modern and lightweight build backend.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "cognos-to-bimigrator"
 version = "0.1.0"
 description = "Cognos Analytics to Power BI migration tool"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
-    "requests>=2.32.3",
+    "requests",
     "pydantic>=2.0.0",
     "jinja2>=3.1.0",
     "python-dotenv>=1.0.0",
     "lxml>=4.9.0",
     "dataclasses-json>=0.5.7",
     "typing-extensions>=4.0.0",
-    "click>=8.0.0"
+    "click>=8.0.0",
+    "hatchling>=1.27.0",
+    "pybars3>=0.9.7",
+]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["cognos_migrator"]
+
+[project.scripts]
+bimigrator = "cognos_migrator.main:main"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "cognos_migrator/*",
+    '*.yaml',
+    '*.json',
+    '*.md',
+    '*.txt',
+    'templates/*',
+    'config/*'
 ]

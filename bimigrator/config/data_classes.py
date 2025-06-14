@@ -131,8 +131,8 @@ class PowerBiResourcePackage:
 @dataclass
 class PowerBiReport:
     """Report definition."""
-    id: str
-    layout_optimization: str
+    id: int = 0
+    layout_optimization: int = 0
     resource_packages: List[PowerBiResourcePackage] = field(default_factory=list)
 
 

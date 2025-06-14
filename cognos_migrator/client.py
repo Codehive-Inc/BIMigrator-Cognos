@@ -35,11 +35,13 @@ class CognosClient:
             self.base_url = base_url
             self.session = requests.Session()
             self.session.headers[self.config.auth_key] = session_key
+            self.logger = logging.getLogger(__name__)
             self.auth_token = session_key
             self.session.headers.update({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             })
+            self._verify_session()
             self.authenticated = True
         else: 
             self.config = config
@@ -213,6 +215,20 @@ class CognosClient:
             self.logger.warning(f"Alternative session format failed: {e}")
             
         return None
+    
+    def _verify_session(self) -> bool:
+        """Verify if the current session is valid"""
+        try:
+            response = self._make_request('GET', '/session')
+            if response.status_code == 200:
+                self.logger.info("Session is valid")
+                return True
+            else:
+                self.logger.warning(f"Session verification failed: {response.status_code}")
+                return False
+        except Exception as e:
+            self.logger.error(f"Session verification error: {e}")
+            return False
         
     def _make_request(self, method: str, endpoint: str, **kwargs) -> requests.Response:
         """Make HTTP request with error handling and retries"""
