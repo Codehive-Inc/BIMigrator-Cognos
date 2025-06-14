@@ -467,12 +467,13 @@ class CognosMigrator:
             return False
     
     def _save_extracted_data(self, cognos_report, extracted_dir):
-        """Save raw Cognos report data to the extracted folder"""
+        """Save extracted data to files for investigation"""
         try:
             import json
-            from pathlib import Path
+            import xml.etree.ElementTree as ET
+            from datetime import datetime
             
-            # Save report specification XML
+            # Save raw report specification XML
             spec_path = extracted_dir / "report_specification.xml"
             with open(spec_path, "w", encoding="utf-8") as f:
                 f.write(cognos_report.specification)
@@ -485,18 +486,502 @@ class CognosMigrator:
             # Save report details as JSON
             details_path = extracted_dir / "report_details.json"
             with open(details_path, "w", encoding="utf-8") as f:
-                json.dump({
+                details = {
                     "id": cognos_report.id,
                     "name": cognos_report.name,
-                    "path": cognos_report.path,
-                    "type": cognos_report.type,
                     "extractionTime": str(datetime.now())
-                }, f, indent=2)
+                }
+                
+                # Add optional attributes if they exist
+                if hasattr(cognos_report, 'path'):
+                    details["path"] = cognos_report.path
+                if hasattr(cognos_report, 'type'):
+                    details["type"] = cognos_report.type
+                    
+                json.dump(details, f, indent=2)
+            
+            # Save serialized CognosReport object
+            report_obj_path = extracted_dir / "cognos_report.json"
+            with open(report_obj_path, "w", encoding="utf-8") as f:
+                report_dict = {
+                    "id": cognos_report.id,
+                    "name": cognos_report.name,
+                    "data_sources": [ds.__dict__ if hasattr(ds, '__dict__') else str(ds) for ds in cognos_report.data_sources]
+                }
+                
+                # Add optional attributes if they exist
+                if hasattr(cognos_report, 'path'):
+                    report_dict["path"] = cognos_report.path
+                if hasattr(cognos_report, 'type'):
+                    report_dict["type"] = cognos_report.type
+                    
+                json.dump(report_dict, f, indent=2)
+            
+            # Extract and save additional intermediate files for detailed investigation
+            try:
+                # Parse the XML for additional extractions
+                root = ET.fromstring(cognos_report.specification)
+                
+                # Register the namespace - Cognos XML uses namespaces
+                ns = {}
+                if root.tag.startswith('{'):
+                    ns_uri = root.tag.split('}')[0].strip('{')
+                    ns['ns'] = ns_uri
+                    self.logger.info(f"Detected XML namespace: {ns_uri}")
+                
+                # Extract and save queries
+                queries = self._extract_queries_from_xml(root, ns)
+                queries_path = extracted_dir / "report_queries.json"
+                with open(queries_path, "w", encoding="utf-8") as f:
+                    json.dump(queries, f, indent=2)
+                
+                # Extract and save data items/columns
+                data_items = self._extract_data_items_from_xml(root, ns)
+                data_items_path = extracted_dir / "report_data_items.json"
+                with open(data_items_path, "w", encoding="utf-8") as f:
+                    json.dump(data_items, f, indent=2)
+                
+                # Extract and save expressions
+                expressions = self._extract_expressions_from_xml(root, ns)
+                expressions_path = extracted_dir / "report_expressions.json"
+                with open(expressions_path, "w", encoding="utf-8") as f:
+                    json.dump(expressions, f, indent=2)
+                
+                # Extract and save parameters
+                parameters = self._extract_parameters_from_xml(root, ns)
+                parameters_path = extracted_dir / "report_parameters.json"
+                with open(parameters_path, "w", encoding="utf-8") as f:
+                    json.dump(parameters, f, indent=2)
+                
+                # Extract and save filters
+                filters = self._extract_filters_from_xml(root, ns)
+                filters_path = extracted_dir / "report_filters.json"
+                with open(filters_path, "w", encoding="utf-8") as f:
+                    json.dump(filters, f, indent=2)
+                
+                # Extract and save layout information
+                layout = self._extract_layout_from_xml(root, ns)
+                layout_path = extracted_dir / "report_layout.json"
+                with open(layout_path, "w", encoding="utf-8") as f:
+                    json.dump(layout, f, indent=2)
+                
+                self.logger.info(f"Saved additional extracted data files to {extracted_dir}")
+                
+            except Exception as e:
+                self.logger.warning(f"Could not extract additional data from XML: {e}")
             
             self.logger.info(f"Saved extracted Cognos report data to {extracted_dir}")
             
         except Exception as e:
             self.logger.error(f"Failed to save extracted data: {e}")
+    
+    def _extract_queries_from_xml(self, root, ns=None):
+        """Extract queries from report specification XML"""
+        queries = []
+        try:
+            # Find the queries section directly under the root
+            queries_section = root.find("queries")
+                
+            if queries_section is None:
+                self.logger.warning("No queries section found in report specification")
+                return queries
+                
+            # Find all query elements directly under the queries section
+            query_elements = queries_section.findall("query")
+            
+            for i, query_elem in enumerate(query_elements):
+                query = {
+                    "id": query_elem.get("id", f"query_{i}"),
+                    "name": query_elem.get("name", f"Query {i}"),
+                }
+                
+                # Extract source information
+                source_elem = query_elem.find("source")
+                if source_elem is not None:
+                    model_elem = source_elem.find("model")
+                    if model_elem is not None:
+                        query["source"] = "model"
+                    else:
+                        query["source"] = self._get_element_text(source_elem)
+                
+                # Extract data items (columns)
+                data_items = []
+                selection_elem = query_elem.find("selection")
+                if selection_elem is not None:
+                    for item in selection_elem.findall("dataItem"):
+                        data_item = {
+                            "name": item.get("name", ""),
+                            "aggregate": item.get("aggregate", "none"),
+                            "rollupAggregate": item.get("rollupAggregate", "none"),
+                        }
+                        
+                        # Extract expression
+                        expr_elem = item.find("expression")
+                        if expr_elem is not None:
+                            data_item["expression"] = self._get_element_text(expr_elem)
+                        
+                        # Extract XML attributes for data type and usage
+                        xml_attrs = item.find("XMLAttributes")
+                        if xml_attrs is not None:
+                            data_type_attr = xml_attrs.find("XMLAttribute[@name='RS_dataType']")
+                            if data_type_attr is not None:
+                                data_item["dataType"] = data_type_attr.get("value", "")
+                                
+                            usage_attr = xml_attrs.find("XMLAttribute[@name='RS_dataUsage']")
+                            if usage_attr is not None:
+                                data_item["dataUsage"] = usage_attr.get("value", "")
+                        
+                        data_items.append(data_item)
+                
+                query["dataItems"] = data_items
+                
+                # Extract filters
+                filters = []
+                detail_filters = query_elem.find("detailFilters")
+                if detail_filters is not None:
+                    for filter_elem in detail_filters.findall("detailFilter"):
+                        filter_expr = filter_elem.find("filterExpression")
+                        if filter_expr is not None:
+                            filters.append({
+                                "type": "detail",
+                                "expression": self._get_element_text(filter_expr)
+                            })
+                
+                summary_filters = query_elem.find("summaryFilters")
+                if summary_filters is not None:
+                    for filter_elem in summary_filters.findall("summaryFilter"):
+                        filter_expr = filter_elem.find("filterExpression")
+                        if filter_expr is not None:
+                            filters.append({
+                                "type": "summary",
+                                "expression": self._get_element_text(filter_expr)
+                            })
+                
+                query["filters"] = filters
+                queries.append(query)
+                
+            return queries
+            
+        except Exception as e:
+            self.logger.warning(f"Error extracting queries from XML: {e}")
+            return queries
+    
+    def _extract_data_items_from_xml(self, root, ns=None):
+        """Extract data items from report specification XML"""
+        data_items = []
+        try:
+            # Find the queries section directly under the root
+            queries_section = root.find("queries")
+                
+            if queries_section is None:
+                self.logger.warning("No queries section found in report specification")
+                return data_items
+                
+            # Process each query
+            for query_idx, query_elem in enumerate(queries_section.findall("query")):
+                query_name = query_elem.get("name", f"Query {query_idx}")
+                
+                # Find the selection element that contains data items
+                selection_elem = query_elem.find("selection")
+                if selection_elem is None:
+                    continue
+                    
+                # Process each data item in the selection
+                for i, item_elem in enumerate(selection_elem.findall("dataItem")):
+                    data_item = {
+                        "name": item_elem.get("name", f"Data Item {i}"),
+                        "queryName": query_name,
+                        "aggregate": item_elem.get("aggregate", "none"),
+                        "rollupAggregate": item_elem.get("rollupAggregate", "none"),
+                    }
+                    
+                    # Extract expression
+                    expr_elem = item_elem.find("expression")
+                    if expr_elem is not None:
+                        data_item["expression"] = self._get_element_text(expr_elem)
+                    
+                    # Extract XML attributes for data type and usage
+                    xml_attrs = item_elem.find("XMLAttributes")
+                    if xml_attrs is not None:
+                        # Extract data type
+                        data_type_attr = xml_attrs.find("XMLAttribute[@name='RS_dataType']")
+                        if data_type_attr is not None:
+                            data_type_value = data_type_attr.get("value", "")
+                            # Convert numeric data type codes to readable format
+                            data_type_map = {
+                                "1": "integer",
+                                "2": "decimal",
+                                "3": "string",
+                                "4": "datetime",
+                                "5": "boolean"
+                            }
+                            data_item["dataType"] = data_type_map.get(data_type_value, data_type_value)
+                        
+                        # Extract data usage
+                        usage_attr = xml_attrs.find("XMLAttribute[@name='RS_dataUsage']")
+                        if usage_attr is not None:
+                            usage_value = usage_attr.get("value", "")
+                            # Convert numeric usage codes to readable format
+                            usage_map = {
+                                "0": "attribute",
+                                "1": "identifier",
+                                "2": "fact"
+                            }
+                            data_item["dataUsage"] = usage_map.get(usage_value, usage_value)
+                    
+                    # Extract format information if available
+                    format_elem = item_elem.find("format")
+                    if format_elem is not None:
+                        data_item["format"] = {
+                            "type": format_elem.get("type", ""),
+                            "pattern": format_elem.get("pattern", ""),
+                        }
+                    
+                    data_items.append(data_item)
+        except Exception as e:
+            self.logger.warning(f"Error extracting data items: {e}")
+        
+        return data_items
+    
+    def _extract_expressions_from_xml(self, root, ns=None):
+        """Extract expressions from report specification XML"""
+        expressions = []
+        try:
+            # Create a map of elements to their parent contexts
+            # This is needed because ElementTree doesn't have a getparent() method
+            parent_map = {}
+            for parent in root.iter():
+                for child in parent:
+                    parent_map[child] = parent
+            
+            # Find the queries section directly under the root
+            queries_section = root.find("queries")
+            if queries_section is None:
+                self.logger.warning("No queries section found in report specification")
+                return expressions
+                
+            # Process each query
+            for query_elem in queries_section.findall("query"):
+                query_name = query_elem.get("name", "")
+                
+                # Process data item expressions
+                selection_elem = query_elem.find("selection")
+                if selection_elem is not None:
+                    for data_item in selection_elem.findall("dataItem"):
+                        data_item_name = data_item.get("name", "")
+                        expr_elem = data_item.find("expression")
+                        
+                        if expr_elem is not None:
+                            expressions.append({
+                                "parentType": "dataItem",
+                                "parentName": data_item_name,
+                                "queryName": query_name,
+                                "text": self._get_element_text(expr_elem),
+                                "context": f"Query: {query_name}, Data Item: {data_item_name}"
+                            })
+                
+                # Process detail filter expressions
+                detail_filters = query_elem.find("detailFilters")
+                if detail_filters is not None:
+                    for filter_elem in detail_filters.findall("detailFilter"):
+                        filter_expr = filter_elem.find("filterExpression")
+                        if filter_expr is not None:
+                            expressions.append({
+                                "parentType": "detailFilter",
+                                "queryName": query_name,
+                                "text": self._get_element_text(filter_expr),
+                                "context": f"Query: {query_name}, Detail Filter"
+                            })
+            
+                # Process summary filter expressions
+                summary_filters = query_elem.find("summaryFilters")
+                if summary_filters is not None:
+                    for filter_elem in summary_filters.findall("summaryFilter"):
+                        filter_expr = filter_elem.find("filterExpression")
+                        if filter_expr is not None:
+                            expressions.append({
+                                "parentType": "summaryFilter",
+                                "queryName": query_name,
+                                "text": self._get_element_text(filter_expr),
+                                "context": f"Query: {query_name}, Summary Filter"
+                            })
+                
+            # We've already processed all expressions in the queries section above,
+            # so we don't need this redundant section anymore.
+            # The expressions from data items, detail filters, and summary filters are already captured.
+        except Exception as e:
+            self.logger.warning(f"Error extracting expressions: {e}")
+        
+        return expressions
+    
+    def _extract_parameters_from_xml(self, root, ns=None):
+        """Extract parameters from report specification XML"""
+        parameters = []
+        try:
+            # Find the parameters section directly under the root
+            params_section = root.find("parameters")
+            if params_section is None:
+                # Try to find parameters in other locations
+                params_section = root.find("parameterList")
+                if params_section is None:
+                    self.logger.warning("No parameters section found in report specification")
+                    return parameters
+            
+            # Process each parameter
+            for i, param_elem in enumerate(params_section.findall("parameter")):
+                param = {
+                    "id": param_elem.get("id", f"param_{i}"),
+                    "name": param_elem.get("name", f"Parameter {i}"),
+                    "type": param_elem.get("type", ""),
+                    "required": param_elem.get("required", "false"),
+                    "multiValue": param_elem.get("multiValue", "false"),
+                }
+                
+                # Extract default value
+                default_elem = param_elem.find("defaultValue")
+                if default_elem is not None:
+                    param["defaultValue"] = self._get_element_text(default_elem)
+                
+                # Extract allowed values
+                values_elem = param_elem.find("allowedValues")
+                if values_elem is not None:
+                    allowed_values = []
+                    for value_elem in values_elem.findall("value"):
+                        allowed_values.append(self._get_element_text(value_elem))
+                    param["allowedValues"] = allowed_values
+                
+                parameters.append(param)
+        except Exception as e:
+            self.logger.warning(f"Error extracting parameters: {e}")
+        
+        return parameters
+
+    def _extract_filters_from_xml(self, root, ns=None):
+        """Extract filters from report specification XML"""
+        filters = []
+        try:
+            # Find the queries section directly under the root
+            queries_section = root.find("queries")
+            if queries_section is None:
+                self.logger.warning("No queries section found in report specification")
+                return filters
+                
+            # Process each query
+            for query_idx, query_elem in enumerate(queries_section.findall("query")):
+                query_name = query_elem.get("name", f"Query {query_idx}")
+                query_id = query_elem.get("id", f"query_{query_idx}")
+                
+                # Process detail filters
+                detail_filters = query_elem.find("detailFilters")
+                if detail_filters is not None:
+                    for i, filter_elem in enumerate(detail_filters.findall("detailFilter")):
+                        filter_item = {
+                            "id": filter_elem.get("id", f"detail_filter_{query_id}_{i}"),
+                            "name": filter_elem.get("name", f"Detail Filter {i}"),
+                            "type": "detail",
+                            "queryName": query_name,
+                            "queryId": query_id
+                        }
+                        
+                        # Extract filter expression
+                        filter_expr = filter_elem.find("filterExpression")
+                        if filter_expr is not None:
+                            filter_item["expression"] = self._get_element_text(filter_expr)
+                        
+                        filters.append(filter_item)
+                
+                # Process summary filters
+                summary_filters = query_elem.find("summaryFilters")
+                if summary_filters is not None:
+                    for i, filter_elem in enumerate(summary_filters.findall("summaryFilter")):
+                        filter_item = {
+                            "id": filter_elem.get("id", f"summary_filter_{query_id}_{i}"),
+                            "name": filter_elem.get("name", f"Summary Filter {i}"),
+                            "type": "summary",
+                            "queryName": query_name,
+                            "queryId": query_id
+                        }
+                        
+                        # Extract filter expression
+                        filter_expr = filter_elem.find("filterExpression")
+                        if filter_expr is not None:
+                            filter_item["expression"] = self._get_element_text(filter_expr)
+                        
+                        filters.append(filter_item)
+                
+        except Exception as e:
+            self.logger.warning(f"Error extracting filters: {e}")
+        
+        return filters
+    
+    def _extract_layout_from_xml(self, root, ns=None):
+        """Extract layout information from report specification XML"""
+        layout = {
+            "pages": [],
+            "containers": [],
+            "visualizations": []
+        }
+        try:
+            # Find layout section directly under the root
+            layout_section = root.find("layout")
+            if layout_section is None:
+                # Try to find layout in other locations
+                layout_section = root.find("layouts/layout")
+                if layout_section is None:
+                    self.logger.warning("No layout section found in report specification")
+                    return layout
+            
+            # Extract page information
+            pages = []
+            page_elements = layout_section.findall(".//page")
+            for page_elem in page_elements:
+                page = {
+                    "id": page_elem.get("id", ""),
+                    "name": page_elem.get("name", ""),
+                    "style": page_elem.get("style", "")
+                }
+                pages.append(page)
+            layout["pages"] = pages
+            
+            # Extract container information (blocks, tables, etc.)
+            containers = []
+            block_elements = layout_section.findall(".//block")
+            table_elements = layout_section.findall(".//table")
+                
+            for container_elem in block_elements + table_elements:
+                container = {
+                    "id": container_elem.get("id", ""),
+                    "type": container_elem.tag.split('}')[-1] if '}' in container_elem.tag else container_elem.tag,
+                    "style": container_elem.get("style", "")
+                }
+                containers.append(container)
+            layout["containers"] = containers
+            
+            # Extract visualization information (charts, crosstabs, lists, etc.)
+            visualizations = []
+            chart_elements = layout_section.findall(".//chart")
+            crosstab_elements = layout_section.findall(".//crosstab")
+            list_elements = layout_section.findall(".//list")
+            
+            for viz_elem in chart_elements + crosstab_elements + list_elements:
+                viz = {
+                    "id": viz_elem.get("id", ""),
+                    "type": viz_elem.tag.split('}')[-1] if '}' in viz_elem.tag else viz_elem.tag,
+                    "style": viz_elem.get("style", "")
+                }
+                visualizations.append(viz)
+            layout["visualizations"] = visualizations
+            
+        except Exception as e:
+            self.logger.warning(f"Error extracting layout: {e}")
+        
+        return layout
+    
+    def _get_element_text(self, element):
+        """Safely get text from an XML element"""
+        if element is None:
+            return ""
+        return element.text or ""
     
     def _enhance_with_cpf_metadata(self, powerbi_project: PowerBIProject) -> None:
         """Enhance Power BI project with metadata from CPF file"""
