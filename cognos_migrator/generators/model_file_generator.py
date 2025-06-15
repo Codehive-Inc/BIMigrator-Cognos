@@ -105,6 +105,15 @@ class ModelFileGenerator:
             try:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
                 
+                # Generate M-query once for both table TMDL and JSON
+                m_query = None
+                try:
+                    self.logger.info(f"Generating M-query for table {table.name} once to reuse")
+                    m_query = self._build_m_expression(table, report_spec)
+                    self.logger.info(f"Successfully generated M-query for table {table.name}")
+                except Exception as e:
+                    self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
+                
                 # Try to read data items from report_data_items.json for both JSON and TMDL files
                 data_items = []
                 if extracted_dir:
@@ -118,7 +127,7 @@ class ModelFileGenerator:
                             self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
                 
                 # Build table context with the data items
-                context = self._build_table_context(table, report_spec, data_items, extracted_dir)
+                context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
@@ -127,7 +136,7 @@ class ModelFileGenerator:
                 table_file = tables_dir / f"{table.name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
-
+                
                 # Save table information as JSON in extracted directory
                 if extracted_dir:
 
@@ -221,12 +230,30 @@ class ModelFileGenerator:
                             }
                             table_json["columns"].append(column_json)
                     
+                    # Add partition information to the table JSON using the already generated M-query
+                    if m_query:
+                        # Add hierarchies and partitions fields if they don't exist
+                        if "hierarchies" not in table_json:
+                            table_json["hierarchies"] = []
+                        
+                        # Add partition information
+                        table_json["partitions"] = [
+                            {
+                                "name": table.name,
+                                "source_type": "m",
+                                "expression": m_query
+                            }
+                        ]
+                        
+                        # Add other required fields
+                        table_json["has_widget_serialization"] = False
+                        table_json["visual_type"] = None
+                        table_json["column_settings"] = None
+                        
+                        self.logger.info(f"Added M-query partition information to table {table.name} JSON")
+                    
                     # Save as table_[TableName].json
                     save_json_to_extracted_dir(extracted_dir, f"table_{table.name}.json", table_json)
-                    
-                    # Also save as table.json for the first table
-                    if tables.index(table) == 0:
-                        save_json_to_extracted_dir(extracted_dir, "table.json", table_json)
                 
                 self.logger.info(f"Generated table file: {table_file}")
                 
@@ -262,7 +289,7 @@ class ModelFileGenerator:
                     
                 self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
     
-    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
         columns = []
         
@@ -360,12 +387,18 @@ class ModelFileGenerator:
                 }
                 columns.append(column)
             
-        # Build M expression for table partition
-        try:
-            m_expression = self._build_m_expression(table, report_spec)
-        except Exception as e:
-            self.logger.error(f"Error building M-expression for table {table.name}: {e}")
-            m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource"
+        # Use the provided M-query or generate it if not provided
+        if m_query is not None:
+            self.logger.info(f"Using pre-generated M-query for table {table.name}")
+            m_expression = m_query
+        else:
+            # Fallback to generating M-query if not provided
+            try:
+                self.logger.warning(f"No pre-generated M-query provided for table {table.name}, generating now")
+                m_expression = self._build_m_expression(table, report_spec)
+            except Exception as e:
+                self.logger.error(f"Error building M-expression for table {table.name}: {e}")
+                m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource"
         
         context = {
             'table_name': table.name,
