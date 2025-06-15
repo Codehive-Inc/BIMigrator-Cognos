@@ -185,7 +185,7 @@ class PowerBIProjectOrchestrator:
         
         # Create a Report object from the Cognos report structure
         report = Report(
-            id=cognos_report.id,
+            id=cognos_report.report_id if hasattr(cognos_report, 'report_id') else f"report_{cognos_report.name.lower().replace(' ', '_')}",
             name=cognos_report.name,
             sections=[]
         )
@@ -237,7 +237,7 @@ class PowerBIProjectOrchestrator:
             })
         
         context = {
-            'report_id': cognos_report.id,
+            'report_id': cognos_report.report_id if hasattr(cognos_report, 'report_id') else f"report_{cognos_report.name.lower().replace(' ', '_')}",
             'report_name': cognos_report.name,
             'sections': sections
         }
@@ -258,7 +258,7 @@ class PowerBIProjectOrchestrator:
             report_dir: Report directory path
         """
         context = {
-            'report_id': cognos_report.id,
+            'report_id': cognos_report.report_id if hasattr(cognos_report, 'report_id') else f"report_{cognos_report.name.lower().replace(' ', '_')}",
             'report_name': cognos_report.name
         }
         

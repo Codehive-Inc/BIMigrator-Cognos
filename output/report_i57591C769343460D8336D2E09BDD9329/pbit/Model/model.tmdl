@@ -1,17 +1,21 @@
+{# model.tmdl - Template for pbi-tools text-based TMDL #}
 model Model
-	culture: en-US
+	culture: {{ default_culture }}
 	defaultPowerBIDataSourceVersion: powerBI_V3
-	sourceQueryCulture: en-US
+	sourceQueryCulture: {{ default_culture }}
 	dataAccessOptions
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Data"]
+annotation PBI_QueryOrder = [{% for table in tables %}"{{ table }}{% if not loop.last
+   %}, {% endif %}"{% endfor %}]
 
-annotation __PBI_TimeIntelligenceEnabled = 0
+annotation __PBI_TimeIntelligenceEnabled = {{ time_intelligence_enabled }}
 
-annotation PBIDesktopVersion = 2.142.928.0 (25.04)+de52df9f0bb74ad93a80d89c52d63fe6d07e0e1b
+annotation PBIDesktopVersion = {{ desktop_version }}
 
-ref table 'Data'
+{% for table in tables %}
+ref table '{{ table }}'
+{% endfor %}
 
-ref cultureInfo en-US
+ref cultureInfo {{ default_culture }}

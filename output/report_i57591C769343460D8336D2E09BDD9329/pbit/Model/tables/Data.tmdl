@@ -1,43 +1,29 @@
-table 'Data'
+table ''
 
 
-    column 'ID'
-        dataType: int64
-        summarizeBy: none
+    column ''
+        dataType: 
         sourceColumn: ID
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
         
-    column 'Name'
-        dataType: string
-        summarizeBy: none
+    column ''
+        dataType: 
         sourceColumn: Name
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
         
-    column 'Value'
-        dataType: int64
-        summarizeBy: none
+    column ''
+        dataType: 
         sourceColumn: Value
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
         
 
 
-
-    partition 'Data-partition' = m
-        mode: import
-        source = 
-            // ERROR: Failed to generate M-query for Data
-// Error communicating with LLM service for table Data: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=30)
-let
-				Source = Table.FromRows({})
-			in
-				Source
-        
 
 
 
