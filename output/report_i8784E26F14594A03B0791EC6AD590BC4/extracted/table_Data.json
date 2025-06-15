@@ -7,7 +7,7 @@
   "columns": [
     {
       "source_name": "Year",
-      "datatype": "boolean",
+      "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "Year",
@@ -23,7 +23,7 @@
     },
     {
       "source_name": "Quarter",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "Quarter",
@@ -39,7 +39,7 @@
     },
     {
       "source_name": "Month",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "Month",
@@ -55,7 +55,7 @@
     },
     {
       "source_name": "ProductName",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ProductName",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "Country",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "Country",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "State",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "State",
@@ -103,7 +103,7 @@
     },
     {
       "source_name": "SalesAmount",
-      "datatype": "boolean",
+      "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SalesAmount",
@@ -119,7 +119,7 @@
     },
     {
       "source_name": "Quantity",
-      "datatype": "boolean",
+      "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "Quantity",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "ProductID",
-      "datatype": "boolean",
+      "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ProductID",
@@ -151,7 +151,7 @@
     },
     {
       "source_name": "ProductName",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ProductName",

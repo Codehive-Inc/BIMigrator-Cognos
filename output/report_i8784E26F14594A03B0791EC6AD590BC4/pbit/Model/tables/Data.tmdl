@@ -2,7 +2,7 @@ table 'Data'
 
 
     column 'Year'
-        dataType: boolean
+        dataType: decimal
         summarizeBy: none
         sourceColumn: Year
 
@@ -10,7 +10,7 @@ table 'Data'
 
         
     column 'Quarter'
-        dataType: decimal
+        dataType: string
         summarizeBy: none
         sourceColumn: Quarter
 
@@ -18,7 +18,7 @@ table 'Data'
 
         
     column 'Month'
-        dataType: decimal
+        dataType: string
         summarizeBy: none
         sourceColumn: Month
 
@@ -26,7 +26,7 @@ table 'Data'
 
         
     column 'ProductName'
-        dataType: decimal
+        dataType: string
         summarizeBy: none
         sourceColumn: ProductName
 
@@ -34,7 +34,7 @@ table 'Data'
 
         
     column 'Country'
-        dataType: decimal
+        dataType: string
         summarizeBy: none
         sourceColumn: Country
 
@@ -42,7 +42,7 @@ table 'Data'
 
         
     column 'State'
-        dataType: decimal
+        dataType: string
         summarizeBy: none
         sourceColumn: State
 
@@ -50,7 +50,7 @@ table 'Data'
 
         
     column 'SalesAmount'
-        dataType: boolean
+        dataType: decimal
         summarizeBy: none
         sourceColumn: SalesAmount
 
@@ -58,7 +58,7 @@ table 'Data'
 
         
     column 'Quantity'
-        dataType: boolean
+        dataType: decimal
         summarizeBy: none
         sourceColumn: Quantity
 
@@ -66,7 +66,7 @@ table 'Data'
 
         
     column 'ProductID'
-        dataType: boolean
+        dataType: decimal
         summarizeBy: none
         sourceColumn: ProductID
 
@@ -74,7 +74,7 @@ table 'Data'
 
         
     column 'ProductName'
-        dataType: decimal
+        dataType: string
         summarizeBy: none
         sourceColumn: ProductName
 
