@@ -2,10 +2,13 @@
 Main entry point for Cognos to Power BI migration tool
 """
 
+import json
 import logging
+import os
 import sys
+from datetime import datetime
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Any, Optional
 
 from .config import ConfigManager
 from .migrator import CognosToPowerBIMigrator, MigrationBatch
@@ -406,18 +409,30 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         module_path = Path(output_path)
         module_path.mkdir(parents=True, exist_ok=True)
         
-        # Save module information
-        with open(module_path / "module_info.json", "w") as f:
+        # Create subdirectories
+        docs_dir = module_path / "documentation"
+        docs_dir.mkdir(exist_ok=True)
+        
+        reports_dir = module_path / "reports"
+        reports_dir.mkdir(exist_ok=True)
+        
+        extracted_dir = module_path / "extracted"
+        extracted_dir.mkdir(exist_ok=True)
+        
+        pbit_dir = module_path / "pbit"
+        pbit_dir.mkdir(exist_ok=True)
+        
+        # Save module information in extracted directory
+        with open(extracted_dir / "module_info.json", "w") as f:
             json.dump(module_info, f, indent=2)
         
-        # Save module metadata
-        with open(module_path / "module_metadata.json", "w") as f:
+        # Save module metadata in extracted directory
+        with open(extracted_dir / "module_metadata.json", "w") as f:
             json.dump(module_metadata, f, indent=2)
         
         # Step 2: Folder-based execution
         logger.info(f"Step 2: Migrating reports from folder {folder_id}")
-        folder_output_path = module_path / "reports"
-        folder_results = migrate_folder(folder_id, str(folder_output_path))
+        folder_results = migrate_folder(folder_id, str(reports_dir))
         
         # Step 3: Post-processing
         logger.info("Step 3: Post-processing generated files")
@@ -449,8 +464,8 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
             "success_rate": f"{(successful/total*100):.1f}%" if total > 0 else "0%"
         }
         
-        # Save summary
-        with open(module_path / "module_migration_summary.json", "w") as f:
+        # Save summary in documentation directory
+        with open(docs_dir / "module_migration_summary.json", "w") as f:
             json.dump(summary, f, indent=2)
         
         logger.info(f"Module migration completed: {successful}/{total} reports successful")

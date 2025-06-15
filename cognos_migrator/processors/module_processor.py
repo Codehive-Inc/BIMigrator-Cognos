@@ -35,15 +35,27 @@ class ModuleProcessor:
             bool: True if successful, False otherwise
         """
         try:
-            module_info_path = self.module_path / "module_info.json"
+            # Check for module info in the new structure (extracted directory)
+            module_info_path = self.module_path / "extracted" / "module_info.json"
+            
+            # Fall back to old location if not found
             if not module_info_path.exists():
-                self.logger.error(f"Module info file not found: {module_info_path}")
+                module_info_path = self.module_path / "module_info.json"
+                
+            if not module_info_path.exists():
+                self.logger.error(f"Module info file not found in expected locations")
                 return False
                 
             with open(module_info_path, "r") as f:
                 self.module_info = json.load(f)
                 
-            module_metadata_path = self.module_path / "module_metadata.json"
+            # Check for module metadata in the new structure (extracted directory)
+            module_metadata_path = self.module_path / "extracted" / "module_metadata.json"
+            
+            # Fall back to old location if not found
+            if not module_metadata_path.exists():
+                module_metadata_path = self.module_path / "module_metadata.json"
+                
             if module_metadata_path.exists():
                 with open(module_metadata_path, "r") as f:
                     self.module_metadata = json.load(f)
@@ -305,9 +317,10 @@ class ModuleProcessor:
             bool: True if successful, False otherwise
         """
         try:
-            # Create documentation directory
+            # Use the documentation directory in the new structure
             docs_dir = self.module_path / "documentation"
-            docs_dir.mkdir(exist_ok=True)
+            if not docs_dir.exists():
+                docs_dir.mkdir(exist_ok=True)
             
             # Generate module overview document
             self._generate_module_overview(docs_dir)
