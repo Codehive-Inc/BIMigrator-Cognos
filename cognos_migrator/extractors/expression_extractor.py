@@ -5,6 +5,7 @@ This module provides functionality to extract expression information from Cognos
 """
 
 import logging
+import re
 from typing import Dict, Any, Optional, List
 from .base_extractor import BaseExtractor
 
@@ -16,6 +17,49 @@ class ExpressionExtractor(BaseExtractor):
         """Initialize the expression extractor with optional expression converter and logger."""
         super().__init__(logger)
         self.expression_converter = expression_converter
+        
+    def is_source_column(self, expression: str) -> bool:
+        """
+        Determine if an expression is a source column or a calculation based on its structure.
+        
+        Source columns typically follow a pattern like [Namespace].[Folder].[Item] with no operations.
+        Calculations contain functions, operators, or other computational elements.
+        
+        Args:
+            expression: The expression string to analyze
+            
+        Returns:
+            bool: True if the expression appears to be a source column, False if it's a calculation
+        """
+        if not expression:
+            return False
+            
+        # Check if the expression matches the pattern of bracketed segments separated by dots
+        # This is typical for direct source column references: [Namespace].[Folder].[Item]
+        source_column_pattern = r'^\[.*?\](?:\.\[.*?\])+$'
+        if re.match(source_column_pattern, expression):
+            # Check for indicators that this might be a calculation despite matching the pattern
+            calculation_indicators = [
+                '(', ')',  # Function calls or grouping
+                '+', '-', '*', '/', '>', '<', '=',  # Common operators
+                ' if ', ' then ', ' else ',  # Conditional logic
+                ' and ', ' or ', ' not ',  # Logical operators
+                ' in ', ' case ', ' when '  # Other keywords
+            ]
+            
+            # If any calculation indicators are found, it's likely a calculation
+            for indicator in calculation_indicators:
+                if indicator in expression:
+                    self.logger.debug(f"Expression '{expression}' contains '{indicator}', classified as calculation")
+                    return False
+                    
+            # If no calculation indicators found, it's likely a source column
+            self.logger.debug(f"Expression '{expression}' classified as source column")
+            return True
+        else:
+            # If it doesn't match the source column pattern, it's a calculation
+            self.logger.debug(f"Expression '{expression}' doesn't match source column pattern, classified as calculation")
+            return False
     
     def extract_expressions(self, root, ns=None):
         """Extract expressions from report specification XML"""
@@ -31,6 +75,11 @@ class ExpressionExtractor(BaseExtractor):
                 # Extract the expression text
                 expr_text = self.get_element_text(expr_elem)
                 if not expr_text:
+                    continue
+                    
+                # Skip source columns - we only want to include calculations
+                if self.is_source_column(expr_text):
+                    self.logger.debug(f"Skipping source column expression: {expr_text}")
                     continue
                     
                 # Try to determine context by looking at parent elements

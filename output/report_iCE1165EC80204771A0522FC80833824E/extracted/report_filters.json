@@ -1,0 +1,14 @@
+[
+  {
+    "id": "detail_filter_0_0",
+    "type": "detail",
+    "queryName": "Query1",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductID] in ?Parameter1?"
+  },
+  {
+    "id": "detail_filter_1_0",
+    "type": "detail",
+    "queryName": "Query2",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductID] = ?Parameter1?"
+  }
+]

@@ -1,90 +1,100 @@
 [
   {
     "name": "Year",
-    "id": "",
+    "id": "Year",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Time_Dimension].[Year_]",
+    "type": "source_column",
     "dataType": "1",
     "dataUsage": "1",
     "queryName": "Query1"
   },
   {
     "name": "Quarter",
-    "id": "",
+    "id": "Quarter",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Time_Dimension].[Quarter]",
+    "type": "source_column",
     "dataType": "3",
     "dataUsage": "1",
     "queryName": "Query1"
   },
   {
     "name": "Month",
-    "id": "",
+    "id": "Month",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Time_Dimension].[Month_]",
+    "type": "source_column",
     "dataType": "3",
     "dataUsage": "1",
     "queryName": "Query1"
   },
   {
     "name": "ProductName",
-    "id": "",
+    "id": "ProductName",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductName]",
+    "type": "source_column",
     "dataType": "3",
     "dataUsage": "0",
     "queryName": "Query1"
   },
   {
     "name": "Country",
-    "id": "",
+    "id": "Country",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Location_Dimension].[Country]",
+    "type": "source_column",
     "dataType": "3",
     "dataUsage": "1",
     "queryName": "Query1"
   },
   {
     "name": "State",
-    "id": "",
+    "id": "State",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Location_Dimension].[State_]",
+    "type": "source_column",
     "dataType": "3",
     "dataUsage": "1",
     "queryName": "Query1"
   },
   {
     "name": "SalesAmount",
-    "id": "",
+    "id": "SalesAmount",
     "aggregate": "total",
     "expression": "[C].[C_Sample_Dimensional_DM].[FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio].[SalesAmount]",
+    "type": "source_column",
     "dataType": "1",
     "dataUsage": "2",
     "queryName": "Query1"
   },
   {
     "name": "Quantity",
-    "id": "",
+    "id": "Quantity",
     "aggregate": "total",
     "expression": "[C].[C_Sample_Dimensional_DM].[FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio].[Quantity]",
+    "type": "source_column",
     "dataType": "1",
     "dataUsage": "2",
     "queryName": "Query1"
   },
   {
     "name": "ProductID",
-    "id": "",
+    "id": "ProductID",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductID]",
+    "type": "source_column",
     "dataType": "1",
     "dataUsage": "1",
     "queryName": "Query2"
   },
   {
     "name": "ProductName",
-    "id": "",
+    "id": "ProductName",
     "aggregate": "none",
     "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductName]",
+    "type": "source_column",
     "dataType": "3",
     "dataUsage": "0",
     "queryName": "Query1"
