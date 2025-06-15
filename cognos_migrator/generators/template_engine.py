@@ -95,13 +95,21 @@ class TemplateEngine:
             
         template = self.templates[template_name]
         
+        # Debug logging
+        self.logger.debug(f"Rendering template: {template_name}")
+        self.logger.debug(f"Context keys: {list(context.keys())}")
+        
         if template_name == 'table':
             # Use handlebars for table template
             result = template(context)
             return result
         else:
             # Use Jinja2 for other templates
-            return self._render_jinja_template(template, context)
+            try:
+                return self._render_jinja_template(template, context)
+            except Exception as e:
+                self.logger.error(f"Error rendering template {template_name}: {e}")
+                raise
     
     def _render_jinja_template(self, template: Template, context: Dict[str, Any]) -> str:
         """Render a Jinja2 template with the given context"""

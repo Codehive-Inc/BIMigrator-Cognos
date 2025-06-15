@@ -327,7 +327,13 @@ class PowerBIProjectOrchestrator:
                 'section_id': 'section1',
                 'section_name': 'Page 1',
                 'section_display_name': 'Page 1',
-                'visuals': []
+                'visuals': [],
+                # Add default layout information
+                'layout': {
+                    'width': 1280,
+                    'height': 720,
+                    'display_option': 'FitToPage'
+                }
             }
             
             content = self.template_engine.render('report_section', context)
@@ -357,7 +363,13 @@ class PowerBIProjectOrchestrator:
             'section_id': page_id,
             'section_name': page_name,
             'section_display_name': page_display_name,
-            'visuals': []
+            'visuals': [],
+            # Add default layout information
+            'layout': {
+                'width': 1280,
+                'height': 720,
+                'display_option': 'FitToPage'
+            }
         }
         
         return context
@@ -373,7 +385,12 @@ class PowerBIProjectOrchestrator:
         static_dir.mkdir(parents=True, exist_ok=True)
         
         # Generate CY23SU04.json file
-        context = {}
+        # Provide the expected variables directly in the context
+        context = {
+            'version': '1.0',
+            'nodes': [],  # Direct access in template
+            'edges': []   # Direct access in template
+        }
         content = self.template_engine.render('diagram_layout', context)
         
         layout_file = static_dir / 'CY23SU04.json'

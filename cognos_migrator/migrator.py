@@ -115,7 +115,7 @@ class CognosMigrator:
                 return False
             
             # Step 4: Generate documentation
-            self.doc_generator.generate_migration_report(powerbi_project, str(extracted_dir))
+            self.doc_generator.generate_migration_report(powerbi_project, extracted_dir)
             
             # If CPF metadata is available, save it to the extracted folder
             if self.cpf_extractor:

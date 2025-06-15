@@ -173,7 +173,13 @@ class ReportFileGenerator:
                     'section_id': section.get('id', f'section{i}'),
                     'section_name': section.get('name', f'Section {i}'),
                     'section_display_name': section.get('display_name', f'Section {i}'),
-                    'visuals': section.get('visuals', [])
+                    'visuals': section.get('visuals', []),
+                    # Add default layout information
+                    'layout': {
+                        'width': 1280,
+                        'height': 720,
+                        'display_option': 'FitToPage'
+                    }
                 }
                 
                 content = self.template_engine.render('report_section', context)
@@ -189,7 +195,13 @@ class ReportFileGenerator:
                 'section_id': 'section1',
                 'section_name': 'Page 1',
                 'section_display_name': 'Page 1',
-                'visuals': []
+                'visuals': [],
+                # Add default layout information
+                'layout': {
+                    'width': 1280,
+                    'height': 720,
+                    'display_option': 'FitToPage'
+                }
             }
             
             content = self.template_engine.render('report_section', context)
@@ -203,12 +215,11 @@ class ReportFileGenerator:
     def _generate_diagram_layout(self, report_dir: Path):
         """Generate diagram layout file"""
         # Create a basic layout context with nodes and edges
-        # This addresses the 'layout' is undefined error
+        # Provide the expected variables directly in the context
         context = {
-            'layout': {
-                'nodes': [],
-                'edges': []
-            }
+            'version': '1.0',
+            'nodes': [],  # Direct access in template
+            'edges': []   # Direct access in template
         }
         
         try:
@@ -224,7 +235,13 @@ class ReportFileGenerator:
             # Save to extracted directory if applicable
             extracted_dir = get_extracted_dir(report_dir)
             if extracted_dir:
-                save_json_to_extracted_dir(extracted_dir, "layout.json", context['layout'])
+                # Save the diagram layout context directly
+                layout_data = {
+                    "version": context.get('version', '1.0'),
+                    "nodes": context.get('nodes', []),
+                    "edges": context.get('edges', [])
+                }
+                save_json_to_extracted_dir(extracted_dir, "layout.json", layout_data)
                 
             self.logger.info(f"Generated diagram layout file: {layout_file}")
         except Exception as e:
