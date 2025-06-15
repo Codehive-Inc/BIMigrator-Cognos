@@ -12,7 +12,8 @@ from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
 
 from cognos_migrator.config import ConfigManager, MigrationConfig
-from cognos_migrator.extractors import BaseExtractor, QueryExtractor, DataItemExtractor, ExpressionExtractor
+from cognos_migrator.extractors import BaseExtractor, QueryExtractor, DataItemExtractor, ExpressionExtractor, ParameterExtractor, FilterExtractor, LayoutExtractor
+from cognos_migrator.enhancers import CPFMetadataEnhancer
 from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
 # Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
@@ -45,15 +46,20 @@ class CognosMigrator:
         self.query_extractor = QueryExtractor(logger=self.logger)
         self.data_item_extractor = DataItemExtractor(logger=self.logger)
         self.expression_extractor = ExpressionExtractor(logger=self.logger)
+        self.parameter_extractor = ParameterExtractor(logger=self.logger)
+        self.filter_extractor = FilterExtractor(logger=self.logger)
+        self.layout_extractor = LayoutExtractor(logger=self.logger)
         
         # Initialize CPF extractor if a CPF file path is provided
         self.cpf_extractor = None
+        self.cpf_metadata_enhancer = None
         if cpf_file_path:
-            self.cpf_extractor = CPFExtractor(cpf_file_path)
+            self.cpf_extractor = CPFExtractor(cpf_file_path, logger=self.logger)
             if not self.cpf_extractor.metadata:
                 self.logger.warning(f"Failed to load CPF file: {cpf_file_path}")
                 self.cpf_extractor = None
             else:
+                self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
                 self.logger.info(f"Successfully loaded CPF file: {cpf_file_path}")
     
     def migrate_report(self, report_id: str, output_path: str) -> bool:
@@ -90,8 +96,8 @@ class CognosMigrator:
                 return False
             
             # If CPF metadata is available, enhance the Power BI project with it
-            if self.cpf_extractor:
-                self._enhance_with_cpf_metadata(powerbi_project)
+            if self.cpf_extractor and self.cpf_metadata_enhancer:
+                self.cpf_metadata_enhancer.enhance_project(powerbi_project)
             
             # Step 3: Generate Power BI project files
             success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
@@ -586,19 +592,19 @@ class CognosMigrator:
                     json.dump(expressions, f, indent=2)
                 
                 # Extract and save parameters
-                parameters = self._extract_parameters_from_xml(root, ns)
+                parameters = self.parameter_extractor.extract_parameters(root, ns)
                 parameters_path = extracted_dir / "report_parameters.json"
                 with open(parameters_path, "w", encoding="utf-8") as f:
                     json.dump(parameters, f, indent=2)
                 
                 # Extract and save filters
-                filters = self._extract_filters_from_xml(root, ns)
+                filters = self.filter_extractor.extract_filters(root, ns)
                 filters_path = extracted_dir / "report_filters.json"
                 with open(filters_path, "w", encoding="utf-8") as f:
                     json.dump(filters, f, indent=2)
                 
-                # Extract and save layout information
-                layout = self._extract_layout_from_xml(root, ns)
+                # Extract and save layout
+                layout = self.layout_extractor.extract_layout(root, ns)
                 layout_path = extracted_dir / "report_layout.json"
                 with open(layout_path, "w", encoding="utf-8") as f:
                     json.dump(layout, f, indent=2)
@@ -619,381 +625,17 @@ class CognosMigrator:
     
     # _extract_expressions_from_xml method has been moved to ExpressionExtractor class
     
-    def _extract_parameters_from_xml(self, root, ns):
-        """Extract parameters from report specification XML"""
-        parameters = []
-        try:
-            # Register namespace if present
-            namespace = None
-            if ns and 'ns' in ns:
-                namespace = {"ns": ns['ns']}
-                import xml.etree.ElementTree as ET
-                ET.register_namespace('', ns['ns'])
-            
-            # Find the parameters section
-            if namespace:
-                params_section = root.find(".//{{{0}}}parameters".format(ns['ns']))
-                if params_section is None:
-                    # Try to find parameters in other locations
-                    params_section = root.find(".//{{{0}}}parameterList".format(ns['ns']))
-            else:
-                params_section = root.find("parameters")
-                if params_section is None:
-                    # Try to find parameters in other locations
-                    params_section = root.find("parameterList")
-                    
-            if params_section is None:
-                self.logger.warning("No parameters section found in report specification")
-                return parameters
-            
-            # Process each parameter
-            if namespace:
-                param_elements = params_section.findall(".//{{{0}}}parameter".format(ns['ns']))
-            else:
-                param_elements = params_section.findall("parameter")
-                
-            for i, param_elem in enumerate(param_elements):
-                param = {
-                    "id": param_elem.get("id", f"param_{i}"),
-                    "name": param_elem.get("name", f"Parameter {i}"),
-                    "type": param_elem.get("type", ""),
-                    "required": param_elem.get("required", "false"),
-                    "multiValue": param_elem.get("multiValue", "false"),
-                }
-                
-                # Extract default value
-                if namespace:
-                    default_elem = param_elem.find(".//{{{0}}}defaultValue".format(ns['ns']))
-                else:
-                    default_elem = param_elem.find("defaultValue")
-                    
-                if default_elem is not None:
-                    param["defaultValue"] = self._get_element_text(default_elem)
-                
-                # Extract allowed values
-                if namespace:
-                    values_elem = param_elem.find(".//{{{0}}}allowedValues".format(ns['ns']))
-                else:
-                    values_elem = param_elem.find("allowedValues")
-                    
-                if values_elem is not None:
-                    allowed_values = []
-                    if namespace:
-                        value_elements = values_elem.findall(".//{{{0}}}value".format(ns['ns']))
-                    else:
-                        value_elements = values_elem.findall("value")
-                        
-                    for value_elem in value_elements:
-                        allowed_values.append(self._get_element_text(value_elem))
-                    param["allowedValues"] = allowed_values
-                
-                parameters.append(param)
-        except Exception as e:
-            self.logger.warning(f"Error extracting parameters: {e}")
-        
-        return parameters
-
-    def _extract_filters_from_xml(self, root, ns):
-        """Extract filters from report specification XML"""
-        filters = []
-        try:
-            # Register namespace if present
-            namespace = None
-            if ns and 'ns' in ns:
-                namespace = {"ns": ns['ns']}
-                import xml.etree.ElementTree as ET
-                ET.register_namespace('', ns['ns'])
-            
-            # Find the queries section
-            if namespace:
-                queries_section = root.find(".//{{{0}}}queries".format(ns['ns']))
-            else:
-                queries_section = root.find("queries")
-                
-            if queries_section is None:
-                self.logger.warning("No queries section found in report specification")
-                return filters
-                
-            # Process each query
-            if namespace:
-                query_elements = queries_section.findall(".//{{{0}}}query".format(ns['ns']))
-            else:
-                query_elements = queries_section.findall("query")
-                
-            for query_idx, query_elem in enumerate(query_elements):
-                query_name = query_elem.get("name", f"Query {query_idx}")
-                
-                # Extract detail filters
-                if namespace:
-                    detail_filters_elem = query_elem.find(".//{{{0}}}detailFilters".format(ns['ns']))
-                else:
-                    detail_filters_elem = query_elem.find("detailFilters")
-                    
-                if detail_filters_elem is not None:
-                    if namespace:
-                        filter_elements = detail_filters_elem.findall(".//{{{0}}}detailFilter".format(ns['ns']))
-                    else:
-                        filter_elements = detail_filters_elem.findall("detailFilter")
-                        
-                    for i, filter_elem in enumerate(filter_elements):
-                        filter_data = {
-                            "id": filter_elem.get("id", f"detail_filter_{query_idx}_{i}"),
-                            "type": "detail",
-                            "queryName": query_name,
-                        }
-                        
-                        # Extract filter expression
-                        if namespace:
-                            expr_elem = filter_elem.find(".//{{{0}}}filterExpression".format(ns['ns']))
-                        else:
-                            expr_elem = filter_elem.find("filterExpression")
-                            
-                        if expr_elem is not None:
-                            filter_data["expression"] = self._get_element_text(expr_elem)
-                        
-                        filters.append(filter_data)
-                
-                # Extract summary filters
-                if namespace:
-                    summary_filters_elem = query_elem.find(".//{{{0}}}summaryFilters".format(ns['ns']))
-                else:
-                    summary_filters_elem = query_elem.find("summaryFilters")
-                    
-                if summary_filters_elem is not None:
-                    if namespace:
-                        filter_elements = summary_filters_elem.findall(".//{{{0}}}summaryFilter".format(ns['ns']))
-                    else:
-                        filter_elements = summary_filters_elem.findall("summaryFilter")
-                        
-                    for i, filter_elem in enumerate(filter_elements):
-                        filter_data = {
-                            "id": filter_elem.get("id", f"summary_filter_{query_idx}_{i}"),
-                            "type": "summary",
-                            "queryName": query_name,
-                        }
-                        
-                        # Extract filter expression
-                        if namespace:
-                            expr_elem = filter_elem.find(".//{{{0}}}filterExpression".format(ns['ns']))
-                        else:
-                            expr_elem = filter_elem.find("filterExpression")
-                            
-                        if expr_elem is not None:
-                            filter_data["expression"] = self._get_element_text(expr_elem)
-                        
-                        filters.append(filter_data)
-        except Exception as e:
-            self.logger.warning(f"Error extracting filters: {e}")
-        
-        return filters
+    # _extract_filters_from_xml method has been moved to FilterExtractor class
     
-    def _extract_layout_from_xml(self, root, ns=None):
-        """Extract layout information from report specification XML"""
-        layout = {
-            "pages": [],
-            "containers": [],
-            "visualizations": []
-        }
-        try:
-            # Register namespace if present
-            namespace = None
-            if ns and 'ns' in ns:
-                namespace = {"ns": ns['ns']}
-                import xml.etree.ElementTree as ET
-                ET.register_namespace('', ns['ns'])
-            
-            # Find layout section
-            if namespace:
-                layout_section = root.find(".//{{{0}}}layout".format(ns['ns']))
-                if layout_section is None:
-                    # Try to find layout in other locations
-                    layouts_section = root.find(".//{{{0}}}layouts".format(ns['ns']))
-                    if layouts_section is not None:
-                        layout_section = layouts_section.find(".//{{{0}}}layout".format(ns['ns']))
-            else:
-                layout_section = root.find("layout")
-                if layout_section is None:
-                    # Try to find layout in other locations
-                    layout_section = root.find("layouts/layout")
-                    
-            if layout_section is None:
-                self.logger.warning("No layout section found in report specification")
-                return layout
-            
-            # Extract page information
-            pages = []
-            if namespace:
-                page_elements = layout_section.findall(".//{{{0}}}page".format(ns['ns']))
-            else:
-                page_elements = layout_section.findall(".//page")
-                
-            for page_elem in page_elements:
-                page = {
-                    "id": page_elem.get("id", ""),
-                    "name": page_elem.get("name", ""),
-                    "style": page_elem.get("style", "")
-                }
-                pages.append(page)
-            layout["pages"] = pages
-            
-            # Extract container information (blocks, tables, etc.)
-            containers = []
-            if namespace:
-                block_elements = layout_section.findall(".//{{{0}}}block".format(ns['ns']))
-                table_elements = layout_section.findall(".//{{{0}}}table".format(ns['ns']))
-            else:
-                block_elements = layout_section.findall(".//block")
-                table_elements = layout_section.findall(".//table")
-                
-            for container_elem in block_elements + table_elements:
-                container = {
-                    "id": container_elem.get("id", ""),
-                    "type": container_elem.tag.split('}')[-1] if '}' in container_elem.tag else container_elem.tag,
-                    "style": container_elem.get("style", "")
-                }
-                containers.append(container)
-            layout["containers"] = containers
-            
-            # Extract visualization information (charts, crosstabs, lists, etc.)
-            visualizations = []
-            if namespace:
-                chart_elements = layout_section.findall(".//{{{0}}}chart".format(ns['ns']))
-                crosstab_elements = layout_section.findall(".//{{{0}}}crosstab".format(ns['ns']))
-                list_elements = layout_section.findall(".//{{{0}}}list".format(ns['ns']))
-            else:
-                chart_elements = layout_section.findall(".//chart")
-                crosstab_elements = layout_section.findall(".//crosstab")
-                list_elements = layout_section.findall(".//list")
-            
-            for viz_elem in chart_elements + crosstab_elements + list_elements:
-                viz = {
-                    "id": viz_elem.get("id", ""),
-                    "type": viz_elem.tag.split('}')[-1] if '}' in viz_elem.tag else viz_elem.tag,
-                    "style": viz_elem.get("style", "")
-                }
-                visualizations.append(viz)
-            layout["visualizations"] = visualizations
-            
-        except Exception as e:
-            self.logger.warning(f"Error extracting layout: {e}")
-        
-        return layout
+    # _extract_layout_from_xml method has been moved to LayoutExtractor class
     
     def _get_element_text(self, element):
         """Safely get text from an XML element"""
         return self.base_extractor.get_element_text(element)
     
-    def _enhance_with_cpf_metadata(self, powerbi_project: PowerBIProject) -> None:
-        """Enhance Power BI project with metadata from CPF file"""
-        try:
-            if not self.cpf_extractor or not powerbi_project or not powerbi_project.data_model:
-                return
-            
-            self.logger.info("Enhancing Power BI project with CPF metadata")
-            
-            # Enhance tables with CPF metadata
-            for table in powerbi_project.data_model.tables:
-                table_name = table.name
-                
-                # Get table schema from CPF metadata
-                table_schema = self.cpf_extractor.get_table_schema(table_name)
-                if not table_schema or not table_schema.get('columns'):
-                    continue
-                
-                self.logger.info(f"Enhancing table: {table_name} with CPF metadata")
-                
-                # Update column metadata
-                for col in table.columns:
-                    # Find matching column in CPF metadata
-                    for cpf_col in table_schema.get('columns', []):
-                        if cpf_col.get('name') == col.name:
-                            # Update column data type if available
-                            if cpf_col.get('dataType'):
-                                col.data_type = self._map_cpf_data_type(cpf_col.get('dataType'))
-                            
-                            # Update column description if available
-                            if cpf_col.get('expression'):
-                                col.description = f"Expression: {cpf_col.get('expression')}"
-                            
-                            break
-                
-                # Add relationships if available
-                for rel in table_schema.get('relationships', []):
-                    target_table = self._find_table_by_name(powerbi_project.data_model, 
-                                                         self.cpf_extractor.get_query_subject_by_id(rel.get('targetQuerySubjectId', '')).get('name', ''))
-                    
-                    if target_table:
-                        # Get column names
-                        source_cols = [self.cpf_extractor.get_column_name_by_id(col_id) for col_id in rel.get('sourceColumns', [])]
-                        target_cols = [self.cpf_extractor.get_column_name_by_id(col_id) for col_id in rel.get('targetColumns', [])]
-                        
-                        # Create relationship if columns are found
-                        if source_cols and target_cols:
-                            new_rel = Relationship(
-                                from_table=table.name,
-                                from_column=source_cols[0],  # Use first column for now
-                                to_table=target_table.name,
-                                to_column=target_cols[0],    # Use first column for now
-                                cardinality=self._map_cpf_cardinality(rel.get('cardinality', ''))
-                            )
-                            
-                            # Add relationship if it doesn't already exist
-                            if not self._relationship_exists(powerbi_project.data_model, new_rel):
-                                powerbi_project.data_model.relationships.append(new_rel)
-                                self.logger.info(f"Added relationship: {table.name}.{source_cols[0]} -> {target_table.name}.{target_cols[0]}")
-            
-            # Add M-query context to the project for later use
-            powerbi_project.metadata['cpf_metadata'] = True
-            
-            self.logger.info("Successfully enhanced Power BI project with CPF metadata")
-            
-        except Exception as e:
-            self.logger.error(f"Error enhancing with CPF metadata: {e}")
+    # _enhance_with_cpf_metadata method has been moved to CPFMetadataEnhancer class
     
-    def _map_cpf_data_type(self, cpf_type: str) -> str:
-        """Map CPF data type to Power BI data type"""
-        type_mapping = {
-            'xs:string': 'Text',
-            'xs:integer': 'Int64',
-            'xs:decimal': 'Decimal',
-            'xs:double': 'Double',
-            'xs:float': 'Double',
-            'xs:boolean': 'Boolean',
-            'xs:date': 'Date',
-            'xs:time': 'Time',
-            'xs:dateTime': 'DateTime',
-            'xs:duration': 'Duration'
-        }
-        
-        return type_mapping.get(cpf_type, 'Text')  # Default to Text if unknown
-    
-    def _map_cpf_cardinality(self, cardinality: str) -> str:
-        """Map CPF cardinality to Power BI cardinality"""
-        cardinality_mapping = {
-            'oneToOne': 'OneToOne',
-            'oneToMany': 'OneToMany',
-            'manyToOne': 'ManyToOne',
-            'manyToMany': 'ManyToMany'
-        }
-        
-        return cardinality_mapping.get(cardinality, 'ManyToOne')  # Default to ManyToOne if unknown
-    
-    def _find_table_by_name(self, data_model, table_name: str):
-        """Find a table in the data model by name"""
-        for table in data_model.tables:
-            if table.name == table_name:
-                return table
-        return None
-    
-    def _relationship_exists(self, data_model, new_rel: Relationship) -> bool:
-        """Check if a relationship already exists in the data model"""
-        for rel in data_model.relationships:
-            if (rel.from_table == new_rel.from_table and 
-                rel.from_column == new_rel.from_column and 
-                rel.to_table == new_rel.to_table and 
-                rel.to_column == new_rel.to_column):
-                return True
-        return False
+    # CPF metadata helper methods have been moved to CPFMetadataEnhancer class
     
     def get_migration_status(self, output_path: str) -> Dict[str, Any]:
         """Get status of migration in output directory"""
