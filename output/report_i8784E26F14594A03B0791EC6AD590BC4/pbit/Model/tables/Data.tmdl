@@ -1,0 +1,89 @@
+table 'Data'
+
+
+    column 'Year'
+        dataType: boolean
+        summarizeBy: none
+        sourceColumn: Year
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Quarter'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: Quarter
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Month'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: Month
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductName'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: ProductName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: Country
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SalesAmount'
+        dataType: boolean
+        summarizeBy: none
+        sourceColumn: SalesAmount
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Quantity'
+        dataType: boolean
+        summarizeBy: none
+        sourceColumn: Quantity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductID'
+        dataType: boolean
+        summarizeBy: none
+        sourceColumn: ProductID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductName'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: ProductName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

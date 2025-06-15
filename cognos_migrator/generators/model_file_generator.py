@@ -102,8 +102,20 @@ class ModelFileGenerator:
             try:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
                 
-                # Build table context
-                context = self._build_table_context(table, report_spec)
+                # Try to read data items from report_data_items.json for both JSON and TMDL files
+                data_items = []
+                if extracted_dir:
+                    data_items_file = extracted_dir / "report_data_items.json"
+                    if data_items_file.exists():
+                        try:
+                            with open(data_items_file, 'r', encoding='utf-8') as f:
+                                data_items = json.load(f)
+                            self.logger.info(f"Loaded {len(data_items)} data items for table {table.name} from {data_items_file}")
+                        except Exception as e:
+                            self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
+                
+                # Build table context with the data items
+                context = self._build_table_context(table, report_spec, data_items)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
@@ -115,16 +127,6 @@ class ModelFileGenerator:
                 
                 # Save table information as JSON in extracted directory
                 if extracted_dir:
-                    # Try to read data items from report_data_items.json
-                    data_items = []
-                    data_items_file = extracted_dir / "report_data_items.json"
-                    if data_items_file.exists():
-                        try:
-                            with open(data_items_file, 'r', encoding='utf-8') as f:
-                                data_items = json.load(f)
-                            self.logger.info(f"Loaded {len(data_items)} data items from {data_items_file}")
-                        except Exception as e:
-                            self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
                     
                     # Create a JSON representation of the table similar to table_Sheet1.json
                     table_json = {
@@ -231,16 +233,81 @@ class ModelFileGenerator:
                     
                 self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
     
-    def _build_table_context(self, table: Table, report_spec: Optional[str] = None) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None) -> Dict[str, Any]:
         """Build context for table template"""
         columns = []
-        for col in table.columns:
-            column = {
-                'name': col.name,
-                'data_type': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type),
-                'source_column': col.name
-            }
-            columns.append(column)
+        
+        # If data_items is not provided, try to get them from the extracted directory
+        if data_items is None:
+            data_items = []
+            # Try to get the extracted directory to read data items
+            extracted_dir = None
+            if hasattr(table, 'output_dir') and table.output_dir:
+                extracted_dir = get_extracted_dir(Path(table.output_dir))
+            else:
+                # Try to find the extracted directory from the model directory
+                model_dir = Path(f"output/report_{table.name}/pbit/Model")
+                if model_dir.exists():
+                    extracted_dir = get_extracted_dir(model_dir)
+                else:
+                    # Try a more general approach
+                    for report_dir in Path("output").glob("report_*"):
+                        if (report_dir / "extracted").exists():
+                            extracted_dir = report_dir / "extracted"
+                            break
+            
+            # Try to read data items from report_data_items.json
+            if extracted_dir:
+                data_items_file = extracted_dir / "report_data_items.json"
+                if data_items_file.exists():
+                    try:
+                        with open(data_items_file, 'r', encoding='utf-8') as f:
+                            data_items = json.load(f)
+                        self.logger.info(f"Loaded {len(data_items)} data items for table context from {data_items_file}")
+                    except Exception as e:
+                        self.logger.warning(f"Error loading data items for table context from {data_items_file}: {e}")
+        
+        # If we have data items, use them as columns
+        if data_items:
+            for item in data_items:
+                # Map Cognos data types to Power BI data types
+                data_type = "string"  # Default
+                if item.get('dataType') == '1':  # Boolean
+                    data_type = "boolean"
+                elif item.get('dataType') == '2':  # Integer
+                    data_type = "int64"
+                elif item.get('dataType') == '3':  # Decimal/Float
+                    data_type = "decimal"
+                elif item.get('dataType') == '4':  # Currency
+                    data_type = "currency"
+                elif item.get('dataType') == '7':  # Date/Time
+                    data_type = "datetime"
+                
+                column = {
+                    'name': item.get('name', 'Column'),
+                    'source_name': item.get('name', 'Column'),
+                    'datatype': data_type,
+                    'source_column': item.get('name', 'Column'),
+                    'is_calculated': item.get('type') == 'calculation',
+                    'summarize_by': 'none',
+                    'is_hidden': False,
+                    'annotations': {'SummarizationSetBy': 'Automatic'}
+                }
+                columns.append(column)
+        else:
+            # If no data items, use the table columns
+            for col in table.columns:
+                column = {
+                    'name': col.name,
+                    'source_name': col.name,
+                    'datatype': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
+                    'source_column': col.name,
+                    'is_calculated': hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                    'summarize_by': getattr(col, 'summarize_by', 'none'),
+                    'is_hidden': getattr(col, 'is_hidden', False),
+                    'annotations': {'SummarizationSetBy': 'Automatic'}
+                }
+                columns.append(column)
             
         # Build M expression for table partition
         try:
@@ -251,6 +318,7 @@ class ModelFileGenerator:
         
         context = {
             'table_name': table.name,
+            'source_name': table.name,
             'columns': columns,
             'partition_name': f"{table.name}-partition",
             'm_expression': m_expression
