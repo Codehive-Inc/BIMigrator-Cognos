@@ -5,7 +5,9 @@ This package contains converters for transforming Cognos elements to Power BI eq
 """
 
 from .expression_converter import ExpressionConverter
+from .mquery_converter import MQueryConverter
 
 __all__ = [
     'ExpressionConverter',
+    'MQueryConverter',
 ]

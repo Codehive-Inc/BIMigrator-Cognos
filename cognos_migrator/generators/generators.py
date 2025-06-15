@@ -149,14 +149,22 @@ class PowerBIProjectGenerator:
         
         # Initialize LLM service client if enabled
         self.llm_service = None
+        self.mquery_converter = None
         if hasattr(config, 'llm_service_enabled') and config.llm_service_enabled:
             self.logger.warning("LLM service is enabled for M-query generation")
             from ..llm_service import LLMServiceClient
+            from ..converters.mquery_converter import MQueryConverter
+            
+            # Initialize LLM service client
             self.llm_service = LLMServiceClient(
                 base_url=config.llm_service_url,
                 api_key=getattr(config, 'llm_service_api_key', None)
             )
             self.logger.warning(f"LLM service client initialized with URL: {config.llm_service_url}")
+            
+            # Initialize M-query converter
+            self.mquery_converter = MQueryConverter(self.llm_service)
+            self.logger.warning("M-query converter initialized with LLM service")
         else:
             self.logger.info("LLM service is disabled, using default M-query generation")
     
@@ -428,8 +436,10 @@ class PowerBIProjectGenerator:
         }
     
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
-        """Build M expression for table partition using LLM service"""
-        self.logger.info(f"Building M-expression for table: {table.name}")
+        """Build M expression for table partition using LLM service if available"""
+        # If LLM service is not configured, use the default implementation
+        self.logger.warning(f"Building M-expression for table: {table.name}")
+        self.logger.warning(f"LLM service available: {self.llm_service is not None}")
         
         # Check if table has source_query
         if hasattr(table, 'source_query'):
@@ -437,150 +447,14 @@ class PowerBIProjectGenerator:
         else:
             self.logger.info(f"Table {table.name} does not have source_query attribute")
         
-        if not self.llm_service:
-            error_msg = f"LLM service is not configured but required for M-query generation for table {table.name}"
+        if not self.mquery_converter:
+            error_msg = f"M-query converter is not configured but required for M-query generation for table {table.name}"
             self.logger.error(error_msg)
             raise Exception(error_msg)
         
-        # Prepare context for LLM service
-        context = {
-            'table_name': table.name,
-            'columns': [{
-                'name': col.name,
-                'data_type': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type),
-                'description': col.description if hasattr(col, 'description') else None
-            } for col in table.columns],
-            'source_query': table.source_query,
-        }
-        
-        # Add report specification if available
-        if report_spec:
-            # Extract relevant parts of the report spec to keep context size manageable
-            context['report_spec'] = self._extract_relevant_report_spec(report_spec, table.name)
-        
-        # Add data sample if available
-        if data_sample:
-            context['data_sample'] = data_sample
-        
-        # Call LLM service to generate optimized M-query
-        self.logger.warning(f"Generating optimized M-query for table {table.name} using LLM service")
-        m_query = self.llm_service.generate_m_query(context)
-        
-        # Clean the M-query by removing comments
-        cleaned_m_query = self._clean_m_query(m_query)
-        self.logger.warning(f"Cleaned M-query for table {table.name}")
-        return cleaned_m_query
-        
-    def _clean_m_query(self, m_query: str) -> str:
-        """Clean M-query by removing comments and fixing formatting"""
-        try:
-            # Log original query for debugging
-            self.logger.debug(f"Original M-query before cleaning: {m_query}")
-            
-            # Remove the leading 'm' if present (sometimes added by LLM)
-            if m_query.startswith('m '):
-                m_query = m_query[2:]
-            
-            # Parse the query to identify key components
-            if 'let' in m_query and 'in' in m_query:
-                # Extract the parts between let and in
-                let_part = m_query.split('let')[1].split('in')[0]
-                in_part = m_query.split('in')[1].strip()
-                
-                # Process the let part to remove comments but keep code
-                cleaned_let_part = ""
-                for line in let_part.split(','):
-                    # Remove comments (text after // or / /)
-                    code_part = re.sub(r'(/ /|//).*?(?=,|$)', '', line).strip()
-                    if code_part:
-                        cleaned_let_part += code_part + ", "
-                
-                # Remove trailing comma if present
-                cleaned_let_part = cleaned_let_part.rstrip(', ')
-                
-                # Clean the in part
-                cleaned_in_part = re.sub(r'(/ /|//).*', '', in_part).strip()
-                
-                # Reconstruct the query
-                m_query = f"let {cleaned_let_part} in {cleaned_in_part}"
-            
-                # Now extract the steps and format them properly
-                steps = []
-                for step in m_query.split('let')[1].split('in')[0].split(','):
-                    step = step.strip()
-                    if step:
-                        steps.append(step)
-                
-                # Format the final M-query with proper indentation for TMDL
-                formatted_query = "let\n"
-                
-                # Process each step
-                for i, step in enumerate(steps):
-                    if '=' in step:
-                        parts = step.split('=', 1)
-                        step_name = parts[0].strip()
-                        step_content = parts[1].strip()
-                        
-                        # Handle SQL queries - keep them on one line
-                        if 'Value.NativeQuery' in step_content or 'Sql.Database' in step_content:
-                            # Ensure SQL query is on one line
-                            sql_pattern = r'"([^"]*?)"'
-                            sql_queries = re.findall(sql_pattern, step_content)
-                            for sql in sql_queries:
-                                cleaned_sql = sql.replace('\n', ' ').replace('\r', '')
-                                step_content = step_content.replace(f'"{sql}"', f'"{cleaned_sql}"')
-                        
-                        # Handle parameter arrays - keep them on one line
-                        if '{{' in step_content and '}}' in step_content:
-                            # Ensure parameter arrays are on one line
-                            step_content = re.sub(r'\s+', ' ', step_content)
-                        
-                        formatted_query += f"\t\t\t\t{step_name} = {step_content}"
-                        if i < len(steps) - 1:
-                            formatted_query += ",\n"
-                    else:
-                        formatted_query += f"\t\t\t\t{step}"
-                        if i < len(steps) - 1:
-                            formatted_query += ",\n"
-                
-                # Add the 'in' part
-                formatted_query += "\n\t\t\tin\n\t\t\t\t" + cleaned_in_part
-                
-                self.logger.debug(f"Cleaned M-query: {formatted_query}")
-                return formatted_query
-            else:
-                # If the query doesn't have let/in structure, just return it as is
-                self.logger.debug(f"Cleaned M-query (unchanged): {m_query}")
-                return m_query
-        except Exception as e:
-            self.logger.warning(f"Error cleaning M-query: {e}")
-            return m_query
-    
-    def _extract_relevant_report_spec(self, report_spec: str, table_name: str) -> str:
-        """Extract relevant parts of the report specification for the given table"""
-        try:
-            # This is a simplified implementation - in a real-world scenario,
-            # you would parse the XML and extract only the relevant parts
-            # related to the table structure, data items, and calculations
-            import re
-            import xml.etree.ElementTree as ET
-            
-            # Find data items related to the table
-            root = ET.fromstring(report_spec)
-            data_items = root.findall('.//dataItem')
-            relevant_items = []
-            
-            for item in data_items:
-                # Check if the data item is related to the table
-                # This is a simplified check - you would need to adapt this
-                # based on your actual Cognos report structure
-                if table_name.lower() in ET.tostring(item, encoding='unicode').lower():
-                    relevant_items.append(ET.tostring(item, encoding='unicode'))
-            
-            return '\n'.join(relevant_items)
-        except Exception as e:
-            self.logger.warning(f"Failed to extract relevant report spec: {e}")
-            return ""
+        # Use the MQueryConverter to generate the M-query
+        self.logger.info(f"Generating optimized M-query for table {table.name} using M-query converter")
+        return self.mquery_converter.convert_to_m_query(table, report_spec, data_sample)
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""
