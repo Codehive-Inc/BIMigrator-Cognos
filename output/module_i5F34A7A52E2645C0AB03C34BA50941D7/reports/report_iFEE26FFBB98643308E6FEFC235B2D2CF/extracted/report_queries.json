@@ -1,0 +1,59 @@
+[
+  {
+    "id": "query_0",
+    "name": "Query1",
+    "source": "model",
+    "data_items": [
+      {
+        "name": "Regional Manager",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[People].[Regional_Manager]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Region",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[People].[Region]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Area",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[People].[Area]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Country",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[People].[Country]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Region1",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[Orders].[Region]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Order ID",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[Orders].[Order_ID]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Returned",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[Returns_].[Returned]",
+        "dataType": "3",
+        "dataUsage": "1"
+      }
+    ],
+    "filters": []
+  }
+]

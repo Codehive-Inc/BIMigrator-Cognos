@@ -1,0 +1,45 @@
+table 'Data'
+
+
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'No of Unique Orders' = ```
+            DISTINCTCOUNT('Data'[Order_ID])
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Orders Returned (Multiple Returns per Order)' = ```
+            IF('Data'[Returned] = "Yes", 1, 0)
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        annotation SummarizationSetBy = User
+
+        
+
+
+
+    partition 'Data' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table Data: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=30)
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

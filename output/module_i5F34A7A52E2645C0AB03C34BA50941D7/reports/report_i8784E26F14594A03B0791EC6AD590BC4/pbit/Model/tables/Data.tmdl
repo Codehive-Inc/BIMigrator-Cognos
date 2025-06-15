@@ -1,0 +1,99 @@
+table 'Data'
+
+
+    column 'Year'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: Year
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Quarter'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Quarter
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Month'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Month
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ProductName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Country
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SalesAmount'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: SalesAmount
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Quantity'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: Quantity
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'ProductID'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: ProductID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ProductName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Data' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table Data: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=30)
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table
