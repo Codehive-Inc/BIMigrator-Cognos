@@ -348,15 +348,29 @@ class ModelFileGenerator:
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
-                
+
                 # Write table file
                 table_file = tables_dir / f"{table.name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
-                
+
                 # Save table information as JSON in extracted directory
                 if extracted_dir:
-                    
+
+                    # Load calculations if available to update source_column for calculated fields
+                    calculations_map = {}
+                    calculations_file = extracted_dir / "calculations.json"
+                    if calculations_file.exists():
+                        try:
+                            with open(calculations_file, 'r', encoding='utf-8') as f:
+                                calculations_data = json.load(f)
+                                for calc in calculations_data.get('calculations', []):
+                                    if calc.get('TableName') == table.name and calc.get('FormulaDax'):
+                                        calculations_map[calc.get('CognosName')] = calc.get('FormulaDax')
+                            self.logger.info(f"Loaded {len(calculations_map)} calculations for table {table.name} from {calculations_file}")
+                        except Exception as e:
+                            self.logger.warning(f"Failed to load calculations from {calculations_file}: {e}")
+
                     # Create a JSON representation of the table similar to table_Sheet1.json
                     table_json = {
                         "source_name": table.name,
@@ -366,28 +380,38 @@ class ModelFileGenerator:
                         "is_hidden": getattr(table, 'is_hidden', False),
                         "columns": []
                     }
-                    
+
                     # If we have data items, use them as columns
                     if data_items:
                         for item in data_items:
                             # Use the comprehensive mapping function to get both data type and summarize_by
                             data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
+
                             
                             # Log the data type mapping for debugging
                             self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
                             
                             
+                            column_name = item.get('name', 'Column')
+                            is_calculation = item.get('type') == 'calculation'
+                            
+                            # Use DAX formula for calculated columns if available
+                            source_column = column_name
+                            if is_calculation and column_name in calculations_map:
+                                source_column = calculations_map[column_name]
+                                self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
+                            
                             column_json = {
-                                "source_name": item.get('name', 'Column'),
+                                "source_name": column_name,
                                 "datatype": data_type,
                                 "format_string": None,
                                 "lineage_tag": None,
-                                "source_column": item.get('name', 'Column'),
+                                "source_column": source_column,
                                 "description": None,
                                 "is_hidden": False,
                                 "summarize_by": summarize_by,
                                 "data_category": None,
-                                "is_calculated": item.get('type') == 'calculation',
+                                "is_calculated": is_calculation,
                                 "is_data_type_inferred": True,
                                 "annotations": {
                                     "SummarizationSetBy": "Automatic"
@@ -397,17 +421,25 @@ class ModelFileGenerator:
                     else:
                         # If no data items, use the table columns
                         for col in table.columns:
+                            is_calculated = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
+                            
+                            # Use DAX formula for calculated columns if available
+                            source_column = getattr(col, 'source_column', col.name)
+                            if is_calculated and col.name in calculations_map:
+                                source_column = calculations_map[col.name]
+                                self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
+                            
                             column_json = {
                                 "source_name": col.name,
                                 "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                                 "format_string": getattr(col, 'format_string', None),
                                 "lineage_tag": getattr(col, 'lineage_tag', None),
-                                "source_column": getattr(col, 'source_column', col.name),
+                                "source_column": source_column,
                                 "description": getattr(col, 'description', None),
                                 "is_hidden": getattr(col, 'is_hidden', False),
                                 "summarize_by": getattr(col, 'summarize_by', 'none'),
                                 "data_category": getattr(col, 'data_category', None),
-                                "is_calculated": hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                                "is_calculated": is_calculated,
                                 "is_data_type_inferred": True,
                                 "annotations": {
                                     "SummarizationSetBy": "Automatic"
