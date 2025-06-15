@@ -118,7 +118,7 @@ class ModelFileGenerator:
                             self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
                 
                 # Build table context with the data items
-                context = self._build_table_context(table, report_spec, data_items)
+                context = self._build_table_context(table, report_spec, data_items, extracted_dir)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
@@ -262,16 +262,14 @@ class ModelFileGenerator:
                     
                 self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
     
-    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None) -> Dict[str, Any]:
         """Build context for table template"""
         columns = []
         
-        # Use the specific report ID we're working with
-        report_id = "i85E7DF75D282452BAF5231C18F5B48A7"
-        extracted_dir = Path(f"output/report_{report_id}/extracted")
-        self.logger.info(f"Using hardcoded report ID {report_id} for extracted directory: {extracted_dir}")
-        
-        self.logger.info(f"Using extracted directory: {extracted_dir}")
+        if extracted_dir:
+            self.logger.info(f"Using extracted directory: {extracted_dir}")
+        else:
+            self.logger.warning(f"No extracted directory provided for table {table.name}")
         
         # Load calculations if available to update source_column for calculated fields
         calculations_map = {}
