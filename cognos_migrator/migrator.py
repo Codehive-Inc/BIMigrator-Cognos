@@ -375,9 +375,21 @@ class CognosMigrator:
             config={}
         )
         
+        # Convert ReportPage to dictionary to make it JSON serializable
+        page_dict = {
+            'name': page.name,
+            'display_name': page.display_name,
+            'width': page.width,
+            'height': page.height,
+            'visuals': page.visuals,
+            'filters': page.filters,
+            'config': page.config
+        }
+        
         report = Report(
+            id=getattr(cognos_report, 'id', f"report_{cognos_report.name.lower().replace(' ', '_')}"),
             name=cognos_report.name,
-            pages=[page],
+            sections=[page_dict],
             data_model=data_model,
             config={
                 "theme": "CorporateTheme",
@@ -397,13 +409,18 @@ class CognosMigrator:
             successful_reports = sum(1 for success in results.values() if success)
             failed_reports = total_reports - successful_reports
             
+            # Calculate success rate with check for division by zero
+            success_rate = 0.0
+            if total_reports > 0:
+                success_rate = (successful_reports / total_reports) * 100
+            
             summary_content = f"""# Migration Summary Report
 
 ## Overview
 - **Total Reports**: {total_reports}
 - **Successful Migrations**: {successful_reports}
 - **Failed Migrations**: {failed_reports}
-- **Success Rate**: {(successful_reports/total_reports*100):.1f}%
+- **Success Rate**: {success_rate:.1f}%
 
 ## Migration Results
 

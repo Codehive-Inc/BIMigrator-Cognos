@@ -6,8 +6,10 @@ import re
 from pathlib import Path
 import logging
 from typing import Dict, Any, List, Optional
+import json
 
 import pybars
+from jinja2 import Environment, FileSystemLoader, Template
 
 
 class TemplateEngine:
@@ -29,6 +31,17 @@ class TemplateEngine:
         # Initialize template cache
         self.templates = {}
         self.handlebars_compiler = pybars.Compiler()
+        
+        # Initialize Jinja2 environment
+        self.jinja_env = Environment(
+            loader=FileSystemLoader(str(self.template_directory)),
+            autoescape=False,  # Don't escape HTML by default
+            trim_blocks=True,  # Remove first newline after a block
+            lstrip_blocks=True  # Strip tabs and spaces from the beginning of a line to the start of a block
+        )
+        
+        # Add custom filters
+        self.jinja_env.filters['safe'] = lambda x: x  # 'safe' filter to prevent escaping
         
         # Load all templates
         self._load_templates()
@@ -72,8 +85,8 @@ class TemplateEngine:
                 # Compile handlebars template
                 self.templates[template_name] = self.handlebars_compiler.compile(template_content)
             else:
-                # Store as simple template
-                self.templates[template_name] = template_content
+                # Compile Jinja2 template
+                self.templates[template_name] = self.jinja_env.from_string(template_content)
     
     def render(self, template_name: str, context: Dict[str, Any]) -> str:
         """Render a template with the given context"""
@@ -87,26 +100,22 @@ class TemplateEngine:
             result = template(context)
             return result
         else:
-            # Use simple string formatting for other templates
-            return self._render_simple_template(template, context)
+            # Use Jinja2 for other templates
+            return self._render_jinja_template(template, context)
     
-    def _render_simple_template(self, template: str, context: Dict[str, Any]) -> str:
-        """Render a simple template using string formatting"""
-        # Replace placeholders with values from context
-        result = template
-        
-        # First pass: replace complex nested structures with JSON strings
-        for key, value in context.items():
-            placeholder = f"{{{{ {key} }}}}"
-            if isinstance(value, (dict, list)):
-                import json
-                result = result.replace(placeholder, json.dumps(value))
+    def _render_jinja_template(self, template: Template, context: Dict[str, Any]) -> str:
+        """Render a Jinja2 template with the given context"""
+        try:
+            # Process context to ensure JSON serializable values for complex structures
+            processed_context = {}
+            for key, value in context.items():
+                if isinstance(value, (dict, list)):
+                    # Convert to JSON string if needed by the template
+                    processed_context[key + '_json'] = json.dumps(value)
+                processed_context[key] = value
                 
-        # Second pass: replace simple values
-        for key, value in context.items():
-            placeholder = f"{{{{ {key} }}}}"
-            if isinstance(value, (str, int, float, bool)) or value is None:
-                str_value = str(value) if value is not None else ""
-                result = result.replace(placeholder, str_value)
-                
-        return result
+            # Render the template with the processed context
+            return template.render(**processed_context)
+        except Exception as e:
+            self.logger.error(f"Error rendering template: {e}")
+            raise

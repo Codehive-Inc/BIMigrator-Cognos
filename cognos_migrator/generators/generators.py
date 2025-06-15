@@ -373,14 +373,28 @@ class PowerBIProjectOrchestrator:
         static_dir.mkdir(parents=True, exist_ok=True)
         
         # Generate CY23SU04.json file
-        context = {}
-        content = self.template_engine.render('diagram_layout', context)
+        # Provide a default empty layout to satisfy the template requirements
+        context = {
+            'layout': {},  # Add the missing layout variable
+            'version': '1.0.0'
+        }
         
-        layout_file = static_dir / 'CY23SU04.json'
-        with open(layout_file, 'w', encoding='utf-8') as f:
-            f.write(content)
+        try:
+            content = self.template_engine.render('diagram_layout', context)
             
-        self.logger.info(f"Generated static resources: {layout_file}")
+            layout_file = static_dir / 'CY23SU04.json'
+            with open(layout_file, 'w', encoding='utf-8') as f:
+                f.write(content)
+                
+            self.logger.info(f"Generated static resources: {layout_file}")
+        except Exception as e:
+            self.logger.error(f"Failed to generate diagram layout: {e}")
+            # Create an empty file as fallback
+            layout_file = static_dir / 'CY23SU04.json'
+            with open(layout_file, 'w', encoding='utf-8') as f:
+                f.write('{}')
+            self.logger.warning(f"Created empty diagram layout file as fallback: {layout_file}")
+            # This is not a critical error, so we don't want to fail the entire process
     
     def _sanitize_filename(self, filename: str) -> str:
         """Sanitize filename for filesystem compatibility

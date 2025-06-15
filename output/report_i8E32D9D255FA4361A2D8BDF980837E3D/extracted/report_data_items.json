@@ -1,0 +1,20 @@
+[
+  {
+    "name": "As Of Date",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date]",
+    "dataType": "7",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Time Perspective",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Time_Perspective_data_module].[Sheet1].[Time_Perspective]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "calculations": [
+    {
+      "TableName": "Data",
+      "FormulaCaptionCognos": "As Of Date",
+      "CognosName": "As Of Date",
+      "FormulaCognos": "[C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date]",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "As Of Date",
+      "FormulaDax": "[C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date]",
+      "Status": "needs_review"
+    },
+    {
+      "TableName": "Data",
+      "FormulaCaptionCognos": "Time Perspective",
+      "CognosName": "Time Perspective",
+      "FormulaCognos": "[C].[C_Time_Perspective_data_module].[Sheet1].[Time_Perspective]",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "Time Perspective",
+      "FormulaDax": "'Data'[Time_Perspective]",
+      "Status": "converted"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "{{ name }}",
+  "displayName": "{{ display_name }}",
+  "filters": [
+    {%- for filter in filters %}
+    {
+      "filterType": "{{ filter.type }}",
+      "target": {
+        "table": "{{ filter.table }}",
+        "column": "{{ filter.column }}"
+      },
+      "value": {{ filter.value }}
+    }{%- if not loop.last %},{% endif %}
+    {%- endfor %}
+  ],
+  "config": {
+    "objects": {
+      "visuals": [
+        {%- for visual in visuals %}
+        {
+          "id": "{{ visual.id }}",
+          "type": "{{ visual.type }}",
+          "properties": {{ visual.properties|safe }}
+        }{%- if not loop.last %},{% endif %}
+        {%- endfor %}
+      ]
+    },
+    "layout": {
+      "width": {{ layout.width }},
+      "height": {{ layout.height }},
+      "displayOption": "{{ layout.display_option }}"
+    }
+  }
+}

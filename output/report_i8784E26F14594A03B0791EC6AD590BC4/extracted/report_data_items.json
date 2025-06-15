@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Year",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Time_Dimension].[Year_]",
+    "dataType": "1",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Quarter",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Time_Dimension].[Quarter]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Month",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Time_Dimension].[Month_]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "ProductName",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductName]",
+    "dataType": "3",
+    "dataUsage": "0",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Country",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Location_Dimension].[Country]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "State",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Location_Dimension].[State_]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "SalesAmount",
+    "id": "",
+    "aggregate": "total",
+    "expression": "[C].[C_Sample_Dimensional_DM].[FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio].[SalesAmount]",
+    "dataType": "1",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Quantity",
+    "id": "",
+    "aggregate": "total",
+    "expression": "[C].[C_Sample_Dimensional_DM].[FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio].[Quantity]",
+    "dataType": "1",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "ProductID",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductID]",
+    "dataType": "1",
+    "dataUsage": "1",
+    "queryName": "Query2"
+  },
+  {
+    "name": "ProductName",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Sample_Dimensional_DM].[Product_Dimension].[ProductName]",
+    "dataType": "3",
+    "dataUsage": "0",
+    "queryName": "Query1"
+  }
+]

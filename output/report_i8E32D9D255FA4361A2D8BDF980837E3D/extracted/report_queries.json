@@ -1,0 +1,33 @@
+[
+  {
+    "id": "query_0",
+    "name": "Query1",
+    "source": "model",
+    "data_items": [
+      {
+        "name": "As Of Date",
+        "aggregate": "none",
+        "expression": "[C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date]",
+        "dataType": "7",
+        "dataUsage": "1"
+      },
+      {
+        "name": "Time Perspective",
+        "aggregate": "none",
+        "expression": "[C].[C_Time_Perspective_data_module].[Sheet1].[Time_Perspective]",
+        "dataType": "3",
+        "dataUsage": "1"
+      }
+    ],
+    "filters": [
+      {
+        "type": "detail",
+        "expression": "[As Of Date] = ?_as_of_date?"
+      },
+      {
+        "type": "detail",
+        "expression": "[Time Perspective] = ?Time Perspective?"
+      }
+    ]
+  }
+]
