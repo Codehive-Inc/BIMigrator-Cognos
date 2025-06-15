@@ -2,12 +2,17 @@
 Main migration orchestrator for Cognos to Power BI migration
 """
 
+import os
+import sys
+import json
 import logging
+import shutil
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
 
-from .config import CognosConfig, MigrationConfig, ConfigManager
+from cognos_migrator.config import ConfigManager, MigrationConfig
+from cognos_migrator.extractors import BaseExtractor, QueryExtractor
 from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
 # Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
@@ -20,11 +25,11 @@ from .cpf_extractor import CPFExtractor
 
 
 class CognosMigrator:
-    """Main orchestrator for Cognos to Power BI migration"""
+    """Main migration orchestrator for Cognos to Power BI migration"""
     
-    def __init__(self, config: MigrationConfig, base_url: str = None, session_key: str = None, cpf_file_path: str = None):
+    def __init__(self, config: MigrationConfig, logger=None, base_url: str = None, session_key: str = None, cpf_file_path: str = None):
         self.config = config
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
         
         # Initialize components
         config_manager = ConfigManager()
@@ -34,6 +39,10 @@ class CognosMigrator:
         self.report_parser = CognosReportSpecificationParser()
         self.project_generator = PowerBIProjectGenerator(config)
         self.doc_generator = DocumentationGenerator(config)
+        
+        # Initialize extractors for XML operations
+        self.base_extractor = BaseExtractor(logger=self.logger)
+        self.query_extractor = QueryExtractor(logger=self.logger)
         
         # Initialize CPF extractor if a CPF file path is provided
         self.cpf_extractor = None
@@ -557,7 +566,7 @@ class CognosMigrator:
                     self.logger.info(f"Detected XML namespace: {ns_uri}")
                 
                 # Extract and save queries
-                queries = self._extract_queries_from_xml(root, ns)
+                queries = self.query_extractor.extract_queries(root, ns)
                 queries_path = extracted_dir / "report_queries.json"
                 with open(queries_path, "w", encoding="utf-8") as f:
                     json.dump(queries, f, indent=2)
@@ -602,163 +611,7 @@ class CognosMigrator:
         except Exception as e:
             self.logger.error(f"Failed to save extracted data: {e}")
     
-    def _extract_queries_from_xml(self, root, ns):
-        """Extract queries from report specification XML"""
-        queries = []
-        try:
-            # Register namespace if present
-            namespace = None
-            if ns and 'ns' in ns:
-                namespace = {"ns": ns['ns']}
-                import xml.etree.ElementTree as ET
-                ET.register_namespace('', ns['ns'])
-            
-            # Find the queries section directly under the root
-            if namespace:
-                queries_section = root.find(".//{{{0}}}queries".format(ns['ns']))
-            else:
-                queries_section = root.find("queries")
-                
-            if queries_section is None:
-                self.logger.warning("No queries section found in report specification")
-                return queries
-                
-            # Find all query elements
-            if namespace:
-                query_elements = queries_section.findall(".//{{{0}}}query".format(ns['ns']))
-            else:
-                query_elements = queries_section.findall("query")
-                
-            for i, query_elem in enumerate(query_elements):
-                query = {
-                    "id": query_elem.get("id", f"query_{i}"),
-                    "name": query_elem.get("name", f"Query {i}"),
-                }
-                
-                # Find source element
-                if namespace:
-                    source_elem = query_elem.find(".//{{{0}}}source".format(ns['ns']))
-                    if source_elem is not None:
-                        model_elem = source_elem.find(".//{{{0}}}model".format(ns['ns']))
-                else:
-                    source_elem = query_elem.find("source")
-                    if source_elem is not None:
-                        model_elem = source_elem.find("model")
-                        
-                if source_elem is not None:
-                    if model_elem is not None:
-                        query["source"] = "model"
-                    else:
-                        query["source"] = self._get_element_text(source_elem)
-                        
-                # Extract data items
-                data_items = []
-                if namespace:
-                    selection_elem = query_elem.find(".//{{{0}}}selection".format(ns['ns']))
-                else:
-                    selection_elem = query_elem.find("selection")
-                    
-                if selection_elem is not None:
-                    if namespace:
-                        item_elements = selection_elem.findall(".//{{{0}}}dataItem".format(ns['ns']))
-                    else:
-                        item_elements = selection_elem.findall("dataItem")
-                        
-                    for item in item_elements:
-                        data_item = {
-                            "name": item.get("name", ""),
-                            "aggregate": item.get("aggregate", "none"),
-                        }
-                        
-                        if namespace:
-                            expr_elem = item.find(".//{{{0}}}expression".format(ns['ns']))
-                        else:
-                            expr_elem = item.find("expression")
-                            
-                        if expr_elem is not None:
-                            data_item["expression"] = self._get_element_text(expr_elem)
-                        
-                        # Extract XML attributes for data type and usage
-                        if namespace:
-                            xml_attrs = item.find(".//{{{0}}}XMLAttributes".format(ns['ns']))
-                        else:
-                            xml_attrs = item.find("XMLAttributes")
-                            
-                        if xml_attrs is not None:
-                            if namespace:
-                                data_type_attr = xml_attrs.find(".//{{{0}}}XMLAttribute[@name='RS_dataType']".format(ns['ns']))
-                                data_usage_attr = xml_attrs.find(".//{{{0}}}XMLAttribute[@name='RS_dataUsage']".format(ns['ns']))
-                            else:
-                                data_type_attr = xml_attrs.find("XMLAttribute[@name='RS_dataType']")
-                                data_usage_attr = xml_attrs.find("XMLAttribute[@name='RS_dataUsage']")
-                                
-                            if data_type_attr is not None:
-                                data_item["dataType"] = data_type_attr.get("value", "")
-                            if data_usage_attr is not None:
-                                data_item["dataUsage"] = data_usage_attr.get("value", "")
-                                
-                        data_items.append(data_item)
-                query["data_items"] = data_items
-                
-                # Extract filters
-                filters = []
-                
-                # Detail filters
-                if namespace:
-                    detail_filters = query_elem.find(".//{{{0}}}detailFilters".format(ns['ns']))
-                else:
-                    detail_filters = query_elem.find("detailFilters")
-                    
-                if detail_filters is not None:
-                    if namespace:
-                        filter_elements = detail_filters.findall(".//{{{0}}}detailFilter".format(ns['ns']))
-                    else:
-                        filter_elements = detail_filters.findall("detailFilter")
-                        
-                    for filter_elem in filter_elements:
-                        if namespace:
-                            filter_expr = filter_elem.find(".//{{{0}}}filterExpression".format(ns['ns']))
-                        else:
-                            filter_expr = filter_elem.find("filterExpression")
-                            
-                        if filter_expr is not None:
-                            filters.append({
-                                "type": "detail",
-                                "expression": self._get_element_text(filter_expr)
-                            })
-                
-                # Summary filters
-                if namespace:
-                    summary_filters_elem = query_elem.find(".//{{{0}}}summaryFilters".format(ns['ns']))
-                else:
-                    summary_filters_elem = query_elem.find("summaryFilters")
-                    
-                if summary_filters_elem is not None:
-                    if namespace:
-                        filter_elements = summary_filters_elem.findall(".//{{{0}}}summaryFilter".format(ns['ns']))
-                    else:
-                        filter_elements = summary_filters_elem.findall("summaryFilter")
-                        
-                    for filter_elem in filter_elements:
-                        if namespace:
-                            filter_expr = filter_elem.find(".//{{{0}}}filterExpression".format(ns['ns']))
-                        else:
-                            filter_expr = filter_elem.find("filterExpression")
-                            
-                        if filter_expr is not None:
-                            filters.append({
-                                "type": "summary",
-                                "expression": self._get_element_text(filter_expr)
-                            })
-                
-                query["filters"] = filters
-                queries.append(query)
-                
-            return queries
-            
-        except Exception as e:
-            self.logger.warning(f"Error extracting filters from XML: {e}")
-            return filters
+    # _extract_queries_from_xml method has been moved to QueryExtractor class
     
     def _extract_data_items_from_xml(self, root, ns):
         """Extract data items from report specification XML"""
@@ -1179,9 +1032,7 @@ class CognosMigrator:
     
     def _get_element_text(self, element):
         """Safely get text from an XML element"""
-        if element is None:
-            return ""
-        return element.text or ""
+        return self.base_extractor.get_element_text(element)
     
     def _enhance_with_cpf_metadata(self, powerbi_project: PowerBIProject) -> None:
         """Enhance Power BI project with metadata from CPF file"""
