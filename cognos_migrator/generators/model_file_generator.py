@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
+from .utils import get_extracted_dir, save_json_to_extracted_dir
+
 from ..models import DataModel, Table, Relationship
 from ..converters import MQueryConverter
 from .template_engine import TemplateEngine
@@ -76,6 +78,15 @@ class ModelFileGenerator:
         database_file = model_dir / 'database.tmdl'
         with open(database_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save database info as JSON
+            database_json = {
+                "name": data_model.name
+            }
+            save_json_to_extracted_dir(extracted_dir, "database.json", database_json)
             
         self.logger.info(f"Generated database file: {database_file}")
     
@@ -83,6 +94,9 @@ class ModelFileGenerator:
         """Generate table/*.tmdl files"""
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
+        
+        # Get extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
         
         for table in tables:
             try:
@@ -98,7 +112,46 @@ class ModelFileGenerator:
                 table_file = tables_dir / f"{table.name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
+                
+                # Save table information as JSON in extracted directory
+                if extracted_dir:
+                    # Create a JSON representation of the table similar to table_Sheet1.json
+                    table_json = {
+                        "source_name": table.name,
+                        "name": table.name,
+                        "lineage_tag": getattr(table, 'lineage_tag', None),
+                        "description": getattr(table, 'description', f"Table from federated relation: {table.name}"),
+                        "is_hidden": getattr(table, 'is_hidden', False),
+                        "columns": []
+                    }
                     
+                    # Add columns
+                    for col in table.columns:
+                        column_json = {
+                            "source_name": col.name,
+                            "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
+                            "format_string": getattr(col, 'format_string', None),
+                            "lineage_tag": getattr(col, 'lineage_tag', None),
+                            "source_column": getattr(col, 'source_column', col.name),
+                            "description": getattr(col, 'description', None),
+                            "is_hidden": getattr(col, 'is_hidden', False),
+                            "summarize_by": getattr(col, 'summarize_by', 'none'),
+                            "data_category": getattr(col, 'data_category', None),
+                            "is_calculated": hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                            "is_data_type_inferred": True,
+                            "annotations": {
+                                "SummarizationSetBy": "Automatic"
+                            }
+                        }
+                        table_json["columns"].append(column_json)
+                    
+                    # Save as table_[TableName].json
+                    save_json_to_extracted_dir(extracted_dir, f"table_{table.name}.json", table_json)
+                    
+                    # Also save as table.json for the first table
+                    if tables.index(table) == 0:
+                        save_json_to_extracted_dir(extracted_dir, "table.json", table_json)
+                
                 self.logger.info(f"Generated table file: {table_file}")
                 
             except Exception as e:
@@ -203,6 +256,15 @@ class ModelFileGenerator:
         relationships_file = model_dir / 'relationships.tmdl'
         with open(relationships_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save relationships info as JSON
+            relationship_json = {
+                "relationships": relationships_context
+            }
+            save_json_to_extracted_dir(extracted_dir, "relationship.json", relationship_json)
             
         self.logger.info(f"Generated relationships file: {relationships_file}")
     
@@ -218,13 +280,29 @@ class ModelFileGenerator:
         model_file = model_dir / 'model.tmdl'
         with open(model_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save model info as JSON
+            model_json = {
+                "name": data_model.name,
+                "culture": data_model.culture or 'en-US',
+                "compatibility_level": data_model.compatibility_level,
+                "default_power_bi_data_source_version": "powerBI_V3"
+            }
+            save_json_to_extracted_dir(extracted_dir, "model.json", model_json)
             
         self.logger.info(f"Generated model file: {model_file}")
     
     def _generate_culture_file(self, data_model: DataModel, model_dir: Path):
         """Generate culture.tmdl file"""
+        # Get the version from data_model if available, otherwise use a default version
+        version = getattr(data_model, 'version', '1.0') if hasattr(data_model, 'version') else '1.0'
+        
         context = {
-            'culture': data_model.culture or 'en-US'
+            'culture': data_model.culture or 'en-US',
+            'version': version
         }
         
         content = self.template_engine.render('culture', context)
@@ -233,6 +311,15 @@ class ModelFileGenerator:
         culture_file.parent.mkdir(exist_ok=True)
         with open(culture_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save culture info as JSON
+            culture_json = {
+                "culture": data_model.culture or 'en-US'
+            }
+            save_json_to_extracted_dir(extracted_dir, "culture.json", culture_json)
             
         self.logger.info(f"Generated culture file: {culture_file}")
     
@@ -245,5 +332,15 @@ class ModelFileGenerator:
         expressions_file = model_dir / 'expressions.tmdl'
         with open(expressions_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save version info as JSON
+            version = getattr(data_model, 'version', '1.0') if hasattr(data_model, 'version') else '1.0'
+            version_json = {
+                "version": version
+            }
+            save_json_to_extracted_dir(extracted_dir, "version.json", version_json)
             
         self.logger.info(f"Generated expressions file: {expressions_file}")

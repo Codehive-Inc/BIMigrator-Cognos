@@ -4,10 +4,11 @@ Report file generator for Power BI projects.
 import logging
 import json
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
 from ..models import Report
 from .template_engine import TemplateEngine
+from .utils import get_extracted_dir, save_json_to_extracted_dir
 
 
 class ReportFileGenerator:
@@ -71,6 +72,17 @@ class ReportFileGenerator:
         report_file = report_dir / 'report.json'
         with open(report_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(report_dir)
+        if extracted_dir:
+            # Save report info as JSON
+            report_json = {
+                "id": report.id,
+                "name": report.name,
+                "sections": len(report.sections) if hasattr(report, 'sections') else 0
+            }
+            save_json_to_extracted_dir(extracted_dir, "report.json", report_json)
             
         self.logger.info(f"Generated report file: {report_file}")
     
@@ -86,6 +98,16 @@ class ReportFileGenerator:
         config_file = report_dir / 'report.config.json'
         with open(config_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(report_dir)
+        if extracted_dir:
+            try:
+                # Try to parse the content as JSON
+                config_data = json.loads(content)
+                save_json_to_extracted_dir(extracted_dir, "report_config.json", config_data)
+            except json.JSONDecodeError:
+                self.logger.warning("Could not parse report config content as JSON")
             
         self.logger.info(f"Generated report config file: {config_file}")
     
@@ -101,6 +123,16 @@ class ReportFileGenerator:
         metadata_file = report_dir / 'report.metadata.json'
         with open(metadata_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(report_dir)
+        if extracted_dir:
+            try:
+                # Try to parse the content as JSON
+                metadata_data = json.loads(content)
+                save_json_to_extracted_dir(extracted_dir, "report_metadata.json", metadata_data)
+            except json.JSONDecodeError:
+                self.logger.warning("Could not parse report metadata content as JSON")
             
         self.logger.info(f"Generated report metadata file: {metadata_file}")
     
@@ -116,6 +148,16 @@ class ReportFileGenerator:
         settings_file = report_dir / 'report.settings.json'
         with open(settings_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(report_dir)
+        if extracted_dir:
+            try:
+                # Try to parse the content as JSON
+                settings_data = json.loads(content)
+                save_json_to_extracted_dir(extracted_dir, "report_settings.json", settings_data)
+            except json.JSONDecodeError:
+                self.logger.warning("Could not parse report settings content as JSON")
             
         self.logger.info(f"Generated report settings file: {settings_file}")
     
@@ -160,13 +202,32 @@ class ReportFileGenerator:
     
     def _generate_diagram_layout(self, report_dir: Path):
         """Generate diagram layout file"""
-        context = {}
+        # Create a basic layout context with nodes and edges
+        # This addresses the 'layout' is undefined error
+        context = {
+            'layout': {
+                'nodes': [],
+                'edges': []
+            }
+        }
         
-        content = self.template_engine.render('diagram_layout', context)
-        
-        layout_file = report_dir / 'StaticResources' / 'SharedResources' / 'BaseThemes' / 'CY23SU04.json'
-        layout_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(layout_file, 'w', encoding='utf-8') as f:
-            f.write(content)
+        try:
+            content = self.template_engine.render('diagram_layout', context)
             
-        self.logger.info(f"Generated diagram layout file: {layout_file}")
+            layout_dir = report_dir / 'diagramLayout'
+            layout_dir.mkdir(exist_ok=True)
+            
+            layout_file = layout_dir / 'layout.json'
+            with open(layout_file, 'w', encoding='utf-8') as f:
+                f.write(content)
+            
+            # Save to extracted directory if applicable
+            extracted_dir = get_extracted_dir(report_dir)
+            if extracted_dir:
+                save_json_to_extracted_dir(extracted_dir, "layout.json", context['layout'])
+                
+            self.logger.info(f"Generated diagram layout file: {layout_file}")
+        except Exception as e:
+            self.logger.error(f"Error generating diagram layout: {e}")
+    
+

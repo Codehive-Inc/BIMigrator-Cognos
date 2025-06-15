@@ -7,8 +7,8 @@
       "FormulaCognos": "[C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "As Of Date",
-      "FormulaDax": "[C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date]",
-      "Status": "needs_review"
+      "FormulaDax": "'Data'[As_Of_Date]",
+      "Status": "converted"
     },
     {
       "TableName": "Data",
