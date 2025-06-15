@@ -400,10 +400,20 @@ class ModelFileGenerator:
                 self.logger.error(f"Error building M-expression for table {table.name}: {e}")
                 m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource"
         
+        # Add partition information to the context
+        partitions = []
+        if m_expression:
+            partitions.append({
+                'name': table.name,
+                'source_type': 'm',
+                'expression': m_expression
+            })
+        
         context = {
             'table_name': table.name,
             'source_name': table.name,
             'columns': columns,
+            'partitions': partitions,
             'partition_name': f"{table.name}-partition",
             'm_expression': m_expression
         }

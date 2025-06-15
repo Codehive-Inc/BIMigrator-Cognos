@@ -30,6 +30,25 @@ table 'Data'
 
 
 
+    partition 'Data' = m
+        mode: import
+        source = 
+            let
+				Source = Value.NativeQuery(Cognos,
+				"SELECT ID,
+				Name,
+				Value FROM Data"),
+				#"Changed Types" = Table.TransformColumnTypes(Source,
+				{{"ID",
+				Int64.Type},
+				{"Name",
+				type text},
+				{"Value",
+				Int64.Type}})
+			in
+				#"Changed Types"
+        
+
 
 
     annotation PBI_ResultType = Table
