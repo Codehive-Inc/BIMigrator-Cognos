@@ -67,8 +67,8 @@
       "FormulaCognos": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "PaymentStatus",
-      "FormulaDax": "'Data'[PaymentStatus]",
-      "Status": "converted"
+      "FormulaDax": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]",
+      "Status": "needs_review"
     },
     {
       "TableName": "Data",
@@ -97,8 +97,8 @@
       "FormulaCognos": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "High Consumption Flag",
-      "FormulaDax": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
-      "Status": "needs_review"
+      "FormulaDax": "IF('Data'[EnergyUsage_kWh] > 1500, \"High\", \"Normal\")",
+      "Status": "converted"
     }
   ]
 }
