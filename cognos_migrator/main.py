@@ -358,6 +358,109 @@ def demo_migration():
     logger.info("and ensure your .env file contains valid Cognos Analytics credentials")
 
 
+def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = None):
+    """Migrate a Cognos module and associated folder
+    
+    This function performs a three-step migration process:
+    1. Module-based implementation - Extracts module metadata and structure
+    2. Folder-based execution - Migrates all reports in the specified folder
+    3. Post-processing - Enhances the generated files with module-specific information
+    
+    Args:
+        module_id: ID of the Cognos module to migrate
+        folder_id: ID of the folder containing reports to migrate
+        output_path: Optional path to store migration output
+    
+    Returns:
+        Dict[str, bool]: Results of the migration process
+    """
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load configuration
+        config = load_config()
+        
+        # Initialize migrator
+        migrator = CognosToPowerBIMigrator(config)
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            return {}
+        
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"module_{module_id}"
+        
+        # Step 1: Module-based implementation
+        logger.info(f"Step 1: Processing module {module_id}")
+        module_info = migrator.cognos_client.get_module(module_id)
+        if not module_info:
+            logger.error(f"Failed to retrieve module information for {module_id}")
+            return {}
+        
+        # Extract module metadata
+        module_metadata = migrator.cognos_client.get_module_metadata(module_id)
+        
+        # Create module directory structure
+        module_path = Path(output_path)
+        module_path.mkdir(parents=True, exist_ok=True)
+        
+        # Save module information
+        with open(module_path / "module_info.json", "w") as f:
+            json.dump(module_info, f, indent=2)
+        
+        # Save module metadata
+        with open(module_path / "module_metadata.json", "w") as f:
+            json.dump(module_metadata, f, indent=2)
+        
+        # Step 2: Folder-based execution
+        logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+        folder_output_path = module_path / "reports"
+        folder_results = migrate_folder(folder_id, str(folder_output_path))
+        
+        # Step 3: Post-processing
+        logger.info("Step 3: Post-processing generated files")
+        from cognos_migrator.processors import ModuleProcessor
+        
+        processor = ModuleProcessor(str(module_path))
+        
+        # Load module information
+        if not processor.load_module_info():
+            logger.warning('Failed to load module information for post-processing')
+        
+        # Process report files
+        logger.info('Processing report files with module information')
+        processor.process_report_files()
+        
+        # Generate module documentation
+        logger.info('Generating module documentation')
+        processor.generate_module_documentation()
+        
+        # Generate module-level summary
+        successful = sum(1 for success in folder_results.values() if success)
+        total = len(folder_results)
+        
+        summary = {
+            "module_id": module_id,
+            "folder_id": folder_id,
+            "total_reports": total,
+            "successful_reports": successful,
+            "success_rate": f"{(successful/total*100):.1f}%" if total > 0 else "0%"
+        }
+        
+        # Save summary
+        with open(module_path / "module_migration_summary.json", "w") as f:
+            json.dump(summary, f, indent=2)
+        
+        logger.info(f"Module migration completed: {successful}/{total} reports successful")
+        return folder_results
+        
+    except Exception as e:
+        logger.error(f"Error during module migration: {e}")
+        return {}
+
+
 def main():
     """Main entry point"""
     # Setup logging
@@ -381,6 +484,12 @@ def main():
             output_path = sys.argv[3] if len(sys.argv) > 3 else None
             recursive = sys.argv[4].lower() == 'true' if len(sys.argv) > 4 else True
             migrate_folder(folder_id, output_path, recursive)
+            
+        elif command == 'migrate-module' and len(sys.argv) > 3:
+            module_id = sys.argv[2]
+            folder_id = sys.argv[3]
+            output_path = sys.argv[4] if len(sys.argv) > 4 else None
+            migrate_module(module_id, folder_id, output_path)
 
         elif command == 'validate':
             config = load_config()
@@ -399,6 +508,7 @@ def main():
             print("  python main.py list                                    # List available reports and folders")
             print("  python main.py migrate-report <report_id> [output]    # Migrate single report")
             print("  python main.py migrate-folder <folder_id> [output]    # Migrate folder")
+            print("  python main.py migrate-module <module_id> <folder_id> [output]  # Migrate module and folder")
             print("  python main.py validate                               # Validate prerequisites")
 
     else:
