@@ -1,21 +1,56 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <report xmlns="http://developer.cognos.com/schemas/report/16.2/" useStyleVersion="11.6" expressionLocale="en-us">
+  
+				
+				
   <drillBehavior/>
+  
+				
   <layouts>
+    
+					
     <layout>
+      
+						
       <reportPages>
+        
+							
         <page name="Page1">
+          
+								
           <style>
+            
+									
             <defaultStyles>
+              
+										
               <defaultStyle refStyle="pg"/>
+              
+									
             </defaultStyles>
+            
+								
           </style>
+          
+								
           <pageBody>
+            
+									
             <style>
+              
+										
               <defaultStyles>
+                
+											
                 <defaultStyle refStyle="pb"/>
+                
+										
               </defaultStyles>
+              
+									
             </style>
+            
+									
             <contents>
               <table>
                 <style>
@@ -30,28 +65,77 @@
                       <tableCell>
                         <contents>
                           <list horizontalPagination="true" refQuery="Query1" name="List1">
+                            
+			
+			
+			
+			
                             <noDataHandler>
+                              
+				
                               <contents>
+                                
+					
                                 <block>
+                                  
+						
                                   <contents>
+                                    
+							
                                     <textItem>
+                                      
+								
                                       <dataSource>
+                                        
+									
                                         <staticValue>No Data Available</staticValue>
+                                        
+								
                                       </dataSource>
+                                      
+							
                                     </textItem>
+                                    
+						
                                   </contents>
+                                  
+						
                                   <style>
+                                    
+							
                                     <CSS value="padding:16px;"/>
+                                    
+						
                                   </style>
+                                  
+					
                                 </block>
+                                
+				
                               </contents>
+                              
+			
                             </noDataHandler>
+                            
+			
                             <style>
+                              
+				
                               <CSS value="border-collapse:collapse"/>
+                              
+				
                               <defaultStyles>
+                                
+					
                                 <defaultStyle refStyle="ls"/>
+                                
+				
                               </defaultStyles>
+                              
+			
                             </style>
+                            
+		
                             <listColumns>
                               <listColumn>
                                 <listColumnTitle>
@@ -455,14 +539,26 @@
                 </tableRows>
               </table>
             </contents>
+            
+								
           </pageBody>
+          
+							
           <XMLAttributes>
             <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
           </XMLAttributes>
         </page>
+        
+						
       </reportPages>
+      
+					
     </layout>
+    
+				
   </layouts>
+  
+			
   <XMLAttributes>
     <XMLAttribute output="no" name="RS_CreateExtendedDataItems" value="true"/>
     <XMLAttribute output="no" name="listSeparator" value=","/>

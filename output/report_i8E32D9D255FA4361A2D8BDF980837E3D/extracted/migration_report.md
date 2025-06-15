@@ -1,10 +1,10 @@
 # Power BI Migration Report
 
 ## Project Information
-- **Name**: test report
+- **Name**: Global parameter date picker
 - **Version**: 1.0
-- **Created**: 2025-06-14 20:13:54.610842
-- **Last Modified**: 2025-06-14 20:13:54.610849
+- **Created**: 2025-06-14 19:43:49.879693
+- **Last Modified**: 2025-06-14 19:43:49.879702
 
 ## Data Model
 
