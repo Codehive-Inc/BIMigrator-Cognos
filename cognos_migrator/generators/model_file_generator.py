@@ -105,15 +105,6 @@ class ModelFileGenerator:
             try:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
                 
-                # Generate M-query once for both table TMDL and JSON
-                m_query = None
-                try:
-                    self.logger.info(f"Generating M-query for table {table.name} once to reuse")
-                    m_query = self._build_m_expression(table, report_spec)
-                    self.logger.info(f"Successfully generated M-query for table {table.name}")
-                except Exception as e:
-                    self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
-                
                 # Try to read data items from report_data_items.json for both JSON and TMDL files
                 data_items = []
                 if extracted_dir:
@@ -125,6 +116,40 @@ class ModelFileGenerator:
                             self.logger.info(f"Loaded {len(data_items)} data items for table {table.name} from {data_items_file}")
                         except Exception as e:
                             self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
+                
+                # Update table.columns with data_items before generating M-query
+                if data_items:
+                    self.logger.info(f"Updating table {table.name} columns with {len(data_items)} data items before M-query generation")
+                    # Create new Column objects from data items
+                    from cognos_migrator.models import Column, DataType
+                    updated_columns = []
+                    for item in data_items:
+                        column_name = item.get('name', 'Column')
+                        # Map Cognos data type to Power BI data type
+                        data_type_str, _ = map_cognos_to_powerbi_datatype(item, self.logger)
+                        try:
+                            # Try to convert string data type to enum
+                            data_type_enum = DataType[data_type_str.upper()]
+                        except (KeyError, AttributeError):
+                            # Default to STRING if conversion fails
+                            data_type_enum = DataType.STRING
+                        # Create column object with required source_column parameter
+                        column = Column(name=column_name, data_type=data_type_enum, source_column=column_name)
+                        updated_columns.append(column)
+                    # Update the table's columns
+                    table.columns = updated_columns
+                    self.logger.info(f"Updated table {table.name} columns: {', '.join([col.name for col in table.columns])}")
+                else:
+                    self.logger.warning(f"No data items found for table {table.name}, using default columns for M-query generation")
+                
+                # Generate M-query once for both table TMDL and JSON
+                m_query = None
+                try:
+                    self.logger.info(f"Generating M-query for table {table.name} once to reuse")
+                    m_query = self._build_m_expression(table, report_spec)
+                    self.logger.info(f"Successfully generated M-query for table {table.name}")
+                except Exception as e:
+                    self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
                 
                 # Build table context with the data items
                 context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query)

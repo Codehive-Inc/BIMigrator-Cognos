@@ -35,16 +35,16 @@ table 'Data'
         source = 
             let
 				Source = Value.NativeQuery(Cognos,
-				"SELECT ID,
-				Name,
-				Value FROM Data"),
+				"SELECT ""Region"",
+				""No of Unique Orders"",
+				""Orders Returned (Multiple Returns per Order)"" FROM Data"),
 				#"Changed Types" = Table.TransformColumnTypes(Source,
-				{{"ID",
-				Int64.Type},
-				{"Name",
+				{{"Region",
 				type text},
-				{"Value",
-				Int64.Type}})
+				{"No of Unique Orders",
+				type text},
+				{"Orders Returned (Multiple Returns per Order)",
+				type number}})
 			in
 				#"Changed Types"
         

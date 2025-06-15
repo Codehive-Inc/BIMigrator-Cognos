@@ -50,6 +50,12 @@ class MQueryConverter:
         # Prepare context for LLM service
         context = self._build_context(table, report_spec, data_sample)
         
+        # Log the context being sent to the LLM service
+        self.logger.info(f"Context for table {table.name}:")
+        self.logger.info(f"  - Table name: {context['table_name']}")
+        self.logger.info(f"  - Columns: {json.dumps([col['name'] for col in context['columns']], indent=2)}")
+        self.logger.info(f"  - Source query: {context['source_query'][:100]}..." if context.get('source_query') else "  - Source query: None")
+        
         # Call LLM service to generate M-query
         self.logger.info(f"Sending request to LLM service for M-query generation for table {table.name}")
         m_query = self.llm_service_client.generate_m_query(context)
