@@ -51,18 +51,18 @@ table 'Data'
         
     column 'SalesAmount'
         dataType: decimal
-        summarizeBy: none
+        summarizeBy: sum
         sourceColumn: SalesAmount
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
         
     column 'Quantity'
         dataType: decimal
-        summarizeBy: none
+        summarizeBy: sum
         sourceColumn: Quantity
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
         
     column 'ProductID'

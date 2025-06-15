@@ -15,16 +15,16 @@ from ..converters import MQueryConverter
 from .template_engine import TemplateEngine
 
 
-def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> str:
+def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> Tuple[str, str]:
     """
-    Maps Cognos data types to Power BI data types based on comprehensive mapping rules.
+    Maps Cognos data types to Power BI data types and summarize_by values based on comprehensive mapping rules.
     
     Args:
         item: A dictionary containing data item properties including dataType, dataUsage, name, expression, etc.
         logger: Optional logger for debugging
         
     Returns:
-        str: The recommended Power BI data type
+        Tuple[str, str]: The recommended Power BI data type and summarize_by value
     """
     # Extract needed properties
     name = item.get('name', '')
@@ -36,10 +36,12 @@ def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> str:
     
     # Default fallback
     powerbi_type = "string"
+    summarize_by = "none"  # Default summarize_by
     
     # Log input parameters if logger is provided
     if logger:
-        logger.debug(f"Mapping data type for {name}: dataType={data_type}, dataUsage={data_usage}, is_calculation={is_calculation}")
+        logger.debug(f"Mapping data type for {name}: dataType={data_type}, dataUsage={data_usage}, is_calculation={is_calculation}, aggregate={aggregate}")
+        
     
     # Priority Level 1: Based on dataUsage
     
@@ -179,11 +181,65 @@ def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> str:
             else:
                 powerbi_type = "string"  # Safe fallback
     
+    # Determine summarize_by based on the rules
+    
+    # Rule 1: Identifier (dataUsage: "0")
+    if data_usage == "0":
+        # Identifiers should not be summarized
+        summarize_by = "none"
+    
+    # Rule 2: Attribute (dataUsage: "1")
+    elif data_usage == "1":
+        # Attributes should not be summarized
+        summarize_by = "none"
+    
+    # Rule 3: Fact/Measure - Numeric/Currency Source Columns (dataUsage: "2")
+    elif data_usage == "2":
+        # Look at Cognos aggregate attribute
+        if aggregate == "total":
+            summarize_by = "sum"
+        elif aggregate == "count":
+            summarize_by = "count"
+        elif aggregate == "average":
+            summarize_by = "average"
+        elif aggregate == "maximum":
+            summarize_by = "max"
+        elif aggregate == "minimum":
+            summarize_by = "min"
+        elif aggregate == "none" or not aggregate:
+            # Default for numeric facts is sum
+            if powerbi_type in ["decimal", "double", "int64", "currency"]:
+                summarize_by = "sum"
+            else:
+                summarize_by = "none"
+        else:
+            # Default for other aggregates
+            summarize_by = "sum" if powerbi_type in ["decimal", "double", "int64", "currency"] else "none"
+    
+    # Rule 4: Calculations
+    elif is_calculation:
+        # For calculated columns that are numeric
+        if powerbi_type in ["decimal", "double", "int64", "currency"]:
+            summarize_by = "sum"
+        # For calculated columns that are categorical
+        elif powerbi_type in ["string", "boolean"]:
+            summarize_by = "none"
+        else:
+            summarize_by = "none"
+    
+    # Default case
+    else:
+        # For numeric types, default to sum
+        if powerbi_type in ["decimal", "double", "int64", "currency"]:
+            summarize_by = "sum"
+        else:
+            summarize_by = "none"
+    
     # Log the final mapping if logger is provided
     if logger:
-        logger.debug(f"Mapped {name} to Power BI type: {powerbi_type}")
+        logger.debug(f"Mapped {name} to Power BI type: {powerbi_type}, summarize_by: {summarize_by}")
     
-    return powerbi_type
+    return powerbi_type, summarize_by
 
 
 class ModelFileGenerator:
@@ -314,11 +370,11 @@ class ModelFileGenerator:
                     # If we have data items, use them as columns
                     if data_items:
                         for item in data_items:
-                            # Use the comprehensive mapping function
-                            data_type = map_cognos_to_powerbi_datatype(item, self.logger)
+                            # Use the comprehensive mapping function to get both data type and summarize_by
+                            data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
                             
                             # Log the data type mapping for debugging
-                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type} for {item.get('name')}")
+                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
                             
                             
                             column_json = {
@@ -329,7 +385,7 @@ class ModelFileGenerator:
                                 "source_column": item.get('name', 'Column'),
                                 "description": None,
                                 "is_hidden": False,
-                                "summarize_by": "none",
+                                "summarize_by": summarize_by,
                                 "data_category": None,
                                 "is_calculated": item.get('type') == 'calculation',
                                 "is_data_type_inferred": True,
@@ -437,12 +493,14 @@ class ModelFileGenerator:
         # If we have data items, use them as columns
         if data_items:
             for item in data_items:
-                # Use the comprehensive mapping function
-                data_type = map_cognos_to_powerbi_datatype(item, self.logger)
+                # Use the comprehensive mapping function to get both data type and summarize_by
+                data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
                 
                 # Log the data type mapping for debugging
-                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type} for {item.get('name')}")
+                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
                 
+                # Determine the appropriate SummarizationSetBy annotation value
+                summarization_set_by = 'User' if summarize_by != 'none' else 'Automatic'
                 
                 column = {
                     'name': item.get('name', 'Column'),
@@ -450,9 +508,9 @@ class ModelFileGenerator:
                     'datatype': data_type,
                     'source_column': item.get('name', 'Column'),
                     'is_calculated': item.get('type') == 'calculation',
-                    'summarize_by': 'none',
+                    'summarize_by': summarize_by,
                     'is_hidden': False,
-                    'annotations': {'SummarizationSetBy': 'Automatic'}
+                    'annotations': {'SummarizationSetBy': summarization_set_by}
                 }
                 columns.append(column)
         else:
