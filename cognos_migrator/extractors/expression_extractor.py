@@ -77,46 +77,68 @@ class ExpressionExtractor(BaseExtractor):
             table_mappings: Optional mapping of Cognos table names to Power BI table names
             
         Returns:
-            List of expression dictionaries with added DAX conversion
+            Dictionary with calculations array in the desired format
         """
         if not self.expression_converter:
             self.logger.warning("No expression converter provided, skipping DAX conversion")
-            return expressions
+            return {"calculations": []}
             
-        converted_expressions = []
+        calculations = []
         
         for expr in expressions:
             cognos_expr = expr.get("expression", "")
             context = expr.get("context", "unknown")
             name = expr.get("name", "")
             
-            # Create a copy of the original expression dict
-            converted_expr = expr.copy()
+            # Determine table name from context if possible
+            table_name = "Data"  # Default table name
+            if table_mappings and name in table_mappings:
+                table_name = table_mappings[name]
             
             # Convert the expression to DAX
             try:
-                # Determine table name from context if possible
-                table_name = None
-                if table_mappings and name in table_mappings:
-                    table_name = table_mappings[name]
-                
                 # Convert the expression
                 conversion_result = self.expression_converter.convert_expression(
                     cognos_formula=cognos_expr,
                     table_name=table_name
                 )
                 
-                # Add the DAX expression and metadata to the result
-                converted_expr["dax_expression"] = conversion_result.get("dax_expression", cognos_expr)
-                converted_expr["conversion_confidence"] = conversion_result.get("confidence", 0.0)
-                converted_expr["conversion_notes"] = conversion_result.get("notes", "")
+                dax_expression = conversion_result.get("dax_expression", cognos_expr)
+                confidence = conversion_result.get("confidence", 0.0)
+                notes = conversion_result.get("notes", "")
+                
+                # Determine status based on confidence
+                status = "converted" if confidence > 0.5 else "needs_review"
+                
+                # Create calculation entry in the Cognos format
+                calculation = {
+                    "TableName": table_name,
+                    "FormulaCaptionCognos": name,
+                    "CognosName": name,
+                    "FormulaCognos": cognos_expr,
+                    "FormulaTypeCognos": context if context != "unknown" else "calculated_column",
+                    "PowerBIName": name,
+                    "FormulaDax": dax_expression,
+                    "Status": status
+                }
+                
+                calculations.append(calculation)
                 
             except Exception as e:
                 self.logger.warning(f"Error converting expression to DAX: {e}")
-                converted_expr["dax_expression"] = cognos_expr  # Use original as fallback
-                converted_expr["conversion_confidence"] = 0.0
-                converted_expr["conversion_notes"] = f"Conversion error: {str(e)}"
-            
-            converted_expressions.append(converted_expr)
+                
+                # Create calculation entry with error information in Cognos format
+                calculation = {
+                    "TableName": table_name,
+                    "FormulaCaptionCognos": name,
+                    "CognosName": name,
+                    "FormulaCognos": cognos_expr,
+                    "FormulaTypeCognos": context if context != "unknown" else "calculated_column",
+                    "PowerBIName": name,
+                    "FormulaDax": cognos_expr,  # Use original as fallback
+                    "Status": "needs_review"
+                }
+                
+                calculations.append(calculation)
         
-        return converted_expressions
+        return {"calculations": calculations}

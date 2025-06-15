@@ -601,12 +601,18 @@ class CognosMigrator:
                     self.logger.info("Converting Cognos expressions to DAX using LLM service")
                     # Create table mappings from queries for context
                     table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
-                    expressions = self.expression_extractor.convert_to_dax(expressions, table_mappings)
-                    self.logger.info(f"Converted {len(expressions)} expressions to DAX")
+                    calculations = self.expression_extractor.convert_to_dax(expressions, table_mappings)
+                    self.logger.info(f"Converted {len(calculations['calculations'])} expressions to DAX")
+                else:
+                    # Create empty calculations structure if no converter is available
+                    calculations = {"calculations": []}
                 
-                expressions_path = extracted_dir / "report_expressions.json"
-                with open(expressions_path, "w", encoding="utf-8") as f:
-                    json.dump(expressions, f, indent=2)
+                # Save calculations in the Cognos format
+                calculations_path = extracted_dir / "calculations.json"
+                with open(calculations_path, "w", encoding="utf-8") as f:
+                    json.dump(calculations, f, indent=2, ensure_ascii=False)
+                    
+                # We no longer save report_expressions.json as we've standardized on calculations.json
                 
                 # Extract and save parameters
                 parameters = self.parameter_extractor.extract_parameters(root, ns)
