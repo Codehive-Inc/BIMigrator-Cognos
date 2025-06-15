@@ -115,6 +115,17 @@ class ModelFileGenerator:
                 
                 # Save table information as JSON in extracted directory
                 if extracted_dir:
+                    # Try to read data items from report_data_items.json
+                    data_items = []
+                    data_items_file = extracted_dir / "report_data_items.json"
+                    if data_items_file.exists():
+                        try:
+                            with open(data_items_file, 'r', encoding='utf-8') as f:
+                                data_items = json.load(f)
+                            self.logger.info(f"Loaded {len(data_items)} data items from {data_items_file}")
+                        except Exception as e:
+                            self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
+                    
                     # Create a JSON representation of the table similar to table_Sheet1.json
                     table_json = {
                         "source_name": table.name,
@@ -125,25 +136,59 @@ class ModelFileGenerator:
                         "columns": []
                     }
                     
-                    # Add columns
-                    for col in table.columns:
-                        column_json = {
-                            "source_name": col.name,
-                            "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
-                            "format_string": getattr(col, 'format_string', None),
-                            "lineage_tag": getattr(col, 'lineage_tag', None),
-                            "source_column": getattr(col, 'source_column', col.name),
-                            "description": getattr(col, 'description', None),
-                            "is_hidden": getattr(col, 'is_hidden', False),
-                            "summarize_by": getattr(col, 'summarize_by', 'none'),
-                            "data_category": getattr(col, 'data_category', None),
-                            "is_calculated": hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
-                            "is_data_type_inferred": True,
-                            "annotations": {
-                                "SummarizationSetBy": "Automatic"
+                    # If we have data items, use them as columns
+                    if data_items:
+                        for item in data_items:
+                            # Map Cognos data types to Power BI data types
+                            data_type = "string"  # Default
+                            if item.get('dataType') == '1':  # Boolean
+                                data_type = "boolean"
+                            elif item.get('dataType') == '2':  # Integer
+                                data_type = "int64"
+                            elif item.get('dataType') == '3':  # Decimal/Float
+                                data_type = "decimal"
+                            elif item.get('dataType') == '4':  # Currency
+                                data_type = "currency"
+                            elif item.get('dataType') == '7':  # Date/Time
+                                data_type = "datetime"
+                            
+                            column_json = {
+                                "source_name": item.get('name', 'Column'),
+                                "datatype": data_type,
+                                "format_string": None,
+                                "lineage_tag": None,
+                                "source_column": item.get('name', 'Column'),
+                                "description": None,
+                                "is_hidden": False,
+                                "summarize_by": "none",
+                                "data_category": None,
+                                "is_calculated": item.get('type') == 'calculation',
+                                "is_data_type_inferred": True,
+                                "annotations": {
+                                    "SummarizationSetBy": "Automatic"
+                                }
                             }
-                        }
-                        table_json["columns"].append(column_json)
+                            table_json["columns"].append(column_json)
+                    else:
+                        # If no data items, use the table columns
+                        for col in table.columns:
+                            column_json = {
+                                "source_name": col.name,
+                                "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
+                                "format_string": getattr(col, 'format_string', None),
+                                "lineage_tag": getattr(col, 'lineage_tag', None),
+                                "source_column": getattr(col, 'source_column', col.name),
+                                "description": getattr(col, 'description', None),
+                                "is_hidden": getattr(col, 'is_hidden', False),
+                                "summarize_by": getattr(col, 'summarize_by', 'none'),
+                                "data_category": getattr(col, 'data_category', None),
+                                "is_calculated": hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                                "is_data_type_inferred": True,
+                                "annotations": {
+                                    "SummarizationSetBy": "Automatic"
+                                }
+                            }
+                            table_json["columns"].append(column_json)
                     
                     # Save as table_[TableName].json
                     save_json_to_extracted_dir(extracted_dir, f"table_{table.name}.json", table_json)

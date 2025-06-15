@@ -6,11 +6,11 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "ID",
-      "datatype": "int64",
+      "source_name": "Region",
+      "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID",
+      "source_column": "Region",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -22,32 +22,32 @@
       }
     },
     {
-      "source_name": "Name",
-      "datatype": "string",
+      "source_name": "No of Unique Orders",
+      "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "Name",
+      "source_column": "No of Unique Orders",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
       "data_category": null,
-      "is_calculated": false,
+      "is_calculated": true,
       "is_data_type_inferred": true,
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
     },
     {
-      "source_name": "Value",
-      "datatype": "int64",
+      "source_name": "Orders Returned (Multiple Returns per Order)",
+      "datatype": "boolean",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "Value",
+      "source_column": "Orders Returned (Multiple Returns per Order)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
       "data_category": null,
-      "is_calculated": false,
+      "is_calculated": true,
       "is_data_type_inferred": true,
       "annotations": {
         "SummarizationSetBy": "Automatic"
