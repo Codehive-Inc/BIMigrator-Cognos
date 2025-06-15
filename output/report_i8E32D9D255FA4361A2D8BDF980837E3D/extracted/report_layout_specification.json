@@ -1,0 +1,492 @@
+{
+  "layouts": {
+    "layout": {
+      "reportPages": {
+        "page": {
+          "name": "Page1",
+          "style": {
+            "defaultStyles": {
+              "defaultStyle": {
+                "refStyle": "pg"
+              }
+            }
+          },
+          "pageBody": {
+            "style": {
+              "defaultStyles": {
+                "defaultStyle": {
+                  "refStyle": "pb"
+                }
+              },
+              "CSS": {
+                "value": "padding:20px;text-align:center;background-color:gray"
+              }
+            },
+            "contents": {
+              "table": {
+                "style": {
+                  "CSS": {
+                    "value": "border-collapse:collapse;width:50%;background-color:white"
+                  },
+                  "defaultStyles": {
+                    "defaultStyle": [
+                      {
+                        "refStyle": "tb"
+                      },
+                      {
+                        "refStyle": "GuidedLayoutPadding"
+                      },
+                      {
+                        "refStyle": "GuidedLayoutPadding"
+                      }
+                    ]
+                  }
+                },
+                "tableRows": {
+                  "tableRow": [
+                    {
+                      "tableCells": {
+                        "tableCell": {
+                          "contents": {
+                            "textItem": {
+                              "dataSource": {
+                                "staticValue": {
+                                  "text": "Global Parameter Date Picker"
+                                }
+                              }
+                            }
+                          },
+                          "style": {
+                            "defaultStyles": {
+                              "defaultStyle": {
+                                "refStyle": "HeaderReportTitleTableCell"
+                              }
+                            },
+                            "CSS": {
+                              "value": "padding-top:20px;padding-bottom:0px;padding-left:20px;font-family:Helvetica;font-size:16pt;font-weight:bold;font-style:normal"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "tableCells": {
+                        "tableCell": {
+                          "contents": {
+                            "textItem": [
+                              {
+                                "dataSource": {
+                                  "staticValue": {
+                                    "text": "You can use this sample report as the source to import parameters into your IBM Cognos Analytics environment. For instructions on how to do this, see"
+                                  }
+                                }
+                              },
+                              {
+                                "dataSource": {
+                                  "staticValue": {
+                                    "text": "This parameterized report contains one query with detail filters. The filters must be \"Required\" and associated with a data container (e.g. the List below) in order to import them."
+                                  }
+                                }
+                              }
+                            ],
+                            "hyperlink": {
+                              "target": "_blank",
+                              "dataSource": {
+                                "staticValue": {
+                                  "text": "https://public.dhe.ibm.com/software/data/sw-library/cognos/mobile/C11/guides/How_to_import_parameters_from_report.pdf"
+                                }
+                              },
+                              "contents": {
+                                "textItem": {
+                                  "dataSource": {
+                                    "staticValue": {
+                                      "text": "How to import Parameters from a Report"
+                                    }
+                                  }
+                                }
+                              },
+                              "style": {
+                                "defaultStyles": {
+                                  "defaultStyle": {
+                                    "refStyle": "hy"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "style": {
+                            "CSS": {
+                              "value": "padding:20px 20px 10px 20px;font-family:Helvetica;font-size:10pt;font-weight:normal;font-style:normal"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "tableCells": {
+                        "tableCell": {
+                          "contents": {
+                            "table": {
+                              "style": {
+                                "defaultStyles": {
+                                  "defaultStyle": {
+                                    "refStyle": "tb"
+                                  }
+                                },
+                                "CSS": {
+                                  "value": "border-collapse:collapse;width:100%"
+                                }
+                              },
+                              "tableRows": {
+                                "tableRow": [
+                                  {
+                                    "tableCells": {
+                                      "tableCell": [
+                                        {
+                                          "contents": {
+                                            "textItem": [
+                                              {
+                                                "dataSource": {
+                                                  "staticValue": {
+                                                    "text": "As Of Date:"
+                                                  }
+                                                },
+                                                "style": {
+                                                  "CSS": {
+                                                    "value": "font-weight:bold"
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "dataSource": {
+                                                  "staticValue": {
+                                                    "text": "One of the parameters in this report (_as_of_date) allows your users to choose the As Of Date for their reports. By default, the As Of Date is \"today's\" date."
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "dataSource": {
+                                                  "staticValue": {
+                                                    "text": "For more information, see"
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "hyperlink": {
+                                              "target": "_blank",
+                                              "dataSource": {
+                                                "staticValue": {
+                                                  "text": "https://www.ibm.com/docs/en/cognos-analytics/11.2.0?topic=date-setting-as-global-parameter"
+                                                }
+                                              },
+                                              "contents": {
+                                                "textItem": {
+                                                  "dataSource": {
+                                                    "staticValue": {
+                                                      "text": "Setting the _as_of_date global parameter"
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "style": {
+                                                "defaultStyles": {
+                                                  "defaultStyle": {
+                                                    "refStyle": "hy"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "style": {
+                                            "CSS": {
+                                              "value": "width:50%;text-align:left;vertical-align:top;padding-right:20px;padding-bottom:20px"
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "contents": {
+                                            "textItem": [
+                                              {
+                                                "dataSource": {
+                                                  "staticValue": {
+                                                    "text": "Time Perspective (Dynamic As Of Dates):"
+                                                  }
+                                                },
+                                                "style": {
+                                                  "CSS": {
+                                                    "value": "font-weight:bold"
+                                                  }
+                                                }
+                                              },
+                                              {
+                                                "dataSource": {
+                                                  "staticValue": {
+                                                    "text": "The _as_of_date global parameter approach is sufficient for most use cases, but there are circumstances where additional user interactions are required. For example, many customers use data warehouses that load based on yesterday's data. When these customers run their reports, they must first manually select yesterday's date in the _as_of_date parameter to display any data."
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "style": {
+                                            "CSS": {
+                                              "value": "text-align:left;vertical-align:top;width:50%;padding-left:20px;padding-bottom:20px;border-left:1pt solid silver"
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "tableCells": {
+                                      "tableCell": [
+                                        {
+                                          "contents": {},
+                                          "style": {
+                                            "CSS": {
+                                              "value": "text-align:left;vertical-align:top;width:50%;padding-right:20px"
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "contents": {
+                                            "textItem": {
+                                              "dataSource": {
+                                                "staticValue": {
+                                                  "text": "What if these users could set \"yesterday\" in a global parameter and Cognos Analytics would always remember this setting? What if they could set \"last Sunday\", which is another common use case? Or what if they just want to use the _as_of_date and be able to set any date they choose? Well now they can with the Time Perspective global parameter. This new ability to set a dynamic date solves this problem and saves time/effort for end users."
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "style": {
+                                            "CSS": {
+                                              "value": "text-align:left;vertical-align:top;width:50%;padding-left:20px;border-left:1pt solid silver"
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "style": {
+                            "CSS": {
+                              "value": "padding:20px;font-family:Helvetica;font-size:10pt;font-weight:normal;font-style:normal"
+                            },
+                            "defaultStyles": {
+                              "defaultStyle": [
+                                {
+                                  "refStyle": "GuidedLayoutTopPadding"
+                                },
+                                {
+                                  "refStyle": "GuidedLayoutBottomPadding"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "tableCells": {
+                        "tableCell": {
+                          "contents": {
+                            "textItem": {
+                              "dataSource": {
+                                "staticValue": {
+                                  "text": "Data Container:"
+                                }
+                              }
+                            },
+                            "list": {
+                              "horizontalPagination": "true",
+                              "name": "List1",
+                              "refQuery": "Query1",
+                              "style": {
+                                "CSS": {
+                                  "value": "border-collapse:collapse;width:200px"
+                                },
+                                "defaultStyles": {
+                                  "defaultStyle": {
+                                    "refStyle": "ls"
+                                  }
+                                }
+                              },
+                              "listColumnBodyStyle": {
+                                "style": {
+                                  "CSS": {
+                                    "value": "font-family:Helvetica;font-size:9pt;font-weight:normal;font-style:normal;text-align:center"
+                                  }
+                                }
+                              },
+                              "listColumnTitleStyle": {
+                                "style": {
+                                  "CSS": {
+                                    "value": "font-family:Helvetica;font-size:9pt;font-weight:bold;font-style:normal;text-align:center"
+                                  }
+                                }
+                              },
+                              "listColumns": {
+                                "listColumn": [
+                                  {
+                                    "listColumnTitle": {
+                                      "style": {
+                                        "defaultStyles": {
+                                          "defaultStyle": {
+                                            "refStyle": "lt"
+                                          }
+                                        }
+                                      },
+                                      "contents": {
+                                        "textItem": {
+                                          "dataSource": {
+                                            "dataItemLabel": {
+                                              "refDataItem": "As Of Date"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "listColumnBody": {
+                                      "style": {
+                                        "defaultStyles": {
+                                          "defaultStyle": {
+                                            "refStyle": "lc"
+                                          }
+                                        }
+                                      },
+                                      "contents": {
+                                        "textItem": {
+                                          "dataSource": {
+                                            "dataItemValue": {
+                                              "refDataItem": "As Of Date"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "listColumnTitle": {
+                                      "style": {
+                                        "defaultStyles": {
+                                          "defaultStyle": {
+                                            "refStyle": "lt"
+                                          }
+                                        }
+                                      },
+                                      "contents": {
+                                        "textItem": {
+                                          "dataSource": {
+                                            "dataItemLabel": {
+                                              "refDataItem": "Time Perspective"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "listColumnBody": {
+                                      "style": {
+                                        "defaultStyles": {
+                                          "defaultStyle": {
+                                            "refStyle": "lc"
+                                          }
+                                        }
+                                      },
+                                      "contents": {
+                                        "textItem": {
+                                          "dataSource": {
+                                            "dataItemValue": {
+                                              "refDataItem": "Time Perspective"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "style": {
+                            "CSS": {
+                              "value": "padding:20px;font-family:Helvetica;font-size:10pt;font-weight:normal;font-style:normal;text-align:center;vertical-align:top;border-top:1pt solid silver"
+                            },
+                            "defaultStyles": {
+                              "defaultStyle": [
+                                {
+                                  "refStyle": "GuidedLayoutTopPadding"
+                                },
+                                {
+                                  "refStyle": "GuidedLayoutBottomPadding"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "tableCells": {
+                        "tableCell": {
+                          "contents": {
+                            "textItem": {
+                              "dataSource": {
+                                "staticValue": {
+                                  "text": "Here is a video overview of global parameters:"
+                                }
+                              }
+                            },
+                            "hyperlink": {
+                              "target": "_blank",
+                              "dataSource": {
+                                "staticValue": {
+                                  "text": "https://youtu.be/1ugWBv0XVTk"
+                                }
+                              },
+                              "contents": {
+                                "textItem": {
+                                  "dataSource": {
+                                    "staticValue": {
+                                      "text": "Video"
+                                    }
+                                  }
+                                }
+                              },
+                              "style": {
+                                "defaultStyles": {
+                                  "defaultStyle": {
+                                    "refStyle": "hy"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "style": {
+                            "CSS": {
+                              "value": "padding:20px;font-family:Helvetica;font-size:10pt;font-weight:normal;font-style:normal;text-align:center;vertical-align:top;border-top:1pt solid silver"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "XMLAttributes": {
+            "XMLAttribute": {
+              "output": "no",
+              "name": "RS_legacyDrillDown",
+              "value": "0"
+            }
+          }
+        }
+      }
+    }
+  },
+  "reportPages": [],
+  "visualizations": []
+}

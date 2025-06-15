@@ -19,6 +19,7 @@ from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
 # Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
 from .generators import PowerBIProjectGenerator, DocumentationGenerator
+from .generators.utils import save_split_report_specification
 from .models import (
     CognosReport, PowerBIProject, DataModel, Report, 
     Table, Column, Relationship, Measure, ReportPage
@@ -531,6 +532,10 @@ class CognosMigrator:
                 with open(formatted_spec_path, "w", encoding="utf-8") as f:
                     f.write(formatted_xml)
                 self.logger.info(f"Saved formatted XML to {formatted_spec_path}")
+                
+                # Split report specification into layout and query components
+                save_split_report_specification(formatted_spec_path, extracted_dir)
+                self.logger.info(f"Split report specification into layout and query components")
             except Exception as e:
                 self.logger.warning(f"Failed to save formatted XML: {e}")
                 # Try using xmllint if available
@@ -540,6 +545,10 @@ class CognosMigrator:
                         with open(formatted_spec_path, "w", encoding="utf-8") as f_out:
                             subprocess.run(["xmllint", "--format", "-"], stdin=f_in, stdout=f_out)
                     self.logger.info(f"Saved formatted XML using xmllint to {formatted_spec_path}")
+                    
+                    # Split report specification into layout and query components
+                    save_split_report_specification(formatted_spec_path, extracted_dir)
+                    self.logger.info(f"Split report specification into layout and query components")
                 except Exception as e2:
                     self.logger.warning(f"Failed to format XML with xmllint: {e2}")
                     # Just copy the original file as a fallback
