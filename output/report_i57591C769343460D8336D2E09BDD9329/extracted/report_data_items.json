@@ -1,1 +1,88 @@
-[]
+[
+  {
+    "name": "CustomerID",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerID]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "CustomerName",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerName]",
+    "dataType": "3",
+    "dataUsage": "0",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Region",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[Region]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "EnergyUsage_kWh",
+    "id": "",
+    "aggregate": "total",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[EnergyUsage_kWh]",
+    "dataType": "1",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "TariffPer_kWh",
+    "id": "",
+    "aggregate": "total",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TariffPer_kWh]",
+    "dataType": "2",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "TotalBill",
+    "id": "",
+    "aggregate": "total",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TotalBill]",
+    "dataType": "2",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "PaymentStatus",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "ServiceType",
+    "id": "",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[ServiceType]",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Total count",
+    "id": "",
+    "aggregate": "none",
+    "expression": "count([PaymentStatus])",
+    "queryName": "Query1"
+  },
+  {
+    "name": "High Consumption Flag",
+    "id": "",
+    "aggregate": "none",
+    "expression": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
+    "queryName": "Query1"
+  }
+]

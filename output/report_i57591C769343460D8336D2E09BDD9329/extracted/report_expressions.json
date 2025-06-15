@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "context": "dataItem",
+    "name": "CustomerID",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerID]"
+  },
+  {
+    "context": "dataItem",
+    "name": "CustomerName",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerName]"
+  },
+  {
+    "context": "dataItem",
+    "name": "Region",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[Region]"
+  },
+  {
+    "context": "dataItem",
+    "name": "EnergyUsage_kWh",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[EnergyUsage_kWh]"
+  },
+  {
+    "context": "dataItem",
+    "name": "TariffPer_kWh",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TariffPer_kWh]"
+  },
+  {
+    "context": "dataItem",
+    "name": "TotalBill",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TotalBill]"
+  },
+  {
+    "context": "dataItem",
+    "name": "PaymentStatus",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]"
+  },
+  {
+    "context": "dataItem",
+    "name": "ServiceType",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[ServiceType]"
+  },
+  {
+    "context": "dataItem",
+    "name": "Total count",
+    "expression": "count([PaymentStatus])"
+  },
+  {
+    "context": "dataItem",
+    "name": "High Consumption Flag",
+    "expression": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')"
+  }
+]
