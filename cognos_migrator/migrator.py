@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
 
 from cognos_migrator.config import ConfigManager, MigrationConfig
-from cognos_migrator.extractors import BaseExtractor, QueryExtractor
+from cognos_migrator.extractors import BaseExtractor, QueryExtractor, DataItemExtractor, ExpressionExtractor
 from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
 # Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
@@ -43,6 +43,8 @@ class CognosMigrator:
         # Initialize extractors for XML operations
         self.base_extractor = BaseExtractor(logger=self.logger)
         self.query_extractor = QueryExtractor(logger=self.logger)
+        self.data_item_extractor = DataItemExtractor(logger=self.logger)
+        self.expression_extractor = ExpressionExtractor(logger=self.logger)
         
         # Initialize CPF extractor if a CPF file path is provided
         self.cpf_extractor = None
@@ -572,13 +574,13 @@ class CognosMigrator:
                     json.dump(queries, f, indent=2)
                 
                 # Extract and save data items/columns
-                data_items = self._extract_data_items_from_xml(root, ns)
+                data_items = self.data_item_extractor.extract_data_items(root, ns)
                 data_items_path = extracted_dir / "report_data_items.json"
                 with open(data_items_path, "w", encoding="utf-8") as f:
                     json.dump(data_items, f, indent=2)
                 
                 # Extract and save expressions
-                expressions = self._extract_expressions_from_xml(root, ns)
+                expressions = self.expression_extractor.extract_expressions(root, ns)
                 expressions_path = extracted_dir / "report_expressions.json"
                 with open(expressions_path, "w", encoding="utf-8") as f:
                     json.dump(expressions, f, indent=2)
@@ -613,162 +615,9 @@ class CognosMigrator:
     
     # _extract_queries_from_xml method has been moved to QueryExtractor class
     
-    def _extract_data_items_from_xml(self, root, ns):
-        """Extract data items from report specification XML"""
-        data_items = []
-        try:
-            # Register namespace if present
-            namespace = None
-            if ns and 'ns' in ns:
-                namespace = {"ns": ns['ns']}
-                import xml.etree.ElementTree as ET
-                ET.register_namespace('', ns['ns'])
-            
-            # Find all data items in the report
-            if namespace:
-                data_item_elements = root.findall(".//{{{0}}}dataItem".format(ns['ns']))
-            else:
-                data_item_elements = root.findall(".//dataItem")
-                
-            for item_elem in data_item_elements:
-                data_item = {
-                    "name": item_elem.get("name", ""),
-                    "id": item_elem.get("id", ""),
-                    "aggregate": item_elem.get("aggregate", "none"),
-                }
-                
-                # Extract expression
-                if namespace:
-                    expr_elem = item_elem.find(".//{{{0}}}expression".format(ns['ns']))
-                else:
-                    expr_elem = item_elem.find("expression")
-                    
-                if expr_elem is not None:
-                    data_item["expression"] = self._get_element_text(expr_elem)
-                
-                # Extract XML attributes for data type and usage
-                if namespace:
-                    xml_attrs = item_elem.find(".//{{{0}}}XMLAttributes".format(ns['ns']))
-                else:
-                    xml_attrs = item_elem.find("XMLAttributes")
-                    
-                if xml_attrs is not None:
-                    if namespace:
-                        data_type_attr = xml_attrs.find(".//{{{0}}}XMLAttribute[@name='RS_dataType']".format(ns['ns']))
-                        data_usage_attr = xml_attrs.find(".//{{{0}}}XMLAttribute[@name='RS_dataUsage']".format(ns['ns']))
-                        format_attr = xml_attrs.find(".//{{{0}}}XMLAttribute[@name='RS_formatProperties']".format(ns['ns']))
-                    else:
-                        data_type_attr = xml_attrs.find("XMLAttribute[@name='RS_dataType']")
-                        data_usage_attr = xml_attrs.find("XMLAttribute[@name='RS_dataUsage']")
-                        format_attr = xml_attrs.find("XMLAttribute[@name='RS_formatProperties']")
-                        
-                    if data_type_attr is not None:
-                        data_item["dataType"] = data_type_attr.get("value", "")
-                    if data_usage_attr is not None:
-                        data_item["dataUsage"] = data_usage_attr.get("value", "")
-                    if format_attr is not None:
-                        data_item["formatProperties"] = format_attr.get("value", "")
-                
-                # Try to determine the source query by looking at the context
-                # Since ElementTree doesn't have parent navigation, we'll use a different approach
-                # Look for data items within query selections
-                if namespace:
-                    query_elements = root.findall(".//{{{0}}}query".format(ns['ns']))
-                else:
-                    query_elements = root.findall(".//query")
-                    
-                for query_elem in query_elements:
-                    query_name = query_elem.get("name", "")
-                    
-                    # Look for this data item in the query's selection
-                    if namespace:
-                        selection_elem = query_elem.find(".//{{{0}}}selection".format(ns['ns']))
-                    else:
-                        selection_elem = query_elem.find("selection")
-                        
-                    if selection_elem is not None:
-                        if namespace:
-                            query_data_items = selection_elem.findall(".//{{{0}}}dataItem[@name='{1}']".format(ns['ns'], data_item["name"]))
-                        else:
-                            query_data_items = selection_elem.findall(".//dataItem[@name='{0}']".format(data_item["name"]))
-                            
-                        if query_data_items:
-                            data_item["queryName"] = query_name
-                            break
-                
-                data_items.append(data_item)
-                
-        except Exception as e:
-            self.logger.warning(f"Error extracting data items: {e}")
-            
-        return data_items
+    # _extract_data_items_from_xml method has been moved to DataItemExtractor class
     
-    def _extract_expressions_from_xml(self, root, ns):
-        """Extract expressions from report specification XML"""
-        expressions = []
-        try:
-            # Register namespace if present
-            namespace = None
-            if ns and 'ns' in ns:
-                namespace = {"ns": ns['ns']}
-                import xml.etree.ElementTree as ET
-                ET.register_namespace('', ns['ns'])
-                
-            # Find all expressions in the report
-            if namespace:
-                expr_elements = root.findall(".//{{{0}}}expression".format(ns['ns']))
-            else:
-                expr_elements = root.findall(".//expression")
-                
-            for expr_elem in expr_elements:
-                # Extract the expression text
-                expr_text = self._get_element_text(expr_elem)
-                if not expr_text:
-                    continue
-                    
-                # Try to determine context by looking at parent elements
-                context = "unknown"
-                name = ""
-                
-                # Since we can't directly get parent, we'll search for dataItems and check if this expression is inside
-                if namespace:
-                    data_items = root.findall(".//{{{0}}}dataItem".format(ns['ns']))
-                else:
-                    data_items = root.findall(".//dataItem")
-                    
-                for data_item in data_items:
-                    if namespace:
-                        item_expr = data_item.find(".//{{{0}}}expression".format(ns['ns']))
-                    else:
-                        item_expr = data_item.find("expression")
-                        
-                    if item_expr is not None and self._get_element_text(item_expr) == expr_text:
-                        context = "dataItem"
-                        name = data_item.get("name", "")
-                        break
-                
-                # If not found in dataItems, check filters
-                if context == "unknown":
-                    if namespace:
-                        filters = root.findall(".//{{{0}}}filterExpression".format(ns['ns']))
-                    else:
-                        filters = root.findall(".//filterExpression")
-                        
-                    for filter_expr in filters:
-                        if self._get_element_text(filter_expr) == expr_text:
-                            context = "filter"
-                            break
-                
-                expressions.append({
-                    "context": context,
-                    "name": name,
-                    "expression": expr_text
-                })
-                
-        except Exception as e:
-            self.logger.warning(f"Error extracting expressions: {e}")
-            
-        return expressions
+    # _extract_expressions_from_xml method has been moved to ExpressionExtractor class
     
     def _extract_parameters_from_xml(self, root, ns):
         """Extract parameters from report specification XML"""
