@@ -34,19 +34,11 @@ table 'Data'
         mode: import
         source = 
             let
-				Source = Value.NativeQuery(Cognos,
-				"SELECT ID,
-				Name,
-				Value FROM Data"),
-				#"Changed Types" = Table.TransformColumnTypes(Source,
-				{{"ID",
-				Int64.Type},
-				{"Name",
-				type text},
-				{"Value",
-				Int64.Type}})
+				Source = Sql.Database("server",
+				"database",
+				[Query = "
 			in
-				#"Changed Types"
+				Source"])
         
 
 

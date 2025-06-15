@@ -14,6 +14,7 @@ from datetime import datetime
 from cognos_migrator.config import ConfigManager, MigrationConfig
 from cognos_migrator.extractors import BaseExtractor, QueryExtractor, DataItemExtractor, ExpressionExtractor, ParameterExtractor, FilterExtractor, LayoutExtractor
 from cognos_migrator.enhancers import CPFMetadataEnhancer
+from cognos_migrator.converters import ExpressionConverter
 from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
 # Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
@@ -41,11 +42,18 @@ class CognosMigrator:
         self.project_generator = PowerBIProjectGenerator(config)
         self.doc_generator = DocumentationGenerator(config)
         
-        # Initialize extractors for XML operations
+        # Initialize LLM service client for M-query generation
+        from cognos_migrator.llm_service import LLMServiceClient
+        self.llm_service_client = LLMServiceClient()
+        
+        # Initialize expression converter with LLM service
+        self.expression_converter = ExpressionConverter(llm_service_client=self.llm_service_client, logger=self.logger)
+        
+        # Initialize extractors
         self.base_extractor = BaseExtractor(logger=self.logger)
         self.query_extractor = QueryExtractor(logger=self.logger)
         self.data_item_extractor = DataItemExtractor(logger=self.logger)
-        self.expression_extractor = ExpressionExtractor(logger=self.logger)
+        self.expression_extractor = ExpressionExtractor(expression_converter=self.expression_converter, logger=self.logger)
         self.parameter_extractor = ParameterExtractor(logger=self.logger)
         self.filter_extractor = FilterExtractor(logger=self.logger)
         self.layout_extractor = LayoutExtractor(logger=self.logger)
@@ -587,6 +595,15 @@ class CognosMigrator:
                 
                 # Extract and save expressions
                 expressions = self.expression_extractor.extract_expressions(root, ns)
+                
+                # Convert expressions to DAX if expression converter is available
+                if self.expression_converter:
+                    self.logger.info("Converting Cognos expressions to DAX using LLM service")
+                    # Create table mappings from queries for context
+                    table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    expressions = self.expression_extractor.convert_to_dax(expressions, table_mappings)
+                    self.logger.info(f"Converted {len(expressions)} expressions to DAX")
+                
                 expressions_path = extracted_dir / "report_expressions.json"
                 with open(expressions_path, "w", encoding="utf-8") as f:
                     json.dump(expressions, f, indent=2)

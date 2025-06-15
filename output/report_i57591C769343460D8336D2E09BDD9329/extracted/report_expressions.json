@@ -2,51 +2,81 @@
   {
     "context": "dataItem",
     "name": "CustomerID",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerID]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerID]",
+    "dax_expression": "'C_Data_Module_Energy_usage_data_Sheet1'[CustomerID]",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "CustomerName",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerName]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerName]",
+    "dax_expression": "'COGNOS C_Data_Module_Energy_usage_data_Sheet1'[CustomerName]",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "Region",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[Region]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[Region]",
+    "dax_expression": "'Sheet1'[Region]",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "EnergyUsage_kWh",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[EnergyUsage_kWh]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[EnergyUsage_kWh]",
+    "dax_expression": "'COGNOS C_Data_Module_Energy_usage_data_Sheet1'[EnergyUsage_kWh]",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "TariffPer_kWh",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TariffPer_kWh]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TariffPer_kWh]",
+    "dax_expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TariffPer_kWh]",
+    "conversion_confidence": 0.0,
+    "conversion_notes": "LLM service conversion failed: No valid result returned"
   },
   {
     "context": "dataItem",
     "name": "TotalBill",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TotalBill]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TotalBill]",
+    "dax_expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TotalBill]",
+    "conversion_confidence": 0.0,
+    "conversion_notes": "LLM service conversion failed: No valid result returned"
   },
   {
     "context": "dataItem",
     "name": "PaymentStatus",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]",
+    "dax_expression": "'[PaymentStatus]",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "ServiceType",
-    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[ServiceType]"
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[ServiceType]",
+    "dax_expression": "'COGNOS C_Data_Module_Energy_usage_data_Sheet1'[ServiceType]",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "Total count",
-    "expression": "count([PaymentStatus])"
+    "expression": "count([PaymentStatus])",
+    "dax_expression": "COUNT('[PaymentStatus])",
+    "conversion_confidence": 0.9,
+    "conversion_notes": "Converted using azure"
   },
   {
     "context": "dataItem",
     "name": "High Consumption Flag",
-    "expression": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')"
+    "expression": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
+    "dax_expression": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
+    "conversion_confidence": 0.0,
+    "conversion_notes": "LLM service conversion failed: No valid result returned"
   }
 ]
