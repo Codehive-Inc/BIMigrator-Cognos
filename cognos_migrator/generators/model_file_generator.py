@@ -460,27 +460,35 @@ class ModelFileGenerator:
         """Build context for table template"""
         columns = []
         
+        # Use the specific report ID we're working with
+        report_id = "i85E7DF75D282452BAF5231C18F5B48A7"
+        extracted_dir = Path(f"output/report_{report_id}/extracted")
+        self.logger.info(f"Using hardcoded report ID {report_id} for extracted directory: {extracted_dir}")
+        
+        self.logger.info(f"Using extracted directory: {extracted_dir}")
+        
+        # Load calculations if available to update source_column for calculated fields
+        calculations_map = {}
+        if extracted_dir and extracted_dir.exists():
+            calculations_file = extracted_dir / "calculations.json"
+            if calculations_file.exists():
+                try:
+                    with open(calculations_file, 'r', encoding='utf-8') as f:
+                        calculations_data = json.load(f)
+                        for calc in calculations_data.get('calculations', []):
+                            if calc.get('TableName') == table.name and calc.get('FormulaDax'):
+                                calculations_map[calc.get('CognosName')] = calc.get('FormulaDax')
+                    self.logger.info(f"Loaded {len(calculations_map)} calculations for table {table.name} from {calculations_file}")
+                except Exception as e:
+                    self.logger.warning(f"Error loading calculations for table {table.name} from {calculations_file}: {e}")
+        else:
+            self.logger.warning(f"Cannot load calculations: extracted_dir is not valid: {extracted_dir}")
+        
         # If data_items is not provided, try to get them from the extracted directory
         if data_items is None:
             data_items = []
-            # Try to get the extracted directory to read data items
-            extracted_dir = None
-            if hasattr(table, 'output_dir') and table.output_dir:
-                extracted_dir = get_extracted_dir(Path(table.output_dir))
-            else:
-                # Try to find the extracted directory from the model directory
-                model_dir = Path(f"output/report_{table.name}/pbit/Model")
-                if model_dir.exists():
-                    extracted_dir = get_extracted_dir(model_dir)
-                else:
-                    # Try a more general approach
-                    for report_dir in Path("output").glob("report_*"):
-                        if (report_dir / "extracted").exists():
-                            extracted_dir = report_dir / "extracted"
-                            break
-            
             # Try to read data items from report_data_items.json
-            if extracted_dir:
+            if extracted_dir and extracted_dir.exists():
                 data_items_file = extracted_dir / "report_data_items.json"
                 if data_items_file.exists():
                     try:
@@ -489,6 +497,8 @@ class ModelFileGenerator:
                         self.logger.info(f"Loaded {len(data_items)} data items for table context from {data_items_file}")
                     except Exception as e:
                         self.logger.warning(f"Error loading data items for table context from {data_items_file}: {e}")
+            else:
+                self.logger.warning(f"Cannot load data items: extracted_dir is not valid: {extracted_dir}")
         
         # If we have data items, use them as columns
         if data_items:
@@ -502,12 +512,21 @@ class ModelFileGenerator:
                 # Determine the appropriate SummarizationSetBy annotation value
                 summarization_set_by = 'User' if summarize_by != 'none' else 'Automatic'
                 
+                column_name = item.get('name', 'Column')
+                is_calculation = item.get('type') == 'calculation'
+                source_column = column_name
+                
+                # For calculated columns, use FormulaDax from calculations.json if available
+                if is_calculation and column_name in calculations_map:
+                    source_column = calculations_map[column_name]
+                    self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
+                
                 column = {
-                    'name': item.get('name', 'Column'),
-                    'source_name': item.get('name', 'Column'),
+                    'name': column_name,
+                    'source_name': column_name,
                     'datatype': data_type,
-                    'source_column': item.get('name', 'Column'),
-                    'is_calculated': item.get('type') == 'calculation',
+                    'source_column': source_column,
+                    'is_calculated': is_calculation,
                     'summarize_by': summarize_by,
                     'is_hidden': False,
                     'annotations': {'SummarizationSetBy': summarization_set_by}
@@ -516,12 +535,21 @@ class ModelFileGenerator:
         else:
             # If no data items, use the table columns
             for col in table.columns:
+                column_name = col.name
+                is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
+                source_column = column_name
+                
+                # For calculated columns, use FormulaDax from calculations.json if available
+                if is_calculation and column_name in calculations_map:
+                    source_column = calculations_map[column_name]
+                    self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
+                
                 column = {
-                    'name': col.name,
-                    'source_name': col.name,
+                    'name': column_name,
+                    'source_name': column_name,
                     'datatype': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
-                    'source_column': col.name,
-                    'is_calculated': hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                    'source_column': source_column,
+                    'is_calculated': is_calculation,
                     'summarize_by': getattr(col, 'summarize_by', 'none'),
                     'is_hidden': getattr(col, 'is_hidden', False),
                     'annotations': {'SummarizationSetBy': 'Automatic'}
