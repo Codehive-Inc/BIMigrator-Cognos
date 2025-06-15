@@ -21,7 +21,7 @@ class LLMServiceClient:
             api_key: Optional API key for authentication (not needed in Docker network)
         """
         if not base_url:
-            base_url = os.environ.get('LLM_SERVICE_URL', 'http://localhost:8080')
+            base_url = os.environ.get('DAX_API_URL', 'http://localhost:8080')
         self.base_url = base_url.rstrip('/')
         self.api_key = api_key
         self.logger = logging.getLogger(__name__)
@@ -73,7 +73,12 @@ class LLMServiceClient:
         
         Returns:
             Optimized M-query string
+            
+        Raises:
+            Exception: If the LLM service fails or returns invalid results
         """
+        table_name = context.get('table_name', 'unknown')
+        
         try:
             headers = {'Content-Type': 'application/json'}
             
@@ -87,7 +92,7 @@ class LLMServiceClient:
             }
             
             # Make the request to the FastAPI endpoint
-            self.logger.info(f"Sending request to LLM service for table {context.get('table_name', 'unknown')}")
+            self.logger.info(f"Sending request to LLM service for table {table_name}")
             response = requests.post(
                 f'{self.base_url}/api/m-query',
                 headers=headers,
@@ -102,7 +107,7 @@ class LLMServiceClient:
             self.logger.info(f"Complete API response: {json.dumps(result, indent=2)}")
             
             if 'm_query' in result:
-                self.logger.info(f"Successfully generated M-query for table {context.get('table_name', 'unknown')}")
+                self.logger.info(f"Successfully generated M-query for table {table_name}")
                 # Log performance notes if available
                 if 'performance_notes' in result and result['performance_notes']:
                     self.logger.info(f"Performance notes: {result['performance_notes']}")
@@ -111,22 +116,26 @@ class LLMServiceClient:
                     self.logger.info(f"Confidence score: {result['confidence']}")
                 return result['m_query']
             else:
-                self.logger.warning(f"LLM service response missing 'm_query' field: {result}")
-                return self._fallback_m_query(context)
+                error_msg = f"LLM service response missing 'm_query' field for table {table_name}: {result}"
+                self.logger.error(error_msg)
+                raise Exception(error_msg)
                 
         except requests.exceptions.RequestException as e:
-            self.logger.error(f"Error communicating with LLM service: {e}")
-            return self._fallback_m_query(context)
+            error_msg = f"Error communicating with LLM service for table {table_name}: {e}"
+            self.logger.error(error_msg)
+            raise Exception(error_msg)
         except Exception as e:
-            self.logger.error(f"Unexpected error in LLM service client: {e}")
-            return self._fallback_m_query(context)
+            error_msg = f"Unexpected error in LLM service client for table {table_name}: {e}"
+            self.logger.error(error_msg)
+            raise Exception(error_msg)
     
-    def _fallback_m_query(self, context: Dict[str, Any]) -> str:
-        """Generate a fallback M-query when the LLM service fails"""
-        table_name = context.get('table_name', 'Unknown')
-        self.logger.warning(f"Using fallback M-query generation for table: {table_name}")
-        
-        if context.get('source_query'):
+    # Removed fallback method as we now raise exceptions instead of falling back
+    # def _fallback_m_query(self, context: Dict[str, Any]) -> str:
+    #     """Generate a fallback M-query when the LLM service fails"""
+    #     table_name = context.get('table_name', 'Unknown')
+    #     self.logger.warning(f"Using fallback M-query generation for table: {table_name}")
+    #     
+    #     if context.get('source_query'):
             # For SQL queries, wrap in appropriate M function with comments
             return f'''// Fallback M-query for {table_name} (LLM service unavailable)
 let

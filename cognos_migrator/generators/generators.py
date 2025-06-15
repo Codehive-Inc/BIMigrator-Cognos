@@ -317,16 +317,62 @@ class PowerBIProjectGenerator:
         tables_dir.mkdir(exist_ok=True)
         
         for table in tables:
-            # Pass report_spec to _build_table_context
-            context = self._build_table_context(table, report_spec)
-            content = self.template_engine.render('table', context)
-            
-            # Clean filename for filesystem
-            safe_filename = self._sanitize_filename(table.name)
-            table_file = tables_dir / f'{safe_filename}.tmdl'
-            
-            with open(table_file, 'w', encoding='utf-8') as f:
-                f.write(content)
+            try:
+                # Pass report_spec to _build_table_context
+                context = self._build_table_context(table, report_spec)
+                content = self.template_engine.render('table', context)
+                
+                # Clean filename for filesystem
+                safe_filename = self._sanitize_filename(table.name)
+                table_file = tables_dir / f'{safe_filename}.tmdl'
+                
+                with open(table_file, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                    
+            except Exception as e:
+                self.logger.error(f"Error generating table file for {table.name}: {e}")
+                
+                # Create an error table file with error information
+                error_context = {
+                    'source_name': table.name,
+                    'is_hidden': False,
+                    'columns': [],
+                    'measures': [],
+                    'hierarchies': [],
+                    'partitions': [{
+                        'name': f'{table.name}-partition',
+                        'source_type': 'm',
+                        'expression': f'// ERROR: Failed to generate M-query for {table.name}\n// {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource'
+                    }],
+                    'has_widget_serialization': False,
+                    'visual_type': 'Table',
+                    'column_settings': '[]',
+                    'error': str(e)
+                }
+                
+                # Add columns if available
+                if hasattr(table, 'columns'):
+                    error_context['columns'] = [{
+                        'source_name': col.name,
+                        'source_column': col.source_column if hasattr(col, 'source_column') else col.name,
+                        'datatype': self._map_datatype_to_powerbi(col.data_type) if hasattr(col, 'data_type') else 'string',
+                        'summarize_by': col.summarize_by if hasattr(col, 'summarize_by') else 'none',
+                        'format_string': col.format_string if hasattr(col, 'format_string') else None,
+                        'is_hidden': False,
+                        'is_calculated': False,
+                        'is_data_type_inferred': False,
+                        'annotations': {'SummarizationSetBy': 'User'}
+                    } for col in table.columns]
+                
+                # Render error table
+                error_content = self.template_engine.render('table', error_context)
+                
+                # Clean filename for filesystem
+                safe_filename = self._sanitize_filename(table.name)
+                error_table_file = tables_dir / f'{safe_filename}.tmdl'
+                
+                with open(error_table_file, 'w', encoding='utf-8') as f:
+                    f.write(error_content)
     
     def _build_table_context(self, table: Table, report_spec: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
@@ -382,25 +428,19 @@ class PowerBIProjectGenerator:
         }
     
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
-        """Build M expression for table partition using LLM service if available"""
-        # If LLM service is not configured, use the default implementation
-        self.logger.warning(f"Building M-expression for table: {table.name}")
-        self.logger.warning(f"LLM service available: {self.llm_service is not None}")
+        """Build M expression for table partition using LLM service"""
+        self.logger.info(f"Building M-expression for table: {table.name}")
         
         # Check if table has source_query
         if hasattr(table, 'source_query'):
-            self.logger.warning(f"Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
+            self.logger.info(f"Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
         else:
-            self.logger.warning(f"Table {table.name} does not have source_query attribute")
+            self.logger.info(f"Table {table.name} does not have source_query attribute")
         
         if not self.llm_service:
-            self.logger.info(f"Using default M-query generation for table {table.name} (LLM service not configured)")
-            if table.source_query:
-                # For SQL queries, wrap in appropriate M function
-                return f'let\n\t\t\t\tSource = Sql.Database("server", "database", [Query="{table.source_query}"])\n\t\t\tin\n\t\t\t\t#"Changed Type"'
-            else:
-                # For other sources, create a basic expression
-                return f'let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\t#"Changed Type"'
+            error_msg = f"LLM service is not configured but required for M-query generation for table {table.name}"
+            self.logger.error(error_msg)
+            raise Exception(error_msg)
         
         # Prepare context for LLM service
         context = {
