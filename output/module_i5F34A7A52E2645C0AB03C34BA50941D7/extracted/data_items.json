@@ -1,0 +1,608 @@
+{
+  "Orders": [
+    {
+      "identifier": "_row_id",
+      "label": "Row Id",
+      "description": "Represents the row number identifier, as originally found in the uploaded file.",
+      "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+      "expression": "_row_id",
+      "datatype": "BIGINT",
+      "usage": "identifier",
+      "hidden": true,
+      "nullable": false,
+      "regularAggregate": "count",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "integer",
+      "idForExpression": "C.C_TestDataModule.Orders._row_id",
+      "powerbi_datatype": "Int64",
+      "powerbi_format": "#,0;-#,0;0",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Row_ID",
+      "label": "Row ID",
+      "description": "",
+      "comment": "",
+      "expression": "Row_ID",
+      "datatype": "BIGINT",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "integer",
+      "idForExpression": "C.C_TestDataModule.Orders.Row_ID",
+      "powerbi_datatype": "Int64",
+      "powerbi_format": "#,0;-#,0;0",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Order_ID",
+      "label": "Order ID",
+      "description": "",
+      "comment": "",
+      "expression": "Order_ID",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Order_ID",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Order_Date",
+      "label": "Order Date",
+      "description": "",
+      "comment": "",
+      "expression": "Order_Date",
+      "datatype": "DATE",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "datetime",
+      "highlevelDatatype": "date",
+      "idForExpression": "C.C_TestDataModule.Orders.Order_Date",
+      "powerbi_datatype": "DateTime",
+      "powerbi_format": "dd/MM/yyyy",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Ship_Date",
+      "label": "Ship Date",
+      "description": "",
+      "comment": "",
+      "expression": "Ship_Date",
+      "datatype": "DATE",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "datetime",
+      "highlevelDatatype": "date",
+      "idForExpression": "C.C_TestDataModule.Orders.Ship_Date",
+      "powerbi_datatype": "DateTime",
+      "powerbi_format": "dd/MM/yyyy",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Ship_Mode",
+      "label": "Ship Mode",
+      "description": "",
+      "comment": "",
+      "expression": "Ship_Mode",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Ship_Mode",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Customer_ID",
+      "label": "Customer ID",
+      "description": "",
+      "comment": "",
+      "expression": "Customer_ID",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Customer_ID",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Customer_Name",
+      "label": "Customer Name",
+      "description": "",
+      "comment": "",
+      "expression": "Customer_Name",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "attribute",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Customer_Name",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Segment",
+      "label": "Segment",
+      "description": "",
+      "comment": "",
+      "expression": "Segment",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Segment",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Country_Region",
+      "label": "Country/Region",
+      "description": "",
+      "comment": "",
+      "expression": "Country_Region",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Country_Region",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "City",
+      "label": "City",
+      "description": "",
+      "comment": "",
+      "expression": "City",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.City",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "State_Province",
+      "label": "State/Province",
+      "description": "",
+      "comment": "",
+      "expression": "State_Province",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.State_Province",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Postal_Code",
+      "label": "Postal Code",
+      "description": "",
+      "comment": "",
+      "expression": "Postal_Code",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Postal_Code",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Region",
+      "label": "Region",
+      "description": "",
+      "comment": "",
+      "expression": "Region",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Region",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Product_ID",
+      "label": "Product ID",
+      "description": "",
+      "comment": "",
+      "expression": "Product_ID",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Product_ID",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Category",
+      "label": "Category",
+      "description": "",
+      "comment": "",
+      "expression": "Category",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Category",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Sub_Category",
+      "label": "Sub-Category",
+      "description": "",
+      "comment": "",
+      "expression": "Sub_Category",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Sub_Category",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Product_Name",
+      "label": "Product Name",
+      "description": "",
+      "comment": "",
+      "expression": "Product_Name",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "attribute",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Orders.Product_Name",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Sales",
+      "label": "Sales",
+      "description": "",
+      "comment": "",
+      "expression": "Sales",
+      "datatype": "DOUBLE",
+      "usage": "fact",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "total",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "decimal",
+      "idForExpression": "C.C_TestDataModule.Orders.Sales",
+      "powerbi_datatype": "Double",
+      "powerbi_format": "#,0.00;-#,0.00;0.00",
+      "facetDefinition": {
+        "enabled": "false"
+      }
+    },
+    {
+      "identifier": "Quantity",
+      "label": "Quantity",
+      "description": "",
+      "comment": "",
+      "expression": "Quantity",
+      "datatype": "BIGINT",
+      "usage": "fact",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "total",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "integer",
+      "idForExpression": "C.C_TestDataModule.Orders.Quantity",
+      "powerbi_datatype": "Int64",
+      "powerbi_format": "#,0;-#,0;0",
+      "facetDefinition": {
+        "enabled": "false"
+      }
+    },
+    {
+      "identifier": "Discount",
+      "label": "Discount",
+      "description": "",
+      "comment": "",
+      "expression": "Discount",
+      "datatype": "DOUBLE",
+      "usage": "fact",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "total",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "decimal",
+      "idForExpression": "C.C_TestDataModule.Orders.Discount",
+      "powerbi_datatype": "Double",
+      "powerbi_format": "#,0.00;-#,0.00;0.00",
+      "facetDefinition": {
+        "enabled": "false"
+      }
+    },
+    {
+      "identifier": "Profit",
+      "label": "Profit",
+      "description": "",
+      "comment": "",
+      "expression": "Profit",
+      "datatype": "DOUBLE",
+      "usage": "fact",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "total",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "decimal",
+      "idForExpression": "C.C_TestDataModule.Orders.Profit",
+      "powerbi_datatype": "Double",
+      "powerbi_format": "#,0.00;-#,0.00;0.00",
+      "facetDefinition": {
+        "enabled": "false"
+      }
+    }
+  ],
+  "People": [
+    {
+      "identifier": "_row_id",
+      "label": "Row Id",
+      "description": "Represents the row number identifier, as originally found in the uploaded file.",
+      "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+      "expression": "_row_id",
+      "datatype": "BIGINT",
+      "usage": "identifier",
+      "hidden": true,
+      "nullable": false,
+      "regularAggregate": "count",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "integer",
+      "idForExpression": "C.C_TestDataModule.People._row_id",
+      "powerbi_datatype": "Int64",
+      "powerbi_format": "#,0;-#,0;0",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Regional_Manager",
+      "label": "Regional Manager",
+      "description": "",
+      "comment": "",
+      "expression": "Regional_Manager",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.People.Regional_Manager",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Region",
+      "label": "Region",
+      "description": "",
+      "comment": "",
+      "expression": "Region",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.People.Region",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Area",
+      "label": "Area",
+      "description": "",
+      "comment": "",
+      "expression": "Area",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.People.Area",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Country",
+      "label": "Country",
+      "description": "",
+      "comment": "",
+      "expression": "Country",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.People.Country",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    }
+  ],
+  "Returns_": [
+    {
+      "identifier": "_row_id",
+      "label": "Row Id",
+      "description": "Represents the row number identifier, as originally found in the uploaded file.",
+      "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+      "expression": "_row_id",
+      "datatype": "BIGINT",
+      "usage": "identifier",
+      "hidden": true,
+      "nullable": false,
+      "regularAggregate": "count",
+      "datatypeCategory": "number",
+      "highlevelDatatype": "integer",
+      "idForExpression": "C.C_TestDataModule.Returns_._row_id",
+      "powerbi_datatype": "Int64",
+      "powerbi_format": "#,0;-#,0;0",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Returned",
+      "label": "Returned",
+      "description": "",
+      "comment": "",
+      "expression": "Returned",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Returns_.Returned",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    },
+    {
+      "identifier": "Order_ID",
+      "label": "Order ID",
+      "description": "",
+      "comment": "",
+      "expression": "Order_ID",
+      "datatype": "NVARCHAR(MAX)",
+      "usage": "identifier",
+      "hidden": false,
+      "nullable": false,
+      "regularAggregate": "countDistinct",
+      "datatypeCategory": "string",
+      "highlevelDatatype": "string",
+      "idForExpression": "C.C_TestDataModule.Returns_.Order_ID",
+      "powerbi_datatype": "String",
+      "powerbi_format": "",
+      "facetDefinition": {
+        "enabled": "automatic"
+      }
+    }
+  ]
+}

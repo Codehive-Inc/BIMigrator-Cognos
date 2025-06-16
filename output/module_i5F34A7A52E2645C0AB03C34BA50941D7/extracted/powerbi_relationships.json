@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Orders_People",
+    "fromTable": "Orders",
+    "fromColumn": "Region",
+    "toTable": "People",
+    "toColumn": "Region",
+    "cardinality": "ManyToOne",
+    "crossFilteringBehavior": "automatic",
+    "isSystemGenerated": true
+  },
+  {
+    "name": "Returns_Orders",
+    "fromTable": "Returns_",
+    "fromColumn": "Order_ID",
+    "toTable": "Orders",
+    "toColumn": "Order_ID",
+    "cardinality": "OneToMany",
+    "crossFilteringBehavior": "automatic"
+  }
+]

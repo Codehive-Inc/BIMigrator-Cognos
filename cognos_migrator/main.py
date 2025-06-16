@@ -449,8 +449,14 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
     except Exception as e:
         logger.error(f"Error during module migration: {e}")
         return {}
-    logger = logging.getLogger(__name__)
 
+
+def main():
+    """Main entry point"""
+    # Setup logging
+    setup_logging()
+    logger = logging.getLogger(__name__)
+    
     # Check if we have command line arguments
     if len(sys.argv) > 1:
         command = sys.argv[1].lower()

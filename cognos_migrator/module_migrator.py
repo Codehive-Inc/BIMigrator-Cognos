@@ -8,6 +8,7 @@ import json
 import logging
 import shutil
 import re
+import uuid
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
@@ -87,46 +88,73 @@ class CognosModuleMigrator:
             pbit_dir = output_dir / "pbit"
             pbit_dir.mkdir(exist_ok=True)
             
-            # Step 1: Fetch Cognos module
-            cognos_module = self.cognos_client.get_module(module_id)
-            if not cognos_module:
-                self.logger.error(f"Failed to fetch Cognos module: {module_id}")
-                return False
-            
-            # Save raw module data
-            module_content = cognos_module.get('content', '')
-            if not module_content:
-                self.logger.error("Empty module content")
+            # Step 1: Fetch Cognos module information
+            module_info = self.cognos_client.get_module(module_id)
+            if not module_info:
+                self.logger.error(f"Failed to fetch Cognos module info: {module_id}")
                 return False
                 
-            # Save raw module data to JSON and XML files
+            # Step 2: Fetch module metadata
+            module_metadata = self.cognos_client.get_module_metadata(module_id)
+            if not module_metadata:
+                self.logger.error(f"Failed to fetch Cognos module metadata: {module_id}")
+                return False
+            
+            # Save module information and metadata
+            module_info_path = extracted_dir / "module_info.json"
+            with open(module_info_path, 'w', encoding='utf-8') as f:
+                json.dump(module_info, f, indent=2)
+                
             module_metadata_path = extracted_dir / "module_metadata.json"
             with open(module_metadata_path, 'w', encoding='utf-8') as f:
-                json.dump(cognos_module.get('content', {}), f, indent=2)
-                
-            module_spec_path = extracted_dir / "module_specification.xml"
-            with open(module_spec_path, 'w', encoding='utf-8') as f:
-                f.write(cognos_module.get('specification', ''))
+                json.dump(module_metadata, f, indent=2)
             
-            # Step 2: Extract module components using specialized extractors
+            # Step 3: Extract module components using specialized extractors
             # Each extractor will save its output to JSON files in the extracted directory
+            # Convert module_metadata to JSON string for extractors
+            module_metadata_json = json.dumps(module_metadata)
+            
             self.logger.info("Extracting module structure")
-            module_structure = self.module_structure_extractor.extract_and_save(module_content, extracted_dir)
+            try:
+                module_structure = self.module_structure_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting module structure: {e}")
+                module_structure = {}
             
             self.logger.info("Extracting query subjects and items")
-            query_data = self.module_query_extractor.extract_and_save(module_content, extracted_dir)
+            try:
+                query_data = self.module_query_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting query subjects: {e}")
+                query_data = {}
             
             self.logger.info("Extracting data items and calculated items")
-            data_items = self.module_data_item_extractor.extract_and_save(module_content, extracted_dir)
+            try:
+                data_items = self.module_data_item_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting data items: {e}")
+                data_items = {}
             
             self.logger.info("Extracting relationships")
-            relationships = self.module_relationship_extractor.extract_and_save(module_content, extracted_dir)
+            try:
+                relationships = self.module_relationship_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting relationships: {e}")
+                relationships = {}
             
             self.logger.info("Extracting hierarchies")
-            hierarchies = self.module_hierarchy_extractor.extract_and_save(module_content, extracted_dir)
+            try:
+                hierarchies = self.module_hierarchy_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting hierarchies: {e}")
+                hierarchies = {}
             
             self.logger.info("Extracting and converting expressions")
-            expressions = self.module_expression_extractor.extract_and_save(module_content, extracted_dir)
+            try:
+                expressions = self.module_expression_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting expressions: {e}")
+                expressions = {}
             
             # Combine all extracted data into a parsed module structure
             parsed_module = {
@@ -141,7 +169,7 @@ class CognosModuleMigrator:
                 'powerbi_hierarchies': hierarchies.get('powerbi_hierarchies', {}),
                 'expressions': expressions.get('cognos_expressions', {}),
                 'dax_expressions': expressions.get('dax_expressions', {}),
-                'raw_module': cognos_module
+                'raw_module': module_info
             }
             
             # Save the combined parsed module
@@ -200,10 +228,11 @@ class CognosModuleMigrator:
             
             # Create Power BI project
             powerbi_project = PowerBIProject(
-                name=module_name,
-                description=f"Migrated from Cognos module: {module_name}",
-                source_id=module_id
+                name=module_name
             )
+            
+            # We can't store metadata directly in PowerBIProject, so we'll add it to the report metadata
+            # when we create the report structure
             
             # Create data model
             data_model = self._create_data_model(parsed_module)
@@ -237,7 +266,15 @@ class CognosModuleMigrator:
         Returns:
             Power BI data model
         """
-        data_model = DataModel()
+        # Extract module name from raw module
+        raw_module = parsed_module.get('raw_module', {})
+        module_name = raw_module.get('name', 'CognosModule')
+        
+        # Initialize DataModel with required parameters
+        data_model = DataModel(
+            name=f"{module_name} Data Model",
+            tables=[]
+        )
         
         # Add tables
         query_subjects = parsed_module.get('query_subjects', [])
@@ -249,26 +286,37 @@ class CognosModuleMigrator:
                 continue
                 
             # Create table
+            table_name = query_subject.get('label', subject_id) or subject_id
             table = Table(
-                name=query_subject.get('label', subject_id) or subject_id,
-                source_name=subject_id
+                name=table_name,
+                columns=[]
             )
+            
+            # Store source ID in annotations
+            table.annotations['source_id'] = subject_id
             
             # Add columns
             data_items = data_items_by_subject.get(subject_id, [])
             for data_item in data_items:
                 # Skip hidden items if configured to do so
-                if data_item.get('hidden', False) and self.config.skip_hidden_columns:
+                skip_hidden = getattr(self.config, 'skip_hidden_columns', False)
+                if data_item.get('hidden', False) and skip_hidden:
                     continue
                     
+                column_name = data_item.get('label', '') or data_item.get('identifier', '')
+                source_column = data_item.get('identifier', '')
+                data_type = data_item.get('powerbi_datatype', 'String')
+                
                 column = Column(
-                    name=data_item.get('label', '') or data_item.get('identifier', ''),
-                    source_name=data_item.get('identifier', ''),
-                    data_type=data_item.get('powerbi_datatype', 'String'),
-                    format=data_item.get('powerbi_format', ''),
-                    description=data_item.get('description', ''),
-                    is_hidden=data_item.get('hidden', False)
+                    name=column_name,
+                    data_type=data_type,
+                    source_column=source_column,
+                    description=data_item.get('description', '')
                 )
+                
+                # Store additional metadata in annotations
+                column.annotations['format'] = data_item.get('powerbi_format', '')
+                column.annotations['is_hidden'] = data_item.get('hidden', False)
                 table.columns.append(column)
             
             # Add measures from calculated items
@@ -290,7 +338,7 @@ class CognosModuleMigrator:
                     name=calc_item.get('label', '') or item_id,
                     expression=dax_expression,
                     description=calc_item.get('description', ''),
-                    format=self._determine_measure_format(calc_item)
+                    format_string=self._determine_measure_format(calc_item)
                 )
                 table.measures.append(measure)
             
@@ -319,10 +367,20 @@ class CognosModuleMigrator:
         Returns:
             Power BI report
         """
+        # Get module ID from raw module
+        raw_module = parsed_module.get('raw_module', {})
+        module_id = raw_module.get('id', str(uuid.uuid4()))
+        
         report = Report(
-            name=f"{module_name} Report",
-            description=f"Report generated from Cognos module: {module_name}"
+            id=f"report_{module_id}",
+            name=f"{module_name} Report"
         )
+        
+        # Store module metadata in report metadata
+        report.metadata = {
+            "source_module_id": module_id,
+            "source_description": f"Report generated from Cognos module: {module_name}"
+        }
         
         # Create a default page with tables from the module
         page = ReportPage(
