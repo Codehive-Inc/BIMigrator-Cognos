@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: Report with Calculations
-- **Migration Date**: 2025-06-15 21:43:39
+- **Migration Date**: 2025-06-15 22:49:30
 
 ## Data Model
 

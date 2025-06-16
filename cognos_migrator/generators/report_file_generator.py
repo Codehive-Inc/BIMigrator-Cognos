@@ -87,15 +87,30 @@ class ReportFileGenerator:
         self.logger.info(f"Generated report file: {report_file}")
     
     def _generate_report_config_file(self, report: Report, report_dir: Path):
-        """Generate report.config.json file"""
+        """Generate report configuration file (report.config.json or config.json)"""
         context = {
             'report_id': report.id,
             'report_name': report.name
         }
         
-        content = self.template_engine.render('report_config', context)
+        # Use the 'config' template which points to the new name
+        template_name = 'config'
+        content = self.template_engine.render(template_name, context)
         
-        config_file = report_dir / 'report.config.json'
+        # Get template info to determine the target filename and path
+        template_info = self.template_engine.get_template_info(template_name)
+        target_filename = template_info['target_filename']
+        target_path = template_info['path']
+        
+        # Create the target directory if it doesn't exist
+        if target_path:
+            target_dir = report_dir / target_path
+            target_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            target_dir = report_dir
+        
+        # Create the output file
+        config_file = target_dir / target_filename
         with open(config_file, 'w', encoding='utf-8') as f:
             f.write(content)
         
@@ -112,15 +127,22 @@ class ReportFileGenerator:
         self.logger.info(f"Generated report config file: {config_file}")
     
     def _generate_report_metadata_file(self, report: Report, report_dir: Path):
-        """Generate report.metadata.json file"""
+        """Generate report metadata file"""
         context = {
             'report_id': report.id,
             'report_name': report.name
         }
         
-        content = self.template_engine.render('report_metadata', context)
+        # Use the template engine to render the metadata file
+        template_name = 'report_metadata'
+        content = self.template_engine.render(template_name, context)
         
-        metadata_file = report_dir / 'report.metadata.json'
+        # Get template info to determine the target filename
+        template_info = self.template_engine.get_template_info(template_name)
+        target_filename = template_info['target_filename']
+        
+        # ReportMetadata.json should be directly in the pbit directory (one level up from report_dir)
+        metadata_file = report_dir.parent / target_filename
         with open(metadata_file, 'w', encoding='utf-8') as f:
             f.write(content)
         
@@ -137,15 +159,21 @@ class ReportFileGenerator:
         self.logger.info(f"Generated report metadata file: {metadata_file}")
     
     def _generate_report_settings_file(self, report: Report, report_dir: Path):
-        """Generate report.settings.json file"""
+        """Generate report settings file"""
         context = {
             'report_id': report.id,
             'report_name': report.name
         }
         
-        content = self.template_engine.render('report_settings', context)
+        template_name = 'report_settings'
+        content = self.template_engine.render(template_name, context)
         
-        settings_file = report_dir / 'report.settings.json'
+        # Get template info to determine the target filename
+        template_info = self.template_engine.get_template_info(template_name)
+        target_filename = template_info['target_filename']
+        
+        # ReportSettings.json should be directly in the pbit directory (one level up from report_dir)
+        settings_file = report_dir.parent / target_filename
         with open(settings_file, 'w', encoding='utf-8') as f:
             f.write(content)
         
@@ -163,8 +191,17 @@ class ReportFileGenerator:
     
     def _generate_report_sections(self, report: Report, report_dir: Path):
         """Generate report section files"""
-        sections_dir = report_dir / 'sections'
-        sections_dir.mkdir(exist_ok=True)
+        # Get template info to determine the target path
+        template_info = self.template_engine.get_template_info('report_section')
+        target_path = template_info['path']
+        
+        # Create the sections directory based on template path
+        if target_path:
+            sections_dir = report_dir / target_path
+            sections_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            sections_dir = report_dir / 'sections'
+            sections_dir.mkdir(exist_ok=True)
         
         # If report has sections, generate a file for each section
         if hasattr(report, 'sections') and report.sections:
@@ -182,9 +219,21 @@ class ReportFileGenerator:
                     }
                 }
                 
-                content = self.template_engine.render('report_section', context)
+                template_name = 'report_section'
+                content = self.template_engine.render(template_name, context)
                 
-                section_file = sections_dir / f"{context['section_id']}.json"
+                # Get template info to determine the target filename format
+                template_info = self.template_engine.get_template_info(template_name)
+                target_filename = template_info['target_filename']
+                
+                # Replace any placeholders in the target filename
+                if '{section_id}' in target_filename:
+                    actual_filename = target_filename.replace('{section_id}', context['section_id'])
+                else:
+                    actual_filename = f"{context['section_id']}.json"
+                
+                # Create the output file
+                section_file = sections_dir / actual_filename
                 with open(section_file, 'w', encoding='utf-8') as f:
                     f.write(content)
                     
@@ -204,9 +253,21 @@ class ReportFileGenerator:
                 }
             }
             
-            content = self.template_engine.render('report_section', context)
+            template_name = 'report_section'
+            content = self.template_engine.render(template_name, context)
             
-            section_file = sections_dir / 'section1.json'
+            # Get template info to determine the target filename format
+            template_info = self.template_engine.get_template_info(template_name)
+            target_filename = template_info['target_filename']
+            
+            # Replace any placeholders in the target filename
+            if '{section_id}' in target_filename:
+                actual_filename = target_filename.replace('{section_id}', context['section_id'])
+            else:
+                actual_filename = f"{context['section_id']}.json"
+            
+            # Create the output file
+            section_file = sections_dir / actual_filename
             with open(section_file, 'w', encoding='utf-8') as f:
                 f.write(content)
                 
@@ -223,12 +284,15 @@ class ReportFileGenerator:
         }
         
         try:
-            content = self.template_engine.render('diagram_layout', context)
+            template_name = 'diagram_layout'
+            content = self.template_engine.render(template_name, context)
             
-            layout_dir = report_dir / 'diagramLayout'
-            layout_dir.mkdir(exist_ok=True)
+            # Get template info to determine the target filename
+            template_info = self.template_engine.get_template_info(template_name)
+            target_filename = template_info['target_filename']
             
-            layout_file = layout_dir / 'layout.json'
+            # DiagramLayout.json should be directly in the pbit directory (one level up from report_dir)
+            layout_file = report_dir.parent / target_filename
             with open(layout_file, 'w', encoding='utf-8') as f:
                 f.write(content)
             

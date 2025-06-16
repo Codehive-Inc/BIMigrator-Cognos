@@ -251,7 +251,7 @@ class PowerBIProjectOrchestrator:
         self.logger.info(f"Generated enhanced report file: {report_file}")
     
     def _generate_enhanced_report_config(self, cognos_report: CognosReportStructure, report_dir: Path):
-        """Generate enhanced config.json file
+        """Generate enhanced report configuration file (config.json)
         
         Args:
             cognos_report: Cognos report structure
@@ -262,9 +262,16 @@ class PowerBIProjectOrchestrator:
             'report_name': cognos_report.name
         }
         
-        content = self.template_engine.render('report_config', context)
+        # Use the 'config' template which points to the new name
+        template_name = 'config'
+        content = self.template_engine.render(template_name, context)
         
-        config_file = report_dir / 'report.config.json'
+        # Get template info to determine the target filename
+        template_info = self.template_engine.get_template_info(template_name)
+        target_filename = template_info['target_filename']
+        
+        # Create the output file
+        config_file = report_dir / target_filename
         with open(config_file, 'w', encoding='utf-8') as f:
             f.write(content)
             
