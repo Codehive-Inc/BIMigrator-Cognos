@@ -638,6 +638,14 @@ class CognosMigrator:
                     self.logger.info("Converting Cognos expressions to DAX using LLM service")
                     # Create table mappings from queries for context
                     table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    
+                    # Add a mapping for the default 'Data' table to use the report name
+                    if cognos_report.name:
+                        # Create a safe report name (same logic as in _convert_cognos_to_powerbi)
+                        safe_table_name = re.sub(r'[^\w\s]', '', cognos_report.name).replace(' ', '_')
+                        self.logger.info(f"Adding table mapping: Data -> {safe_table_name}")
+                        table_mappings['Data'] = safe_table_name
+                    
                     calculations = self.expression_extractor.convert_to_dax(expressions, table_mappings)
                     self.logger.info(f"Converted {len(calculations['calculations'])} expressions to DAX")
                 else:
