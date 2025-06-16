@@ -70,8 +70,17 @@ class CognosModuleMigrator:
                 self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
                 self.logger.info(f"Successfully loaded CPF file: {cpf_file_path}")
     
-    def migrate_module(self, module_id: str, output_path: str) -> bool:
-        """Migrate a single Cognos module to Power BI"""
+    def migrate_module(self, module_id: str, output_path: str, report_ids: List[str] = None) -> bool:
+        """Migrate a single Cognos module to Power BI
+        
+        Args:
+            module_id (str): ID of the Cognos module to migrate
+            output_path (str): Path where migration output will be saved
+            report_ids (List[str], optional): List of report IDs that are associated with this module
+            
+        Returns:
+            bool: True if migration was successful, False otherwise
+        """
         try:
             self.logger.info(f"Starting migration of module: {module_id}")
             
@@ -108,6 +117,13 @@ class CognosModuleMigrator:
             module_metadata_path = extracted_dir / "module_metadata.json"
             with open(module_metadata_path, 'w', encoding='utf-8') as f:
                 json.dump(module_metadata, f, indent=2)
+                
+            # Save associated report IDs if provided
+            if report_ids:
+                self.logger.info(f"Associating module with {len(report_ids)} reports: {report_ids}")
+                report_ids_path = extracted_dir / "associated_reports.json"
+                with open(report_ids_path, 'w', encoding='utf-8') as f:
+                    json.dump({"report_ids": report_ids}, f, indent=2)
             
             # Step 3: Extract module components using specialized extractors
             # Each extractor will save its output to JSON files in the extracted directory
@@ -153,8 +169,9 @@ class CognosModuleMigrator:
             try:
                 expressions = self.module_expression_extractor.extract_and_save(module_metadata_json, extracted_dir)
             except Exception as e:
-                self.logger.error(f"Error extracting expressions: {e}")
-                expressions = {}
+                    self.logger.error(f"Error collecting calculations from reports: {e}")
+            else:
+                self.logger.warning("No report IDs provided, skipping calculation collection")
             
             # Combine all extracted data into a parsed module structure
             parsed_module = {
@@ -169,7 +186,8 @@ class CognosModuleMigrator:
                 'powerbi_hierarchies': hierarchies.get('powerbi_hierarchies', {}),
                 'expressions': expressions.get('cognos_expressions', {}),
                 'dax_expressions': expressions.get('dax_expressions', {}),
-                'raw_module': module_info
+                'raw_module': module_info,
+                'associated_reports': report_ids or []
             }
             
             # Save the combined parsed module
@@ -248,7 +266,8 @@ class CognosModuleMigrator:
                 'source_id': module_id,
                 'source_name': module_name,
                 'migration_date': datetime.now().isoformat(),
-                'migrator_version': '1.0.0'
+                'migrator_version': '1.0.0',
+                'associated_reports': parsed_module.get('associated_reports', [])
             }
             
             return powerbi_project

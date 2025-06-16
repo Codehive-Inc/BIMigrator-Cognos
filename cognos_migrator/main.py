@@ -432,11 +432,15 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         logger.info(f"Step 2: Migrating reports from folder {folder_id}")
         folder_results = migrate_folder(folder_id, str(reports_dir))
         
+        # Extract report IDs that were successfully migrated
+        successful_report_ids = [report_id for report_id, success in folder_results.items() if success]
+        logger.info(f"Successfully migrated {len(successful_report_ids)} reports: {successful_report_ids}")
+        
         # Step 3: Migrate the module
         logger.info("Step 3: Migrating module")
         from cognos_migrator.module_migrator import CognosModuleMigrator
         module_migrator = CognosModuleMigrator(config)
-        success = module_migrator.migrate_module(module_id, str(module_path))
+        success = module_migrator.migrate_module(module_id, str(module_path), successful_report_ids)
         
         if success:
             logger.info("Module migration completed successfully")

@@ -10,7 +10,7 @@ table 'Report_with_Calculations'
 
         
     column 'No of Unique Orders' = ```
-            No of Unique Orders
+            DISTINCTCOUNT('Report_with_Calculations'[Order_ID])
     ```
         dataType: int64
         summarizeBy: sum
@@ -19,7 +19,7 @@ table 'Report_with_Calculations'
 
         
     column 'Orders Returned (Multiple Returns per Order)' = ```
-            Orders Returned (Multiple Returns per Order)
+            IF('C_TestDataModule'[Returns_].[Returned] = "Yes", 1, 0)
     ```
         dataType: decimal
         summarizeBy: sum

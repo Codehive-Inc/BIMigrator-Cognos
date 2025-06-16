@@ -16,7 +16,7 @@
 ### Failed Migrations
 
 ## Migration Details
-- **Migration Date**: 2025-06-16 17:40:00
+- **Migration Date**: 2025-06-16 19:01:29
 - **Output Directory**: output/module_i5F34A7A52E2645C0AB03C34BA50941D7/reports
 
 ## Next Steps
