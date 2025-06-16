@@ -31,7 +31,7 @@ class ModelFileGenerator:
         self.mquery_converter = mquery_converter
         self.logger = logging.getLogger(__name__)
     
-    def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None) -> Path:
+    def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Path:
         """Generate model files for Power BI template"""
         model_dir = output_dir / 'Model'
         model_dir.mkdir(exist_ok=True)
@@ -57,7 +57,7 @@ class ModelFileGenerator:
         self._generate_database_file(data_model, model_dir, report_name)
         
         # Generate table files
-        self._generate_table_files(data_model.tables, model_dir, report_spec, report_name)
+        self._generate_table_files(data_model.tables, model_dir, report_spec, report_name, project_metadata)
         
         # Generate relationships file
         if data_model.relationships:
@@ -106,7 +106,7 @@ class ModelFileGenerator:
             
         self.logger.info(f"Generated database file: {database_file}")
     
-    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None):
+    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None):
         """Generate table/*.tmdl files"""
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
@@ -168,7 +168,7 @@ class ModelFileGenerator:
                     self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
                 
                 # Build table context with the data items
-                context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query)
+                context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query, report_name, project_metadata)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
@@ -345,7 +345,7 @@ class ModelFileGenerator:
                     
                 self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
     
-    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Build context for table template"""
         # Use report name for table name if available and if table name is 'Data'
         table_name = table.name
@@ -466,7 +466,12 @@ class ModelFileGenerator:
         
         # Add partition information to the context
         partitions = []
-        if m_expression:
+        
+        # Skip partition preparation for module migrations
+        is_module_migration = project_metadata.get('is_module_migration', False) if project_metadata else False
+        if is_module_migration:
+            self.logger.info(f"Skipping partition preparation for module migration: {table_name}")
+        elif m_expression:
             partitions.append({
                 'name': table_name,
                 'source_type': 'm',

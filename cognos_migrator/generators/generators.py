@@ -89,7 +89,7 @@ class PowerBIProjectOrchestrator:
             
             # Generate model files
             if project.data_model:
-                self.model_file_generator.generate_model_files(project.data_model, output_dir)
+                self.model_file_generator.generate_model_files(project.data_model, output_dir, project_metadata=project.metadata)
             
             # Generate report files
             if project.report:

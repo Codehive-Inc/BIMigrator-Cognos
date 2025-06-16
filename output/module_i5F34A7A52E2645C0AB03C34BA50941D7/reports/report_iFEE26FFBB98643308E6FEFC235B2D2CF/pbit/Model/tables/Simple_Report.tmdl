@@ -1,4 +1,4 @@
-table 'Data'
+table 'Simple_Report'
 
 
     column 'Regional Manager'
@@ -59,37 +59,6 @@ table 'Data'
         
 
 
-
-    partition 'Data' = m
-        mode: import
-        source = 
-            let
-				Source = Value.NativeQuery(Cognos,
-				"SELECT ""Regional Manager"",
-				""Region"",
-				""Area"",
-				""Country"",
-				""Region1"",
-				""Order ID"",
-				""Returned"" FROM Data"),
-				#"Changed Types" = Table.TransformColumnTypes(Source,
-				{{"Regional Manager",
-				type text},
-				{"Region",
-				type text},
-				{"Area",
-				type text},
-				{"Country",
-				type text},
-				{"Region1",
-				type text},
-				{"Order ID",
-				type text},
-				{"Returned",
-				type text}})
-			in
-				#"Changed Types"
-        
 
 
 

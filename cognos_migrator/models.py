@@ -216,6 +216,7 @@ class PowerBIProject:
     # Project components
     data_model: Optional[DataModel] = None
     report: Optional[Report] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
     
     # File paths
     project_file: str = ".pbixproj.json"
