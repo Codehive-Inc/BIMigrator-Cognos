@@ -364,42 +364,94 @@ def demo_migration():
 def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = None):
     """Migrate a Cognos module and associated folder
     
-    This function uses the dedicated module migrator to perform a complete module migration
-    with module-specific generators and processing.
-    
+    This function performs a three-step migration process:
     Args:
-        module_id: ID of the Cognos module to migrate
-        folder_id: ID of the folder containing reports to migrate
-        output_path: Optional path to store migration output
-    
+        module_id (str): Module ID
+        folder_id (str): Folder ID containing reports
+        output_path (str, optional): Output path. Defaults to None.
+
     Returns:
-        Dict[str, bool]: Results of the migration process
+        Dict[str, bool]: Migration results
     """
-    logger = logging.getLogger(__name__)
-    
     try:
         # Load configuration
         config = load_config()
         
-        # Initialize module migrator
+        # Initialize migrator
+        migrator = CognosToPowerBIMigrator(config)
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            return {}
+        
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"module_{module_id}"
+        
+        # Step 1: Module-based implementation
+        logger.info(f"Step 1: Processing module {module_id}")
+        module_info = migrator.cognos_client.get_module(module_id)
+        if not module_info:
+            logger.error(f"Failed to retrieve module information for {module_id}")
+            return {}
+        
+        # Extract module metadata
+        module_metadata = migrator.cognos_client.get_module_metadata(module_id)
+        
+        # Create module directory structure
+        module_path = Path(output_path)
+        module_path.mkdir(parents=True, exist_ok=True)
+        
+        # Create subdirectories
+        docs_dir = module_path / "documentation"
+        docs_dir.mkdir(exist_ok=True)
+        
+        reports_dir = module_path / "reports"
+        reports_dir.mkdir(exist_ok=True)
+        
+        extracted_dir = module_path / "extracted"
+        extracted_dir.mkdir(exist_ok=True)
+        
+        pbit_dir = module_path / "pbit"
+        pbit_dir.mkdir(exist_ok=True)
+        
+        # Save module information in extracted directory
+        with open(extracted_dir / "module_info.json", "w") as f:
+            json.dump(module_info, f, indent=2)
+        
+        # Save module metadata in extracted directory
+        with open(extracted_dir / "module_metadata.json", "w") as f:
+            json.dump(module_metadata, f, indent=2)
+        
+        # Step 2: Folder-based execution
+        logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+        folder_results = migrate_folder(folder_id, str(reports_dir))
+        
+        # Step 3: Post-processing with ModuleMigrator
+        logger.info("Step 3: Post-processing with ModuleMigrator")
         from cognos_migrator.module_migrator import ModuleMigrator
+        
+        # Initialize module migrator with the already extracted data
         module_migrator = ModuleMigrator(config)
         
-        logger.info(f"Starting module migration for module {module_id} with folder {folder_id}")
+        # Process the module with the already extracted data and migrated reports
+        post_process_result = module_migrator.post_process_module(
+            module_id=module_id,
+            folder_id=folder_id,
+            module_path=module_path,
+            module_info=module_info,
+            module_metadata=module_metadata,
+            folder_results=folder_results
+        )
         
-        # Set output path if not provided
-        output_path_obj = Path(output_path) if output_path else None
-        
-        # Perform module migration
-        result = module_migrator.migrate_module(module_id, folder_id, output_path_obj)
-        
-        if result.get("success"):
-            logger.info(f"Module migration completed successfully")
-            # Return the results in the same format as before for backward compatibility
-            return result.get("results", {})
+        if post_process_result.get("success"):
+            logger.info("Module post-processing completed successfully")
         else:
-            logger.error(f"Module migration failed: {result.get('error')}")
-            return {}
+            logger.error(f"Module post-processing failed: {post_process_result.get('error')}")
+        
+        # Return the folder results for backward compatibility
+        return folder_results
         
     except Exception as e:
         logger.error(f"Error during module migration: {e}")
