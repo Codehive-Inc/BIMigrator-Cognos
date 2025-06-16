@@ -2,16 +2,24 @@
 Main migration orchestrator for Cognos to Power BI migration
 """
 
+import os
+import sys
+import json
 import logging
+import shutil
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
 
-from .config import CognosConfig, MigrationConfig, ConfigManager
+from cognos_migrator.config import ConfigManager, MigrationConfig
+from cognos_migrator.extractors import BaseExtractor, QueryExtractor, DataItemExtractor, ExpressionExtractor, ParameterExtractor, FilterExtractor, LayoutExtractor
+from cognos_migrator.enhancers import CPFMetadataEnhancer
+from cognos_migrator.converters import ExpressionConverter
 from .client import CognosClient
 from .report_parser import CognosReportSpecificationParser
 # Import PowerBIProjectGenerator directly from generators.py to use the LLM-integrated version
 from .generators import PowerBIProjectGenerator, DocumentationGenerator
+from .generators.utils import save_split_report_specification
 from .models import (
     CognosReport, PowerBIProject, DataModel, Report, 
     Table, Column, Relationship, Measure, ReportPage
@@ -20,11 +28,11 @@ from .cpf_extractor import CPFExtractor
 
 
 class CognosMigrator:
-    """Main orchestrator for Cognos to Power BI migration"""
+    """Main migration orchestrator for Cognos to Power BI migration"""
     
-    def __init__(self, config: MigrationConfig, base_url: str = None, session_key: str = None, cpf_file_path: str = None):
+    def __init__(self, config: MigrationConfig, logger=None, base_url: str = None, session_key: str = None, cpf_file_path: str = None):
         self.config = config
-        self.logger = logging.getLogger(__name__)
+        self.logger = logger or logging.getLogger(__name__)
         
         # Initialize components
         config_manager = ConfigManager()
@@ -35,14 +43,32 @@ class CognosMigrator:
         self.project_generator = PowerBIProjectGenerator(config)
         self.doc_generator = DocumentationGenerator(config)
         
+        # Initialize LLM service client for M-query generation
+        from cognos_migrator.llm_service import LLMServiceClient
+        self.llm_service_client = LLMServiceClient()
+        
+        # Initialize expression converter with LLM service
+        self.expression_converter = ExpressionConverter(llm_service_client=self.llm_service_client, logger=self.logger)
+        
+        # Initialize extractors
+        self.base_extractor = BaseExtractor(logger=self.logger)
+        self.query_extractor = QueryExtractor(logger=self.logger)
+        self.data_item_extractor = DataItemExtractor(logger=self.logger)
+        self.expression_extractor = ExpressionExtractor(expression_converter=self.expression_converter, logger=self.logger)
+        self.parameter_extractor = ParameterExtractor(logger=self.logger)
+        self.filter_extractor = FilterExtractor(logger=self.logger)
+        self.layout_extractor = LayoutExtractor(logger=self.logger)
+        
         # Initialize CPF extractor if a CPF file path is provided
         self.cpf_extractor = None
+        self.cpf_metadata_enhancer = None
         if cpf_file_path:
-            self.cpf_extractor = CPFExtractor(cpf_file_path)
+            self.cpf_extractor = CPFExtractor(cpf_file_path, logger=self.logger)
             if not self.cpf_extractor.metadata:
                 self.logger.warning(f"Failed to load CPF file: {cpf_file_path}")
                 self.cpf_extractor = None
             else:
+                self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
                 self.logger.info(f"Successfully loaded CPF file: {cpf_file_path}")
     
     def migrate_report(self, report_id: str, output_path: str) -> bool:
@@ -79,8 +105,8 @@ class CognosMigrator:
                 return False
             
             # If CPF metadata is available, enhance the Power BI project with it
-            if self.cpf_extractor:
-                self._enhance_with_cpf_metadata(powerbi_project)
+            if self.cpf_extractor and self.cpf_metadata_enhancer:
+                self.cpf_metadata_enhancer.enhance_project(powerbi_project)
             
             # Step 3: Generate Power BI project files
             success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
@@ -350,9 +376,21 @@ class CognosMigrator:
             config={}
         )
         
+        # Convert ReportPage to dictionary to make it JSON serializable
+        page_dict = {
+            'name': page.name,
+            'display_name': page.display_name,
+            'width': page.width,
+            'height': page.height,
+            'visuals': page.visuals,
+            'filters': page.filters,
+            'config': page.config
+        }
+        
         report = Report(
+            id=getattr(cognos_report, 'id', f"report_{cognos_report.name.lower().replace(' ', '_')}"),
             name=cognos_report.name,
-            pages=[page],
+            sections=[page_dict],
             data_model=data_model,
             config={
                 "theme": "CorporateTheme",
@@ -372,13 +410,18 @@ class CognosMigrator:
             successful_reports = sum(1 for success in results.values() if success)
             failed_reports = total_reports - successful_reports
             
+            # Calculate success rate with check for division by zero
+            success_rate = 0.0
+            if total_reports > 0:
+                success_rate = (successful_reports / total_reports) * 100
+            
             summary_content = f"""# Migration Summary Report
 
 ## Overview
 - **Total Reports**: {total_reports}
 - **Successful Migrations**: {successful_reports}
 - **Failed Migrations**: {failed_reports}
-- **Success Rate**: {(successful_reports/total_reports*100):.1f}%
+- **Success Rate**: {success_rate:.1f}%
 
 ## Migration Results
 
@@ -467,15 +510,51 @@ class CognosMigrator:
             return False
     
     def _save_extracted_data(self, cognos_report, extracted_dir):
-        """Save raw Cognos report data to the extracted folder"""
+        """Save extracted data to files for investigation"""
         try:
             import json
-            from pathlib import Path
+            import xml.etree.ElementTree as ET
+            import xml.dom.minidom as minidom
+            from datetime import datetime
             
-            # Save report specification XML
+            # Save raw report specification XML
             spec_path = extracted_dir / "report_specification.xml"
             with open(spec_path, "w", encoding="utf-8") as f:
                 f.write(cognos_report.specification)
+                
+            # Save formatted report specification XML for better readability
+            try:
+                formatted_spec_path = extracted_dir / "report_specification_formatted.xml"
+                # Parse the XML string
+                dom = minidom.parseString(cognos_report.specification)
+                # Pretty print with 2-space indentation
+                formatted_xml = dom.toprettyxml(indent='  ')
+                with open(formatted_spec_path, "w", encoding="utf-8") as f:
+                    f.write(formatted_xml)
+                self.logger.info(f"Saved formatted XML to {formatted_spec_path}")
+                
+                # Split report specification into layout and query components
+                save_split_report_specification(formatted_spec_path, extracted_dir)
+                self.logger.info(f"Split report specification into layout and query components")
+            except Exception as e:
+                self.logger.warning(f"Failed to save formatted XML: {e}")
+                # Try using xmllint if available
+                try:
+                    import subprocess
+                    with open(spec_path, "r", encoding="utf-8") as f_in:
+                        with open(formatted_spec_path, "w", encoding="utf-8") as f_out:
+                            subprocess.run(["xmllint", "--format", "-"], stdin=f_in, stdout=f_out)
+                    self.logger.info(f"Saved formatted XML using xmllint to {formatted_spec_path}")
+                    
+                    # Split report specification into layout and query components
+                    save_split_report_specification(formatted_spec_path, extracted_dir)
+                    self.logger.info(f"Split report specification into layout and query components")
+                except Exception as e2:
+                    self.logger.warning(f"Failed to format XML with xmllint: {e2}")
+                    # Just copy the original file as a fallback
+                    with open(spec_path, "r", encoding="utf-8") as f_in:
+                        with open(formatted_spec_path, "w", encoding="utf-8") as f_out:
+                            f_out.write(f_in.read())
             
             # Save report metadata as JSON
             metadata_path = extracted_dir / "report_metadata.json"
@@ -485,130 +564,127 @@ class CognosMigrator:
             # Save report details as JSON
             details_path = extracted_dir / "report_details.json"
             with open(details_path, "w", encoding="utf-8") as f:
-                json.dump({
+                details = {
                     "id": cognos_report.id,
                     "name": cognos_report.name,
-                    "path": cognos_report.path,
-                    "type": cognos_report.type,
                     "extractionTime": str(datetime.now())
-                }, f, indent=2)
+                }
+                
+                # Add optional attributes if they exist
+                if hasattr(cognos_report, 'path'):
+                    details["path"] = cognos_report.path
+                if hasattr(cognos_report, 'type'):
+                    details["type"] = cognos_report.type
+                    
+                json.dump(details, f, indent=2)
+            
+            # Save serialized CognosReport object
+            report_obj_path = extracted_dir / "cognos_report.json"
+            with open(report_obj_path, "w", encoding="utf-8") as f:
+                report_dict = {
+                    "id": cognos_report.id,
+                    "name": cognos_report.name,
+                    "data_sources": [ds.__dict__ if hasattr(ds, '__dict__') else str(ds) for ds in cognos_report.data_sources]
+                }
+                
+                # Add optional attributes if they exist
+                if hasattr(cognos_report, 'path'):
+                    report_dict["path"] = cognos_report.path
+                if hasattr(cognos_report, 'type'):
+                    report_dict["type"] = cognos_report.type
+                    
+                json.dump(report_dict, f, indent=2)
+            
+            # Extract and save additional intermediate files for detailed investigation
+            try:
+                # Parse the XML for additional extractions
+                root = ET.fromstring(cognos_report.specification)
+                
+                # Register the namespace - Cognos XML uses namespaces
+                ns = {}
+                if root.tag.startswith('{'):
+                    ns_uri = root.tag.split('}')[0].strip('{')
+                    ns['ns'] = ns_uri
+                    self.logger.info(f"Detected XML namespace: {ns_uri}")
+                
+                # Extract and save queries
+                queries = self.query_extractor.extract_queries(root, ns)
+                queries_path = extracted_dir / "report_queries.json"
+                with open(queries_path, "w", encoding="utf-8") as f:
+                    json.dump(queries, f, indent=2)
+                
+                # Extract and save data items/columns
+                data_items = self.data_item_extractor.extract_data_items(root, ns)
+                data_items_path = extracted_dir / "report_data_items.json"
+                with open(data_items_path, "w", encoding="utf-8") as f:
+                    json.dump(data_items, f, indent=2)
+                
+                # Extract and save expressions
+                expressions = self.expression_extractor.extract_expressions(root, ns)
+                
+                # Convert expressions to DAX if expression converter is available
+                if self.expression_converter:
+                    self.logger.info("Converting Cognos expressions to DAX using LLM service")
+                    # Create table mappings from queries for context
+                    table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    calculations = self.expression_extractor.convert_to_dax(expressions, table_mappings)
+                    self.logger.info(f"Converted {len(calculations['calculations'])} expressions to DAX")
+                else:
+                    # Create empty calculations structure if no converter is available
+                    calculations = {"calculations": []}
+                
+                # Save calculations in the Cognos format
+                calculations_path = extracted_dir / "calculations.json"
+                with open(calculations_path, "w", encoding="utf-8") as f:
+                    json.dump(calculations, f, indent=2, ensure_ascii=False)
+                    
+                # We no longer save report_expressions.json as we've standardized on calculations.json
+                
+                # Extract and save parameters
+                parameters = self.parameter_extractor.extract_parameters(root, ns)
+                parameters_path = extracted_dir / "report_parameters.json"
+                with open(parameters_path, "w", encoding="utf-8") as f:
+                    json.dump(parameters, f, indent=2)
+                
+                # Extract and save filters
+                filters = self.filter_extractor.extract_filters(root, ns)
+                filters_path = extracted_dir / "report_filters.json"
+                with open(filters_path, "w", encoding="utf-8") as f:
+                    json.dump(filters, f, indent=2)
+                
+                # Extract and save layout
+                layout = self.layout_extractor.extract_layout(root, ns)
+                layout_path = extracted_dir / "report_layout.json"
+                with open(layout_path, "w", encoding="utf-8") as f:
+                    json.dump(layout, f, indent=2)
+                
+                self.logger.info(f"Saved additional extracted data files to {extracted_dir}")
+                
+            except Exception as e:
+                self.logger.warning(f"Could not extract additional data from XML: {e}")
             
             self.logger.info(f"Saved extracted Cognos report data to {extracted_dir}")
             
         except Exception as e:
             self.logger.error(f"Failed to save extracted data: {e}")
     
-    def _enhance_with_cpf_metadata(self, powerbi_project: PowerBIProject) -> None:
-        """Enhance Power BI project with metadata from CPF file"""
-        try:
-            if not self.cpf_extractor or not powerbi_project or not powerbi_project.data_model:
-                return
-            
-            self.logger.info("Enhancing Power BI project with CPF metadata")
-            
-            # Enhance tables with CPF metadata
-            for table in powerbi_project.data_model.tables:
-                table_name = table.name
-                
-                # Get table schema from CPF metadata
-                table_schema = self.cpf_extractor.get_table_schema(table_name)
-                if not table_schema or not table_schema.get('columns'):
-                    continue
-                
-                self.logger.info(f"Enhancing table: {table_name} with CPF metadata")
-                
-                # Update column metadata
-                for col in table.columns:
-                    # Find matching column in CPF metadata
-                    for cpf_col in table_schema.get('columns', []):
-                        if cpf_col.get('name') == col.name:
-                            # Update column data type if available
-                            if cpf_col.get('dataType'):
-                                col.data_type = self._map_cpf_data_type(cpf_col.get('dataType'))
-                            
-                            # Update column description if available
-                            if cpf_col.get('expression'):
-                                col.description = f"Expression: {cpf_col.get('expression')}"
-                            
-                            break
-                
-                # Add relationships if available
-                for rel in table_schema.get('relationships', []):
-                    target_table = self._find_table_by_name(powerbi_project.data_model, 
-                                                         self.cpf_extractor.get_query_subject_by_id(rel.get('targetQuerySubjectId', '')).get('name', ''))
-                    
-                    if target_table:
-                        # Get column names
-                        source_cols = [self.cpf_extractor.get_column_name_by_id(col_id) for col_id in rel.get('sourceColumns', [])]
-                        target_cols = [self.cpf_extractor.get_column_name_by_id(col_id) for col_id in rel.get('targetColumns', [])]
-                        
-                        # Create relationship if columns are found
-                        if source_cols and target_cols:
-                            new_rel = Relationship(
-                                from_table=table.name,
-                                from_column=source_cols[0],  # Use first column for now
-                                to_table=target_table.name,
-                                to_column=target_cols[0],    # Use first column for now
-                                cardinality=self._map_cpf_cardinality(rel.get('cardinality', ''))
-                            )
-                            
-                            # Add relationship if it doesn't already exist
-                            if not self._relationship_exists(powerbi_project.data_model, new_rel):
-                                powerbi_project.data_model.relationships.append(new_rel)
-                                self.logger.info(f"Added relationship: {table.name}.{source_cols[0]} -> {target_table.name}.{target_cols[0]}")
-            
-            # Add M-query context to the project for later use
-            powerbi_project.metadata['cpf_metadata'] = True
-            
-            self.logger.info("Successfully enhanced Power BI project with CPF metadata")
-            
-        except Exception as e:
-            self.logger.error(f"Error enhancing with CPF metadata: {e}")
+    # _extract_queries_from_xml method has been moved to QueryExtractor class
     
-    def _map_cpf_data_type(self, cpf_type: str) -> str:
-        """Map CPF data type to Power BI data type"""
-        type_mapping = {
-            'xs:string': 'Text',
-            'xs:integer': 'Int64',
-            'xs:decimal': 'Decimal',
-            'xs:double': 'Double',
-            'xs:float': 'Double',
-            'xs:boolean': 'Boolean',
-            'xs:date': 'Date',
-            'xs:time': 'Time',
-            'xs:dateTime': 'DateTime',
-            'xs:duration': 'Duration'
-        }
-        
-        return type_mapping.get(cpf_type, 'Text')  # Default to Text if unknown
+    # _extract_data_items_from_xml method has been moved to DataItemExtractor class
     
-    def _map_cpf_cardinality(self, cardinality: str) -> str:
-        """Map CPF cardinality to Power BI cardinality"""
-        cardinality_mapping = {
-            'oneToOne': 'OneToOne',
-            'oneToMany': 'OneToMany',
-            'manyToOne': 'ManyToOne',
-            'manyToMany': 'ManyToMany'
-        }
-        
-        return cardinality_mapping.get(cardinality, 'ManyToOne')  # Default to ManyToOne if unknown
+    # _extract_expressions_from_xml method has been moved to ExpressionExtractor class
     
-    def _find_table_by_name(self, data_model, table_name: str):
-        """Find a table in the data model by name"""
-        for table in data_model.tables:
-            if table.name == table_name:
-                return table
-        return None
+    # _extract_filters_from_xml method has been moved to FilterExtractor class
     
-    def _relationship_exists(self, data_model, new_rel: Relationship) -> bool:
-        """Check if a relationship already exists in the data model"""
-        for rel in data_model.relationships:
-            if (rel.from_table == new_rel.from_table and 
-                rel.from_column == new_rel.from_column and 
-                rel.to_table == new_rel.to_table and 
-                rel.to_column == new_rel.to_column):
-                return True
-        return False
+    # _extract_layout_from_xml method has been moved to LayoutExtractor class
+    
+    def _get_element_text(self, element):
+        """Safely get text from an XML element"""
+        return self.base_extractor.get_element_text(element)
+    
+    # _enhance_with_cpf_metadata method has been moved to CPFMetadataEnhancer class
+    
+    # CPF metadata helper methods have been moved to CPFMetadataEnhancer class
     
     def get_migration_status(self, output_path: str) -> Dict[str, Any]:
         """Get status of migration in output directory"""

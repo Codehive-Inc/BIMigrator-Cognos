@@ -134,9 +134,10 @@ class ReportPage:
 @dataclass
 class Report:
     """Power BI report definition"""
+    id: str
     name: str
-    pages: List[ReportPage]
-    data_model: DataModel
+    sections: List[ReportPage] = field(default_factory=list)
+    data_model: Optional[DataModel] = None
     config: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
     settings: Dict[str, Any] = field(default_factory=dict)

@@ -1,0 +1,54 @@
+table 'Data'
+
+
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'No of Unique Orders' = ```
+            DISTINCTCOUNT('Data'[Order_ID])
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Orders Returned (Multiple Returns per Order)' = ```
+            IF('Data'[Returned] = "Yes", 1, 0)
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        annotation SummarizationSetBy = User
+
+        
+
+
+
+    partition 'Data' = m
+        mode: import
+        source = 
+            let
+				Source = Value.NativeQuery(Cognos,
+				"SELECT ""Region"",
+				""No of Unique Orders"",
+				""Orders Returned (Multiple Returns per Order)"" FROM Data"),
+				#"Changed Types" = Table.TransformColumnTypes(Source,
+				{{"Region",
+				type text},
+				{"No of Unique Orders",
+				type text},
+				{"Orders Returned (Multiple Returns per Order)",
+				type number}})
+			in
+				#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

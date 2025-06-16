@@ -1,10 +1,14 @@
 """
 Cognos Expression to DAX Converter
 Converts Cognos Analytics expressions and calculations to Power BI DAX format
+
+DEPRECATED: This module is deprecated and will be removed in a future version.
+Please use cognos_migrator.converters.expression_converter.ExpressionConverter instead.
 """
 
 import re
 import logging
+import warnings
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 
@@ -22,6 +26,11 @@ class CognosExpressionConverter:
     """Converts Cognos expressions to DAX equivalents"""
     
     def __init__(self):
+        warnings.warn(
+            "CognosExpressionConverter is deprecated. Please use cognos_migrator.converters.expression_converter.ExpressionConverter instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         self.logger = logging.getLogger(__name__)
         self._load_function_mappings()
     
