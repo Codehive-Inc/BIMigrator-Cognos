@@ -70,14 +70,14 @@ class TemplateEngine:
             # Report templates
             'report': {'filename': 'report.json', 'path': 'Report', 'target_filename': 'report.json'},
             'report_config': {'filename': 'report.config.json', 'path': 'Report', 'target_filename': 'report.config.json'},  # Legacy name
-            'config': {'filename': 'report.config.json', 'path': 'Report/Report', 'target_filename': 'config.json'},  # New name
+            'config': {'filename': 'report.config.json', 'path': 'Report', 'target_filename': 'config.json'},  # New name
             'report_metadata': {'filename': 'report.metadata.json', 'path': '', 'target_filename': 'ReportMetadata.json'},
             'report_settings': {'filename': 'report.settings.json', 'path': '', 'target_filename': 'ReportSettings.json'},
-            'report_section': {'filename': 'report.section.json', 'path': 'Report/Report/sections', 'target_filename': '{section_id}.json'},
+            'report_section': {'filename': 'report.section.json', 'path': 'Report/sections', 'target_filename': '{section_id}.json'},
             'diagram_layout': {'filename': 'diagram.layout.json', 'path': '', 'target_filename': 'DiagramLayout.json'},
             
             # Metadata templates
-            'version': {'filename': 'version.txt', 'path': '', 'target_filename': 'version.txt'}
+            'version': {'filename': 'version.txt', 'path': '', 'target_filename': 'Version.txt'}
         }
         
         # Load each template

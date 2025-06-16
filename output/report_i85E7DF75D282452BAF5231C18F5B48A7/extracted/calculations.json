@@ -7,8 +7,8 @@
       "FormulaCognos": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "No of Unique Orders",
-      "FormulaDax": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
-      "Status": "needs_review"
+      "FormulaDax": "DISTINCTCOUNT('Data'[Order_ID])",
+      "Status": "converted"
     },
     {
       "TableName": "Data",
@@ -17,8 +17,8 @@
       "FormulaCognos": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "Orders Returned (Multiple Returns per Order)",
-      "FormulaDax": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
-      "Status": "needs_review"
+      "FormulaDax": "IF('Data'[Returned] = \"Yes\", 1, 0)",
+      "Status": "converted"
     }
   ]
 }

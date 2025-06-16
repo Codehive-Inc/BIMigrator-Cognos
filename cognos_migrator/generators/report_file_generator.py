@@ -97,20 +97,12 @@ class ReportFileGenerator:
         template_name = 'config'
         content = self.template_engine.render(template_name, context)
         
-        # Get template info to determine the target filename and path
+        # Get template info to determine the target filename
         template_info = self.template_engine.get_template_info(template_name)
         target_filename = template_info['target_filename']
-        target_path = template_info['path']
         
-        # Create the target directory if it doesn't exist
-        if target_path:
-            target_dir = report_dir / target_path
-            target_dir.mkdir(parents=True, exist_ok=True)
-        else:
-            target_dir = report_dir
-        
-        # Create the output file
-        config_file = target_dir / target_filename
+        # Create the config file directly in the Report directory
+        config_file = report_dir / target_filename
         with open(config_file, 'w', encoding='utf-8') as f:
             f.write(content)
         
@@ -191,17 +183,9 @@ class ReportFileGenerator:
     
     def _generate_report_sections(self, report: Report, report_dir: Path):
         """Generate report section files"""
-        # Get template info to determine the target path
-        template_info = self.template_engine.get_template_info('report_section')
-        target_path = template_info['path']
-        
-        # Create the sections directory based on template path
-        if target_path:
-            sections_dir = report_dir / target_path
-            sections_dir.mkdir(parents=True, exist_ok=True)
-        else:
-            sections_dir = report_dir / 'sections'
-            sections_dir.mkdir(exist_ok=True)
+        # Create sections directory directly under report_dir
+        sections_dir = report_dir / 'sections'
+        sections_dir.mkdir(parents=True, exist_ok=True)
         
         # If report has sections, generate a file for each section
         if hasattr(report, 'sections') and report.sections:

@@ -10,7 +10,7 @@ table 'Data'
 
         
     column 'No of Unique Orders' = ```
-            count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])
+            DISTINCTCOUNT('Data'[Order_ID])
     ```
         dataType: int64
         summarizeBy: sum
@@ -19,7 +19,7 @@ table 'Data'
 
         
     column 'Orders Returned (Multiple Returns per Order)' = ```
-            case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end
+            IF('Data'[Returned] = "Yes", 1, 0)
     ```
         dataType: decimal
         summarizeBy: sum
