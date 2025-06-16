@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: Simple Report
-- **Migration Date**: 2025-06-16 08:39:43
+- **Migration Date**: 2025-06-16 08:52:21
 
 ## Data Model
 
@@ -12,7 +12,7 @@
 
 ### Tables
 
-- **Data**
+- **Simple_Report**
   - Columns: 7
   - Column details:
     - Regional Manager (string)

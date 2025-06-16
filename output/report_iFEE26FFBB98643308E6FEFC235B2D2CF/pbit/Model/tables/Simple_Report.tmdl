@@ -1,4 +1,4 @@
-table 'Data'
+table 'Simple_Report'
 
 
     column 'Regional Manager'
@@ -60,7 +60,7 @@ table 'Data'
 
 
 
-    partition 'Data' = m
+    partition 'Simple_Report' = m
         mode: import
         source = 
             let

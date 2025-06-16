@@ -173,16 +173,8 @@ class ModelFileGenerator:
                 # Render table template
                 content = self.template_engine.render('table', context)
 
-                # Use report name for table file if available, otherwise use original table name
-                table_name = table.name
-                if report_name and table.name == "Data":
-                    # Replace spaces with underscores and remove special characters for filename
-                    safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-                    table_name = safe_report_name
-                    self.logger.info(f"Renaming table file from '{table.name}' to '{table_name}'")
-                
-                # Write table file
-                table_file = tables_dir / f"{table_name}.tmdl"
+                # Write table file using the table name (which is already properly set)
+                table_file = tables_dir / f"{table.name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
                 
@@ -347,13 +339,7 @@ class ModelFileGenerator:
     
     def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
-        # Use report name for table name if available and if table name is 'Data'
-        table_name = table.name
-        if report_name and table.name == "Data":
-            # Replace spaces with underscores and remove special characters
-            safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-            table_name = safe_report_name
-            self.logger.info(f"Using report name '{report_name}' for table name instead of '{table.name}'")
+        # Table name is already properly set when the table was created
         
         columns = []
         
@@ -468,18 +454,18 @@ class ModelFileGenerator:
         partitions = []
         if m_expression:
             partitions.append({
-                'name': table_name,
+                'name': table.name,
                 'source_type': 'm',
                 'expression': m_expression
             })
         
         context = {
-            'name': table_name,
-            'table_name': table_name,
-            'source_name': table_name,
+            'name': table.name,
+            'table_name': table.name,
+            'source_name': table.name,
             'columns': columns,
             'partitions': partitions,
-            'partition_name': f"{table_name}-partition",
+            'partition_name': f"{table.name}-partition",
             'm_expression': m_expression
         }
         
