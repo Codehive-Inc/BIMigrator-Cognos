@@ -2,7 +2,30 @@
   {
     "id": "query_0",
     "name": "Query1",
-    "dataItems": [],
+    "source": "model",
+    "data_items": [
+      {
+        "name": "Region",
+        "aggregate": "none",
+        "expression": "[C].[C_TestDataModule].[People].[Region]",
+        "dataType": "3",
+        "dataUsage": "1"
+      },
+      {
+        "name": "No of Unique Orders",
+        "aggregate": "total",
+        "expression": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
+        "dataType": "3",
+        "dataUsage": "2"
+      },
+      {
+        "name": "Orders Returned (Multiple Returns per Order)",
+        "aggregate": "total",
+        "expression": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
+        "dataType": "1",
+        "dataUsage": ""
+      }
+    ],
     "filters": []
   }
 ]

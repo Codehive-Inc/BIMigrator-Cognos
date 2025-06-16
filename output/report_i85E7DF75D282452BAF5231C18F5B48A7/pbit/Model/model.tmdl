@@ -1,16 +1,17 @@
 model Model
-	culture: 
+	culture: en-US
 	defaultPowerBIDataSourceVersion: powerBI_V3
-	sourceQueryCulture: 
+	sourceQueryCulture: en-US
 	dataAccessOptions
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = []
+annotation PBI_QueryOrder = ["Report_with_Calculations"]
 
-annotation __PBI_TimeIntelligenceEnabled = 
+annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBIDesktopVersion = 
+annotation PBIDesktopVersion = 2.141.1253.0
 
+ref table 'Report_with_Calculations'
 
-ref cultureInfo 
+ref cultureInfo en-US
