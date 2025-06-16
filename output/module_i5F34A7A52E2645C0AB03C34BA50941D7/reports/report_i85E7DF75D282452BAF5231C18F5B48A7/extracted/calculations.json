@@ -17,8 +17,8 @@
       "FormulaCognos": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "Orders Returned (Multiple Returns per Order)",
-      "FormulaDax": "IF('Data'[Returned] = \"Yes\", 1, 0)",
-      "Status": "converted"
+      "FormulaDax": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
+      "Status": "needs_review"
     }
   ]
 }

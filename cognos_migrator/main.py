@@ -361,7 +361,7 @@ def demo_migration():
     logger.info("and ensure your .env file contains valid Cognos Analytics credentials")
 
 
-def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = None):
+def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = None) -> Dict[str, bool]:
     """Migrate a Cognos module and associated folder
     
     This function performs a three-step migration process:
@@ -373,6 +373,10 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
     Returns:
         Dict[str, bool]: Migration results
     """
+    # Initialize logger
+    import logging
+    logger = logging.getLogger(__name__)
+    
     try:
         # Load configuration
         config = load_config()
@@ -428,27 +432,16 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         logger.info(f"Step 2: Migrating reports from folder {folder_id}")
         folder_results = migrate_folder(folder_id, str(reports_dir))
         
-        # Step 3: Post-processing with ModuleMigrator
-        logger.info("Step 3: Post-processing with ModuleMigrator")
-        from cognos_migrator.module_migrator import ModuleMigrator
+        # Step 3: Migrate the module
+        logger.info("Step 3: Migrating module")
+        from cognos_migrator.module_migrator import CognosModuleMigrator
+        module_migrator = CognosModuleMigrator(config)
+        success = module_migrator.migrate_module(module_id, str(module_path))
         
-        # Initialize module migrator with the already extracted data
-        module_migrator = ModuleMigrator(config)
-        
-        # Process the module with the already extracted data and migrated reports
-        post_process_result = module_migrator.post_process_module(
-            module_id=module_id,
-            folder_id=folder_id,
-            module_path=module_path,
-            module_info=module_info,
-            module_metadata=module_metadata,
-            folder_results=folder_results
-        )
-        
-        if post_process_result.get("success"):
-            logger.info("Module post-processing completed successfully")
+        if success:
+            logger.info("Module migration completed successfully")
         else:
-            logger.error(f"Module post-processing failed: {post_process_result.get('error')}")
+            logger.error("Module migration failed")
         
         # Return the folder results for backward compatibility
         return folder_results
@@ -456,12 +449,6 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
     except Exception as e:
         logger.error(f"Error during module migration: {e}")
         return {}
-
-
-def main():
-    """Main entry point"""
-    # Setup logging
-    setup_logging()
     logger = logging.getLogger(__name__)
 
     # Check if we have command line arguments

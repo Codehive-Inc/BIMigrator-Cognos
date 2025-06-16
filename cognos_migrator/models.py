@@ -205,6 +205,21 @@ class CognosReport:
 
 
 @dataclass
+class CognosModule:
+    """Cognos module structure"""
+    id: str
+    name: str
+    specification: str
+    content: Dict[str, Any] = field(default_factory=dict)
+    query_subjects: List[Dict[str, Any]] = field(default_factory=list)
+    query_items: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
+    relationships: List[Dict[str, Any]] = field(default_factory=list)
+    hierarchies: List[Dict[str, Any]] = field(default_factory=list)
+    expressions: Dict[str, Any] = field(default_factory=dict)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class PowerBIProject:
     """Complete Power BI project structure"""
     name: str

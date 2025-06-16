@@ -1,4 +1,4 @@
-table 'Data'
+table 'Dimensional_reportztest'
 
 
     column 'Year'
@@ -84,14 +84,55 @@ table 'Data'
 
 
 
-    partition 'Data' = m
+    partition 'Dimensional_reportztest' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Data: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=30)
-let
-				Source = Table.FromRows({})
+            let
+				Source = / * Connect to data source based on context * /,
+				#"Renamed Columns" = Table.RenameColumns(Source,
+				{{"OldYear",
+				"Year"},
+				{"OldQuarter",
+				"Quarter"},
+				{"OldMonth",
+				"Month"},
+				{"OldProductName",
+				"ProductName"},
+				{"OldCountry",
+				"Country"},
+				{"OldState",
+				"State"},
+				{"OldSalesAmount",
+				"SalesAmount"},
+				{"OldQuantity",
+				"Quantity"},
+				{"OldProductID",
+				"ProductID"},
+				{"OldProductName2",
+				"ProductName"}}),
+				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
+				{{"Year",
+				type number},
+				{"Quarter",
+				type text},
+				{"Month",
+				type text},
+				{"ProductName",
+				type text},
+				{"Country",
+				type text},
+				{"State",
+				type text},
+				{"SalesAmount",
+				type number},
+				{"Quantity",
+				type number},
+				{"ProductID",
+				type number},
+				{"ProductName",
+				type text}})
 			in
-				Source
+				#"Changed Types"
         
 
 
