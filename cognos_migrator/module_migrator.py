@@ -15,7 +15,7 @@ from datetime import datetime
 from cognos_migrator.config import ConfigManager, MigrationConfig
 from cognos_migrator.client import CognosClient
 from cognos_migrator.report_parser import CognosReportSpecificationParser
-from cognos_migrator.generators.module_generators import ModuleModelFileGenerator, ModuleDocumentationGenerator
+from cognos_migrator.generators.modules import ModuleModelFileGenerator, ModuleDocumentationGenerator
 from cognos_migrator.extractors.module_extractors import ModuleMetadataExtractor
 from cognos_migrator.models import (
     CognosReport, PowerBIProject, DataModel, Report, 
