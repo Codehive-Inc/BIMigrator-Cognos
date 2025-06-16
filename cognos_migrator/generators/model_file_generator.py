@@ -32,32 +32,39 @@ class ModelFileGenerator:
         self.logger = logging.getLogger(__name__)
     
     def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None) -> Path:
-        """
-        Generate model files (database, tables, relationships)
-        
-        Args:
-            data_model: Data model object
-            output_dir: Output directory
-            report_spec: Optional report specification XML
-            
-        Returns:
-            Path to the model directory
-        """
+        """Generate model files for Power BI template"""
         model_dir = output_dir / 'Model'
         model_dir.mkdir(exist_ok=True)
         
+        # Get extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        
+        # Try to get report name from report_details.json once
+        report_name = None
+        if extracted_dir:
+            report_details_file = extracted_dir / "report_details.json"
+            if report_details_file.exists():
+                try:
+                    with open(report_details_file, 'r', encoding='utf-8') as f:
+                        report_details = json.load(f)
+                        report_name = report_details.get('name')
+                        if report_name:
+                            self.logger.info(f"Using report name '{report_name}' from report_details.json for naming")
+                except Exception as e:
+                    self.logger.warning(f"Error loading report details from {report_details_file}: {e}")
+        
         # Generate database.tmdl
-        self._generate_database_file(data_model, model_dir)
+        self._generate_database_file(data_model, model_dir, report_name)
         
         # Generate table files
-        self._generate_table_files(data_model.tables, model_dir, report_spec)
+        self._generate_table_files(data_model.tables, model_dir, report_spec, report_name)
         
         # Generate relationships file
         if data_model.relationships:
             self._generate_relationships_file(data_model.relationships, model_dir)
         
         # Generate model.tmdl
-        self._generate_model_file(data_model, model_dir)
+        self._generate_model_file(data_model, model_dir, report_name)
         
         # Generate culture.tmdl
         self._generate_culture_file(data_model, model_dir)
@@ -68,12 +75,18 @@ class ModelFileGenerator:
         self.logger.info(f"Generated model files in: {model_dir}")
         return model_dir
     
-    def _generate_database_file(self, data_model: DataModel, model_dir: Path):
+    def _generate_database_file(self, data_model: DataModel, model_dir: Path, report_name: Optional[str] = None):
         """Generate database.tmdl file"""
+        # Use report name for database name if available
+        database_name = data_model.name
+        if report_name:
+            database_name = report_name
+            self.logger.info(f"Using report name '{report_name}' for database naming")
+            
         context = {
-            'name': data_model.name,
+            'name': database_name,
             'compatibility_level': data_model.compatibility_level,
-            'model_name': data_model.name
+            'model_name': database_name
         }
         
         content = self.template_engine.render('database', context)
@@ -93,7 +106,7 @@ class ModelFileGenerator:
             
         self.logger.info(f"Generated database file: {database_file}")
     
-    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None):
+    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None):
         """Generate table/*.tmdl files"""
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
@@ -101,6 +114,9 @@ class ModelFileGenerator:
         # Get extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
         
+        if report_name:
+            self.logger.info(f"Using report name '{report_name}' for table naming")
+            
         for table in tables:
             try:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
@@ -157,8 +173,16 @@ class ModelFileGenerator:
                 # Render table template
                 content = self.template_engine.render('table', context)
 
+                # Use report name for table file if available, otherwise use original table name
+                table_name = table.name
+                if report_name and table.name == "Data":
+                    # Replace spaces with underscores and remove special characters for filename
+                    safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
+                    table_name = safe_report_name
+                    self.logger.info(f"Renaming table file from '{table.name}' to '{table_name}'")
+                
                 # Write table file
-                table_file = tables_dir / f"{table.name}.tmdl"
+                table_file = tables_dir / f"{table_name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
                 
@@ -180,9 +204,16 @@ class ModelFileGenerator:
                             self.logger.warning(f"Failed to load calculations from {calculations_file}: {e}")
 
                     # Create a JSON representation of the table similar to table_Sheet1.json
+                    # Use report name for table name in JSON if available
+                    table_name = table.name
+                    if report_name and table.name == "Data":
+                        # Replace spaces with underscores and remove special characters
+                        safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
+                        table_name = safe_report_name
+                    
                     table_json = {
                         "source_name": table.name,
-                        "name": table.name,
+                        "name": table_name,
                         "lineage_tag": getattr(table, 'lineage_tag', None),
                         "description": getattr(table, 'description', f"Table from federated relation: {table.name}"),
                         "is_hidden": getattr(table, 'is_hidden', False),
@@ -277,8 +308,8 @@ class ModelFileGenerator:
                         
                         self.logger.info(f"Added M-query partition information to table {table.name} JSON")
                     
-                    # Save as table_[TableName].json
-                    save_json_to_extracted_dir(extracted_dir, f"table_{table.name}.json", table_json)
+                    # Save as table_[TableName].json using the renamed table name
+                    save_json_to_extracted_dir(extracted_dir, f"table_{table_name}.json", table_json)
                 
                 self.logger.info(f"Generated table file: {table_file}")
                 
@@ -314,8 +345,16 @@ class ModelFileGenerator:
                     
                 self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
     
-    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
+        # Use report name for table name if available and if table name is 'Data'
+        table_name = table.name
+        if report_name and table.name == "Data":
+            # Replace spaces with underscores and remove special characters
+            safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
+            table_name = safe_report_name
+            self.logger.info(f"Using report name '{report_name}' for table name instead of '{table.name}'")
+        
         columns = []
         
         if extracted_dir:
@@ -429,17 +468,18 @@ class ModelFileGenerator:
         partitions = []
         if m_expression:
             partitions.append({
-                'name': table.name,
+                'name': table_name,
                 'source_type': 'm',
                 'expression': m_expression
             })
         
         context = {
-            'table_name': table.name,
-            'source_name': table.name,
+            'name': table_name,
+            'table_name': table_name,
+            'source_name': table_name,
             'columns': columns,
             'partitions': partitions,
-            'partition_name': f"{table.name}-partition",
+            'partition_name': f"{table_name}-partition",
             'm_expression': m_expression
         }
         
@@ -500,11 +540,38 @@ class ModelFileGenerator:
             
         self.logger.info(f"Generated relationships file: {relationships_file}")
     
-    def _generate_model_file(self, data_model: DataModel, model_dir: Path):
+    def _generate_model_file(self, data_model: DataModel, model_dir: Path, report_name: Optional[str] = None):
         """Generate model.tmdl file"""
+        # Get extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        
+        if report_name:
+            self.logger.info(f"Using report name '{report_name}' for model naming")
+        
+        # Use report name for model name if available
+        model_name = data_model.name
+        if report_name:
+            model_name = report_name
+        
+        # Get table names for references and query order
+        table_names = []
+        for table in data_model.tables:
+            table_name = table.name
+            if report_name and table.name == "Data":
+                # Replace spaces with underscores and remove special characters
+                safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
+                table_name = safe_report_name
+            table_names.append(table_name)
+        
+        self.logger.info(f"Including table references in model.tmdl: {table_names}")
+            
         context = {
-            'model_name': data_model.name,
-            'culture': data_model.culture or 'en-US'
+            'model_name': model_name,
+            'culture': data_model.culture or 'en-US',
+            'default_culture': data_model.culture or 'en-US',
+            'tables': table_names,
+            'time_intelligence_enabled': getattr(data_model, 'time_intelligence_enabled', '0'),
+            'desktop_version': getattr(data_model, 'desktop_version', '2.141.1253.0')
         }
         
         content = self.template_engine.render('model', context)

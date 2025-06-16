@@ -30,6 +30,7 @@ class TemplateEngine:
         
         # Initialize template cache
         self.templates = {}
+        self.template_info = {}
         self.handlebars_compiler = pybars.Compiler()
         
         # Initialize Jinja2 environment
@@ -55,25 +56,33 @@ class TemplateEngine:
         handlebars_templates = ['table']
         
         template_files = {
-            'database': 'database.tmdl',
-            'table': 'Table.tmdl',
-            'relationship': 'relationship.tmdl',
-            'model': 'model.tmdl',
-            'culture': 'culture.tmdl',
-            'expressions': 'expressions.tmdl',
-            'pbixproj': 'pbixproj.json',
-            'report_config': 'report.config.json',
-            'report': 'report.json',
-            'report_metadata': 'report.metadata.json',
-            'report_settings': 'report.settings.json',
-            'report_section': 'report.section.json',
-            'diagram_layout': 'diagram.layout.json',
-            'version': 'version.txt'
+            # Model templates
+            'database': {'filename': 'database.tmdl', 'path': 'Model', 'target_filename': 'database.tmdl'},
+            'table': {'filename': 'Table.tmdl', 'path': 'Model/tables', 'target_filename': '{table_name}.tmdl'},
+            'relationship': {'filename': 'relationship.tmdl', 'path': 'Model', 'target_filename': 'relationships.tmdl'},
+            'model': {'filename': 'model.tmdl', 'path': 'Model', 'target_filename': 'model.tmdl'},
+            'culture': {'filename': 'culture.tmdl', 'path': 'Model/cultures', 'target_filename': '{culture_name}.tmdl'},
+            'expressions': {'filename': 'expressions.tmdl', 'path': 'Model', 'target_filename': 'expressions.tmdl'},
+            
+            # Project templates
+            'pbixproj': {'filename': 'pbixproj.json', 'path': '', 'target_filename': '.pbixproj.json'},
+            
+            # Report templates
+            'report': {'filename': 'report.json', 'path': 'Report', 'target_filename': 'report.json'},
+            'report_config': {'filename': 'report.config.json', 'path': 'Report', 'target_filename': 'report.config.json'},  # Legacy name
+            'config': {'filename': 'report.config.json', 'path': 'Report', 'target_filename': 'config.json'},  # New name
+            'report_metadata': {'filename': 'report.metadata.json', 'path': '', 'target_filename': 'ReportMetadata.json'},
+            'report_settings': {'filename': 'report.settings.json', 'path': '', 'target_filename': 'ReportSettings.json'},
+            'report_section': {'filename': 'report.section.json', 'path': 'Report/sections', 'target_filename': '{section_id}.json'},
+            'diagram_layout': {'filename': 'diagram.layout.json', 'path': '', 'target_filename': 'DiagramLayout.json'},
+            
+            # Metadata templates
+            'version': {'filename': 'version.txt', 'path': '', 'target_filename': 'Version.txt'}
         }
         
         # Load each template
-        for template_name, file_name in template_files.items():
-            template_path = self.template_directory / file_name
+        for template_name, template_info in template_files.items():
+            template_path = self.template_directory / template_info['filename']
             if not template_path.exists():
                 self.logger.warning(f"Template file not found: {template_path}")
                 continue
@@ -87,6 +96,23 @@ class TemplateEngine:
             else:
                 # Compile Jinja2 template
                 self.templates[template_name] = self.jinja_env.from_string(template_content)
+                
+        # Store the template info for later use
+        self.template_info = template_files
+    
+    def get_template_info(self, template_name: str) -> Dict[str, Any]:
+        """Get information about a template
+        
+        Args:
+            template_name: Name of the template
+            
+        Returns:
+            Dictionary with template information (filename, path, target_filename)
+        """
+        if template_name not in self.template_info:
+            raise ValueError(f"Template info not found: {template_name}")
+            
+        return self.template_info[template_name]
     
     def render(self, template_name: str, context: Dict[str, Any]) -> str:
         """Render a template with the given context"""
@@ -95,13 +121,21 @@ class TemplateEngine:
             
         template = self.templates[template_name]
         
+        # Debug logging
+        self.logger.debug(f"Rendering template: {template_name}")
+        self.logger.debug(f"Context keys: {list(context.keys())}")
+        
         if template_name == 'table':
             # Use handlebars for table template
             result = template(context)
             return result
         else:
             # Use Jinja2 for other templates
-            return self._render_jinja_template(template, context)
+            try:
+                return self._render_jinja_template(template, context)
+            except Exception as e:
+                self.logger.error(f"Error rendering template {template_name}: {e}")
+                raise
     
     def _render_jinja_template(self, template: Template, context: Dict[str, Any]) -> str:
         """Render a Jinja2 template with the given context"""

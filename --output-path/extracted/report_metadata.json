@@ -1,25 +1,6 @@
 {
-  "modificationTime": "2025-06-06T01:58:55.941Z",
-  "defaultName": "test report",
-  "id": "i57591C769343460D8336D2E09BDD9329",
-  "type": "report",
-  "version": 3,
-  "owner": [
-    {
-      "userName": "Administrator",
-      "defaultName": "Administrator"
-    }
-  ],
-  "links": [
-    {
-      "rel": "self",
-      "type": "application/json",
-      "href": "/api/v1/content/i57591C769343460D8336D2E09BDD9329"
-    },
-    {
-      "rel": "items",
-      "type": "application/json",
-      "href": "/api/v1/content/i57591C769343460D8336D2E09BDD9329/items"
-    }
-  ]
+  "Version": 5,
+  "AutoCreatedRelationships": [],
+  "CreatedFrom": "Cloud",
+  "CreatedFromRelease": "2025.03"
 }

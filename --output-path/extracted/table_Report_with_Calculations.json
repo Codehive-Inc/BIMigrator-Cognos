@@ -1,0 +1,68 @@
+{
+  "source_name": "Data",
+  "name": "Report_with_Calculations",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "Region",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Region",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "No of Unique Orders",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DISTINCTCOUNT('Data'[Order_ID])",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Orders Returned (Multiple Returns per Order)",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "IF('Data'[Returned] = \"Yes\", 1, 0)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Data",
+      "source_type": "m",
+      "expression": "let\n\t\t\t\tSource = Value.NativeQuery(Cognos,\n\t\t\t\t\"SELECT \"\"Region\"\",\n\t\t\t\t\"\"No of Unique Orders\"\",\n\t\t\t\t\"\"Orders Returned (Multiple Returns per Order)\"\" FROM Data\"),\n\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source,\n\t\t\t\t{{\"Region\",\n\t\t\t\ttype text},\n\t\t\t\t{\"No of Unique Orders\",\n\t\t\t\ttype text},\n\t\t\t\t{\"Orders Returned (Multiple Returns per Order)\",\n\t\t\t\ttype number}})\n\t\t\tin\n\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

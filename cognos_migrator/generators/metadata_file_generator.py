@@ -45,10 +45,16 @@ class MetadataFileGenerator:
             'version': project.version
         }
         
-        content = self.template_engine.render('version', context)
+        # Get template info to determine the target filename and path
+        template_name = 'version'
+        content = self.template_engine.render(template_name, context)
         
-        version_file = output_dir / 'Version' / 'version.txt'
-        version_file.parent.mkdir(exist_ok=True)
+        # Get template info
+        template_info = self.template_engine.get_template_info(template_name)
+        target_filename = template_info['target_filename']
+        
+        # Version file should be directly in the output directory
+        version_file = output_dir / target_filename
         with open(version_file, 'w', encoding='utf-8') as f:
             f.write(content)
             
