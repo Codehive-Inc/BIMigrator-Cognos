@@ -320,7 +320,7 @@ class CognosMigrator:
             table = Table(
                 name=table_data.get('name', 'Table'),
                 columns=columns,
-                source_query=f"let Source = {table_data.get('source_type', 'Cognos')} in Source"
+                source_query=""  # Empty source query - no placeholder needed
             )
             tables.append(table)
         

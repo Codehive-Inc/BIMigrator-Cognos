@@ -1,0 +1,104 @@
+table 'Data'
+
+
+    column 'Regional Manager'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Regional Manager
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Area'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Area
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Country
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Region1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region1
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Order ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Order ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Returned'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Returned
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Data' = m
+        mode: import
+        source = 
+            let
+				Source = / * Connect to data source based on context * /,
+				#"Renamed Columns" = Table.RenameColumns(Source,
+				{{"OldRegionalManager",
+				"Regional Manager"},
+				{"OldRegion",
+				"Region"},
+				{"OldArea",
+				"Area"},
+				{"OldCountry",
+				"Country"},
+				{"OldRegion1",
+				"Region1"},
+				{"OldOrderID",
+				"Order ID"},
+				{"OldReturned",
+				"Returned"}}),
+				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
+				{{"Regional Manager",
+				type text},
+				{"Region",
+				type text},
+				{"Area",
+				type text},
+				{"Country",
+				type text},
+				{"Region1",
+				type text},
+				{"Order ID",
+				type text},
+				{"Returned",
+				type text}})
+			in
+				#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,427 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" useStyleVersion="11.6" expressionLocale="en-us">
+  
+				
+				
+  <drillBehavior/>
+  
+				
+  <layouts>
+    
+					
+    <layout>
+      
+						
+      <reportPages>
+        
+							
+        <page name="Page1">
+          
+								
+          <style>
+            
+									
+            <defaultStyles>
+              
+										
+              <defaultStyle refStyle="pg"/>
+              
+									
+            </defaultStyles>
+            
+								
+          </style>
+          
+								
+          <pageBody>
+            
+									
+            <style>
+              
+										
+              <defaultStyles>
+                
+											
+                <defaultStyle refStyle="pb"/>
+                
+										
+              </defaultStyles>
+              
+									
+            </style>
+            
+									
+            <contents>
+              <list horizontalPagination="true" name="List1" refQuery="Query1">
+                
+			
+			
+			
+			
+                <noDataHandler>
+                  
+				
+                  <contents>
+                    
+					
+                    <block>
+                      
+						
+                      <contents>
+                        
+							
+                        <textItem>
+                          
+								
+                          <dataSource>
+                            
+									
+                            <staticValue>No Data Available</staticValue>
+                            
+								
+                          </dataSource>
+                          
+							
+                        </textItem>
+                        
+						
+                      </contents>
+                      
+						
+                      <style>
+                        
+							
+                        <CSS value="padding:16px;"/>
+                        
+						
+                      </style>
+                      
+					
+                    </block>
+                    
+				
+                  </contents>
+                  
+			
+                </noDataHandler>
+                
+			
+                <style>
+                  
+				
+                  <CSS value="border-collapse:collapse"/>
+                  
+				
+                  <defaultStyles>
+                    
+					
+                    <defaultStyle refStyle="ls"/>
+                    
+				
+                  </defaultStyles>
+                  
+			
+                </style>
+                
+		
+                <listColumns>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Regional Manager"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Regional Manager"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Region"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Region"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Area"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Area"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Region1"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Region1"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Country"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Country"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Order ID"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Order ID"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Returned"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Returned"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                </listColumns>
+              </list>
+            </contents>
+            
+								
+          </pageBody>
+          
+							
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
+          </XMLAttributes>
+        </page>
+        
+						
+      </reportPages>
+      
+					
+    </layout>
+    
+				
+  </layouts>
+  
+			
+  <XMLAttributes>
+    <XMLAttribute output="no" name="RS_CreateExtendedDataItems" value="true"/>
+    <XMLAttribute output="no" name="listSeparator" value=","/>
+    <XMLAttribute output="no" name="decimalSeparator" value="."/>
+    <XMLAttribute output="no" name="RS_modelModificationTime" value="2025-06-12T04:27:14.972Z"/>
+  </XMLAttributes>
+  <queries>
+    <query name="Query1">
+      <source>
+        <model/>
+      </source>
+      <selection>
+        <dataItem aggregate="none" rollupAggregate="none" name="Regional Manager">
+          <expression>[C].[C_TestDataModule].[People].[Regional_Manager]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+        <dataItem aggregate="none" rollupAggregate="none" name="Region">
+          <expression>[C].[C_TestDataModule].[People].[Region]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+        <dataItem aggregate="none" rollupAggregate="none" name="Area">
+          <expression>[C].[C_TestDataModule].[People].[Area]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+        <dataItem aggregate="none" rollupAggregate="none" name="Country">
+          <expression>[C].[C_TestDataModule].[People].[Country]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+        <dataItem aggregate="none" rollupAggregate="none" name="Region1">
+          <expression>[C].[C_TestDataModule].[Orders].[Region]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+        <dataItem aggregate="none" rollupAggregate="none" name="Order ID">
+          <expression>[C].[C_TestDataModule].[Orders].[Order_ID]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+        <dataItem aggregate="none" rollupAggregate="none" name="Returned">
+          <expression>[C].[C_TestDataModule].[Returns_].[Returned]</expression>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_dataType" value="3"/>
+            <XMLAttribute output="no" name="RS_dataUsage" value="1"/>
+          </XMLAttributes>
+        </dataItem>
+      </selection>
+    </query>
+  </queries>
+  <modelPath type="module">CAMID(&quot;CognosEx:u:uid=administrator&quot;)/folder[@name='My Folders']/folder[@name='Sample']/module[@name='TestDataModule']</modelPath>
+  <reportName>Simple Report</reportName>
+</report>

@@ -1,0 +1,265 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" useStyleVersion="11.6" expressionLocale="en-us">
+  <drillBehavior/>
+  <layouts>
+    <layout>
+      <reportPages>
+        <page name="Page1">
+          <style>
+            <defaultStyles>
+              <defaultStyle refStyle="pg"/>
+            </defaultStyles>
+          </style>
+          <pageBody>
+            <style>
+              <defaultStyles>
+                <defaultStyle refStyle="pb"/>
+              </defaultStyles>
+            </style>
+            <contents>
+              <list horizontalPagination="true" name="List1" refQuery="Query1">
+                <noDataHandler>
+                  <contents>
+                    <block>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <staticValue>No Data Available</staticValue>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                      <style>
+                        <CSS value="padding:16px;"/>
+                      </style>
+                    </block>
+                  </contents>
+                </noDataHandler>
+                <style>
+                  <CSS value="border-collapse:collapse"/>
+                  <defaultStyles>
+                    <defaultStyle refStyle="ls"/>
+                  </defaultStyles>
+                </style>
+                <listColumns>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Regional Manager"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Regional Manager"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Region"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Region"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Area"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Area"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Region1"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Region1"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Country"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Country"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Order ID"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Order ID"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                  <listColumn>
+                    <listColumnTitle>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemLabel refDataItem="Returned"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <dataItemValue refDataItem="Returned"/>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                    </listColumnBody>
+                  </listColumn>
+                </listColumns>
+              </list>
+            </contents>
+          </pageBody>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
+          </XMLAttributes>
+        </page>
+      </reportPages>
+    </layout>
+  </layouts>
+</report>

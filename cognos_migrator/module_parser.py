@@ -898,8 +898,16 @@ class CognosModuleParser:
     
     def _build_m_expression(self, source_query: str) -> str:
         """Build M expression for Power BI partition"""
-        # Simple M expression wrapper for SQL queries
-        return f'''let
+        if not source_query:
+            # Handle empty source query
+            self.logger.info("Empty source query provided, generating generic table structure")
+            return '''let
+    Source = Table.FromRows({{}}, type table [])
+in
+    Source'''
+        else:
+            # Simple M expression wrapper for SQL queries
+            return f'''let
     Source = Sql.Database("server", "database", [Query="{source_query}"])
 in
     Source'''

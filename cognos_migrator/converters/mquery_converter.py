@@ -41,11 +41,15 @@ class MQueryConverter:
         """
         self.logger.info(f"Converting source query to M-query for table: {table.name}")
         
-        # Check if table has source_query
-        if not hasattr(table, 'source_query') or not table.source_query:
-            error_msg = f"Table {table.name} does not have a source_query attribute or it's empty"
+        # Check if table has source_query attribute
+        if not hasattr(table, 'source_query'):
+            error_msg = f"Table {table.name} does not have a source_query attribute"
             self.logger.error(error_msg)
             raise Exception(error_msg)
+            
+        # Log if source_query is empty
+        if not table.source_query:
+            self.logger.info(f"Table {table.name} has empty source_query - this will be handled by the LLM service")
         
         # Prepare context for LLM service
         context = self._build_context(table, report_spec, data_sample)
