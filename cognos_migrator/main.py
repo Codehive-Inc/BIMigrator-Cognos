@@ -238,8 +238,18 @@ def migrate_multiple_reports(report_ids: List[str], output_base_path: Optional[s
         return {}
 
 
-def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive: bool = True):
-    """Migrate all reports in a Cognos folder"""
+def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive: bool = True, is_module_migration: bool = False):
+    """Migrate all reports in a Cognos folder
+    
+    Args:
+        folder_id: ID of the folder containing reports to migrate
+        output_path: Optional path to store migration output
+        recursive: Whether to include reports in subfolders
+        is_module_migration: Flag indicating if this is part of a module migration
+    
+    Returns:
+        Dict[str, bool]: Results of the migration process
+    """
     logger = logging.getLogger(__name__)
 
     try:
@@ -260,7 +270,7 @@ def migrate_folder(folder_id: str, output_path: Optional[str] = None, recursive:
 
         # Perform migration
         logger.info(f"Starting migration of folder: {folder_id}")
-        results = migrator.migrate_folder(folder_id, str(output_path), recursive)
+        results = migrator.migrate_folder(folder_id, str(output_path), recursive, is_module_migration)
 
         # Summary
         successful = sum(1 for success in results.values() if success)
@@ -432,7 +442,8 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         
         # Step 2: Folder-based execution
         logger.info(f"Step 2: Migrating reports from folder {folder_id}")
-        folder_results = migrate_folder(folder_id, str(reports_dir))
+        # Pass is_module_migration flag to indicate this is part of a module migration
+        folder_results = migrate_folder(folder_id, str(reports_dir), recursive=True, is_module_migration=True)
         
         # Step 3: Post-processing
         logger.info("Step 3: Post-processing generated files")

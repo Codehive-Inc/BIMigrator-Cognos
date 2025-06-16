@@ -30,8 +30,17 @@ class CognosToPowerBIMigrator:
         self.project_generator = PowerBIProjectGenerator(config)
         self.doc_generator = DocumentationGenerator(config)
     
-    def migrate_report(self, report_id: str, output_path: str) -> bool:
-        """Migrate a single Cognos report to Power BI"""
+    def migrate_report(self, report_id: str, output_path: str, is_module_migration: bool = False) -> bool:
+        """Migrate a single Cognos report to Power BI
+        
+        Args:
+            report_id: ID of the report to migrate
+            output_path: Path to store migration output
+            is_module_migration: Flag indicating if this is part of a module migration
+            
+        Returns:
+            bool: True if migration was successful, False otherwise
+        """
         try:
             self.logger.info(f"Starting migration of report: {report_id}")
             
@@ -42,7 +51,8 @@ class CognosToPowerBIMigrator:
                 return False
             
             # Step 2: Convert to Power BI structures
-            powerbi_project = self._convert_cognos_to_powerbi(cognos_report)
+            # Pass the is_module_migration flag to the conversion process
+            powerbi_project = self._convert_cognos_to_powerbi(cognos_report, is_module_migration)
             if not powerbi_project:
                 self.logger.error(f"Failed to convert report: {report_id}")
                 return False
@@ -63,8 +73,17 @@ class CognosToPowerBIMigrator:
             self.logger.error(f"Migration failed for report {report_id}: {e}")
             return False
     
-    def migrate_multiple_reports(self, report_ids: List[str], output_base_path: str) -> Dict[str, bool]:
-        """Migrate multiple Cognos reports"""
+    def migrate_multiple_reports(self, report_ids: List[str], output_base_path: str, is_module_migration: bool = False) -> Dict[str, bool]:
+        """Migrate multiple Cognos reports
+        
+        Args:
+            report_ids: List of report IDs to migrate
+            output_base_path: Base path for migration output
+            is_module_migration: Flag indicating if this is part of a module migration
+            
+        Returns:
+            Dict[str, bool]: Results of the migration process
+        """
         results = {}
         
         for report_id in report_ids:
@@ -72,7 +91,8 @@ class CognosToPowerBIMigrator:
                 # Create individual output directory for each report
                 report_output_path = Path(output_base_path) / f"report_{report_id}"
                 
-                success = self.migrate_report(report_id, str(report_output_path))
+                # Pass the is_module_migration flag to migrate_report
+                success = self.migrate_report(report_id, str(report_output_path), is_module_migration=is_module_migration)
                 results[report_id] = success
                 
                 if success:
@@ -89,8 +109,18 @@ class CognosToPowerBIMigrator:
         
         return results
     
-    def migrate_folder(self, folder_id: str, output_path: str, recursive: bool = True) -> Dict[str, bool]:
-        """Migrate all reports in a Cognos folder"""
+    def migrate_folder(self, folder_id: str, output_path: str, recursive: bool = True, is_module_migration: bool = False) -> Dict[str, bool]:
+        """Migrate all reports in a Cognos folder
+        
+        Args:
+            folder_id: ID of the folder containing reports to migrate
+            output_path: Path to store migration output
+            recursive: Whether to include reports in subfolders
+            is_module_migration: Flag indicating if this is part of a module migration
+            
+        Returns:
+            Dict[str, bool]: Results of the migration process
+        """
         try:
             self.logger.info(f"Starting folder migration: {folder_id}")
             
@@ -101,14 +131,23 @@ class CognosToPowerBIMigrator:
                 return {}
             
             report_ids = [report.id for report in reports]
-            return self.migrate_multiple_reports(report_ids, output_path)
+            # Pass the is_module_migration flag to migrate_multiple_reports
+            return self.migrate_multiple_reports(report_ids, output_path, is_module_migration=is_module_migration)
             
         except Exception as e:
             self.logger.error(f"Failed to migrate folder {folder_id}: {e}")
             return {}
     
-    def _convert_cognos_to_powerbi(self, cognos_report: CognosReport) -> Optional[PowerBIProject]:
-        """Convert Cognos report to Power BI project structure"""
+    def _convert_cognos_to_powerbi(self, cognos_report: CognosReport, is_module_migration: bool = False) -> Optional[PowerBIProject]:
+        """Convert Cognos report to Power BI project structure
+        
+        Args:
+            cognos_report: The Cognos report to convert
+            is_module_migration: Flag indicating if this is part of a module migration
+            
+        Returns:
+            Optional[PowerBIProject]: The converted Power BI project, or None if conversion failed
+        """
         try:
             # Convert report specification
             converted_data = self.report_converter.convert_report(cognos_report)
@@ -126,7 +165,11 @@ class CognosToPowerBIMigrator:
                 created=datetime.now(),
                 last_modified=datetime.now(),
                 data_model=data_model,
-                report=report
+                report=report,
+                metadata={
+                    "is_module_migration": is_module_migration,
+                    "migration_type": "module" if is_module_migration else "standalone"
+                }
             )
             
             return project
