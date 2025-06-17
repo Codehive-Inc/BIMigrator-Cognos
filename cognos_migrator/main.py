@@ -120,7 +120,7 @@ def list_available_content():
 # here is migrate single report method that takes session_key as an argument besides report_id and output_path.
 # This is useful when you want to migrate a report by passing user credentials and main key.
 def migrate_single_report_with_session_key(report_id: str, cognos_url: str, session_key: str,
-                                           output_path: Optional[str] = None):
+                                           output_path: Optional[str] = None, task_id: Optional[str] = None):
     """Migrate a single Cognos report using session key"""
     logger = logging.getLogger(__name__)
 
@@ -161,7 +161,7 @@ def migrate_single_report_with_session_key(report_id: str, cognos_url: str, sess
         return False
 
 def migrate_module_with_session_key(module_id: str, cognos_url: str, session_key: str, 
-                                   folder_id: str, output_path: Optional[str] = None):
+                                   folder_id: str, output_path: Optional[str] = None, task_id: Optional[str] = None):
     """Migrate a Cognos module using session key
     
     Args:
