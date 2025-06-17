@@ -190,15 +190,33 @@ class ReportFileGenerator:
         # If report has sections, generate a file for each section
         if hasattr(report, 'sections') and report.sections:
             for i, section in enumerate(report.sections):
+                # Handle both dictionary and ReportPage object formats
+                if isinstance(section, dict):
+                    # Dictionary format
+                    section_id = section.get('id', f'section{i}')
+                    section_name = section.get('name', f'Section {i}')
+                    section_display_name = section.get('display_name', f'Section {i}')
+                    visuals = section.get('visuals', [])
+                    width = section.get('width', 1280)
+                    height = section.get('height', 720)
+                else:
+                    # ReportPage object format
+                    section_id = getattr(section, 'id', f'section{i}')
+                    section_name = section.name
+                    section_display_name = section.display_name
+                    visuals = section.visuals
+                    width = getattr(section, 'width', 1280)
+                    height = getattr(section, 'height', 720)
+                
                 context = {
-                    'section_id': section.get('id', f'section{i}'),
-                    'section_name': section.get('name', f'Section {i}'),
-                    'section_display_name': section.get('display_name', f'Section {i}'),
-                    'visuals': section.get('visuals', []),
+                    'section_id': section_id,
+                    'section_name': section_name,
+                    'section_display_name': section_display_name,
+                    'visuals': visuals,
                     # Add default layout information
                     'layout': {
-                        'width': 1280,
-                        'height': 720,
+                        'width': width,
+                        'height': height,
                         'display_option': 'FitToPage'
                     }
                 }

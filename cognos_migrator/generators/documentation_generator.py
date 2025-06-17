@@ -99,16 +99,29 @@ class DocumentationGenerator:
                 
                 content += "\n### Pages\n\n"
                 for i, section in enumerate(project.report.sections):
-                    section_name = section.get('name', f'Section {i}')
+                    # Handle both dictionary and ReportPage object formats
+                    if isinstance(section, dict):
+                        section_name = section.get('name', f'Section {i}')
+                        visuals = section.get('visuals', [])
+                    else:
+                        # ReportPage object
+                        section_name = section.name
+                        visuals = section.visuals
+                        
                     content += f"- **{section_name}**\n"
                     
                     # Add visuals
-                    visuals = section.get('visuals', [])
                     if visuals:
                         content += f"  - Visuals: {len(visuals)}\n"
                         for j, visual in enumerate(visuals):
-                            visual_type = visual.get('type', 'Unknown')
-                            visual_name = visual.get('name', f'Visual {j}')
+                            if isinstance(visual, dict):
+                                visual_type = visual.get('type', 'Unknown')
+                                visual_name = visual.get('name', f'Visual {j}')
+                            else:
+                                # Handle non-dict visual objects if needed
+                                visual_type = getattr(visual, 'type', 'Unknown')
+                                visual_name = getattr(visual, 'name', f'Visual {j}')
+                                
                             content += f"    - {visual_name} ({visual_type})\n"
                     else:
                         content += "  - No visuals\n"

@@ -8,6 +8,8 @@ import logging
 from typing import Dict, Any, List, Optional
 import json
 
+from cognos_migrator.utils.json_encoder import ModelJSONEncoder, model_to_dict
+
 import pybars
 from jinja2 import Environment, FileSystemLoader, Template
 
@@ -142,10 +144,17 @@ class TemplateEngine:
         try:
             # Process context to ensure JSON serializable values for complex structures
             processed_context = {}
+            
+            # First convert any non-serializable objects to dictionaries
+            serializable_context = {}
             for key, value in context.items():
+                serializable_context[key] = model_to_dict(value)
+            
+            # Then process for template rendering
+            for key, value in serializable_context.items():
                 if isinstance(value, (dict, list)):
                     # Convert to JSON string if needed by the template
-                    processed_context[key + '_json'] = json.dumps(value)
+                    processed_context[key + '_json'] = json.dumps(value, cls=ModelJSONEncoder)
                 processed_context[key] = value
                 
             # Render the template with the processed context
