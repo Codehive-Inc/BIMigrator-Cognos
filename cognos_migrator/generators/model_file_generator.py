@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
-from bimigrator.common.websocket_client import logging_helper
+from cognos_migrator.common.websocket_client import logging_helper
 
 from .utils import get_extracted_dir, save_json_to_extracted_dir
 

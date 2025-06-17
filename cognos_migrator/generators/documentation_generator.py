@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
-from bimigrator.common.websocket_client import logging_helper
+from cognos_migrator.common.websocket_client import logging_helper
 
 from ..models import PowerBIProject, DataModel, Report
 from .template_engine import TemplateEngine

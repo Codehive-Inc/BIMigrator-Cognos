@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-from bimigrator.common.websocket_client import logging_helper, set_task_info
+from .common.websocket_client import logging_helper, set_task_info
 from .config import ConfigManager
 from .migrator import CognosToPowerBIMigrator, MigrationBatch
 

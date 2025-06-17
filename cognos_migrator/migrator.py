@@ -702,7 +702,7 @@ class CognosMigrator:
         Returns:
             Dict[str, bool]: Results of the migration process
         """
-        from bimigrator.common.websocket_client import logging_helper
+        from cognos_migrator.common.websocket_client import logging_helper
         
         try:
             # Set output path if not provided

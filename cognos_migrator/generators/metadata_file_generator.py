@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 from typing import Dict, Any
 
-from bimigrator.common.websocket_client import logging_helper
+from cognos_migrator.common.websocket_client import logging_helper
 
 from ..models import PowerBIProject
 from .template_engine import TemplateEngine
