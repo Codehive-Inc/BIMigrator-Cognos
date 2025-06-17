@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-
+from bimigrator.common.websocket_client import logging_helper, set_task_info
 from .config import ConfigManager
 from .migrator import CognosToPowerBIMigrator, MigrationBatch
 
@@ -384,11 +384,21 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         config = load_config()
         
         # Initialize migrator
+        logging_helper(message="Initializing Cognos to Power BI migration", 
+                       progress=0, 
+                       message_type="info")
         migrator = CognosToPowerBIMigrator(config)
+        logging_helper(message="Initialization complete!", 
+                       progress=10,
+                       messsage_type="info")
+
         
         # Validate prerequisites
         if not migrator.validate_migration_prerequisites():
             logger.error("Migration prerequisites not met. Please check configuration.")
+            logging_helper(message="Migration prerequisites not met. Please check configuration.", 
+                       progress=10,
+                       messsage_type="error")
             return {}
         
         # Set output path
@@ -397,14 +407,22 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         
         # Step 1: Module-based implementation
         logger.info(f"Step 1: Processing module {module_id}")
+        logging_helper(message=f"Processing module {module_id}", 
+                       progress=15, 
+                       message_type="info")
         module_info = migrator.cognos_client.get_module(module_id)
         if not module_info:
             logger.error(f"Failed to retrieve module information for {module_id}")
+            logging_helper(message=f"Failed to retrieve module information for {module_id}", 
+                       progress=15, 
+                       message_type="error")
             return {}
         
         # Extract module metadata
         module_metadata = migrator.cognos_client.get_module_metadata(module_id)
-        
+        logging_helper(message=f"Extracted metadata for module {module_id}", 
+                       progress=30, 
+                       message_type="info")
         # Create module directory structure
         module_path = Path(output_path)
         module_path.mkdir(parents=True, exist_ok=True)
@@ -432,10 +450,16 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         
         # Step 2: Folder-based execution
         logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+        logging_helper(message=f"Extracted metadata for module {module_id}", 
+                       progress=40, 
+                       message_type="info") 
         folder_results = migrate_folder(folder_id, str(reports_dir))
         
         # Step 3: Post-processing
         logger.info("Step 3: Post-processing generated files")
+        logging_helper(message=f"Post-processing file generatoin for module {module_id} done!", 
+                       progress=60, 
+                       message_type="info")
         from cognos_migrator.processors import ModuleProcessor
         
         processor = ModuleProcessor(str(module_path))
@@ -443,13 +467,22 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         # Load module information
         if not processor.load_module_info():
             logger.warning('Failed to load module information for post-processing')
+            logging_helper(message=f"Post-processing file generatoin for module {module_id} done!", 
+                       progress=60, 
+                       message_type="info")
         
         # Process report files
         logger.info('Processing report files with module information')
+        logging_helper(message=f"Processing report files with module information", 
+                       progress=80, 
+                       message_type="info")
         processor.process_report_files()
         
         # Generate module documentation
         logger.info('Generating module documentation')
+        logging_helper(message=f"Summarizing module completion", 
+                       progress=100, 
+                       message_type="info")
         processor.generate_module_documentation()
         
         # Generate module-level summary

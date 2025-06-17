@@ -8,9 +8,6 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
-from cognos_migrator.config import ConfigManager
-from cognos_migrator.migrator import CognosToPowerBIMigrator, MigrationBatch
-
 
 def setup_logging(log_level: str = "INFO"):
     """Setup logging configuration"""
@@ -26,6 +23,7 @@ def setup_logging(log_level: str = "INFO"):
 
 def load_config():
     """Load migration configuration"""
+    from cognos_migrator.config import ConfigManager
     config_manager = ConfigManager()
     return config_manager.load_config()
 
@@ -39,6 +37,7 @@ def migrate_single_report(report_id: str, output_path: Optional[str] = None):
         config = load_config()
         
         # Initialize migrator
+        from cognos_migrator.migrator import CognosToPowerBIMigrator
         migrator = CognosToPowerBIMigrator(config)
         
         # Validate prerequisites
@@ -80,6 +79,7 @@ def migrate_multiple_reports(report_ids: List[str], output_base_path: Optional[s
         config = load_config()
         
         # Initialize migrator
+        from cognos_migrator.migrator import CognosToPowerBIMigrator
         migrator = CognosToPowerBIMigrator(config)
         
         # Validate prerequisites
