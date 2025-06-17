@@ -12,6 +12,7 @@ from typing import Dict, List, Any, Optional
 from .common.websocket_client import logging_helper, set_task_info
 from .config import ConfigManager
 from .migrator import CognosToPowerBIMigrator, MigrationBatch
+from uuid import uuid4
 
 
 def setup_logging(log_level: str = "INFO"):
@@ -173,6 +174,14 @@ def migrate_module_with_session_key(module_id: str, cognos_url: str, session_key
     Returns:
         Dict[str, bool]: Results of the migration process
     """
+
+    # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"migration_{uuid4().hex}"
+    
+    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+    set_task_info(task_id, total_steps=12)
+
     logger = logging.getLogger(__name__)
     
     try:
