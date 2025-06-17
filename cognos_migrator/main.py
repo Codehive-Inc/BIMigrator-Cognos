@@ -159,6 +159,72 @@ def migrate_single_report_with_session_key(report_id: str, cognos_url: str, sess
         logger.error(f"Error during migration: {e}")
         return False
 
+def migrate_module_with_session_key(module_id: str, cognos_url: str, session_key: str, 
+                                   folder_id: str, output_path: Optional[str] = None):
+    """Migrate a Cognos module using session key
+    
+    Args:
+        module_id: ID of the Cognos module to migrate
+        cognos_url: Base URL of the Cognos server
+        session_key: Authentication session key
+        folder_id: ID of the folder containing reports to migrate
+        output_path: Optional path to store migration output
+    
+    Returns:
+        Dict[str, bool]: Results of the migration process
+    """
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load configuration
+        config = load_config()
+        
+        # Create client with existing session
+        # set_task_info(task_name="Module Migration with Session", 
+        #               task_description=f"Migrating module {module_id} with folder {folder_id}")
+        logging_helper(message="Initializing Cognos to Power BI migration with session key", 
+                       progress=0, 
+                       message_type="info")
+        migrator = CognosToPowerBIMigrator(config, base_url=cognos_url, session_key=session_key)
+        logging_helper(message="Initialization complete!", 
+                       progress=10,
+                       message_type="info")
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            logging_helper(message="Migration prerequisites not met. Please check configuration.", 
+                           progress=10,
+                           message_type="error")
+            return {}
+        
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"module_{module_id}"
+        
+        # Perform module migration
+        logger.info(f"Starting migration of module: {module_id} with folder: {folder_id}")
+        results = migrator.migrate_module(module_id, folder_id, str(output_path))
+        
+        if results:
+            successful = sum(1 for success in results.values() if success)
+            total = len(results)
+            logger.info(f"✓ Module migration completed: {successful}/{total} reports successful")
+            
+            # Show migration status
+            status = migrator.get_migration_status(str(output_path))
+            logger.info(f"Migration status: {status}")
+        else:
+            logger.error(f"✗ Failed to migrate module {module_id}")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error during module migration: {e}")
+        logging_helper(message=f"Error during module migration: {e}", 
+                       progress=100,
+                       message_type="error")
+        return {}
 
 def migrate_single_report(report_id: str, output_path: Optional[str] = None):
     """Migrate a single Cognos report"""
@@ -384,125 +450,25 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         config = load_config()
         
         # Initialize migrator
+        # set_task_info(task_name="Module Migration", task_description=f"Migrating module {module_id} with folder {folder_id}")
         logging_helper(message="Initializing Cognos to Power BI migration", 
                        progress=0, 
                        message_type="info")
         migrator = CognosToPowerBIMigrator(config)
         logging_helper(message="Initialization complete!", 
                        progress=10,
-                       messsage_type="info")
-
+                       message_type="info")
         
         # Validate prerequisites
         if not migrator.validate_migration_prerequisites():
             logger.error("Migration prerequisites not met. Please check configuration.")
             logging_helper(message="Migration prerequisites not met. Please check configuration.", 
                        progress=10,
-                       messsage_type="error")
-            return {}
-        
-        # Set output path
-        if not output_path:
-            output_path = Path(config.output_directory) / f"module_{module_id}"
-        
-        # Step 1: Module-based implementation
-        logger.info(f"Step 1: Processing module {module_id}")
-        logging_helper(message=f"Processing module {module_id}", 
-                       progress=15, 
-                       message_type="info")
-        module_info = migrator.cognos_client.get_module(module_id)
-        if not module_info:
-            logger.error(f"Failed to retrieve module information for {module_id}")
-            logging_helper(message=f"Failed to retrieve module information for {module_id}", 
-                       progress=15, 
                        message_type="error")
             return {}
         
-        # Extract module metadata
-        module_metadata = migrator.cognos_client.get_module_metadata(module_id)
-        logging_helper(message=f"Extracted metadata for module {module_id}", 
-                       progress=30, 
-                       message_type="info")
-        # Create module directory structure
-        module_path = Path(output_path)
-        module_path.mkdir(parents=True, exist_ok=True)
-        
-        # Create subdirectories
-        docs_dir = module_path / "documentation"
-        docs_dir.mkdir(exist_ok=True)
-        
-        reports_dir = module_path / "reports"
-        reports_dir.mkdir(exist_ok=True)
-        
-        extracted_dir = module_path / "extracted"
-        extracted_dir.mkdir(exist_ok=True)
-        
-        pbit_dir = module_path / "pbit"
-        pbit_dir.mkdir(exist_ok=True)
-        
-        # Save module information in extracted directory
-        with open(extracted_dir / "module_info.json", "w") as f:
-            json.dump(module_info, f, indent=2)
-        
-        # Save module metadata in extracted directory
-        with open(extracted_dir / "module_metadata.json", "w") as f:
-            json.dump(module_metadata, f, indent=2)
-        
-        # Step 2: Folder-based execution
-        logger.info(f"Step 2: Migrating reports from folder {folder_id}")
-        logging_helper(message=f"Extracted metadata for module {module_id}", 
-                       progress=40, 
-                       message_type="info") 
-        folder_results = migrate_folder(folder_id, str(reports_dir))
-        
-        # Step 3: Post-processing
-        logger.info("Step 3: Post-processing generated files")
-        logging_helper(message=f"Post-processing file generatoin for module {module_id} done!", 
-                       progress=60, 
-                       message_type="info")
-        from cognos_migrator.processors import ModuleProcessor
-        
-        processor = ModuleProcessor(str(module_path))
-        
-        # Load module information
-        if not processor.load_module_info():
-            logger.warning('Failed to load module information for post-processing')
-            logging_helper(message=f"Post-processing file generatoin for module {module_id} done!", 
-                       progress=60, 
-                       message_type="info")
-        
-        # Process report files
-        logger.info('Processing report files with module information')
-        logging_helper(message=f"Processing report files with module information", 
-                       progress=80, 
-                       message_type="info")
-        processor.process_report_files()
-        
-        # Generate module documentation
-        logger.info('Generating module documentation')
-        logging_helper(message=f"Summarizing module completion", 
-                       progress=100, 
-                       message_type="info")
-        processor.generate_module_documentation()
-        
-        # Generate module-level summary
-        successful = sum(1 for success in folder_results.values() if success)
-        total = len(folder_results)
-        
-        summary = {
-            "module_id": module_id,
-            "folder_id": folder_id,
-            "total_reports": total,
-            "successful_reports": successful,
-            "success_rate": f"{(successful/total*100):.1f}%" if total > 0 else "0%"
-        }
-        
-        # Save summary in documentation directory
-        with open(docs_dir / "module_migration_summary.json", "w") as f:
-            json.dump(summary, f, indent=2)
-        
-        logger.info(f"Module migration completed: {successful}/{total} reports successful")
-        return folder_results
+        # Delegate to the migrator's migrate_module method
+        return migrator.migrate_module(module_id, folder_id, output_path)
         
     except Exception as e:
         logger.error(f"Error during module migration: {e}")
@@ -568,7 +534,7 @@ def main():
         # demo_migration()
         report_id = "i8E32D9D255FA4361A2D8BDF980837E3D"
         cognos_url = "http://20.244.32.126:9300/api/v1"
-        session_key = "CAM MTsxMDE6Y2I3ZTQ0N2ItYjgyNC01NTZhLTRmZmYtYmQzYjBlYTIyNzQ3OjA4MzY1MzgzMTM7MDszOzA7"
+        session_key = "CAM MTsxMDE6NzhmNDVlZjQtMTMzMS0zMmU3LTVhZWUtMmY3NzEyNzNiOWU1OjA5ODQ1OTI1MDc7MDszOzA7"
         migrate_single_report_with_session_key(report_id, cognos_url, session_key, output_path)
 
 
