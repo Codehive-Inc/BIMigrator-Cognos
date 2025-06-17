@@ -26,7 +26,7 @@
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "DISTINCTCOUNT('C_TestDataModule'[Order_ID])",
+      "source_column": "DISTINCTCOUNT('Report_with_Calculations'[Order_ID])",
       "description": null,
       "is_hidden": false,
       "summarize_by": "sum",

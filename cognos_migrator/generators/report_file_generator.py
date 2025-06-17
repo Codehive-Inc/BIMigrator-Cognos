@@ -62,7 +62,7 @@ class ReportFileGenerator:
     def _generate_report_file(self, report: Report, report_dir: Path):
         """Generate report.json file"""
         context = {
-            'report_id': report.id,
+            'report_id': 0,  # Use 0 as the default ID for compatibility
             'report_name': report.name,
             'sections': report.sections if hasattr(report, 'sections') else []
         }
