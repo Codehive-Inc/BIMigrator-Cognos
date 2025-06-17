@@ -1,0 +1,24 @@
+{
+  "relationships": [
+    {
+      "name": "a9b0e462-b8a7-4d79-a119-abd366aaf4dd",
+      "from_table": "Orders",
+      "from_column": "Region",
+      "to_table": "People",
+      "to_column": "Region",
+      "cardinality": "many",
+      "cross_filter_direction": "OneDirection",
+      "is_active": true
+    },
+    {
+      "name": "3dfe0ec2-c377-437f-a055-98fd8cb5d2e6",
+      "from_table": "Orders",
+      "from_column": "Order_ID",
+      "to_table": "Returns_",
+      "to_column": "Order_ID",
+      "cardinality": "many",
+      "cross_filter_direction": "OneDirection",
+      "is_active": true
+    }
+  ]
+}

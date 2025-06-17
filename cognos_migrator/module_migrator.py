@@ -395,7 +395,23 @@ class CognosModuleMigrator:
         
         # Add relationships
         powerbi_relationships = parsed_module.get('powerbi_relationships', [])
-        data_model.relationships = powerbi_relationships
+        relationship_objects = []
+        
+        for rel_dict in powerbi_relationships:
+            # Create Relationship object from dictionary
+            relationship = Relationship(
+                name=rel_dict.get('id', str(uuid.uuid4())),
+                from_table=rel_dict.get('from_table', ''),
+                from_column=rel_dict.get('from_column', ''),
+                to_table=rel_dict.get('to_table', ''),
+                to_column=rel_dict.get('to_column', ''),
+                cardinality=rel_dict.get('cardinality', 'one_to_many'),
+                cross_filter_direction=rel_dict.get('cross_filter_behavior', 'OneDirection'),
+                is_active=rel_dict.get('is_active', True)
+            )
+            relationship_objects.append(relationship)
+            
+        data_model.relationships = relationship_objects
         
         return data_model
     def _create_report_structure(self, parsed_module: Dict[str, Any], module_name: str) -> Report:
