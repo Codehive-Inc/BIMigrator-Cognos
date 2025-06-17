@@ -8,6 +8,8 @@ import logging
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
+from bimigrator.common.websocket_client import logging_helper
+
 from ..models import PowerBIProject, DataModel, Table, Relationship, Report
 from ..llm_service import LLMServiceClient
 from ..converters import MQueryConverter
@@ -405,6 +407,8 @@ class PowerBIProjectOrchestrator:
             f.write(content)
             
         self.logger.info(f"Generated static resources: {layout_file}")
+        logging_helper(message=f"Generated static resources: {layout_file}", 
+                    message_type="info")
     
     def _sanitize_filename(self, filename: str) -> str:
         """Sanitize filename for filesystem compatibility

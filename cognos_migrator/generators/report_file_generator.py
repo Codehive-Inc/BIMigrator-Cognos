@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Dict, Any, Optional, Union
 
+from bimigrator.common.websocket_client import logging_helper
+
 from ..models import Report
 from .template_engine import TemplateEngine
 from .utils import get_extracted_dir, save_json_to_extracted_dir
@@ -57,6 +59,8 @@ class ReportFileGenerator:
         self._generate_diagram_layout(report_dir)
         
         self.logger.info(f"Generated report files in: {report_dir}")
+        logging_helper(message=f"Generated report files in: {report_dir}",
+                       message_type="info")
         return report_dir
     
     def _generate_report_file(self, report: Report, report_dir: Path):
@@ -85,6 +89,8 @@ class ReportFileGenerator:
             save_json_to_extracted_dir(extracted_dir, "report.json", report_json)
             
         self.logger.info(f"Generated report file: {report_file}")
+        logging_helper(message=f"Generated report file: {report_file}",
+                       message_type="info")
     
     def _generate_report_config_file(self, report: Report, report_dir: Path):
         """Generate report configuration file (report.config.json or config.json)"""
@@ -117,7 +123,9 @@ class ReportFileGenerator:
                 self.logger.warning("Could not parse report config content as JSON")
             
         self.logger.info(f"Generated report config file: {config_file}")
-    
+        logging_helper(message=f"Generated report config file: {config_file}",
+                       message_type="info")
+
     def _generate_report_metadata_file(self, report: Report, report_dir: Path):
         """Generate report metadata file"""
         context = {
@@ -149,6 +157,8 @@ class ReportFileGenerator:
                 self.logger.warning("Could not parse report metadata content as JSON")
             
         self.logger.info(f"Generated report metadata file: {metadata_file}")
+        logging_helper(message=f"Generated report metadata file: {metadata_file}",
+                       message_type="info")
     
     def _generate_report_settings_file(self, report: Report, report_dir: Path):
         """Generate report settings file"""
@@ -180,6 +190,8 @@ class ReportFileGenerator:
                 self.logger.warning("Could not parse report settings content as JSON")
             
         self.logger.info(f"Generated report settings file: {settings_file}")
+        logging_helper(message=f"Generated report settings file: {settings_file}",
+                       message_type="info")
     
     def _generate_report_sections(self, report: Report, report_dir: Path):
         """Generate report section files"""
@@ -222,6 +234,8 @@ class ReportFileGenerator:
                     f.write(content)
                     
                 self.logger.info(f"Generated report section file: {section_file}")
+                logging_helper(message=f"Generated report section file: {section_file}",
+                               message_type="info")
         else:
             # Generate a default section
             context = {
@@ -256,6 +270,8 @@ class ReportFileGenerator:
                 f.write(content)
                 
             self.logger.info(f"Generated default report section file: {section_file}")
+            logging_helper(message=f"Generated default report section file: {section_file}",
+                           message_type="info")
     
     def _generate_diagram_layout(self, report_dir: Path):
         """Generate diagram layout file"""

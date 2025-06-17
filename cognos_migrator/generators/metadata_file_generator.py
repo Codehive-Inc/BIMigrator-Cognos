@@ -5,6 +5,8 @@ import logging
 from pathlib import Path
 from typing import Dict, Any
 
+from bimigrator.common.websocket_client import logging_helper
+
 from ..models import PowerBIProject
 from .template_engine import TemplateEngine
 
@@ -59,3 +61,5 @@ class MetadataFileGenerator:
             f.write(content)
             
         self.logger.info(f"Generated version file: {version_file}")
+        logging_helper(message=f"Generated version file: {version_file}", 
+                     message_type="info")
