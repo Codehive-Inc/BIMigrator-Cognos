@@ -398,6 +398,7 @@ class CognosModuleMigrator:
         data_model.relationships = powerbi_relationships
         
         return data_model
+    
     def _create_report_structure(self, parsed_module: Dict[str, Any], module_name: str) -> Report:
         """Create Power BI report structure from parsed module
         
@@ -433,9 +434,34 @@ class CognosModuleMigrator:
         report.sections.append(page)
         
         return report
-    def _determine_measure_format(self, calc_item: Dict[str, Any]) -> str:
-        """Determine the appropriate format for a measure based on its properties
         
+    def _create_data_model(self, parsed_module: Dict[str, Any]) -> DataModel:
+    """Create Power BI data model from parsed module
+    
+    Args:
+        parsed_module: Parsed module structure
+        
+    Returns:
+        Power BI data model
+    """
+    # Extract module name from raw module
+    raw_module = parsed_module.get('raw_module', {})
+    module_name = raw_module.get('name', 'CognosModule')
+    
+    # Initialize DataModel with required parameters
+    data_model = DataModel(
+        name=f"{module_name} Data Model",
+        tables=[]
+    )
+    
+    # Add tables
+    query_subjects = parsed_module.get('query_subjects', [])
+    data_items_by_subject = parsed_module.get('data_items', {})
+    
+    for query_subject in query_subjects:
+        subject_id = query_subject.get('identifier', '')
+        if not subject_id:
+            continue
         Args:
             calc_item: Calculated item dictionary
             

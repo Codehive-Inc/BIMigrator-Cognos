@@ -1,0 +1,80 @@
+table 'People'
+
+
+    column 'Row Id'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Row Id
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Regional Manager'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Regional Manager
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Area'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Area
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Country
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'People' = m
+        mode: import
+        source = 
+            let
+				Source = / * Connect to data source based on context * /,
+				#"Renamed Columns" = Table.RenameColumns(Source,
+				{{"Row Id",
+				"Row Id"},
+				{"Regional Manager",
+				"Regional Manager"},
+				{"Region",
+				"Region"},
+				{"Area",
+				"Area"},
+				{"Country",
+				"Country"}}),
+				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
+				{{"Row Id",
+				Int64.Type},
+				{"Regional Manager",
+				type text},
+				{"Region",
+				type text},
+				{"Area",
+				type text},
+				{"Country",
+				type text}})
+			in
+				#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

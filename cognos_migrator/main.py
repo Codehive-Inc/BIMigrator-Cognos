@@ -10,9 +10,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
-from .config import ConfigManager
-from .migrator import CognosToPowerBIMigrator, MigrationBatch
-from .extractors.modules.module_source_extractor import ModuleSourceExtractor
+from cognos_migrator.config import ConfigManager
+from cognos_migrator.migrator import CognosToPowerBIMigrator, MigrationBatch
+from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
 
 
 def setup_logging(log_level: str = "INFO"):

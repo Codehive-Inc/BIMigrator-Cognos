@@ -1,0 +1,218 @@
+table 'Orders'
+
+
+    column 'Row Id'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Row Id
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Row ID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Row ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Order ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Order ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Order Date'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: Order Date
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Ship Date'
+        dataType: datetime
+        summarizeBy: none
+        sourceColumn: Ship Date
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Ship Mode'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Ship Mode
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Customer ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Customer ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Customer Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Customer Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Segment'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Segment
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country/Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Country/Region
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'City'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: City
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State/Province'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State/Province
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Postal Code'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Postal Code
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Product ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Product ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Category'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Category
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Sub-Category'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Sub-Category
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Product Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Product Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Sales'
+        dataType: double
+        summarizeBy: none
+        sourceColumn: Sales
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Quantity'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Quantity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Discount'
+        dataType: double
+        summarizeBy: none
+        sourceColumn: Discount
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Profit'
+        dataType: double
+        summarizeBy: none
+        sourceColumn: Profit
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Orders' = m
+        mode: import
+        source = 
+            let
+				Source = / * Connect to data source based on context * /,
+				#"Renamed Columns" = Table.RenameColumns(Source,
+				{{"Row Id",
+				"Row Id"},
+				{"Row ID",
+				"Row ID"},
+				{"Order ID",
+				"Order ID"},
+				{"Order Date",
+				"Order Date"},
+				{"Ship Date",
+				"Ship Date"},
+				{"Ship Mode",
+				"Ship Mode"},
+				{"Customer ID",
+				"Customer ID"},
+				{"Customer Name",
+				"Customer Name"},
+				{"Segment",
+				"Segment"},
+				{"Country / Region",
+				"Country / Region"},
+				{"City",
+				"City"},
+				{"State / Prov
+			in
+				ce", "State / Prov
+        
+
+
+
+    annotation PBI_ResultType = Table
