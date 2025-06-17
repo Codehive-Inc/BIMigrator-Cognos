@@ -2,6 +2,7 @@
 Module relationship extractor for Cognos to Power BI migration
 """
 
+import os
 import logging
 import json
 from typing import Dict, List, Optional, Any
@@ -35,9 +36,18 @@ class ModuleRelationshipExtractor(ModuleExtractor):
         relationships = self.extract_relationships(module_content)
         powerbi_relationships = self.convert_to_powerbi_relationships(relationships)
         
-        # Save to JSON files
+        # Save to JSON files - only save one consolidated file
         self.save_to_json(relationships, output_dir, "cognos_relationships.json")
         self.save_to_json({"relationships": powerbi_relationships}, output_dir, "relationships.json")
+        
+        # Remove the redundant relationship.json file if it exists
+        relationship_file = os.path.join(output_dir, "relationship.json")
+        if os.path.exists(relationship_file):
+            try:
+                os.remove(relationship_file)
+                self.logger.info(f"Removed redundant relationship.json file: {relationship_file}")
+            except Exception as e:
+                self.logger.warning(f"Failed to remove redundant file {relationship_file}: {str(e)}")
         
         return {
             'cognos_relationships': relationships,

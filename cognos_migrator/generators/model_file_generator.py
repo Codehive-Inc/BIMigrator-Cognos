@@ -495,13 +495,13 @@ class ModelFileGenerator:
         relationships_context = []
         for rel in relationships:
             relationships_context.append({
-                'name': rel.name,
+                'id': rel.name,  # Use name as the ID for the template
                 'from_table': rel.from_table,
                 'from_column': rel.from_column,
                 'to_table': rel.to_table,
                 'to_column': rel.to_column,
                 'cardinality': rel.cardinality,
-                'cross_filter_direction': rel.cross_filter_direction,
+                'cross_filter_behavior': rel.cross_filter_direction,  # Match template's expected field name
                 'is_active': rel.is_active
             })
             

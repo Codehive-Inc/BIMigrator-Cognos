@@ -400,12 +400,12 @@ class CognosModuleMigrator:
         for rel_dict in powerbi_relationships:
             # Create Relationship object from dictionary
             relationship = Relationship(
-                name=rel_dict.get('id', str(uuid.uuid4())),
+                name=rel_dict.get('id', str(uuid.uuid4())),  # Use the UUID as the name
                 from_table=rel_dict.get('from_table', ''),
                 from_column=rel_dict.get('from_column', ''),
                 to_table=rel_dict.get('to_table', ''),
                 to_column=rel_dict.get('to_column', ''),
-                cardinality=rel_dict.get('cardinality', 'one_to_many'),
+                cardinality=rel_dict.get('cardinality', 'many'),  # Use 'many' as default to match TMDL format
                 cross_filter_direction=rel_dict.get('cross_filter_behavior', 'OneDirection'),
                 is_active=rel_dict.get('is_active', True)
             )

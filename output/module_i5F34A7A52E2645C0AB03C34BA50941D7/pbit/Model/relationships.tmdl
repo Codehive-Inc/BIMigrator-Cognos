@@ -1,12 +1,14 @@
-relationship 
+relationship f4f55c73-eb23-4d0e-b39e-d9f02d35ad5b
 	fromColumn: 'Orders'.Region
 	toColumn: 'People'.Region
+	crossFilteringBehavior: OneDirection
 	fromCardinality: many
 	isActive: True
 
-relationship 
+relationship 5231c058-ce8c-455d-b326-451d6f4bc5f0
 	fromColumn: 'Orders'.Order_ID
 	toColumn: 'Returns_'.Order_ID
+	crossFilteringBehavior: OneDirection
 	fromCardinality: many
 	isActive: True
 
