@@ -1753,43 +1753,27 @@
       }
     ]
   },
-  "expressions": {
-    "Orders": {
-      "_row_id": "_row_id",
-      "Row_ID": "Row_ID",
-      "Order_ID": "Order_ID",
-      "Order_Date": "Order_Date",
-      "Ship_Date": "Ship_Date",
-      "Ship_Mode": "Ship_Mode",
-      "Customer_ID": "Customer_ID",
-      "Customer_Name": "Customer_Name",
-      "Segment": "Segment",
-      "Country_Region": "Country_Region",
-      "City": "City",
-      "State_Province": "State_Province",
-      "Postal_Code": "Postal_Code",
-      "Region": "Region",
-      "Product_ID": "Product_ID",
-      "Category": "Category",
-      "Sub_Category": "Sub_Category",
-      "Product_Name": "Product_Name",
-      "Sales": "Sales",
-      "Quantity": "Quantity",
-      "Discount": "Discount",
-      "Profit": "Profit"
-    },
-    "People": {
-      "_row_id": "_row_id",
-      "Regional_Manager": "Regional_Manager",
-      "Region": "Region",
-      "Area": "Area",
-      "Country": "Country"
-    },
-    "Returns_": {
-      "_row_id": "_row_id",
-      "Returned": "Returned",
-      "Order_ID": "Order_ID"
+  "calculations": [],
+  "source_data": [
+    {
+      "class": "",
+      "server": null,
+      "database": null,
+      "schema": null,
+      "username": null,
+      "port": null,
+      "authentication": null,
+      "table_name": "Sheet1$",
+      "sql_queries": [],
+      "metadata": {
+        "identifier": "M1",
+        "type": "file",
+        "storeID": "i6CE1A685ADF246D2BBBE13F07337D1CF",
+        "searchPath": "CAMID(\"CognosEx:u:uid=administrator\")/folder[@name='My Folders']/folder[@name='Sample']/uploadedFile[@name='SampleData.xls']",
+        "fileName": "SampleData.xls",
+        "folderPath": "My Folders/Sample"
+      }
     }
-  },
-  "dax_expressions": {}
+  ],
+  "associated_reports": []
 }

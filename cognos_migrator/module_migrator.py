@@ -15,6 +15,7 @@ from datetime import datetime
 
 from cognos_migrator.config import ConfigManager, MigrationConfig
 from cognos_migrator.extractors.modules import ModuleExtractor, ModuleStructureExtractor, ModuleQueryExtractor, ModuleDataItemExtractor, ModuleExpressionExtractor, ModuleRelationshipExtractor, ModuleHierarchyExtractor
+from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
 from cognos_migrator.enhancers import CPFMetadataEnhancer
 from cognos_migrator.converters import ExpressionConverter
 from .client import CognosClient
@@ -55,6 +56,7 @@ class CognosModuleMigrator:
         self.module_query_extractor = ModuleQueryExtractor(logger=self.logger)
         self.module_data_item_extractor = ModuleDataItemExtractor(logger=self.logger)
         self.module_expression_extractor = ModuleExpressionExtractor(llm_client=self.llm_service_client, logger=self.logger)
+        self.module_source_extractor = ModuleSourceExtractor(logger=self.logger)
         self.module_relationship_extractor = ModuleRelationshipExtractor(logger=self.logger)
         self.module_hierarchy_extractor = ModuleHierarchyExtractor(logger=self.logger)
         
@@ -164,14 +166,27 @@ class CognosModuleMigrator:
             except Exception as e:
                 self.logger.error(f"Error extracting hierarchies: {e}")
                 hierarchies = {}
-            
-            self.logger.info("Extracting and converting expressions")
+                
+            self.logger.info("Extracting source data information")
             try:
-                expressions = self.module_expression_extractor.extract_and_save(module_metadata_json, extracted_dir)
+                source_data = self.module_source_extractor.extract_and_save(module_metadata_json, extracted_dir)
             except Exception as e:
-                    self.logger.error(f"Error collecting calculations from reports: {e}")
-            else:
-                self.logger.warning("No report IDs provided, skipping calculation collection")
+                self.logger.error(f"Error extracting source data: {e}")
+                source_data = {}
+            
+            self.logger.info("Collecting calculations from reports")
+            try:
+                if report_ids:
+                    # Use the new method to collect calculations from reports
+                    calculations = self.module_expression_extractor.collect_report_calculations(
+                        report_ids, output_path, extracted_dir
+                    )
+                else:
+                    self.logger.warning("No report IDs provided, skipping calculation collection")
+                    calculations = {"calculations": []}
+            except Exception as e:
+                self.logger.error(f"Error collecting calculations from reports: {e}")
+                calculations = {"calculations": []}
             
             # Combine all extracted data into a parsed module structure
             parsed_module = {
@@ -184,8 +199,8 @@ class CognosModuleMigrator:
                 'powerbi_relationships': relationships.get('powerbi_relationships', []),
                 'hierarchies': hierarchies.get('cognos_hierarchies', []),
                 'powerbi_hierarchies': hierarchies.get('powerbi_hierarchies', {}),
-                'expressions': expressions.get('cognos_expressions', {}),
-                'dax_expressions': expressions.get('dax_expressions', {}),
+                'calculations': calculations.get('calculations', []),
+                'source_data': source_data.get('sources', []),
                 'raw_module': module_info,
                 'associated_reports': report_ids or []
             }
@@ -340,18 +355,18 @@ class CognosModuleMigrator:
             
             # Add measures from calculated items
             calculated_items_by_subject = parsed_module.get('calculated_items', {})
-            dax_expressions_by_subject = parsed_module.get('dax_expressions', {})
-            
             calculated_items = calculated_items_by_subject.get(subject_id, [])
-            dax_expressions = dax_expressions_by_subject.get(subject_id, {})
+            
+            # Add measures from collected calculations
+            calculations = parsed_module.get('calculations', [])
             
             for calc_item in calculated_items:
                 item_id = calc_item.get('identifier', '')
                 if not item_id:
                     continue
                     
-                # Get DAX expression if available
-                dax_expression = dax_expressions.get(item_id, calc_item.get('expression', ''))
+                # Get DAX expression from the calculated item
+                dax_expression = calc_item.get('expression', '')
                 
                 measure = Measure(
                     name=calc_item.get('label', '') or item_id,
@@ -365,8 +380,16 @@ class CognosModuleMigrator:
             powerbi_hierarchies_by_table = parsed_module.get('powerbi_hierarchies', {})
             table_hierarchies = powerbi_hierarchies_by_table.get(subject_id, [])
             
-            for hierarchy in table_hierarchies:
-                table.hierarchies.append(hierarchy)
+            # Check if table has hierarchies attribute, otherwise store in annotations
+            if hasattr(table, 'hierarchies'):
+                for hierarchy in table_hierarchies:
+                    table.hierarchies.append(hierarchy)
+            else:
+                # Store hierarchies in annotations if attribute is missing
+                if 'hierarchies' not in table.annotations:
+                    table.annotations['hierarchies'] = []
+                for hierarchy in table_hierarchies:
+                    table.annotations['hierarchies'].append(hierarchy)
             
             data_model.tables.append(table)
         

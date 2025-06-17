@@ -12,6 +12,7 @@ from typing import Dict, List, Any, Optional
 
 from .config import ConfigManager
 from .migrator import CognosToPowerBIMigrator, MigrationBatch
+from .extractors.modules.module_source_extractor import ModuleSourceExtractor
 
 
 def setup_logging(log_level: str = "INFO"):

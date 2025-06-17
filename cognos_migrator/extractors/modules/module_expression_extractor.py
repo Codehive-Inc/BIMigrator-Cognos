@@ -1,240 +1,162 @@
-"""
-Module expression extractor for Cognos to Power BI migration
-"""
+"""Module expression extractor for Cognos to Power BI migration"""
 
 import logging
 import json
+import os
 import re
+from pathlib import Path
 from typing import Dict, List, Optional, Any
-import xml.etree.ElementTree as ET
 
 from .module_extractor import ModuleExtractor
 
 
 class ModuleExpressionExtractor(ModuleExtractor):
-    """Extracts and converts expressions from a Cognos module"""
+    """Collects and combines calculations from Cognos reports"""
     
     def __init__(self, logger=None, llm_client=None):
         """Initialize the module expression extractor
         
         Args:
             logger: Optional logger instance
-            llm_client: LLM client for expression conversion
+            llm_client: LLM client (not used in this implementation)
         """
         super().__init__(logger)
         self.llm_client = llm_client
         
-    def extract_and_save(self, module_content: str, output_dir: str) -> Dict[str, Any]:
-        """Extract expressions and save to JSON
+    def collect_report_calculations(self, report_ids: List[str], base_output_path: str, output_dir: str) -> Dict[str, Any]:
+        """Collect calculations from multiple reports and combine them
         
         Args:
-            module_content: JSON content of the module
-            output_dir: Directory to save extracted data
+            report_ids: List of report IDs to collect calculations from
+            base_output_path: Base path where report outputs are stored
+            output_dir: Directory to save combined calculations
             
         Returns:
-            Dictionary with extracted expressions
+            Dictionary with combined calculations
         """
-        # Extract expressions
-        expressions = self.extract_expressions(module_content)
-        dax_expressions = self.convert_expressions_to_powerbi(expressions)
+        self.logger.info(f"Collecting calculations from {len(report_ids)} reports")
         
-        # Combine into a single structure
-        expression_data = {
-            'cognos_expressions': expressions,
-            'dax_expressions': dax_expressions
-        }
+        # Initialize empty calculations dictionary
+        combined_calculations = {"calculations": []}
         
-        # Save to JSON files
-        self.save_to_json(expressions, output_dir, "cognos_expressions.json")
-        self.save_to_json(dax_expressions, output_dir, "dax_expressions.json")
-        self.save_to_json(expression_data, output_dir, "expression_data.json")
-        
-        return expression_data
-    
-    def extract_expressions(self, module_content: str) -> Dict[str, Dict[str, str]]:
-        """Extract expressions from a module
-        
-        Args:
-            module_content: JSON content of the module
-            
-        Returns:
-            Dictionary mapping query subject identifiers to dictionaries of item expressions
-        """
         try:
-            # Parse the module content as JSON
-            module_data = json.loads(module_content)
-            
-            expressions_by_subject = {}
-            
-            # Extract expressions for each query subject
-            if "querySubject" in module_data:
-                for query_subject in module_data.get("querySubject", []):
-                    subject_id = query_subject.get("identifier", "")
-                    expressions = {}
-                    
-                    # Extract expressions from query items
-                    for item in query_subject.get("item", []):
-                        if "queryItem" in item:
-                            query_item = item["queryItem"]
-                            identifier = query_item.get("identifier", "")
-                            expression = query_item.get("expression", "")
-                            
-                            if identifier and expression:
-                                expressions[identifier] = expression
-                    
-                    if subject_id and expressions:
-                        expressions_by_subject[subject_id] = expressions
-            
-            return expressions_by_subject
-            
-        except json.JSONDecodeError as e:
-            self.logger.error(f"Error parsing module content as JSON: {e}")
-            return {}
-        except Exception as e:
-            self.logger.error(f"Error extracting expressions: {e}")
-            return {}
-    
-    def convert_expressions_to_powerbi(self, expressions_by_subject: Dict[str, Dict[str, str]]) -> Dict[str, Dict[str, str]]:
-        """Convert Cognos expressions to Power BI DAX expressions
-        
-        Args:
-            expressions_by_subject: Dictionary mapping query subject identifiers to dictionaries of item expressions
-            
-        Returns:
-            Dictionary mapping query subject identifiers to dictionaries of converted DAX expressions
-        """
-        converted_expressions = {}
-        
-        for subject_id, expressions in expressions_by_subject.items():
-            converted = {}
-            
-            for item_id, expression in expressions.items():
-                # Skip simple column references (not calculated)
-                if expression == item_id:
-                    continue
+            # For each report, check if calculations.json exists and collect calculations
+            for report_id in report_ids:
+                # Construct the path to the report's calculations.json file
+                report_calculations_path = Path(base_output_path).parent / f"report_{report_id}" / "extracted" / "calculations.json"
                 
-                # Convert the expression
-                converted_expression = self._convert_expression_to_dax(expression, subject_id, item_id)
-                converted[item_id] = converted_expression
+                if report_calculations_path.exists():
+                    self.logger.info(f"Found calculations for report {report_id}")
+                    with open(report_calculations_path, 'r', encoding='utf-8') as f:
+                        report_calculations = json.load(f)
+                        
+                        # Merge calculations from this report
+                        if 'calculations' in report_calculations and isinstance(report_calculations['calculations'], list):
+                            combined_calculations['calculations'].extend(report_calculations['calculations'])
             
-            if converted:
-                converted_expressions[subject_id] = converted
-        
-        return converted_expressions
+            # Process the calculations to extract correct table names and update DAX expressions
+            processed_calculations = self._process_calculations(combined_calculations['calculations'])
+            combined_calculations['calculations'] = processed_calculations
+            
+            # Save the combined calculations to calculations.json
+            with open(Path(output_dir) / "calculations.json", 'w', encoding='utf-8') as f:
+                json.dump(combined_calculations, f, indent=2)
+            
+            self.logger.info(f"Saved {len(combined_calculations['calculations'])} calculations from reports")
+            return combined_calculations
+            
+        except Exception as e:
+            self.logger.error(f"Error collecting calculations from reports: {e}")
+            import traceback
+            self.logger.debug(f"Full traceback: {traceback.format_exc()}")
+            return {"calculations": []}
     
-    def _convert_expression_to_dax(self, expression: str, subject_id: str, item_id: str) -> str:
-        """Convert a single Cognos expression to Power BI DAX
+    def _process_calculations(self, calculations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Process calculations to extract correct table names and update DAX expressions
         
         Args:
-            expression: Cognos expression
-            subject_id: Query subject identifier
-            item_id: Query item identifier
+            calculations: List of calculation dictionaries
             
         Returns:
-            Converted DAX expression
+            Processed calculations
         """
-        # If we have an LLM client, use it for complex expressions
-        if self.llm_client and len(expression) > 10 and not self._is_simple_expression(expression):
+        processed_calculations = []
+        
+        for calc in calculations:
             try:
-                return self._convert_with_llm(expression, subject_id, item_id)
+                # Extract table name from FormulaCognos
+                formula_cognos = calc.get('FormulaCognos', '')
+                table_name = self._extract_table_name(formula_cognos)
+                
+                if table_name:
+                    # Update TableName with the extracted table name
+                    calc['TableName'] = table_name
+                
+                # Update FormulaDax to use correct [table].[column] format
+                formula_dax = calc.get('FormulaDax', '')
+                if formula_dax:
+                    calc['FormulaDax'] = self._update_dax_formula(formula_dax, table_name)
+                
+                processed_calculations.append(calc)
             except Exception as e:
-                self.logger.error(f"Error converting expression with LLM: {e}")
-                # Fall back to rule-based conversion
+                self.logger.warning(f"Error processing calculation: {e}")
+                # Keep the original calculation if processing fails
+                processed_calculations.append(calc)
         
-        # Rule-based conversion for common patterns
-        return self._rule_based_conversion(expression)
+        return processed_calculations
     
-    def _is_simple_expression(self, expression: str) -> bool:
-        """Check if an expression is simple (direct reference or basic operation)
+    def _extract_table_name(self, formula_cognos: str) -> str:
+        """Extract table name from Cognos formula
         
         Args:
-            expression: Expression to check
+            formula_cognos: Cognos formula
             
         Returns:
-            True if the expression is simple, False otherwise
+            Extracted table name or empty string if not found
         """
-        # Simple direct reference
-        if not any(op in expression for op in ['+', '-', '*', '/', '(', ')', 'if', 'case', 'when']):
-            return True
+        # Pattern to match [namespace].[package].[table].[column]
+        pattern = r'\[\w+\]\.\[\w+\]\.\[(\w+)\]'
+        match = re.search(pattern, formula_cognos)
         
-        # Simple arithmetic with at most one operator
-        if expression.count('+') + expression.count('-') + expression.count('*') + expression.count('/') <= 1 and '(' not in expression:
-            return True
+        if match:
+            return match.group(1)
         
-        return False
+        return ""
     
-    def _convert_with_llm(self, expression: str, subject_id: str, item_id: str) -> str:
-        """Convert an expression using the LLM client
+    def _update_dax_formula(self, formula_dax: str, table_name: str) -> str:
+        """Update DAX formula to use correct [table].[column] format
         
         Args:
-            expression: Cognos expression
-            subject_id: Query subject identifier
-            item_id: Query item identifier
+            formula_dax: DAX formula
+            table_name: Table name to use
             
         Returns:
-            Converted DAX expression
+            Updated DAX formula
         """
-        if not self.llm_client:
-            return expression
+        if not table_name:
+            return formula_dax
         
-        prompt = f"""
-        Convert the following Cognos expression to Power BI DAX:
+        # Replace 'Report_with_Calculations'[column] with 'table_name'[column]
+        pattern = r"'[^']*'\[(\w+)\]"
         
-        Cognos Expression: {expression}
-        Table Name: {subject_id}
-        Column Name: {item_id}
+        def replace_table(match):
+            column = match.group(1)
+            return f"'{table_name}'[{column}]"
         
-        Return only the DAX expression without any explanation.
-        """
-        
-        response = self.llm_client.generate_text(prompt)
-        
-        # Clean up the response
-        dax_expression = response.strip()
-        
-        # Remove any markdown code block formatting
-        dax_expression = re.sub(r'^```.*\n', '', dax_expression)
-        dax_expression = re.sub(r'\n```$', '', dax_expression)
-        
-        return dax_expression
+        updated_formula = re.sub(pattern, replace_table, formula_dax)
+        return updated_formula
     
-    def _rule_based_conversion(self, expression: str) -> str:
-        """Apply rule-based conversion for common Cognos expression patterns
+    def extract_and_save(self, module_content: str, output_dir: str) -> Dict[str, Any]:
+        """Placeholder method to maintain compatibility with the ModuleExtractor interface
+        
+        This method is not used as we're only collecting calculations from reports.
         
         Args:
-            expression: Cognos expression
+            module_content: JSON content of the module (not used)
+            output_dir: Directory to save extracted data (not used)
             
         Returns:
-            Converted DAX expression
+            Empty dictionary
         """
-        # Replace common Cognos functions with DAX equivalents
-        converted = expression
-        
-        # Date functions
-        converted = re.sub(r'current_date\(\)', 'TODAY()', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'current_timestamp\(\)', 'NOW()', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'current_time\(\)', 'TIME(HOUR(NOW()), MINUTE(NOW()), SECOND(NOW()))', converted, flags=re.IGNORECASE)
-        
-        # String functions
-        converted = re.sub(r'lower\((.*?)\)', r'LOWER(\1)', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'upper\((.*?)\)', r'UPPER(\1)', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'substring\((.*?),\s*(.*?),\s*(.*?)\)', r'MID(\1, \2, \3)', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'trim\((.*?)\)', r'TRIM(\1)', converted, flags=re.IGNORECASE)
-        
-        # Numeric functions
-        converted = re.sub(r'round\((.*?),\s*(.*?)\)', r'ROUND(\1, \2)', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'ceiling\((.*?)\)', r'CEILING(\1)', converted, flags=re.IGNORECASE)
-        converted = re.sub(r'floor\((.*?)\)', r'FLOOR(\1)', converted, flags=re.IGNORECASE)
-        
-        # Conditional functions
-        converted = re.sub(r'nullif\((.*?),\s*(.*?)\)', r'IF(\1 = \2, BLANK(), \1)', converted, flags=re.IGNORECASE)
-        
-        # Replace if-then-else pattern
-        if_pattern = r'if\s+\((.*?)\)\s+then\s+(.*?)\s+else\s+(.*?)\s+endif'
-        converted = re.sub(if_pattern, r'IF(\1, \2, \3)', converted, flags=re.IGNORECASE)
-        
-        # Replace case-when pattern (simplified)
-        case_pattern = r'case\s+when\s+(.*?)\s+then\s+(.*?)\s+else\s+(.*?)\s+end'
-        converted = re.sub(case_pattern, r'IF(\1, \2, \3)', converted, flags=re.IGNORECASE)
-        
-        return converted
+        self.logger.info("Module expression extraction not implemented - use collect_report_calculations instead")
+        return {"calculations": []}
