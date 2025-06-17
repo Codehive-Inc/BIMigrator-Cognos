@@ -35,18 +35,14 @@ class ModuleRelationshipExtractor(ModuleExtractor):
         relationships = self.extract_relationships(module_content)
         powerbi_relationships = self.convert_to_powerbi_relationships(relationships)
         
-        # Combine into a single structure
-        relationship_data = {
+        # Save to JSON files
+        self.save_to_json(relationships, output_dir, "cognos_relationships.json")
+        self.save_to_json({"relationships": powerbi_relationships}, output_dir, "relationships.json")
+        
+        return {
             'cognos_relationships': relationships,
             'powerbi_relationships': powerbi_relationships
         }
-        
-        # Save to JSON files
-        self.save_to_json(relationships, output_dir, "cognos_relationships.json")
-        self.save_to_json(powerbi_relationships, output_dir, "powerbi_relationships.json")
-        self.save_to_json(relationship_data, output_dir, "relationship_data.json")
-        
-        return relationship_data
     
     def extract_relationships(self, module_content: str) -> List[Dict[str, Any]]:
         """Extract relationships from a module
@@ -123,34 +119,113 @@ class ModuleRelationshipExtractor(ModuleExtractor):
         Returns:
             List of relationships in Power BI format
         """
+        import uuid
         powerbi_relationships = []
+        datasource_id = ""  # Default empty datasource ID
+        datasource_caption = ""  # Default empty datasource caption
         
         for rel in relationships:
-            # Map cardinality
-            cardinality = self._map_cardinality(
-                rel.get("left", {}).get("mincard", ""),
-                rel.get("left", {}).get("maxcard", ""),
-                rel.get("right", {}).get("mincard", ""),
-                rel.get("right", {}).get("maxcard", "")
-            )
+            left_maxcard = rel.get("left", {}).get("maxcard", "")
+            right_maxcard = rel.get("right", {}).get("maxcard", "")
             
-            # Create Power BI relationship for each link
-            for link in rel.get("links", []):
-                powerbi_rel = {
-                    "name": rel.get("identifier", ""),
-                    "fromTable": rel.get("left", {}).get("ref", ""),
-                    "fromColumn": link.get("leftRef", ""),
-                    "toTable": rel.get("right", {}).get("ref", ""),
-                    "toColumn": link.get("rightRef", ""),
-                    "cardinality": cardinality,
-                    "crossFilteringBehavior": "automatic"
-                }
-                
-                # Check if this is a system-discovered relationship
-                if rel.get("properties", {}).get("SystemDiscovered") == "true":
-                    powerbi_rel["isSystemGenerated"] = True
-                
-                powerbi_relationships.append(powerbi_rel)
+            # Determine from/to tables and columns based on cardinality rules
+            if left_maxcard == "many" and right_maxcard == "one":
+                # ManyToOne: from is left, to is right
+                from_table = rel.get("left", {}).get("ref", "")
+                to_table = rel.get("right", {}).get("ref", "")
+                cardinality = "many"
+                cross_filter_behavior = "OneDirection"
+                # For links, we'll use the first link if there are multiple (composite keys)
+                if rel.get("links", []):
+                    from_column = rel.get("links", [])[0].get("leftRef", "")
+                    to_column = rel.get("links", [])[0].get("rightRef", "")
+                else:
+                    continue  # Skip if no links
+                    
+            elif left_maxcard == "one" and right_maxcard == "many":
+                # ManyToOne: from is right, to is left (swap direction)
+                from_table = rel.get("right", {}).get("ref", "")
+                to_table = rel.get("left", {}).get("ref", "")
+                cardinality = "many"
+                cross_filter_behavior = "OneDirection"
+                # For links, we'll use the first link if there are multiple (composite keys)
+                if rel.get("links", []):
+                    from_column = rel.get("links", [])[0].get("rightRef", "")
+                    to_column = rel.get("links", [])[0].get("leftRef", "")
+                else:
+                    continue  # Skip if no links
+                    
+            elif left_maxcard == "one" and right_maxcard == "one":
+                # OneToOne: from is left, to is right
+                from_table = rel.get("left", {}).get("ref", "")
+                to_table = rel.get("right", {}).get("ref", "")
+                cardinality = "one"
+                cross_filter_behavior = "BothDirections"
+                # For links, we'll use the first link if there are multiple (composite keys)
+                if rel.get("links", []):
+                    from_column = rel.get("links", [])[0].get("leftRef", "")
+                    to_column = rel.get("links", [])[0].get("rightRef", "")
+                else:
+                    continue  # Skip if no links
+                    
+            elif left_maxcard == "many" and right_maxcard == "many":
+                # ManyToMany: from is left, to is right
+                from_table = rel.get("left", {}).get("ref", "")
+                to_table = rel.get("right", {}).get("ref", "")
+                cardinality = "many"
+                cross_filter_behavior = "BothDirections"
+                # For links, we'll use the first link if there are multiple (composite keys)
+                if rel.get("links", []):
+                    from_column = rel.get("links", [])[0].get("leftRef", "")
+                    to_column = rel.get("links", [])[0].get("rightRef", "")
+                else:
+                    continue  # Skip if no links
+            else:
+                # Default case if cardinality is not specified
+                from_table = rel.get("left", {}).get("ref", "")
+                to_table = rel.get("right", {}).get("ref", "")
+                cardinality = "one"
+                cross_filter_behavior = "OneDirection"
+                # For links, we'll use the first link if there are multiple (composite keys)
+                if rel.get("links", []):
+                    from_column = rel.get("links", [])[0].get("leftRef", "")
+                    to_column = rel.get("links", [])[0].get("rightRef", "")
+                else:
+                    continue  # Skip if no links
+            
+            # Create Power BI relationship
+            powerbi_rel = {
+                "id": str(uuid.uuid4()),
+                "from_table": from_table,
+                "from_column": from_column,
+                "to_table": to_table,
+                "to_column": to_column,
+                "cardinality": cardinality,
+                "cross_filter_behavior": cross_filter_behavior,
+                "is_active": True,
+                "from_datasource_id": datasource_id,
+                "from_datasource_caption": datasource_caption,
+                "to_datasource_id": datasource_id,
+                "to_datasource_caption": datasource_caption
+            }
+            
+            powerbi_relationships.append(powerbi_rel)
+        
+        # Check for multiple relationships between the same tables and mark all but one as inactive
+        table_pairs = {}
+        for rel in powerbi_relationships:
+            pair_key = f"{rel['from_table']}:{rel['to_table']}"
+            if pair_key in table_pairs:
+                table_pairs[pair_key].append(rel)
+            else:
+                table_pairs[pair_key] = [rel]
+        
+        # For each pair of tables with multiple relationships, keep only the first one active
+        for pair, rels in table_pairs.items():
+            if len(rels) > 1:
+                for i in range(1, len(rels)):
+                    rels[i]["is_active"] = False
+                    self.logger.warning(f"Multiple relationships found between {pair}, marking relationship {rels[i]['id']} as inactive")
         
         return powerbi_relationships
     

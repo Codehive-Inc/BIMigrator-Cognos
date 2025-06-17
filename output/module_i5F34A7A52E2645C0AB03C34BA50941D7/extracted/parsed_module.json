@@ -1642,23 +1642,32 @@
   ],
   "powerbi_relationships": [
     {
-      "name": "Orders_People",
-      "fromTable": "Orders",
-      "fromColumn": "Region",
-      "toTable": "People",
-      "toColumn": "Region",
-      "cardinality": "ManyToOne",
-      "crossFilteringBehavior": "automatic",
-      "isSystemGenerated": true
+      "id": "974b3465-1472-4f3e-9fc9-895d8dc4dd54",
+      "from_table": "Orders",
+      "from_column": "Region",
+      "to_table": "People",
+      "to_column": "Region",
+      "cardinality": "many",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "",
+      "from_datasource_caption": "",
+      "to_datasource_id": "",
+      "to_datasource_caption": ""
     },
     {
-      "name": "Returns_Orders",
-      "fromTable": "Returns_",
-      "fromColumn": "Order_ID",
-      "toTable": "Orders",
-      "toColumn": "Order_ID",
-      "cardinality": "OneToMany",
-      "crossFilteringBehavior": "automatic"
+      "id": "501bdbf8-d5c1-41d2-be9d-6448e32ae4f0",
+      "from_table": "Orders",
+      "from_column": "Order_ID",
+      "to_table": "Returns_",
+      "to_column": "Order_ID",
+      "cardinality": "many",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "",
+      "from_datasource_caption": "",
+      "to_datasource_id": "",
+      "to_datasource_caption": ""
     }
   ],
   "hierarchies": [

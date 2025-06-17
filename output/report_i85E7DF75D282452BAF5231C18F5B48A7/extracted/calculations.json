@@ -7,7 +7,7 @@
       "FormulaCognos": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "No of Unique Orders",
-      "FormulaDax": "DISTINCTCOUNT('Report_with_Calculations'[Order_ID])",
+      "FormulaDax": "DISTINCTCOUNT('C_TestDataModule'[Order_ID])",
       "Status": "converted"
     },
     {
