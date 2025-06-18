@@ -686,6 +686,168 @@ class CognosMigrator:
     
     # CPF metadata helper methods have been moved to CPFMetadataEnhancer class
     
+    def migrate_module(self, module_id: str, folder_id: str, output_path: Optional[str] = None) -> Dict[str, bool]:
+        """Migrate a Cognos module and associated folder
+        
+        This method performs a three-step migration process:
+        1. Module-based implementation - Extracts module metadata and structure
+        2. Folder-based execution - Migrates all reports in the specified folder
+        3. Post-processing - Enhances the generated files with module-specific information
+        
+        Args:
+            module_id: ID of the Cognos module to migrate
+            folder_id: ID of the folder containing reports to migrate
+            output_path: Optional path to store migration output
+        
+        Returns:
+            Dict[str, bool]: Results of the migration process
+        """
+        from cognos_migrator.common.websocket_client import logging_helper
+        
+        try:
+            # Set output path if not provided
+            if not output_path:
+                output_path = Path(self.config.output_directory) / f"module_{module_id}"
+            else:
+                output_path = Path(output_path)
+            
+            # Step 1: Module-based implementation
+            self.logger.info(f"Step 1: Processing module {module_id}")
+            logging_helper(message=f"Processing module {module_id}", 
+                           progress=15, 
+                           message_type="info")
+            
+            module_info = self.cognos_client.get_module(module_id)
+            if not module_info:
+                self.logger.error(f"Failed to retrieve module information for {module_id}")
+                logging_helper(message=f"Failed to retrieve module information for {module_id}", 
+                               progress=15, 
+                               message_type="error")
+                return {}
+            
+            # Extract module metadata
+            module_metadata = self.cognos_client.get_module_metadata(module_id)
+            logging_helper(message=f"Extracted metadata for module {module_id}", 
+                           progress=30, 
+                           message_type="info")
+            
+            # Create module directory structure
+            output_path.mkdir(parents=True, exist_ok=True)
+            
+            # Create subdirectories
+            docs_dir = output_path / "documentation"
+            docs_dir.mkdir(exist_ok=True)
+            
+            reports_dir = output_path / "reports"
+            reports_dir.mkdir(exist_ok=True)
+            
+            extracted_dir = output_path / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            pbit_dir = output_path / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
+            
+            # Save module information in extracted directory
+            with open(extracted_dir / "module_info.json", "w") as f:
+                json.dump(module_info, f, indent=2)
+            
+            # Save module metadata in extracted directory
+            with open(extracted_dir / "module_metadata.json", "w") as f:
+                json.dump(module_metadata, f, indent=2)
+            
+            # Step 2: Folder-based execution
+            self.logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+            logging_helper(message=f"Migrating reports from folder {folder_id}", 
+                           progress=40, 
+                           message_type="info")
+            
+            # Use the existing migrate_folder method
+            folder_results = self.migrate_folder(folder_id, str(reports_dir))
+            
+            # Step 3: Post-processing
+            self.logger.info("Step 3: Post-processing generated files")
+            logging_helper(message=f"Post-processing file generation for module {module_id} done!", 
+                           progress=60, 
+                           message_type="info")
+            
+            from cognos_migrator.processors import ModuleProcessor
+            
+            processor = ModuleProcessor(str(output_path))
+            
+            # Load module information
+            if not processor.load_module_info():
+                self.logger.warning('Failed to load module information for post-processing')
+                logging_helper(message=f"Failed to load module information for post-processing", 
+                               progress=60, 
+                               message_type="warning")
+            
+            # Process report files
+            self.logger.info('Processing report files with module information')
+            logging_helper(message=f"Processing report files with module information", 
+                           progress=80, 
+                           message_type="info")
+            processor.process_report_files()
+            
+            # Generate module documentation
+            self.logger.info('Generating module documentation')
+            logging_helper(message=f"Summarizing module completion", 
+                           progress=100, 
+                           message_type="info")
+            processor.generate_module_documentation()
+            
+            # Generate module-level summary
+            successful = sum(1 for success in folder_results.values() if success)
+            total = len(folder_results)
+            
+            summary = {
+                "module_id": module_id,
+                "folder_id": folder_id,
+                "total_reports": total,
+                "successful_reports": successful,
+                "success_rate": f"{(successful/total*100):.1f}%" if total > 0 else "0%"
+            }
+            
+            # Save summary in documentation directory
+            with open(docs_dir / "module_migration_summary.json", "w") as f:
+                json.dump(summary, f, indent=2)
+            
+            self.logger.info(f"Module migration completed: {successful}/{total} reports successful")
+            return folder_results
+            
+        except Exception as e:
+            self.logger.error(f"Error during module migration: {e}")
+            return {}
+    
+    def migrate_folder(self, folder_id: str, output_path: str, recursive: bool = True) -> Dict[str, bool]:
+        """Migrate all reports in a folder"""
+        results = {}
+        
+        try:
+            self.logger.info(f"Starting migration of folder: {folder_id}")
+            
+            # Get all reports in folder
+            reports = self.cognos_client.list_reports_in_folder(folder_id, recursive)
+            self.logger.info(f"Found {len(reports)} reports in folder")
+            
+            # Migrate each report
+            for i, report in enumerate(reports):
+                report_output_path = Path(output_path) / f"report_{report.id}"
+                self.logger.info(f"Migrating report {i+1}/{len(reports)}: {report.name}")
+                
+                success = self.migrate_report(report.id, str(report_output_path))
+                results[report.id] = success
+                
+                if success:
+                    self.logger.info(f"Successfully migrated: {report.name}")
+                else:
+                    self.logger.error(f"Failed to migrate: {report.name}")
+            
+            return results
+            
+        except Exception as e:
+            self.logger.error(f"Error during folder migration: {e}")
+            return results
+    
     def get_migration_status(self, output_path: str) -> Dict[str, Any]:
         """Get status of migration in output directory"""
         status = {

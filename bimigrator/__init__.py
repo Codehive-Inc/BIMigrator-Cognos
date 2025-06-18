@@ -8,12 +8,13 @@ Source code for BIMigrator package.
 """
 
 # Import all subpackages to make them accessible
-from . import cim
+# Only import what's necessary to avoid circular imports
 from . import common
-from . import converters
-from . import exceptions
-from . import generators
-from . import mapping
-from . import parsers
-from . import transformation
-from . import utils
+# The following imports are commented out to avoid circular dependencies
+# from . import cim
+# from . import converters
+# from . import exceptions
+# from . import mapping
+# from . import parsers
+# from . import transformation
+# from . import utils
