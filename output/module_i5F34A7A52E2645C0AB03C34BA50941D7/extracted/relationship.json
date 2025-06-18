@@ -1,23 +1,23 @@
 {
   "relationships": [
     {
-      "id": "628d11f5-9259-4040-b9bf-2d3d3215b6dd",
+      "name": "d8c81527-338c-4854-8b4a-1c7223525316",
       "from_table": "Orders",
       "from_column": "Region",
       "to_table": "People",
       "to_column": "Region",
       "cardinality": "many",
-      "cross_filter_behavior": "OneDirection",
+      "cross_filter_direction": "OneDirection",
       "is_active": true
     },
     {
-      "id": "08078d3a-f14d-4b87-ba58-059f0e642e39",
+      "name": "98b52726-93f3-4436-86e6-26443396dc75",
       "from_table": "Orders",
       "from_column": "Order_ID",
       "to_table": "Returns_",
       "to_column": "Order_ID",
       "cardinality": "many",
-      "cross_filter_behavior": "OneDirection",
+      "cross_filter_direction": "OneDirection",
       "is_active": true
     }
   ]

@@ -2,193 +2,192 @@ table 'Orders'
 
 
     column '_row_id'
-        dataType: int64
+        dataType: string
         summarizeBy: none
         sourceColumn: _row_id
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Row_ID'
-        dataType: int64
+        dataType: string
         summarizeBy: none
         sourceColumn: Row_ID
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Order_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Order_ID
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Order_Date'
-        dataType: datetime
+        dataType: string
         summarizeBy: none
         sourceColumn: Order_Date
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Ship_Date'
-        dataType: datetime
+        dataType: string
         summarizeBy: none
         sourceColumn: Ship_Date
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Ship_Mode'
         dataType: string
         summarizeBy: none
         sourceColumn: Ship_Mode
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Customer_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Customer_ID
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Customer_Name'
         dataType: string
         summarizeBy: none
         sourceColumn: Customer_Name
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Segment'
         dataType: string
         summarizeBy: none
         sourceColumn: Segment
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Country_Region'
         dataType: string
         summarizeBy: none
         sourceColumn: Country_Region
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'City'
         dataType: string
         summarizeBy: none
         sourceColumn: City
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'State_Province'
         dataType: string
         summarizeBy: none
         sourceColumn: State_Province
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Postal_Code'
         dataType: string
         summarizeBy: none
         sourceColumn: Postal_Code
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Region'
         dataType: string
         summarizeBy: none
         sourceColumn: Region
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Product_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Product_ID
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Category'
         dataType: string
         summarizeBy: none
         sourceColumn: Category
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Sub_Category'
         dataType: string
         summarizeBy: none
         sourceColumn: Sub_Category
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Product_Name'
         dataType: string
         summarizeBy: none
         sourceColumn: Product_Name
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Sales'
-        dataType: double
+        dataType: string
         summarizeBy: none
         sourceColumn: Sales
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Quantity'
-        dataType: int64
+        dataType: string
         summarizeBy: none
         sourceColumn: Quantity
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Discount'
-        dataType: double
+        dataType: string
         summarizeBy: none
         sourceColumn: Discount
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
-        
+
     column 'Profit'
-        dataType: double
+        dataType: string
         summarizeBy: none
         sourceColumn: Profit
 
-        annotation SummarizationSetBy = Automatic
-
-        
+        annotation SummarizationSetBy = User
 
 
 
-    partition 'Orders' = m
+
+    partition 'Orders-partition' = m
         mode: import
         source = 
-            	let
-					Source = /* Connect to data source based on context */,
-					#"Renamed Columns" = Table.RenameColumns(Source, {{"_row_id", "_row_id"}, {"Row_ID", "Row_ID"}, {"Order_ID", "Order_ID"}, {"Order_Date", "Order_Date"}, {"Ship_Date", "Ship_Date"}, {"Ship_Mode", "Ship_Mode"}, {"Customer_ID", "Customer_ID"}, {"Customer_Name", "Customer_Name"}, {"Segment", "Segment"}, {"Country_Region", "Country_Region"}, {"City", "City"}, {"State_Province", "State_Province"}, {"Postal_Code", "Postal_Code"}, {"Region", "Region"}, {"Product_ID", "Product_ID"}, {"Category", "Category"}, {"Sub_Category", "Sub_Category"}, {"Product_Name", "Product_Name"}, {"Sales", "Sales"}, {"Quantity", "Quantity"}, {"Discount", "Discount"}, {"Profit", "Profit"}}),
-					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"_row_id", Int64.Type}, {"Row_ID", Int64.Type}, {"Order_ID", type text}, {"Order_Date", type datetime}, {"Ship_Date", type datetime}, {"Ship_Mode", type text}, {"Customer_ID", type text}, {"Customer_Name", type text}, {"Segment", type text}, {"Country_Region", type text}, {"City", type text}, {"State_Province", type text}, {"Postal_Code", type text}, {"Region", type text}, {"Product_ID", type text}, {"Category", type text}, {"Sub_Category", type text}, {"Product_Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
-				in
-					#"Changed Types"
+            // ERROR: Failed to generate M-query for Orders
+// ModuleModelFileGenerator._build_table_context() takes from 2 to 7 positional arguments but 8 were given
+let
+				Source = Table.FromRows({})
+			in
+				Source
         
 
 

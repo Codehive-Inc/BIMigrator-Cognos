@@ -18,9 +18,14 @@ class ModuleModelFileGenerator(ModelFileGenerator):
     Extends the standard ModelFileGenerator with module-specific functionality
     """
     
-    def __init__(self, template_dir: Optional[str] = None):
-        """Initialize the module model file generator"""
-        super().__init__(template_dir)
+    def __init__(self, template_engine=None, mquery_converter=None):
+        """Initialize the module model file generator
+        
+        Args:
+            template_engine: Template engine for rendering templates
+            mquery_converter: Optional MQueryConverter for generating M-queries
+        """
+        super().__init__(template_engine, mquery_converter)
         self.logger = logging.getLogger(__name__)
         
     def _build_table_context(self, table: Table, report_spec: Optional[str] = None, 
