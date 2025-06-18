@@ -1,11 +1,11 @@
-relationship b5e95f6a-5a84-4e57-821c-3d16b4a81496
+relationship 400478eb-97f2-43ce-beae-d6ab0f215d4c
 	fromColumn: 'Orders'.Region
 	toColumn: 'People'.Region
 	crossFilteringBehavior: OneDirection
 	fromCardinality: many
 	isActive: True
 
-relationship 85e4def5-5bce-4f51-b897-9c4687b3f939
+relationship 0ed8013d-a38c-4afb-9ddb-906ed1189e93
 	fromColumn: 'Orders'.Order_ID
 	toColumn: 'Returns_'.Order_ID
 	crossFilteringBehavior: OneDirection

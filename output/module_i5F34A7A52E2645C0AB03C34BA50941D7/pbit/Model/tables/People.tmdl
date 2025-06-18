@@ -48,11 +48,11 @@ table 'People'
         mode: import
         source = 
             	let
-								Source = /* Connect to data source based on context */,
-								#"Renamed Columns" = Table.RenameColumns(Source, {{"OldRowId", "_row_id"}, {"OldRegionalManager", "Regional_Manager"}, {"OldRegion", "Region"}, {"OldArea", "Area"}, {"OldCountry", "Country"}}),
-								#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"_row_id", Int64.Type}, {"Regional_Manager", type text}, {"Region", type text}, {"Area", type text}, {"Country", type text}})
-						in
-								#"Changed Types"
+					Source = /* Connect to data source based on context */,
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"OldRowId", "_row_id"}, {"OldRegionalManager", "Regional_Manager"}, {"OldRegion", "Region"}, {"OldArea", "Area"}, {"OldCountry", "Country"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"_row_id", Int64.Type}, {"Regional_Manager", type text}, {"Region", type text}, {"Area", type text}, {"Country", type text}})
+				in
+					#"Changed Types"
         
 
 

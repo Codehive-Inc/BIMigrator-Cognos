@@ -91,7 +91,7 @@
     {
       "name": "People",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"OldRowId\", \"_row_id\"}, {\"OldRegionalManager\", \"Regional_Manager\"}, {\"OldRegion\", \"Region\"}, {\"OldArea\", \"Area\"}, {\"OldCountry\", \"Country\"}}),\n\t\t\t\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"_row_id\", Int64.Type}, {\"Regional_Manager\", type text}, {\"Region\", type text}, {\"Area\", type text}, {\"Country\", type text}})\n\t\t\t\t\t\tin\n\t\t\t\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"OldRowId\", \"_row_id\"}, {\"OldRegionalManager\", \"Regional_Manager\"}, {\"OldRegion\", \"Region\"}, {\"OldArea\", \"Area\"}, {\"OldCountry\", \"Country\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"_row_id\", Int64.Type}, {\"Regional_Manager\", type text}, {\"Region\", type text}, {\"Area\", type text}, {\"Country\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

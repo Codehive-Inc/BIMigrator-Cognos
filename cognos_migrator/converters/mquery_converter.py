@@ -213,16 +213,16 @@ class MQueryConverter:
                         # Keep the expression on a single line but preserve quoted strings
                         expression = self._format_table_expression(expression)
                     
-                    # Match the exact indentation from Sheet1.tmdl with 8 tabs
-                    formatted_query += f"\t\t\t\t\t\t\t\t{var_name} = {expression}"
+                    # Match the exact indentation from Sheet1.tmdl with 5 tabs
+                    formatted_query += f"\t\t\t\t\t{var_name} = {expression}"
                 else:
-                    formatted_query += f"\t\t\t\t\t\t\t\t{step}"
+                    formatted_query += f"\t\t\t\t\t{step}"
                 
                 if i < len(steps) - 1:
                     formatted_query += ",\n"
             
-            # Format the 'in' part with correct indentation (6 tabs)
-            formatted_query += f"\n\t\t\t\t\t\tin\n\t\t\t\t\t\t\t\t{in_part}"
+            # Format the 'in' part with correct indentation (4 tabs for 'in', 5 tabs for expression)
+            formatted_query += f"\n\t\t\t\tin\n\t\t\t\t\t{in_part}"
             
             return formatted_query
         
