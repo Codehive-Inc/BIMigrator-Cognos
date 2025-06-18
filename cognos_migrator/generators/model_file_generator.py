@@ -140,7 +140,7 @@ class ModelFileGenerator:
                     from cognos_migrator.models import Column, DataType
                     updated_columns = []
                     for item in data_items:
-                        column_name = item.get('name', 'Column')
+                        column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                         # Map Cognos data type to Power BI data type
                         data_type_str, _ = map_cognos_to_powerbi_datatype(item, self.logger)
                         try:
@@ -220,10 +220,10 @@ class ModelFileGenerator:
 
                             
                             # Log the data type mapping for debugging
-                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                             
                             
-                            column_name = item.get('name', 'Column')
+                            column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                             is_calculation = item.get('type') == 'calculation'
                             
                             # Use DAX formula for calculated columns if available
@@ -232,8 +232,11 @@ class ModelFileGenerator:
                                 source_column = calculations_map[column_name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
                             
+                            # Get the identifier directly for source_name
+                            source_name = item.get('identifier', column_name)
+                            
                             column_json = {
-                                "source_name": column_name,
+                                "source_name": source_name,  # Use identifier for source_name
                                 "datatype": data_type,
                                 "format_string": None,
                                 "lineage_tag": None,
@@ -260,8 +263,11 @@ class ModelFileGenerator:
                                 source_column = calculations_map[col.name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
                             
+                            # For table columns, use source_column if available as the source_name
+                            source_name = getattr(col, 'source_column', col.name)
+                            
                             column_json = {
-                                "source_name": col.name,
+                                "source_name": source_name,  # Use source_column if available, otherwise col.name
                                 "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                                 "format_string": getattr(col, 'format_string', None),
                                 "lineage_tag": getattr(col, 'lineage_tag', None),
@@ -392,12 +398,12 @@ class ModelFileGenerator:
                 data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
                 
                 # Log the data type mapping for debugging
-                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                 
                 # Determine the appropriate SummarizationSetBy annotation value
                 summarization_set_by = 'User' if summarize_by != 'none' else 'Automatic'
                 
-                column_name = item.get('name', 'Column')
+                column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                 is_calculation = item.get('type') == 'calculation'
                 source_column = column_name
                 
@@ -406,9 +412,12 @@ class ModelFileGenerator:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
                 
+                # Get the identifier directly from the item for source_name to ensure we use the correct field
+                source_name = item.get('identifier', column_name)
+                
                 column = {
                     'name': column_name,
-                    'source_name': column_name,
+                    'source_name': source_name,  # Use the identifier directly for source_name
                     'datatype': data_type,
                     'source_column': source_column,
                     'is_calculated': is_calculation,
@@ -429,9 +438,13 @@ class ModelFileGenerator:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
                 
+                # For table columns, we'll use the raw column name as the source_name
+                # This is the equivalent of using the identifier in the data items case
+                source_name = getattr(col, 'source_column', column_name)
+                
                 column = {
                     'name': column_name,
-                    'source_name': column_name,
+                    'source_name': source_name,  # Use source_column if available, otherwise column_name
                     'datatype': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                     'source_column': source_column,
                     'is_calculated': is_calculation,

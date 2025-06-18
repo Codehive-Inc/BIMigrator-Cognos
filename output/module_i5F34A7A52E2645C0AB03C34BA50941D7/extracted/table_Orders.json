@@ -6,7 +6,7 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "Row Id",
+      "source_name": "_row_id",
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "source_name": "Row ID",
+      "source_name": "Row_ID",
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
@@ -38,7 +38,7 @@
       }
     },
     {
-      "source_name": "Order ID",
+      "source_name": "Order_ID",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -54,7 +54,7 @@
       }
     },
     {
-      "source_name": "Order Date",
+      "source_name": "Order_Date",
       "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
@@ -70,7 +70,7 @@
       }
     },
     {
-      "source_name": "Ship Date",
+      "source_name": "Ship_Date",
       "datatype": "datetime",
       "format_string": null,
       "lineage_tag": null,
@@ -86,7 +86,7 @@
       }
     },
     {
-      "source_name": "Ship Mode",
+      "source_name": "Ship_Mode",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -102,7 +102,7 @@
       }
     },
     {
-      "source_name": "Customer ID",
+      "source_name": "Customer_ID",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -118,7 +118,7 @@
       }
     },
     {
-      "source_name": "Customer Name",
+      "source_name": "Customer_Name",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -150,7 +150,7 @@
       }
     },
     {
-      "source_name": "Country/Region",
+      "source_name": "Country_Region",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -182,7 +182,7 @@
       }
     },
     {
-      "source_name": "State/Province",
+      "source_name": "State_Province",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -198,7 +198,7 @@
       }
     },
     {
-      "source_name": "Postal Code",
+      "source_name": "Postal_Code",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -230,7 +230,7 @@
       }
     },
     {
-      "source_name": "Product ID",
+      "source_name": "Product_ID",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -262,7 +262,7 @@
       }
     },
     {
-      "source_name": "Sub-Category",
+      "source_name": "Sub_Category",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
@@ -278,7 +278,7 @@
       }
     },
     {
-      "source_name": "Product Name",
+      "source_name": "Product_Name",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,

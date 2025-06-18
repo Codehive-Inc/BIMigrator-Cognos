@@ -1,7 +1,7 @@
 table 'Returns'
 
 
-    column 'Row Id'
+    column '_row_id'
         dataType: int64
         summarizeBy: none
         sourceColumn: Row Id
@@ -17,7 +17,7 @@ table 'Returns'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Order ID'
+    column 'Order_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Order ID

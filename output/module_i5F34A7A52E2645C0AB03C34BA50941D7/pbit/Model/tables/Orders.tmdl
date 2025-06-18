@@ -1,7 +1,7 @@
 table 'Orders'
 
 
-    column 'Row Id'
+    column '_row_id'
         dataType: int64
         summarizeBy: none
         sourceColumn: Row Id
@@ -9,7 +9,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Row ID'
+    column 'Row_ID'
         dataType: int64
         summarizeBy: none
         sourceColumn: Row ID
@@ -17,7 +17,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Order ID'
+    column 'Order_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Order ID
@@ -25,7 +25,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Order Date'
+    column 'Order_Date'
         dataType: datetime
         summarizeBy: none
         sourceColumn: Order Date
@@ -33,7 +33,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Ship Date'
+    column 'Ship_Date'
         dataType: datetime
         summarizeBy: none
         sourceColumn: Ship Date
@@ -41,7 +41,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Ship Mode'
+    column 'Ship_Mode'
         dataType: string
         summarizeBy: none
         sourceColumn: Ship Mode
@@ -49,7 +49,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Customer ID'
+    column 'Customer_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Customer ID
@@ -57,7 +57,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Customer Name'
+    column 'Customer_Name'
         dataType: string
         summarizeBy: none
         sourceColumn: Customer Name
@@ -73,7 +73,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Country/Region'
+    column 'Country_Region'
         dataType: string
         summarizeBy: none
         sourceColumn: Country/Region
@@ -89,7 +89,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'State/Province'
+    column 'State_Province'
         dataType: string
         summarizeBy: none
         sourceColumn: State/Province
@@ -97,7 +97,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Postal Code'
+    column 'Postal_Code'
         dataType: string
         summarizeBy: none
         sourceColumn: Postal Code
@@ -113,7 +113,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Product ID'
+    column 'Product_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Product ID
@@ -129,7 +129,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Sub-Category'
+    column 'Sub_Category'
         dataType: string
         summarizeBy: none
         sourceColumn: Sub-Category
@@ -137,7 +137,7 @@ table 'Orders'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Product Name'
+    column 'Product_Name'
         dataType: string
         summarizeBy: none
         sourceColumn: Product Name

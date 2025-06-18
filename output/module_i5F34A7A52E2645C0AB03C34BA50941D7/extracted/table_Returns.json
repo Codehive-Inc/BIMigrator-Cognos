@@ -6,7 +6,7 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "Row Id",
+      "source_name": "_row_id",
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
@@ -38,7 +38,7 @@
       }
     },
     {
-      "source_name": "Order ID",
+      "source_name": "Order_ID",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
