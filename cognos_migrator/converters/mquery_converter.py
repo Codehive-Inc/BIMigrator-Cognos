@@ -145,6 +145,12 @@ class MQueryConverter:
             # Log original query for debugging
             self.logger.debug(f"Original M-query before cleaning: {m_query}")
             
+            # Fix comment formatting - replace spaced comment delimiters and ensure no spaces
+            m_query = m_query.replace('/ *', '/*').replace('* /', '*/')
+            # Additional check for comment formatting with spaces
+            m_query = re.sub(r'/\s*\*', '/*', m_query)
+            m_query = re.sub(r'\*\s*/', '*/', m_query)
+            
             # Unescape double quotes that are incorrectly escaped
             m_query = m_query.replace('\\"', '"')
             
@@ -192,8 +198,9 @@ class MQueryConverter:
             if current_step.strip():
                 steps.append(current_step.strip())
             
-            # Format the M-query with proper indentation
-            formatted_query = "let\n"
+            # Format the M-query with proper indentation for TMDL files
+            # Using the exact indentation pattern from Sheet1.tmdl
+            formatted_query = "\tlet\n"
             
             for i, step in enumerate(steps):
                 if '=' in step:
@@ -206,15 +213,16 @@ class MQueryConverter:
                         # Keep the expression on a single line but preserve quoted strings
                         expression = self._format_table_expression(expression)
                     
-                    formatted_query += f"    {var_name} = {expression}"
+                    # Match the exact indentation from Sheet1.tmdl with 8 tabs
+                    formatted_query += f"\t\t\t\t\t\t\t\t{var_name} = {expression}"
                 else:
-                    formatted_query += f"    {step}"
+                    formatted_query += f"\t\t\t\t\t\t\t\t{step}"
                 
                 if i < len(steps) - 1:
                     formatted_query += ",\n"
             
-            # Format the 'in' part
-            formatted_query += f"\nin\n    {in_part}"
+            # Format the 'in' part with correct indentation (6 tabs)
+            formatted_query += f"\n\t\t\t\t\t\tin\n\t\t\t\t\t\t\t\t{in_part}"
             
             return formatted_query
         
