@@ -16,7 +16,7 @@ def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> Tuple[s
         Tuple[str, str]: The recommended Power BI data type and summarize_by value
     """
     # Extract needed properties
-    name = item.get('name', '')
+    name = item.get('identifier', '')  # Using 'identifier' field for more accurate column naming
     expression = item.get('expression', '')
     data_type = item.get('dataType', '')
     data_usage = item.get('dataUsage', '')

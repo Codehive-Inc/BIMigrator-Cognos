@@ -1,0 +1,1788 @@
+{
+  "metadata": {
+    "version": "17.0",
+    "container": "C",
+    "expressionLocale": "en-us",
+    "lastModified": "2025-06-12T11:54:43.397Z",
+    "tables": [
+      {
+        "ref": [
+          "M1.Orders"
+        ],
+        "identifier": "Orders",
+        "label": "Orders",
+        "idForExpression": "C.C_TestDataModule.Orders",
+        "columns": [
+          {
+            "identifier": "_row_id",
+            "label": "Row Id",
+            "expression": "_row_id",
+            "datatype": "BIGINT",
+            "usage": "identifier",
+            "hidden": true
+          },
+          {
+            "identifier": "Row_ID",
+            "label": "Row ID",
+            "expression": "Row_ID",
+            "datatype": "BIGINT",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Order_ID",
+            "label": "Order ID",
+            "expression": "Order_ID",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Order_Date",
+            "label": "Order Date",
+            "expression": "Order_Date",
+            "datatype": "DATE",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Ship_Date",
+            "label": "Ship Date",
+            "expression": "Ship_Date",
+            "datatype": "DATE",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Ship_Mode",
+            "label": "Ship Mode",
+            "expression": "Ship_Mode",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Customer_ID",
+            "label": "Customer ID",
+            "expression": "Customer_ID",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Customer_Name",
+            "label": "Customer Name",
+            "expression": "Customer_Name",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "attribute",
+            "hidden": false
+          },
+          {
+            "identifier": "Segment",
+            "label": "Segment",
+            "expression": "Segment",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Country_Region",
+            "label": "Country/Region",
+            "expression": "Country_Region",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "City",
+            "label": "City",
+            "expression": "City",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "State_Province",
+            "label": "State/Province",
+            "expression": "State_Province",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Postal_Code",
+            "label": "Postal Code",
+            "expression": "Postal_Code",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Region",
+            "label": "Region",
+            "expression": "Region",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Product_ID",
+            "label": "Product ID",
+            "expression": "Product_ID",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Category",
+            "label": "Category",
+            "expression": "Category",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Sub_Category",
+            "label": "Sub-Category",
+            "expression": "Sub_Category",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Product_Name",
+            "label": "Product Name",
+            "expression": "Product_Name",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "attribute",
+            "hidden": false
+          },
+          {
+            "identifier": "Sales",
+            "label": "Sales",
+            "expression": "Sales",
+            "datatype": "DOUBLE",
+            "usage": "fact",
+            "hidden": false
+          },
+          {
+            "identifier": "Quantity",
+            "label": "Quantity",
+            "expression": "Quantity",
+            "datatype": "BIGINT",
+            "usage": "fact",
+            "hidden": false
+          },
+          {
+            "identifier": "Discount",
+            "label": "Discount",
+            "expression": "Discount",
+            "datatype": "DOUBLE",
+            "usage": "fact",
+            "hidden": false
+          },
+          {
+            "identifier": "Profit",
+            "label": "Profit",
+            "expression": "Profit",
+            "datatype": "DOUBLE",
+            "usage": "fact",
+            "hidden": false
+          }
+        ]
+      },
+      {
+        "ref": [
+          "M1.People"
+        ],
+        "identifier": "People",
+        "label": "People",
+        "idForExpression": "C.C_TestDataModule.People",
+        "columns": [
+          {
+            "identifier": "_row_id",
+            "label": "Row Id",
+            "expression": "_row_id",
+            "datatype": "BIGINT",
+            "usage": "identifier",
+            "hidden": true
+          },
+          {
+            "identifier": "Regional_Manager",
+            "label": "Regional Manager",
+            "expression": "Regional_Manager",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Region",
+            "label": "Region",
+            "expression": "Region",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Area",
+            "label": "Area",
+            "expression": "Area",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Country",
+            "label": "Country",
+            "expression": "Country",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          }
+        ]
+      },
+      {
+        "ref": [
+          "M1.Returns_"
+        ],
+        "identifier": "Returns_",
+        "label": "Returns",
+        "idForExpression": "C.C_TestDataModule.Returns_",
+        "columns": [
+          {
+            "identifier": "_row_id",
+            "label": "Row Id",
+            "expression": "_row_id",
+            "datatype": "BIGINT",
+            "usage": "identifier",
+            "hidden": true
+          },
+          {
+            "identifier": "Returned",
+            "label": "Returned",
+            "expression": "Returned",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          },
+          {
+            "identifier": "Order_ID",
+            "label": "Order ID",
+            "expression": "Order_ID",
+            "datatype": "NVARCHAR(MAX)",
+            "usage": "identifier",
+            "hidden": false
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "identifier": "Orders_People",
+        "label": "Orders<-->People",
+        "left": {
+          "ref": "Orders",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "ref": "People",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "links": [
+          {
+            "leftRef": "Region",
+            "rightRef": "Region",
+            "comparisonOperator": "equalTo"
+          }
+        ]
+      },
+      {
+        "identifier": "Returns_Orders",
+        "label": "Returns_<-->Orders",
+        "left": {
+          "ref": "Returns_",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "ref": "Orders",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "links": [
+          {
+            "leftRef": "Order_ID",
+            "rightRef": "Order_ID",
+            "comparisonOperator": "equalTo"
+          }
+        ]
+      }
+    ],
+    "hierarchies": [
+      {
+        "identifier": "Country_Hier",
+        "label": "Country Hier",
+        "levels": [
+          {
+            "ref": "People.Country",
+            "identifier": "Country",
+            "label": "Country"
+          },
+          {
+            "ref": "People.Area",
+            "identifier": "Area",
+            "label": "Area"
+          },
+          {
+            "ref": "People.Region",
+            "identifier": "Region",
+            "label": "Region"
+          }
+        ]
+      },
+      {
+        "identifier": "Country_Region",
+        "label": "Country - Region",
+        "levels": [
+          {
+            "ref": "People.Country",
+            "identifier": "Country",
+            "label": "Country"
+          },
+          {
+            "ref": "People.Area",
+            "identifier": "Area",
+            "label": "Area"
+          },
+          {
+            "ref": "People.Region",
+            "identifier": "Region",
+            "label": "Region"
+          }
+        ]
+      }
+    ],
+    "dataSources": [
+      {
+        "id": "i5F34A7A52E2645C0AB03C34BA50941D7",
+        "identifier": "M1",
+        "type": "file",
+        "storeID": "i6CE1A685ADF246D2BBBE13F07337D1CF",
+        "searchPath": "CAMID(\"CognosEx:u:uid=administrator\")/folder[@name='My Folders']/folder[@name='Sample']/uploadedFile[@name='SampleData.xls']"
+      }
+    ]
+  },
+  "query_subjects": [
+    {
+      "ref": [
+        "M1.Orders"
+      ],
+      "identifier": "Orders",
+      "label": "Orders",
+      "idForExpression": "C.C_TestDataModule.Orders",
+      "properties": {
+        "_MUI_diagramNodePosition": "{\"x\":531.6082482891742,\"y\":474.51597396075385}"
+      },
+      "propertyOverrides": [
+        "NEW",
+        "property._MUI_diagramNodePosition"
+      ]
+    },
+    {
+      "ref": [
+        "M1.People"
+      ],
+      "identifier": "People",
+      "label": "People",
+      "idForExpression": "C.C_TestDataModule.People",
+      "properties": {
+        "_MUI_diagramNodePosition": "{\"x\":336.23054104593314,\"y\":254.4711590789787}"
+      },
+      "propertyOverrides": [
+        "NEW",
+        "property._MUI_diagramNodePosition"
+      ]
+    },
+    {
+      "ref": [
+        "M1.Returns_"
+      ],
+      "identifier": "Returns_",
+      "label": "Returns",
+      "idForExpression": "C.C_TestDataModule.Returns_",
+      "properties": {
+        "_MUI_diagramNodePosition": "{\"x\":484.51682127800683,\"y\":153.8501931474824}"
+      },
+      "propertyOverrides": [
+        "NEW",
+        "property._MUI_diagramNodePosition"
+      ]
+    }
+  ],
+  "query_items": {
+    "Orders": [
+      {
+        "identifier": "_row_id",
+        "label": "Row Id",
+        "description": "Represents the row number identifier, as originally found in the uploaded file.",
+        "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+        "expression": "_row_id",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": true,
+        "nullable": false,
+        "regularAggregate": "count",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Orders._row_id",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Row_ID",
+        "label": "Row ID",
+        "description": "",
+        "comment": "",
+        "expression": "Row_ID",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Orders.Row_ID",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Order_ID",
+        "label": "Order ID",
+        "description": "",
+        "comment": "",
+        "expression": "Order_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Order_ID",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Order_Date",
+        "label": "Order Date",
+        "description": "",
+        "comment": "",
+        "expression": "Order_Date",
+        "datatype": "DATE",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "datetime",
+        "highlevelDatatype": "date",
+        "idForExpression": "C.C_TestDataModule.Orders.Order_Date",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Ship_Date",
+        "label": "Ship Date",
+        "description": "",
+        "comment": "",
+        "expression": "Ship_Date",
+        "datatype": "DATE",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "datetime",
+        "highlevelDatatype": "date",
+        "idForExpression": "C.C_TestDataModule.Orders.Ship_Date",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Ship_Mode",
+        "label": "Ship Mode",
+        "description": "",
+        "comment": "",
+        "expression": "Ship_Mode",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Ship_Mode",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Customer_ID",
+        "label": "Customer ID",
+        "description": "",
+        "comment": "",
+        "expression": "Customer_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Customer_ID",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Customer_Name",
+        "label": "Customer Name",
+        "description": "",
+        "comment": "",
+        "expression": "Customer_Name",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "attribute",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Customer_Name",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Segment",
+        "label": "Segment",
+        "description": "",
+        "comment": "",
+        "expression": "Segment",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Segment",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Country_Region",
+        "label": "Country/Region",
+        "description": "",
+        "comment": "",
+        "expression": "Country_Region",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Country_Region",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "City",
+        "label": "City",
+        "description": "",
+        "comment": "",
+        "expression": "City",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.City",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "State_Province",
+        "label": "State/Province",
+        "description": "",
+        "comment": "",
+        "expression": "State_Province",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.State_Province",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Postal_Code",
+        "label": "Postal Code",
+        "description": "",
+        "comment": "",
+        "expression": "Postal_Code",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Postal_Code",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Region",
+        "label": "Region",
+        "description": "",
+        "comment": "",
+        "expression": "Region",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Region",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Product_ID",
+        "label": "Product ID",
+        "description": "",
+        "comment": "",
+        "expression": "Product_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Product_ID",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Category",
+        "label": "Category",
+        "description": "",
+        "comment": "",
+        "expression": "Category",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Category",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Sub_Category",
+        "label": "Sub-Category",
+        "description": "",
+        "comment": "",
+        "expression": "Sub_Category",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Sub_Category",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Product_Name",
+        "label": "Product Name",
+        "description": "",
+        "comment": "",
+        "expression": "Product_Name",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "attribute",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Product_Name",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Sales",
+        "label": "Sales",
+        "description": "",
+        "comment": "",
+        "expression": "Sales",
+        "datatype": "DOUBLE",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "decimal",
+        "idForExpression": "C.C_TestDataModule.Orders.Sales",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      },
+      {
+        "identifier": "Quantity",
+        "label": "Quantity",
+        "description": "",
+        "comment": "",
+        "expression": "Quantity",
+        "datatype": "BIGINT",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Orders.Quantity",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      },
+      {
+        "identifier": "Discount",
+        "label": "Discount",
+        "description": "",
+        "comment": "",
+        "expression": "Discount",
+        "datatype": "DOUBLE",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "decimal",
+        "idForExpression": "C.C_TestDataModule.Orders.Discount",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      },
+      {
+        "identifier": "Profit",
+        "label": "Profit",
+        "description": "",
+        "comment": "",
+        "expression": "Profit",
+        "datatype": "DOUBLE",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "decimal",
+        "idForExpression": "C.C_TestDataModule.Orders.Profit",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      }
+    ],
+    "People": [
+      {
+        "identifier": "_row_id",
+        "label": "Row Id",
+        "description": "Represents the row number identifier, as originally found in the uploaded file.",
+        "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+        "expression": "_row_id",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": true,
+        "nullable": false,
+        "regularAggregate": "count",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.People._row_id",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Regional_Manager",
+        "label": "Regional Manager",
+        "description": "",
+        "comment": "",
+        "expression": "Regional_Manager",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Regional_Manager",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Region",
+        "label": "Region",
+        "description": "",
+        "comment": "",
+        "expression": "Region",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Region",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Area",
+        "label": "Area",
+        "description": "",
+        "comment": "",
+        "expression": "Area",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Area",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Country",
+        "label": "Country",
+        "description": "",
+        "comment": "",
+        "expression": "Country",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Country",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      }
+    ],
+    "Returns_": [
+      {
+        "identifier": "_row_id",
+        "label": "Row Id",
+        "description": "Represents the row number identifier, as originally found in the uploaded file.",
+        "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+        "expression": "_row_id",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": true,
+        "nullable": false,
+        "regularAggregate": "count",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Returns_._row_id",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Returned",
+        "label": "Returned",
+        "description": "",
+        "comment": "",
+        "expression": "Returned",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Returns_.Returned",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Order_ID",
+        "label": "Order ID",
+        "description": "",
+        "comment": "",
+        "expression": "Order_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Returns_.Order_ID",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      }
+    ]
+  },
+  "data_items": {
+    "Orders": [
+      {
+        "identifier": "_row_id",
+        "label": "Row Id",
+        "description": "Represents the row number identifier, as originally found in the uploaded file.",
+        "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+        "expression": "_row_id",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": true,
+        "nullable": false,
+        "regularAggregate": "count",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Orders._row_id",
+        "powerbi_datatype": "Int64",
+        "powerbi_format": "#,0;-#,0;0",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Row_ID",
+        "label": "Row ID",
+        "description": "",
+        "comment": "",
+        "expression": "Row_ID",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Orders.Row_ID",
+        "powerbi_datatype": "Int64",
+        "powerbi_format": "#,0;-#,0;0",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Order_ID",
+        "label": "Order ID",
+        "description": "",
+        "comment": "",
+        "expression": "Order_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Order_ID",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Order_Date",
+        "label": "Order Date",
+        "description": "",
+        "comment": "",
+        "expression": "Order_Date",
+        "datatype": "DATE",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "datetime",
+        "highlevelDatatype": "date",
+        "idForExpression": "C.C_TestDataModule.Orders.Order_Date",
+        "powerbi_datatype": "DateTime",
+        "powerbi_format": "dd/MM/yyyy",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Ship_Date",
+        "label": "Ship Date",
+        "description": "",
+        "comment": "",
+        "expression": "Ship_Date",
+        "datatype": "DATE",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "datetime",
+        "highlevelDatatype": "date",
+        "idForExpression": "C.C_TestDataModule.Orders.Ship_Date",
+        "powerbi_datatype": "DateTime",
+        "powerbi_format": "dd/MM/yyyy",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Ship_Mode",
+        "label": "Ship Mode",
+        "description": "",
+        "comment": "",
+        "expression": "Ship_Mode",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Ship_Mode",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Customer_ID",
+        "label": "Customer ID",
+        "description": "",
+        "comment": "",
+        "expression": "Customer_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Customer_ID",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Customer_Name",
+        "label": "Customer Name",
+        "description": "",
+        "comment": "",
+        "expression": "Customer_Name",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "attribute",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Customer_Name",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Segment",
+        "label": "Segment",
+        "description": "",
+        "comment": "",
+        "expression": "Segment",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Segment",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Country_Region",
+        "label": "Country/Region",
+        "description": "",
+        "comment": "",
+        "expression": "Country_Region",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Country_Region",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "City",
+        "label": "City",
+        "description": "",
+        "comment": "",
+        "expression": "City",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.City",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "State_Province",
+        "label": "State/Province",
+        "description": "",
+        "comment": "",
+        "expression": "State_Province",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.State_Province",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Postal_Code",
+        "label": "Postal Code",
+        "description": "",
+        "comment": "",
+        "expression": "Postal_Code",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Postal_Code",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Region",
+        "label": "Region",
+        "description": "",
+        "comment": "",
+        "expression": "Region",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Region",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Product_ID",
+        "label": "Product ID",
+        "description": "",
+        "comment": "",
+        "expression": "Product_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Product_ID",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Category",
+        "label": "Category",
+        "description": "",
+        "comment": "",
+        "expression": "Category",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Category",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Sub_Category",
+        "label": "Sub-Category",
+        "description": "",
+        "comment": "",
+        "expression": "Sub_Category",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Sub_Category",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Product_Name",
+        "label": "Product Name",
+        "description": "",
+        "comment": "",
+        "expression": "Product_Name",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "attribute",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Orders.Product_Name",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Sales",
+        "label": "Sales",
+        "description": "",
+        "comment": "",
+        "expression": "Sales",
+        "datatype": "DOUBLE",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "decimal",
+        "idForExpression": "C.C_TestDataModule.Orders.Sales",
+        "powerbi_datatype": "Double",
+        "powerbi_format": "#,0.00;-#,0.00;0.00",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      },
+      {
+        "identifier": "Quantity",
+        "label": "Quantity",
+        "description": "",
+        "comment": "",
+        "expression": "Quantity",
+        "datatype": "BIGINT",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Orders.Quantity",
+        "powerbi_datatype": "Int64",
+        "powerbi_format": "#,0;-#,0;0",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      },
+      {
+        "identifier": "Discount",
+        "label": "Discount",
+        "description": "",
+        "comment": "",
+        "expression": "Discount",
+        "datatype": "DOUBLE",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "decimal",
+        "idForExpression": "C.C_TestDataModule.Orders.Discount",
+        "powerbi_datatype": "Double",
+        "powerbi_format": "#,0.00;-#,0.00;0.00",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      },
+      {
+        "identifier": "Profit",
+        "label": "Profit",
+        "description": "",
+        "comment": "",
+        "expression": "Profit",
+        "datatype": "DOUBLE",
+        "usage": "fact",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "total",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "decimal",
+        "idForExpression": "C.C_TestDataModule.Orders.Profit",
+        "powerbi_datatype": "Double",
+        "powerbi_format": "#,0.00;-#,0.00;0.00",
+        "facetDefinition": {
+          "enabled": "false"
+        }
+      }
+    ],
+    "People": [
+      {
+        "identifier": "_row_id",
+        "label": "Row Id",
+        "description": "Represents the row number identifier, as originally found in the uploaded file.",
+        "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+        "expression": "_row_id",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": true,
+        "nullable": false,
+        "regularAggregate": "count",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.People._row_id",
+        "powerbi_datatype": "Int64",
+        "powerbi_format": "#,0;-#,0;0",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Regional_Manager",
+        "label": "Regional Manager",
+        "description": "",
+        "comment": "",
+        "expression": "Regional_Manager",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Regional_Manager",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Region",
+        "label": "Region",
+        "description": "",
+        "comment": "",
+        "expression": "Region",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Region",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Area",
+        "label": "Area",
+        "description": "",
+        "comment": "",
+        "expression": "Area",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Area",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Country",
+        "label": "Country",
+        "description": "",
+        "comment": "",
+        "expression": "Country",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.People.Country",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      }
+    ],
+    "Returns_": [
+      {
+        "identifier": "_row_id",
+        "label": "Row Id",
+        "description": "Represents the row number identifier, as originally found in the uploaded file.",
+        "comment": "Represents the row number identifier, as originally found in the uploaded file.",
+        "expression": "_row_id",
+        "datatype": "BIGINT",
+        "usage": "identifier",
+        "hidden": true,
+        "nullable": false,
+        "regularAggregate": "count",
+        "datatypeCategory": "number",
+        "highlevelDatatype": "integer",
+        "idForExpression": "C.C_TestDataModule.Returns_._row_id",
+        "powerbi_datatype": "Int64",
+        "powerbi_format": "#,0;-#,0;0",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Returned",
+        "label": "Returned",
+        "description": "",
+        "comment": "",
+        "expression": "Returned",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Returns_.Returned",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      },
+      {
+        "identifier": "Order_ID",
+        "label": "Order ID",
+        "description": "",
+        "comment": "",
+        "expression": "Order_ID",
+        "datatype": "NVARCHAR(MAX)",
+        "usage": "identifier",
+        "hidden": false,
+        "nullable": false,
+        "regularAggregate": "countDistinct",
+        "datatypeCategory": "string",
+        "highlevelDatatype": "string",
+        "idForExpression": "C.C_TestDataModule.Returns_.Order_ID",
+        "powerbi_datatype": "String",
+        "powerbi_format": "",
+        "facetDefinition": {
+          "enabled": "automatic"
+        }
+      }
+    ]
+  },
+  "calculated_items": {},
+  "relationships": [
+    {
+      "identifier": "Orders_People",
+      "label": "Orders<-->People",
+      "description": "Orders<-->People",
+      "idForExpression": "Orders_People",
+      "joinFilterType": "none",
+      "left": {
+        "ref": "Orders",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "right": {
+        "ref": "People",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "links": [
+        {
+          "leftRef": "Region",
+          "rightRef": "Region",
+          "comparisonOperator": "equalTo"
+        }
+      ],
+      "properties": {
+        "SystemDiscovered": "true"
+      },
+      "propertyOverrides": [
+        "NEW",
+        "label",
+        "joinFilterType"
+      ]
+    },
+    {
+      "identifier": "Returns_Orders",
+      "label": "Returns_<-->Orders",
+      "description": "",
+      "idForExpression": "Returns_Orders",
+      "joinFilterType": "none",
+      "left": {
+        "ref": "Returns_",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "ref": "Orders",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "links": [
+        {
+          "leftRef": "Order_ID",
+          "rightRef": "Order_ID",
+          "comparisonOperator": "equalTo"
+        }
+      ],
+      "properties": {},
+      "propertyOverrides": [
+        "NEW"
+      ]
+    }
+  ],
+  "powerbi_relationships": [
+    {
+      "id": "628d11f5-9259-4040-b9bf-2d3d3215b6dd",
+      "from_table": "Orders",
+      "from_column": "Region",
+      "to_table": "People",
+      "to_column": "Region",
+      "cardinality": "many",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "",
+      "from_datasource_caption": "",
+      "to_datasource_id": "",
+      "to_datasource_caption": ""
+    },
+    {
+      "id": "08078d3a-f14d-4b87-ba58-059f0e642e39",
+      "from_table": "Orders",
+      "from_column": "Order_ID",
+      "to_table": "Returns_",
+      "to_column": "Order_ID",
+      "cardinality": "many",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "",
+      "from_datasource_caption": "",
+      "to_datasource_id": "",
+      "to_datasource_caption": ""
+    }
+  ],
+  "hierarchies": [
+    {
+      "identifier": "Country_Hier",
+      "label": "Country Hier",
+      "idForExpression": "Country_Hier",
+      "levels": [
+        {
+          "ref": "People.Country",
+          "identifier": "Country",
+          "label": "Country"
+        },
+        {
+          "ref": "People.Area",
+          "identifier": "Area",
+          "label": "Area"
+        },
+        {
+          "ref": "People.Region",
+          "identifier": "Region",
+          "label": "Region"
+        }
+      ],
+      "properties": {},
+      "propertyOverrides": [
+        "NEW"
+      ]
+    },
+    {
+      "identifier": "Country_Region",
+      "label": "Country - Region",
+      "idForExpression": "Country_Region",
+      "levels": [
+        {
+          "ref": "People.Country",
+          "identifier": "Country",
+          "label": "Country"
+        },
+        {
+          "ref": "People.Area",
+          "identifier": "Area",
+          "label": "Area"
+        },
+        {
+          "ref": "People.Region",
+          "identifier": "Region",
+          "label": "Region"
+        }
+      ],
+      "properties": {},
+      "propertyOverrides": [
+        "NEW"
+      ]
+    }
+  ],
+  "powerbi_hierarchies": {
+    "People": [
+      {
+        "name": "Country Hier",
+        "levels": [
+          {
+            "column": "Country",
+            "name": "Country"
+          },
+          {
+            "column": "Area",
+            "name": "Area"
+          },
+          {
+            "column": "Region",
+            "name": "Region"
+          }
+        ]
+      },
+      {
+        "name": "Country - Region",
+        "levels": [
+          {
+            "column": "Country",
+            "name": "Country"
+          },
+          {
+            "column": "Area",
+            "name": "Area"
+          },
+          {
+            "column": "Region",
+            "name": "Region"
+          }
+        ]
+      }
+    ]
+  },
+  "calculations": [],
+  "source_data": [
+    {
+      "class": "",
+      "server": null,
+      "database": null,
+      "schema": null,
+      "username": null,
+      "port": null,
+      "authentication": null,
+      "table_name": "Sheet1$",
+      "sql_queries": [],
+      "metadata": {
+        "identifier": "M1",
+        "type": "file",
+        "storeID": "i6CE1A685ADF246D2BBBE13F07337D1CF",
+        "searchPath": "CAMID(\"CognosEx:u:uid=administrator\")/folder[@name='My Folders']/folder[@name='Sample']/uploadedFile[@name='SampleData.xls']",
+        "fileName": "SampleData.xls",
+        "folderPath": "My Folders/Sample"
+      }
+    }
+  ],
+  "associated_reports": []
+}

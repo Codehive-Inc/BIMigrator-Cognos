@@ -141,8 +141,14 @@ class ExpressionExtractor(BaseExtractor):
             
             # Determine table name from context if possible
             table_name = "Data"  # Default table name
+            
+            # First check if we have a direct mapping for this expression name
             if table_mappings and name in table_mappings:
                 table_name = table_mappings[name]
+            # Then check if we have a mapping for the default 'Data' table
+            elif table_mappings and 'Data' in table_mappings:
+                table_name = table_mappings['Data']
+                self.logger.info(f"Using mapped table name for 'Data': {table_name}")
             
             # Convert the expression to DAX
             try:

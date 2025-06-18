@@ -97,7 +97,7 @@ class LLMServiceClient:
                 f'{self.base_url}/api/m-query',
                 headers=headers,
                 json=payload,
-                timeout=30  # 30 second timeout
+                timeout=120  # 120 second timeout (increased from 30 to reduce timeout errors)
             )
             
             response.raise_for_status()

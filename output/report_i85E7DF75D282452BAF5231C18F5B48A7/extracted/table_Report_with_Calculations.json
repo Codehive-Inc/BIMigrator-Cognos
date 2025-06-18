@@ -1,5 +1,5 @@
 {
-  "source_name": "Data",
+  "source_name": "Report_with_Calculations",
   "name": "Report_with_Calculations",
   "lineage_tag": null,
   "description": null,
@@ -26,7 +26,7 @@
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "DISTINCTCOUNT('Data'[Order_ID])",
+      "source_column": "DISTINCTCOUNT('C_TestDataModule'[Order_ID])",
       "description": null,
       "is_hidden": false,
       "summarize_by": "sum",
@@ -42,7 +42,7 @@
       "datatype": "decimal",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "IF('Data'[Returned] = \"Yes\", 1, 0)",
+      "source_column": "IF('C_TestDataModule'[Returns_].[Returned] = \"Yes\", 1, 0)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "sum",
@@ -57,9 +57,9 @@
   "hierarchies": [],
   "partitions": [
     {
-      "name": "Data",
+      "name": "Report_with_Calculations",
       "source_type": "m",
-      "expression": "let\n\t\t\t\tSource = Value.NativeQuery(Cognos,\n\t\t\t\t\"SELECT \"\"Region\"\",\n\t\t\t\t\"\"No of Unique Orders\"\",\n\t\t\t\t\"\"Orders Returned (Multiple Returns per Order)\"\" FROM Data\"),\n\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source,\n\t\t\t\t{{\"Region\",\n\t\t\t\ttype text},\n\t\t\t\t{\"No of Unique Orders\",\n\t\t\t\ttype text},\n\t\t\t\t{\"Orders Returned (Multiple Returns per Order)\",\n\t\t\t\ttype number}})\n\t\t\tin\n\t\t\t\t#\"Changed Types\""
+      "expression": "let\n\t\t\t\tSource = / * Connect to data source based on context * /,\n\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source,\n\t\t\t\t{{\"OldRegion\",\n\t\t\t\t\"Region\"},\n\t\t\t\t{\"OldUniqueOrders\",\n\t\t\t\t\"No of Unique Orders\"},\n\t\t\t\t{\"OldOrdersReturned\",\n\t\t\t\t\"Orders Returned (Multiple Returns per Order)\"}}),\n\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\",\n\t\t\t\t{{\"Region\",\n\t\t\t\ttype text},\n\t\t\t\t{\"No of Unique Orders\",\n\t\t\t\ttype text},\n\t\t\t\t{\"Orders Returned (Multiple Returns per Order)\",\n\t\t\t\ttype number}})\n\t\t\tin\n\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

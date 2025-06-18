@@ -143,7 +143,7 @@ class ModelFileGenerator:
                     from cognos_migrator.models import Column, DataType
                     updated_columns = []
                     for item in data_items:
-                        column_name = item.get('name', 'Column')
+                        column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                         # Map Cognos data type to Power BI data type
                         data_type_str, _ = map_cognos_to_powerbi_datatype(item, self.logger)
                         try:
@@ -176,16 +176,8 @@ class ModelFileGenerator:
                 # Render table template
                 content = self.template_engine.render('table', context)
 
-                # Use report name for table file if available, otherwise use original table name
-                table_name = table.name
-                if report_name and table.name == "Data":
-                    # Replace spaces with underscores and remove special characters for filename
-                    safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-                    table_name = safe_report_name
-                    self.logger.info(f"Renaming table file from '{table.name}' to '{table_name}'")
-                
-                # Write table file
-                table_file = tables_dir / f"{table_name}.tmdl"
+                # Write table file using the table name (which is already properly set)
+                table_file = tables_dir / f"{table.name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
                 
@@ -231,20 +223,22 @@ class ModelFileGenerator:
 
                             
                             # Log the data type mapping for debugging
-                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                             
                             
-                            column_name = item.get('name', 'Column')
+                            column_name = item.get('identifier', 'Column')  # Using 'identifier' field for column naming
                             is_calculation = item.get('type') == 'calculation'
-                            
+                            source_column = item.get('identifier', column_name)  # Use identifier for source_column as well
                             # Use DAX formula for calculated columns if available
-                            source_column = column_name
                             if is_calculation and column_name in calculations_map:
                                 source_column = calculations_map[column_name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
                             
+                            # Get the identifier directly for source_name
+                            source_name = item.get('identifier', column_name)
+                            
                             column_json = {
-                                "source_name": column_name,
+                                "source_name": source_name,  # Use identifier for source_name
                                 "datatype": data_type,
                                 "format_string": None,
                                 "lineage_tag": None,
@@ -271,8 +265,11 @@ class ModelFileGenerator:
                                 source_column = calculations_map[col.name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
                             
+                            # For table columns, use source_column if available as the source_name
+                            source_name = getattr(col, 'source_column', col.name)
+                            
                             column_json = {
-                                "source_name": col.name,
+                                "source_name": source_name,  # Use source_column if available, otherwise col.name
                                 "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                                 "format_string": getattr(col, 'format_string', None),
                                 "lineage_tag": getattr(col, 'lineage_tag', None),
@@ -331,13 +328,17 @@ class ModelFileGenerator:
                         error_content += f"        sourceColumn: {column.name}\n\n"
                         error_content += f"        annotation SummarizationSetBy = User\n\n"
                 
-                # Add partition with error information
-                error_content += f"\n\n\n    partition '{table.name}-partition' = m\n"
+                # Add partition with error information - use the table name without -partition suffix
+                error_content += f"\n\n\n    partition '{table.name}' = m\n"
                 error_content += f"        mode: import\n"
                 error_content += f"        source = \n"
-                error_content += f"            // ERROR: Failed to generate M-query for {table.name}\n"
-                error_content += f"// {str(e)}\n"
-                error_content += f"let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource\n"
+                # Create a valid M-query with proper indentation that will work with pbi-tools
+                # Put the error information in a proper M-query comment
+                error_content += f"            let\n"
+                error_content += f"                /* ERROR: {str(e).replace('*/', '*\/').strip()} */\n"
+                error_content += f"                Source = Table.FromRows({{}})\n"
+                error_content += f"            in\n"
+                error_content += f"                Source\n"
                 error_content += f"        \n\n\n\n"
                 error_content += f"    annotation PBI_ResultType = Table\n"
                 
@@ -350,13 +351,7 @@ class ModelFileGenerator:
     
     def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
-        # Use report name for table name if available and if table name is 'Data'
-        table_name = table.name
-        if report_name and table.name == "Data":
-            # Replace spaces with underscores and remove special characters
-            safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-            table_name = safe_report_name
-            self.logger.info(f"Using report name '{report_name}' for table name instead of '{table.name}'")
+        # Table name is already properly set when the table was created
         
         columns = []
         
@@ -405,23 +400,26 @@ class ModelFileGenerator:
                 data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
                 
                 # Log the data type mapping for debugging
-                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                 
                 # Determine the appropriate SummarizationSetBy annotation value
                 summarization_set_by = 'User' if summarize_by != 'none' else 'Automatic'
                 
-                column_name = item.get('name', 'Column')
+                column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                 is_calculation = item.get('type') == 'calculation'
-                source_column = column_name
+                source_column = item.get('identifier', column_name)  # Use identifier for source_column as well
                 
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
                 
+                # Get the identifier directly from the item for source_name to ensure we use the correct field
+                source_name = item.get('identifier', column_name)
+                
                 column = {
                     'name': column_name,
-                    'source_name': column_name,
+                    'source_name': source_name,  # Use the identifier directly for source_name
                     'datatype': data_type,
                     'source_column': source_column,
                     'is_calculated': is_calculation,
@@ -435,16 +433,20 @@ class ModelFileGenerator:
             for col in table.columns:
                 column_name = col.name
                 is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
-                source_column = column_name
+                source_column = getattr(col, 'source_column', column_name)  # Use source_column attribute if available
                 
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
                 
+                # For table columns, we'll use the raw column name as the source_name
+                # This is the equivalent of using the identifier in the data items case
+                source_name = getattr(col, 'source_column', column_name)
+                
                 column = {
                     'name': column_name,
-                    'source_name': column_name,
+                    'source_name': source_name,  # Use source_column if available, otherwise column_name
                     'datatype': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                     'source_column': source_column,
                     'is_calculated': is_calculation,
@@ -471,18 +473,18 @@ class ModelFileGenerator:
         partitions = []
         if m_expression:
             partitions.append({
-                'name': table_name,
+                'name': table.name,
                 'source_type': 'm',
                 'expression': m_expression
             })
         
         context = {
-            'name': table_name,
-            'table_name': table_name,
-            'source_name': table_name,
+            'name': table.name,
+            'table_name': table.name,
+            'source_name': table.name,
             'columns': columns,
             'partitions': partitions,
-            'partition_name': f"{table_name}-partition",
+            'partition_name': f"{table.name}-partition",
             'm_expression': m_expression
         }
         
@@ -512,13 +514,13 @@ class ModelFileGenerator:
         relationships_context = []
         for rel in relationships:
             relationships_context.append({
-                'name': rel.name,
+                'id': rel.name,  # Use name as the ID for the template
                 'from_table': rel.from_table,
                 'from_column': rel.from_column,
                 'to_table': rel.to_table,
                 'to_column': rel.to_column,
                 'cardinality': rel.cardinality,
-                'cross_filter_direction': rel.cross_filter_direction,
+                'cross_filter_behavior': rel.cross_filter_direction,  # Match template's expected field name
                 'is_active': rel.is_active
             })
             
@@ -574,7 +576,7 @@ class ModelFileGenerator:
             'default_culture': data_model.culture or 'en-US',
             'tables': table_names,
             'time_intelligence_enabled': getattr(data_model, 'time_intelligence_enabled', '0'),
-            'desktop_version': getattr(data_model, 'desktop_version', '2.141.1253.0')
+            'desktop_version': getattr(data_model, 'desktop_version', '2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729')
         }
         
         content = self.template_engine.render('model', context)
@@ -600,7 +602,7 @@ class ModelFileGenerator:
     def _generate_culture_file(self, data_model: DataModel, model_dir: Path):
         """Generate culture.tmdl file"""
         # Get the version from data_model if available, otherwise use a default version
-        version = getattr(data_model, 'version', '1.0') if hasattr(data_model, 'version') else '1.0'
+        version = getattr(data_model, 'version', '1.0.0') if hasattr(data_model, 'version') else '1.0.0'
         
         context = {
             'culture': data_model.culture or 'en-US',

@@ -7,6 +7,7 @@ import sys
 import json
 import logging
 import shutil
+import re
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
@@ -183,8 +184,12 @@ class CognosMigrator:
                 cognos_report.metadata
             )
             
+            # Prepare safe table name once - replace spaces with underscores and remove special characters
+            safe_table_name = re.sub(r'[^\w\s]', '', cognos_report.name).replace(' ', '_')
+            self.logger.info(f"Using report name '{cognos_report.name}' (sanitized as '{safe_table_name}') for table name")
+            
             # Convert parsed structure to migration data
-            converted_data = self._convert_parsed_structure(parsed_structure)
+            converted_data = self._convert_parsed_structure(parsed_structure, safe_table_name)
             
             # Create data model
             data_model = self._create_data_model(converted_data, cognos_report.name)
@@ -208,7 +213,7 @@ class CognosMigrator:
             self.logger.error(f"Failed to convert Cognos report to Power BI: {e}")
             return None
     
-    def _convert_parsed_structure(self, parsed_structure) -> Dict[str, Any]:
+    def _convert_parsed_structure(self, parsed_structure, safe_table_name: str) -> Dict[str, Any]:
         """Convert parsed Cognos structure to migration data format"""
         try:
             # Extract basic information
@@ -267,8 +272,11 @@ class CognosMigrator:
             
             # If no specific structure, create basic defaults
             if not converted_data['tables']:
+                # Use the safe_table_name that was passed in
+                self.logger.info(f"Using safe table name '{safe_table_name}' for default table")
+                
                 converted_data['tables'].append({
-                    'name': 'Data',
+                    'name': safe_table_name,
                     'columns': [
                         {'name': 'ID', 'type': 'Int64'},
                         {'name': 'Name', 'type': 'Text'},
@@ -282,9 +290,12 @@ class CognosMigrator:
         except Exception as e:
             self.logger.warning(f"Error converting parsed structure: {e}")
             # Return minimal structure as fallback
+            # Use the safe_table_name that was passed in
+            self.logger.warning(f"Using safe table name '{safe_table_name}' for fallback table")
+            
             return {
                 'tables': [{
-                    'name': 'Data',
+                    'name': safe_table_name,
                     'columns': [
                         {'name': 'ID', 'type': 'Int64'},
                         {'name': 'Value', 'type': 'Decimal'}
@@ -320,7 +331,7 @@ class CognosMigrator:
             table = Table(
                 name=table_data.get('name', 'Table'),
                 columns=columns,
-                source_query=f"let Source = {table_data.get('source_type', 'Cognos')} in Source"
+                source_query=""  # Empty source query - no placeholder needed
             )
             tables.append(table)
         
@@ -627,6 +638,14 @@ class CognosMigrator:
                     self.logger.info("Converting Cognos expressions to DAX using LLM service")
                     # Create table mappings from queries for context
                     table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    
+                    # Add a mapping for the default 'Data' table to use the report name
+                    if cognos_report.name:
+                        # Create a safe report name (same logic as in _convert_cognos_to_powerbi)
+                        safe_table_name = re.sub(r'[^\w\s]', '', cognos_report.name).replace(' ', '_')
+                        self.logger.info(f"Adding table mapping: Data -> {safe_table_name}")
+                        table_mappings['Data'] = safe_table_name
+                    
                     calculations = self.expression_extractor.convert_to_dax(expressions, table_mappings)
                     self.logger.info(f"Converted {len(calculations['calculations'])} expressions to DAX")
                 else:

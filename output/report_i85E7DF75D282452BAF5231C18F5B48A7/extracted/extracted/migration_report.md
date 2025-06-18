@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: Report with Calculations
-- **Migration Date**: 2025-06-15 22:54:31
+- **Migration Date**: 2025-06-17 12:21:22
 
 ## Data Model
 
@@ -12,7 +12,7 @@
 
 ### Tables
 
-- **Data**
+- **Report_with_Calculations**
   - Columns: 3
   - Column details:
     - Region (string)

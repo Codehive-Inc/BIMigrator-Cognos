@@ -10,8 +10,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from .common.websocket_client import logging_helper, set_task_info
-from .config import ConfigManager
-from .migrator import CognosToPowerBIMigrator, MigrationBatch
+from cognos_migrator.config import ConfigManager
+from cognos_migrator.migrator import CognosToPowerBIMigrator, MigrationBatch
+from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
 from uuid import uuid4
 
 
@@ -436,22 +437,20 @@ def demo_migration():
     logger.info("and ensure your .env file contains valid Cognos Analytics credentials")
 
 
-def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = None):
+def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = None) -> Dict[str, bool]:
     """Migrate a Cognos module and associated folder
     
     This function performs a three-step migration process:
-    1. Module-based implementation - Extracts module metadata and structure
-    2. Folder-based execution - Migrates all reports in the specified folder
-    3. Post-processing - Enhances the generated files with module-specific information
-    
     Args:
-        module_id: ID of the Cognos module to migrate
-        folder_id: ID of the folder containing reports to migrate
-        output_path: Optional path to store migration output
-    
+        module_id (str): Module ID
+        folder_id (str): Folder ID containing reports
+        output_path (str, optional): Output path. Defaults to None.
+
     Returns:
-        Dict[str, bool]: Results of the migration process
+        Dict[str, bool]: Migration results
     """
+    # Initialize logger
+    import logging
     logger = logging.getLogger(__name__)
     
     try:
@@ -476,8 +475,66 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
                        message_type="error")
             return {}
         
-        # Delegate to the migrator's migrate_module method
-        return migrator.migrate_module(module_id, folder_id, output_path)
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"module_{module_id}"
+        
+        # Step 1: Module-based implementation
+        logger.info(f"Step 1: Processing module {module_id}")
+        module_info = migrator.cognos_client.get_module(module_id)
+        if not module_info:
+            logger.error(f"Failed to retrieve module information for {module_id}")
+            return {}
+        
+        # Extract module metadata
+        module_metadata = migrator.cognos_client.get_module_metadata(module_id)
+        
+        # Create module directory structure
+        module_path = Path(output_path)
+        module_path.mkdir(parents=True, exist_ok=True)
+        
+        # Create subdirectories
+        docs_dir = module_path / "documentation"
+        docs_dir.mkdir(exist_ok=True)
+        
+        reports_dir = module_path / "reports"
+        reports_dir.mkdir(exist_ok=True)
+        
+        extracted_dir = module_path / "extracted"
+        extracted_dir.mkdir(exist_ok=True)
+        
+        pbit_dir = module_path / "pbit"
+        pbit_dir.mkdir(exist_ok=True)
+        
+        # Save module information in extracted directory
+        with open(extracted_dir / "module_info.json", "w") as f:
+            json.dump(module_info, f, indent=2)
+        
+        # Save module metadata in extracted directory
+        with open(extracted_dir / "module_metadata.json", "w") as f:
+            json.dump(module_metadata, f, indent=2)
+        
+        # Step 2: Folder-based execution
+        logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+        folder_results = migrate_folder(folder_id, str(reports_dir))
+        
+        # Extract report IDs that were successfully migrated
+        successful_report_ids = [report_id for report_id, success in folder_results.items() if success]
+        logger.info(f"Successfully migrated {len(successful_report_ids)} reports: {successful_report_ids}")
+        
+        # Step 3: Migrate the module
+        logger.info("Step 3: Migrating module")
+        from cognos_migrator.module_migrator import CognosModuleMigrator
+        module_migrator = CognosModuleMigrator(config)
+        success = module_migrator.migrate_module(module_id, str(module_path), successful_report_ids)
+        
+        if success:
+            logger.info("Module migration completed successfully")
+        else:
+            logger.error("Module migration failed")
+        
+        # Return the folder results for backward compatibility
+        return folder_results
         
     except Exception as e:
         logger.error(f"Error during module migration: {e}")
@@ -489,7 +546,7 @@ def main():
     # Setup logging
     setup_logging()
     logger = logging.getLogger(__name__)
-
+    
     # Check if we have command line arguments
     if len(sys.argv) > 1:
         command = sys.argv[1].lower()
@@ -511,7 +568,16 @@ def main():
         elif command == 'migrate-module' and len(sys.argv) > 3:
             module_id = sys.argv[2]
             folder_id = sys.argv[3]
-            output_path = sys.argv[4] if len(sys.argv) > 4 else None
+            output_path = None
+            
+            # Parse remaining arguments
+            for i in range(4, len(sys.argv)):
+                arg = sys.argv[i]
+                if arg.startswith('--output='):
+                    output_path = arg.split('=')[1]
+            
+            logger.info(f"Migrating module {module_id} with folder {folder_id}")
+            
             migrate_module(module_id, folder_id, output_path)
 
         elif command == 'validate':
