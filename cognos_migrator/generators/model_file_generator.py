@@ -320,13 +320,17 @@ class ModelFileGenerator:
                         error_content += f"        sourceColumn: {column.name}\n\n"
                         error_content += f"        annotation SummarizationSetBy = User\n\n"
                 
-                # Add partition with error information
-                error_content += f"\n\n\n    partition '{table.name}-partition' = m\n"
+                # Add partition with error information - use the table name without -partition suffix
+                error_content += f"\n\n\n    partition '{table.name}' = m\n"
                 error_content += f"        mode: import\n"
                 error_content += f"        source = \n"
-                error_content += f"            // ERROR: Failed to generate M-query for {table.name}\n"
-                error_content += f"// {str(e)}\n"
-                error_content += f"let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource\n"
+                # Create a valid M-query with proper indentation that will work with pbi-tools
+                # Put the error information in a proper M-query comment
+                error_content += f"            let\n"
+                error_content += f"                /* ERROR: {str(e).replace('*/', '*\/').strip()} */\n"
+                error_content += f"                Source = Table.FromRows({{}})\n"
+                error_content += f"            in\n"
+                error_content += f"                Source\n"
                 error_content += f"        \n\n\n\n"
                 error_content += f"    annotation PBI_ResultType = Table\n"
                 

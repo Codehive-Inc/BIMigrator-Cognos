@@ -31,11 +31,24 @@ table 'Returns'
     partition 'Returns' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Returns: HTTPConnectionPool(host='localhost', port=8080): Read timed out. (read timeout=30)
-let
-				Source = Table.FromRows({})
+            let
+				Source = / * Connect to data source based on context * /,
+				#"Renamed Columns" = Table.RenameColumns(Source,
+				{{"OldRowId",
+				"Row Id"},
+				{"OldReturned",
+				"Returned"},
+				{"OldOrderID",
+				"Order ID"}}),
+				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
+				{{"Row Id",
+				Int64.Type},
+				{"Returned",
+				type text},
+				{"Order ID",
+				type text}})
 			in
-				Source
+				#"Changed Types"
         
 
 
