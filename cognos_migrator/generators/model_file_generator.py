@@ -8,6 +8,8 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
+from cognos_migrator.common.websocket_client import logging_helper
+
 from .utils import get_extracted_dir, save_json_to_extracted_dir
 
 from ..models import DataModel, Table, Relationship
@@ -73,6 +75,7 @@ class ModelFileGenerator:
         self._generate_expressions_file(data_model, model_dir)
         
         self.logger.info(f"Generated model files in: {model_dir}")
+        logging_helper(message=f"Generated model files in: {model_dir}", message_type="info")
         return model_dir
     
     def _generate_database_file(self, data_model: DataModel, model_dir: Path, report_name: Optional[str] = None):

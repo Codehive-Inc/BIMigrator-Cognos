@@ -9,10 +9,11 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-
+from .common.websocket_client import logging_helper, set_task_info
 from cognos_migrator.config import ConfigManager
 from cognos_migrator.migrator import CognosToPowerBIMigrator, MigrationBatch
 from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
+from uuid import uuid4
 
 
 def setup_logging(log_level: str = "INFO"):
@@ -120,7 +121,7 @@ def list_available_content():
 # here is migrate single report method that takes session_key as an argument besides report_id and output_path.
 # This is useful when you want to migrate a report by passing user credentials and main key.
 def migrate_single_report_with_session_key(report_id: str, cognos_url: str, session_key: str,
-                                           output_path: Optional[str] = None):
+                                           output_path: Optional[str] = None, task_id: Optional[str] = None):
     """Migrate a single Cognos report using session key"""
     logger = logging.getLogger(__name__)
 
@@ -160,6 +161,80 @@ def migrate_single_report_with_session_key(report_id: str, cognos_url: str, sess
         logger.error(f"Error during migration: {e}")
         return False
 
+def migrate_module_with_session_key(module_id: str, cognos_url: str, session_key: str, 
+                                   folder_id: str, output_path: Optional[str] = None, task_id: Optional[str] = None):
+    """Migrate a Cognos module using session key
+    
+    Args:
+        module_id: ID of the Cognos module to migrate
+        cognos_url: Base URL of the Cognos server
+        session_key: Authentication session key
+        folder_id: ID of the folder containing reports to migrate
+        output_path: Optional path to store migration output
+    
+    Returns:
+        Dict[str, bool]: Results of the migration process
+    """
+
+    # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"migration_{uuid4().hex}"
+    
+    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+    set_task_info(task_id, total_steps=12)
+
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load configuration
+        config = load_config()
+        
+        # Create client with existing session
+        # set_task_info(task_name="Module Migration with Session", 
+        #               task_description=f"Migrating module {module_id} with folder {folder_id}")
+        logging_helper(message="Initializing Cognos to Power BI migration with session key", 
+                       progress=0, 
+                       message_type="info")
+        migrator = CognosToPowerBIMigrator(config, base_url=cognos_url, session_key=session_key)
+        logging_helper(message="Initialization complete!", 
+                       progress=10,
+                       message_type="info")
+        
+        # Validate prerequisites
+        if not migrator.validate_migration_prerequisites():
+            logger.error("Migration prerequisites not met. Please check configuration.")
+            logging_helper(message="Migration prerequisites not met. Please check configuration.", 
+                           progress=10,
+                           message_type="error")
+            return {}
+        
+        # Set output path
+        if not output_path:
+            output_path = Path(config.output_directory) / f"module_{module_id}"
+        
+        # Perform module migration
+        logger.info(f"Starting migration of module: {module_id} with folder: {folder_id}")
+        results = migrator.migrate_module(module_id, folder_id, str(output_path))
+        
+        if results:
+            successful = sum(1 for success in results.values() if success)
+            total = len(results)
+            logger.info(f"✓ Module migration completed: {successful}/{total} reports successful")
+            
+            # Show migration status
+            status = migrator.get_migration_status(str(output_path))
+            logger.info(f"Migration status: {status}")
+        else:
+            logger.error(f"✗ Failed to migrate module {module_id}")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error during module migration: {e}")
+        logging_helper(message=f"Error during module migration: {e}", 
+                       progress=100,
+                       message_type="error")
+        return {}
 
 def migrate_single_report(report_id: str, output_path: Optional[str] = None):
     """Migrate a single Cognos report"""
@@ -383,11 +458,21 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         config = load_config()
         
         # Initialize migrator
+        # set_task_info(task_name="Module Migration", task_description=f"Migrating module {module_id} with folder {folder_id}")
+        logging_helper(message="Initializing Cognos to Power BI migration", 
+                       progress=0, 
+                       message_type="info")
         migrator = CognosToPowerBIMigrator(config)
+        logging_helper(message="Initialization complete!", 
+                       progress=10,
+                       message_type="info")
         
         # Validate prerequisites
         if not migrator.validate_migration_prerequisites():
             logger.error("Migration prerequisites not met. Please check configuration.")
+            logging_helper(message="Migration prerequisites not met. Please check configuration.", 
+                       progress=10,
+                       message_type="error")
             return {}
         
         # Set output path
@@ -524,7 +609,7 @@ def main():
         # demo_migration()
         report_id = "i8E32D9D255FA4361A2D8BDF980837E3D"
         cognos_url = "http://20.244.32.126:9300/api/v1"
-        session_key = "CAM MTsxMDE6Y2I3ZTQ0N2ItYjgyNC01NTZhLTRmZmYtYmQzYjBlYTIyNzQ3OjA4MzY1MzgzMTM7MDszOzA7"
+        session_key = "CAM MTsxMDE6NzhmNDVlZjQtMTMzMS0zMmU3LTVhZWUtMmY3NzEyNzNiOWU1OjA5ODQ1OTI1MDc7MDszOzA7"
         migrate_single_report_with_session_key(report_id, cognos_url, session_key, output_path)
 
 

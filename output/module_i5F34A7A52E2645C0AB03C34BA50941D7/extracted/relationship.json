@@ -1,7 +1,7 @@
 {
   "relationships": [
     {
-      "id": "400478eb-97f2-43ce-beae-d6ab0f215d4c",
+      "id": "628d11f5-9259-4040-b9bf-2d3d3215b6dd",
       "from_table": "Orders",
       "from_column": "Region",
       "to_table": "People",
@@ -11,7 +11,7 @@
       "is_active": true
     },
     {
-      "id": "0ed8013d-a38c-4afb-9ddb-906ed1189e93",
+      "id": "08078d3a-f14d-4b87-ba58-059f0e642e39",
       "from_table": "Orders",
       "from_column": "Order_ID",
       "to_table": "Returns_",
