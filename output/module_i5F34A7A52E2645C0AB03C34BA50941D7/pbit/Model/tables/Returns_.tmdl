@@ -33,22 +33,16 @@ table 'Returns_'
         source = 
             let
 				Source = / * Connect to data source based on context * /,
-				#"Renamed Columns" = Table.RenameColumns(Source,
-				{{"OldRowID",
-				"_row_id"},
-				{"OldReturned",
-				"Returned"},
-				{"OldOrderID",
-				"Order_ID"}}),
-				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
+				#"Changed Types" = Table.TransformColumnTypes(Source,
 				{{"_row_id",
 				Int64.Type},
 				{"Returned",
 				type text},
 				{"Order_ID",
-				type text}})
+				type text}}),
+				#"F
 			in
-				#"Changed Types"
+				al Selected Columns" = Table.SelectColumns(#"Changed Types", {"_row_id", "Returned", "Order_ID"})
         
 
 

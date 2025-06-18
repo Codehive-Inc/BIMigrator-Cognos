@@ -91,7 +91,7 @@
     {
       "name": "People",
       "source_type": "m",
-      "expression": "let\n\t\t\t\tSource = / * Connect to data source based on context * /,\n\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source,\n\t\t\t\t{{\"OldRowId\",\n\t\t\t\t\"_row_id\"},\n\t\t\t\t{\"OldRegionalManager\",\n\t\t\t\t\"Regional_Manager\"},\n\t\t\t\t{\"OldRegion\",\n\t\t\t\t\"Region\"},\n\t\t\t\t{\"OldArea\",\n\t\t\t\t\"Area\"},\n\t\t\t\t{\"OldCountry\",\n\t\t\t\t\"Country\"}}),\n\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\",\n\t\t\t\t{{\"_row_id\",\n\t\t\t\tInt64.Type},\n\t\t\t\t{\"Regional_Manager\",\n\t\t\t\ttype text},\n\t\t\t\t{\"Region\",\n\t\t\t\ttype text},\n\t\t\t\t{\"Area\",\n\t\t\t\ttype text},\n\t\t\t\t{\"Country\",\n\t\t\t\ttype text}})\n\t\t\tin\n\t\t\t\t#\"Changed Types\""
+      "expression": "let\n\t\t\t\tSource = / * Connect to data source based on context * /,\n\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source,\n\t\t\t\t{{\"Orig\n\t\t\tin\n\t\t\t\talRowID\", \"_row_id\"}, {\"Orig"
     }
   ],
   "has_widget_serialization": false,

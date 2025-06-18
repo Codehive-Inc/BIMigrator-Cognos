@@ -1642,7 +1642,7 @@
   ],
   "powerbi_relationships": [
     {
-      "id": "53103394-ca1d-4d21-97d2-03757526f69e",
+      "id": "280133da-7652-4900-a947-e84da95e1b8d",
       "from_table": "Orders",
       "from_column": "Region",
       "to_table": "People",
@@ -1656,7 +1656,7 @@
       "to_datasource_caption": ""
     },
     {
-      "id": "bd104207-8b5c-4927-a70b-6364358af205",
+      "id": "cada59b1-6d62-4a07-91e0-760e9c9363da",
       "from_table": "Orders",
       "from_column": "Order_ID",
       "to_table": "Returns_",

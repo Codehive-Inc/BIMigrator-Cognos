@@ -1,11 +1,11 @@
-relationship 53103394-ca1d-4d21-97d2-03757526f69e
+relationship 280133da-7652-4900-a947-e84da95e1b8d
 	fromColumn: 'Orders'.Region
 	toColumn: 'People'.Region
 	crossFilteringBehavior: OneDirection
 	fromCardinality: many
 	isActive: True
 
-relationship bd104207-8b5c-4927-a70b-6364358af205
+relationship cada59b1-6d62-4a07-91e0-760e9c9363da
 	fromColumn: 'Orders'.Order_ID
 	toColumn: 'Returns_'.Order_ID
 	crossFilteringBehavior: OneDirection

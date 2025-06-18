@@ -7,8 +7,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = [{% for table in tables %}"{{ table }}{% if not loop.last
-   %}, {% endif %}"{% endfor %}]
+annotation PBI_QueryOrder = [{% for table in tables %}"{{ table }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 
 annotation __PBI_TimeIntelligenceEnabled = {{ time_intelligence_enabled }}
 
