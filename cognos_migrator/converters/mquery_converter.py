@@ -145,83 +145,102 @@ class MQueryConverter:
             # Log original query for debugging
             self.logger.debug(f"Original M-query before cleaning: {m_query}")
             
-            # Remove the leading 'm' if present (sometimes added by LLM)
-            if m_query.startswith('m '):
-                m_query = m_query[2:]
+            # Unescape double quotes that are incorrectly escaped
+            m_query = m_query.replace('\\"', '"')
             
-            # Parse the query to identify key components
-            if 'let' in m_query and 'in' in m_query:
-                # Extract the parts between let and in
-                let_part = m_query.split('let')[1].split('in')[0]
-                in_part = m_query.split('in')[1].strip()
-                
-                # Process the let part to remove comments but keep code
-                cleaned_let_part = ""
-                for line in let_part.split(','):
-                    # Remove comments (text after // or / /)
-                    code_part = re.sub(r'(/ /|//).*?(?=,|$)', '', line).strip()
-                    if code_part:
-                        cleaned_let_part += code_part + ", "
-                
-                # Remove trailing comma if present
-                cleaned_let_part = cleaned_let_part.rstrip(', ')
-                
-                # Clean the in part
-                cleaned_in_part = re.sub(r'(/ /|//).*', '', in_part).strip()
-                
-                # Reconstruct the query
-                m_query = f"let {cleaned_let_part} in {cleaned_in_part}"
+            # Split into let and in parts
+            let_in_parts = re.split(r'\s+in\s+', m_query, 1)
             
-                # Now extract the steps and format them properly
-                steps = []
-                for step in m_query.split('let')[1].split('in')[0].split(','):
-                    step = step.strip()
-                    if step:
-                        steps.append(step)
-                
-                # Format the final M-query with proper indentation for TMDL
-                formatted_query = "let\n"
-                
-                # Process each step
-                for i, step in enumerate(steps):
-                    if '=' in step:
-                        parts = step.split('=', 1)
-                        step_name = parts[0].strip()
-                        step_content = parts[1].strip()
-                        
-                        # Handle SQL queries - keep them on one line
-                        if 'Value.NativeQuery' in step_content or 'Sql.Database' in step_content:
-                            # Ensure SQL query is on one line
-                            sql_pattern = r'"([^"]*?)"'
-                            sql_queries = re.findall(sql_pattern, step_content)
-                            for sql in sql_queries:
-                                cleaned_sql = sql.replace('\n', ' ').replace('\r', '')
-                                step_content = step_content.replace(f'"{sql}"', f'"{cleaned_sql}"')
-                        
-                        # Handle parameter arrays - keep them on one line
-                        if '{{' in step_content and '}}' in step_content:
-                            # Ensure parameter arrays are on one line
-                            step_content = re.sub(r'\s+', ' ', step_content)
-                        
-                        formatted_query += f"\t\t\t\t{step_name} = {step_content}"
-                        if i < len(steps) - 1:
-                            formatted_query += ",\n"
-                    else:
-                        # Handle steps without '=' (rare case)
-                        formatted_query += f"\t\t\t\t{step}"
-                        if i < len(steps) - 1:
-                            formatted_query += ",\n"
-                
-                # Add the 'in' part
-                formatted_query += f"\n\t\t\tin\n\t\t\t\t{cleaned_in_part}"
-                
-                return formatted_query
-            else:
-                # If query doesn't have let/in structure, return as is with minimal formatting
-                self.logger.warning(f"M-query doesn't have standard let/in structure: {m_query[:100]}...")
+            if len(let_in_parts) != 2:
+                self.logger.warning(f"M-query for table {table_name} doesn't have the expected 'let...in' structure")
                 return m_query
                 
+            let_part = let_in_parts[0].strip()
+            in_part = let_in_parts[1].strip()
+            
+            # Remove 'let' keyword
+            if let_part.lower().startswith('let'):
+                let_part = let_part[3:].strip()
+            
+            # Split the let part into steps by commas, but be careful with commas inside functions
+            steps = []
+            current_step = ""
+            bracket_count = 0
+            paren_count = 0
+            in_quotes = False
+            
+            for char in let_part:
+                if char == '"' and (len(current_step) == 0 or current_step[-1] != '\\'):
+                    in_quotes = not in_quotes
+                
+                if not in_quotes:
+                    if char == '{':
+                        bracket_count += 1
+                    elif char == '}':
+                        bracket_count -= 1
+                    elif char == '(':
+                        paren_count += 1
+                    elif char == ')':
+                        paren_count -= 1
+                    elif char == ',' and bracket_count == 0 and paren_count == 0:
+                        steps.append(current_step.strip())
+                        current_step = ""
+                        continue
+                
+                current_step += char
+            
+            if current_step.strip():
+                steps.append(current_step.strip())
+            
+            # Format the M-query with proper indentation
+            formatted_query = "let\n"
+            
+            for i, step in enumerate(steps):
+                if '=' in step:
+                    var_name, expression = step.split('=', 1)
+                    var_name = var_name.strip()
+                    expression = expression.strip()
+                    
+                    # Format table operations to be on a single line
+                    if any(func in expression for func in ['Table.', 'Sql.']):
+                        # Keep the expression on a single line but preserve quoted strings
+                        expression = self._format_table_expression(expression)
+                    
+                    formatted_query += f"    {var_name} = {expression}"
+                else:
+                    formatted_query += f"    {step}"
+                
+                if i < len(steps) - 1:
+                    formatted_query += ",\n"
+            
+            # Format the 'in' part
+            formatted_query += f"\nin\n    {in_part}"
+            
+            return formatted_query
+        
         except Exception as e:
-            self.logger.error(f"Error cleaning M-query: {e}")
-            # Return original if cleaning fails
-            return m_query
+            self.logger.error(f"Error cleaning M-query for table {table_name}: {str(e)}")
+            return m_query  # Return the original query if cleaning fails
+    
+    def _format_table_expression(self, expression):
+        """
+        Format a Table expression to be on a single line with proper formatting.
+        
+        Args:
+            expression (str): The Table expression to format
+            
+        Returns:
+            str: The formatted expression
+        """
+        # Replace newlines and multiple spaces with a single space
+        expression = re.sub(r'\s+', ' ', expression)
+        
+        # Fix array formatting for column specifications
+        # Match patterns like {{"column", type}} and ensure proper spacing
+        expression = re.sub(r'\{\{\s*"([^"]+)"\s*,\s*([^\}]+)\s*\}\}', r'{{"\1", \2}}', expression)
+        
+        # Fix multiple items in an array
+        # This matches patterns like {{...}, {...}} and ensures proper formatting
+        expression = re.sub(r'\}\}\s*,\s*\{\{', r'}}, {{', expression)
+        
+        return expression
