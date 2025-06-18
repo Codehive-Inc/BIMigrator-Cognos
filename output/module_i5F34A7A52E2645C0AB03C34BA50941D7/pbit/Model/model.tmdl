@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Orders, ""People, ""Returns"]
+annotation PBI_QueryOrder = ["Orders, ""People, ""Returns_"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -14,6 +14,6 @@ annotation PBIDesktopVersion = 2.141.1253.0
 
 ref table 'Orders'
 ref table 'People'
-ref table 'Returns'
+ref table 'Returns_'
 
 ref cultureInfo en-US

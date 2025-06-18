@@ -223,11 +223,10 @@ class ModelFileGenerator:
                             self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                             
                             
-                            column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
+                            column_name = item.get('identifier', 'Column')  # Using 'identifier' field for column naming
                             is_calculation = item.get('type') == 'calculation'
-                            
+                            source_column = item.get('identifier', column_name)  # Use identifier for source_column as well
                             # Use DAX formula for calculated columns if available
-                            source_column = column_name
                             if is_calculation and column_name in calculations_map:
                                 source_column = calculations_map[column_name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
@@ -405,7 +404,7 @@ class ModelFileGenerator:
                 
                 column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                 is_calculation = item.get('type') == 'calculation'
-                source_column = column_name
+                source_column = item.get('identifier', column_name)  # Use identifier for source_column as well
                 
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
@@ -431,7 +430,7 @@ class ModelFileGenerator:
             for col in table.columns:
                 column_name = col.name
                 is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
-                source_column = column_name
+                source_column = getattr(col, 'source_column', column_name)  # Use source_column attribute if available
                 
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:

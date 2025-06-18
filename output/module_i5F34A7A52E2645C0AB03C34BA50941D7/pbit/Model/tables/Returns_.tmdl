@@ -1,10 +1,10 @@
-table 'Returns'
+table 'Returns_'
 
 
     column '_row_id'
         dataType: int64
         summarizeBy: none
-        sourceColumn: Row Id
+        sourceColumn: _row_id
 
         annotation SummarizationSetBy = Automatic
 
@@ -20,7 +20,7 @@ table 'Returns'
     column 'Order_ID'
         dataType: string
         summarizeBy: none
-        sourceColumn: Order ID
+        sourceColumn: Order_ID
 
         annotation SummarizationSetBy = Automatic
 
@@ -28,24 +28,24 @@ table 'Returns'
 
 
 
-    partition 'Returns' = m
+    partition 'Returns_' = m
         mode: import
         source = 
             let
 				Source = / * Connect to data source based on context * /,
 				#"Renamed Columns" = Table.RenameColumns(Source,
-				{{"OldRowId",
-				"Row Id"},
+				{{"OldRowID",
+				"_row_id"},
 				{"OldReturned",
 				"Returned"},
 				{"OldOrderID",
-				"Order ID"}}),
+				"Order_ID"}}),
 				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
-				{{"Row Id",
+				{{"_row_id",
 				Int64.Type},
 				{"Returned",
 				type text},
-				{"Order ID",
+				{"Order_ID",
 				type text}})
 			in
 				#"Changed Types"

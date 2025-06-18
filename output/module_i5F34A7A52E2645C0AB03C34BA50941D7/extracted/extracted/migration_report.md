@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: CognosModule
-- **Migration Date**: 2025-06-18 07:39:57
+- **Migration Date**: 2025-06-18 07:51:05
 
 ## Data Model
 
@@ -15,24 +15,24 @@
 - **Orders**
   - Columns: 22
   - Column details:
-    - Row Id (Int64)
-    - Row ID (Int64)
-    - Order ID (String)
-    - Order Date (DateTime)
-    - Ship Date (DateTime)
-    - Ship Mode (String)
-    - Customer ID (String)
-    - Customer Name (String)
+    - _row_id (Int64)
+    - Row_ID (Int64)
+    - Order_ID (String)
+    - Order_Date (DateTime)
+    - Ship_Date (DateTime)
+    - Ship_Mode (String)
+    - Customer_ID (String)
+    - Customer_Name (String)
     - Segment (String)
-    - Country/Region (String)
+    - Country_Region (String)
     - City (String)
-    - State/Province (String)
-    - Postal Code (String)
+    - State_Province (String)
+    - Postal_Code (String)
     - Region (String)
-    - Product ID (String)
+    - Product_ID (String)
     - Category (String)
-    - Sub-Category (String)
-    - Product Name (String)
+    - Sub_Category (String)
+    - Product_Name (String)
     - Sales (Double)
     - Quantity (Int64)
     - Discount (Double)
@@ -41,18 +41,18 @@
 - **People**
   - Columns: 5
   - Column details:
-    - Row Id (Int64)
-    - Regional Manager (String)
+    - _row_id (Int64)
+    - Regional_Manager (String)
     - Region (String)
     - Area (String)
     - Country (String)
 
-- **Returns**
+- **Returns_**
   - Columns: 3
   - Column details:
-    - Row Id (Int64)
+    - _row_id (Int64)
     - Returned (String)
-    - Order ID (String)
+    - Order_ID (String)
 
 
 ### Relationships
@@ -62,7 +62,7 @@
 
 ## Report
 
-- **Report ID**: report_ca603ab7-0270-44d3-8e64-37b5d973de7b
+- **Report ID**: report_e40bbb9e-c0c0-4255-9e04-4eca141d26cb
 - **Report Name**: CognosModule Report
 - **Pages**: 1
 

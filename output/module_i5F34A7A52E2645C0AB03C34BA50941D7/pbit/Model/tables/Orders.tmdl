@@ -4,7 +4,7 @@ table 'Orders'
     column '_row_id'
         dataType: int64
         summarizeBy: none
-        sourceColumn: Row Id
+        sourceColumn: _row_id
 
         annotation SummarizationSetBy = Automatic
 
@@ -12,7 +12,7 @@ table 'Orders'
     column 'Row_ID'
         dataType: int64
         summarizeBy: none
-        sourceColumn: Row ID
+        sourceColumn: Row_ID
 
         annotation SummarizationSetBy = Automatic
 
@@ -20,7 +20,7 @@ table 'Orders'
     column 'Order_ID'
         dataType: string
         summarizeBy: none
-        sourceColumn: Order ID
+        sourceColumn: Order_ID
 
         annotation SummarizationSetBy = Automatic
 
@@ -28,7 +28,7 @@ table 'Orders'
     column 'Order_Date'
         dataType: datetime
         summarizeBy: none
-        sourceColumn: Order Date
+        sourceColumn: Order_Date
 
         annotation SummarizationSetBy = Automatic
 
@@ -36,7 +36,7 @@ table 'Orders'
     column 'Ship_Date'
         dataType: datetime
         summarizeBy: none
-        sourceColumn: Ship Date
+        sourceColumn: Ship_Date
 
         annotation SummarizationSetBy = Automatic
 
@@ -44,7 +44,7 @@ table 'Orders'
     column 'Ship_Mode'
         dataType: string
         summarizeBy: none
-        sourceColumn: Ship Mode
+        sourceColumn: Ship_Mode
 
         annotation SummarizationSetBy = Automatic
 
@@ -52,7 +52,7 @@ table 'Orders'
     column 'Customer_ID'
         dataType: string
         summarizeBy: none
-        sourceColumn: Customer ID
+        sourceColumn: Customer_ID
 
         annotation SummarizationSetBy = Automatic
 
@@ -60,7 +60,7 @@ table 'Orders'
     column 'Customer_Name'
         dataType: string
         summarizeBy: none
-        sourceColumn: Customer Name
+        sourceColumn: Customer_Name
 
         annotation SummarizationSetBy = Automatic
 
@@ -76,7 +76,7 @@ table 'Orders'
     column 'Country_Region'
         dataType: string
         summarizeBy: none
-        sourceColumn: Country/Region
+        sourceColumn: Country_Region
 
         annotation SummarizationSetBy = Automatic
 
@@ -92,7 +92,7 @@ table 'Orders'
     column 'State_Province'
         dataType: string
         summarizeBy: none
-        sourceColumn: State/Province
+        sourceColumn: State_Province
 
         annotation SummarizationSetBy = Automatic
 
@@ -100,7 +100,7 @@ table 'Orders'
     column 'Postal_Code'
         dataType: string
         summarizeBy: none
-        sourceColumn: Postal Code
+        sourceColumn: Postal_Code
 
         annotation SummarizationSetBy = Automatic
 
@@ -116,7 +116,7 @@ table 'Orders'
     column 'Product_ID'
         dataType: string
         summarizeBy: none
-        sourceColumn: Product ID
+        sourceColumn: Product_ID
 
         annotation SummarizationSetBy = Automatic
 
@@ -132,7 +132,7 @@ table 'Orders'
     column 'Sub_Category'
         dataType: string
         summarizeBy: none
-        sourceColumn: Sub-Category
+        sourceColumn: Sub_Category
 
         annotation SummarizationSetBy = Automatic
 
@@ -140,7 +140,7 @@ table 'Orders'
     column 'Product_Name'
         dataType: string
         summarizeBy: none
-        sourceColumn: Product Name
+        sourceColumn: Product_Name
 
         annotation SummarizationSetBy = Automatic
 
@@ -185,32 +185,32 @@ table 'Orders'
         source = 
             let
 				Source = / * Connect to data source based on context * /,
-				#"Renamed Columns" = Table.RenameColumns(Source,
-				{{"Row Id",
-				"Row Id"},
-				{"Row ID",
-				"Row ID"},
-				{"Order ID",
-				"Order ID"},
-				{"Order Date",
-				"Order Date"},
-				{"Ship Date",
-				"Ship Date"},
-				{"Ship Mode",
-				"Ship Mode"},
-				{"Customer ID",
-				"Customer ID"},
-				{"Customer Name",
-				"Customer Name"},
+				#"Changed Type" = Table.TransformColumnTypes(Source,
+				{{"_row_id",
+				Int64.Type},
+				{"Row_ID",
+				Int64.Type},
+				{"Order_ID",
+				type text},
+				{"Order_Date",
+				type datetime},
+				{"Ship_Date",
+				type datetime},
+				{"Ship_Mode",
+				type text},
+				{"Customer_ID",
+				type text},
+				{"Customer_Name",
+				type text},
 				{"Segment",
-				"Segment"},
-				{"Country / Region",
-				"Country / Region"},
+				type text},
+				{"Country_Region",
+				type text},
 				{"City",
-				"City"},
-				{"State / Prov
+				type text},
+				{"State_Prov
 			in
-				ce", "State / Prov
+				ce", type text}, {"Postal_Code", type text}, {"Region", type text}, {"Product_ID", type text}, {"Category", type text}, {"Sub_Category", type text}, {"Product_Name", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}})
         
 
 

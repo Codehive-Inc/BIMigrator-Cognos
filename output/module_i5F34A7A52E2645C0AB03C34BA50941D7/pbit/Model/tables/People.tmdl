@@ -4,7 +4,7 @@ table 'People'
     column '_row_id'
         dataType: int64
         summarizeBy: none
-        sourceColumn: Row Id
+        sourceColumn: _row_id
 
         annotation SummarizationSetBy = Automatic
 
@@ -12,7 +12,7 @@ table 'People'
     column 'Regional_Manager'
         dataType: string
         summarizeBy: none
-        sourceColumn: Regional Manager
+        sourceColumn: Regional_Manager
 
         annotation SummarizationSetBy = Automatic
 
@@ -51,9 +51,9 @@ table 'People'
 				Source = / * Connect to data source based on context * /,
 				#"Renamed Columns" = Table.RenameColumns(Source,
 				{{"OldRowId",
-				"Row Id"},
+				"_row_id"},
 				{"OldRegionalManager",
-				"Regional Manager"},
+				"Regional_Manager"},
 				{"OldRegion",
 				"Region"},
 				{"OldArea",
@@ -61,9 +61,9 @@ table 'People'
 				{"OldCountry",
 				"Country"}}),
 				#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns",
-				{{"Row Id",
+				{{"_row_id",
 				Int64.Type},
-				{"Regional Manager",
+				{"Regional_Manager",
 				type text},
 				{"Region",
 				type text},

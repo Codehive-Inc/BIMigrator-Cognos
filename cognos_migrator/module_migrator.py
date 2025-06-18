@@ -320,7 +320,8 @@ class CognosModuleMigrator:
                 continue
                 
             # Create table
-            table_name = query_subject.get('label', subject_id) or subject_id
+            # Use identifier field for table name instead of label for more accurate naming
+            table_name = query_subject.get('identifier', subject_id) or subject_id
             table = Table(
                 name=table_name,
                 columns=[]
@@ -337,7 +338,8 @@ class CognosModuleMigrator:
                 if data_item.get('hidden', False) and skip_hidden:
                     continue
                     
-                column_name = data_item.get('label', '') or data_item.get('identifier', '')
+                # Use identifier field for column name instead of label for more accurate naming
+                column_name = data_item.get('identifier', '') or data_item.get('label', '')
                 source_column = data_item.get('identifier', '')
                 data_type = data_item.get('powerbi_datatype', 'String')
                 
