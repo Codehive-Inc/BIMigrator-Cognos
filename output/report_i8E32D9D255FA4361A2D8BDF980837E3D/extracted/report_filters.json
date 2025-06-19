@@ -1,0 +1,14 @@
+[
+  {
+    "id": "detail_filter_0_0",
+    "type": "detail",
+    "queryName": "Query1",
+    "expression": "[As Of Date] = ?_as_of_date?"
+  },
+  {
+    "id": "detail_filter_0_1",
+    "type": "detail",
+    "queryName": "Query1",
+    "expression": "[Time Perspective] = ?Time Perspective?"
+  }
+]

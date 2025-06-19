@@ -1,0 +1,38 @@
+{
+  "People": [
+    {
+      "name": "Country Hier",
+      "levels": [
+        {
+          "column": "Country",
+          "name": "Country"
+        },
+        {
+          "column": "Area",
+          "name": "Area"
+        },
+        {
+          "column": "Region",
+          "name": "Region"
+        }
+      ]
+    },
+    {
+      "name": "Country - Region",
+      "levels": [
+        {
+          "column": "Country",
+          "name": "Country"
+        },
+        {
+          "column": "Area",
+          "name": "Area"
+        },
+        {
+          "column": "Region",
+          "name": "Region"
+        }
+      ]
+    }
+  ]
+}

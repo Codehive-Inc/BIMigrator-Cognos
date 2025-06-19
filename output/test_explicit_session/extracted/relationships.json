@@ -1,0 +1,32 @@
+{
+  "relationships": [
+    {
+      "id": "e40d25bc-27ef-4587-a7f4-ec71916ee873",
+      "from_table": "Orders",
+      "from_column": "Region",
+      "to_table": "People",
+      "to_column": "Region",
+      "cardinality": "many",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "",
+      "from_datasource_caption": "",
+      "to_datasource_id": "",
+      "to_datasource_caption": ""
+    },
+    {
+      "id": "d251a3a6-23bf-45a9-83fc-0f8933d0954f",
+      "from_table": "Orders",
+      "from_column": "Order_ID",
+      "to_table": "Returns_",
+      "to_column": "Order_ID",
+      "cardinality": "many",
+      "cross_filter_behavior": "OneDirection",
+      "is_active": true,
+      "from_datasource_id": "",
+      "from_datasource_caption": "",
+      "to_datasource_id": "",
+      "to_datasource_caption": ""
+    }
+  ]
+}
