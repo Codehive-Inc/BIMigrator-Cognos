@@ -789,31 +789,24 @@ class CognosMigrator:
                            progress=60, 
                            message_type="info")
             
-            from cognos_migrator.processors import ModuleProcessor
-            
-            processor = ModuleProcessor(str(output_path))
-            
-            # Load module information
-            if not processor.load_module_info():
-                self.logger.warning('Failed to load module information for post-processing')
-                logging_helper(message=f"Failed to load module information for post-processing", 
-                               progress=60, 
-                               message_type="warning")
-            
-            # Process report files
-            self.logger.info('Processing report files with module information')
-            logging_helper(message=f"Processing report files with module information", 
-                           progress=80, 
-                           message_type="info")
-            processor.process_report_files()
-            
-            # Generate module documentation
-            self.logger.info('Generating module documentation')
-            logging_helper(message=f"Summarizing module completion", 
-                           progress=100, 
-                           message_type="info")
-            processor.generate_module_documentation()
-            
+            # Use the new module migrator approach
+            try:
+                from cognos_migrator.module_migrator import CognosModuleMigrator
+                module_migrator = CognosModuleMigrator(self.config)
+                
+                # Process the module with existing reports
+                successful_report_ids = [report_id for report_id, success in folder_results.items() if success]
+                module_migrator.post_process_module(module_id, str(output_path), successful_report_ids)
+                
+                logging_helper(message=f"Module post-processing completed successfully", 
+                              progress=100, 
+                              message_type="info")
+            except Exception as e:
+                self.logger.error(f"Error during module post-processing: {e}")
+                logging_helper(message=f"Error during module post-processing: {e}", 
+                              progress=80, 
+                              message_type="error")
+                
             # Generate module-level summary
             successful = sum(1 for success in folder_results.values() if success)
             total = len(folder_results)

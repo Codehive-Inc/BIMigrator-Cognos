@@ -89,6 +89,61 @@ class CognosModuleMigrator:
                 self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
                 self.logger.info(f"Successfully loaded CPF file: {cpf_file_path}")
     
+    def post_process_module(self, module_id: str, output_path: str, successful_report_ids: List[str] = None) -> bool:
+        """Post-process a migrated module with additional information
+        
+        Args:
+            module_id: ID of the Cognos module to migrate
+            output_path: Path where migration output is stored
+            successful_report_ids: List of successfully migrated report IDs
+            
+        Returns:
+            bool: True if post-processing was successful, False otherwise
+        """
+        try:
+            self.logger.info(f"Post-processing module {module_id} at {output_path}")
+            
+            # Load module information from extracted directory
+            output_path = Path(output_path)
+            extracted_dir = output_path / "extracted"
+            
+            # Check if module information exists
+            module_info_path = extracted_dir / "module_info.json"
+            if not module_info_path.exists():
+                self.logger.error(f"Module information not found at {module_info_path}")
+                return False
+                
+            # Load module information
+            with open(module_info_path, "r") as f:
+                module_info = json.load(f)
+                
+            # Generate documentation
+            self.logger.info("Generating module documentation")
+            docs_dir = output_path / "documentation"
+            docs_dir.mkdir(exist_ok=True)
+            
+            # Create a summary document
+            summary_path = docs_dir / "module_summary.md"
+            with open(summary_path, "w") as f:
+                f.write(f"# Module Migration Summary\n\n")
+                f.write(f"## Module Information\n\n")
+                f.write(f"- Module ID: {module_id}\n")
+                f.write(f"- Module Name: {module_info.get('name', 'Unknown')}\n")
+                f.write(f"- Migration Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                
+                f.write(f"## Migration Results\n\n")
+                f.write(f"- Reports Processed: {len(successful_report_ids) if successful_report_ids else 0}\n")
+                if successful_report_ids:
+                    f.write(f"- Successfully Migrated Reports: {len(successful_report_ids)}\n")
+                    f.write(f"- Report IDs: {', '.join(successful_report_ids)}\n")
+                    
+            self.logger.info(f"Generated module summary at {summary_path}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error during module post-processing: {e}")
+            return False
+    
     def migrate_module(self, module_id: str, output_path: str, report_ids: List[str] = None) -> bool:
         """Migrate a single Cognos module to Power BI
         
