@@ -8,6 +8,8 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
+from cognos_migrator.common.websocket_client import logging_helper
+
 from .utils import get_extracted_dir, save_json_to_extracted_dir
 
 from ..models import DataModel, Table, Relationship
@@ -31,7 +33,7 @@ class ModelFileGenerator:
         self.mquery_converter = mquery_converter
         self.logger = logging.getLogger(__name__)
     
-    def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Path:
+    def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None) -> Path:
         """Generate model files for Power BI template"""
         model_dir = output_dir / 'Model'
         model_dir.mkdir(exist_ok=True)
@@ -57,7 +59,7 @@ class ModelFileGenerator:
         self._generate_database_file(data_model, model_dir, report_name)
         
         # Generate table files
-        self._generate_table_files(data_model.tables, model_dir, report_spec, report_name, project_metadata)
+        self._generate_table_files(data_model.tables, model_dir, report_spec, report_name)
         
         # Generate relationships file
         if data_model.relationships:
@@ -73,6 +75,7 @@ class ModelFileGenerator:
         self._generate_expressions_file(data_model, model_dir)
         
         self.logger.info(f"Generated model files in: {model_dir}")
+        logging_helper(message=f"Generated model files in: {model_dir}", message_type="info")
         return model_dir
     
     def _generate_database_file(self, data_model: DataModel, model_dir: Path, report_name: Optional[str] = None):
@@ -106,7 +109,7 @@ class ModelFileGenerator:
             
         self.logger.info(f"Generated database file: {database_file}")
     
-    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None):
+    def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None):
         """Generate table/*.tmdl files"""
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
@@ -140,7 +143,7 @@ class ModelFileGenerator:
                     from cognos_migrator.models import Column, DataType
                     updated_columns = []
                     for item in data_items:
-                        column_name = item.get('name', 'Column')
+                        column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                         # Map Cognos data type to Power BI data type
                         data_type_str, _ = map_cognos_to_powerbi_datatype(item, self.logger)
                         try:
@@ -168,21 +171,13 @@ class ModelFileGenerator:
                     self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
                 
                 # Build table context with the data items
-                context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query, report_name, project_metadata)
+                context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
 
-                # Use report name for table file if available, otherwise use original table name
-                table_name = table.name
-                if report_name and table.name == "Data":
-                    # Replace spaces with underscores and remove special characters for filename
-                    safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-                    table_name = safe_report_name
-                    self.logger.info(f"Renaming table file from '{table.name}' to '{table_name}'")
-                
-                # Write table file
-                table_file = tables_dir / f"{table_name}.tmdl"
+                # Write table file using the table name (which is already properly set)
+                table_file = tables_dir / f"{table.name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
                 
@@ -228,20 +223,22 @@ class ModelFileGenerator:
 
                             
                             # Log the data type mapping for debugging
-                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                             
                             
-                            column_name = item.get('name', 'Column')
+                            column_name = item.get('identifier', 'Column')  # Using 'identifier' field for column naming
                             is_calculation = item.get('type') == 'calculation'
-                            
+                            source_column = item.get('identifier', column_name)  # Use identifier for source_column as well
                             # Use DAX formula for calculated columns if available
-                            source_column = column_name
                             if is_calculation and column_name in calculations_map:
                                 source_column = calculations_map[column_name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
                             
+                            # Get the identifier directly for source_name
+                            source_name = item.get('identifier', column_name)
+                            
                             column_json = {
-                                "source_name": column_name,
+                                "source_name": source_name,  # Use identifier for source_name
                                 "datatype": data_type,
                                 "format_string": None,
                                 "lineage_tag": None,
@@ -268,8 +265,11 @@ class ModelFileGenerator:
                                 source_column = calculations_map[col.name]
                                 self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
                             
+                            # For table columns, use source_column if available as the source_name
+                            source_name = getattr(col, 'source_column', col.name)
+                            
                             column_json = {
-                                "source_name": col.name,
+                                "source_name": source_name,  # Use source_column if available, otherwise col.name
                                 "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                                 "format_string": getattr(col, 'format_string', None),
                                 "lineage_tag": getattr(col, 'lineage_tag', None),
@@ -328,13 +328,17 @@ class ModelFileGenerator:
                         error_content += f"        sourceColumn: {column.name}\n\n"
                         error_content += f"        annotation SummarizationSetBy = User\n\n"
                 
-                # Add partition with error information
-                error_content += f"\n\n\n    partition '{table.name}-partition' = m\n"
+                # Add partition with error information - use the table name without -partition suffix
+                error_content += f"\n\n\n    partition '{table.name}' = m\n"
                 error_content += f"        mode: import\n"
                 error_content += f"        source = \n"
-                error_content += f"            // ERROR: Failed to generate M-query for {table.name}\n"
-                error_content += f"// {str(e)}\n"
-                error_content += f"let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource\n"
+                # Create a valid M-query with proper indentation that will work with pbi-tools
+                # Put the error information in a proper M-query comment
+                error_content += f"            let\n"
+                error_content += f"                /* ERROR: {str(e).replace('*/', '*\/').strip()} */\n"
+                error_content += f"                Source = Table.FromRows({{}})\n"
+                error_content += f"            in\n"
+                error_content += f"                Source\n"
                 error_content += f"        \n\n\n\n"
                 error_content += f"    annotation PBI_ResultType = Table\n"
                 
@@ -345,15 +349,9 @@ class ModelFileGenerator:
                     
                 self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
     
-    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None) -> Dict[str, Any]:
         """Build context for table template"""
-        # Use report name for table name if available and if table name is 'Data'
-        table_name = table.name
-        if report_name and table.name == "Data":
-            # Replace spaces with underscores and remove special characters
-            safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-            table_name = safe_report_name
-            self.logger.info(f"Using report name '{report_name}' for table name instead of '{table.name}'")
+        # Table name is already properly set when the table was created
         
         columns = []
         
@@ -402,23 +400,26 @@ class ModelFileGenerator:
                 data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
                 
                 # Log the data type mapping for debugging
-                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('identifier')}")
                 
                 # Determine the appropriate SummarizationSetBy annotation value
                 summarization_set_by = 'User' if summarize_by != 'none' else 'Automatic'
                 
-                column_name = item.get('name', 'Column')
+                column_name = item.get('identifier', 'Column')  # Using 'identifier' field for more accurate column naming
                 is_calculation = item.get('type') == 'calculation'
-                source_column = column_name
+                source_column = item.get('identifier', column_name)  # Use identifier for source_column as well
                 
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
                 
+                # Get the identifier directly from the item for source_name to ensure we use the correct field
+                source_name = item.get('identifier', column_name)
+                
                 column = {
                     'name': column_name,
-                    'source_name': column_name,
+                    'source_name': source_name,  # Use the identifier directly for source_name
                     'datatype': data_type,
                     'source_column': source_column,
                     'is_calculated': is_calculation,
@@ -432,16 +433,20 @@ class ModelFileGenerator:
             for col in table.columns:
                 column_name = col.name
                 is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
-                source_column = column_name
+                source_column = getattr(col, 'source_column', column_name)  # Use source_column attribute if available
                 
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
                 
+                # For table columns, we'll use the raw column name as the source_name
+                # This is the equivalent of using the identifier in the data items case
+                source_name = getattr(col, 'source_column', column_name)
+                
                 column = {
                     'name': column_name,
-                    'source_name': column_name,
+                    'source_name': source_name,  # Use source_column if available, otherwise column_name
                     'datatype': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
                     'source_column': source_column,
                     'is_calculated': is_calculation,
@@ -466,25 +471,20 @@ class ModelFileGenerator:
         
         # Add partition information to the context
         partitions = []
-        
-        # Skip partition preparation for module migrations
-        is_module_migration = project_metadata.get('is_module_migration', False) if project_metadata else False
-        if is_module_migration:
-            self.logger.info(f"Skipping partition preparation for module migration: {table_name}")
-        elif m_expression:
+        if m_expression:
             partitions.append({
-                'name': table_name,
+                'name': table.name,
                 'source_type': 'm',
                 'expression': m_expression
             })
         
         context = {
-            'name': table_name,
-            'table_name': table_name,
-            'source_name': table_name,
+            'name': table.name,
+            'table_name': table.name,
+            'source_name': table.name,
             'columns': columns,
             'partitions': partitions,
-            'partition_name': f"{table_name}-partition",
+            'partition_name': f"{table.name}-partition",
             'm_expression': m_expression
         }
         
@@ -513,18 +513,16 @@ class ModelFileGenerator:
         """Generate relationships.tmdl file"""
         relationships_context = []
         for rel in relationships:
-            relationship_data = {
+            relationships_context.append({
                 'id': rel.name,  # Use name as the ID for the template
-                'name': rel.name,
                 'from_table': rel.from_table,
                 'from_column': rel.from_column,
                 'to_table': rel.to_table,
                 'to_column': rel.to_column,
                 'cardinality': rel.cardinality,
-                'cross_filter_direction': rel.cross_filter_direction,
+                'cross_filter_behavior': rel.cross_filter_direction,  # Match template's expected field name
                 'is_active': rel.is_active
-            }
-            relationships_context.append(relationship_data)
+            })
             
         context = {
             'relationships': relationships_context
@@ -613,8 +611,7 @@ class ModelFileGenerator:
         
         content = self.template_engine.render('culture', context)
         
-        culture_code = data_model.culture or 'en-US'
-        culture_file = model_dir / 'cultures' / f'{culture_code}.tmdl'
+        culture_file = model_dir / 'cultures' / 'culture.tmdl'
         culture_file.parent.mkdir(exist_ok=True)
         with open(culture_file, 'w', encoding='utf-8') as f:
             f.write(content)

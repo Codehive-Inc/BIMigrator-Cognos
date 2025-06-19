@@ -21,6 +21,7 @@ from cognos_migrator.converters import ExpressionConverter
 from .client import CognosClient
 from .module_parser import CognosModuleParser
 from .generators import PowerBIProjectGenerator, DocumentationGenerator
+from .generators.module_generators import ModuleModelFileGenerator
 from .models import (
     CognosModule, PowerBIProject, DataModel, Report, 
     Table, Column, Relationship, Measure, ReportPage
@@ -41,12 +42,28 @@ class CognosModuleMigrator:
         
         self.cognos_client = CognosClient(cognos_config, base_url, session_key)
         self.module_parser = CognosModuleParser(client=self.cognos_client)
-        self.project_generator = PowerBIProjectGenerator(config)
-        self.doc_generator = DocumentationGenerator(config)
         
-        # Initialize LLM service client for expression conversion
+        # Initialize LLM service client for expression conversion and M-query generation
         from cognos_migrator.llm_service import LLMServiceClient
         self.llm_service_client = LLMServiceClient()
+        
+        # Create a standard PowerBIProjectGenerator
+        self.project_generator = PowerBIProjectGenerator(config)
+        
+        # Replace the standard ModelFileGenerator with the ModuleModelFileGenerator
+        # This ensures module-specific enhancements are applied during model file generation
+        if hasattr(self.project_generator, 'model_file_generator'):
+            # Initialize template engine from the project generator
+            template_engine = self.project_generator.template_engine
+            # Initialize the module-specific model file generator
+            module_model_file_generator = ModuleModelFileGenerator(template_engine, self.project_generator.mquery_converter)
+            # Replace the standard model file generator with the module-specific one
+            self.project_generator.model_file_generator = module_model_file_generator
+            self.logger.info("Using ModuleModelFileGenerator for module migration")
+        
+        self.doc_generator = DocumentationGenerator(config)
+        
+        # LLM service client already initialized above
         
         # Initialize expression converter with LLM service
         self.expression_converter = ExpressionConverter(llm_service_client=self.llm_service_client, logger=self.logger)
