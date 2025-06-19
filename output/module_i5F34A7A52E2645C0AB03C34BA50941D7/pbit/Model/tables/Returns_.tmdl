@@ -2,40 +2,41 @@ table 'Returns_'
 
 
     column '_row_id'
-        dataType: string
+        dataType: int64
         summarizeBy: none
         sourceColumn: _row_id
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
-
+        
     column 'Returned'
         dataType: string
         summarizeBy: none
         sourceColumn: Returned
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
-
+        
     column 'Order_ID'
         dataType: string
         summarizeBy: none
         sourceColumn: Order_ID
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
-
-    partition 'Returns_-partition' = m
+    partition 'Returns_' = m
         mode: import
         source = 
-            // ERROR: Failed to generate M-query for Returns_
-// ModuleModelFileGenerator._build_table_context() takes from 2 to 7 positional arguments but 8 were given
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = /* Connect to data source based on context */,
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"_row_id", Int64.Type}, {"Returned", type text}, {"Order_ID", type text}}),
+					#"Final Selected Columns" = Table.SelectColumns(#"Changed Types", {"_row_id", "Returned", "Order_ID"})
+				in
+					#"Final Selected Columns"
         
 
 

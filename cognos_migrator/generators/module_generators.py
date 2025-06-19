@@ -30,10 +30,11 @@ class ModuleModelFileGenerator(ModelFileGenerator):
         
     def _build_table_context(self, table: Table, report_spec: Optional[str] = None, 
                            data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, 
-                           m_query: Optional[str] = None, report_name: Optional[str] = None) -> Dict[str, Any]:
+                           m_query: Optional[str] = None, report_name: Optional[str] = None, 
+                           project_metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Build context for table template with module-specific enhancements"""
         # Get base context from parent class
-        context = super()._build_table_context(table, report_spec, data_items, extracted_dir, m_query, report_name)
+        context = super()._build_table_context(table, report_spec, data_items, extracted_dir, m_query, report_name, project_metadata)
         
         # Add module-specific metadata to the context
         context['is_module_table'] = True

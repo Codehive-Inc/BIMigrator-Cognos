@@ -2,56 +2,57 @@ table 'People'
 
 
     column '_row_id'
-        dataType: string
+        dataType: int64
         summarizeBy: none
         sourceColumn: _row_id
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
-
+        
     column 'Regional_Manager'
         dataType: string
         summarizeBy: none
         sourceColumn: Regional_Manager
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
-
+        
     column 'Region'
         dataType: string
         summarizeBy: none
         sourceColumn: Region
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
-
+        
     column 'Area'
         dataType: string
         summarizeBy: none
         sourceColumn: Area
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
 
-
+        
     column 'Country'
         dataType: string
         summarizeBy: none
         sourceColumn: Country
 
-        annotation SummarizationSetBy = User
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
-
-    partition 'People-partition' = m
+    partition 'People' = m
         mode: import
         source = 
-            // ERROR: Failed to generate M-query for People
-// ModuleModelFileGenerator._build_table_context() takes from 2 to 7 positional arguments but 8 were given
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = /* Connect to data source based on context */,
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"OldRowId", "_row_id"}, {"OldRegionalManager", "Regional_Manager"}, {"OldRegion", "Region"}, {"OldArea", "Area"}, {"OldCountry", "Country"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"_row_id", Int64.Type}, {"Regional_Manager", type text}, {"Region", type text}, {"Area", type text}, {"Country", type text}})
+				in
+					#"Changed Types"
         
 
 
