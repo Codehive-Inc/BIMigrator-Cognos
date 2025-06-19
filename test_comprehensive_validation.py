@@ -33,7 +33,7 @@ def test_invalid_session():
     print("🔴 === Testing with INVALID Session Key ===")
     
     cognos_url = 'http://20.244.32.126:9300/api/v1'
-    invalid_session = 'CAM_INVALID_SESSION_KEY_FOR_TESTING'
+    invalid_session = 'CAM MTsxMDE6ZmYzMmU3NDktMmI4My05YzA5LWRmZDktZTJjNWZjMjgxZmIzOjM3NjI3MzM1MDI7MDszOzA7'
     module_id = 'i5F34A7A52E2645C0AB03C34BA50941D7'
     output_path = './output/test_invalid_session'
     
@@ -92,7 +92,7 @@ def test_class_instantiation():
     print("\n🔵 === Testing CognosModuleMigratorExplicit Class ===")
     
     cognos_url = 'http://20.244.32.126:9300/api/v1'
-    invalid_session = 'CAM_INVALID_SESSION_KEY_FOR_TESTING'
+    invalid_session = 'CAM MTsxMDE6ZmYzMmU3NDktMmI4My05YzA5LWRmZDktZTJjNWZjMjgxZmIzOjM3NjI3MzM1MDI7MDszOzA7'
     output_path = './output/test_class_invalid'
     
     try:
