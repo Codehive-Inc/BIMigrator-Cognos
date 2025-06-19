@@ -2,26 +2,55 @@
 
 ## Overview
 
-The data model generation process creates a Power BI data model from the parsed Cognos report structure, including tables, columns, measures, and relationships.
+The data model generation process creates a Power BI data model from either a Cognos report specification or a Cognos data module. This includes tables, columns, measures, and relationships.
 
-## Process Flow
+## Common Process Flow
 
-1. **Create Data Model Structure**
-   - Create tables based on data sources in the report
-   - Define columns with appropriate data types
-   - Create measures from calculations
+Both report and module data model generation follow these common steps:
 
-2. **Process Module Information**
-   - Extract module metadata using `ModuleParser`
-   - Map Cognos module structure to Power BI tables
+1. **Create Tables**
+   - Create table objects with appropriate properties
+   - Set table properties (name, description)
 
-3. **Generate Relationships**
+2. **Create Columns**
+   - Create columns for each data item or module column
+   - Set column properties (name, data type, format)
+   - Handle calculated columns
+
+3. **Create Measures**
+   - Create measure objects with expressions
+   - Convert Cognos expressions to DAX
+
+4. **Create Relationships**
    - Identify relationships between tables
-   - Define cardinality and cross-filter direction
+   - Set cardinality and cross-filter direction
+   - Ensure relationship names are used as identifiers
 
-4. **Enhance with CPF Metadata (if available)**
-   - Incorporate metadata from Cognos package files
-   - Enhance data model with additional information
+## Report-Specific Data Model Generation
+
+Report data model generation includes these additional steps:
+
+1. **Extract Data Items**
+   - Identify data items used in the report
+   - Extract column names, data types, and expressions
+   - Group data items by source table
+
+2. **Infer Relationships**
+   - Analyze report structure to infer relationships
+   - Use query information to determine table connections
+
+## Module-Specific Data Model Generation
+
+Module data model generation includes these additional steps:
+
+1. **Extract Module Structure**
+   - Parse module specification to extract table definitions
+   - Identify explicit relationships defined in the module
+   - Extract module-specific metadata
+
+2. **Preserve Module Relationships**
+   - Maintain relationship properties from the module
+   - Use relationship names as identifiers in the generated model
 
 ## Key Components
 
