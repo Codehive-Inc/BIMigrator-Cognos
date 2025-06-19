@@ -4,27 +4,57 @@
 
 The Power BI project generation process creates the necessary files for a Power BI template (.pbit) from the data model and report structure. This includes generating TMDL (Tabular Model Definition Language) files and report JSON files.
 
-## Process Flow
+The BIMigrator-Cognos tool supports two types of Power BI project generation:
+
+1. **Report Generation**: Creates a Power BI report with visuals and a data model
+2. **Module Generation**: Creates a Power BI dataset from a Cognos data module
+
+## Common Process Flow
+
+Both report and module generation follow these common steps:
 
 1. **Initialize Project Structure**
    - Create directory structure for Power BI project
    - Set up Model and Report directories
 
-2. **Generate Model Files**
+2. **Generate Core Model Files**
    - Create database.tmdl file
-   - Create model.tmdl file
+   - Create model.tmdl file with appropriate PBIDesktopVersion annotation
    - Generate table files for each table
-   - Generate relationships.tmdl file
+   - Generate relationships.tmdl file using relationship names as IDs
    - Generate expressions.tmdl file (for measures)
+   - Generate culture files with correct naming (e.g., en-US.tmdl) and version (1.0.0)
 
-3. **Generate Report Files**
-   - Create report.json file
-   - Create config.json file
-   - Generate section files for each page
-   - Create visual containers
-
-4. **Generate Metadata Files**
+3. **Generate Metadata Files**
    - Create metadata files required by Power BI
+
+## Report-Specific Generation
+
+Report generation includes these additional steps:
+
+1. **Generate Report Files**
+   - Create report.json file with visual definitions
+   - Create config.json file with report settings
+   - Generate section files for each page
+   - Create visual containers mapped from Cognos visuals
+
+2. **Generate Visual Layout**
+   - Position visuals according to Cognos layout
+   - Apply formatting and styling
+   - Configure interactions between visuals
+
+## Module-Specific Generation
+
+Module generation includes these additional steps:
+
+1. **Generate Module-Specific Model Files**
+   - Create tables with appropriate structure for modules
+   - Generate relationships with correct cardinality
+   - Preserve module-specific metadata
+
+2. **Generate Basic Report Structure**
+   - Create minimal report structure without visuals
+   - Set up appropriate configuration for dataset usage
 
 ## Key Components
 
