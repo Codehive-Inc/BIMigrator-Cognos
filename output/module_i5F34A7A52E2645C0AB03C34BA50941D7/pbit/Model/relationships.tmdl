@@ -1,10 +1,10 @@
-relationship 12eaaab3-19c6-44cb-8d09-7d6e934d456e
+relationship 364837bb-85b3-4d8e-9999-a8be9dc648e9
 	fromColumn: 'Orders'.Region
 	toColumn: 'People'.Region
 	fromCardinality: many
 	isActive: True
 
-relationship 61763451-a945-4da5-9aad-48135590c8bf
+relationship b057df17-d193-4aba-90fd-0de781024ad8
 	fromColumn: 'Orders'.Order_ID
 	toColumn: 'Returns_'.Order_ID
 	fromCardinality: many

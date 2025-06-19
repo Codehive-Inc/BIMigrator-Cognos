@@ -59,7 +59,7 @@
     {
       "name": "Returns_",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"_row_id\", Int64.Type}, {\"Returned\", type text}, {\"Order_ID\", type text}}),\n\t\t\t\t\t#\"Final Selected Columns\" = Table.SelectColumns(#\"Changed Types\", {\"_row_id\", \"Returned\", \"Order_ID\"})\n\t\t\t\tin\n\t\t\t\t\t#\"Final Selected Columns\""
+      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"OldRowID\", \"_row_id\"}, {\"OldReturned\", \"Returned\"}, {\"OldOrderID\", \"Order_ID\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"_row_id\", Int64.Type}, {\"Returned\", type text}, {\"Order_ID\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

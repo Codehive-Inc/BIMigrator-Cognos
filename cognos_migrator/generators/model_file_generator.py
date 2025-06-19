@@ -578,7 +578,7 @@ class ModelFileGenerator:
             'default_culture': data_model.culture or 'en-US',
             'tables': table_names,
             'time_intelligence_enabled': getattr(data_model, 'time_intelligence_enabled', '0'),
-            'desktop_version': getattr(data_model, 'desktop_version', '2.141.1253.0')
+            'desktop_version': getattr(data_model, 'desktop_version', '2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729')
         }
         
         content = self.template_engine.render('model', context)
@@ -604,7 +604,7 @@ class ModelFileGenerator:
     def _generate_culture_file(self, data_model: DataModel, model_dir: Path):
         """Generate culture.tmdl file"""
         # Get the version from data_model if available, otherwise use a default version
-        version = getattr(data_model, 'version', '1.0') if hasattr(data_model, 'version') else '1.0'
+        version = getattr(data_model, 'version', '1.0.0') if hasattr(data_model, 'version') else '1.0.0'
         
         context = {
             'culture': data_model.culture or 'en-US',
@@ -613,7 +613,8 @@ class ModelFileGenerator:
         
         content = self.template_engine.render('culture', context)
         
-        culture_file = model_dir / 'cultures' / 'culture.tmdl'
+        culture_code = data_model.culture or 'en-US'
+        culture_file = model_dir / 'cultures' / f'{culture_code}.tmdl'
         culture_file.parent.mkdir(exist_ok=True)
         with open(culture_file, 'w', encoding='utf-8') as f:
             f.write(content)

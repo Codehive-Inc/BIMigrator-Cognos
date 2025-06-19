@@ -611,7 +611,8 @@ class ModuleModelFileGenerator:
         
         content = self.template_engine.render('culture', context)
         
-        culture_file = model_dir / 'cultures' / 'culture.tmdl'
+        culture_code = data_model.culture or 'en-US'
+        culture_file = model_dir / 'cultures' / f'{culture_code}.tmdl'
         culture_file.parent.mkdir(exist_ok=True)
         with open(culture_file, 'w', encoding='utf-8') as f:
             f.write(content)
