@@ -229,6 +229,17 @@ python test_comprehensive_validation.py "YOUR_VALID_SESSION_KEY"
 python example_explicit_session_usage.py
 ```
 
+### Enhanced Functionality:
+The explicit session functions now have **complete feature parity** with the original `CognosModuleMigrator`:
+
+✅ **Report calculations collection** - Properly processes `report_ids` and extracts calculations from associated reports
+✅ **Comprehensive data extraction** - All extractors with individual error handling (structure, queries, data items, relationships, hierarchies, source data)
+✅ **Complete parsed module structure** - Creates full `parsed_module.json` with all components combined
+✅ **Advanced Power BI conversion** - Uses `_convert_cognos_to_powerbi` with data model, tables, columns, measures, and relationships
+✅ **CPF metadata enhancement** - Supports CPF file processing if provided
+✅ **Enhanced project generation** - Uses full `generate_project` and `generate_migration_report` methods
+✅ **Detailed progress tracking** - Enhanced WebSocket integration with 15+ progress checkpoints
+
 ### Validation Results:
 ✅ **All methods properly validate session keys before proceeding**
 ✅ **Invalid/expired sessions immediately raise `CognosAPIError`**
@@ -236,3 +247,4 @@ python example_explicit_session_usage.py
 ✅ **WebSocket integration provides real-time progress tracking**
 ✅ **Proper error handling at all levels (connection, migration, post-processing)**
 ✅ **Class instantiation works with both valid and invalid sessions**
+✅ **Full functionality preserved** - No missing features compared to original implementation

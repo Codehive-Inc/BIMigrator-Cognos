@@ -375,7 +375,9 @@ class CognosModuleMigratorExplicit:
                 with open(extracted_dir / "associated_reports.json", 'w', encoding='utf-8') as f:
                     json.dump({"report_ids": report_ids}, f, indent=2)
             
-            # Extract module components
+            # Step 3: Extract module components using specialized extractors
+            # Each extractor will save its output to JSON files in the extracted directory
+            # Convert module_metadata to JSON string for extractors
             logging_helper(
                 message="Starting module component extraction",
                 progress=40,
@@ -384,67 +386,194 @@ class CognosModuleMigratorExplicit:
             
             module_metadata_json = json.dumps(module_metadata)
             
-            # Run all extractors
+            self.logger.info("Extracting module structure")
             logging_helper(
-                message="Extracting module structure and components",
+                message="Extracting module structure",
+                progress=45,
+                message_type="info"
+            )
+            try:
+                module_structure = self.module_structure_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting module structure: {e}")
+                module_structure = {}
+            
+            self.logger.info("Extracting query subjects and items")
+            logging_helper(
+                message="Extracting query subjects and items",
                 progress=50,
                 message_type="info"
             )
+            try:
+                query_data = self.module_query_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting query subjects: {e}")
+                query_data = {}
             
-            self.module_structure_extractor.extract_and_save(module_metadata_json, extracted_dir)
-            self.module_query_extractor.extract_and_save(module_metadata_json, extracted_dir)
-            self.module_data_item_extractor.extract_and_save(module_metadata_json, extracted_dir)
-            self.module_relationship_extractor.extract_and_save(module_metadata_json, extracted_dir)
-            self.module_hierarchy_extractor.extract_and_save(module_metadata_json, extracted_dir)
-            self.module_source_extractor.extract_and_save(module_metadata_json, extracted_dir)
-            
-            # Generate Power BI project files
-            self.logger.info("Generating Power BI project files")
+            self.logger.info("Extracting data items and calculated items")
             logging_helper(
-                message="Generating Power BI project files",
+                message="Extracting data items and calculated items",
+                progress=55,
+                message_type="info"
+            )
+            try:
+                data_items = self.module_data_item_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting data items: {e}")
+                data_items = {}
+            
+            self.logger.info("Extracting relationships")
+            logging_helper(
+                message="Extracting relationships",
+                progress=60,
+                message_type="info"
+            )
+            try:
+                relationships = self.module_relationship_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting relationships: {e}")
+                relationships = {}
+            
+            self.logger.info("Extracting hierarchies")
+            logging_helper(
+                message="Extracting hierarchies",
+                progress=65,
+                message_type="info"
+            )
+            try:
+                hierarchies = self.module_hierarchy_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting hierarchies: {e}")
+                hierarchies = {}
+                
+            self.logger.info("Extracting source data information")
+            logging_helper(
+                message="Extracting source data information",
+                progress=68,
+                message_type="info"
+            )
+            try:
+                source_data = self.module_source_extractor.extract_and_save(module_metadata_json, extracted_dir)
+            except Exception as e:
+                self.logger.error(f"Error extracting source data: {e}")
+                source_data = {}
+            
+            self.logger.info("Collecting calculations from reports")
+            logging_helper(
+                message="Collecting calculations from reports",
                 progress=70,
                 message_type="info"
             )
+            try:
+                if report_ids:
+                    # Use the new method to collect calculations from reports
+                    calculations = self.module_expression_extractor.collect_report_calculations(
+                        report_ids, output_path, extracted_dir
+                    )
+                else:
+                    self.logger.warning("No report IDs provided, skipping calculation collection")
+                    calculations = {"calculations": []}
+            except Exception as e:
+                self.logger.error(f"Error collecting calculations from reports: {e}")
+                calculations = {"calculations": []}
             
-            cognos_module = CognosModule(
-                id=module_id,
-                name=module_info.get('defaultName', 'Module'),
-                metadata=module_metadata
-            )
-            
-            # Parse and generate
+            # Combine all extracted data into a parsed module structure
             logging_helper(
-                message="Parsing module and generating Power BI structures",
-                progress=80,
+                message="Combining extracted data into parsed module structure",
+                progress=75,
+                message_type="info"
+            )
+            parsed_module = {
+                'metadata': module_structure,
+                'query_subjects': query_data.get('query_subjects', []),
+                'query_items': query_data.get('query_items', {}),
+                'data_items': data_items.get('data_items', {}),
+                'calculated_items': data_items.get('calculated_items', {}),
+                'relationships': relationships.get('cognos_relationships', []),
+                'powerbi_relationships': relationships.get('powerbi_relationships', []),
+                'hierarchies': hierarchies.get('cognos_hierarchies', []),
+                'powerbi_hierarchies': hierarchies.get('powerbi_hierarchies', {}),
+                'calculations': calculations.get('calculations', []),
+                'source_data': source_data.get('sources', []),
+                'raw_module': module_info,
+                'associated_reports': report_ids or []
+            }
+            
+            # Save the combined parsed module
+            parsed_module_path = extracted_dir / "parsed_module.json"
+            with open(parsed_module_path, 'w', encoding='utf-8') as f:
+                # Remove raw_module from the saved JSON to avoid duplication
+                parsed_module_to_save = {k: v for k, v in parsed_module.items() if k != 'raw_module'}
+                json.dump(parsed_module_to_save, f, indent=2)
+            
+            # Step 3: Convert to Power BI structures
+            logging_helper(
+                message="Converting Cognos module to Power BI structures",
+                progress=78,
+                message_type="info"
+            )
+            powerbi_project = self._convert_cognos_to_powerbi(parsed_module)
+            if not powerbi_project:
+                self.logger.error(f"Failed to convert module: {module_id}")
+                logging_helper(
+                    message=f"Failed to convert module: {module_id}",
+                    progress=78,
+                    message_type="error"
+                )
+                return False
+            
+            # If CPF metadata is available, enhance the Power BI project with it
+            if self.cpf_extractor and self.cpf_metadata_enhancer:
+                logging_helper(
+                    message="Enhancing project with CPF metadata",
+                    progress=82,
+                    message_type="info"
+                )
+                self.cpf_metadata_enhancer.enhance_project(powerbi_project)
+            
+            # Step 4: Generate Power BI project files
+            self.logger.info("Generating Power BI project files")
+            logging_helper(
+                message="Generating Power BI project files",
+                progress=85,
                 message_type="info"
             )
             
-            parsed_module = self.module_parser.parse_module(cognos_module)
-            powerbi_project = self.project_generator.generate_project(parsed_module)
+            success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
+            if not success:
+                self.logger.error(f"Failed to generate Power BI project files")
+                logging_helper(
+                    message="Failed to generate Power BI project files",
+                    progress=85,
+                    message_type="error"
+                )
+                return False
             
-            # Write project files
+            # Step 5: Generate documentation
             logging_helper(
-                message="Writing Power BI project files",
-                progress=90,
+                message="Generating migration documentation",
+                progress=92,
                 message_type="info"
             )
+            self.doc_generator.generate_migration_report(powerbi_project, extracted_dir)
             
-            self.project_generator.write_project(powerbi_project, str(pbit_dir))
+            # If CPF metadata is available, save it to the extracted folder
+            if self.cpf_extractor:
+                logging_helper(
+                    message="Saving CPF metadata",
+                    progress=95,
+                    message_type="info"
+                )
+                cpf_metadata_path = extracted_dir / "cpf_metadata.json"
+                self.cpf_extractor.parser.save_metadata_to_json(str(cpf_metadata_path))
+                self.logger.info(f"Saved CPF metadata to: {cpf_metadata_path}")
             
-            # Generate documentation
+            self.logger.info(f"Successfully migrated module {module_id} to {output_path}")
             logging_helper(
-                message="Generating documentation",
-                progress=95,
+                message=f"Successfully migrated module {module_id}",
+                progress=100,
                 message_type="info"
             )
-            
-            self.doc_generator.generate_module_documentation(
-                cognos_module=cognos_module,
-                powerbi_project=powerbi_project,
-                output_path=str(output_dir)
-            )
-            
-            self.logger.info(f"Module migration completed: {module_id}")
             return True
             
         except Exception as e:
@@ -455,6 +584,213 @@ class CognosModuleMigratorExplicit:
                 message_type="error"
             )
             return False
+
+    def _convert_cognos_to_powerbi(self, parsed_module: Dict[str, Any]) -> PowerBIProject:
+        """Convert parsed Cognos module to Power BI project
+        
+        Args:
+            parsed_module: Parsed module structure
+            
+        Returns:
+            Power BI project
+        """
+        try:
+            # Extract module name from raw module
+            raw_module = parsed_module.get('raw_module', {})
+            module_name = raw_module.get('name', 'CognosModule')
+            module_id = raw_module.get('id', '')
+            
+            # Create Power BI project
+            powerbi_project = PowerBIProject(
+                name=module_name
+            )
+            
+            # Create data model
+            data_model = self._create_data_model(parsed_module)
+            powerbi_project.data_model = data_model
+            
+            # Create report structure (empty report with tables)
+            report = self._create_report_structure(parsed_module, module_name)
+            powerbi_project.report = report
+            
+            # Add migration metadata
+            powerbi_project.migration_metadata = {
+                'source_type': 'cognos_module',
+                'source_id': module_id,
+                'source_name': module_name,
+                'migration_date': datetime.now().isoformat(),
+                'migrator_version': '1.0.0',
+                'associated_reports': parsed_module.get('associated_reports', [])
+            }
+            
+            return powerbi_project
+            
+        except Exception as e:
+            self.logger.error(f"Error converting module to Power BI: {e}")
+            return None
+    
+    def _create_data_model(self, parsed_module: Dict[str, Any]) -> DataModel:
+        """Create Power BI data model from parsed module
+        
+        Args:
+            parsed_module: Parsed module structure
+            
+        Returns:
+            Power BI data model
+        """
+        # Extract module name from raw module
+        raw_module = parsed_module.get('raw_module', {})
+        module_name = raw_module.get('name', 'CognosModule')
+        
+        # Initialize DataModel with required parameters
+        data_model = DataModel(
+            name=f"{module_name} Data Model",
+            tables=[]
+        )
+        
+        # Add tables
+        query_subjects = parsed_module.get('query_subjects', [])
+        data_items_by_subject = parsed_module.get('data_items', {})
+        
+        for query_subject in query_subjects:
+            subject_id = query_subject.get('identifier', '')
+            if not subject_id:
+                continue
+                
+            # Create table
+            table_name = query_subject.get('identifier', subject_id) or subject_id
+            table = Table(
+                name=table_name,
+                columns=[]
+            )
+            
+            # Store source ID in annotations
+            table.annotations['source_id'] = subject_id
+            
+            # Add columns
+            data_items = data_items_by_subject.get(subject_id, [])
+            for data_item in data_items:
+                # Skip hidden items if configured to do so
+                skip_hidden = getattr(self.config, 'skip_hidden_columns', False)
+                if data_item.get('hidden', False) and skip_hidden:
+                    continue
+                    
+                # Use identifier field for column name
+                column_name = data_item.get('identifier', '') or data_item.get('label', '')
+                source_column = data_item.get('identifier', '')
+                data_type = data_item.get('powerbi_datatype', 'String')
+                
+                column = Column(
+                    name=column_name,
+                    data_type=data_type,
+                    source_column=source_column,
+                    description=data_item.get('description', '')
+                )
+                
+                # Store additional metadata in annotations
+                column.annotations['format'] = data_item.get('powerbi_format', '')
+                column.annotations['is_hidden'] = data_item.get('hidden', False)
+                table.columns.append(column)
+            
+            # Add measures from calculated items
+            calculated_items_by_subject = parsed_module.get('calculated_items', {})
+            calculated_items = calculated_items_by_subject.get(subject_id, [])
+            
+            for calc_item in calculated_items:
+                item_id = calc_item.get('identifier', '')
+                if not item_id:
+                    continue
+                    
+                # Get DAX expression from the calculated item
+                dax_expression = calc_item.get('expression', '')
+                
+                measure = Measure(
+                    name=calc_item.get('label', '') or item_id,
+                    expression=dax_expression,
+                    description=calc_item.get('description', ''),
+                    format_string=self._determine_measure_format(calc_item)
+                )
+                table.measures.append(measure)
+            
+            # Add hierarchies
+            powerbi_hierarchies_by_table = parsed_module.get('powerbi_hierarchies', {})
+            table_hierarchies = powerbi_hierarchies_by_table.get(subject_id, [])
+            
+            # Check if table has hierarchies attribute, otherwise store in annotations
+            if hasattr(table, 'hierarchies'):
+                for hierarchy in table_hierarchies:
+                    table.hierarchies.append(hierarchy)
+            else:
+                # Store hierarchies in annotations if attribute is missing
+                if 'hierarchies' not in table.annotations:
+                    table.annotations['hierarchies'] = []
+                for hierarchy in table_hierarchies:
+                    table.annotations['hierarchies'].append(hierarchy)
+            
+            data_model.tables.append(table)
+        
+        # Add relationships
+        powerbi_relationships = parsed_module.get('powerbi_relationships', [])
+        relationship_objects = []
+        
+        for rel_dict in powerbi_relationships:
+            # Create Relationship object from dictionary
+            relationship = Relationship(
+                name=rel_dict.get('id', str(uuid.uuid4())),
+                from_table=rel_dict.get('from_table', ''),
+                from_column=rel_dict.get('from_column', ''),
+                to_table=rel_dict.get('to_table', ''),
+                to_column=rel_dict.get('to_column', ''),
+                cardinality=rel_dict.get('cardinality', 'many'),
+                cross_filter_direction=rel_dict.get('cross_filter_behavior', 'OneDirection'),
+                is_active=rel_dict.get('is_active', True)
+            )
+            relationship_objects.append(relationship)
+            
+        data_model.relationships = relationship_objects
+        return data_model
+    
+    def _create_report_structure(self, parsed_module: Dict[str, Any], module_name: str) -> Report:
+        """Create Power BI report structure from parsed module
+        
+        Args:
+            parsed_module: Parsed module structure
+            module_name: Name of the module
+            
+        Returns:
+            Power BI report structure
+        """
+        # Create a basic report structure
+        report = Report(
+            name=f"{module_name} Report",
+            pages=[]
+        )
+        
+        # Create a basic page showing the tables
+        page = ReportPage(
+            name="Module Overview",
+            visuals=[]
+        )
+        
+        report.pages.append(page)
+        return report
+    
+    def _determine_measure_format(self, calc_item: Dict[str, Any]) -> str:
+        """Determine format string for a measure
+        
+        Args:
+            calc_item: Calculated item data
+            
+        Returns:
+            Format string for the measure
+        """
+        # Basic format determination logic
+        format_hint = calc_item.get('powerbi_format', '')
+        if format_hint:
+            return format_hint
+            
+        # Default to general format
+        return "0"
 
 
 class CognosModuleMigrator:
