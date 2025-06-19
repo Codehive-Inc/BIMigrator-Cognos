@@ -533,8 +533,8 @@ def migrate_module(module_id: str, folder_id: str, output_path: Optional[str] = 
         else:
             logger.error("Module migration failed")
         
-        # Return the folder results for backward compatibility
-        return folder_results
+        # Return the results
+        return {'success': success, 'module_id': module_id, 'folder_id': folder_id, 'output_path': str(module_path)}
         
     except Exception as e:
         logger.error(f"Error during module migration: {e}")
