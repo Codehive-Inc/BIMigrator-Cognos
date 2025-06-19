@@ -10,12 +10,12 @@ from typing import Dict, List, Optional, Any, Tuple
 
 from cognos_migrator.common.websocket_client import logging_helper
 
-from .utils import get_extracted_dir, save_json_to_extracted_dir
+from cognos_migrator.generators.utils import get_extracted_dir, save_json_to_extracted_dir
 
-from ..models import DataModel, Table, Relationship
-from ..converters import MQueryConverter
-from ..utils.datatype_mapper import map_cognos_to_powerbi_datatype
-from .template_engine import TemplateEngine
+from cognos_migrator.models import DataModel, Table, Relationship
+from cognos_migrator.converters import MQueryConverter
+from cognos_migrator.utils.datatype_mapper import map_cognos_to_powerbi_datatype
+from cognos_migrator.generators.template_engine import TemplateEngine
 
 
 class ModuleModelFileGenerator:
