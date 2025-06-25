@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
 """
-Test script for migrate_module_with_explicit_session function
+Test script for cognos_migrator package - explicit session migration functions
 
-This script demonstrates how to test the migrate_module_with_explicit_session
-function that takes explicit cognos_url and session_key parameters without
-using environment variables.
+This is the only test file needed for the refactored cognos_migrator package.
+Tests all essential functions exposed in the public API.
 """
 
 import sys
 import logging
-from cognos_migrator.explicit_session_migrator import (
-    test_cognos_connection,
-    migrate_module_with_explicit_session,
-    migrate_single_report_with_explicit_session
-)
-from cognos_migrator.client import CognosAPIError
-from cognos_migrator.common.websocket_client import set_websocket_post_function, set_task_info
+
+# Test the public API import
+import cognos_migrator
 
 # Setup logging
 logging.basicConfig(
@@ -31,23 +26,23 @@ def sample_websocket_function(data):
 
 
 def main(session_key: str = None):
-    """Main test function"""
+    """Main test function for cognos_migrator public API"""
     
-    # Set up WebSocket integration for progress tracking
-    set_websocket_post_function(sample_websocket_function)
-    set_task_info("migrate_module_explicit_session_test", 12)  # 12 total steps
+    print(f"🧪 Testing cognos_migrator v{cognos_migrator.__version__}")
+    print(f"📋 Available functions: {cognos_migrator.__all__}")
     
-    # Using actual values provided
+    # Configuration
     cognos_url = "http://20.244.32.126:9300/api/v1"
-    session_key = session_key or "CAM MTsxMDE6NGE0NjhiZjYtNTU3OC0yZjY2LTg2YmYtY2FmNmM3ZDA0YWQ5OjI0OTk5Mjg0OTU7MDszOzA7"
+    session_key = session_key or "CAM MTsxMDE6NGE0NjhiZjYtNTU3OC0yZjY2LTg2YmYtY2FmNmM3ZDA0YWQ5OjI0OTk5Mjg0OTU7MDszOzA;"
     module_id = "i5F34A7A52E2645C0AB03C34BA50941D7"
-    output_path = "./output/test_migrate_module_explicit_session"
     folder_id = "i9EA2C6D84DE9437CA99C62EB44E18F26"
+    report_id = "iFEE26FFBB98643308E6FEFC235B2D2CF"
+    output_path = "./test_output"
     
     # Test 1: Test connection
     print("\n=== Testing Connection ===")
     try:
-        is_connected = test_cognos_connection(cognos_url, session_key)
+        is_connected = cognos_migrator.test_cognos_connection(cognos_url, session_key)
         if is_connected:
             print("✅ Connection successful!")
         else:
@@ -58,9 +53,9 @@ def main(session_key: str = None):
         return
     
     # Test 2: Migrate module with explicit session
-    print("\n=== Testing Module Migration with Explicit Session ===")
+    print("\n=== Testing Module Migration ===")
     try:
-        success = migrate_module_with_explicit_session(
+        success = cognos_migrator.migrate_module_with_explicit_session(
             module_id=module_id,
             output_path=output_path,
             cognos_url=cognos_url,
@@ -68,78 +63,53 @@ def main(session_key: str = None):
             folder_id=folder_id
         )
         if success:
-            print("✅ Module migration with explicit session successful!")
+            print("✅ Module migration successful!")
             print(f"📁 Output saved to: {output_path}")
         else:
-            print("❌ Module migration with explicit session failed!")
-    except CognosAPIError as e:
-        print(f"❌ Session error: {e}")
-        print("The session key has expired. Please generate a new session key.")
+            print("❌ Module migration failed!")
+    except cognos_migrator.CognosAPIError as e:
+        print(f"❌ Cognos API Error: {e}")
         return
     except Exception as e:
         print(f"❌ Migration error: {e}")
         return
     
-    # Test 3: Test with CPF file (optional)
-    print("\n=== Testing Module Migration with CPF File ===")
-    cpf_file_path = "/path/to/your/file.cpf"  # Replace with actual CPF file path
-    print(f"Note: To test with CPF file, provide a valid path to a CPF file.")
-    print(f"Current CPF path (update if needed): {cpf_file_path}")
-    
-    # Uncomment the following to test with CPF file:
-    # try:
-    #     success = migrate_module_with_explicit_session(
-    #         module_id=module_id,
-    #         output_path=output_path + "_with_cpf",
-    #         cognos_url=cognos_url,
-    #         session_key=session_key,
-    #         cpf_file_path=cpf_file_path
-    #     )
-    #     if success:
-    #         print("✅ Module migration with CPF file successful!")
-    #     else:
-    #         print("❌ Module migration with CPF file failed!")
-    # except Exception as e:
-    #     print(f"❌ CPF migration error: {e}")
-    
-    # Test 4: Test with custom authentication header
-    print("\n=== Testing Module Migration with Custom Auth Header ===")
+    # Test 3: Test single report migration
+    print("\n=== Testing Single Report Migration ===")
     try:
-        success = migrate_module_with_explicit_session(
-            module_id=module_id,
-            output_path=output_path + "_custom_auth",
-            cognos_url=cognos_url,
-            session_key=session_key,
-            auth_key="IBM-BA-Authorization"  # Default value, can be customized
-        )
-        if success:
-            print("✅ Module migration with custom auth header successful!")
-        else:
-            print("❌ Module migration with custom auth header failed!")
-    except Exception as e:
-        print(f"❌ Custom auth migration error: {e}")
-    
-    # Test 5: Test single report migration with explicit session
-    print("\n=== Testing Single Report Migration with Explicit Session ===")
-    report_id = "iFEE26FFBB98643308E6FEFC235B2D2CF"  # Use one of the successful report IDs
-    try:
-        success = migrate_single_report_with_explicit_session(
+        success = cognos_migrator.migrate_single_report_with_explicit_session(
             report_id=report_id,
             output_path=output_path + "_single_report",
             cognos_url=cognos_url,
             session_key=session_key
         )
         if success:
-            print("✅ Single report migration with explicit session successful!")
+            print("✅ Single report migration successful!")
         else:
-            print("❌ Single report migration with explicit session failed!")
-    except CognosAPIError as e:
-        print(f"❌ Session error: {e}")
+            print("❌ Single report migration failed!")
+    except cognos_migrator.CognosAPIError as e:
+        print(f"❌ Cognos API Error: {e}")
     except Exception as e:
         print(f"❌ Single report migration error: {e}")
     
-    print("\n=== Test Complete ===")
-    print("✨ All tests for migrate_module_with_explicit_session and migrate_single_report_with_explicit_session completed!")
+    # Test 4: Test post-processing
+    print("\n=== Testing Post-Processing ===")
+    try:
+        success = cognos_migrator.post_process_module_with_explicit_session(
+            module_id=module_id,
+            output_path=output_path,
+            cognos_url=cognos_url,
+            session_key=session_key
+        )
+        if success:
+            print("✅ Post-processing successful!")
+        else:
+            print("❌ Post-processing failed!")
+    except Exception as e:
+        print(f"❌ Post-processing error: {e}")
+    
+    print("\n=== All Tests Complete ===")
+    print("✨ All cognos_migrator public API functions tested!")
 
 
 if __name__ == "__main__":
@@ -151,7 +121,6 @@ if __name__ == "__main__":
         print("Usage: python test_migrate_module_explicit_session.py <session_key>")
         print("\nExample:")
         print("python test_migrate_module_explicit_session.py 'CAM AWkyOTE4MjMwOEY3N0Q0QkIyOEUwRURFMTQ2NzREQjUwNgJxgOzruzMUgqRDMXRAZl2ODpkK'")
-        print("\nNote: The session key expires over time. Use a fresh session key for testing.")
-        print("\nThis test specifically focuses on the migrate_module_with_explicit_session function.")
-        print("It tests module migration without using .env files or environment variables.")
-        print("WebSocket integration provides real-time progress tracking during migration.")
+        print("\nNote: This test validates the complete cognos_migrator public API.")
+        print("It tests all functions exposed in cognos_migrator.__all__")
+        print("The package works entirely without .env files or environment variables.")

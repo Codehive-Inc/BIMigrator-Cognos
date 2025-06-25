@@ -31,6 +31,14 @@ from .models import (
 from .cpf_extractor import CPFExtractor
 from .common.websocket_client import logging_helper, set_task_info
 
+__all__ = [
+    'test_cognos_connection',
+    'migrate_module_with_explicit_session',
+    'migrate_single_report_with_explicit_session', 
+    'post_process_module_with_explicit_session',
+    'CognosModuleMigratorExplicit'
+]
+
 
 def test_cognos_connection(cognos_url: str, session_key: str) -> bool:
     """Test connection to Cognos using URL and session key

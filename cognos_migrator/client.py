@@ -1,17 +1,17 @@
-"""
-Cognos Analytics REST API Client
-"""
+"""Cognos Analytics REST API Client."""
+
+import json
+import logging
+import time
+from datetime import datetime
+from typing import Dict, List, Optional, Any
 
 import requests
-import json
-import time
-from typing import Dict, List, Optional, Any, Union
-from urllib.parse import urljoin
-import logging
-from datetime import datetime
 
 from .config import CognosConfig
 from .models import CognosObject, DataSource, ObjectType, CognosReport
+
+__all__ = ['CognosAPIError', 'CognosClient']
 
 
 class CognosAPIError(Exception):

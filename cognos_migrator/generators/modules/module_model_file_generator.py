@@ -317,16 +317,22 @@ class ModuleModelFileGenerator:
                 self.logger.error(f"Error generating table file for {table.name}: {e}")
                 
                 # Create a minimal table file with error information
-                error_content = f"table '{table.name}'\n\n"
+                # Build content efficiently using list and join
+                content_parts = [f"table '{table.name}'\n\n"]
                 
                 # Add columns if available
                 if hasattr(table, 'columns') and table.columns:
                     for column in table.columns:
-                        error_content += f"\n    column '{column.name}'\n"
-                        error_content += f"        dataType: {column.data_type.value if hasattr(column.data_type, 'value') else 'string'}\n"
-                        error_content += f"        summarizeBy: none\n"
-                        error_content += f"        sourceColumn: {column.name}\n\n"
-                        error_content += f"        annotation SummarizationSetBy = User\n\n"
+                        data_type = column.data_type.value if hasattr(column.data_type, 'value') else 'string'
+                        content_parts.extend([
+                            f"\n    column '{column.name}'\n",
+                            f"        dataType: {data_type}\n",
+                            "        summarizeBy: none\n",
+                            f"        sourceColumn: {column.name}\n\n",
+                            "        annotation SummarizationSetBy = User\n\n"
+                        ])
+                
+                error_content = ''.join(content_parts)
                 
                 # Add partition with error information - use the table name without -partition suffix
                 error_content += f"\n\n\n    partition '{table.name}' = m\n"
@@ -335,7 +341,7 @@ class ModuleModelFileGenerator:
                 # Create a valid M-query with proper indentation that will work with pbi-tools
                 # Put the error information in a proper M-query comment
                 error_content += f"            let\n"
-                error_content += f"                /* ERROR: {str(e).replace('*/', '*\/').strip()} */\n"
+                error_content += f"                /* ERROR: {str(e).replace('*/', '*\\/').strip()} */\n"
                 error_content += f"                Source = Table.FromRows({{}})\n"
                 error_content += f"            in\n"
                 error_content += f"                Source\n"
