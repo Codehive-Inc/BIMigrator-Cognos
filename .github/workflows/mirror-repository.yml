@@ -1,0 +1,137 @@
+name: Mirror Repository
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Validate configuration
+        run: |
+          echo "Validating mirror repository configuration..."
+          
+          # Check if required variables are set
+          if [ -z "${{ vars.MIRROR_REPOSITORY_URL }}" ]; then
+            echo "❌ MIRROR_REPOSITORY_URL variable is not set"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.MIRROR_AUTH_TOKEN }}" ]; then
+            echo "❌ MIRROR_AUTH_TOKEN secret is not set"
+            exit 1
+          fi
+          
+          # Check if it's a GitHub repository
+          if [[ "${{ vars.MIRROR_REPOSITORY_URL }}" != *"github.com"* ]]; then
+            echo "❌ Only GitHub repositories are supported"
+            exit 1
+          fi
+          
+          echo "✅ Configuration validated"
+
+      - name: Test token access via API
+        if: contains(vars.MIRROR_REPOSITORY_URL, 'github.com')
+        run: |
+          echo "Testing GitHub token via API..."
+          REPO_PATH=$(echo "${{ vars.MIRROR_REPOSITORY_URL }}" | sed 's|https://github.com/||' | sed 's|\.git||')
+          
+          # Test token with GitHub API
+          RESPONSE=$(curl -s -w "%{http_code}" -H "Authorization: token ${{ secrets.MIRROR_AUTH_TOKEN }}" \
+            "https://api.github.com/repos/$REPO_PATH" -o /tmp/api_response.json)
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Token has access to repository"
+          elif [ "$RESPONSE" = "404" ]; then
+            echo "❌ Repository not found or token lacks access"
+            exit 1
+          elif [ "$RESPONSE" = "401" ]; then
+            echo "❌ Token is invalid or expired"
+            exit 1
+          else
+            echo "❌ Unexpected API response: $RESPONSE"
+            exit 1
+          fi
+
+      - name: Setup authentication for mirror repository
+        run: |
+          # Only support GitHub repositories
+          if [[ "${{ vars.MIRROR_REPOSITORY_URL }}" == *"github.com"* ]]; then
+            echo "Setting up GitHub authentication..."
+            REPO_PATH=$(echo "${{ vars.MIRROR_REPOSITORY_URL }}" | sed 's|https://github.com/||' | sed 's|\.git||')
+            AUTH_URL="https://${{ secrets.MIRROR_AUTH_TOKEN }}@github.com/$REPO_PATH.git"
+            git remote add mirror "$AUTH_URL"
+            echo "✅ Mirror remote configured"
+          else
+            echo "❌ Only GitHub repositories are supported"
+            exit 1
+          fi
+
+      - name: Push to mirror repository
+        run: |
+          echo "Starting mirror push operation..."
+          
+          # Remove GitHub CLI extra headers that interfere with token auth
+          git config --unset-all http.https://github.com/.extraheader
+          
+          # Ensure we have the correct remote URL
+          REPO_PATH=$(echo "${{ vars.MIRROR_REPOSITORY_URL }}" | sed 's|https://github.com/||' | sed 's|\.git||')
+          TOKEN_URL="https://${{ secrets.MIRROR_AUTH_TOKEN }}@github.com/$REPO_PATH.git"
+          git remote set-url mirror "$TOKEN_URL"
+          
+          # Push all branches
+          echo "Pushing all branches..."
+          if git push mirror --all --force; then
+            echo "✅ Successfully pushed all branches"
+            BRANCHES_SUCCESS=true
+          else
+            echo "❌ Failed to push branches"
+            BRANCHES_SUCCESS=false
+          fi
+          
+          # Push all tags
+          echo "Pushing all tags..."
+          if git push mirror --tags --force; then
+            echo "✅ Successfully pushed all tags"
+            TAGS_SUCCESS=true
+          else
+            echo "❌ Failed to push tags"
+            TAGS_SUCCESS=false
+          fi
+          
+          # Check overall success
+          if [ "$BRANCHES_SUCCESS" = true ] && [ "$TAGS_SUCCESS" = true ]; then
+            echo "✅ Mirror operation completed successfully"
+          else
+            echo "❌ Mirror operation failed completely"
+            exit 1
+          fi
+
+      - name: Verify mirror sync
+        run: |
+          echo "Mirror operation completed successfully"
+          echo "Repository mirrored to: ${{ vars.MIRROR_REPOSITORY_URL }}"
+          echo "Timestamp: $(date)"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          # Remove the mirror remote
+          git remote remove mirror || true
