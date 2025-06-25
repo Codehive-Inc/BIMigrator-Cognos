@@ -27,7 +27,7 @@ from .models import (
     Table, Column, Relationship, Measure, ReportPage
 )
 from .cpf_extractor import CPFExtractor
-from .common.websocket_client import logging_helper
+from .common.websocket_client import logging_helper, set_task_info
 
 
 def test_cognos_connection(cognos_url: str, session_key: str) -> bool:
@@ -43,10 +43,12 @@ def test_cognos_connection(cognos_url: str, session_key: str) -> bool:
     return CognosClient.test_connection_with_session(cognos_url, session_key)
 
 
-def migrate_module_with_explicit_session(module_id: str, output_path: str,
+def migrate_module_with_explicit_session(module_id: str,
+                                       output_path: str,
                                        cognos_url: str, session_key: str,
-                                       report_ids: List[str] = None,
+                                       folder_id: str = None,
                                        cpf_file_path: str = None,
+                                       task_id: Optional[str] = None,
                                        auth_key: str = "IBM-BA-Authorization") -> bool:
     """Migrate a Cognos module with explicit session credentials
     
@@ -68,6 +70,14 @@ def migrate_module_with_explicit_session(module_id: str, output_path: str,
     Raises:
         CognosAPIError: If session is expired or invalid
     """
+
+        # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"migration_{uuid.uuid4().hex}"
+
+    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+    set_task_info(task_id, total_steps=12)
+    
     # First verify the session is valid
     if not CognosClient.test_connection_with_session(cognos_url, session_key):
         raise CognosAPIError("Session key is expired or invalid")
@@ -121,7 +131,7 @@ def migrate_module_with_explicit_session(module_id: str, output_path: str,
     )
     
     # Perform the migration
-    result = migrator.migrate_module(module_id, output_path, report_ids)
+    result = migrator.migrate_module(module_id, output_path, folder_id)
     
     if result:
         logging_helper(
@@ -307,7 +317,7 @@ class CognosModuleMigratorExplicit:
             if self.cpf_extractor.metadata:
                 self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
     
-    def migrate_module(self, module_id: str, output_path: str, report_ids: List[str] = None) -> bool:
+    def migrate_module(self, module_id: str, output_path: str, folder_id: str) -> bool:
         """Migrate module - uses the same logic as CognosModuleMigrator.migrate_module"""
         # Copy the entire migrate_module method from CognosModuleMigrator
         # This ensures no dependency on environment variables
@@ -324,12 +334,24 @@ class CognosModuleMigratorExplicit:
             output_dir = Path(output_path)
             output_dir.mkdir(parents=True, exist_ok=True)
             
+            reports_dir = output_path / "reports"
+            reports_dir.mkdir(exist_ok=True)
+
             extracted_dir = output_dir / "extracted"
             extracted_dir.mkdir(exist_ok=True)
             
             pbit_dir = output_dir / "pbit"
             pbit_dir.mkdir(exist_ok=True)
             
+
+            self.logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+            folder_results = self.migrate_folder(folder_id, str(reports_dir))
+
+            # Extract report IDs that were successfully migrated
+            successful_report_ids = [report_id for report_id, success in folder_results.items() if success]
+            self.logger.info(f"Successfully migrated {len(successful_report_ids)} reports: {successful_report_ids}")
+
+
             # Fetch module information
             logging_helper(
                 message="Fetching module information from Cognos",
@@ -371,9 +393,9 @@ class CognosModuleMigratorExplicit:
             with open(extracted_dir / "module_metadata.json", 'w', encoding='utf-8') as f:
                 json.dump(module_metadata, f, indent=2)
                 
-            if report_ids:
+            if successful_report_ids:
                 with open(extracted_dir / "associated_reports.json", 'w', encoding='utf-8') as f:
-                    json.dump({"report_ids": report_ids}, f, indent=2)
+                    json.dump({"report_ids": successful_report_ids}, f, indent=2)
             
             # Step 3: Extract module components using specialized extractors
             # Each extractor will save its output to JSON files in the extracted directory
@@ -465,10 +487,10 @@ class CognosModuleMigratorExplicit:
                 message_type="info"
             )
             try:
-                if report_ids:
+                if successful_report_ids:
                     # Use the new method to collect calculations from reports
                     calculations = self.module_expression_extractor.collect_report_calculations(
-                        report_ids, output_path, extracted_dir
+                        successful_report_ids, output_path, extracted_dir
                     )
                 else:
                     self.logger.warning("No report IDs provided, skipping calculation collection")
@@ -496,7 +518,7 @@ class CognosModuleMigratorExplicit:
                 'calculations': calculations.get('calculations', []),
                 'source_data': source_data.get('sources', []),
                 'raw_module': module_info,
-                'associated_reports': report_ids or []
+                'associated_reports': successful_report_ids or []
             }
             
             # Save the combined parsed module
@@ -773,6 +795,664 @@ class CognosModuleMigratorExplicit:
         )
         
         report.pages.append(page)
+        return report
+    
+    def migrate_folder(self, folder_id: str, output_path: str, recursive: bool = True) -> Dict[str, bool]:
+        """Migrate all reports in a Cognos folder without using environment variables
+        
+        Args:
+            folder_id: ID of the Cognos folder to migrate
+            output_path: Path where migration output will be saved
+            recursive: Whether to include reports in subfolders (default: True)
+            
+        Returns:
+            Dict[str, bool]: Dictionary mapping report IDs to migration success status
+            
+        Raises:
+            CognosAPIError: If session is expired or invalid
+        """
+        results = {}
+        
+        try:
+            self.logger.info(f"Starting migration of folder: {folder_id}")
+            
+            logging_helper(
+                message=f"Fetching reports from folder: {folder_id}",
+                progress=70,
+                message_type="info"
+            )
+            
+            # Get all reports in folder using the client with explicit session
+            reports = self.cognos_client.list_reports_in_folder(folder_id, recursive)
+            self.logger.info(f"Found {len(reports)} reports in folder")
+            
+            if not reports:
+                self.logger.warning(f"No reports found in folder: {folder_id}")
+                logging_helper(
+                    message=f"No reports found in folder: {folder_id}",
+                    progress=75,
+                    message_type="warning"
+                )
+                return {}
+            
+            logging_helper(
+                message=f"Starting migration of {len(reports)} reports",
+                progress=75,
+                message_type="info"
+            )
+            
+            # Calculate progress increment per report
+            progress_per_report = 20 / len(reports) if reports else 0
+            current_progress = 75
+            
+            # Migrate each report using the explicit session
+            for i, report in enumerate(reports):
+                report_output_path = Path(output_path) / f"report_{report.id}"
+                self.logger.info(f"Migrating report {i+1}/{len(reports)}: {report.name}")
+                
+                logging_helper(
+                    message=f"Migrating report {i+1}/{len(reports)}: {report.name}",
+                    progress=int(current_progress),
+                    message_type="info"
+                )
+                
+                try:
+                    # Migrate report directly without using CognosMigrator
+                    success = self.migrate_report(report.id, str(report_output_path))
+                    results[report.id] = success
+                    
+                    if success:
+                        self.logger.info(f"Successfully migrated: {report.name}")
+                    else:
+                        self.logger.error(f"Failed to migrate: {report.name}")
+                        
+                except CognosAPIError as e:
+                    # Re-raise API errors to propagate session expiry
+                    raise e
+                except Exception as e:
+                    self.logger.error(f"Error migrating report {report.id}: {e}")
+                    results[report.id] = False
+                
+                current_progress += progress_per_report
+            
+            # Generate migration summary
+            self._generate_migration_summary(results, output_path)
+            
+            logging_helper(
+                message=f"Folder migration completed: {sum(1 for s in results.values() if s)}/{len(results)} successful",
+                progress=95,
+                message_type="info"
+            )
+            
+            return results
+            
+        except CognosAPIError as e:
+            # Re-raise API errors (including session expiry)
+            raise e
+        except Exception as e:
+            self.logger.error(f"Error during folder migration: {e}")
+            logging_helper(
+                message=f"Error during folder migration: {e}",
+                progress=95,
+                message_type="error"
+            )
+            return results
+    
+    def _generate_migration_summary(self, results: Dict[str, bool], output_path: str):
+        """Generate migration summary report
+        
+        Args:
+            results: Dictionary mapping report IDs to success status
+            output_path: Base output path for the migration
+        """
+        try:
+            summary_path = Path(output_path) / "migration_summary.md"
+            
+            total_reports = len(results)
+            successful_reports = sum(1 for success in results.values() if success)
+            failed_reports = total_reports - successful_reports
+            
+            # Calculate success rate with check for division by zero
+            success_rate = 0.0
+            if total_reports > 0:
+                success_rate = (successful_reports / total_reports) * 100
+            
+            summary_content = f"""# Migration Summary Report
+
+## Overview
+- **Total Reports**: {total_reports}
+- **Successful Migrations**: {successful_reports}
+- **Failed Migrations**: {failed_reports}
+- **Success Rate**: {success_rate:.1f}%
+
+## Migration Results
+
+### Successful Migrations
+"""
+            
+            for report_id, success in results.items():
+                if success:
+                    summary_content += f"- ✓ {report_id}\n"
+            
+            summary_content += "\n### Failed Migrations\n"
+            
+            for report_id, success in results.items():
+                if not success:
+                    summary_content += f"- ✗ {report_id}\n"
+            
+            summary_content += f"""
+## Migration Details
+- **Migration Date**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+- **Output Directory**: {output_path}
+
+## Next Steps
+1. Review failed migrations and check logs for error details
+2. Validate successful migrations by opening in Power BI Desktop
+3. Test data connections and refresh capabilities
+4. Review and adjust visual layouts as needed
+"""
+            
+            with open(summary_path, 'w', encoding='utf-8') as f:
+                f.write(summary_content)
+            
+            self.logger.info(f"Generated migration summary: {summary_path}")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to generate migration summary: {e}")
+    
+    def migrate_report(self, report_id: str, output_path: str) -> bool:
+        """Migrate a single Cognos report to Power BI without using environment variables
+        
+        Args:
+            report_id: ID of the Cognos report to migrate
+            output_path: Path where migration output will be saved
+            
+        Returns:
+            bool: True if migration was successful, False otherwise
+            
+        Raises:
+            CognosAPIError: If session is expired or invalid
+        """
+        try:
+            self.logger.info(f"Starting migration of report: {report_id}")
+            
+            # Create output directory structure
+            output_dir = Path(output_path)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Create extracted directory for raw extracted data
+            extracted_dir = output_dir / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            # Create pbit directory for pbitools files
+            pbit_dir = output_dir / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
+            
+            # Step 1: Fetch Cognos report
+            cognos_report = self.cognos_client.get_report(report_id)
+            if not cognos_report:
+                self.logger.error(f"Failed to fetch Cognos report: {report_id}")
+                return False
+            
+            # Save raw Cognos report data to extracted folder
+            self._save_extracted_report_data(cognos_report, extracted_dir)
+            
+            # Step 2: Convert to Power BI structures
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            if not powerbi_project:
+                self.logger.error(f"Failed to convert report: {report_id}")
+                return False
+            
+            # If CPF metadata is available, enhance the Power BI project with it
+            if self.cpf_extractor and self.cpf_metadata_enhancer:
+                self.cpf_metadata_enhancer.enhance_project(powerbi_project)
+            
+            # Step 3: Generate Power BI project files
+            success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
+            if not success:
+                self.logger.error(f"Failed to generate Power BI project files")
+                return False
+            
+            # Step 4: Generate documentation
+            self.doc_generator.generate_migration_report(powerbi_project, extracted_dir)
+            
+            # If CPF metadata is available, save it to the extracted folder
+            if self.cpf_extractor:
+                cpf_metadata_path = extracted_dir / "cpf_metadata.json"
+                self.cpf_extractor.parser.save_metadata_to_json(str(cpf_metadata_path))
+                self.logger.info(f"Saved CPF metadata to: {cpf_metadata_path}")
+            
+            self.logger.info(f"Successfully migrated report {report_id} to {output_path}")
+            return True
+            
+        except CognosAPIError as e:
+            # Re-raise API errors (including session expiry)
+            raise e
+        except Exception as e:
+            self.logger.error(f"Migration failed for report {report_id}: {e}")
+            return False
+    
+    def _save_extracted_report_data(self, cognos_report, extracted_dir):
+        """Save extracted report data to files for investigation
+        
+        This is copied from CognosMigrator._save_extracted_data but adapted
+        to work without dependencies on environment variables.
+        """
+        try:
+            # Import here to avoid circular imports
+            from cognos_migrator.extractors import (
+                BaseExtractor, QueryExtractor, DataItemExtractor, 
+                ExpressionExtractor, ParameterExtractor, FilterExtractor, 
+                LayoutExtractor
+            )
+            
+            # Initialize extractors locally without LLM dependencies
+            base_extractor = BaseExtractor(logger=self.logger)
+            query_extractor = QueryExtractor(logger=self.logger)
+            data_item_extractor = DataItemExtractor(logger=self.logger)
+            expression_extractor = ExpressionExtractor(expression_converter=self.expression_converter, logger=self.logger)
+            parameter_extractor = ParameterExtractor(logger=self.logger)
+            filter_extractor = FilterExtractor(logger=self.logger)
+            layout_extractor = LayoutExtractor(logger=self.logger)
+            
+            # Save raw report specification XML
+            spec_path = extracted_dir / "report_specification.xml"
+            with open(spec_path, "w", encoding="utf-8") as f:
+                f.write(cognos_report.specification)
+                
+            # Save formatted report specification XML for better readability
+            try:
+                import xml.dom.minidom as minidom
+                formatted_spec_path = extracted_dir / "report_specification_formatted.xml"
+                # Parse the XML string
+                dom = minidom.parseString(cognos_report.specification)
+                # Pretty print with 2-space indentation
+                formatted_xml = dom.toprettyxml(indent='  ')
+                with open(formatted_spec_path, "w", encoding="utf-8") as f:
+                    f.write(formatted_xml)
+                self.logger.info(f"Saved formatted XML to {formatted_spec_path}")
+                
+                # Split report specification into layout and query components
+                from cognos_migrator.generators.utils import save_split_report_specification
+                save_split_report_specification(formatted_spec_path, extracted_dir)
+                self.logger.info(f"Split report specification into layout and query components")
+            except Exception as e:
+                self.logger.warning(f"Failed to save formatted XML: {e}")
+            
+            # Save report metadata as JSON
+            metadata_path = extracted_dir / "report_metadata.json"
+            with open(metadata_path, "w", encoding="utf-8") as f:
+                json.dump(cognos_report.metadata, f, indent=2)
+            
+            # Save report details as JSON
+            details_path = extracted_dir / "report_details.json"
+            with open(details_path, "w", encoding="utf-8") as f:
+                details = {
+                    "id": cognos_report.id,
+                    "name": cognos_report.name,
+                    "extractionTime": str(datetime.now())
+                }
+                
+                # Add optional attributes if they exist
+                if hasattr(cognos_report, 'path'):
+                    details["path"] = cognos_report.path
+                if hasattr(cognos_report, 'type'):
+                    details["type"] = cognos_report.type
+                    
+                json.dump(details, f, indent=2)
+            
+            # Save serialized CognosReport object
+            report_obj_path = extracted_dir / "cognos_report.json"
+            with open(report_obj_path, "w", encoding="utf-8") as f:
+                report_dict = {
+                    "id": cognos_report.id,
+                    "name": cognos_report.name,
+                    "data_sources": [ds.__dict__ if hasattr(ds, '__dict__') else str(ds) for ds in cognos_report.data_sources]
+                }
+                
+                # Add optional attributes if they exist
+                if hasattr(cognos_report, 'path'):
+                    report_dict["path"] = cognos_report.path
+                if hasattr(cognos_report, 'type'):
+                    report_dict["type"] = cognos_report.type
+                    
+                json.dump(report_dict, f, indent=2)
+            
+            # Extract and save additional intermediate files for detailed investigation
+            try:
+                import xml.etree.ElementTree as ET
+                # Parse the XML for additional extractions
+                root = ET.fromstring(cognos_report.specification)
+                
+                # Register the namespace - Cognos XML uses namespaces
+                ns = {}
+                if root.tag.startswith('{'):
+                    ns_uri = root.tag.split('}')[0].strip('{')
+                    ns['ns'] = ns_uri
+                    self.logger.info(f"Detected XML namespace: {ns_uri}")
+                
+                # Extract and save queries
+                queries = query_extractor.extract_queries(root, ns)
+                queries_path = extracted_dir / "report_queries.json"
+                with open(queries_path, "w", encoding="utf-8") as f:
+                    json.dump(queries, f, indent=2)
+                
+                # Extract and save data items/columns
+                data_items = data_item_extractor.extract_data_items(root, ns)
+                data_items_path = extracted_dir / "report_data_items.json"
+                with open(data_items_path, "w", encoding="utf-8") as f:
+                    json.dump(data_items, f, indent=2)
+                
+                # Extract and save expressions
+                expressions = expression_extractor.extract_expressions(root, ns)
+                
+                # Convert expressions to DAX if expression converter is available
+                if self.expression_converter:
+                    self.logger.info("Converting Cognos expressions to DAX")
+                    # Create table mappings from queries for context
+                    table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    
+                    # Add a mapping for the default 'Data' table to use the report name
+                    if cognos_report.name:
+                        # Create a safe report name
+                        safe_table_name = re.sub(r'[^\w\s]', '', cognos_report.name).replace(' ', '_')
+                        self.logger.info(f"Adding table mapping: Data -> {safe_table_name}")
+                        table_mappings['Data'] = safe_table_name
+                    
+                    calculations = expression_extractor.convert_to_dax(expressions, table_mappings)
+                    self.logger.info(f"Converted {len(calculations['calculations'])} expressions to DAX")
+                else:
+                    # Create empty calculations structure if no converter is available
+                    calculations = {"calculations": []}
+                
+                # Save calculations in the Cognos format
+                calculations_path = extracted_dir / "calculations.json"
+                with open(calculations_path, "w", encoding="utf-8") as f:
+                    json.dump(calculations, f, indent=2, ensure_ascii=False)
+                
+                # Extract and save parameters
+                parameters = parameter_extractor.extract_parameters(root, ns)
+                parameters_path = extracted_dir / "report_parameters.json"
+                with open(parameters_path, "w", encoding="utf-8") as f:
+                    json.dump(parameters, f, indent=2)
+                
+                # Extract and save filters
+                filters = filter_extractor.extract_filters(root, ns)
+                filters_path = extracted_dir / "report_filters.json"
+                with open(filters_path, "w", encoding="utf-8") as f:
+                    json.dump(filters, f, indent=2)
+                
+                # Extract and save layout
+                layout = layout_extractor.extract_layout(root, ns)
+                layout_path = extracted_dir / "report_layout.json"
+                with open(layout_path, "w", encoding="utf-8") as f:
+                    json.dump(layout, f, indent=2)
+                
+                self.logger.info(f"Saved additional extracted data files to {extracted_dir}")
+                
+            except Exception as e:
+                self.logger.warning(f"Could not extract additional data from XML: {e}")
+            
+            self.logger.info(f"Saved extracted Cognos report data to {extracted_dir}")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to save extracted data: {e}")
+    
+    def _convert_cognos_report_to_powerbi(self, cognos_report) -> Optional[PowerBIProject]:
+        """Convert Cognos report to Power BI project structure
+        
+        This is adapted from CognosMigrator._convert_cognos_to_powerbi but
+        works without environment variable dependencies.
+        """
+        try:
+            from cognos_migrator.report_parser import CognosReportSpecificationParser
+            from cognos_migrator.models import ReportPage
+            from typing import Optional
+            
+            # Initialize report parser
+            report_parser = CognosReportSpecificationParser()
+            
+            # Parse report specification
+            parsed_structure = report_parser.parse_report_specification(
+                cognos_report.specification, 
+                cognos_report.metadata
+            )
+            
+            # Prepare safe table name once - replace spaces with underscores and remove special characters
+            safe_table_name = re.sub(r'[^\w\s]', '', cognos_report.name).replace(' ', '_')
+            self.logger.info(f"Using report name '{cognos_report.name}' (sanitized as '{safe_table_name}') for table name")
+            
+            # Convert parsed structure to migration data
+            converted_data = self._convert_parsed_structure(parsed_structure, safe_table_name)
+            
+            # Create data model
+            data_model = self._create_report_data_model(converted_data, cognos_report.name)
+            
+            # Create report structure
+            report = self._create_report_structure_from_cognos(cognos_report, converted_data, data_model)
+            
+            # Create Power BI project
+            project = PowerBIProject(
+                name=cognos_report.name,
+                version="1.0",  # Match the version format in example files
+                created=datetime.now(),
+                last_modified=datetime.now(),
+                data_model=data_model,
+                report=report
+            )
+            
+            return project
+            
+        except Exception as e:
+            self.logger.error(f"Failed to convert Cognos report to Power BI: {e}")
+            return None
+    
+    def _convert_parsed_structure(self, parsed_structure, safe_table_name: str) -> Dict[str, Any]:
+        """Convert parsed Cognos structure to migration data format
+        
+        Copied from CognosMigrator._convert_parsed_structure
+        """
+        try:
+            # Extract basic information
+            converted_data = {
+                'tables': [],
+                'relationships': [],
+                'measures': [],
+                'filters': [],
+                'visuals': [],
+                'pages': []
+            }
+            
+            # Convert pages if available
+            if hasattr(parsed_structure, 'pages') and parsed_structure.pages:
+                for page in parsed_structure.pages:
+                    page_data = {
+                        'name': page.name,
+                        'visuals': []
+                    }
+                    
+                    # Convert visuals if available
+                    if hasattr(page, 'visuals') and page.visuals:
+                        for visual in page.visuals:
+                            visual_data = {
+                                'name': visual.name,
+                                'type': visual.cognos_type,
+                                'powerbi_type': visual.power_bi_type.value if visual.power_bi_type else 'textbox',
+                                'position': visual.position,
+                                'fields': []
+                            }
+                            
+                            # Convert fields if available
+                            if hasattr(visual, 'fields') and visual.fields:
+                                for field in visual.fields:
+                                    field_data = {
+                                        'name': field.name,
+                                        'source_table': field.source_table,
+                                        'data_role': field.data_role,
+                                        'aggregation': field.aggregation
+                                    }
+                                    visual_data['fields'].append(field_data)
+                            
+                            page_data['visuals'].append(visual_data)
+                    
+                    converted_data['pages'].append(page_data)
+            
+            # Convert data sources to tables
+            if hasattr(parsed_structure, 'data_sources') and parsed_structure.data_sources:
+                for ds in parsed_structure.data_sources:
+                    table_data = {
+                        'name': ds.name,
+                        'columns': [],
+                        'source_type': ds.source_type if hasattr(ds, 'source_type') else 'Unknown'
+                    }
+                    converted_data['tables'].append(table_data)
+            
+            # If no specific structure, create basic defaults
+            if not converted_data['tables']:
+                # Use the safe_table_name that was passed in
+                self.logger.info(f"Using safe table name '{safe_table_name}' for default table")
+                
+                converted_data['tables'].append({
+                    'name': safe_table_name,
+                    'columns': [
+                        {'name': 'ID', 'type': 'Int64'},
+                        {'name': 'Name', 'type': 'Text'},
+                        {'name': 'Value', 'type': 'Decimal'}
+                    ],
+                    'source_type': 'Cognos'
+                })
+            
+            return converted_data
+            
+        except Exception as e:
+            self.logger.warning(f"Error converting parsed structure: {e}")
+            # Return minimal structure as fallback
+            # Use the safe_table_name that was passed in
+            self.logger.warning(f"Using safe table name '{safe_table_name}' for fallback table")
+            
+            return {
+                'tables': [{
+                    'name': safe_table_name,
+                    'columns': [
+                        {'name': 'ID', 'type': 'Int64'},
+                        {'name': 'Value', 'type': 'Decimal'}
+                    ],
+                    'source_type': 'Cognos'
+                }],
+                'relationships': [],
+                'measures': [],
+                'filters': [],
+                'visuals': [],
+                'pages': []
+            }
+    
+    def _create_report_data_model(self, converted_data: Dict[str, Any], model_name: str) -> DataModel:
+        """Create Power BI data model from converted data
+        
+        Adapted from CognosMigrator._create_data_model
+        """
+        from cognos_migrator.models import Table, Column, Relationship, Measure, DataType
+        
+        # Create tables from converted data
+        tables = []
+        for table_data in converted_data.get('tables', []):
+            # Create columns
+            columns = []
+            for col_data in table_data.get('columns', []):
+                column = Column(
+                    name=col_data.get('name', 'Column'),
+                    data_type=DataType.STRING if col_data.get('type') == 'Text' else DataType.INTEGER,
+                    source_column=col_data.get('name', 'Column'),
+                    format_string=col_data.get('format_string')
+                )
+                columns.append(column)
+            
+            # Create table
+            table = Table(
+                name=table_data.get('name', 'Table'),
+                columns=columns,
+                source_query=""  # Empty source query - no placeholder needed
+            )
+            tables.append(table)
+        
+        # Create relationships (basic implementation)
+        relationships = []
+        for rel_data in converted_data.get('relationships', []):
+            relationship = Relationship(
+                from_table=rel_data.get('from_table', ''),
+                from_column=rel_data.get('from_column', ''),
+                to_table=rel_data.get('to_table', ''),
+                to_column=rel_data.get('to_column', ''),
+                cardinality=rel_data.get('cardinality', 'OneToMany')
+            )
+            relationships.append(relationship)
+        
+        # Create measures
+        measures = []
+        for measure_data in converted_data.get('measures', []):
+            measure = Measure(
+                name=measure_data.get('name', 'Measure'),
+                expression=measure_data.get('expression', 'SUM(Table[Column])'),
+                format_string=measure_data.get('format_string'),
+                description=measure_data.get('description')
+            )
+            measures.append(measure)
+        
+        data_model = DataModel(
+            name=model_name,
+            compatibility_level=1567,  # Match example file compatibility level
+            culture="en-US",
+            tables=tables,
+            relationships=relationships,
+            measures=measures,
+            annotations={
+                "PBI_QueryOrder": "[\"Query1\"]",
+                "PBIDesktopVersion": "2.142.928.0 (25.04)+de52df9f0bb74ad93a80d89c52d63fe6d07e0e1b",
+                "__PBI_TimeIntelligenceEnabled": "0"
+            }
+        )
+        
+        return data_model
+    
+    def _create_report_structure_from_cognos(self, cognos_report, converted_data: Dict[str, Any], data_model: DataModel) -> Report:
+        """Create Power BI report structure
+        
+        Adapted from CognosMigrator._create_report_structure
+        """
+        # Create basic report page
+        page = ReportPage(
+            name="Page1",
+            display_name="Report Page",
+            width=1280,
+            height=720,
+            visuals=[],  # Would be populated with actual visuals
+            filters=converted_data.get('filters', []),
+            config={}
+        )
+        
+        # Convert ReportPage to dictionary to make it JSON serializable
+        page_dict = {
+            'name': page.name,
+            'display_name': page.display_name,
+            'width': page.width,
+            'height': page.height,
+            'visuals': page.visuals,
+            'filters': page.filters,
+            'config': page.config
+        }
+        
+        report = Report(
+            id=getattr(cognos_report, 'id', f"report_{cognos_report.name.lower().replace(' ', '_')}"),
+            name=cognos_report.name,
+            sections=[page_dict],
+            data_model=data_model,
+            config={
+                "theme": "CorporateTheme",
+                "settings": {}
+            },
+            settings={}
+        )
+        
         return report
     
     def _determine_measure_format(self, calc_item: Dict[str, Any]) -> str:
