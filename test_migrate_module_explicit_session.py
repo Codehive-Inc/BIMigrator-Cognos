@@ -41,7 +41,7 @@ def main(session_key: str = None):
     session_key = session_key or "YOUR_SESSION_KEY_HERE"  # Replace with actual session key
     module_id = "i5F34A7A52E2645C0AB03C34BA50941D7"  # Example module ID
     output_path = "./output/test_migrate_module_explicit_session"
-    folder_id = "iFOLDER123456789"  # Optional folder ID
+    folder_id = "i9EA2C6D84DE9437CA99C62EB44E18F26"  # Optional folder ID
     
     # Test 1: Test connection
     print("\n=== Testing Connection ===")

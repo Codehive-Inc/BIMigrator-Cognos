@@ -131,7 +131,7 @@ def migrate_module_with_explicit_session(module_id: str,
     )
     
     # Perform the migration
-    result = migrator.migrate_module(module_id, output_path, folder_id)
+    result = migrator.migrate_module(module_id, output_path, folder_id, cpf_file_path)
     
     if result:
         logging_helper(
@@ -313,11 +313,15 @@ class CognosModuleMigratorExplicit:
         self.cpf_extractor = None
         self.cpf_metadata_enhancer = None
         if cpf_file_path:
-            self.cpf_extractor = CPFExtractor(cpf_file_path, logger=self.logger)
-            if self.cpf_extractor.metadata:
-                self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
+            try:
+                self.cpf_extractor = CPFExtractor(cpf_file_path)
+                if hasattr(self.cpf_extractor, 'metadata') and self.cpf_extractor.metadata:
+                    self.cpf_metadata_enhancer = CPFMetadataEnhancer(self.cpf_extractor, logger=self.logger)
+            except Exception as e:
+                self.logger.warning(f"Failed to initialize CPF extractor: {e}")
+                self.cpf_extractor = None
     
-    def migrate_module(self, module_id: str, output_path: str, folder_id: str) -> bool:
+    def migrate_module(self, module_id: str, output_path: str, folder_id: str = None, cpf_file_path: str = None) -> bool:
         """Migrate module - uses the same logic as CognosModuleMigrator.migrate_module"""
         # Copy the entire migrate_module method from CognosModuleMigrator
         # This ensures no dependency on environment variables
@@ -334,7 +338,7 @@ class CognosModuleMigratorExplicit:
             output_dir = Path(output_path)
             output_dir.mkdir(parents=True, exist_ok=True)
             
-            reports_dir = output_path / "reports"
+            reports_dir = output_dir / "reports"
             reports_dir.mkdir(exist_ok=True)
 
             extracted_dir = output_dir / "extracted"
@@ -344,12 +348,16 @@ class CognosModuleMigratorExplicit:
             pbit_dir.mkdir(exist_ok=True)
             
 
-            self.logger.info(f"Step 2: Migrating reports from folder {folder_id}")
-            folder_results = self.migrate_folder(folder_id, str(reports_dir))
-
-            # Extract report IDs that were successfully migrated
-            successful_report_ids = [report_id for report_id, success in folder_results.items() if success]
-            self.logger.info(f"Successfully migrated {len(successful_report_ids)} reports: {successful_report_ids}")
+            # Migrate reports from folder if folder_id is provided
+            successful_report_ids = []
+            if folder_id:
+                self.logger.info(f"Step 2: Migrating reports from folder {folder_id}")
+                folder_results = self.migrate_folder(folder_id, str(reports_dir))
+                # Extract report IDs that were successfully migrated
+                successful_report_ids = [report_id for report_id, success in folder_results.items() if success]
+                self.logger.info(f"Successfully migrated {len(successful_report_ids)} reports: {successful_report_ids}")
+            else:
+                self.logger.info("No folder ID provided, skipping report migration")
 
 
             # Fetch module information
