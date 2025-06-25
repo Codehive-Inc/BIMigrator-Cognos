@@ -94,8 +94,8 @@ def migrate_module_with_explicit_session(module_id: str,
         include_metadata=True,
         generate_documentation=True,
         template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
-        llm_service_url=None,  # Disable LLM service
-        llm_service_enabled=False
+        llm_service_url="http://localhost:8080",  # Enable DAX service
+        llm_service_enabled=True
     )
     
     # Create Cognos config with explicit values
@@ -196,8 +196,8 @@ def migrate_single_report_with_explicit_session(report_id: str,
         include_metadata=True,
         generate_documentation=True,
         template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
-        llm_service_url=None,  # Disable LLM service
-        llm_service_enabled=False
+        llm_service_url="http://localhost:8080",  # Enable DAX service
+        llm_service_enabled=True
     )
     
     # Create Cognos config with explicit values
@@ -383,31 +383,51 @@ class CognosModuleMigratorExplicit:
         self.cognos_client = CognosClient(cognos_config, base_url=cognos_url, session_key=session_key)
         self.module_parser = CognosModuleParser(client=self.cognos_client)
         
-        # Initialize generators without LLM service (since it requires env vars)
+        # Initialize generators with LLM service enabled
         from cognos_migrator.generators.template_engine import TemplateEngine
+        from cognos_migrator.llm_service import LLMServiceClient
+        from cognos_migrator.converters import MQueryConverter
+        
         template_engine = TemplateEngine(template_directory=migration_config.template_directory)
         
-        # Create minimal project generator
+        # Initialize LLM service client and M-query converter
+        llm_service_client = None
+        mquery_converter = None
+        
+        if migration_config.llm_service_enabled and migration_config.llm_service_url:
+            try:
+                llm_service_client = LLMServiceClient(
+                    base_url=migration_config.llm_service_url,
+                    api_key=migration_config.llm_service_api_key
+                )
+                mquery_converter = MQueryConverter(llm_service_client)
+                self.logger.info(f"LLM service client initialized with URL: {migration_config.llm_service_url}")
+                self.logger.info("M-query converter initialized with LLM service")
+            except Exception as e:
+                self.logger.warning(f"Failed to initialize LLM service: {e}")
+                self.logger.warning("Proceeding without M-query conversion")
+        
+        # Create project generator
         self.project_generator = PowerBIProjectGenerator(migration_config)
         
-        # Initialize module-specific model file generator
+        # Initialize module-specific model file generator with M-query converter
         if hasattr(self.project_generator, 'model_file_generator'):
             module_model_file_generator = ModuleModelFileGenerator(
                 template_engine, 
-                mquery_converter=None  # Disable M-query conversion as it may need LLM
+                mquery_converter=mquery_converter
             )
             self.project_generator.model_file_generator = module_model_file_generator
             
         self.doc_generator = DocumentationGenerator(migration_config)
         
-        # Initialize expression converter without LLM
-        self.expression_converter = ExpressionConverter(llm_service_client=None, logger=self.logger)
+        # Initialize expression converter with LLM if available
+        self.expression_converter = ExpressionConverter(llm_service_client=llm_service_client, logger=self.logger)
         
         # Initialize module extractors
         self.module_structure_extractor = ModuleStructureExtractor(logger=self.logger)
         self.module_query_extractor = ModuleQueryExtractor(logger=self.logger)
         self.module_data_item_extractor = ModuleDataItemExtractor(logger=self.logger)
-        self.module_expression_extractor = ModuleExpressionExtractor(llm_client=None, logger=self.logger)
+        self.module_expression_extractor = ModuleExpressionExtractor(llm_client=llm_service_client, logger=self.logger)
         self.module_source_extractor = ModuleSourceExtractor(logger=self.logger)
         self.module_relationship_extractor = ModuleRelationshipExtractor(logger=self.logger)
         self.module_hierarchy_extractor = ModuleHierarchyExtractor(logger=self.logger)
