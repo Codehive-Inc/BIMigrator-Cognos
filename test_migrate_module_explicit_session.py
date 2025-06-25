@@ -9,9 +9,10 @@ using environment variables.
 
 import sys
 import logging
-from cognos_migrator.module_migrator import (
+from cognos_migrator.explicit_session_migrator import (
     test_cognos_connection,
-    migrate_module_with_explicit_session
+    migrate_module_with_explicit_session,
+    migrate_single_report_with_explicit_session
 )
 from cognos_migrator.client import CognosAPIError
 from cognos_migrator.common.websocket_client import set_websocket_post_function, set_task_info
@@ -36,12 +37,12 @@ def main(session_key: str = None):
     set_websocket_post_function(sample_websocket_function)
     set_task_info("migrate_module_explicit_session_test", 12)  # 12 total steps
     
-    # Example usage - replace these with actual values
+    # Using actual values provided
     cognos_url = "http://20.244.32.126:9300/api/v1"
-    session_key = session_key or "YOUR_SESSION_KEY_HERE"  # Replace with actual session key
-    module_id = "i5F34A7A52E2645C0AB03C34BA50941D7"  # Example module ID
+    session_key = session_key or "CAM MTsxMDE6NGE0NjhiZjYtNTU3OC0yZjY2LTg2YmYtY2FmNmM3ZDA0YWQ5OjI0OTk5Mjg0OTU7MDszOzA7"
+    module_id = "i5F34A7A52E2645C0AB03C34BA50941D7"
     output_path = "./output/test_migrate_module_explicit_session"
-    folder_id = "i9EA2C6D84DE9437CA99C62EB44E18F26"  # Optional folder ID
+    folder_id = "i9EA2C6D84DE9437CA99C62EB44E18F26"
     
     # Test 1: Test connection
     print("\n=== Testing Connection ===")
@@ -118,8 +119,27 @@ def main(session_key: str = None):
     except Exception as e:
         print(f"❌ Custom auth migration error: {e}")
     
+    # Test 5: Test single report migration with explicit session
+    print("\n=== Testing Single Report Migration with Explicit Session ===")
+    report_id = "iFEE26FFBB98643308E6FEFC235B2D2CF"  # Use one of the successful report IDs
+    try:
+        success = migrate_single_report_with_explicit_session(
+            report_id=report_id,
+            output_path=output_path + "_single_report",
+            cognos_url=cognos_url,
+            session_key=session_key
+        )
+        if success:
+            print("✅ Single report migration with explicit session successful!")
+        else:
+            print("❌ Single report migration with explicit session failed!")
+    except CognosAPIError as e:
+        print(f"❌ Session error: {e}")
+    except Exception as e:
+        print(f"❌ Single report migration error: {e}")
+    
     print("\n=== Test Complete ===")
-    print("✨ All tests for migrate_module_with_explicit_session completed!")
+    print("✨ All tests for migrate_module_with_explicit_session and migrate_single_report_with_explicit_session completed!")
 
 
 if __name__ == "__main__":
