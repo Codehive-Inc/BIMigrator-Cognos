@@ -54,6 +54,47 @@ class CognosClient:
             self.auth_token = None
             self._authenticate()
     
+    @staticmethod
+    def test_connection_with_session(cognos_url: str, session_key: str) -> bool:
+        """Test connection to Cognos using only URL and session key
+        
+        Args:
+            cognos_url: The Cognos base URL
+            session_key: The session key to test
+            
+        Returns:
+            bool: True if connection is successful, False otherwise
+        """
+        try:
+            # Create a simple session with the provided credentials
+            session = requests.Session()
+            session.headers.update({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'IBM-BA-Authorization': session_key  # Using hardcoded auth key
+            })
+            
+            # Try to verify the session
+            response = session.get(
+                f"{cognos_url}/session",
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                # Check if session is valid and not anonymous
+                try:
+                    session_data = response.json()
+                    if session_data and not session_data.get('isAnonymous', True):
+                        return True
+                except:
+                    pass
+                    
+            return False
+            
+        except Exception as e:
+            logging.error(f"Connection test failed: {e}")
+            return False
+    
     def _authenticate(self):
         """Authenticate with Cognos using session-based authentication"""
         try:
