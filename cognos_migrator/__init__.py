@@ -32,7 +32,7 @@ __version__ = "1.0.0"
 __author__ = "Cognos Migration Team"
 
 # Import only essential functions for external integration
-from .explicit_session_migrator import (
+from .main import (
     test_cognos_connection,
     migrate_module_with_explicit_session,
     migrate_single_report_with_explicit_session,

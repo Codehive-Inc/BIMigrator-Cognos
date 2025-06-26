@@ -7,6 +7,7 @@ without requiring environment variables or .env files.
 
 import json
 import logging
+import os
 import uuid
 from pathlib import Path
 from typing import Dict, List, Optional, Any
@@ -102,7 +103,7 @@ def migrate_module_with_explicit_session(module_id: str,
         include_metadata=True,
         generate_documentation=True,
         template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
-        llm_service_url="http://localhost:8080",  # Enable DAX service
+        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
         llm_service_enabled=True
     )
     
@@ -204,7 +205,7 @@ def migrate_single_report_with_explicit_session(report_id: str,
         include_metadata=True,
         generate_documentation=True,
         template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
-        llm_service_url="http://localhost:8080",  # Enable DAX service
+        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
         llm_service_enabled=True
     )
     
