@@ -1,11 +1,28 @@
 """
 Power BI project file generators package
+Consolidated imports for explicit session-based migration
 """
 
-# WARNING: This import structure causes the wrong PowerBIProjectGenerator to be used
-# The version in .generators does NOT have LLM integration
-# The version in ..generators DOES have LLM integration
-from .generators import PowerBIProjectGenerator, TemplateEngine, DocumentationGenerator
+# Import the LLM-integrated generator (the correct one to use)
+from .generators import PowerBIProjectGenerator, DocumentationGenerator
+from .template_engine import TemplateEngine
 
-# TODO: Refactor the codebase to eliminate duplicate PowerBIProjectGenerator classes
-# and ensure the LLM-integrated version is always used
+# Import specialized generators
+from .project_file_generator import ProjectFileGenerator
+from .model_file_generator import ModelFileGenerator
+from .report_file_generator import ReportFileGenerator
+from .metadata_file_generator import MetadataFileGenerator
+
+# Import module-specific generators
+from .modules.module_model_file_generator import ModuleModelFileGenerator
+
+__all__ = [
+    'PowerBIProjectGenerator',
+    'DocumentationGenerator', 
+    'TemplateEngine',
+    'ProjectFileGenerator',
+    'ModelFileGenerator',
+    'ReportFileGenerator',
+    'MetadataFileGenerator',
+    'ModuleModelFileGenerator'
+]

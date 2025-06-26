@@ -4,6 +4,7 @@ LLM Service Client for M-Query Generation
 
 import json
 import logging
+import os
 import requests
 from typing import Dict, Any, Optional
 
@@ -20,7 +21,7 @@ class LLMServiceClient:
             api_key: Optional API key for authentication (not needed in Docker network)
         """
         if not base_url:
-            base_url = 'http://localhost:8080'
+            base_url = os.environ.get('DAX_API_URL', 'http://localhost:8080')
         self.base_url = base_url.rstrip('/')
         self.api_key = api_key
         self.logger = logging.getLogger(__name__)
