@@ -35,6 +35,7 @@ from .common.websocket_client import logging_helper, set_task_info
 __all__ = [
     'test_cognos_connection',
     'migrate_module_with_explicit_session',
+    'migrate_module_with_reports_explicit_session',
     'migrate_single_report_with_explicit_session', 
     'post_process_module_with_explicit_session',
     'CognosModuleMigratorExplicit'
@@ -254,6 +255,143 @@ def migrate_single_report_with_explicit_session(report_id: str,
     else:
         logging_helper(
             message=f"Report migration failed: {report_id}",
+            progress=100,
+            message_type="error"
+        )
+    
+    return result
+
+
+def migrate_module_with_reports_explicit_session(module_id: str,
+                                       output_path: str,
+                                       cognos_url: str, session_key: str,
+                                       report_ids: List[str] = None,
+                                       cpf_file_path: str = None,
+                                       task_id: Optional[str] = None,
+                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+    """Migrate a Cognos module with explicit session credentials and specific reports
+    
+    This function allows migrating a module with specific reports instead of requiring a folder.
+    It does not use environment variables and will raise an exception if the session key is expired.
+    
+    Args:
+        module_id: ID of the Cognos module to migrate
+        output_path: Path where migration output will be saved
+        cognos_url: The Cognos base URL
+        session_key: The session key for authentication
+        report_ids: List of specific report IDs to migrate and associate with the module
+        cpf_file_path: Optional path to CPF file for enhanced metadata
+        task_id: Optional task ID for tracking (default: auto-generated)
+        auth_key: The authentication header key (default: IBM-BA-Authorization)
+        
+    Returns:
+        bool: True if migration was successful, False otherwise
+        
+    Raises:
+        CognosAPIError: If session is expired or invalid
+    """
+
+    # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"migration_{uuid.uuid4().hex}"
+
+    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+    set_task_info(task_id, total_steps=12)
+    
+    # First verify the session is valid
+    if not CognosClient.test_connection_with_session(cognos_url, session_key):
+        raise CognosAPIError("Session key is expired or invalid")
+    
+    # Create a minimal config without using environment variables
+    
+    # Create migration config with explicit values
+    migration_config = MigrationConfig(
+        output_directory=output_path,
+        preserve_structure=True,
+        include_metadata=True,
+        generate_documentation=True,
+        template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
+        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
+        llm_service_enabled=True
+    )
+    
+    # Create Cognos config with explicit values
+    cognos_config = CognosConfig(
+        base_url=cognos_url,
+        auth_key=auth_key,
+        auth_value=session_key,
+        session_timeout=3600,
+        max_retries=3,
+        request_timeout=30
+    )
+    
+    # Create a minimal migrator without using environment variables
+    logger = logging.getLogger(__name__)
+    
+    logging_helper(
+        message=f"Starting explicit session migration for module: {module_id} with specific reports",
+        progress=0,
+        message_type="info"
+    )
+    
+    migrator = CognosModuleMigratorExplicit(
+        migration_config=migration_config,
+        cognos_config=cognos_config,
+        cognos_url=cognos_url,
+        session_key=session_key,
+        logger=logger,
+        cpf_file_path=cpf_file_path
+    )
+    
+    logging_helper(
+        message="Migrator initialized successfully",
+        progress=10,
+        message_type="info"
+    )
+    
+    # Migrate the module with specific reports
+    successful_report_ids = []
+    
+    # First migrate the module structure
+    result = migrator.migrate_module(module_id, output_path, folder_id=None, cpf_file_path=cpf_file_path)
+    
+    # If module migration was successful and report_ids were provided, migrate each report
+    if result and report_ids:
+        logging_helper(
+            message=f"Module structure migrated successfully, now migrating {len(report_ids)} reports",
+            progress=50,
+            message_type="info"
+        )
+        
+        # Migrate each report
+        for report_id in report_ids:
+            try:
+                report_result = migrator.migrate_single_report_with_session_key(report_id, output_path)
+                if report_result:
+                    successful_report_ids.append(report_id)
+                    logger.info(f"Successfully migrated report: {report_id}")
+                else:
+                    logger.warning(f"Failed to migrate report: {report_id}")
+            except Exception as e:
+                logger.error(f"Error migrating report {report_id}: {e}")
+        
+        # Post-process the module with the successfully migrated reports
+        if successful_report_ids:
+            post_process_result = post_process_module_with_explicit_session(
+                module_id, output_path, cognos_url, session_key, successful_report_ids, auth_key
+            )
+            if not post_process_result:
+                logger.warning("Post-processing failed, but module and reports were migrated")
+    
+    if result:
+        logging_helper(
+            message=f"Module migration completed successfully: {module_id}",
+            progress=100,
+            message_type="info"
+        )
+    else:
+        logging_helper(
+            message=f"Module migration failed: {module_id}",
             progress=100,
             message_type="error"
         )
