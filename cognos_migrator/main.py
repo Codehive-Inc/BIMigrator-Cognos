@@ -31,6 +31,7 @@ from .models import (
 )
 from .cpf_extractor import CPFExtractor
 from .common.websocket_client import logging_helper, set_task_info
+from .consolidation import consolidate_model_tables
 
 __all__ = [
     'test_cognos_connection',
@@ -38,6 +39,7 @@ __all__ = [
     'migrate_module_with_reports_explicit_session',
     'migrate_single_report_with_explicit_session', 
     'post_process_module_with_explicit_session',
+    'consolidate_model_tables',
     'CognosModuleMigratorExplicit'
 ]
 
@@ -247,6 +249,30 @@ def migrate_single_report_with_explicit_session(report_id: str,
     result = migrator.migrate_single_report_with_session_key(report_id, output_path)
     
     if result:
+        # Consolidate tables into model.tmdl
+        logger.info("Consolidating tables into model.tmdl")
+        logging_helper(
+            message="Consolidating tables into model.tmdl",
+            progress=90,
+            message_type="info"
+        )
+        
+        consolidate_result = consolidate_model_tables(output_path)
+        if not consolidate_result:
+            logger.warning("Table consolidation failed, but report was migrated")
+            logging_helper(
+                message="Table consolidation failed, but report was migrated",
+                progress=95,
+                message_type="warning"
+            )
+        else:
+            logger.info("Successfully consolidated all tables into model.tmdl")
+            logging_helper(
+                message="Successfully consolidated all tables into model.tmdl",
+                progress=100,
+                message_type="info"
+            )
+        
         logging_helper(
             message=f"Report migration completed successfully: {report_id}",
             progress=100,
@@ -382,6 +408,14 @@ def migrate_module_with_reports_explicit_session(module_id: str,
             )
             if not post_process_result:
                 logger.warning("Post-processing failed, but module and reports were migrated")
+        else:
+            # If no reports were successfully migrated, we still need to consolidate tables
+            logger.info("No reports were successfully migrated, consolidating tables directly")
+            consolidate_result = consolidate_model_tables(output_path)
+            if not consolidate_result:
+                logger.warning("Table consolidation failed, but module was migrated")
+            else:
+                logger.info("Successfully consolidated all tables into model.tmdl")
     
     if result:
         logging_helper(
@@ -502,9 +536,33 @@ def post_process_module_with_explicit_session(module_id: str, output_path: str,
         
         logging_helper(
             message=f"Post-processing completed successfully for module: {module_id}",
-            progress=100,
+            progress=90,
             message_type="info"
         )
+        
+        # Final step: Consolidate all tables into a single model.tmdl file
+        logger.info("Consolidating all tables into model.tmdl")
+        logging_helper(
+            message="Consolidating all tables into model.tmdl",
+            progress=95,
+            message_type="info"
+        )
+        
+        consolidate_result = consolidate_model_tables(output_path)
+        if not consolidate_result:
+            logger.warning("Table consolidation failed, but module and reports were migrated")
+            logging_helper(
+                message="Table consolidation failed, but module and reports were migrated",
+                progress=95,
+                message_type="warning"
+            )
+        else:
+            logger.info("Successfully consolidated all tables into model.tmdl")
+            logging_helper(
+                message="Successfully consolidated all tables into model.tmdl",
+                progress=100,
+                message_type="info"
+            )
         
         return True
         
