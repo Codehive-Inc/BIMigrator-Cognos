@@ -1,23 +1,19 @@
 """
-Cognos Migrator implementation with explicit session credentials
+Explicit session-based migration orchestrator for Cognos to Power BI migration
 
-This module provides the CognosModuleMigratorExplicit class that handles
-migration of Cognos modules and reports to Power BI without requiring
-environment variables or .env files.
+This module provides migration functionality that works with explicit credentials
+without requiring environment variables or .env files.
 """
 
-import os
 import json
 import logging
+import os
 import uuid
-from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any
+from datetime import datetime
 
 from cognos_migrator.config import MigrationConfig, CognosConfig
-from cognos_migrator.common.logging import configure_logging, log_info, log_warning, log_error, log_debug
-from cognos_migrator.client import CognosClient, CognosAPIError
-from cognos_migrator.common.websocket_client import logging_helper, set_task_info
 from cognos_migrator.extractors.modules import (
     ModuleStructureExtractor, ModuleQueryExtractor, ModuleDataItemExtractor, 
     ModuleExpressionExtractor, ModuleRelationshipExtractor, ModuleHierarchyExtractor
@@ -25,14 +21,363 @@ from cognos_migrator.extractors.modules import (
 from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
 from cognos_migrator.enhancers import CPFMetadataEnhancer
 from cognos_migrator.converters import ExpressionConverter
-from cognos_migrator.module_parser import CognosModuleParser
-from cognos_migrator.generators import PowerBIProjectGenerator, DocumentationGenerator
-from cognos_migrator.generators.module_generators import ModuleModelFileGenerator
-from cognos_migrator.models import (
+from .client import CognosClient, CognosAPIError
+from .module_parser import CognosModuleParser
+from .generators import PowerBIProjectGenerator, DocumentationGenerator
+from .generators.module_generators import ModuleModelFileGenerator
+from .models import (
     PowerBIProject, DataModel, Report, Table, Column, Relationship, 
     Measure, ReportPage
 )
-from cognos_migrator.cpf_extractor import CPFExtractor
+from .cpf_extractor import CPFExtractor
+from .common.websocket_client import logging_helper, set_task_info
+
+__all__ = [
+    'test_cognos_connection',
+    'migrate_module_with_explicit_session',
+    'migrate_single_report_with_explicit_session', 
+    'post_process_module_with_explicit_session',
+    'CognosModuleMigratorExplicit'
+]
+
+
+def test_cognos_connection(cognos_url: str, session_key: str) -> bool:
+    """Test connection to Cognos using URL and session key
+    
+    Args:
+        cognos_url: The Cognos base URL
+        session_key: The session key to test
+        
+    Returns:
+        bool: True if connection is successful, False otherwise
+    """
+    return CognosClient.test_connection_with_session(cognos_url, session_key)
+
+
+def migrate_module_with_explicit_session(module_id: str,
+                                       output_path: str,
+                                       cognos_url: str, session_key: str,
+                                       folder_id: str = None,
+                                       cpf_file_path: str = None,
+                                       task_id: Optional[str] = None,
+                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+    """Migrate a Cognos module with explicit session credentials
+    
+    This function does not use environment variables and will raise an exception
+    if the session key is expired.
+    
+    Args:
+        module_id: ID of the Cognos module to migrate
+        output_path: Path where migration output will be saved
+        cognos_url: The Cognos base URL
+        session_key: The session key for authentication
+        folder_id: Optional folder ID containing reports to migrate
+        cpf_file_path: Optional path to CPF file for enhanced metadata
+        task_id: Optional task ID for tracking (default: auto-generated)
+        auth_key: The authentication header key (default: IBM-BA-Authorization)
+        
+    Returns:
+        bool: True if migration was successful, False otherwise
+        
+    Raises:
+        CognosAPIError: If session is expired or invalid
+    """
+
+    # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"migration_{uuid.uuid4().hex}"
+
+    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+    set_task_info(task_id, total_steps=12)
+    
+    # First verify the session is valid
+    if not CognosClient.test_connection_with_session(cognos_url, session_key):
+        raise CognosAPIError("Session key is expired or invalid")
+    
+    # Create a minimal config without using environment variables
+    
+    # Create migration config with explicit values
+    migration_config = MigrationConfig(
+        output_directory=output_path,
+        preserve_structure=True,
+        include_metadata=True,
+        generate_documentation=True,
+        template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
+        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
+        llm_service_enabled=True
+    )
+    
+    # Create Cognos config with explicit values
+    cognos_config = CognosConfig(
+        base_url=cognos_url,
+        auth_key=auth_key,
+        auth_value=session_key,
+        session_timeout=3600,
+        max_retries=3,
+        request_timeout=30
+    )
+    
+    # Create a minimal migrator without using environment variables
+    logger = logging.getLogger(__name__)
+    
+    logging_helper(
+        message=f"Starting explicit session migration for module: {module_id}",
+        progress=0,
+        message_type="info"
+    )
+    
+    migrator = CognosModuleMigratorExplicit(
+        migration_config=migration_config,
+        cognos_config=cognos_config,
+        cognos_url=cognos_url,
+        session_key=session_key,
+        logger=logger,
+        cpf_file_path=cpf_file_path
+    )
+    
+    logging_helper(
+        message="Migrator initialized successfully",
+        progress=10,
+        message_type="info"
+    )
+    
+    # Perform the migration
+    result = migrator.migrate_module(module_id, output_path, folder_id, cpf_file_path)
+    
+    if result:
+        logging_helper(
+            message=f"Module migration completed successfully: {module_id}",
+            progress=100,
+            message_type="info"
+        )
+    else:
+        logging_helper(
+            message=f"Module migration failed: {module_id}",
+            progress=100,
+            message_type="error"
+        )
+    
+    return result
+
+
+def migrate_single_report_with_explicit_session(report_id: str,
+                                               output_path: str,
+                                               cognos_url: str, session_key: str,
+                                               task_id: Optional[str] = None,
+                                               auth_key: str = "IBM-BA-Authorization") -> bool:
+    """Migrate a single Cognos report with explicit session credentials
+    
+    This function does not use environment variables and will raise an exception
+    if the session key is expired. Adapted from main.py migrate_single_report_with_session_key.
+    
+    Args:
+        report_id: ID of the Cognos report to migrate
+        output_path: Path where migration output will be saved
+        cognos_url: The Cognos base URL
+        session_key: The session key for authentication
+        task_id: Optional task ID for tracking (default: auto-generated)
+        auth_key: The authentication header key (default: IBM-BA-Authorization)
+        
+    Returns:
+        bool: True if migration was successful, False otherwise
+        
+    Raises:
+        CognosAPIError: If session is expired or invalid
+    """
+    
+    # Generate task_id if not provided
+    if task_id is None:
+        task_id = f"report_migration_{uuid.uuid4().hex}"
+
+    # Initialize WebSocket logging with task ID and total steps (8 steps in the report migration process)
+    set_task_info(task_id, total_steps=8)
+    
+    # First verify the session is valid
+    if not CognosClient.test_connection_with_session(cognos_url, session_key):
+        raise CognosAPIError("Session key is expired or invalid")
+    
+    # Create a minimal config without using environment variables
+    
+    # Create migration config with explicit values
+    migration_config = MigrationConfig(
+        output_directory=output_path,
+        preserve_structure=True,
+        include_metadata=True,
+        generate_documentation=True,
+        template_directory=str(Path(__file__).parent / "templates"),  # Use existing templates directory
+        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
+        llm_service_enabled=True
+    )
+    
+    # Create Cognos config with explicit values
+    cognos_config = CognosConfig(
+        base_url=cognos_url,
+        auth_key=auth_key,
+        auth_value=session_key,
+        session_timeout=3600,
+        max_retries=3,
+        request_timeout=30
+    )
+    
+    # Create a minimal migrator without using environment variables
+    logger = logging.getLogger(__name__)
+    
+    logging_helper(
+        message=f"Starting explicit session migration for report: {report_id}",
+        progress=0,
+        message_type="info"
+    )
+    
+    migrator = CognosModuleMigratorExplicit(
+        migration_config=migration_config,
+        cognos_config=cognos_config,
+        cognos_url=cognos_url,
+        session_key=session_key,
+        logger=logger
+    )
+    
+    logging_helper(
+        message="Migrator initialized successfully",
+        progress=10,
+        message_type="info"
+    )
+    
+    # Perform the report migration
+    result = migrator.migrate_single_report_with_session_key(report_id, output_path)
+    
+    if result:
+        logging_helper(
+            message=f"Report migration completed successfully: {report_id}",
+            progress=100,
+            message_type="info"
+        )
+    else:
+        logging_helper(
+            message=f"Report migration failed: {report_id}",
+            progress=100,
+            message_type="error"
+        )
+    
+    return result
+
+
+def post_process_module_with_explicit_session(module_id: str, output_path: str,
+                                             cognos_url: str, session_key: str,
+                                             successful_report_ids: List[str] = None,
+                                             auth_key: str = "IBM-BA-Authorization") -> bool:
+    """Post-process a module with explicit session credentials
+    
+    This function does not use environment variables and will raise an exception
+    if the session key is expired.
+    
+    Args:
+        module_id: ID of the Cognos module
+        output_path: Path where migration output is stored
+        cognos_url: The Cognos base URL
+        session_key: The session key for authentication
+        successful_report_ids: List of successfully migrated report IDs
+        auth_key: The authentication header key (default: IBM-BA-Authorization)
+        
+    Returns:
+        bool: True if post-processing was successful, False otherwise
+        
+    Raises:
+        CognosAPIError: If session is expired or invalid
+    """
+    # First verify the session is valid
+    if not CognosClient.test_connection_with_session(cognos_url, session_key):
+        raise CognosAPIError("Session key is expired or invalid")
+    
+    try:
+        logger = logging.getLogger(__name__)
+        logger.info(f"Post-processing module {module_id} at {output_path}")
+        
+        logging_helper(
+            message=f"Starting post-processing for module: {module_id}",
+            progress=0,
+            message_type="info"
+        )
+        
+        # Load module information from extracted directory
+        output_path = Path(output_path)
+        extracted_dir = output_path / "extracted"
+        
+        logging_helper(
+            message="Loading module information from extracted directory",
+            progress=20,
+            message_type="info"
+        )
+        
+        # Check if module information exists
+        module_info_path = extracted_dir / "module_info.json"
+        if not module_info_path.exists():
+            logger.error(f"Module information not found at {module_info_path}")
+            logging_helper(
+                message=f"Module information not found at {module_info_path}",
+                progress=20,
+                message_type="error"
+            )
+            return False
+            
+        # Load module information
+        with open(module_info_path, "r") as f:
+            module_info = json.load(f)
+        
+        logging_helper(
+            message="Module information loaded successfully",
+            progress=40,
+            message_type="info"
+        )
+            
+        # Generate documentation
+        logger.info("Generating module documentation")
+        logging_helper(
+            message="Generating module documentation",
+            progress=60,
+            message_type="info"
+        )
+        docs_dir = output_path / "documentation"
+        docs_dir.mkdir(exist_ok=True)
+        
+        # Create a summary document
+        summary_path = docs_dir / "module_summary.md"
+        with open(summary_path, "w") as f:
+            f.write(f"# Module Migration Summary\n\n")
+            f.write(f"## Module Information\n\n")
+            f.write(f"- Module ID: {module_id}\n")
+            f.write(f"- Module Name: {module_info.get('name', 'Unknown')}\n")
+            f.write(f"- Migration Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            
+            f.write(f"## Migration Results\n\n")
+            f.write(f"- Reports Processed: {len(successful_report_ids) if successful_report_ids else 0}\n")
+            if successful_report_ids:
+                f.write(f"- Successfully Migrated Reports: {len(successful_report_ids)}\n")
+                f.write(f"- Report IDs: {', '.join(successful_report_ids)}\n")
+        
+        logging_helper(
+            message=f"Documentation generated successfully at {summary_path}",
+            progress=80,
+            message_type="info"
+        )
+                
+        logger.info(f"Generated module summary at {summary_path}")
+        
+        logging_helper(
+            message=f"Post-processing completed successfully for module: {module_id}",
+            progress=100,
+            message_type="info"
+        )
+        
+        return True
+        
+    except Exception as e:
+        logger.error(f"Error during module post-processing: {e}")
+        logging_helper(
+            message=f"Post-processing failed: {str(e)}",
+            progress=100,
+            message_type="error"
+        )
+        return False
 
 
 class CognosModuleMigratorExplicit:
