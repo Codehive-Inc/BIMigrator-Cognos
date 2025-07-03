@@ -55,7 +55,9 @@ class ConsolidatedPackageExtractor:
             
             # Create output directory if specified
             if output_dir:
-                output_path = Path(output_dir) / "extracted"
+                # Use the output_dir directly without adding "extracted" subfolder
+                # This avoids creating a nested extracted folder
+                output_path = Path(output_dir)
                 output_path.mkdir(parents=True, exist_ok=True)
             else:
                 output_path = None

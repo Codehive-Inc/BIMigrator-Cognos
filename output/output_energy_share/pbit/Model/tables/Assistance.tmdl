@@ -201,7 +201,7 @@ table 'Assistance'
         source = 
             	let
 					Source = /* Connect to data source based on context */,
-					#"Renamed Columns" = Table.RenameColumns(Source, {{"OldAssistanceReportID", "AssistanceReportID"}, {"OldAgencyID", "AgencyID"}, {"OldApplicableMonth", "ApplicableMonth"}, {"OldApplicableYear", "ApplicableYear"}, {"OldHouseholdsAssisted", "HouseholdsAssisted"}, {"OldDenials", "Denials"}, {"OldPreparedBy", "PreparedBy"}, {"OldPreparedDate", "PreparedDate"}, {"OldCreatedBy", "CreatedBy"}, {"Olddatecreated", "datecreated"}, {"OldUpdatedBy", "UpdatedBy"}, {"OldLastUpdated", "LastUpdated"}}),
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"AssistanceReportID", "AssistanceReportID"}, {"AgencyID", "AgencyID"}, {"ApplicableMonth", "ApplicableMonth"}, {"ApplicableYear", "ApplicableYear"}, {"HouseholdsAssisted", "HouseholdsAssisted"}, {"Denials", "Denials"}, {"PreparedBy", "PreparedBy"}, {"PreparedDate", "PreparedDate"}, {"CreatedBy", "CreatedBy"}, {"datecreated", "datecreated"}, {"UpdatedBy", "UpdatedBy"}, {"LastUpdated", "LastUpdated"}}),
 					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"AssistanceReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"HouseholdsAssisted", Int64.Type}, {"Denials", Int64.Type}, {"PreparedBy", type text}, {"PreparedDate", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
 				in
 					#"Changed Types"

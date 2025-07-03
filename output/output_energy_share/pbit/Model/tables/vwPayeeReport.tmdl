@@ -169,8 +169,7 @@ table 'vwPayeeReport'
         source = 
             	let
 					Source = /* Connect to data source based on context */,
-					#"Renamed Columns" = Table.RenameColumns(Source, {{"OldSeason", "Season"}, {"OldApplicableYear", "ApplicableYear"}, {"OldState", "State"}, {"OldAuthorizationType", "AuthorizationType"}, {"OldVendorID", "VendorID"}, {"OldVendor", "Vendor"}, {"OldAgency", "Agency"}, {"OldDateSubmitted", "Date Submitted"}, {"OldPaidByEnergyShare", "PaidByEnergyShare"}, {"OldEditLink", "EditLink"}}),
-					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"Season", type text}, {"ApplicableYear", Int64.Type}, {"State", type text}, {"AuthorizationType", type text}, {"VendorID", Int64.Type}, {"Vendor", type text}, {"Agency", type text}, {"Date Submitted", type text}, {"PaidByEnergyShare", type text}, {"EditLink", type text}})
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"Season", type text}, {"ApplicableYear", Int64.Type}, {"State", type text}, {"AuthorizationType", type text}, {"VendorID", Int64.Type}, {"Vendor", type text}, {"Agency", type text}, {"Date Submitted", type text}, {"PaidByEnergyShare", type text}, {"EditLink", type text}, {"Season", type text}, {"ApplicableYear", Int64.Type}, {"State", type text}, {"AuthorizationType", type text}, {"VendorID", Int64.Type}, {"Vendor", type text}, {"Agency", type text}, {"Date Submitted", type text}, {"PaidByEnergyShare", type text}, {"EditLink", type text}})
 				in
 					#"Changed Types"
         

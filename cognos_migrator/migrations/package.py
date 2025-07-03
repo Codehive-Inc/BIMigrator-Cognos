@@ -139,7 +139,7 @@ def migrate_package_with_explicit_session(package_file_path: str,
         data_model = package_extractor.convert_to_data_model(package_info)
         
         # Consolidate tables if needed
-        consolidate_model_tables(output_path)
+        consolidate_model_tables(str(extracted_dir))
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
@@ -350,7 +350,7 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         data_model = package_extractor.convert_to_data_model(package_info)
         
         # Consolidate tables if needed
-        consolidate_model_tables(output_path)
+        consolidate_model_tables(str(extracted_dir))
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         

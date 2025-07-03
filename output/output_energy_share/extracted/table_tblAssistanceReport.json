@@ -427,7 +427,7 @@
     {
       "name": "tblAssistanceReport",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a mistake\n\t\t\t\tin\n\t\t\t\t\tthe table information provided. The columns are listed multiple times, which is not typical for a table structure. Could you please clarify the correct list of columns and their data types?"
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a mistake\n\t\t\t\tin\n\t\t\t\t\tthe provided information. The column names and data types are repeated, which is not valid for a table definition. Could you please clarify the correct list of columns and their data types?"
     }
   ],
   "has_widget_serialization": false,

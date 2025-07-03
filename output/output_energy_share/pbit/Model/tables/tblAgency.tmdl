@@ -327,11 +327,11 @@ table 'tblAgency'
     partition 'tblAgency' = m
         mode: import
         source = 
-            // ERROR: name 'table_name' is not defined
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a misunderstanding
+				in
+					the table information provided. The columns listed appear to be duplicated. Could you please clarify the correct list of columns and their data types for the table "tblAgency"?
         
 
 
