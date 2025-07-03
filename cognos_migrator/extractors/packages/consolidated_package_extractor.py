@@ -183,26 +183,70 @@ class ConsolidatedPackageExtractor:
                 if not left_qs or not right_qs:
                     continue
                 
+                # Extract simple table names from fully qualified names
+                # This doesn't change the Relationship class, just helps us identify tables
+                left_table = left_qs.split('.')[-1].strip('[]')
+                right_table = right_qs.split('.')[-1].strip('[]')
+                
                 # Get determinants (join columns)
                 determinants = rel.get('determinants', [])
                 
-                if not determinants:
-                    continue
+                left_col = None
+                right_col = None
                 
-                # Use the first determinant for the relationship
-                det = determinants[0]
-                left_col = det.get('left_column')
-                right_col = det.get('right_column')
+                # If determinants exist, use them
+                if determinants:
+                    det = determinants[0]  # Use the first determinant
+                    left_col = det.get('left_column')
+                    right_col = det.get('right_column')
                 
+                # If no determinants or columns, try to infer from table names
                 if not left_col or not right_col:
+                    self.logger.warning(f"No explicit join columns found for relationship between {left_table} and {right_table}. Attempting to infer.")
+                    
+                    # Find tables in the data model by their simple names
+                    left_table_obj = None
+                    right_table_obj = None
+                    
+                    for table in data_model.tables:
+                        if table.name == left_table:
+                            left_table_obj = table
+                        if table.name == right_table:
+                            right_table_obj = table
+                    
+                    # If tables exist, try to find matching columns
+                    if left_table_obj and right_table_obj:
+                        left_cols = [c.name for c in left_table_obj.columns]
+                        right_cols = [c.name for c in right_table_obj.columns]
+                        
+                        # Find common column names
+                        common_cols = set(left_cols).intersection(set(right_cols))
+                        
+                        # Try to find ID columns
+                        id_patterns = [f"{left_table}ID", f"{left_table}_ID", "ID"]
+                        for pattern in id_patterns:
+                            matching_cols = [col for col in common_cols if pattern.lower() in col.lower()]
+                            if matching_cols:
+                                left_col = right_col = matching_cols[0]
+                                self.logger.info(f"Inferred join column {left_col} for relationship between {left_table} and {right_table}")
+                                break
+                        
+                        # If still no match, use any common column as a last resort
+                        if not left_col and common_cols:
+                            left_col = right_col = list(common_cols)[0]
+                            self.logger.info(f"Using common column {left_col} for relationship between {left_table} and {right_table}")
+                
+                # Skip if we still couldn't determine columns
+                if not left_col or not right_col:
+                    self.logger.warning(f"Skipping relationship between {left_table} and {right_table}: couldn't determine join columns")
                     continue
                 
-                # Create relationship with a name
+                # Create relationship with a name - using the simple table names instead of fully qualified names
                 relationship = Relationship(
-                    name=f"Relationship_{left_qs}_{right_qs}",
-                    from_table=left_qs,
+                    name=f"Relationship_{left_table}_{right_table}",
+                    from_table=left_table,  # Use simple table name
                     from_column=left_col,
-                    to_table=right_qs,
+                    to_table=right_table,    # Use simple table name
                     to_column=right_col
                 )
                 

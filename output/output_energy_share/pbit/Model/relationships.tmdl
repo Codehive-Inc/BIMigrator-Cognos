@@ -1,0 +1,198 @@
+relationship Relationship_tblAgency_tblAgencyTerritory
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAgencyTerritory'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAssistanceReport
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAssistanceReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAuthorization
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAuthorization'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblFinancialReport
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblFinancialReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblTerritory_tblAgencyTerritory
+	fromColumn: 'tblTerritory'.TerritoryID
+	toColumn: 'tblAgencyTerritory'.TerritoryID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblVendor_tblAuthorization
+	fromColumn: 'tblVendor'.VendorID
+	toColumn: 'tblAuthorization'.VendorID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_Authorization - MC Report
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'Authorization - MC Report'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblAuthorization
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblAuthorization'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblFinancialReport
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblFinancialReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_Authorization - MC Report
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'Authorization - MC Report'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblVendor_Authorization - MC Report
+	fromColumn: 'tblVendor'.VendorID
+	toColumn: 'Authorization - MC Report'.VendorID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblAgencyTerritory
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblAgencyTerritory'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblAssistanceReport
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblAssistanceReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblAuthorization
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblAuthorization'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblFinancialReport
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblFinancialReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_Authorization - MC Report
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'Authorization - MC Report'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblVendor_Authorization - MC Report
+	fromColumn: 'tblVendor'.VendorID
+	toColumn: 'Authorization - MC Report'.VendorID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblAgencyTerritory
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblAgencyTerritory'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_tblAssistanceReport
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'tblAssistanceReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAgencyTerritory
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAgencyTerritory'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAssistanceReport
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAssistanceReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAuthorization
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAuthorization'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblFinancialReport
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblFinancialReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblTerritory_tblAgencyTerritory
+	fromColumn: 'tblTerritory'.TerritoryID
+	toColumn: 'tblAgencyTerritory'.TerritoryID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblVendor_tblAuthorization
+	fromColumn: 'tblVendor'.VendorID
+	toColumn: 'tblAuthorization'.VendorID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAgencyTerritory
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAgencyTerritory'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAssistanceReport
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAssistanceReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblAuthorization
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblAuthorization'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblAgency_tblFinancialReport
+	fromColumn: 'tblAgency'.AgencyID
+	toColumn: 'tblFinancialReport'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblTerritory_tblAgencyTerritory
+	fromColumn: 'tblTerritory'.TerritoryID
+	toColumn: 'tblAgencyTerritory'.TerritoryID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_tblVendor_tblAuthorization
+	fromColumn: 'tblVendor'.VendorID
+	toColumn: 'tblAuthorization'.VendorID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_Authorization - MC Report
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'Authorization - MC Report'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+
+relationship Relationship_Agency - MC Report_Authorization - MC Report
+	fromColumn: 'Agency - MC Report'.AgencyID
+	toColumn: 'Authorization - MC Report'.AgencyID
+	fromCardinality: many_to_one
+	isActive: True
+

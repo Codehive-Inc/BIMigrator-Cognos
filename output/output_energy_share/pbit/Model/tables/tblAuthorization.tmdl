@@ -487,11 +487,12 @@ table 'tblAuthorization'
     partition 'tblAuthorization' = m
         mode: import
         source = 
-            // ERROR: name 'table_name' is not defined
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a misunderstanding. The table information provided contains duplicate column names,
+					which is not allowed
+				in
+					Power BI. Please provide a corrected list of columns without duplicates so I can generate the appropriate M - Query.
         
 
 

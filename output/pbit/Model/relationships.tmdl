@@ -1,0 +1,12 @@
+relationship 47cb7d80-42ca-4bcb-94b6-035e261b82df
+	fromColumn: 'Orders'.Region
+	toColumn: 'People'.Region
+	fromCardinality: many
+	isActive: True
+
+relationship 002c8091-97da-4f65-9c39-26d5881b846c
+	fromColumn: 'Orders'.Order_ID
+	toColumn: 'Returns_'.Order_ID
+	fromCardinality: many
+	isActive: True
+

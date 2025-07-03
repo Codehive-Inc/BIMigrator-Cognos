@@ -459,7 +459,7 @@
     {
       "name": "tblFinancialReport",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"FinancialReportID\", Int64.Type}, {\"AgencyID\", Int64.Type}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"BalanceForward\", type text}, {\"EnergyShareCheckAmount\", type text}, {\"EnergySharePartnerAmount\", type text}, {\"AmountSpentPayingEnergyBills\", type text}, {\"BalanceOnHand\", type text}, {\"PreparedBy\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"FinancialReportID\", Int64.Type}, {\"AgencyID\", Int64.Type}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"BalanceForward\", type text}, {\"EnergyShareCheckAmount\", type text}, {\"EnergySharePartnerAmount\", type text}, {\"AmountSpentPayingEnergyBills\", type text}, {\"BalanceOnHand\", type text}, {\"PreparedBy\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be an error\n\t\t\t\tin\n\t\t\t\t\tthe provided table information. The list of expected columns contains duplicates. Could you please clarify the correct list of columns and their data types?"
     }
   ],
   "has_widget_serialization": false,

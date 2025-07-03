@@ -1,0 +1,94 @@
+{
+  "cognos_hierarchies": [
+    {
+      "identifier": "Country_Hier",
+      "label": "Country Hier",
+      "idForExpression": "Country_Hier",
+      "levels": [
+        {
+          "ref": "People.Country",
+          "identifier": "Country",
+          "label": "Country"
+        },
+        {
+          "ref": "People.Area",
+          "identifier": "Area",
+          "label": "Area"
+        },
+        {
+          "ref": "People.Region",
+          "identifier": "Region",
+          "label": "Region"
+        }
+      ],
+      "properties": {},
+      "propertyOverrides": [
+        "NEW"
+      ]
+    },
+    {
+      "identifier": "Country_Region",
+      "label": "Country - Region",
+      "idForExpression": "Country_Region",
+      "levels": [
+        {
+          "ref": "People.Country",
+          "identifier": "Country",
+          "label": "Country"
+        },
+        {
+          "ref": "People.Area",
+          "identifier": "Area",
+          "label": "Area"
+        },
+        {
+          "ref": "People.Region",
+          "identifier": "Region",
+          "label": "Region"
+        }
+      ],
+      "properties": {},
+      "propertyOverrides": [
+        "NEW"
+      ]
+    }
+  ],
+  "powerbi_hierarchies": {
+    "People": [
+      {
+        "name": "Country Hier",
+        "levels": [
+          {
+            "column": "Country",
+            "name": "Country"
+          },
+          {
+            "column": "Area",
+            "name": "Area"
+          },
+          {
+            "column": "Region",
+            "name": "Region"
+          }
+        ]
+      },
+      {
+        "name": "Country - Region",
+        "levels": [
+          {
+            "column": "Country",
+            "name": "Country"
+          },
+          {
+            "column": "Area",
+            "name": "Area"
+          },
+          {
+            "column": "Region",
+            "name": "Region"
+          }
+        ]
+      }
+    ]
+  }
+}
