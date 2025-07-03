@@ -16,9 +16,10 @@ from cognos_migrator.config import MigrationConfig, CognosConfig
 from cognos_migrator.common.logging import configure_logging, log_info, log_warning, log_error, log_debug
 from cognos_migrator.client import CognosClient, CognosAPIError
 from cognos_migrator.common.websocket_client import logging_helper, set_task_info
-from cognos_migrator.extractors.packages import PackageExtractor
+from cognos_migrator.extractors.packages import PackageExtractor, ConsolidatedPackageExtractor
 from cognos_migrator.generators import PowerBIProjectGenerator
 from cognos_migrator.models import PowerBIProject
+from cognos_migrator.migrations.report import migrate_single_report_with_explicit_session
 from ..consolidation import consolidate_model_tables
 
 
@@ -50,34 +51,15 @@ def migrate_package_with_explicit_session(package_file_path: str,
     Raises:
         CognosAPIError: If session is expired or invalid
     """
-    # Configure logging for this module
-    configure_logging("cognos_package_migration")
-    
-    # Generate task_id if not provided
+    # Generate task ID if not provided
     if task_id is None:
-        task_id = f"migration_{uuid.uuid4().hex}"
-
-    # Initialize WebSocket logging with task ID and total steps (8 steps in the migration process)
+        task_id = str(uuid.uuid4())
+    
+    # Configure logging
+    configure_logging()
+    
+    # Set task info for WebSocket updates
     set_task_info(task_id, total_steps=8)
-    
-    # First verify the session is valid
-    log_info(f"Testing connection to Cognos at {cognos_url}")
-    if not CognosClient.test_connection_with_session(cognos_url, session_key):
-        log_error("Session key is expired or invalid")
-        raise CognosAPIError("Session key is expired or invalid")
-    
-    # Create a minimal config without using environment variables
-    
-    # Create migration config with explicit values
-    migration_config = MigrationConfig(
-        output_directory=output_path,
-        preserve_structure=True,
-        include_metadata=True,
-        generate_documentation=True,
-        template_directory=str(Path(__file__).parent.parent / "templates"),  # Use existing templates directory
-        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
-        llm_service_enabled=True
-    )
     
     # Create Cognos config with explicit values
     cognos_config = CognosConfig(
@@ -134,11 +116,11 @@ def migrate_package_with_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Create package extractor
-        package_extractor = PackageExtractor(logger=logging.getLogger(__name__))
+        # Create package extractor using the new modular architecture
+        package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))
         
         # Extract package information
-        package_info = package_extractor.extract_package(package_file_path)
+        package_info = package_extractor.extract_package(package_file_path, str(extracted_dir))
         
         # Save extracted information
         with open(extracted_dir / "package_info.json", 'w', encoding='utf-8') as f:
@@ -153,10 +135,13 @@ def migrate_package_with_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Convert package info to data model
+        # Convert to data model
         data_model = package_extractor.convert_to_data_model(package_info)
         
-        log_info(f"Converted package to data model with {len(data_model.tables)} tables and {len(data_model.relationships)} relationships")
+        # Consolidate tables if needed
+        data_model = consolidate_model_tables(data_model)
+        
+        log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
         # Step 3: Create Power BI project
         logging_helper(
@@ -165,50 +150,42 @@ def migrate_package_with_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Migration config was already created above
-        
-        # Create a Power BI project
-        project = PowerBIProject(
+        # Create Power BI project
+        pbi_project = PowerBIProject(
             name=package_info['name'],
-            data_model=data_model,
-            report=None  # No report for package migration
+            data_model=data_model
         )
         
-        # Create project generator
-        project_generator = PowerBIProjectGenerator(migration_config)
-        
-        # Generate Power BI project
-        project_generator.generate_project(project, str(pbit_dir))
-        
-        log_info(f"Generated Power BI project at: {pbit_dir}")
-        
-        # Step 4: Consolidate model tables
+        # Step 4: Generate Power BI files
         logging_helper(
-            message="Consolidating model tables",
+            message="Generating Power BI files",
             progress=80,
             message_type="info"
         )
         
-        consolidate_model_tables(output_path)
+        # Create generator
+        generator = PowerBIProjectGenerator(logger=logging.getLogger(__name__))
         
-        # Log successful completion
-        log_info(f"Package migration completed successfully: {package_file_path}")
+        # Generate PBIT file
+        pbit_path = generator.generate_pbit(pbi_project, pbit_dir)
         
-        # Also send to WebSocket for frontend updates
+        log_info(f"Generated PBIT file: {pbit_path}")
+        
+        # Step 5: Complete migration
         logging_helper(
-            message=f"Package migration completed successfully",
+            message="Migration completed successfully",
             progress=100,
-            message_type="info"
+            message_type="success"
         )
         
         return True
         
     except Exception as e:
-        log_error(f"Package migration failed: {str(e)}")
+        log_error(f"Migration failed: {e}")
         
         # Also send to WebSocket for frontend updates
         logging_helper(
-            message=f"Package migration failed: {str(e)}",
+            message=f"Migration failed: {e}",
             progress=100,
             message_type="error"
         )
@@ -244,32 +221,15 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
     Raises:
         CognosAPIError: If session is expired or invalid
     """
-    # Configure logging for this module
-    configure_logging("cognos_package_reports_migration")
-    
-    # Generate task_id if not provided
+    # Generate task ID if not provided
     if task_id is None:
-        task_id = f"migration_{uuid.uuid4().hex}"
-
-    # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
+        task_id = str(uuid.uuid4())
+    
+    # Configure logging
+    configure_logging()
+    
+    # Set task info for WebSocket updates
     set_task_info(task_id, total_steps=12)
-    
-    # First verify the session is valid
-    log_info(f"Testing connection to Cognos at {cognos_url}")
-    if not CognosClient.test_connection_with_session(cognos_url, session_key):
-        log_error("Session key is expired or invalid")
-        raise CognosAPIError("Session key is expired or invalid")
-    
-    # Create migration config with explicit values
-    migration_config = MigrationConfig(
-        output_directory=output_path,
-        preserve_structure=True,
-        include_metadata=True,
-        generate_documentation=True,
-        template_directory=str(Path(__file__).parent.parent / "templates"),  # Use existing templates directory
-        llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
-        llm_service_enabled=True
-    )
     
     # Create Cognos config with explicit values
     cognos_config = CognosConfig(
@@ -281,86 +241,96 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         request_timeout=30
     )
     
-    # Create Cognos client for API operations
-    cognos_client = CognosClient(cognos_config, base_url=cognos_url, session_key=session_key)
-    
     # Log the start of migration
-    log_info(f"Starting package with reports migration for: {package_file_path}")
+    log_info(f"Starting explicit session migration for package with reports: {package_file_path}")
     
     # Also send to WebSocket for frontend updates
     logging_helper(
-        message=f"Starting package with reports migration for: {package_file_path}",
+        message=f"Starting explicit session migration for package with reports: {package_file_path}",
         progress=0,
         message_type="info"
     )
     
     try:
-        # Create output directory structure
-        output_dir = Path(output_path)
+        # Ensure output path is within the standard output directory
+        base_output_dir = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent / "output"
+        base_output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # If output_path is an absolute path, extract just the directory name
+        if os.path.isabs(output_path):
+            output_name = os.path.basename(output_path)
+        else:
+            output_name = output_path
+        
+        # Remove any path separators to get a clean directory name
+        output_name = output_name.replace('/', '_').replace('\\', '_')
+        
+        # Create the final output directory within the standard output directory
+        output_dir = base_output_dir / output_name
         output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Log the actual output directory being used
+        log_info(f"Using output directory: {output_dir}")
+        
+        # Create subdirectories
+        extracted_dir = output_dir / "extracted"
+        extracted_dir.mkdir(exist_ok=True)
         
         reports_dir = output_dir / "reports"
         reports_dir.mkdir(exist_ok=True)
         
-        extracted_dir = output_dir / "extracted"
-        extracted_dir.mkdir(exist_ok=True)
-        
         pbit_dir = output_dir / "pbit"
         pbit_dir.mkdir(exist_ok=True)
         
-        # Step 1: Migrate reports if report_ids are provided
-        successful_report_ids = []
-        if report_ids:
-            logging_helper(
-                message=f"Migrating {len(report_ids)} reports",
-                progress=10,
-                message_type="info"
-            )
-            
-            # Import the report migration function
-            from cognos_migrator.migrations.report import migrate_report_with_explicit_session
-            
-            # Migrate each report
-            for i, report_id in enumerate(report_ids):
-                report_output_path = str(reports_dir / f"report_{i}")
-                success = migrate_report_with_explicit_session(
-                    report_id=report_id,
-                    output_path=report_output_path,
-                    cognos_url=cognos_url,
-                    session_key=session_key,
-                    auth_key=auth_key
-                )
-                
-                if success:
-                    successful_report_ids.append(report_id)
-                    log_info(f"Successfully migrated report: {report_id}")
-                else:
-                    log_warning(f"Failed to migrate report: {report_id}")
-            
-            # Save successful report IDs
-            with open(extracted_dir / "associated_reports.json", 'w', encoding='utf-8') as f:
-                json.dump({"report_ids": successful_report_ids}, f, indent=2)
-                
-            log_info(f"Successfully migrated {len(successful_report_ids)} out of {len(report_ids)} reports")
-        
-        # Step 2: Extract package information
+        # Step 1: Extract package information
         logging_helper(
             message="Extracting package information",
-            progress=30,
+            progress=10,
             message_type="info"
         )
         
-        # Create package extractor
-        package_extractor = PackageExtractor(logger=logging.getLogger(__name__))
+        # Create package extractor using the new modular architecture
+        package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))
         
         # Extract package information
-        package_info = package_extractor.extract_package(package_file_path)
+        package_info = package_extractor.extract_package(package_file_path, str(extracted_dir))
         
         # Save extracted information
         with open(extracted_dir / "package_info.json", 'w', encoding='utf-8') as f:
             json.dump(package_info, f, indent=2)
         
         log_info(f"Extracted package information: {package_info['name']}")
+        
+        # Step 2: Download report specifications
+        logging_helper(
+            message="Downloading report specifications",
+            progress=30,
+            message_type="info"
+        )
+        
+        # Create Cognos client
+        client = CognosClient(cognos_config)
+        
+        # Download report specifications for each report ID
+        report_specs = []
+        
+        if report_ids:
+            for report_id in report_ids:
+                try:
+                    # Get report spec
+                    report_spec = client.get_report_spec(report_id)
+                    
+                    # Save report spec
+                    report_specs.append(report_spec)
+                    
+                    # Save to file
+                    with open(reports_dir / f"report_{report_id}.xml", 'w', encoding='utf-8') as f:
+                        f.write(report_spec)
+                    
+                    log_info(f"Downloaded report spec for report ID: {report_id}")
+                    
+                except Exception as e:
+                    log_warning(f"Failed to download report spec for report ID {report_id}: {e}")
         
         # Step 3: Convert to Power BI data model
         logging_helper(
@@ -369,10 +339,13 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Convert package info to data model
+        # Convert to data model
         data_model = package_extractor.convert_to_data_model(package_info)
         
-        log_info(f"Converted package to data model with {len(data_model.tables)} tables and {len(data_model.relationships)} relationships")
+        # Consolidate tables if needed
+        data_model = consolidate_model_tables(data_model)
+        
+        log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
         # Step 4: Create Power BI project
         logging_helper(
@@ -381,48 +354,42 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Create a Power BI project
-        project = PowerBIProject(
+        # Create Power BI project
+        pbi_project = PowerBIProject(
             name=package_info['name'],
-            data_model=data_model,
-            report=None  # No report for package migration
+            data_model=data_model
         )
         
-        # Create project generator
-        project_generator = PowerBIProjectGenerator(migration_config)
-        
-        # Generate Power BI project
-        project_generator.generate_project(project, str(pbit_dir))
-        
-        log_info(f"Generated Power BI project at: {pbit_dir}")
-        
-        # Step 5: Consolidate model tables
+        # Step 5: Generate Power BI files
         logging_helper(
-            message="Consolidating model tables",
+            message="Generating Power BI files",
             progress=90,
             message_type="info"
         )
         
-        consolidate_model_tables(output_path)
+        # Create generator
+        generator = PowerBIProjectGenerator(logger=logging.getLogger(__name__))
         
-        # Log successful completion
-        log_info(f"Package with reports migration completed successfully: {package_file_path}")
+        # Generate PBIT file
+        pbit_path = generator.generate_pbit(pbi_project, pbit_dir)
         
-        # Also send to WebSocket for frontend updates
+        log_info(f"Generated PBIT file: {pbit_path}")
+        
+        # Step 6: Complete migration
         logging_helper(
-            message=f"Package with reports migration completed successfully",
+            message="Migration completed successfully",
             progress=100,
-            message_type="info"
+            message_type="success"
         )
         
         return True
         
     except Exception as e:
-        log_error(f"Package with reports migration failed: {str(e)}")
+        log_error(f"Migration failed: {e}")
         
         # Also send to WebSocket for frontend updates
         logging_helper(
-            message=f"Package with reports migration failed: {str(e)}",
+            message=f"Migration failed: {e}",
             progress=100,
             message_type="error"
         )

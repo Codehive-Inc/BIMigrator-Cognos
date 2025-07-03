@@ -1,0 +1,44 @@
+table 'Returns_'
+
+
+    column '_row_id'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: _row_id
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Returned'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Returned
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Order_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Order_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Returns_' = m
+        mode: import
+        source = 
+            	let
+					Source = /* Connect to data source based on context */,
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"OldRowID", "_row_id"}, {"OldReturned", "Returned"}, {"OldOrderID", "Order_ID"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"_row_id", Int64.Type}, {"Returned", type text}, {"Order_ID", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

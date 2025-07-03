@@ -1,0 +1,68 @@
+{
+  "source_name": "Report_with_Calculations",
+  "name": "Report_with_Calculations",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "Region",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Region",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "No of Unique Orders",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DISTINCTCOUNT('Report_with_Calculations'[Order_ID])",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Orders Returned (Multiple Returns per Order)",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "IF('C_TestDataModule'[Returns_].[Returned] = \"Yes\", 1, 0)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Report_with_Calculations",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"OldRegion\", \"Region\"}, {\"OldUniqueOrders\", \"No of Unique Orders\"}, {\"OldOrdersReturned\", \"Orders Returned (Multiple Returns per Order)\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"Region\", type text}, {\"No of Unique Orders\", type text}, {\"Orders Returned (Multiple Returns per Order)\", type number}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}
