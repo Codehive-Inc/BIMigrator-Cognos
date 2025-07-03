@@ -167,11 +167,11 @@ table 'Payee Report'
     partition 'Payee Report' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table Payee Report
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a mistake
+				in
+					the table information provided. The columns are listed twice, which is not valid for a table definition. Could you please clarify the correct set of columns and their data types?
         
 
 

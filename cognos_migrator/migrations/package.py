@@ -165,7 +165,11 @@ def migrate_package_with_explicit_session(package_file_path: str,
         
         # Create generator
         # Initialize with config instead of logger
-        config = MigrationConfig(template_directory=str(Path(__file__).parent.parent / 'templates'))
+        config = MigrationConfig(
+            template_directory=str(Path(__file__).parent.parent / 'templates'),
+            llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
+            llm_service_enabled=True
+        )
         generator = PowerBIProjectGenerator(config=config)
         
         # Generate Power BI project files
@@ -372,7 +376,11 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         # Create generator
         # Initialize with config instead of logger
-        config = MigrationConfig(template_directory=str(Path(__file__).parent.parent / 'templates'))
+        config = MigrationConfig(
+            template_directory=str(Path(__file__).parent.parent / 'templates'),
+            llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),  # Enable DAX service
+            llm_service_enabled=True
+        )
         generator = PowerBIProjectGenerator(config=config)
         
         # Generate Power BI project files

@@ -327,7 +327,7 @@ table 'tblAgency'
     partition 'tblAgency' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table tblAgency
+            // ERROR: name 'table_name' is not defined
 let
 				Source = Table.FromRows({})
 			in

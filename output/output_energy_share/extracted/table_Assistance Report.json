@@ -773,5 +773,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Assistance Report",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"Season\", type text}, {\"AssistanceReportID\", Int64.Type}, {\"AgencyID\", Int64.Type}, {\"AgencyName\", type text}, {\"State\", type text}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"TotalAssisted\", Int64.Type}, {\"HouseholdsAssisted\", Int64.Type}, {\"TotalOver60\", Int64.Type}, {\"TotalUnder5\", Int64.Type}, {\"TotalDisabled\", Int64.Type}, {\"Denials\", Int64.Type}, {\"PreparedBy\", type text}, {\"PreparedDate\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"EditLink\", type text}, {\"TotalVeteranVoucher\", Int64.Type}, {\"TotalDisabilityVoucher\", Int64.Type}, {\"TotalVeteran\", Int64.Type}, {\"TotalWeatherInterested\", Int64.Type}, {\"Season\", type text}, {\"AssistanceReportID\", Int64.Type}, {\"AgencyID\", Int64.Type}, {\"AgencyName\", type text}, {\"State\", type text}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"TotalAssisted\", Int64.Type}, {\"HouseholdsAssisted\", Int64.Type}, {\"TotalOver60\", Int64.Type}, {\"TotalUnder5\", Int64.Type}, {\"TotalDisabled\", Int64.Type}, {\"Denials\", Int64.Type}, {\"PreparedBy\", type text}, {\"PreparedDate\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"EditLink\", type text}, {\"TotalVeteranVoucher\", Int64.Type}, {\"TotalDisabilityVoucher\", Int64.Type}, {\"TotalVeteran\", Int64.Type}, {\"TotalWeatherInterested\", Int64.Type}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

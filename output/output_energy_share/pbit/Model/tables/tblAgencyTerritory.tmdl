@@ -55,11 +55,11 @@ table 'tblAgencyTerritory'
     partition 'tblAgencyTerritory' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table tblAgencyTerritory
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = /* Connect to data source based on context */,
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}, {"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}})
+				in
+					#"Changed Types"
         
 
 

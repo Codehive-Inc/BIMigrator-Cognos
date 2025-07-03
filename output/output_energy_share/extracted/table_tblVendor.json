@@ -709,5 +709,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "tblVendor",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = /* Connect to data source based on context */,\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"OldVendorID\", \"VendorID\"}, {\"OldName\", \"Name\"}, {\"OldAddress1\", \"Address1\"}, {\"OldAddress2\", \"Address2\"}, {\"OldCity\", \"City\"}, {\"OldState\", \"State\"}, {\"OldZip\", \"Zip\"}, {\"OldPhone\", \"Phone\"}, {\"OldIsDominionVendor\", \"IsDominionVendor\"}, {\"OldIsActive\", \"IsActive\"}, {\"OldDefaultState\", \"DefaultState\"}, {\"OldsellsDominion\", \"sellsDominion\"}, {\"OldsellsOtherElectric\", \"sellsOtherElectric\"}, {\"OldsellsFuelOil\", \"sellsFuelOil\"}, {\"OldsellsCoalOrWood\", \"sellsCoalOrWood\"}, {\"OldsellsNaturalGas\", \"sellsNaturalGas\"}, {\"OldsellsKerosene\", \"sellsKerosene\"}, {\"OldsellsPropane\", \"sellsPropane\"}, {\"OldCreatedBy\", \"CreatedBy\"}, {\"Olddatecreated\", \"datecreated\"}, {\"OldUpdatedBy\", \"UpdatedBy\"}, {\"OldLastUpdated\", \"LastUpdated\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"VendorID\", Int64.Type}, {\"Name\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"IsDominionVendor\", type text}, {\"IsActive\", type text}, {\"DefaultState\", type text}, {\"sellsDominion\", type text}, {\"sellsOtherElectric\", type text}, {\"sellsFuelOil\", type text}, {\"sellsCoalOrWood\", type text}, {\"sellsNaturalGas\", type text}, {\"sellsKerosene\", type text}, {\"sellsPropane\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

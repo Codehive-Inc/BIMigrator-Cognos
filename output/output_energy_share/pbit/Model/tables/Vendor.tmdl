@@ -343,11 +343,11 @@ table 'Vendor'
     partition 'Vendor' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table Vendor
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a mistake
+				in
+					the table information provided. The list of expected columns contains duplicate entries. Could you please clarify the correct list of columns and their data types?
         
 
 

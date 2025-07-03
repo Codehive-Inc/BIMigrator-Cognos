@@ -215,11 +215,11 @@ table 'tblAssistanceReport'
     partition 'tblAssistanceReport' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table tblAssistanceReport
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a mistake
+				in
+					the table information provided. The columns are listed multiple times, which is not typical for a table structure. Could you please clarify the correct list of columns and their data types?
         
 
 

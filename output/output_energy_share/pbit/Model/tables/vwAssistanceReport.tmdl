@@ -391,11 +391,11 @@ table 'vwAssistanceReport'
     partition 'vwAssistanceReport' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table vwAssistanceReport
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = Sql.Database("YourServerName", "YourDatabaseName", [Query = "SELECT * FROM vwAssistanceReport"]),
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"Season", type text}, {"AssistanceReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"AgencyName", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"TotalVeteran", Int64.Type}, {"TotalWeatherInterested", Int64.Type}, {"HouseholdsAssisted", Int64.Type}, {"Denials", Int64.Type}, {"PreparedBy", type text}, {"PreparedDate", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"TotalAssisted", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalDisabled", Int64.Type}, {"TotalVeteranVoucher", Int64.Type}, {"TotalDisabilityVoucher", Int64.Type}, {"EditLink", type text}, {"Season", type text}, {"AssistanceReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"AgencyName", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"TotalVeteran", Int64.Type}, {"TotalWeatherInterested", Int64.Type}, {"HouseholdsAssisted", Int64.Type}, {"Denials", Int64.Type}, {"PreparedBy", type text}, {"PreparedDate", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"TotalAssisted", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalDisabled", Int64.Type}, {"TotalVeteranVoucher", Int64.Type}, {"TotalDisabilityVoucher", Int64.Type}, {"EditLink", type text}})
+				in
+					#"Changed Types"
         
 
 

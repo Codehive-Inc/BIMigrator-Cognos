@@ -199,11 +199,11 @@ table 'Matching Credit Report'
     partition 'Matching Credit Report' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table Matching Credit Report
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be an error
+				in
+					the table information provided. The columns are listed multiple times. Could you please clarify the correct list of columns and their data types?
         
 
 

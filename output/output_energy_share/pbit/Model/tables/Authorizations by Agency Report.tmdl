@@ -519,7 +519,7 @@ table 'Authorizations by Agency Report'
     partition 'Authorizations by Agency Report' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table Authorizations by Agency Report
+            // ERROR: name 'table_name' is not defined
 let
 				Source = Table.FromRows({})
 			in

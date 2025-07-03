@@ -119,11 +119,12 @@ table 'tblTerritory'
     partition 'tblTerritory' = m
         mode: import
         source = 
-            // ERROR: M-query converter is not configured but required for M-query generation for table tblTerritory
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = /* Connect to data source based on context */,
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"TerritoryID", "TerritoryID"}, {"Name", "Name"}, {"IsActive", "IsActive"}, {"CreatedBy", "CreatedBy"}, {"datecreated", "datecreated"}, {"UpdatedBy", "UpdatedBy"}, {"LastUpdated", "LastUpdated"}, {"TerritoryID", "TerritoryID"}, {"Name", "Name"}, {"IsActive", "IsActive"}, {"CreatedBy", "CreatedBy"}, {"datecreated", "datecreated"}, {"UpdatedBy", "UpdatedBy"}, {"LastUpdated", "LastUpdated"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+				in
+					#"Changed Types"
         
 
 
