@@ -1,0 +1,67 @@
+table 'tblAgencyTerritory'
+
+
+    column 'AgencyTerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyTerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyTerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyTerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'tblAgencyTerritory' = m
+        mode: import
+        source = 
+            // ERROR: M-query converter is not configured but required for M-query generation for table tblAgencyTerritory
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

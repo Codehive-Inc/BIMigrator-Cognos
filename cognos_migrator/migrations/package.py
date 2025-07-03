@@ -139,7 +139,7 @@ def migrate_package_with_explicit_session(package_file_path: str,
         data_model = package_extractor.convert_to_data_model(package_info)
         
         # Consolidate tables if needed
-        data_model = consolidate_model_tables(data_model)
+        consolidate_model_tables(output_path)
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
@@ -164,10 +164,13 @@ def migrate_package_with_explicit_session(package_file_path: str,
         )
         
         # Create generator
-        generator = PowerBIProjectGenerator(logger=logging.getLogger(__name__))
+        # Initialize with config instead of logger
+        config = MigrationConfig(template_directory=str(Path(__file__).parent.parent / 'templates'))
+        generator = PowerBIProjectGenerator(config=config)
         
-        # Generate PBIT file
-        pbit_path = generator.generate_pbit(pbi_project, pbit_dir)
+        # Generate Power BI project files
+        success = generator.generate_project(pbi_project, pbit_dir)
+        pbit_path = pbit_dir if success else None
         
         log_info(f"Generated PBIT file: {pbit_path}")
         
@@ -343,7 +346,7 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         data_model = package_extractor.convert_to_data_model(package_info)
         
         # Consolidate tables if needed
-        data_model = consolidate_model_tables(data_model)
+        consolidate_model_tables(output_path)
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
@@ -368,10 +371,13 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         )
         
         # Create generator
-        generator = PowerBIProjectGenerator(logger=logging.getLogger(__name__))
+        # Initialize with config instead of logger
+        config = MigrationConfig(template_directory=str(Path(__file__).parent.parent / 'templates'))
+        generator = PowerBIProjectGenerator(config=config)
         
-        # Generate PBIT file
-        pbit_path = generator.generate_pbit(pbi_project, pbit_dir)
+        # Generate Power BI project files
+        success = generator.generate_project(pbi_project, pbit_dir)
+        pbit_path = pbit_dir if success else None
         
         log_info(f"Generated PBIT file: {pbit_path}")
         

@@ -1,0 +1,131 @@
+table 'tblTerritory'
+
+
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsActive'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsActive
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsActive'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsActive
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'tblTerritory' = m
+        mode: import
+        source = 
+            // ERROR: M-query converter is not configured but required for M-query generation for table tblTerritory
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table
