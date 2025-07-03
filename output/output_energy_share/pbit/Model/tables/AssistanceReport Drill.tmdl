@@ -343,11 +343,11 @@ table 'AssistanceReport Drill'
     partition 'AssistanceReport Drill' = m
         mode: import
         source = 
-            // ERROR: name 'table_name' is not defined
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a mistake
+				in
+					the table information provided. The list of expected columns contains duplicates. Could you please clarify the unique columns and their data types for the "AssistanceReport Drill" table?
         
 
 

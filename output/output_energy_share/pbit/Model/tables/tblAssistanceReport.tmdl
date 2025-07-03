@@ -215,11 +215,11 @@ table 'tblAssistanceReport'
     partition 'tblAssistanceReport' = m
         mode: import
         source = 
-            // ERROR: name 'table_name' is not defined
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					I'm sorry,
+					but there seems to be a mistake
+				in
+					the table information provided. The columns are repeated twice. Could you please clarify the correct list of columns and their data types?
         
 
 

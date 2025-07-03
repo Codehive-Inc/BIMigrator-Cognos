@@ -331,7 +331,7 @@
     {
       "name": "Payee Report",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a misunderstanding\n\t\t\t\tin\n\t\t\t\t\tthe request. The table information provided contains duplicate column names, which is not allowed in Power BI. Please provide a corrected list of unique column names and their data types so that I can generate the appropriate M - Query."
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a misunderstanding\n\t\t\t\tin\n\t\t\t\t\tthe table definition. The columns are repeated, which is not valid for a table structure. Could you please clarify the table structure or provide the correct column list?"
     }
   ],
   "has_widget_serialization": false,

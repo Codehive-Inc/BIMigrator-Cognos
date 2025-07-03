@@ -171,7 +171,7 @@ table 'Payee Report'
 					I'm sorry,
 					but there seems to be a misunderstanding
 				in
-					the request. The table information provided contains duplicate column names, which is not allowed in Power BI. Please provide a corrected list of unique column names and their data types so that I can generate the appropriate M - Query.
+					the table definition. The columns are repeated, which is not valid for a table structure. Could you please clarify the table structure or provide the correct column list?
         
 
 

@@ -677,5 +677,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "AssistanceReport Drill",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a mistake\n\t\t\t\tin\n\t\t\t\t\tthe table information provided. The list of expected columns contains duplicates. Could you please clarify the unique columns and their data types for the \"AssistanceReport Drill\" table?"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

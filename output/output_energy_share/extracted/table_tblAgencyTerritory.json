@@ -107,7 +107,7 @@
     {
       "name": "tblAgencyTerritory",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a mistake\n\t\t\t\tin\n\t\t\t\t\tthe table definition. The columns \"AgencyTerritoryID\", \"AgencyID\", and \"TerritoryID\" are repeated. Could you please clarify the correct structure of the table?"
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a mistake\n\t\t\t\tin\n\t\t\t\t\tthe request. The columns listed are duplicates, which is not valid for a table definition. Please provide the correct column names and types, and I will generate the M - Query for you."
     }
   ],
   "has_widget_serialization": false,

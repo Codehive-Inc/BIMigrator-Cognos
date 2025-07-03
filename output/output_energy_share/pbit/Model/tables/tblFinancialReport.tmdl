@@ -232,10 +232,11 @@ table 'tblFinancialReport'
         mode: import
         source = 
             	let
-					I'm sorry,
-					but there seems to be an error
+					Source = /* Connect to data source based on context */,
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"OldFinancialReportID", "FinancialReportID"}, {"OldAgencyID", "AgencyID"}, {"OldApplicableMonth", "ApplicableMonth"}, {"OldApplicableYear", "ApplicableYear"}, {"OldBalanceForward", "BalanceForward"}, {"OldEnergyShareCheckAmount", "EnergyShareCheckAmount"}, {"OldEnergySharePartnerAmount", "EnergySharePartnerAmount"}, {"OldAmountSpentPayingEnergyBills", "AmountSpentPayingEnergyBills"}, {"OldBalanceOnHand", "BalanceOnHand"}, {"OldPreparedBy", "PreparedBy"}, {"OldCreatedBy", "CreatedBy"}, {"Olddatecreated", "datecreated"}, {"OldUpdatedBy", "UpdatedBy"}, {"OldLastUpdated", "LastUpdated"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"FinancialReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
 				in
-					the provided table information. The list of expected columns contains duplicates. Could you please clarify the correct list of columns and their data types?
+					#"Changed Types"
         
 
 
