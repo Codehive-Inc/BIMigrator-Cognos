@@ -145,7 +145,7 @@ def logging_helper(
     level = level_map.get(message_type, logging.INFO)
     
     # Log using the standard logging system
-    logger = logging.getLogger('bimigrator')
+    logger = logging.getLogger('cognos_migrator')
     logger.log(level, message)
     
     # Use provided progress or calculate from the task info
@@ -193,4 +193,4 @@ class WebSocketLogHandler(logging.Handler):
         message = self.format(record)
         
         # Send the log message
-        send_log_message(message, None, message_type)
+        logging_helper(message, None, message_type)

@@ -32,11 +32,11 @@ __version__ = "1.0.0"
 __author__ = "Cognos Migration Team"
 
 # Import only essential functions for external integration
-from .main import (
-    test_cognos_connection,
+from .main import test_cognos_connection, post_process_module_with_explicit_session
+from .migrations import (
     migrate_module_with_explicit_session,
-    migrate_single_report_with_explicit_session,
-    post_process_module_with_explicit_session
+    migrate_module_with_reports_explicit_session,
+    migrate_single_report_with_explicit_session
 )
 
 # Import key exception classes for error handling
@@ -50,6 +50,7 @@ __all__ = [
     # Core migration functions
     'test_cognos_connection',
     'migrate_module_with_explicit_session', 
+    'migrate_module_with_reports_explicit_session',
     'migrate_single_report_with_explicit_session',
     'post_process_module_with_explicit_session',
     
