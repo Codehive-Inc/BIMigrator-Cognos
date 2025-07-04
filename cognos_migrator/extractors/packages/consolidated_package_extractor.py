@@ -215,8 +215,14 @@ class ConsolidatedPackageExtractor:
                     )
                     columns.append(column)
                 
-                # Create table with columns
-                table = Table(name=qs['name'], columns=columns)
+                # Extract SQL from sql_definition if available
+                source_query = None
+                if 'sql_definition' in qs and qs['sql_definition'] and 'sql' in qs['sql_definition']:
+                    source_query = qs['sql_definition']['sql']
+                    self.logger.info(f"Extracted SQL for table {qs['name']}: {source_query}")
+                
+                # Create table with columns and source query
+                table = Table(name=qs['name'], columns=columns, source_query=source_query)
                 
                 # Add table to data model's tables list
                 data_model.tables.append(table)

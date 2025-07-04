@@ -1,0 +1,356 @@
+table 'AssistanceReport Drill'
+
+
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AssistanceReportID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AssistanceReportID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AuthorizationID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AuthorizationID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalAssisted'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalAssisted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteranVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabilityVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteran'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteran
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalWeatherInterested'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalWeatherInterested
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AssistanceReportID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AssistanceReportID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AuthorizationID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AuthorizationID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalAssisted'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalAssisted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteranVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabilityVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteran'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteran
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalWeatherInterested'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalWeatherInterested
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'AssistanceReport Drill' = m
+        mode: import
+        source = 
+            	let
+					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "select vwAssistanceReportDrillDown.Season as Season, vwAssistanceReportDrillDown.AssistanceReportID as AssistanceReportID, vwAssistanceReportDrillDown.AuthorizationID as AuthorizationID, vwAssistanceReportDrillDown.AgencyID as AgencyID, vwAssistanceReportDrillDown.AgencyName as AgencyName, vwAssistanceReportDrillDown.""State"" as State6, vwAssistanceReportDrillDown.ApplicableMonth as ApplicableMonth, vwAssistanceReportDrillDown.ApplicableYear as ApplicableYear, vwAssistanceReportDrillDown.CreatedBy as CreatedBy, vwAssistanceReportDrillDown.datecreated as datecreated, vwAssistanceReportDrillDown.UpdatedBy as UpdatedBy, vwAssistanceReportDrillDown.LastUpdated as LastUpdated, vwAssistanceReportDrillDown.TotalAssisted as TotalAssisted, vwAssistanceReportDrillDown.TotalOver60 as TotalOver60, vwAssistanceReportDrillDown.TotalUnder5 as TotalUnder5, vwAssistanceReportDrillDown.TotalDisabled as TotalDisabled, vwAssistanceReportDrillDown.EditLink as EditLink from [Shared_Energy_Share].vwAssistanceReportDrillDown vwAssistanceReportDrillDown"),
+					#"Renamed Columns" = Table.RenameColumns(Source, {{"State6", "State"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"Season", type text}, {"AssistanceReportID", Int64.Type}, {"AuthorizationID", Int64.Type}, {"AgencyID", Int64.Type}, {"AgencyName", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"TotalAssisted", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalDisabled", Int64.Type}, {"EditLink", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

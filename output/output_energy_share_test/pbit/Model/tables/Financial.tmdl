@@ -1,0 +1,243 @@
+table 'Financial'
+
+
+    column 'FinancialReportID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: FinancialReportID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BalanceForward'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BalanceForward
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EnergyShareCheckAmount'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EnergyShareCheckAmount
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EnergySharePartnerAmount'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EnergySharePartnerAmount
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountSpentPayingEnergyBills'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountSpentPayingEnergyBills
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BalanceOnHand'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BalanceOnHand
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PreparedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PreparedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FinancialReportID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: FinancialReportID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BalanceForward'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BalanceForward
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EnergyShareCheckAmount'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EnergyShareCheckAmount
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EnergySharePartnerAmount'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EnergySharePartnerAmount
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountSpentPayingEnergyBills'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountSpentPayingEnergyBills
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BalanceOnHand'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BalanceOnHand
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PreparedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PreparedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Financial' = m
+        mode: import
+        source = 
+            	let
+					Source = Value.NativeQuery(Sql.Database("ServerName", "DatabaseName"), "select tblFinancialReport.FinancialReportID as FinancialReportID, tblFinancialReport.AgencyID as AgencyID, tblFinancialReport.ApplicableMonth as ApplicableMonth, tblFinancialReport.ApplicableYear as ApplicableYear, tblFinancialReport.BalanceForward as BalanceForward, tblFinancialReport.EnergyShareCheckAmount as EnergyShareCheckAmount, tblFinancialReport.EnergySharePartnerAmount as EnergySharePartnerAmount, tblFinancialReport.AmountSpentPayingEnergyBills as AmountSpentPayingEnergyBills, tblFinancialReport.BalanceOnHand as BalanceOnHand, tblFinancialReport.PreparedBy as PreparedBy, tblFinancialReport.CreatedBy as CreatedBy, tblFinancialReport.datecreated as datecreated, tblFinancialReport.UpdatedBy as UpdatedBy, tblFinancialReport.LastUpdated as LastUpdated from [Shared_Energy_Share].tblFinancialReport tblFinancialReport"),
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"FinancialReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table
