@@ -321,18 +321,97 @@ table 'Agency'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'ApplicantFirstName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantFirstName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantMiddleName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantMiddleName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantLastName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantLastName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantAddress
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantCity'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantCity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantZip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantZip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDue'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDue
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MatchingEnergyCredit'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MatchingEnergyCredit
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
     partition 'Agency' = m
         mode: import
         source = 
-            	let
-					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "select tblAgency.AgencyID as AgencyID, tblAgency.AgencyUserID as AgencyUserID, tblAgency.AgencyName as AgencyName, tblAgency.Address1 as Address1, tblAgency.Address2 as Address2, tblAgency.City as City, tblAgency.""State"" as State7, tblAgency.Zip as Zip, tblAgency.Phone as Phone, tblAgency.Fax as Fax, tblAgency.ContactName as ContactName, tblAgency.Email as Email, tblAgency.DistributionAgencyID as DistributionAgencyID, tblAgency.DivisionID as DivisionID, tblAgency.AgencyType as AgencyType, tblAgency.IsActive as IsActive, tblAgency.CreatedBy as CreatedBy, tblAgency.datecreated as datecreated, tblAgency.UpdatedBy as UpdatedBy, tblAgency.LastUpdated as LastUpdated from [Shared_Energy_Share].tblAgency tblAgency"),
-					#"Renamed Columns" = Table.RenameColumns(Source, {{"State7", "State"}}),
-					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"AgencyID", Int64.Type}, {"AgencyUserID", type text}, {"AgencyName", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"Zip", type text}, {"Phone", type text}, {"Fax", type text}, {"ContactName", type text}, {"Email", type text}, {"DistributionAgencyID", Int64.Type}, {"DivisionID", Int64.Type}, {"AgencyType", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
-				in
-					#"Changed Types"
+            // ERROR: name 'table_name' is not defined
+let
+				Source = Table.FromRows({})
+			in
+				Source
         
 
 

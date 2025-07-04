@@ -6,6 +6,7 @@ Cognos Framework Manager (FM) package files using specialized extractors.
 """
 
 import logging
+import re
 import json
 import os
 import shutil
@@ -186,46 +187,54 @@ class ConsolidatedPackageExtractor:
             # Create data model with empty tables list (will add tables later)
             data_model = DataModel(name=package_info['name'], tables=tables)
             
-            # Convert query subjects to tables
+            # Track query subjects by type for later processing
+            db_query_subjects = []
+            model_query_subjects = []
+            other_query_subjects = []
+            
+            # First pass: Categorize query subjects by type
             for qs in package_info['query_subjects']:
-                # Create columns list for table
-                columns = []
-                
-                # Add columns
-                for item in qs.get('items', []):
-                    # Get the data type from the item
-                    cognos_type = item.get('datatype', 'string')
-                    
-                    # Map Cognos data type to Power BI data type
-                    if cognos_type.lower() in ['int32', 'int64']:
-                        data_type = DataType.INTEGER
-                    elif cognos_type.lower() in ['float', 'double']:
-                        data_type = DataType.DOUBLE
-                    elif cognos_type.lower() == 'boolean':
-                        data_type = DataType.BOOLEAN
-                    elif cognos_type.lower() in ['date', 'time', 'timestamp']:
-                        data_type = DataType.DATE
+                if 'sql_definition' in qs and qs['sql_definition']:
+                    # Check if this is a dbQuery or modelQuery by examining the definition
+                    if 'type' in qs['sql_definition'] and qs['sql_definition']['type'] == 'dbQuery':
+                        self.logger.info(f"Found dbQuery subject: {qs['name']}")
+                        db_query_subjects.append(qs)
+                    elif 'type' in qs['sql_definition'] and qs['sql_definition']['type'] == 'modelQuery':
+                        self.logger.info(f"Found modelQuery subject: {qs['name']}")
+                        model_query_subjects.append(qs)
                     else:
-                        data_type = DataType.STRING
-                        
-                    column = Column(
-                        name=item['name'],
-                        data_type=data_type,
-                        source_column=item.get('source_column', item['name'])  # Use source_column if available, otherwise use name
-                    )
-                    columns.append(column)
+                        # If type not clearly identified, check the SQL content
+                        sql = qs['sql_definition'].get('sql', '')
+                        if 'select * from' in sql.lower():
+                            self.logger.info(f"Identified as likely dbQuery by SQL pattern: {qs['name']}")
+                            db_query_subjects.append(qs)
+                        else:
+                            self.logger.info(f"Processing as other query subject: {qs['name']}")
+                            other_query_subjects.append(qs)
+                else:
+                    # If no SQL definition, process as other
+                    other_query_subjects.append(qs)
+            
+            # Process database query subjects first
+            for qs in db_query_subjects:
+                self._create_table_from_query_subject(qs, data_model)
                 
-                # Extract SQL from sql_definition if available
-                source_query = None
-                if 'sql_definition' in qs and qs['sql_definition'] and 'sql' in qs['sql_definition']:
-                    source_query = qs['sql_definition']['sql']
-                    self.logger.info(f"Extracted SQL for table {qs['name']}: {source_query}")
+            # Process other query subjects
+            for qs in other_query_subjects:
+                self._create_table_from_query_subject(qs, data_model)
                 
-                # Create table with columns and source query
-                table = Table(name=qs['name'], columns=columns, source_query=source_query)
+            # Process model query subjects last, potentially combining with existing tables
+            for qs in model_query_subjects:
+                # Try to find if this model query references an existing table
+                referenced_table = self._find_referenced_table(qs, data_model)
                 
-                # Add table to data model's tables list
-                data_model.tables.append(table)
+                if referenced_table:
+                    # Enhance the existing table with the model query information
+                    self._enhance_table_with_model_query(qs, referenced_table)
+                    self.logger.info(f"Enhanced table {referenced_table.name} with model query from {qs['name']}")
+                else:
+                    # Create a new table if no matching reference found
+                    self._create_table_from_query_subject(qs, data_model)
             
             # Convert relationships
             for rel in package_info['relationships']:
@@ -280,8 +289,8 @@ class ConsolidatedPackageExtractor:
                         for pattern in id_patterns:
                             matching_cols = [col for col in common_cols if pattern.lower() in col.lower()]
                             if matching_cols:
-                                left_col = right_col = matching_cols[0]
-                                self.logger.info(f"Inferred join column {left_col} for relationship between {left_table} and {right_table}")
+                                left_col = matching_cols[0]
+                                right_col = matching_cols[0]
                                 break
                         
                         # If still no match, use any common column as a last resort
@@ -312,3 +321,186 @@ class ConsolidatedPackageExtractor:
         except Exception as e:
             self.logger.error(f"Failed to convert package to data model: {e}")
             raise
+
+    def _create_table_from_query_subject(self, qs: Dict[str, Any], data_model: DataModel) -> Table:
+        """Create a Table object from a query subject and add it to the data model
+        
+        Args:
+            qs: Query subject dictionary
+            data_model: DataModel to add the table to
+            
+        Returns:
+            The created Table object
+        """
+        # Create columns list for table
+        columns = []
+        
+        # Add columns
+        for item in qs.get('items', []):
+            # Get the data type from the item
+            cognos_type = item.get('datatype', 'string')
+            
+            # Map Cognos data type to Power BI data type
+            if cognos_type.lower() in ['int32', 'int64']:
+                data_type = DataType.INTEGER
+            elif cognos_type.lower() in ['float', 'double']:
+                data_type = DataType.DOUBLE
+            elif cognos_type.lower() == 'boolean':
+                data_type = DataType.BOOLEAN
+            elif cognos_type.lower() in ['date', 'time', 'timestamp']:
+                data_type = DataType.DATE
+            else:
+                data_type = DataType.STRING
+                
+            column = Column(
+                name=item['name'],
+                data_type=data_type,
+                source_column=item.get('source_column', item['name'])  # Use source_column if available, otherwise use name
+            )
+            columns.append(column)
+        
+        # Extract SQL from sql_definition if available
+        source_query = None
+        if 'sql_definition' in qs and qs['sql_definition'] and 'sql' in qs['sql_definition']:
+            source_query = qs['sql_definition']['sql']
+            self.logger.info(f"Extracted SQL for table {qs['name']}: {source_query}")
+        
+        # Create table with columns and source query
+        table = Table(name=qs['name'], columns=columns, source_query=source_query)
+        
+        # Add table to data model's tables list
+        data_model.tables.append(table)
+        
+        return table
+        
+    def _find_referenced_table(self, model_qs: Dict[str, Any], data_model: DataModel) -> Optional[Table]:
+        """Find the database table that a model query references
+        
+        Args:
+            model_qs: Model query subject dictionary
+            data_model: DataModel containing tables
+            
+        Returns:
+            The referenced Table object or None if not found
+        """
+        if not ('sql_definition' in model_qs and model_qs['sql_definition'] and 'sql' in model_qs['sql_definition']):
+            return None
+            
+        sql = model_qs['sql_definition']['sql']
+        self.logger.info(f"Finding referenced table for model query {model_qs['name']} with SQL: {sql[:100]}...")
+        
+        # Extract table names from the SQL using multiple approaches
+        table_names = set()
+        
+        # Approach 1: Look for table references in FROM clause with schema and alias
+        # Pattern: [schema].[table] [alias] or just table [alias]
+        matches = re.findall(r'from\s+(?:\[?([^\]\s]+)\]?\.)?\[?([^\]\s]+)\]?(?:\s+([^\s,]+))?', sql.lower())
+        for match in matches:
+            schema = match[0] if match[0] else ''
+            table = match[1]
+            table_names.add(table)
+            self.logger.info(f"Found table reference in FROM clause: {table}")
+        
+        # Approach 2: Look for table references in JOIN clauses
+        # Pattern: join [schema].[table] or join table
+        join_matches = re.findall(r'join\s+(?:\[?([^\]\s]+)\]?\.)?\[?([^\]\s]+)\]?', sql.lower())
+        for match in join_matches:
+            schema = match[0] if match[0] else ''
+            table = match[1]
+            table_names.add(table)
+            self.logger.info(f"Found table reference in JOIN clause: {table}")
+        
+        # Approach 3: Simple name matching based on model query subject name
+        # Often the model query subject name is related to the db table name
+        model_name = model_qs['name'].lower()
+        if model_name.startswith('tbl'):
+            # If model name starts with 'tbl', add version without it
+            table_names.add(model_name[3:])
+        else:
+            # Otherwise, add version with 'tbl' prefix
+            table_names.add(f"tbl{model_name}")
+            
+        self.logger.info(f"Potential table names for {model_qs['name']}: {table_names}")
+            
+        # If we couldn't extract table names, return None
+        if not table_names:
+            return None
+            
+        # Look for tables with matching names
+        for table_name in table_names:
+            for table in data_model.tables:
+                # Check for various matching patterns
+                if (table.name.lower() == table_name.lower() or 
+                    (table_name.lower().startswith('tbl') and table.name.lower() == table_name.lower()[3:]) or
+                    (table.name.lower().startswith('tbl') and table.name.lower()[3:] == table_name.lower()) or
+                    (table.name.lower() == f"tbl{table_name.lower()}")):
+                    
+                    self.logger.info(f"Found matching table {table.name} for model query {model_qs['name']}")
+                    return table
+                   
+        self.logger.warning(f"No matching table found for model query {model_qs['name']}")
+        return None
+        
+    def _enhance_table_with_model_query(self, model_qs: Dict[str, Any], table: Table) -> None:
+        """Enhance an existing table with information from a model query
+        
+        Args:
+            model_qs: Model query subject dictionary
+            table: Table to enhance
+        """
+        # If the model query has a more detailed SQL, use it instead of the simple dbQuery
+        if 'sql_definition' in model_qs and model_qs['sql_definition'] and 'sql' in model_qs['sql_definition']:
+            model_sql = model_qs['sql_definition']['sql']
+            
+            # Only replace if the current SQL is a simple SELECT * query or doesn't exist
+            if not table.source_query or 'select * from' in table.source_query.lower():
+                self.logger.info(f"Replacing simple SQL with more detailed model query for table {table.name}")
+                self.logger.info(f"  Original SQL: {table.source_query}")
+                self.logger.info(f"  New SQL from {model_qs['name']}: {model_sql[:100]}...")
+                table.source_query = model_sql
+                
+                # Add a note that this table was enhanced with a model query
+                table.metadata = table.metadata or {}
+                table.metadata['enhanced_with_model_query'] = model_qs['name']
+                
+            # Add any additional columns from the model query that don't exist in the table
+            model_columns = {item['name'].lower(): item for item in model_qs.get('items', [])}
+            table_columns = {col.name.lower(): col for col in table.columns}
+            
+            for col_name, item in model_columns.items():
+                if col_name not in table_columns:
+                    # Get the data type from the item
+                    cognos_type = item.get('datatype', 'string')
+                    
+                    # Map Cognos data type to Power BI data type
+                    if cognos_type.lower() in ['int32', 'int64']:
+                        data_type = DataType.INTEGER
+                    elif cognos_type.lower() in ['float', 'double']:
+                        data_type = DataType.DOUBLE
+                    elif cognos_type.lower() == 'boolean':
+                        data_type = DataType.BOOLEAN
+                    elif cognos_type.lower() in ['date', 'time', 'timestamp']:
+                        data_type = DataType.DATE
+                    else:
+                        data_type = DataType.STRING
+                        
+                    # Create and add the new column
+                    new_column = Column(
+                        name=item['name'],
+                        data_type=data_type,
+                        source_column=item.get('source_column', item['name'])
+                    )
+                    table.columns.append(new_column)
+                    self.logger.info(f"Added column {new_column.name} from model query to table {table.name}")
+                    
+            # Update the table name to the model query name if it's more business-friendly
+            # (e.g., "Territory" instead of "tblTerritory")
+            if table.name.lower().startswith('tbl') and not model_qs['name'].lower().startswith('tbl'):
+                self.logger.info(f"Updating table name from {table.name} to {model_qs['name']} (more business-friendly)")
+                
+                # Store the original name in metadata
+                table.metadata = table.metadata or {}
+                table.metadata['original_name'] = table.name
+                
+                # Update the name
+                table.name = model_qs['name']

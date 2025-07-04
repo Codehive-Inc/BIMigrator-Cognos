@@ -88,6 +88,7 @@ class Table:
     partition_mode: str = "import"
     description: Optional[str] = None
     annotations: Dict[str, Any] = field(default_factory=dict)
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

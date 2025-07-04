@@ -331,7 +331,7 @@
     {
       "name": "vwPayeeReport",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].vwPayeeReport\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"Season\", type text}, {\"ApplicableYear\", Int64.Type}, {\"State\", type text}, {\"AuthorizationType\", type text}, {\"VendorID\", Int64.Type}, {\"Vendor\", type text}, {\"Agency\", type text}, {\"Date Submitted\", type text}, {\"PaidByEnergyShare\", type text}, {\"EditLink\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].vwPayeeReport\"),\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"Season\", \"Season\"}, {\"ApplicableYear\", \"ApplicableYear\"}, {\"State\", \"State\"}, {\"AuthorizationType\", \"AuthorizationType\"}, {\"VendorID\", \"VendorID\"}, {\"Vendor\", \"Vendor\"}, {\"Agency\", \"Agency\"}, {\"Date Submitted\", \"Date Submitted\"}, {\"PaidByEnergyShare\", \"PaidByEnergyShare\"}, {\"EditLink\", \"EditLink\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"Season\", type text}, {\"ApplicableYear\", Int64.Type}, {\"State\", type text}, {\"AuthorizationType\", type text}, {\"VendorID\", Int64.Type}, {\"Vendor\", type text}, {\"Agency\", type text}, {\"Date Submitted\", type text}, {\"PaidByEnergyShare\", type text}, {\"EditLink\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

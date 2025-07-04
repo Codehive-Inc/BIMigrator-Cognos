@@ -6,39 +6,24 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["tblAgency", "tblAgencyTerritory", "tblAssistanceReport", "tblAuthorization", "tblFinancialReport", "tblTerritory", "tblVendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown", "Agency", "Territory", "Vendor", "Authorization", "Assistance", "Financial", "Agency - MC Report", "Authorization - MC Report", "Assistance Report", "Authorizations by Agency Report", "Financial Report", "Payee Report", "Financial Report Drill", "AssistanceReport Drill", "Matching Credit Report"]
+annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
 
-ref table 'tblAgency'
+ref table 'Agency'
 ref table 'tblAgencyTerritory'
-ref table 'tblAssistanceReport'
-ref table 'tblAuthorization'
-ref table 'tblFinancialReport'
-ref table 'tblTerritory'
-ref table 'tblVendor'
+ref table 'Assistance'
+ref table 'Authorization'
+ref table 'Financial'
+ref table 'Territory'
+ref table 'Vendor'
 ref table 'vwAssistanceReport'
 ref table 'vwAuthorizationsByAgency'
 ref table 'vwFinancialReport'
 ref table 'vwPayeeReport'
 ref table 'vwFinancialReportDrillDown'
 ref table 'vwAssistanceReportDrillDown'
-ref table 'Agency'
-ref table 'Territory'
-ref table 'Vendor'
-ref table 'Authorization'
-ref table 'Assistance'
-ref table 'Financial'
-ref table 'Agency - MC Report'
-ref table 'Authorization - MC Report'
-ref table 'Assistance Report'
-ref table 'Authorizations by Agency Report'
-ref table 'Financial Report'
-ref table 'Payee Report'
-ref table 'Financial Report Drill'
-ref table 'AssistanceReport Drill'
-ref table 'Matching Credit Report'
 
 ref cultureInfo en-US

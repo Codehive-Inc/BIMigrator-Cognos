@@ -166,6 +166,22 @@
       }
     },
     {
+      "source_name": "DefaultState",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DefaultState",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "sellsDominion",
       "datatype": "string",
       "format_string": null,
@@ -502,6 +518,22 @@
       }
     },
     {
+      "source_name": "DefaultState",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DefaultState",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "sellsDominion",
       "datatype": "string",
       "format_string": null,
@@ -683,7 +715,7 @@
     {
       "name": "Vendor",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"select tblVendor.VendorID as VendorID, tblVendor.Name as Name, tblVendor.Address1 as Address1, tblVendor.Address2 as Address2, tblVendor.City as City, tblVendor.\"\"State\"\" as State6, tblVendor.Zip as Zip, tblVendor.Phone as Phone, tblVendor.IsDominionVendor as IsDominionVendor, tblVendor.IsActive as IsActive, tblVendor.sellsDominion as sellsDominion, tblVendor.sellsOtherElectric as sellsOtherElectric, tblVendor.sellsFuelOil as sellsFuelOil, tblVendor.sellsCoalOrWood as sellsCoalOrWood, tblVendor.sellsNaturalGas as sellsNaturalGas, tblVendor.sellsKerosene as sellsKerosene, tblVendor.sellsPropane as sellsPropane, tblVendor.CreatedBy as CreatedBy, tblVendor.datecreated as datecreated, tblVendor.UpdatedBy as UpdatedBy, tblVendor.LastUpdated as LastUpdated from [Shared_Energy_Share].tblVendor tblVendor\"),\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"State6\", \"State\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"VendorID\", Int64.Type}, {\"Name\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"IsDominionVendor\", type text}, {\"IsActive\", type text}, {\"sellsDominion\", type text}, {\"sellsOtherElectric\", type text}, {\"sellsFuelOil\", type text}, {\"sellsCoalOrWood\", type text}, {\"sellsNaturalGas\", type text}, {\"sellsKerosene\", type text}, {\"sellsPropane\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].tblVendor\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"VendorID\", Int64.Type}, {\"Name\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"IsDominionVendor\", type text}, {\"IsActive\", type text}, {\"DefaultState\", type text}, {\"sellsDominion\", type text}, {\"sellsOtherElectric\", type text}, {\"sellsFuelOil\", type text}, {\"sellsCoalOrWood\", type text}, {\"sellsNaturalGas\", type text}, {\"sellsKerosene\", type text}, {\"sellsPropane\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"VendorID\", Int64.Type}, {\"Name\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"IsDominionVendor\", type text}, {\"IsActive\", type text}, {\"DefaultState\", type text}, {\"sellsDominion\", type text}, {\"sellsOtherElectric\", type text}, {\"sellsFuelOil\", type text}, {\"sellsCoalOrWood\", type text}, {\"sellsNaturalGas\", type text}, {\"sellsKerosene\", type text}, {\"sellsPropane\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

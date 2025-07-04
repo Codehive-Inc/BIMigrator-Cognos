@@ -1156,6 +1156,38 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
+    },
+    {
+      "source_name": "itemizedCoalOrWood",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "itemizedCoalOrWood",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "itemizedPropane",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "itemizedPropane",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
   "hierarchies": [],
@@ -1163,7 +1195,7 @@
     {
       "name": "vwFinancialReport",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].vwFinancialReport\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"FinancialReportID\", Int64.Type}, {\"Zip\", type text}, {\"ContactName\", type text}, {\"AgencyID\", Int64.Type}, {\"Season\", type text}, {\"AgencyName\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"TOTAL\", type text}, {\"BalanceForward\", type text}, {\"EnergyShareCheckAmount\", type text}, {\"EnergySharePartnerAmount\", type text}, {\"AmountSpentPayingEnergyBills\", type text}, {\"BalanceOnHand\", type text}, {\"PreparedBy\", type text}, {\"Adjustment\", type text}, {\"AdjustmentReason\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"itemizedDominion\", type text}, {\"itemizedOtherElectric\", type text}, {\"itemizedFuelOil\", type text}, {\"itemizedCoalWood\", type text}, {\"itemizedNaturalGas\", type text}, {\"itemizedKerosene\", type text}, {\"itemizedPropaneBottledGas\", type text}, {\"itemizedNumberofDepositsGuaranteed\", type text}, {\"EditLink\", type text}, {\"DirectIndividualContributions\", Int64.Type}, {\"DirectRecipientContributions\", Int64.Type}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].vwFinancialReport\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"FinancialReportID\", Int64.Type}, {\"Zip\", type text}, {\"ContactName\", type text}, {\"AgencyID\", Int64.Type}, {\"Season\", type text}, {\"AgencyName\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"TOTAL\", type text}, {\"BalanceForward\", type text}, {\"EnergyShareCheckAmount\", type text}, {\"EnergySharePartnerAmount\", type text}, {\"AmountSpentPayingEnergyBills\", type text}, {\"BalanceOnHand\", type text}, {\"PreparedBy\", type text}, {\"Adjustment\", type text}, {\"AdjustmentReason\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"itemizedDominion\", type text}, {\"itemizedOtherElectric\", type text}, {\"itemizedFuelOil\", type text}, {\"itemizedCoalWood\", type text}, {\"itemizedNaturalGas\", type text}, {\"itemizedKerosene\", type text}, {\"itemizedPropaneBottledGas\", type text}, {\"itemizedNumberofDepositsGuaranteed\", type text}, {\"EditLink\", type text}, {\"DirectIndividualContributions\", Int64.Type}, {\"DirectRecipientContributions\", Int64.Type}, {\"itemizedCoalOrWood\", type text}, {\"itemizedPropane\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

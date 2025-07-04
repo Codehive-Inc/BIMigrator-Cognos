@@ -644,17 +644,166 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
-    }
-  ],
-  "hierarchies": [],
-  "partitions": [
+    },
     {
-      "name": "Agency",
-      "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"select tblAgency.AgencyID as AgencyID, tblAgency.AgencyUserID as AgencyUserID, tblAgency.AgencyName as AgencyName, tblAgency.Address1 as Address1, tblAgency.Address2 as Address2, tblAgency.City as City, tblAgency.\"\"State\"\" as State7, tblAgency.Zip as Zip, tblAgency.Phone as Phone, tblAgency.Fax as Fax, tblAgency.ContactName as ContactName, tblAgency.Email as Email, tblAgency.DistributionAgencyID as DistributionAgencyID, tblAgency.DivisionID as DivisionID, tblAgency.AgencyType as AgencyType, tblAgency.IsActive as IsActive, tblAgency.CreatedBy as CreatedBy, tblAgency.datecreated as datecreated, tblAgency.UpdatedBy as UpdatedBy, tblAgency.LastUpdated as LastUpdated from [Shared_Energy_Share].tblAgency tblAgency\"),\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(Source, {{\"State7\", \"State\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"AgencyID\", Int64.Type}, {\"AgencyUserID\", type text}, {\"AgencyName\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"Fax\", type text}, {\"ContactName\", type text}, {\"Email\", type text}, {\"DistributionAgencyID\", Int64.Type}, {\"DivisionID\", Int64.Type}, {\"AgencyType\", type text}, {\"IsActive\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "source_name": "ApplicantFirstName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantFirstName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantMiddleName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantMiddleName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantLastName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantLastName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantAddress",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantAddress",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantCity",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantCity",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantState",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantState",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantZip",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantZip",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AmountDue",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AmountDue",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MatchingEnergyCredit",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MatchingEnergyCredit",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PaidByEnergyShare",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PaidByEnergyShare",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
-  ],
-  "has_widget_serialization": false,
-  "visual_type": null,
-  "column_settings": null
+  ]
 }
