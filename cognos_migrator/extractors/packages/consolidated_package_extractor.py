@@ -8,8 +8,10 @@ Cognos Framework Manager (FM) package files using specialized extractors.
 import logging
 import json
 import os
+import shutil
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import xml.dom.minidom as minidom
 from typing import Dict, List, Optional, Any
 
 from cognos_migrator.models import DataType, DataModel, Table, Column, Relationship
@@ -66,6 +68,10 @@ class ConsolidatedPackageExtractor:
             tree = ET.parse(package_file_path)
             root = tree.getroot()
             
+            # Save a formatted version of the XML file if output directory is specified
+            if output_path:
+                self._save_formatted_xml(package_file_path, output_path)
+            
             # Extract package structure
             if output_path:
                 structure = self.structure_extractor.extract_and_save(package_file_path, output_path)
@@ -120,6 +126,47 @@ class ConsolidatedPackageExtractor:
         except Exception as e:
             self.logger.error(f"Failed to extract package from {package_file_path}: {e}")
             raise
+    
+    def _save_formatted_xml(self, package_file_path: str, output_path: Path) -> None:
+        """Save a formatted version of the XML file
+        
+        Args:
+            package_file_path: Path to the original XML file
+            output_path: Directory to save the formatted XML file
+        """
+        try:
+            # Get the original filename
+            original_filename = os.path.basename(package_file_path)
+            formatted_filename = f"{os.path.splitext(original_filename)[0]}_formatted.xml"
+            formatted_file_path = output_path / formatted_filename
+            
+            self.logger.info(f"Creating formatted XML file: {formatted_file_path}")
+            
+            # Parse the XML file
+            with open(package_file_path, 'r', encoding='utf-8') as f:
+                xml_content = f.read()
+            
+            # Parse and format the XML using minidom
+            dom = minidom.parseString(xml_content)
+            formatted_xml = dom.toprettyxml(indent="  ")
+            
+            # Remove extra blank lines that minidom sometimes adds
+            lines = [line for line in formatted_xml.split('\n') if line.strip()]
+            formatted_xml = '\n'.join(lines)
+            
+            # Write the formatted XML to file
+            with open(formatted_file_path, 'w', encoding='utf-8') as f:
+                f.write(formatted_xml)
+            
+            # Also save a copy with the original filename for easier reference
+            original_formatted_path = output_path / original_filename
+            shutil.copy(str(formatted_file_path), str(original_formatted_path))
+            
+            self.logger.info(f"Formatted XML saved to {formatted_file_path}")
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to save formatted XML: {e}")
+            # Continue with extraction even if formatting fails
     
     def convert_to_data_model(self, package_info: Dict[str, Any]) -> DataModel:
         """Convert extracted package information to a data model
