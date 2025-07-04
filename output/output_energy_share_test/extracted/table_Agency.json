@@ -326,11 +326,75 @@
       }
     },
     {
-      "source_name": "AgencyID",
+      "source_name": "Season",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Season",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Date Submitted",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Date Submitted",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "FuelType",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FuelType",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PaidByEnergyShare",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PaidByEnergyShare",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicableYear",
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "AgencyID",
+      "source_column": "ApplicableYear",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -342,187 +406,11 @@
       }
     },
     {
-      "source_name": "AgencyUserID",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "AgencyUserID",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "AgencyName",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "AgencyName",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Address1",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "Address1",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Address2",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "Address2",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "City",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "City",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "State",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "State",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Zip",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "Zip",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Phone",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "Phone",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Fax",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "Fax",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ContactName",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ContactName",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "Email",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "Email",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "DistributionAgencyID",
+      "source_name": "ApplicableMonth",
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "DistributionAgencyID",
+      "source_column": "ApplicableMonth",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -534,11 +422,91 @@
       }
     },
     {
-      "source_name": "DivisionID",
+      "source_name": "Type",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Type",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Applicant Name",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Applicant Name",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EditLink",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EditLink",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AmountDueVeteranVoucher",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AmountDueVeteranVoucher",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AmountDueDisabilityVoucher",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AmountDueDisabilityVoucher",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalVeteranVoucher",
       "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "DivisionID",
+      "source_column": "TotalVeteranVoucher",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -550,139 +518,11 @@
       }
     },
     {
-      "source_name": "AgencyType",
-      "datatype": "string",
+      "source_name": "TotalDisabilityVoucher",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "AgencyType",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "IsActive",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "IsActive",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "CreatedBy",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "CreatedBy",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "datecreated",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "datecreated",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "UpdatedBy",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "UpdatedBy",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "LastUpdated",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "LastUpdated",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ApplicantFirstName",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ApplicantFirstName",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ApplicantMiddleName",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ApplicantMiddleName",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ApplicantLastName",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ApplicantLastName",
+      "source_column": "TotalDisabilityVoucher",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -758,11 +598,11 @@
       }
     },
     {
-      "source_name": "AmountDue",
+      "source_name": "ApplicantPhone",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "AmountDue",
+      "source_column": "ApplicantPhone",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -774,11 +614,11 @@
       }
     },
     {
-      "source_name": "MatchingEnergyCredit",
+      "source_name": "DepositGuarantee",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "MatchingEnergyCredit",
+      "source_column": "DepositGuarantee",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -790,11 +630,171 @@
       }
     },
     {
-      "source_name": "PaidByEnergyShare",
+      "source_name": "IsOver60",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "PaidByEnergyShare",
+      "source_column": "IsOver60",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "IsMedical",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "IsMedical",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "NumberOfCust",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "NumberOfCust",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalUnder5",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TotalUnder5",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalOver60",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TotalOver60",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalDisabled",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TotalDisabled",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalVeteran",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TotalVeteran",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "IsInterestedInWeatherization",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "IsInterestedInWeatherization",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DominionAccountNumber",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DominionAccountNumber",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "BusinessType",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "BusinessType",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CustomBusinessType",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CustomBusinessType",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -805,5 +805,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Agency",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].tblAgency\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"AgencyID\", Int64.Type}, {\"AgencyUserID\", type text}, {\"AgencyName\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"Fax\", type text}, {\"ContactName\", type text}, {\"Email\", type text}, {\"DistributionAgencyID\", Int64.Type}, {\"DivisionID\", Int64.Type}, {\"AgencyType\", type text}, {\"IsActive\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}, {\"Season\", type text}, {\"Date Submitted\", type text}, {\"FuelType\", type text}, {\"PaidByEnergyShare\", type text}, {\"ApplicableYear\", Int64.Type}, {\"ApplicableMonth\", Int64.Type}, {\"Type\", type text}, {\"Applicant Name\", type text}, {\"EditLink\", type text}, {\"AmountDueVeteranVoucher\", type text}, {\"AmountDueDisabilityVoucher\", type text}, {\"TotalVeteranVoucher\", Int64.Type}, {\"TotalDisabilityVoucher\", Int64.Type}, {\"ApplicantAddress\", type text}, {\"ApplicantCity\", type text}, {\"ApplicantState\", type text}, {\"ApplicantZip\", type text}, {\"ApplicantPhone\", type text}, {\"DepositGuarantee\", type text}, {\"IsOver60\", type text}, {\"IsMedical\", type text}, {\"NumberOfCust\", Int64.Type}, {\"TotalUnder5\", Int64.Type}, {\"TotalOver60\", Int64.Type}, {\"TotalDisabled\", Int64.Type}, {\"TotalVeteran\", Int64.Type}, {\"IsInterestedInWeatherization\", type text}, {\"DominionAccountNumber\", type text}, {\"BusinessType\", type text}, {\"CustomBusinessType\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

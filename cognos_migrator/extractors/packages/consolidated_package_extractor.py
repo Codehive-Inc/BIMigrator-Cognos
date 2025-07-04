@@ -373,74 +373,108 @@ class ConsolidatedPackageExtractor:
         
         return table
         
+    def _deduplicate_columns(self, table: Table) -> None:
+        """Deduplicate columns in a table by name
+        
+        Args:
+            table: Table to deduplicate columns in
+        """
+        # Create a dictionary to track unique columns by name (case-insensitive)
+        unique_columns = {}
+        duplicate_count = 0
+        
+        # Identify unique columns (keeping the first occurrence)
+        for col in table.columns:
+            col_name_lower = col.name.lower()
+            if col_name_lower not in unique_columns:
+                unique_columns[col_name_lower] = col
+            else:
+                duplicate_count += 1
+        
+        if duplicate_count > 0:
+            self.logger.info(f"Deduplicating columns in table {table.name}: removed {duplicate_count} duplicate columns")
+            # Replace the columns list with the deduplicated list
+            table.columns = list(unique_columns.values())
+    
     def _find_referenced_table(self, model_qs: Dict[str, Any], data_model: DataModel) -> Optional[Table]:
-        """Find the database table that a model query references
+        """Find the table referenced by a model query subject
         
         Args:
             model_qs: Model query subject dictionary
-            data_model: DataModel containing tables
+            data_model: Data model containing tables
             
         Returns:
-            The referenced Table object or None if not found
+            Table referenced by the model query, or None if not found
         """
-        if not ('sql_definition' in model_qs and model_qs['sql_definition'] and 'sql' in model_qs['sql_definition']):
-            return None
-            
-        sql = model_qs['sql_definition']['sql']
-        self.logger.info(f"Finding referenced table for model query {model_qs['name']} with SQL: {sql[:100]}...")
-        
-        # Extract table names from the SQL using multiple approaches
-        table_names = set()
-        
-        # Approach 1: Look for table references in FROM clause with schema and alias
-        # Pattern: [schema].[table] [alias] or just table [alias]
-        matches = re.findall(r'from\s+(?:\[?([^\]\s]+)\]?\.)?\[?([^\]\s]+)\]?(?:\s+([^\s,]+))?', sql.lower())
-        for match in matches:
-            schema = match[0] if match[0] else ''
-            table = match[1]
-            table_names.add(table)
-            self.logger.info(f"Found table reference in FROM clause: {table}")
-        
-        # Approach 2: Look for table references in JOIN clauses
-        # Pattern: join [schema].[table] or join table
-        join_matches = re.findall(r'join\s+(?:\[?([^\]\s]+)\]?\.)?\[?([^\]\s]+)\]?', sql.lower())
-        for match in join_matches:
-            schema = match[0] if match[0] else ''
-            table = match[1]
-            table_names.add(table)
-            self.logger.info(f"Found table reference in JOIN clause: {table}")
-        
-        # Approach 3: Simple name matching based on model query subject name
-        # Often the model query subject name is related to the db table name
         model_name = model_qs['name'].lower()
-        if model_name.startswith('tbl'):
-            # If model name starts with 'tbl', add version without it
-            table_names.add(model_name[3:])
-        else:
-            # Otherwise, add version with 'tbl' prefix
-            table_names.add(f"tbl{model_name}")
-            
-        self.logger.info(f"Potential table names for {model_qs['name']}: {table_names}")
-            
-        # If we couldn't extract table names, return None
-        if not table_names:
-            return None
-            
-        # Look for tables with matching names
-        for table_name in table_names:
-            for table in data_model.tables:
-                # Check for various matching patterns
-                if (table.name.lower() == table_name.lower() or 
-                    (table_name.lower().startswith('tbl') and table.name.lower() == table_name.lower()[3:]) or
-                    (table.name.lower().startswith('tbl') and table.name.lower()[3:] == table_name.lower()) or
-                    (table.name.lower() == f"tbl{table_name.lower()}")):
-                    
-                    self.logger.info(f"Found matching table {table.name} for model query {model_qs['name']}")
-                    return table
-                   
-        self.logger.warning(f"No matching table found for model query {model_qs['name']}")
-        return None
+        self.logger.info(f"Finding referenced table for model query {model_qs['name']}")
         
+        # First, try direct name matching with special handling for Territory/tblTerritory case
+        for table in data_model.tables:
+            table_name = table.name.lower()
+            
+            # Direct match
+            if table_name == model_name:
+                self.logger.info(f"Found direct name match: {table.name}")
+                return table
+                
+            # Special case for Territory/tblTerritory
+            if model_name == 'territory' and table_name == 'tblterritory':
+                self.logger.info(f"Found Territory/tblTerritory match: {table.name}")
+                return table
+                
+            # Check for tbl prefix
+            if table_name == f"tbl{model_name}" or (table_name.startswith('tbl') and table_name[3:] == model_name):
+                self.logger.info(f"Found match with tbl prefix: {table.name}")
+                return table
+        
+        # If direct name matching didn't work, try SQL-based matching
+        if 'sql_definition' in model_qs and model_qs['sql_definition'] and 'sql' in model_qs['sql_definition']:
+            sql = model_qs['sql_definition']['sql']
+            self.logger.info(f"Trying SQL-based matching with SQL: {sql[:100]}...")
+            
+            # Try to extract table name from SQL using regex
+            # Look for FROM clause
+            from_match = re.search(r'\bFROM\s+\[?([^\]\s\[\)]+)\]?', sql, re.IGNORECASE)
+            if from_match:
+                table_name = from_match.group(1).split('.')[-1]  # Get the last part after any schema/db qualifier
+                self.logger.info(f"Extracted table name from FROM clause: {table_name}")
+                
+                # Look for a matching table in the data model
+                for table in data_model.tables:
+                    if table.name.lower() == table_name.lower() or \
+                       (table.metadata and 'original_name' in table.metadata and \
+                        table.metadata['original_name'].lower() == table_name.lower()):
+                        self.logger.info(f"Found matching table from SQL: {table.name}")
+                        return table
+            
+            # If FROM clause didn't work, try JOIN clauses
+            join_matches = re.findall(r'\bJOIN\s+\[?([^\]\s\[\)]+)\]?', sql, re.IGNORECASE)
+            if join_matches:
+                for join_table in join_matches:
+                    table_name = join_table.split('.')[-1]  # Get the last part after any schema/db qualifier
+                    self.logger.info(f"Extracted table name from JOIN clause: {table_name}")
+                    
+                    # Look for a matching table in the data model
+                    for table in data_model.tables:
+                        if table.name.lower() == table_name.lower() or \
+                           (table.metadata and 'original_name' in table.metadata and \
+                            table.metadata['original_name'].lower() == table_name.lower()):
+                            self.logger.info(f"Found matching table from JOIN: {table.name}")
+                            return table
+        
+        # If all else fails, try fuzzy matching based on name similarity
+        for table in data_model.tables:
+            table_name = table.name.lower()
+            
+            # Check if one name contains the other
+            if model_name in table_name or table_name in model_name:
+                self.logger.info(f"Found fuzzy name match: {table.name}")
+                return table
+                
+        self.logger.warning(f"Could not find referenced table for model query {model_qs['name']}")
+        return None
+
     def _enhance_table_with_model_query(self, model_qs: Dict[str, Any], table: Table) -> None:
         """Enhance an existing table with information from a model query
         
@@ -462,45 +496,48 @@ class ConsolidatedPackageExtractor:
                 # Add a note that this table was enhanced with a model query
                 table.metadata = table.metadata or {}
                 table.metadata['enhanced_with_model_query'] = model_qs['name']
-                
-            # Add any additional columns from the model query that don't exist in the table
-            model_columns = {item['name'].lower(): item for item in model_qs.get('items', [])}
-            table_columns = {col.name.lower(): col for col in table.columns}
+        
+        # First, deduplicate existing columns in the table by name
+        self._deduplicate_columns(table)
             
-            for col_name, item in model_columns.items():
-                if col_name not in table_columns:
-                    # Get the data type from the item
-                    cognos_type = item.get('datatype', 'string')
-                    
-                    # Map Cognos data type to Power BI data type
-                    if cognos_type.lower() in ['int32', 'int64']:
-                        data_type = DataType.INTEGER
-                    elif cognos_type.lower() in ['float', 'double']:
-                        data_type = DataType.DOUBLE
-                    elif cognos_type.lower() == 'boolean':
-                        data_type = DataType.BOOLEAN
-                    elif cognos_type.lower() in ['date', 'time', 'timestamp']:
-                        data_type = DataType.DATE
-                    else:
-                        data_type = DataType.STRING
-                        
-                    # Create and add the new column
-                    new_column = Column(
-                        name=item['name'],
-                        data_type=data_type,
-                        source_column=item.get('source_column', item['name'])
-                    )
-                    table.columns.append(new_column)
-                    self.logger.info(f"Added column {new_column.name} from model query to table {table.name}")
-                    
-            # Update the table name to the model query name if it's more business-friendly
-            # (e.g., "Territory" instead of "tblTerritory")
-            if table.name.lower().startswith('tbl') and not model_qs['name'].lower().startswith('tbl'):
-                self.logger.info(f"Updating table name from {table.name} to {model_qs['name']} (more business-friendly)")
+        # Add any additional columns from the model query that don't exist in the table
+        model_columns = {item['name'].lower(): item for item in model_qs.get('items', [])}
+        table_columns = {col.name.lower(): col for col in table.columns}
+        
+        for col_name, item in model_columns.items():
+            if col_name not in table_columns:
+                # Get the data type from the item
+                cognos_type = item.get('datatype', 'string')
                 
-                # Store the original name in metadata
-                table.metadata = table.metadata or {}
-                table.metadata['original_name'] = table.name
+                # Map Cognos data type to Power BI data type
+                if cognos_type.lower() in ['int32', 'int64']:
+                    data_type = DataType.INTEGER
+                elif cognos_type.lower() in ['float', 'double']:
+                    data_type = DataType.DOUBLE
+                elif cognos_type.lower() == 'boolean':
+                    data_type = DataType.BOOLEAN
+                elif cognos_type.lower() in ['date', 'time', 'timestamp']:
+                    data_type = DataType.DATE
+                else:
+                    data_type = DataType.STRING
+                    
+                # Create and add the new column
+                new_column = Column(
+                    name=item['name'],
+                    data_type=data_type,
+                    source_column=item.get('source_column', item['name'])
+                )
+                table.columns.append(new_column)
+                self.logger.info(f"Added column {new_column.name} from model query to table {table.name}")
                 
-                # Update the name
-                table.name = model_qs['name']
+        # Update the table name to the model query name if it's more business-friendly
+        # (e.g., "Territory" instead of "tblTerritory")
+        if table.name.lower().startswith('tbl') and not model_qs['name'].lower().startswith('tbl'):
+            self.logger.info(f"Updating table name from {table.name} to {model_qs['name']} (more business-friendly)")
+            
+            # Store the original name in metadata
+            table.metadata = table.metadata or {}
+            table.metadata['original_name'] = table.name
+            
+            # Update the name
+            table.name = model_qs['name']

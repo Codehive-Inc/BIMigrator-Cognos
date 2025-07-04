@@ -577,22 +577,6 @@ table 'vwFinancialReport'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'itemizedCoalOrWood'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: itemizedCoalOrWood
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'itemizedPropane'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: itemizedPropane
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 
@@ -601,7 +585,7 @@ table 'vwFinancialReport'
         source = 
             	let
 					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].vwFinancialReport"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"FinancialReportID", Int64.Type}, {"Zip", type text}, {"ContactName", type text}, {"AgencyID", Int64.Type}, {"Season", type text}, {"AgencyName", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"TOTAL", type text}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"Adjustment", type text}, {"AdjustmentReason", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"itemizedDominion", type text}, {"itemizedOtherElectric", type text}, {"itemizedFuelOil", type text}, {"itemizedCoalWood", type text}, {"itemizedNaturalGas", type text}, {"itemizedKerosene", type text}, {"itemizedPropaneBottledGas", type text}, {"itemizedNumberofDepositsGuaranteed", type text}, {"EditLink", type text}, {"DirectIndividualContributions", Int64.Type}, {"DirectRecipientContributions", Int64.Type}, {"itemizedCoalOrWood", type text}, {"itemizedPropane", type text}})
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"FinancialReportID", Int64.Type}, {"Zip", type text}, {"ContactName", type text}, {"AgencyID", Int64.Type}, {"Season", type text}, {"AgencyName", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"TOTAL", type text}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"Adjustment", type text}, {"AdjustmentReason", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"itemizedDominion", type text}, {"itemizedOtherElectric", type text}, {"itemizedFuelOil", type text}, {"itemizedCoalWood", type text}, {"itemizedNaturalGas", type text}, {"itemizedKerosene", type text}, {"itemizedPropaneBottledGas", type text}, {"itemizedNumberofDepositsGuaranteed", type text}, {"EditLink", type text}, {"DirectIndividualContributions", Int64.Type}, {"DirectRecipientContributions", Int64.Type}})
 				in
 					#"Changed Types"
         

@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown"]
+annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown", "Payee Report", "Matching Credit Report"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -25,5 +25,7 @@ ref table 'vwFinancialReport'
 ref table 'vwPayeeReport'
 ref table 'vwFinancialReportDrillDown'
 ref table 'vwAssistanceReportDrillDown'
+ref table 'Payee Report'
+ref table 'Matching Credit Report'
 
 ref cultureInfo en-US

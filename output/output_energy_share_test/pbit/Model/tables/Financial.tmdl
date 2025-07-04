@@ -113,114 +113,306 @@ table 'Financial'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'FinancialReportID'
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DirectIndividualContributions'
         dataType: int64
         summarizeBy: none
-        sourceColumn: FinancialReportID
+        sourceColumn: DirectIndividualContributions
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AgencyID'
+    column 'DirectRecipientContributions'
         dataType: int64
         summarizeBy: none
-        sourceColumn: AgencyID
+        sourceColumn: DirectRecipientContributions
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ApplicableMonth'
+    column 'itemizedDominion'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedDominion
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'itemizedOtherElectric'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedOtherElectric
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'itemizedFuelOil'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedFuelOil
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'itemizedCoalOrWood'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedCoalOrWood
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'itemizedNaturalGas'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedNaturalGas
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'itemizedKerosene'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedKerosene
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'itemizedPropane'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: itemizedPropane
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AuthorizationID'
         dataType: int64
         summarizeBy: none
-        sourceColumn: ApplicableMonth
+        sourceColumn: AuthorizationID
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ApplicableYear'
+    column 'VendorID'
         dataType: int64
         summarizeBy: none
-        sourceColumn: ApplicableYear
+        sourceColumn: VendorID
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'BalanceForward'
+    column 'ApplicableDate'
         dataType: string
         summarizeBy: none
-        sourceColumn: BalanceForward
+        sourceColumn: ApplicableDate
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'EnergyShareCheckAmount'
+    column 'ApplicantNumber'
         dataType: string
         summarizeBy: none
-        sourceColumn: EnergyShareCheckAmount
+        sourceColumn: ApplicantNumber
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'EnergySharePartnerAmount'
+    column 'AuthorizationType'
         dataType: string
         summarizeBy: none
-        sourceColumn: EnergySharePartnerAmount
+        sourceColumn: AuthorizationType
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AmountSpentPayingEnergyBills'
+    column 'VendorAccountNumber'
         dataType: string
         summarizeBy: none
-        sourceColumn: AmountSpentPayingEnergyBills
+        sourceColumn: VendorAccountNumber
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'BalanceOnHand'
+    column 'FuelType'
         dataType: string
         summarizeBy: none
-        sourceColumn: BalanceOnHand
+        sourceColumn: FuelType
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'PreparedBy'
+    column 'IsOver60'
         dataType: string
         summarizeBy: none
-        sourceColumn: PreparedBy
+        sourceColumn: IsOver60
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'CreatedBy'
+    column 'ApplicantFirstName'
         dataType: string
         summarizeBy: none
-        sourceColumn: CreatedBy
+        sourceColumn: ApplicantFirstName
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'datecreated'
+    column 'ApplicantMiddleName'
         dataType: string
         summarizeBy: none
-        sourceColumn: datecreated
+        sourceColumn: ApplicantMiddleName
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'UpdatedBy'
+    column 'ApplicantLastName'
         dataType: string
         summarizeBy: none
-        sourceColumn: UpdatedBy
+        sourceColumn: ApplicantLastName
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LastUpdated'
+    column 'ApplicantPhone'
         dataType: string
         summarizeBy: none
-        sourceColumn: LastUpdated
+        sourceColumn: ApplicantPhone
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantAddress
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantCity'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantCity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantZip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantZip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalAssisted'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalAssisted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDue'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDue
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MatchingEnergyCredit'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MatchingEnergyCredit
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DepositGuarantee'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DepositGuarantee
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaymentAuthorizedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaymentAuthorizedBy
 
         annotation SummarizationSetBy = Automatic
 
@@ -233,7 +425,7 @@ table 'Financial'
         source = 
             	let
 					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].tblFinancialReport"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"FinancialReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"FinancialReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"FinancialReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"Season", type text}, {"AgencyName", type text}, {"State", type text}, {"DirectIndividualContributions", Int64.Type}, {"DirectRecipientContributions", Int64.Type}, {"itemizedDominion", type text}, {"itemizedOtherElectric", type text}, {"itemizedFuelOil", type text}, {"itemizedCoalOrWood", type text}, {"itemizedNaturalGas", type text}, {"itemizedKerosene", type text}, {"itemizedPropane", type text}, {"EditLink", type text}, {"AuthorizationID", Int64.Type}, {"VendorID", Int64.Type}, {"ApplicableDate", type text}, {"ApplicantNumber", type text}, {"AuthorizationType", type text}, {"VendorAccountNumber", type text}, {"FuelType", type text}, {"IsOver60", type text}, {"ApplicantFirstName", type text}, {"ApplicantMiddleName", type text}, {"ApplicantLastName", type text}, {"ApplicantPhone", type text}, {"ApplicantAddress", type text}, {"ApplicantCity", type text}, {"ApplicantState", type text}, {"ApplicantZip", type text}, {"TotalAssisted", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalDisabled", Int64.Type}, {"AmountDue", type text}, {"MatchingEnergyCredit", type text}, {"PaidByEnergyShare", type text}, {"DepositGuarantee", type text}, {"PaymentAuthorizedBy", type text}})
 				in
 					#"Changed Types"
         
