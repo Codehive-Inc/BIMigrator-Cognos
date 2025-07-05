@@ -1,0 +1,497 @@
+[
+  {
+    "name": "tblAgency <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAssistanceReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAssistanceReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblFinancialReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblFinancialReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblTerritory <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblTerritory]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblVendor <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblVendor]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblFinancialReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblFinancialReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblVendor <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblVendor]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblAssistanceReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAssistanceReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblFinancialReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblFinancialReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblVendor <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblVendor]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> tblAssistanceReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAssistanceReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAssistanceReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAssistanceReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblFinancialReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblFinancialReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblTerritory <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblTerritory]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblVendor <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblVendor]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAssistanceReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAssistanceReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblAgency <--> tblFinancialReport",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblAgency]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblFinancialReport]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblTerritory <--> tblAgencyTerritory",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblTerritory]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAgencyTerritory]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "tblVendor <--> tblAuthorization",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[tblVendor]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[tblAuthorization]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Agency - MC Report <--> Authorization - MC Report",
+    "id": "",
+    "left": {
+      "query_subject": "[Presentation Layer].[Agency - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Presentation Layer].[Authorization - MC Report]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  }
+]
