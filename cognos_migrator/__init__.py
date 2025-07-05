@@ -6,10 +6,13 @@ Provides .env-independent migration functions with explicit session management.
 Main Functions:
     test_cognos_connection: Test Cognos connectivity with session key
     migrate_module_with_explicit_session: Migrate a complete Cognos module
+    migrate_module_with_reports_explicit_session: Migrate a module with its reports
     migrate_single_report_with_explicit_session: Migrate a single report
     post_process_module_with_explicit_session: Post-process migrated modules
+    migrate_package_with_explicit_session: Migrate a Cognos Framework Manager package
+    migrate_package_with_reports_explicit_session: Migrate a package with its reports
 
-Example:
+Examples:
     import cognos_migrator
     
     # Test connection
@@ -26,6 +29,14 @@ Example:
         session_key="your_session_key",
         folder_id="reports_folder_id"
     )
+    
+    # Migrate package
+    success = cognos_migrator.migrate_package_with_explicit_session(
+        package_file_path="./path/to/package.xml",
+        output_path="./output",
+        cognos_url="http://your-cognos-server:9300/api/v1",
+        session_key="your_session_key"
+    )
 """
 
 __version__ = "1.0.0"
@@ -36,7 +47,9 @@ from .main import test_cognos_connection, post_process_module_with_explicit_sess
 from .migrations import (
     migrate_module_with_explicit_session,
     migrate_module_with_reports_explicit_session,
-    migrate_single_report_with_explicit_session
+    migrate_single_report_with_explicit_session,
+    migrate_package_with_explicit_session,
+    migrate_package_with_reports_explicit_session
 )
 
 # Import key exception classes for error handling
@@ -53,6 +66,10 @@ __all__ = [
     'migrate_module_with_reports_explicit_session',
     'migrate_single_report_with_explicit_session',
     'post_process_module_with_explicit_session',
+    
+    # Package migration functions
+    'migrate_package_with_explicit_session',
+    'migrate_package_with_reports_explicit_session',
     
     # Exception handling
     'CognosAPIError'

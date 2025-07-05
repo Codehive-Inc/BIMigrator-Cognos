@@ -1,0 +1,195 @@
+table 'Vendor'
+
+
+    column 'VendorID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: VendorID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Address1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Address1
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Address2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Address2
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'City'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: City
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Zip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Zip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Phone'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Phone
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsDominionVendor'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsDominionVendor
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsActive'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsActive
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DefaultState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DefaultState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsDominion'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsDominion
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsOtherElectric'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsOtherElectric
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsFuelOil'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsFuelOil
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsCoalOrWood'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsCoalOrWood
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsNaturalGas'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsNaturalGas
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsKerosene'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsKerosene
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'sellsPropane'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: sellsPropane
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Vendor' = m
+        mode: import
+        source = 
+            	let
+					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].tblVendor"),
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"VendorID", Int64.Type}, {"Name", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"Zip", type text}, {"Phone", type text}, {"IsDominionVendor", type text}, {"IsActive", type text}, {"DefaultState", type text}, {"sellsDominion", type text}, {"sellsOtherElectric", type text}, {"sellsFuelOil", type text}, {"sellsCoalOrWood", type text}, {"sellsNaturalGas", type text}, {"sellsKerosene", type text}, {"sellsPropane", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

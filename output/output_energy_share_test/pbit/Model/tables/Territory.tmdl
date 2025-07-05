@@ -1,0 +1,75 @@
+table 'Territory'
+
+
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsActive'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsActive
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Territory' = m
+        mode: import
+        source = 
+            	let
+					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].tblTerritory"),
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table
