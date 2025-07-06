@@ -16,22 +16,36 @@ This document provides instructions for running different types of migrations us
 
 You can use the migration functions directly in Python without needing a separate script. Here are examples of how to use each function:
 
-### 0. Migrate a Cognos Package
+### 0. Migrate a Cognos Package (FM Model)
 
-Migrates a Cognos package (FM model) to Power BI format.
+Migrates a Cognos package (FM model) to Power BI format. For FM model XML files, use the `migrate_module_with_explicit_session` function.
 
 ```python
-from cognos_migrator.migrations.package import migrate_package_with_explicit_session
+from cognos_migrator.migrations.module import migrate_module_with_explicit_session
 
-result = migrate_package_with_explicit_session(
-    package_path="/path/to/package.xml",  # Path to the FM model XML file
+result = migrate_module_with_explicit_session(
+    module_id="/path/to/package.xml",  # Path to the FM model XML file
     output_path="/path/to/output",
     cognos_url="http://cognos-url/api/v1",
     session_key="CAM session-key-value",
+    cpf_file_path=None,  # Optional
     auth_key="IBM-BA-Authorization"  # Optional
 )
 
 print(f"Package migration successful: {result}")
+```
+
+**Example with Energy Share Package:**
+
+```python
+from cognos_migrator.migrations.module import migrate_module_with_explicit_session
+
+result = migrate_module_with_explicit_session(
+    module_id="./examples/packages/FM Models/Energy_Share.xml",
+    output_path="./output/output_energy_share_test",
+    cognos_url="http://20.244.32.126:9300/api/v1",
+    session_key="CAM MTsxMDE6ZGJiODNkYzktOWUzZS04ZGVmLTFmMTAtNjE0ODk4ZGU2ZGRhOjIwODUxMjA4MzE7MDszOzA7"
+)
 ```
 
 ### 1. Migrate a Cognos Module

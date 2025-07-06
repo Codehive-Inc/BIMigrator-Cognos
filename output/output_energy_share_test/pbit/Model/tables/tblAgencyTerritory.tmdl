@@ -56,8 +56,9 @@ table 'tblAgencyTerritory'
         mode: import
         source = 
             	let
-					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].tblAgencyTerritory"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}})
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAgencyTerritory"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}})
 				in
 					#"Changed Types"
         

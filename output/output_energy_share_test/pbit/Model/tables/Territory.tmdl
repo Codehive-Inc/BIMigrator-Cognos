@@ -64,8 +64,10 @@ table 'Territory'
         mode: import
         source = 
             	let
-					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].tblTerritory"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblTerritory"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Renamed Columns" = Table.RenameColumns(#"Removed Errors", {{"TerritoryID", "TerritoryID"}, {"Name", "Name"}, {"IsActive", "IsActive"}, {"CreatedBy", "CreatedBy"}, {"datecreated", "datecreated"}, {"UpdatedBy", "UpdatedBy"}, {"LastUpdated", "LastUpdated"}}),
+					#"Changed Types" = Table.TransformColumnTypes(#"Renamed Columns", {{"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
 				in
 					#"Changed Types"
         

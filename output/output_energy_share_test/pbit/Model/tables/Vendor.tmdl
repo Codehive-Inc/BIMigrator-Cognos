@@ -184,8 +184,9 @@ table 'Vendor'
         mode: import
         source = 
             	let
-					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].tblVendor"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"VendorID", Int64.Type}, {"Name", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"Zip", type text}, {"Phone", type text}, {"IsDominionVendor", type text}, {"IsActive", type text}, {"DefaultState", type text}, {"sellsDominion", type text}, {"sellsOtherElectric", type text}, {"sellsFuelOil", type text}, {"sellsCoalOrWood", type text}, {"sellsNaturalGas", type text}, {"sellsKerosene", type text}, {"sellsPropane", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
+					/* Connect to the SQL Server database and retrieve data from the specified table */ Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblVendor"]),
+					/* Remove any rows with errors to ensure data integrity */ #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					/* Transform the data types of the columns to the specified types */ #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"VendorID", Int64.Type}, {"Name", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"Zip", type text}, {"Phone", type text}, {"IsDominionVendor", type text}, {"IsActive", type text}, {"DefaultState", type text}, {"sellsDominion", type text}, {"sellsOtherElectric", type text}, {"sellsFuelOil", type text}, {"sellsCoalOrWood", type text}, {"sellsNaturalGas", type text}, {"sellsKerosene", type text}, {"sellsPropane", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}})
 				in
 					#"Changed Types"
         

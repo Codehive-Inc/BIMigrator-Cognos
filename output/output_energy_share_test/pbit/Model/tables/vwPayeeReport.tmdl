@@ -168,8 +168,9 @@ table 'vwPayeeReport'
         mode: import
         source = 
             	let
-					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].vwPayeeReport"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"Season", type text}, {"ApplicableYear", Int64.Type}, {"State", type text}, {"AuthorizationType", type text}, {"VendorID", Int64.Type}, {"Vendor", type text}, {"Agency", type text}, {"Date Submitted", type text}, {"PaidByEnergyShare", type text}, {"EditLink", type text}})
+					/* Connect to the SQL Server database and retrieve data from the specified view */ Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].vwPayeeReport"]),
+					/* Remove any rows with errors to ensure data integrity */ #"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					/* Change column types to ensure correct data types for each column */ #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"Season", type text}, {"ApplicableYear", Int64.Type}, {"State", type text}, {"AuthorizationType", type text}, {"VendorID", Int64.Type}, {"Vendor", type text}, {"Agency", type text}, {"Date Submitted", type text}, {"PaidByEnergyShare", type text}, {"EditLink", type text}})
 				in
 					#"Changed Types"
         

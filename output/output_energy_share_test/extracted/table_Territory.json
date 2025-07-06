@@ -123,7 +123,7 @@
     {
       "name": "Territory",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Value.NativeQuery(Sql.Database(\"YourServerName\", \"YourDatabaseName\"), \"Select * from [Shared_Energy_Share].tblTerritory\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"TerritoryID\", Int64.Type}, {\"Name\", type text}, {\"IsActive\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].tblTerritory\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Renamed Columns\" = Table.RenameColumns(#\"Removed Errors\", {{\"TerritoryID\", \"TerritoryID\"}, {\"Name\", \"Name\"}, {\"IsActive\", \"IsActive\"}, {\"CreatedBy\", \"CreatedBy\"}, {\"datecreated\", \"datecreated\"}, {\"UpdatedBy\", \"UpdatedBy\"}, {\"LastUpdated\", \"LastUpdated\"}}),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Renamed Columns\", {{\"TerritoryID\", Int64.Type}, {\"Name\", type text}, {\"IsActive\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type text}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

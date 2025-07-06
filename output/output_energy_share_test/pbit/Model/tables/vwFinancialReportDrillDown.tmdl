@@ -551,11 +551,11 @@ table 'vwFinancialReportDrillDown'
     partition 'vwFinancialReportDrillDown' = m
         mode: import
         source = 
-            	let
-					Source = Value.NativeQuery(Sql.Database("YourServerName", "YourDatabaseName"), "Select * from [Shared_Energy_Share].vwFinancialReportDrillDown"),
-					#"Changed Types" = Table.TransformColumnTypes(Source, {{"ApplicableYear", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"FinancialReportID", Int64.Type}, {"AuthorizationID", Int64.Type}, {"AgencyID", Int64.Type}, {"VendorID", Int64.Type}, {"ApplicableDate", type text}, {"ApplicantNumber", type text}, {"AuthorizationType", type text}, {"VendorAccountNumber", type text}, {"FuelType", type text}, {"IsOver60", type text}, {"ApplicantFirstName", type text}, {"ApplicantMiddleName", type text}, {"ApplicantLastName", type text}, {"ApplicantPhone", type text}, {"ApplicantAddress", type text}, {"ApplicantCity", type text}, {"ApplicantState", type text}, {"ApplicantZip", type text}, {"TotalAssisted", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalDisabled", Int64.Type}, {"AmountDue", type text}, {"MatchingEnergyCredit", type text}, {"PaidByEnergyShare", type text}, {"DepositGuarantee", type text}, {"PaymentAuthorizedBy", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"EditLink", type text}})
-				in
-					#"Changed Types"
+            // ERROR: name 'table_name' is not defined
+let
+				Source = Table.FromRows({})
+			in
+				Source
         
 
 
