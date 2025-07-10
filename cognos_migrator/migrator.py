@@ -1277,6 +1277,10 @@ class CognosModuleMigratorExplicit:
                 columns=columns,
                 source_query=""  # Empty source query - no placeholder needed
             )
+            
+            # Deduplicate columns in the table by name
+            self._deduplicate_columns(table)
+            
             tables.append(table)
         
         # Create relationships (basic implementation)
@@ -1358,6 +1362,29 @@ class CognosModuleMigratorExplicit:
         )
         
         return report
+    
+    def _deduplicate_columns(self, table: Table) -> None:
+        """Deduplicate columns in a table by name
+        
+        Args:
+            table: Table to deduplicate columns in
+        """
+        # Create a dictionary to track unique columns by name (case-insensitive)
+        unique_columns = {}
+        duplicate_count = 0
+        
+        # Identify unique columns (keeping the first occurrence)
+        for col in table.columns:
+            col_name_lower = col.name.lower()
+            if col_name_lower not in unique_columns:
+                unique_columns[col_name_lower] = col
+            else:
+                duplicate_count += 1
+        
+        if duplicate_count > 0:
+            self.logger.info(f"Deduplicating columns in table {table.name}: removed {duplicate_count} duplicate columns")
+            # Replace the columns list with the deduplicated list
+            table.columns = list(unique_columns.values())
     
     def _determine_measure_format(self, calc_item: Dict[str, Any]) -> str:
         """Determine format string for a measure
