@@ -1145,6 +1145,19 @@ class CognosModuleMigratorExplicit:
                 report=report
             )
             
+            # Final check to ensure all tables in the project have deduplicated columns
+            self.logger.info("Performing final project-level deduplication check on all tables")
+            for table in project.data_model.tables:
+                self.logger.info(f"Project-level deduplication check for table: {table.name}")
+                # Count columns before deduplication
+                before_count = len(table.columns)
+                # Apply deduplication again
+                self._deduplicate_columns(table)
+                # Count columns after deduplication
+                after_count = len(table.columns)
+                if before_count != after_count:
+                    self.logger.warning(f"Project-level deduplication removed {before_count - after_count} columns from {table.name} that were missed in earlier deduplication")
+            
             return project
             
         except Exception as e:
@@ -1204,11 +1217,33 @@ class CognosModuleMigratorExplicit:
             # Convert data sources to tables
             if hasattr(parsed_structure, 'data_sources') and parsed_structure.data_sources:
                 for ds in parsed_structure.data_sources:
+                    # Track column names to prevent duplicates at the source
+                    column_names_set = set()
+                    
                     table_data = {
                         'name': ds.name,
                         'columns': [],
                         'source_type': ds.source_type if hasattr(ds, 'source_type') else 'Unknown'
                     }
+                    
+                    # If the data source has columns, process them with deduplication
+                    if hasattr(ds, 'columns') and ds.columns:
+                        self.logger.info(f"Processing columns for data source {ds.name}")
+                        for col in ds.columns:
+                            col_name = col.name if hasattr(col, 'name') else 'Column'
+                            col_name_lower = col_name.lower()
+                            
+                            # Only add the column if its name (case-insensitive) hasn't been seen before
+                            if col_name_lower not in column_names_set:
+                                column_names_set.add(col_name_lower)
+                                col_data = {
+                                    'name': col_name,
+                                    'type': col.data_type if hasattr(col, 'data_type') else 'Text'
+                                }
+                                table_data['columns'].append(col_data)
+                            else:
+                                self.logger.info(f"Skipping duplicate column {col_name} in data source {ds.name}")
+                    
                     converted_data['tables'].append(table_data)
             
             # If no specific structure, create basic defaults
@@ -1320,6 +1355,19 @@ class CognosModuleMigratorExplicit:
             }
         )
         
+        # Final check to ensure all tables have deduplicated columns
+        self.logger.info("Performing final deduplication check on all tables")
+        for table in data_model.tables:
+            self.logger.info(f"Final deduplication check for table: {table.name}")
+            # Count columns before deduplication
+            before_count = len(table.columns)
+            # Apply deduplication again
+            self._deduplicate_columns(table)
+            # Count columns after deduplication
+            after_count = len(table.columns)
+            if before_count != after_count:
+                self.logger.warning(f"Final deduplication removed {before_count - after_count} columns from {table.name} that were missed in earlier deduplication")
+        
         return data_model
     
     def _create_report_structure_from_cognos(self, cognos_report, converted_data: Dict[str, Any], data_model: DataModel) -> Report:
@@ -1369,9 +1417,14 @@ class CognosModuleMigratorExplicit:
         Args:
             table: Table to deduplicate columns in
         """
+        # Log all column names before deduplication
+        self.logger.info(f"Before deduplication - Table {table.name} has {len(table.columns)} columns")
+        column_names = [col.name for col in table.columns]
+        self.logger.info(f"Column names: {column_names}")
+        
         # Create a dictionary to track unique columns by name (case-insensitive)
         unique_columns = {}
-        duplicate_count = 0
+        duplicates = []
         
         # Identify unique columns (keeping the first occurrence)
         for col in table.columns:
@@ -1379,12 +1432,22 @@ class CognosModuleMigratorExplicit:
             if col_name_lower not in unique_columns:
                 unique_columns[col_name_lower] = col
             else:
-                duplicate_count += 1
+                duplicates.append(col.name)
+        
+        duplicate_count = len(duplicates)
         
         if duplicate_count > 0:
-            self.logger.info(f"Deduplicating columns in table {table.name}: removed {duplicate_count} duplicate columns")
+            self.logger.info(f"Deduplicating columns in table {table.name}: found {duplicate_count} duplicate columns")
+            self.logger.info(f"Duplicate column names: {duplicates}")
             # Replace the columns list with the deduplicated list
             table.columns = list(unique_columns.values())
+            
+            # Log the column names after deduplication
+            after_column_names = [col.name for col in table.columns]
+            self.logger.info(f"After deduplication - Table {table.name} has {len(table.columns)} columns")
+            self.logger.info(f"Column names after deduplication: {after_column_names}")
+        else:
+            self.logger.info(f"No duplicate columns found in table {table.name}")
     
     def _determine_measure_format(self, calc_item: Dict[str, Any]) -> str:
         """Determine format string for a measure
