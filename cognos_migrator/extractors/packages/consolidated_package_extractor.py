@@ -375,13 +375,18 @@ class ConsolidatedPackageExtractor:
         
     def _deduplicate_columns(self, table: Table) -> None:
         """Deduplicate columns in a table by name
-        
+    
         Args:
             table: Table to deduplicate columns in
         """
+        # Log all column names before deduplication
+        self.logger.info(f"Before deduplication - Table {table.name} has {len(table.columns)} columns")
+        column_names = [col.name for col in table.columns]
+        self.logger.info(f"Column names: {column_names}")
+        
         # Create a dictionary to track unique columns by name (case-insensitive)
         unique_columns = {}
-        duplicate_count = 0
+        duplicates = []
         
         # Identify unique columns (keeping the first occurrence)
         for col in table.columns:
@@ -389,12 +394,22 @@ class ConsolidatedPackageExtractor:
             if col_name_lower not in unique_columns:
                 unique_columns[col_name_lower] = col
             else:
-                duplicate_count += 1
+                duplicates.append(col.name)
+        
+        duplicate_count = len(duplicates)
         
         if duplicate_count > 0:
-            self.logger.info(f"Deduplicating columns in table {table.name}: removed {duplicate_count} duplicate columns")
+            self.logger.info(f"Deduplicating columns in table {table.name}: found {duplicate_count} duplicate columns")
+            self.logger.info(f"Duplicate column names: {duplicates}")
             # Replace the columns list with the deduplicated list
             table.columns = list(unique_columns.values())
+            
+            # Log the column names after deduplication
+            after_column_names = [col.name for col in table.columns]
+            self.logger.info(f"After deduplication - Table {table.name} has {len(table.columns)} columns")
+            self.logger.info(f"Column names after deduplication: {after_column_names}")
+        else:
+            self.logger.info(f"No duplicate columns found in table {table.name}")
     
     def _find_referenced_table(self, model_qs: Dict[str, Any], data_model: DataModel) -> Optional[Table]:
         """Find the table referenced by a model query subject

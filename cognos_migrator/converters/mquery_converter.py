@@ -51,17 +51,27 @@ class MQueryConverter:
         if not table.source_query:
             self.logger.info(f"Table {table.name} has empty source_query - this will be handled by the LLM service")
         
-        # Prepare context for LLM service
-        context = self._build_context(table, report_spec, data_sample)
+        # Prepare enhanced context for LLM service
+        context = self._build_enhanced_context(table, report_spec, data_sample)
         
         # Log the context being sent to the LLM service
-        self.logger.info(f"Context for table {table.name}:")
+        self.logger.info(f"Enhanced context for table {table.name}:")
         self.logger.info(f"  - Table name: {context['table_name']}")
         self.logger.info(f"  - Columns: {json.dumps([col['name'] for col in context['columns']], indent=2)}")
         self.logger.info(f"  - Source query: {context['source_query'][:100]}..." if context.get('source_query') else "  - Source query: None")
+        if 'source_info' in context:
+            self.logger.info(f"  - Source type: {context['source_info']['source_type']}")
+        
+        # Add options for enhanced M-query generation
+        context['options'] = {
+            'query_folding_preference': 'BestEffort',
+            'error_handling_strategy': 'RemoveErrors',
+            'add_buffer': False,
+            'add_documentation_comments': True
+        }
         
         # Call LLM service to generate M-query
-        self.logger.info(f"Sending request to LLM service for M-query generation for table {table.name}")
+        self.logger.info(f"Sending request to LLM service for enhanced M-query generation for table {table.name}")
         m_query = self.llm_service_client.generate_m_query(context)
         
         # Clean and format the M-query
@@ -72,7 +82,7 @@ class MQueryConverter:
     
     def _build_context(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> Dict[str, Any]:
         """
-        Build context dictionary for LLM service
+        Build basic context dictionary for LLM service (legacy method)
         
         Args:
             table: Table object
@@ -104,6 +114,74 @@ class MQueryConverter:
             
         return context
     
+    def _build_enhanced_context(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> Dict[str, Any]:
+        """
+        Build enhanced context dictionary for LLM service with structured information
+        
+        Args:
+            table: Table object
+            report_spec: Optional report specification XML
+            data_sample: Optional data sample
+            
+        Returns:
+            Enhanced context dictionary for LLM service
+        """
+        # Start with basic context
+        context = self._build_context(table, report_spec, data_sample)
+        
+        # Add source information based on table metadata
+        source_type = "Unknown"
+        connection_details = {}
+        
+        # Determine source type from table metadata
+        if hasattr(table, 'source_type'):
+            source_type = table.source_type
+        elif hasattr(table, 'database_type') and table.database_type:
+            source_type = table.database_type
+        elif table.source_query and 'SELECT' in table.source_query.upper():
+            source_type = "SqlServer"  # Default to SQL Server for SQL queries
+        elif hasattr(table, 'cognos_path') and table.cognos_path:
+            source_type = "CognosFrameworkManager"
+        
+        # Build connection details
+        if hasattr(table, 'database_name') and table.database_name:
+            connection_details['database'] = table.database_name
+        if hasattr(table, 'server_name') and table.server_name:
+            connection_details['server'] = table.server_name
+        if hasattr(table, 'schema_name') and table.schema_name:
+            connection_details['schema'] = table.schema_name
+        if hasattr(table, 'cognos_path') and table.cognos_path:
+            connection_details['package_path'] = table.cognos_path
+        
+        # Add source info to context
+        context['source_info'] = {
+            'source_type': source_type,
+            'connection_details': connection_details
+        }
+        
+        # Extract filters from report spec if available
+        if report_spec:
+            filters = self._extract_filters_from_report_spec(report_spec, table.name)
+            if filters:
+                context['report_filters'] = filters
+            
+            # Extract calculations from report spec if available
+            calculations = self._extract_calculations_from_report_spec(report_spec, table.name)
+            if calculations:
+                context['report_calculations'] = calculations
+        
+        # Extract relationships if available
+        if hasattr(table, 'relationships') and table.relationships:
+            context['relationships'] = [{
+                'from_table': rel.from_table,
+                'from_column': rel.from_column,
+                'to_table': rel.to_table,
+                'to_column': rel.to_column,
+                'join_type': rel.join_type if hasattr(rel, 'join_type') else 'Inner'
+            } for rel in table.relationships]
+        
+        return context
+    
     def _extract_relevant_report_spec(self, report_spec: str, table_name: str) -> str:
         """
         Extract relevant parts of the report specification for a specific table
@@ -130,6 +208,128 @@ class MQueryConverter:
         except Exception as e:
             self.logger.warning(f"Error extracting relevant report spec: {e}")
             return ""
+    
+    def _extract_filters_from_report_spec(self, report_spec: str, table_name: str) -> List[Dict[str, Any]]:
+        """
+        Extract filters from the report specification for a specific table
+        
+        Args:
+            report_spec: Full report specification XML
+            table_name: Name of the table to extract filters for
+            
+        Returns:
+            List of filter dictionaries with column_name, operator, and values
+        """
+        filters = []
+        try:
+            # Look for filter sections in the report spec
+            # This is a simplified implementation that looks for common filter patterns in Cognos XML
+            filter_patterns = [
+                # Pattern for simple filters
+                r'<filter.*?<expression>\s*\[([^\]]+)\]\s*([=<>!]+)\s*([^<]+)</expression>',
+                # Pattern for IN filters
+                r'<filter.*?<expression>\s*\[([^\]]+)\]\s+in\s+\(([^)]+)\)</expression>',
+                # Pattern for BETWEEN filters
+                r'<filter.*?<expression>\s*\[([^\]]+)\]\s+between\s+([^\s]+)\s+and\s+([^\s<]+)</expression>'
+            ]
+            
+            # Extract the relevant part of the report spec for this table
+            relevant_spec = self._extract_relevant_report_spec(report_spec, table_name)
+            
+            # Process each filter pattern
+            for pattern in filter_patterns:
+                matches = re.findall(pattern, relevant_spec, re.IGNORECASE)
+                
+                for match in matches:
+                    if len(match) == 3 and '=' in match[1]:
+                        # Simple equality filter
+                        filters.append({
+                            'column_name': match[0].strip(),
+                            'operator': 'equals',
+                            'values': [match[2].strip().strip('"\'')] 
+                        })
+                    elif len(match) == 3 and '>' in match[1]:
+                        # Greater than filter
+                        filters.append({
+                            'column_name': match[0].strip(),
+                            'operator': 'greaterThan',
+                            'values': [match[2].strip().strip('"\'')] 
+                        })
+                    elif len(match) == 3 and '<' in match[1]:
+                        # Less than filter
+                        filters.append({
+                            'column_name': match[0].strip(),
+                            'operator': 'lessThan',
+                            'values': [match[2].strip().strip('"\'')] 
+                        })
+                    elif len(match) == 2:  # IN filter
+                        # Split the values and clean them
+                        values = [v.strip().strip('"\'\'') for v in match[1].split(',')]
+                        filters.append({
+                            'column_name': match[0].strip(),
+                            'operator': 'in',
+                            'values': values
+                        })
+                    elif len(match) == 3:  # BETWEEN filter
+                        filters.append({
+                            'column_name': match[0].strip(),
+                            'operator': 'between',
+                            'values': [match[1].strip().strip('"\'\''), match[2].strip().strip('"\'\'')]
+                        })
+            
+            return filters
+        except Exception as e:
+            self.logger.warning(f"Error extracting filters from report spec: {e}")
+            return []
+    
+    def _extract_calculations_from_report_spec(self, report_spec: str, table_name: str) -> List[Dict[str, Any]]:
+        """
+        Extract calculated columns from the report specification for a specific table
+        
+        Args:
+            report_spec: Full report specification XML
+            table_name: Name of the table to extract calculations for
+            
+        Returns:
+            List of calculation dictionaries with new_column_name, source_expression, and description
+        """
+        calculations = []
+        try:
+            # Look for calculation sections in the report spec
+            # This is a simplified implementation that looks for common calculation patterns in Cognos XML
+            calc_patterns = [
+                # Pattern for calculated columns
+                r'<calculation.*?<name>([^<]+)</name>.*?<expression>([^<]+)</expression>',
+                # Pattern for calculated measures
+                r'<measure.*?<name>([^<]+)</name>.*?<expression>([^<]+)</expression>'
+            ]
+            
+            # Extract the relevant part of the report spec for this table
+            relevant_spec = self._extract_relevant_report_spec(report_spec, table_name)
+            
+            # Process each calculation pattern
+            for pattern in calc_patterns:
+                matches = re.findall(pattern, relevant_spec, re.IGNORECASE | re.DOTALL)
+                
+                for match in matches:
+                    if len(match) == 2:
+                        # Extract description if available
+                        description = None
+                        desc_match = re.search(r'<description>([^<]+)</description>', 
+                                              relevant_spec, re.IGNORECASE)
+                        if desc_match:
+                            description = desc_match.group(1).strip()
+                        
+                        calculations.append({
+                            'new_column_name': match[0].strip(),
+                            'source_expression': match[1].strip(),
+                            'description': description
+                        })
+            
+            return calculations
+        except Exception as e:
+            self.logger.warning(f"Error extracting calculations from report spec: {e}")
+            return []
     
     def _clean_m_query(self, m_query: str) -> str:
         """

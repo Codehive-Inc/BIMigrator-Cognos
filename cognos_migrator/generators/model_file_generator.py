@@ -138,8 +138,29 @@ class ModelFileGenerator:
                     self.logger.info(f"Updating table {table.name} columns with {len(data_items)} data items before M-query generation")
                     # Create new Column objects from data items
                     from cognos_migrator.models import Column, DataType
-                    updated_columns = []
+                    
+                    # First, deduplicate data items by column name (case-insensitive)
+                    unique_items = {}
+                    duplicate_items = []
+                    
                     for item in data_items:
+                        column_name = item.get('name', 'Column')
+                        column_name_lower = column_name.lower()
+                        
+                        if column_name_lower not in unique_items:
+                            unique_items[column_name_lower] = item
+                        else:
+                            duplicate_items.append(column_name)
+                    
+                    # Log information about duplicates
+                    if duplicate_items:
+                        self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for table {table.name}")
+                        self.logger.info(f"Duplicate column names: {duplicate_items}")
+                        self.logger.info(f"Using only unique column names for M-query generation")
+                    
+                    # Create columns from deduplicated items
+                    updated_columns = []
+                    for item in unique_items.values():
                         column_name = item.get('name', 'Column')
                         # Map Cognos data type to Power BI data type
                         data_type_str, _ = map_cognos_to_powerbi_datatype(item, self.logger)
@@ -152,9 +173,11 @@ class ModelFileGenerator:
                         # Create column object with required source_column parameter
                         column = Column(name=column_name, data_type=data_type_enum, source_column=column_name)
                         updated_columns.append(column)
+                    
                     # Update the table's columns
                     table.columns = updated_columns
-                    self.logger.info(f"Updated table {table.name} columns: {', '.join([col.name for col in table.columns])}")
+                    self.logger.info(f"Updated table {table.name} columns after deduplication: {', '.join([col.name for col in table.columns])}")
+                    self.logger.info(f"Table {table.name} now has {len(table.columns)} unique columns")
                 else:
                     self.logger.warning(f"No data items found for table {table.name}, using default columns for M-query generation")
                 
@@ -222,7 +245,27 @@ class ModelFileGenerator:
 
                     # If we have data items, use them as columns
                     if data_items:
+                        # First, deduplicate data items by column name (case-insensitive)
+                        unique_items = {}
+                        duplicate_items = []
+                        
                         for item in data_items:
+                            column_name = item.get('name', 'Column')
+                            column_name_lower = column_name.lower()
+                            
+                            if column_name_lower not in unique_items:
+                                unique_items[column_name_lower] = item
+                            else:
+                                duplicate_items.append(column_name)
+                        
+                        # Log information about duplicates
+                        if duplicate_items:
+                            self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for table JSON generation")
+                            self.logger.info(f"Duplicate column names: {duplicate_items}")
+                            self.logger.info(f"Using only unique column names for table JSON generation")
+                        
+                        # Use deduplicated items
+                        for item in unique_items.values():
                             # Use the comprehensive mapping function to get both data type and summarize_by
                             data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
 
@@ -397,7 +440,27 @@ class ModelFileGenerator:
         
         # If we have data items, use them as columns
         if data_items:
+            # First, deduplicate data items by column name (case-insensitive)
+            unique_items = {}
+            duplicate_items = []
+            
             for item in data_items:
+                column_name = item.get('name', 'Column')
+                column_name_lower = column_name.lower()
+                
+                if column_name_lower not in unique_items:
+                    unique_items[column_name_lower] = item
+                else:
+                    duplicate_items.append(column_name)
+            
+            # Log information about duplicates
+            if duplicate_items:
+                self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for TMDL template generation")
+                self.logger.info(f"Duplicate column names: {duplicate_items}")
+                self.logger.info(f"Using only unique column names for TMDL template generation")
+            
+            # Use deduplicated items
+            for item in unique_items.values():
                 # Use the comprehensive mapping function to get both data type and summarize_by
                 data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
                 
