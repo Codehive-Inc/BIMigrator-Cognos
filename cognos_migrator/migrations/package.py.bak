@@ -82,11 +82,24 @@ def migrate_package_with_explicit_session(package_file_path: str,
     )
     
     try:
-        # Create output directory structure using the exact path provided by the user
+        # Ensure output path is within the standard output directory
+        base_output_dir = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent / "output"
+        base_output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # If output_path is an absolute path, extract just the directory name
+        if os.path.isabs(output_path):
+            output_name = os.path.basename(output_path)
+        else:
+            output_name = output_path
+        
+        # Remove any path separators to get a clean directory name
+        output_name = output_name.replace('/', '_').replace('\\', '_')
+        
+        # Create the final output directory within the standard output directory
         output_dir = Path(output_path)
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        # Log the output directory being used
+        # Log the actual output directory being used
         log_info(f"Using output directory: {output_dir}")
         
         # Create subdirectories
@@ -246,11 +259,24 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
     )
     
     try:
-        # Create output directory structure using the exact path provided by the user
+        # Ensure output path is within the standard output directory
+        base_output_dir = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent / "output"
+        base_output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # If output_path is an absolute path, extract just the directory name
+        if os.path.isabs(output_path):
+            output_name = os.path.basename(output_path)
+        else:
+            output_name = output_path
+        
+        # Remove any path separators to get a clean directory name
+        output_name = output_name.replace('/', '_').replace('\\', '_')
+        
+        # Create the final output directory within the standard output directory
         output_dir = Path(output_path)
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        # Log the output directory being used
+        # Log the actual output directory being used
         log_info(f"Using output directory: {output_dir}")
         
         # Create subdirectories
