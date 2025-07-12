@@ -1,0 +1,531 @@
+table 'vwAuthorizationsByAgency'
+
+
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Date Submitted'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Date Submitted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FuelType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FuelType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Type'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Type
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Applicant Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Applicant Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDueVeteranVoucher'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDueVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDueDisabilityVoucher'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDueDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteranVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabilityVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantAddress
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantCity'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantCity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantZip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantZip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DepositGuarantee'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DepositGuarantee
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsOver60'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsMedical'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsMedical
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NumberOfCust'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: NumberOfCust
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteran'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteran
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsInterestedInWeatherization'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsInterestedInWeatherization
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DominionAccountNumber'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DominionAccountNumber
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BusinessType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BusinessType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CustomBusinessType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CustomBusinessType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantPhone'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantPhone
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Date Submitted'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Date Submitted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FuelType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FuelType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Type'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Type
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Applicant Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Applicant Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDueVeteranVoucher'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDueVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDueDisabilityVoucher'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDueDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteranVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabilityVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantAddress
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantCity'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantCity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantZip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantZip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DepositGuarantee'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DepositGuarantee
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsOver60'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsMedical'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsMedical
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NumberOfCust'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: NumberOfCust
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteran'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteran
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsInterestedInWeatherization'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsInterestedInWeatherization
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DominionAccountNumber'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DominionAccountNumber
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BusinessType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BusinessType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CustomBusinessType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CustomBusinessType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantPhone'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantPhone
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'vwAuthorizationsByAgency' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table vwAuthorizationsByAgency: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x106cd5d30>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

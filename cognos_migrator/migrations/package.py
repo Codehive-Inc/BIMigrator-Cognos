@@ -137,10 +137,27 @@ def migrate_package_with_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Create Power BI project
+        # Create a basic Report object to ensure report files are generated
+        from ..models import Report, ReportPage
+        
+        # Create a default report with the package name
+        report = Report(
+            id=f"report_{package_info['name'].lower().replace(' ', '_')}",
+            name=package_info['name'],
+            sections=[
+                ReportPage(
+                    name="page1",
+                    display_name="Dashboard",
+                    visuals=[]
+                )
+            ]
+        )
+        
+        # Create Power BI project with report
         pbi_project = PowerBIProject(
             name=package_info['name'],
-            data_model=data_model
+            data_model=data_model,
+            report=report
         )
         
         # Step 4: Generate Power BI files
@@ -194,10 +211,11 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                        cpf_file_path: str = None,
                                        task_id: Optional[str] = None,
                                        auth_key: str = "IBM-BA-Authorization") -> bool:
-    """Migrate a Cognos Framework Manager package file with explicit session credentials and specific reports
+    """Migrate a Cognos Framework Manager package file to Power BI with explicit session credentials
+    and include specific reports
     
-    This function allows migrating a package with specific reports.
-    It does not use environment variables and will raise an exception if the session key is expired.
+    This function does not use environment variables and will raise an exception
+    if the session key is expired.
     
     Args:
         package_file_path: Path to the FM package file
@@ -223,7 +241,7 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
     configure_logging()
     
     # Set task info for WebSocket updates
-    set_task_info(task_id, total_steps=12)
+    set_task_info(task_id, total_steps=10)
     
     # Create Cognos config with explicit values
     cognos_config = CognosConfig(
@@ -257,9 +275,6 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         extracted_dir = output_dir / "extracted"
         extracted_dir.mkdir(exist_ok=True)
         
-        reports_dir = output_dir / "reports"
-        reports_dir.mkdir(exist_ok=True)
-        
         pbit_dir = output_dir / "pbit"
         pbit_dir.mkdir(exist_ok=True)
         
@@ -282,41 +297,10 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         log_info(f"Extracted package information: {package_info['name']}")
         
-        # Step 2: Download report specifications
-        logging_helper(
-            message="Downloading report specifications",
-            progress=30,
-            message_type="info"
-        )
-        
-        # Create Cognos client
-        client = CognosClient(cognos_config)
-        
-        # Download report specifications for each report ID
-        report_specs = []
-        
-        if report_ids:
-            for report_id in report_ids:
-                try:
-                    # Get report spec
-                    report_spec = client.get_report_spec(report_id)
-                    
-                    # Save report spec
-                    report_specs.append(report_spec)
-                    
-                    # Save to file
-                    with open(reports_dir / f"report_{report_id}.xml", 'w', encoding='utf-8') as f:
-                        f.write(report_spec)
-                    
-                    log_info(f"Downloaded report spec for report ID: {report_id}")
-                    
-                except Exception as e:
-                    log_warning(f"Failed to download report spec for report ID {report_id}: {e}")
-        
-        # Step 3: Convert to Power BI data model
+        # Step 2: Convert to Power BI data model
         logging_helper(
             message="Converting to Power BI data model",
-            progress=50,
+            progress=30,
             message_type="info"
         )
         
@@ -328,6 +312,41 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
+        # Step 3: Migrate associated reports if provided
+        successful_report_ids = []
+        
+        if report_ids and len(report_ids) > 0:
+            logging_helper(
+                message=f"Migrating {len(report_ids)} associated reports",
+                progress=40,
+                message_type="info"
+            )
+            
+            for i, report_id in enumerate(report_ids):
+                log_info(f"Migrating report {i+1}/{len(report_ids)}: {report_id}")
+                
+                logging_helper(
+                    message=f"Migrating report {i+1}/{len(report_ids)}: {report_id}",
+                    progress=40 + int((i / len(report_ids)) * 20),
+                    message_type="info"
+                )
+                
+                # Use the report migration function with explicit session
+                report_success = migrate_single_report_with_explicit_session(
+                    report_id=report_id,
+                    output_path=str(output_dir / "reports" / report_id),
+                    cognos_url=cognos_url,
+                    session_key=session_key,
+                    task_id=f"{task_id}_report_{i}",
+                    auth_key=auth_key
+                )
+                
+                if report_success:
+                    log_info(f"Report migration successful: {report_id}")
+                    successful_report_ids.append(report_id)
+                else:
+                    log_warning(f"Report migration failed: {report_id}")
+        
         # Step 4: Create Power BI project
         logging_helper(
             message="Creating Power BI project",
@@ -335,10 +354,27 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
             message_type="info"
         )
         
-        # Create Power BI project
+        # Create a basic Report object to ensure report files are generated
+        from ..models import Report, ReportPage
+        
+        # Create a default report with the package name
+        report = Report(
+            id=f"report_{package_info['name'].lower().replace(' ', '_')}",
+            name=package_info['name'],
+            sections=[
+                ReportPage(
+                    name="page1",
+                    display_name="Dashboard",
+                    visuals=[]
+                )
+            ]
+        )
+        
+        # Create Power BI project with report
         pbi_project = PowerBIProject(
             name=package_info['name'],
-            data_model=data_model
+            data_model=data_model,
+            report=report
         )
         
         # Step 5: Generate Power BI files

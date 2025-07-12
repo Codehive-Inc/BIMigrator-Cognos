@@ -1,0 +1,179 @@
+table 'Payee Report'
+
+
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AuthorizationType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AuthorizationType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VendorID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: VendorID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Vendor'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Vendor
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Agency'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Agency
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Date Submitted'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Date Submitted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AuthorizationType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AuthorizationType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VendorID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: VendorID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Vendor'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Vendor
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Agency'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Agency
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Date Submitted'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Date Submitted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Payee Report' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table Payee Report: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1072a31a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table
