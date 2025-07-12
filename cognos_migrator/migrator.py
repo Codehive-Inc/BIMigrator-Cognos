@@ -12,7 +12,9 @@ import logging
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Any, Optional, Tuple, Union
+
+from cognos_migrator.summary import MigrationSummaryGenerator
 
 from cognos_migrator.config import MigrationConfig, CognosConfig
 from cognos_migrator.common.logging import configure_logging, log_info, log_warning, log_error, log_debug
@@ -107,6 +109,9 @@ class CognosModuleMigratorExplicit:
             except Exception as e:
                 self.logger.warning(f"Failed to initialize CPF extractor: {e}")
                 self.cpf_extractor = None
+                
+        # Initialize summary generator
+        self.summary_generator = MigrationSummaryGenerator(logger=self.logger)
     
     def migrate_module(self, module_id: str, output_path: str, folder_id: str = None, cpf_file_path: str = None) -> bool:
         """Migrate module - uses the same logic as CognosModuleMigrator.migrate_module"""
@@ -702,7 +707,7 @@ class CognosModuleMigratorExplicit:
                 current_progress += progress_per_report
             
             # Generate migration summary
-            self._generate_migration_summary(results, output_path)
+            self.summary_generator.generate_migration_summary(results, output_path)
             
             logging_helper(
                 message=f"Folder migration completed: {sum(1 for s in results.values() if s)}/{len(results)} successful",
@@ -724,68 +729,7 @@ class CognosModuleMigratorExplicit:
             )
             return results
     
-    def _generate_migration_summary(self, results: Dict[str, bool], output_path: str):
-        """Generate migration summary report
-        
-        Args:
-            results: Dictionary mapping report IDs to success status
-            output_path: Base output path for the migration
-        """
-        try:
-            summary_path = Path(output_path) / "migration_summary.md"
-            
-            total_reports = len(results)
-            successful_reports = sum(1 for success in results.values() if success)
-            failed_reports = total_reports - successful_reports
-            
-            # Calculate success rate with check for division by zero
-            success_rate = 0.0
-            if total_reports > 0:
-                success_rate = (successful_reports / total_reports) * 100
-            
-            summary_content = f"""# Migration Summary Report
 
-## Overview
-- **Total Reports**: {total_reports}
-- **Successful Migrations**: {successful_reports}
-- **Failed Migrations**: {failed_reports}
-- **Success Rate**: {success_rate:.1f}%
-
-## Migration Results
-
-### Successful Migrations
-"""
-            
-            for report_id, success in results.items():
-                if success:
-                    summary_content += f"- ✓ {report_id}\n"
-            
-            summary_content += "\n### Failed Migrations\n"
-            
-            for report_id, success in results.items():
-                if not success:
-                    summary_content += f"- ✗ {report_id}\n"
-            
-            summary_content += f"""
-
-## Migration Details
-- **Migration Date**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-- **Output Directory**: {output_path}
-
-## Next Steps
-1. Review failed migrations and check logs for error details
-2. Validate successful migrations by opening in Power BI Desktop
-3. Test data connections and refresh capabilities
-4. Review and adjust visual layouts as needed
-"""
-            
-            with open(summary_path, 'w', encoding='utf-8') as f:
-                f.write(summary_content)
-            
-            self.logger.info(f"Generated migration summary: {summary_path}")
-            
-        except Exception as e:
-            self.logger.error(f"Failed to generate migration summary: {e}")
     
     def migrate_single_report_with_session_key(self, report_id: str, output_path: str) -> bool:
         """Migrate a single Cognos report using explicit session credentials
