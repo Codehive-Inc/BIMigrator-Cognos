@@ -41,46 +41,6 @@ table 'D_OFS_ACTIVITY_WORK_SKILL'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: AID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'WORK_SKILL_ID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: WORK_SKILL_ID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'REQUIRED_LEVEL'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: REQUIRED_LEVEL
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'PREFERABLE_LEVEL'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: PREFERABLE_LEVEL
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'SYS_UPDATE_TS'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SYS_UPDATE_TS
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 

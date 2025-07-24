@@ -41,46 +41,6 @@ table 'D_OFS_WORK_SKILLS'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'PID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: PID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'WORK_SKILL_ID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: WORK_SKILL_ID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'RATIO'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: RATIO
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'PROVIDER_ID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: PROVIDER_ID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'SYS_UPDATE_TS'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SYS_UPDATE_TS
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 

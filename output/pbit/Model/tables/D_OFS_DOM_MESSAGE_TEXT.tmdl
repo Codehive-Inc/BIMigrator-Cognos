@@ -33,38 +33,6 @@ table 'D_OFS_DOM_MESSAGE_TEXT'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'MESSAGE_MQID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: MESSAGE_MQID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'MESSAGE_SUBJECT'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: MESSAGE_SUBJECT
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'MESSAGE_TEXT'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: MESSAGE_TEXT
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'SYS_UPDATE_TS'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SYS_UPDATE_TS
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 

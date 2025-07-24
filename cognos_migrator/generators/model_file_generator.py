@@ -434,114 +434,53 @@ class ModelFileGenerator:
                     self.logger.info(f"Loaded {len(calculations_map)} calculations for table {table.name} from {calculations_file}")
                 except Exception as e:
                     self.logger.warning(f"Error loading calculations for table {table.name} from {calculations_file}: {e}")
-        else:
-            self.logger.warning(f"Cannot load calculations: extracted_dir is not valid: {extracted_dir}")
         
-        # If data_items is not provided, try to get them from the extracted directory
-        if data_items is None:
-            data_items = []
-            # Try to read data items from report_data_items.json
-            if extracted_dir and extracted_dir.exists():
-                data_items_file = extracted_dir / "report_data_items.json"
-                if data_items_file.exists():
-                    try:
-                        with open(data_items_file, 'r', encoding='utf-8') as f:
-                            data_items = json.load(f)
-                        self.logger.info(f"Loaded {len(data_items)} data items for table context from {data_items_file}")
-                    except Exception as e:
-                        self.logger.warning(f"Error loading data items for table context from {data_items_file}: {e}")
+        columns = []
+        
+        # Try to load the JSON file for this table
+        if extracted_dir and extracted_dir.exists():
+            json_file = extracted_dir / f"table_{table.name}.json"
+            if json_file.exists():
+                try:
+                    with open(json_file, 'r', encoding='utf-8') as f:
+                        table_json = json.load(f)
+                        # Use the already deduplicated columns from JSON
+                        for col in table_json.get('columns', []):
+                            column = {
+                                'name': col['source_name'],
+                                'source_name': col['source_name'],
+                                'datatype': col['datatype'],
+                                'source_column': col['source_column'],
+                                'is_calculated': col['is_calculated'],
+                                'summarize_by': col['summarize_by'],
+                                'is_hidden': col['is_hidden'],
+                                'annotations': col['annotations']
+                            }
+                            columns.append(column)
+                        self.logger.info(f"Loaded {len(columns)} columns from JSON file for table {table.name}")
+                except Exception as e:
+                    self.logger.error(f"Error loading JSON file for table {table.name}: {e}")
+                    # Fallback to original table columns if JSON loading fails
+                    self._load_columns_from_table(table, columns, calculations_map)
             else:
-                self.logger.warning(f"Cannot load data items: extracted_dir is not valid: {extracted_dir}")
-        
-        # If we have data items, use them as columns
-        if data_items:
-            # First, deduplicate data items by column name (case-insensitive)
-            unique_items = {}
-            duplicate_items = []
-            
-            for item in data_items:
-                column_name = item.get('name', 'Column')
-                column_name_lower = column_name.lower()
-                
-                if column_name_lower not in unique_items:
-                    unique_items[column_name_lower] = item
-                else:
-                    duplicate_items.append(column_name)
-            
-            # Log information about duplicates
-            if duplicate_items:
-                self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for TMDL template generation")
-                self.logger.info(f"Duplicate column names: {duplicate_items}")
-                self.logger.info(f"Using only unique column names for TMDL template generation")
-            
-            # Use deduplicated items
-            for item in unique_items.values():
-                # Use the comprehensive mapping function to get both data type and summarize_by
-                data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
-                
-                # Log the data type mapping for debugging
-                self.logger.debug(f"TMDL: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
-                
-                # Determine the appropriate SummarizationSetBy annotation value
-                summarization_set_by = 'User' if summarize_by != 'none' else 'Automatic'
-                
-                column_name = item.get('name', 'Column')
-                is_calculation = item.get('type') == 'calculation'
-                source_column = column_name
-                
-                # For calculated columns, use FormulaDax from calculations.json if available
-                if is_calculation and column_name in calculations_map:
-                    source_column = calculations_map[column_name]
-                    self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
-                
-                column = {
-                    'name': column_name,
-                    'source_name': column_name,
-                    'datatype': data_type,
-                    'source_column': source_column,
-                    'is_calculated': is_calculation,
-                    'summarize_by': summarize_by,
-                    'is_hidden': False,
-                    'annotations': {'SummarizationSetBy': summarization_set_by}
-                }
-                columns.append(column)
+                self.logger.warning(f"No JSON file found for table {table.name}, using original columns")
+                self._load_columns_from_table(table, columns, calculations_map)
         else:
-            # If no data items, use the table columns
-            for col in table.columns:
-                column_name = col.name
-                is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
-                source_column = column_name
-                
-                # For calculated columns, use FormulaDax from calculations.json if available
-                if is_calculation and column_name in calculations_map:
-                    source_column = calculations_map[column_name]
-                    self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
-                
-                column = {
-                    'name': column_name,
-                    'source_name': column_name,
-                    'datatype': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
-                    'source_column': source_column,
-                    'is_calculated': is_calculation,
-                    'summarize_by': getattr(col, 'summarize_by', 'none'),
-                    'is_hidden': getattr(col, 'is_hidden', False),
-                    'annotations': {'SummarizationSetBy': 'Automatic'}
-                }
-                columns.append(column)
-            
+            self.logger.warning(f"No extracted directory found, using original columns")
+            self._load_columns_from_table(table, columns, calculations_map)
+
         # Use the provided M-query or generate it if not provided
         if m_query is not None:
             self.logger.info(f"Using pre-generated M-query for table {table.name}")
             m_expression = m_query
         else:
-            # Fallback to generating M-query if not provided
             try:
                 self.logger.warning(f"No pre-generated M-query provided for table {table.name}, generating now")
                 m_expression = self._build_m_expression(table, report_spec)
             except Exception as e:
                 self.logger.error(f"Error building M-expression for table {table.name}: {e}")
-                m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource"
-        
+                m_expression = f"// ERROR: {str(e)}\nlet\n    Source = Table.FromRows({{}})\nin\n    Source"
+
         # Add partition information to the context
         partitions = []
         
@@ -556,6 +495,7 @@ class ModelFileGenerator:
                 'expression': m_expression
             })
         
+        # Build the final context
         context = {
             'name': table_name,
             'table_name': table_name,
@@ -568,6 +508,53 @@ class ModelFileGenerator:
         
         return context
     
+    def _load_columns_from_table(self, table: Table, columns: List[Dict], calculations_map: Dict[str, str]):
+        """Load columns from table object with deduplication"""
+        # Create a map of unique columns by name (case-insensitive)
+        unique_columns = {}
+        duplicate_columns = []
+
+        # First pass: collect all table columns and identify duplicates
+        for col in table.columns:
+            col_name_lower = col.name.lower()
+            if col_name_lower not in unique_columns:
+                unique_columns[col_name_lower] = {
+                    'name': col.name,
+                    'data_type': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
+                    'source_column': getattr(col, 'source_column', col.name),
+                    'is_calculated': hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                    'summarize_by': getattr(col, 'summarize_by', 'none'),
+                    'is_hidden': getattr(col, 'is_hidden', False)
+                }
+            else:
+                duplicate_columns.append(col.name)
+
+        # Log information about duplicates
+        if duplicate_columns:
+            self.logger.info(f"Found {len(duplicate_columns)} duplicate column names for table {table.name}")
+            self.logger.info(f"Duplicate column names: {duplicate_columns}")
+            self.logger.info(f"Using only unique column names for TMDL generation")
+
+        # Create TMDL entries for unique columns
+        for col_info in unique_columns.values():
+            # Use DAX formula for calculated columns if available
+            source_column = col_info['source_column']
+            if col_info['is_calculated'] and col_info['name'] in calculations_map:
+                source_column = calculations_map[col_info['name']]
+                self.logger.info(f"TMDL: Using FormulaDax as source_column for calculated column {col_info['name']}: {source_column[:50]}...")
+
+            column = {
+                'name': col_info['name'],
+                'source_name': col_info['name'],
+                'datatype': col_info['data_type'],
+                'source_column': source_column,
+                'is_calculated': col_info['is_calculated'],
+                'summarize_by': col_info['summarize_by'],
+                'is_hidden': col_info['is_hidden'],
+                'annotations': {'SummarizationSetBy': 'User' if col_info['summarize_by'] != 'none' else 'Automatic'}
+            }
+            columns.append(column)
+
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
         """Build M expression for table partition using MQueryConverter"""
         self.logger.info(f"Building M-expression for table: {table.name}")
@@ -581,11 +568,16 @@ class ModelFileGenerator:
         if not self.mquery_converter:
             error_msg = f"M-query converter is not configured but required for M-query generation for table {table.name}"
             self.logger.error(error_msg)
-            raise Exception(error_msg)
+            raise ValueError(error_msg)
         
-        # Use the MQueryConverter to generate the M-query
-        self.logger.info(f"Generating optimized M-query for table {table.name} using M-query converter")
-        return self.mquery_converter.convert_to_m_query(table, report_spec)
+        try:
+            m_expression = self.mquery_converter.convert_to_m_query(table, report_spec)
+            self.logger.info(f"Successfully built M-expression for table {table.name}")
+            return m_expression
+        except Exception as e:
+            error_msg = f"Error building M-expression for table {table.name}: {str(e)}"
+            self.logger.error(error_msg)
+            raise ValueError(error_msg) from e
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""

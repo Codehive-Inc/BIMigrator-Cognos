@@ -49,54 +49,6 @@ table 'D_OFS_DOMINION_TYPE_LIST'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TYPE_ID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: TYPE_ID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'TYPE_LANG'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: TYPE_LANG
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'TYPE_LABEL'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: TYPE_LABEL
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'TYPE_TEXT'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: TYPE_TEXT
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'TYPE_NAME'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: TYPE_NAME
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'SYS_UPDATE_TS'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SYS_UPDATE_TS
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 
