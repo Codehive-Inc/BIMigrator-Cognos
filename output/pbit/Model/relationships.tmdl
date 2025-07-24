@@ -1,0 +1,12 @@
+relationship 1773c527-4704-4886-ac1d-9f2fab4f6f82
+	fromColumn: 'F_OFS_DOM_ACTIVITY_DTL_METER'.QUEUE_QID
+	toColumn: 'F_OFS_DOMINION_ACTIVITY_DETAIL'.QUEUE_QID
+	fromCardinality: many
+	isActive: True
+
+relationship 1110026c-ad81-4257-af93-fd23a72e867e
+	fromColumn: 'Resource Hierarchy'.RESOURCE_ID
+	toColumn: 'Meter Activity (Fact)'.RESOURCE_ID
+	fromCardinality: many
+	isActive: True
+

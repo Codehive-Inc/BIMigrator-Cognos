@@ -3,6 +3,7 @@ Model file generator for Power BI projects.
 """
 import logging
 import json
+import uuid
 import os
 import re
 from pathlib import Path
@@ -574,20 +575,41 @@ class ModelFileGenerator:
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""
-        relationships_context = []
+        # Create a dict to deduplicate relationships
+        unique_relationships = {}
+        
         for rel in relationships:
+            # Create a unique key based on the tables and columns involved
+            rel_key = f"{rel.from_table}.{rel.from_column}->{rel.to_table}.{rel.to_column}"
+            
+            # Transform cardinality to Power BI TMDL format (many/one)
+            cardinality = rel.cardinality
+            if cardinality:
+                if 'many' in cardinality.lower():
+                    cardinality = 'many'
+                else:
+                    cardinality = 'one'
+            
+            # Generate UUID for relationship ID
+            rel_id = str(uuid.uuid4())
+            
             relationship_data = {
-                'id': rel.name,  # Use name as the ID for the template
+                'id': rel_id,  # Use UUID as the ID
                 'name': rel.name,
                 'from_table': rel.from_table,
                 'from_column': rel.from_column,
                 'to_table': rel.to_table,
                 'to_column': rel.to_column,
-                'cardinality': rel.cardinality,
+                'cardinality': cardinality,
                 'cross_filter_direction': rel.cross_filter_direction,
                 'is_active': rel.is_active
             }
-            relationships_context.append(relationship_data)
+            
+            # Only keep the first occurrence of each unique relationship
+            if rel_key not in unique_relationships:
+                unique_relationships[rel_key] = relationship_data
+        
+        relationships_context = list(unique_relationships.values())
             
         context = {
             'relationships': relationships_context

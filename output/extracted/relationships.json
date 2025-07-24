@@ -1,0 +1,68 @@
+[
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]"
+    },
+    "join_expression": ""
+  }
+]

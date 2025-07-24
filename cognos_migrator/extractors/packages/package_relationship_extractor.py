@@ -192,23 +192,11 @@ class PackageRelationshipExtractor(BasePackageExtractor):
                         min_card = mincard_elem.text.strip() if mincard_elem is not None and mincard_elem.text else None
                         max_card = maxcard_elem.text.strip() if maxcard_elem is not None and maxcard_elem.text else None
                         
-                        # Map cardinality to Power BI format using camelCase
+                        # Map cardinality to Power BI TMDL format (many/one)
                         if max_card == 'n':
-                            if min_card == '0' or min_card == '1':
-                                if side == 'right':
-                                    side_info['cardinality'] = 'manyToOne'
-                                else:
-                                    side_info['cardinality'] = 'oneToMany'
-                            else:
-                                side_info['cardinality'] = 'manyToMany'
+                            side_info['cardinality'] = 'many'
                         elif max_card == '1':
-                            if min_card == '1':
-                                side_info['cardinality'] = 'oneToOne'
-                            elif min_card == '0':
-                                if side == 'right':
-                                    side_info['cardinality'] = 'manyToOne'
-                                else:
-                                    side_info['cardinality'] = 'oneToMany'
+                            side_info['cardinality'] = 'one'
                         
                         # Store original values for reference
                         if min_card:

@@ -1,0 +1,99 @@
+table 'D_OFS_PROP_LOOKUP'
+
+
+    column 'PROP_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_LID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_LID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_INDEX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_INDEX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_TEXT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_TEXT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_LID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_LID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_INDEX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_INDEX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_TEXT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_TEXT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'D_OFS_PROP_LOOKUP' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table D_OFS_PROP_LOOKUP: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x106b7b8f0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+			in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

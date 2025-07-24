@@ -1,0 +1,26 @@
+{
+  "relationships": [
+    {
+      "id": "1773c527-4704-4886-ac1d-9f2fab4f6f82",
+      "name": "Relationship_F_OFS_DOM_ACTIVITY_DTL_METER_F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "from_table": "F_OFS_DOM_ACTIVITY_DTL_METER",
+      "from_column": "QUEUE_QID",
+      "to_table": "F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "to_column": "QUEUE_QID",
+      "cardinality": "many",
+      "cross_filter_direction": "single",
+      "is_active": true
+    },
+    {
+      "id": "1110026c-ad81-4257-af93-fd23a72e867e",
+      "name": "Relationship_Resource Hierarchy_Meter Activity (Fact)",
+      "from_table": "Resource Hierarchy",
+      "from_column": "RESOURCE_ID",
+      "to_table": "Meter Activity (Fact)",
+      "to_column": "RESOURCE_ID",
+      "cardinality": "many",
+      "cross_filter_direction": "single",
+      "is_active": true
+    }
+  ]
+}
