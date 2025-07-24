@@ -184,15 +184,37 @@ class PackageRelationshipExtractor(BasePackageExtractor):
                             side_info['query_subject'] = refobj_elem.text.strip()
                             break
                     
-                    # Extract cardinality
+                    # Extract cardinality and transform to Power BI format
                     for card_prefix in ['bmt', 'ns']:
                         mincard_elem = side_elem.find(f'.//{card_prefix}:mincard', self.namespaces)
-                        if mincard_elem is not None and mincard_elem.text:
-                            side_info['mincard'] = mincard_elem.text.strip()
-                        
                         maxcard_elem = side_elem.find(f'.//{card_prefix}:maxcard', self.namespaces)
-                        if maxcard_elem is not None and maxcard_elem.text:
-                            side_info['maxcard'] = maxcard_elem.text.strip()
+                        
+                        min_card = mincard_elem.text.strip() if mincard_elem is not None and mincard_elem.text else None
+                        max_card = maxcard_elem.text.strip() if maxcard_elem is not None and maxcard_elem.text else None
+                        
+                        # Map cardinality to Power BI format using camelCase
+                        if max_card == 'n':
+                            if min_card == '0' or min_card == '1':
+                                if side == 'right':
+                                    side_info['cardinality'] = 'manyToOne'
+                                else:
+                                    side_info['cardinality'] = 'oneToMany'
+                            else:
+                                side_info['cardinality'] = 'manyToMany'
+                        elif max_card == '1':
+                            if min_card == '1':
+                                side_info['cardinality'] = 'oneToOne'
+                            elif min_card == '0':
+                                if side == 'right':
+                                    side_info['cardinality'] = 'manyToOne'
+                                else:
+                                    side_info['cardinality'] = 'oneToMany'
+                        
+                        # Store original values for reference
+                        if min_card:
+                            side_info['mincard'] = min_card
+                        if max_card:
+                            side_info['maxcard'] = max_card
                         
                         break
                     

@@ -251,17 +251,17 @@ class ModuleRelationshipExtractor(ModuleExtractor):
         Returns:
             Power BI cardinality type
         """
-        # Power BI cardinality types: OneToOne, OneToMany, ManyToOne, ManyToMany
+        # Power BI cardinality types: oneToOne, oneToMany, manyToOne, manyToMany
         
         if left_max == "one" and right_max == "one":
-            return "OneToOne"
+            return "oneToOne"
         elif left_max == "many" and right_max == "one":
-            return "ManyToOne"
+            return "manyToOne"
         elif left_max == "one" and right_max == "many":
-            return "OneToMany"
+            return "oneToMany"
         elif left_max == "many" and right_max == "many":
-            return "ManyToMany"
+            return "manyToMany"
         else:
-            # Default to OneToMany if can't determine
-            self.logger.warning(f"Could not determine cardinality for {left_min}/{left_max} to {right_min}/{right_max}, defaulting to OneToMany")
-            return "OneToMany"
+            # Default to oneToMany if can't determine
+            self.logger.warning(f"Could not determine cardinality for {left_min}/{left_max} to {right_min}/{right_max}, defaulting to oneToMany")
+            return "oneToMany"
