@@ -84,86 +84,17 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
-    },
-    {
-      "source_name": "PROP_ID",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "PROP_ID",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "PROP_LABEL",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "PROP_LABEL",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "PROP_ENTITY_TYPE",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "PROP_ENTITY_TYPE",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "PROP_NAME",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "PROP_NAME",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "SYS_UPDATE_TS",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "D_OFS_PROPERTY",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be a misunderstanding\n\t\t\t\tin\n\t\t\t\t\tthe provided information. The SQL query or connection details are incomplete, which prevents me from generating the M - Query. Please provide the complete SQL query or connection details so I can assist you further."
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

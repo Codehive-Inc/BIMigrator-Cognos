@@ -71,11 +71,12 @@ table 'D_OFS_DOM_MESSAGE_TEXT'
     partition 'D_OFS_DOM_MESSAGE_TEXT' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table D_OFS_DOM_MESSAGE_TEXT: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x106b83bc0>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = Sql.Database("", "", [Query = "Select MESSAGE_MQID, MESSAGE_SUBJECT, MESSAGE_TEXT, SYS_UPDATE_TS, MESSAGE_MQID, MESSAGE_SUBJECT, MESSAGE_TEXT, SYS_UPDATE_TS"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"MESSAGE_MQID", type text}, {"MESSAGE_SUBJECT", type text}, {"MESSAGE_TEXT", type text}, {"SYS_UPDATE_TS", type text}, {"MESSAGE_MQID", type text}, {"MESSAGE_SUBJECT", type text}, {"MESSAGE_TEXT", type text}, {"SYS_UPDATE_TS", type text}})
+				in
+					#"Changed Types"
         
 
 

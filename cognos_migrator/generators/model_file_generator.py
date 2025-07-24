@@ -244,46 +244,88 @@ class ModelFileGenerator:
                         "columns": []
                     }
 
-                    # If we have data items, use them as columns
+                    # Create a map of unique columns by name (case-insensitive)
+                    unique_columns = {}
+                    duplicate_columns = []
+
+                    # First pass: collect all columns and identify duplicates
+                    for col in table.columns:
+                        col_name_lower = col.name.lower()
+                        if col_name_lower not in unique_columns:
+                            unique_columns[col_name_lower] = {
+                                'name': col.name,
+                                'data_type': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
+                                'source_column': getattr(col, 'source_column', col.name),
+                                'is_calculated': hasattr(col, 'expression') and bool(getattr(col, 'expression', None)),
+                                'summarize_by': getattr(col, 'summarize_by', 'none'),
+                                'is_hidden': getattr(col, 'is_hidden', False)
+                            }
+                        else:
+                            duplicate_columns.append(col.name)
+
+                    # Log information about duplicates
+                    if duplicate_columns:
+                        self.logger.info(f"Found {len(duplicate_columns)} duplicate column names for table {table.name}")
+                        self.logger.info(f"Duplicate column names: {duplicate_columns}")
+                        self.logger.info(f"Using only unique column names for JSON generation")
+
+                    # Create JSON entries for unique columns
+                    for col_info in unique_columns.values():
+                        # Use DAX formula for calculated columns if available
+                        source_column = col_info['source_column']
+                        if col_info['is_calculated'] and col_info['name'] in calculations_map:
+                            source_column = calculations_map[col_info['name']]
+                            self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col_info['name']}: {source_column[:30]}...")
+
+                        column_json = {
+                            "source_name": col_info['name'],
+                            "datatype": col_info['data_type'],
+                            "format_string": None,
+                            "lineage_tag": None,
+                            "source_column": source_column,
+                            "description": None,
+                            "is_hidden": col_info['is_hidden'],
+                            "summarize_by": col_info['summarize_by'],
+                            "data_category": None,
+                            "is_calculated": col_info['is_calculated'],
+                            "is_data_type_inferred": True,
+                            "annotations": {
+                                "SummarizationSetBy": "User" if col_info['summarize_by'] != "none" else "Automatic"
+                            }
+                        }
+                        table_json["columns"].append(column_json)
+
+                    # If we have data items, merge them with table columns
                     if data_items:
-                        # First, deduplicate data items by column name (case-insensitive)
-                        unique_items = {}
-                        duplicate_items = []
-                        
+                        # Process data items and merge with existing columns
                         for item in data_items:
                             column_name = item.get('name', 'Column')
                             column_name_lower = column_name.lower()
                             
-                            if column_name_lower not in unique_items:
-                                unique_items[column_name_lower] = item
-                            else:
-                                duplicate_items.append(column_name)
-                        
-                        # Log information about duplicates
-                        if duplicate_items:
-                            self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for table JSON generation")
-                            self.logger.info(f"Duplicate column names: {duplicate_items}")
-                            self.logger.info(f"Using only unique column names for table JSON generation")
-                        
-                        # Use deduplicated items
-                        for item in unique_items.values():
-                            # Use the comprehensive mapping function to get both data type and summarize_by
+                            # Skip if we already have this column
+                            if column_name_lower in unique_columns:
+                                continue
+                                
+                            # Use the comprehensive mapping function
                             data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
-
                             
-                            # Log the data type mapping for debugging
-                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
-                            
-                            
-                            column_name = item.get('name', 'Column')
+                            # Create new column info
                             is_calculation = item.get('type') == 'calculation'
-                            
-                            # Use DAX formula for calculated columns if available
                             source_column = column_name
                             if is_calculation and column_name in calculations_map:
                                 source_column = calculations_map[column_name]
-                                self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
+                                
+                            # Add to unique columns
+                            unique_columns[column_name_lower] = {
+                                'name': column_name,
+                                'data_type': data_type,
+                                'source_column': source_column,
+                                'is_calculated': is_calculation,
+                                'summarize_by': summarize_by,
+                                'is_hidden': False
+                            }
                             
+                            # Create and append JSON entry
                             column_json = {
                                 "source_name": column_name,
                                 "datatype": data_type,
@@ -297,39 +339,11 @@ class ModelFileGenerator:
                                 "is_calculated": is_calculation,
                                 "is_data_type_inferred": True,
                                 "annotations": {
-                                    "SummarizationSetBy": "Automatic"
+                                    "SummarizationSetBy": "User" if summarize_by != "none" else "Automatic"
                                 }
                             }
                             table_json["columns"].append(column_json)
-                    else:
-                        # If no data items, use the table columns
-                        for col in table.columns:
-                            is_calculated = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
-                            
-                            # Use DAX formula for calculated columns if available
-                            source_column = getattr(col, 'source_column', col.name)
-                            if is_calculated and col.name in calculations_map:
-                                source_column = calculations_map[col.name]
-                                self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
-                            
-                            column_json = {
-                                "source_name": col.name,
-                                "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
-                                "format_string": getattr(col, 'format_string', None),
-                                "lineage_tag": getattr(col, 'lineage_tag', None),
-                                "source_column": source_column,
-                                "description": getattr(col, 'description', None),
-                                "is_hidden": getattr(col, 'is_hidden', False),
-                                "summarize_by": getattr(col, 'summarize_by', 'none'),
-                                "data_category": getattr(col, 'data_category', None),
-                                "is_calculated": is_calculated,
-                                "is_data_type_inferred": True,
-                                "annotations": {
-                                    "SummarizationSetBy": "Automatic"
-                                }
-                            }
-                            table_json["columns"].append(column_json)
-                    
+
                     # Add partition information to the table JSON using the already generated M-query
                     if m_query:
                         # Add hierarchies and partitions fields if they don't exist
