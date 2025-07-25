@@ -38,6 +38,70 @@
       }
     },
     {
+      "source_name": "QUEUE_REACTIVATION_TIME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QUEUE_REACTIVATION_TIME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QUEUE_ACTIVATE_TIME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QUEUE_ACTIVATE_TIME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QUEUE_DEACTIVATE_TIME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QUEUE_DEACTIVATE_TIME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "NOT_AVAILABLE_FOR_ROUTING",
       "datatype": "string",
       "format_string": null,
@@ -75,22 +139,6 @@
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PHONE",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QUEUE_REACTIVATION_TIME",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "QUEUE_REACTIVATION_TIME",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -340,54 +388,17 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
-    },
-    {
-      "source_name": "QUEUE_ACTIVATE_TIME",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "QUEUE_ACTIVATE_TIME",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QUEUE_DEACTIVATE_TIME",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "QUEUE_DEACTIVATE_TIME",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "SYS_UPDATE_TS",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "D_OFS_DOMINION_QUEUE_DETAIL",
+      "source_type": "m",
+      "expression": "// ERROR: Error generating M-query for table D_OFS_DOMINION_QUEUE_DETAIL: Unexpected error in LLM service client for table D_OFS_DOMINION_QUEUE_DETAIL: 'NoneType' object is not subscriptable\nlet\n    Source = Table.FromRows({})\nin\n    Source"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

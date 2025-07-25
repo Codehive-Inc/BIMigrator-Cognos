@@ -62,99 +62,47 @@ class PackageQuerySubjectExtractor(BasePackageExtractor):
         query_subjects = []
         
         try:
-            # First approach: Find all namespaces (Database Layer, Presentation Layer, etc.)
-            namespace_elements = []
-            for ns_prefix in ['bmt', 'ns']:
-                # Find root namespace
-                ns_elems = root.findall(f'.//{ns_prefix}:namespace', self.namespaces)
-                if ns_elems:
-                    namespace_elements.extend(ns_elems)
-            
-            self.logger.info(f"Found {len(namespace_elements)} namespace elements")
-            
-            # If no namespaces found, try searching from root
-            if not namespace_elements:
-                namespace_elements = [root]
-                self.logger.info("No explicit namespace elements found, using root as namespace")
-            
-            # Process each namespace to find query subjects
-            for namespace in namespace_elements:
-                # Try to find query subjects in this namespace with different prefixes
-                for ns_prefix in ['bmt', 'ns']:
-                    # Try multiple paths to find query subjects
-                    search_paths = [
-                        f'.//{ns_prefix}:querySubject',
-                        f'./{ns_prefix}:querySubject',
-                        f'./{ns_prefix}:content//{ns_prefix}:querySubject',
-                        f'./{ns_prefix}:folder//{ns_prefix}:querySubject'
-                    ]
-                    
-                    for search_path in search_paths:
-                        qs_elements = namespace.findall(search_path, self.namespaces)
+            # Find all query subjects in the XML
+            for def_prefix in ['bmt', 'ns']:
+                # Look for query subjects in all layers
+                layers = ['Database Layer', 'Business Layer', 'Presentation Layer']
+                for layer in layers:
+                    # Try to find query subjects in this layer
+                    ns_path = f".//{def_prefix}:namespace/{def_prefix}:name[.='{layer}']/..//{def_prefix}:querySubject"
+                    for qs in root.findall(ns_path, self.namespaces):
+                        # Extract basic info
+                        name = None
+                        # Try name/n path first (common in this format)
+                        name_elem = qs.find(f".//{def_prefix}:name/{def_prefix}:n", self.namespaces)
+                        if name_elem is None or not name_elem.text:
+                            # Try direct name element
+                            name_elem = qs.find(f".//{def_prefix}:name", self.namespaces)
                         
-                        if not qs_elements:
-                            continue
-                            
-                        self.logger.info(f"Found {len(qs_elements)} query subjects using path {search_path}")
-                        
-                        for qs_elem in qs_elements:
-                            # Extract query subject name - try different paths
-                            qs_name = None
-                            
-                            # Try name/n path
-                            for path_prefix in ['bmt', 'ns']:
-                                name_elem = qs_elem.find(f'.//{path_prefix}:name/{path_prefix}:n', self.namespaces)
-                                if name_elem is not None and name_elem.text:
-                                    qs_name = name_elem.text.strip()
-                                    break
-                            
-                            # Try direct n element
-                            if not qs_name:
-                                for path_prefix in ['bmt', 'ns']:
-                                    name_elem = qs_elem.find(f'.//{path_prefix}:n', self.namespaces)
-                                    if name_elem is not None and name_elem.text:
-                                        qs_name = name_elem.text.strip()
-                                        break
-                            
-                            # Try name element with text directly
-                            if not qs_name:
-                                for path_prefix in ['bmt', 'ns']:
-                                    name_elem = qs_elem.find(f'.//{path_prefix}:name', self.namespaces)
-                                    if name_elem is not None and name_elem.text:
-                                        qs_name = name_elem.text.strip()
-                                        break
-                            
-                            # Try name attribute
-                            if not qs_name:
-                                if qs_elem.get('name'):
-                                    qs_name = qs_elem.get('name')
-                            
-                            # Skip if no name found
-                            if not qs_name:
-                                continue
-                            
-                            # Check if this query subject is already in our list
-                            if any(qs['name'] == qs_name for qs in query_subjects):
-                                continue
-                            
-                            # Extract query items (columns)
-                            query_items = self._extract_query_items(qs_elem)
-                            
-                            # Extract SQL definition if available
-                            sql_definition = self._extract_sql_definition(qs_elem)
-                            
-                            # Create query subject info
+                        if name_elem is not None and name_elem.text:
                             query_subject = {
-                                'name': qs_name,
-                                'id': qs_elem.get('id', ''),
-                                'type': qs_elem.get('type', ''),
-                                'status': qs_elem.get('status', ''),
-                                'items': query_items,
-                                'sql_definition': sql_definition
+                                'name': name_elem.text.strip(),
+                                'layer': layer,
+                                'status': qs.get('status', 'unknown')
                             }
+                            
+                            # Extract items (columns)
+                            items = self._extract_query_items(qs)
+                            if items:
+                                query_subject['items'] = items
+                            
+                            # Extract SQL definition
+                            sql_def = self._extract_sql_definition(qs)
+                            if sql_def:
+                                query_subject['sql_definition'] = sql_def
+                                
+                            # Log extraction
+                            self.logger.info(f"Extracted query subject {query_subject['name']} from {layer}")
+                            if 'sql_definition' in query_subject:
+                                self.logger.info(f"SQL found for {query_subject['name']}: {query_subject['sql_definition'].get('sql', '')[:100]}...")
                             
                             query_subjects.append(query_subject)
             
+            self.logger.info(f"Found {len(query_subjects)} query subjects")
             return query_subjects
             
         except Exception as e:
@@ -173,119 +121,84 @@ class PackageQuerySubjectExtractor(BasePackageExtractor):
         query_items = []
         
         try:
-            # Try to find query items with different prefixes and paths
-            for path_prefix in ['bmt', 'ns']:
-                qi_paths = [
-                    f'.//{path_prefix}:queryItem',
-                    f'./{path_prefix}:queryItem',
-                    f'./{path_prefix}:items/{path_prefix}:queryItem'
-                ]
+            # Try all possible paths
+            for def_prefix in ['bmt', 'ns']:
+                # Find all query items
+                items = qs_elem.findall(f'.//{def_prefix}:queryItem', self.namespaces)
                 
-                for qi_path in qi_paths:
-                    qi_elements = qs_elem.findall(qi_path, self.namespaces)
+                for item in items:
+                    # Extract name - try name/n first, then name
+                    name = None
+                    name_elem = item.find(f'.//{def_prefix}:name/{def_prefix}:n', self.namespaces)
+                    if name_elem is None or not name_elem.text:
+                        name_elem = item.find(f'.//{def_prefix}:name', self.namespaces)
                     
-                    if not qi_elements:
-                        continue
-                    
-                    for qi_elem in qi_elements:
-                        # Extract query item name
-                        qi_name = None
-                        
-                        # Try different paths to find the name
-                        for name_prefix in ['bmt', 'ns']:
-                            # Try name/n path
-                            name_elem = qi_elem.find(f'.//{name_prefix}:name/{name_prefix}:n', self.namespaces)
-                            if name_elem is not None and name_elem.text:
-                                qi_name = name_elem.text.strip()
-                                break
-                            
-                            # Try direct n element
-                            name_elem = qi_elem.find(f'.//{name_prefix}:n', self.namespaces)
-                            if name_elem is not None and name_elem.text:
-                                qi_name = name_elem.text.strip()
-                                break
-                            
-                            # Try name element with text directly
-                            name_elem = qi_elem.find(f'.//{name_prefix}:name', self.namespaces)
-                            if name_elem is not None and name_elem.text:
-                                qi_name = name_elem.text.strip()
-                                break
-                        
-                        # Try name attribute
-                        if not qi_name:
-                            if qi_elem.get('name'):
-                                qi_name = qi_elem.get('name')
-                        
-                        # Skip if no name found
-                        if not qi_name:
-                            continue
-                        
-                        # Extract query item properties
-                        qi_info = {
-                            'name': qi_name,
-                            'id': qi_elem.get('id', '')
+                    if name_elem is not None and name_elem.text:
+                        query_item = {
+                            'name': name_elem.text.strip(),
+                            'id': item.get('id', '')
                         }
                         
-                        # Extract datatype
-                        for dt_prefix in ['bmt', 'ns']:
-                            datatype_elem = qi_elem.find(f'.//{dt_prefix}:datatype', self.namespaces)
-                            if datatype_elem is not None and datatype_elem.text:
-                                qi_info['datatype'] = datatype_elem.text.strip()
-                                qi_info['powerbi_datatype'] = self.map_cognos_type_to_powerbi(datatype_elem.text.strip())
-                                break
+                        # Extract data type
+                        datatype = item.find(f'.//{def_prefix}:datatype', self.namespaces)
+                        if datatype is not None and datatype.text:
+                            dtype = datatype.text.strip().lower()
+                            query_item['datatype'] = dtype
+                            
+                            # Add precision and scale for numeric types
+                            if 'decimal' in dtype or 'numeric' in dtype or 'double' in dtype:
+                                precision = item.find(f'.//{def_prefix}:precision', self.namespaces)
+                                if precision is not None and precision.text:
+                                    query_item['precision'] = int(precision.text)
+                                
+                                scale = item.find(f'.//{def_prefix}:scale', self.namespaces)
+                                if scale is not None and scale.text:
+                                    query_item['scale'] = int(scale.text)
+                            
+                            # Add size for character types
+                            if 'char' in dtype or 'string' in dtype:
+                                size = item.find(f'.//{def_prefix}:size', self.namespaces)
+                                if size is not None and size.text:
+                                    query_item['size'] = int(size.text)
                         
-                        # Extract usage
-                        usage = None
-                        for usage_prefix in ['bmt', 'ns']:
-                            usage_elem = qi_elem.find(f'.//{usage_prefix}:usage', self.namespaces)
-                            if usage_elem is not None and usage_elem.text:
-                                usage = usage_elem.text.strip()
-                                break
+                        # Extract usage (identifier, attribute, fact)
+                        usage = item.find(f'.//{def_prefix}:usage', self.namespaces)
+                        if usage is not None and usage.text:
+                            query_item['usage'] = usage.text.strip()
                         
-                        if usage:
-                            qi_info['usage'] = usage
+                        # Extract source column from expression/refobj
+                        expr = item.find(f'.//{def_prefix}:expression/{def_prefix}:refobj', self.namespaces)
+                        if expr is not None and expr.text:
+                            # Clean up the reference - remove layer prefix if present
+                            ref = expr.text.strip()
+                            if '].[' in ref:
+                                ref = ref.split('].[')[-1]  # Get last part after layer
+                            query_item['source_column'] = ref
                         
-                        # Extract expression
-                        for expr_prefix in ['bmt', 'ns']:
-                            expr_elem = qi_elem.find(f'.//{expr_prefix}:expression', self.namespaces)
-                            if expr_elem is not None:
-                                # Get expression text or refobj
-                                refobj_elem = expr_elem.find(f'.//{expr_prefix}:refobj', self.namespaces)
-                                if refobj_elem is not None and refobj_elem.text:
-                                    qi_info['expression'] = f"[{refobj_elem.text.strip()}]"
-                                    qi_info['expression_type'] = 'reference'
-                                elif expr_elem.text:
-                                    qi_info['expression'] = expr_elem.text.strip()
-                                    qi_info['expression_type'] = 'calculation'
-                                break
+                        # Extract nullable property
+                        nullable = item.find(f'.//{def_prefix}:nullable', self.namespaces)
+                        if nullable is not None and nullable.text:
+                            query_item['nullable'] = nullable.text.strip().lower() == 'true'
                         
                         # Extract regular aggregate
-                        for agg_prefix in ['bmt', 'ns']:
-                            agg_elem = qi_elem.find(f'.//{agg_prefix}:regularAggregate', self.namespaces)
-                            if agg_elem is not None and agg_elem.text:
-                                qi_info['regularAggregate'] = agg_elem.text.strip()
-                                break
+                        agg = item.find(f'.//{def_prefix}:regularAggregate', self.namespaces)
+                        if agg is not None and agg.text:
+                            query_item['regular_aggregate'] = agg.text.strip()
                         
-                        # Extract nullable
-                        for null_prefix in ['bmt', 'ns']:
-                            null_elem = qi_elem.find(f'.//{null_prefix}:nullable', self.namespaces)
-                            if null_elem is not None:
-                                qi_info['nullable'] = null_elem.text.strip().lower() == 'true'
-                                break
-                        
-                        # Extract hidden
-                        for hidden_prefix in ['bmt', 'ns']:
-                            hidden_elem = qi_elem.find(f'.//{hidden_prefix}:hidden', self.namespaces)
-                            if hidden_elem is not None:
-                                qi_info['hidden'] = hidden_elem.text.strip().lower() == 'true'
-                                break
-                        
-                        query_items.append(qi_info)
+                        query_items.append(query_item)
+                
+                # If we found items, no need to try other prefixes
+                if query_items:
+                    break
+            
+            # Sort items by usage - identifiers first, then attributes, then facts
+            usage_order = {'identifier': 0, 'attribute': 1, 'fact': 2}
+            query_items.sort(key=lambda x: usage_order.get(x.get('usage', ''), 99))
             
             return query_items
             
         except Exception as e:
-            self.logger.warning(f"Failed to extract query items: {e}")
+            self.logger.error(f"Failed to extract query items: {e}")
             return []
     
     def _extract_sql_definition(self, qs_elem: ET.Element) -> Dict[str, Any]:
@@ -300,50 +213,85 @@ class PackageQuerySubjectExtractor(BasePackageExtractor):
         sql_definition = {}
         
         try:
-            # Try to find definition element
+            # Try all possible SQL paths
             for def_prefix in ['bmt', 'ns']:
-                # Try to find dbQuery (Database Layer)
-                def_elem = qs_elem.find(f'.//{def_prefix}:definition/{def_prefix}:dbQuery', self.namespaces)
+                # Try to find definition element first
+                def_elem = qs_elem.find(f'.//{def_prefix}:definition', self.namespaces)
                 if def_elem is not None:
-                    # Extract SQL
-                    for sql_prefix in ['bmt', 'ns']:
-                        sql_elem = def_elem.find(f'.//{sql_prefix}:sql', self.namespaces)
-                        if sql_elem is not None and sql_elem.text:
-                            sql_definition['sql'] = sql_elem.text.strip()
-                            sql_definition['type'] = 'dbQuery'
-                            break
+                    # Try dbQuery first (Database Layer)
+                    db_query = def_elem.find(f'.//{def_prefix}:dbQuery', self.namespaces)
+                    if db_query is not None:
+                        # Extract SQL
+                        sql_elem = db_query.find(f'.//{def_prefix}:sql', self.namespaces)
+                        if sql_elem is not None:
+                            # Handle SQL element with type attribute
+                            sql_type = sql_elem.get('type', '')
+                            if sql_type == 'cognos':
+                                # Extract SQL from column and table elements
+                                column_elem = sql_elem.find(f'.//{def_prefix}:column', self.namespaces)
+                                table_elem = sql_elem.find(f'.//{def_prefix}:table', self.namespaces)
+                                if column_elem is not None and table_elem is not None:
+                                    sql_definition['sql'] = f"SELECT {column_elem.text} FROM {table_elem.text}"
+                            else:
+                                # Direct SQL text
+                                sql_definition['sql'] = sql_elem.text.strip() if sql_elem.text else None
+                                
+                            if sql_definition.get('sql'):
+                                sql_definition['type'] = 'dbQuery'
+                                
+                                # Extract table type
+                                tt_elem = db_query.find(f'.//{def_prefix}:tableType', self.namespaces)
+                                if tt_elem is not None and tt_elem.text:
+                                    sql_definition['tableType'] = tt_elem.text.strip()
+                                
+                                # Extract data source reference
+                                ds_elem = db_query.find(f'.//{def_prefix}:sources/{def_prefix}:dataSourceRef', self.namespaces)
+                                if ds_elem is not None and ds_elem.text:
+                                    sql_definition['dataSourceRef'] = ds_elem.text.strip()
+                                
+                                break
                     
-                    # Extract table type
-                    for tt_prefix in ['bmt', 'ns']:
-                        tt_elem = def_elem.find(f'.//{tt_prefix}:tableType', self.namespaces)
-                        if tt_elem is not None and tt_elem.text:
-                            sql_definition['tableType'] = tt_elem.text.strip()
-                            break
+                    # Try expression (Business Layer)
+                    if not sql_definition:
+                        expr_items = def_elem.findall(f'.//{def_prefix}:expression/{def_prefix}:refobj', self.namespaces)
+                        if expr_items:
+                            # Build SQL from expression references
+                            refs = []
+                            for expr in expr_items:
+                                if expr.text:
+                                    refs.append(expr.text.strip())
+                            if refs:
+                                sql_definition['sql'] = f"SELECT {', '.join(refs)}"
+                                sql_definition['type'] = 'expression'
+                                break
                     
-                    # Extract data source reference
-                    for ds_prefix in ['bmt', 'ns']:
-                        ds_elem = def_elem.find(f'.//{ds_prefix}:sources/{ds_prefix}:dataSourceRef', self.namespaces)
-                        if ds_elem is not None and ds_elem.text:
-                            sql_definition['dataSourceRef'] = ds_elem.text.strip()
-                            break
-                    
-                    break
+                    # Try modelQuery (Presentation Layer)
+                    if not sql_definition:
+                        model_query = def_elem.find(f'.//{def_prefix}:modelQuery', self.namespaces)
+                        if model_query is not None:
+                            # Extract SQL
+                            sql_elem = model_query.find(f'.//{def_prefix}:sql', self.namespaces)
+                            if sql_elem is not None and sql_elem.text:
+                                sql_definition['sql'] = sql_elem.text.strip()
+                                sql_definition['type'] = 'modelQuery'
+                                break
                 
-                # Try to find modelQuery (Presentation Layer)
-                def_elem = qs_elem.find(f'.//{def_prefix}:definition/{def_prefix}:modelQuery', self.namespaces)
-                if def_elem is not None:
-                    # Extract SQL
-                    for sql_prefix in ['bmt', 'ns']:
-                        sql_elem = def_elem.find(f'.//{sql_prefix}:sql', self.namespaces)
-                        if sql_elem is not None and sql_elem.text:
-                            sql_definition['sql'] = sql_elem.text.strip()
-                            sql_definition['type'] = 'modelQuery'
-                            break
-                    
-                    break
+                # Try direct SQL element as last resort
+                if not sql_definition:
+                    sql_elem = qs_elem.find(f'.//{def_prefix}:sql', self.namespaces)
+                    if sql_elem is not None and sql_elem.text:
+                        sql_definition['sql'] = sql_elem.text.strip()
+                        sql_definition['type'] = 'directQuery'
+                        break
+            
+            # Log the extracted SQL for debugging
+            if 'sql' in sql_definition:
+                self.logger.info(f"Extracted SQL ({sql_definition.get('type')}): {sql_definition['sql'][:100]}...")
+            else:
+                self.logger.warning("No SQL found in query subject")
             
             return sql_definition
             
         except Exception as e:
-            self.logger.warning(f"Failed to extract SQL definition: {e}")
+            self.logger.error(f"Failed to extract SQL definition: {e}")
             return {}

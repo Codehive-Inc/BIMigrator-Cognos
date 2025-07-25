@@ -22,6 +22,22 @@
       }
     },
     {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
       "source_name": "WORK_SKILL_ID",
       "datatype": "string",
       "format_string": null,
@@ -68,22 +84,6 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
-    },
-    {
-      "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "SYS_UPDATE_TS",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
     }
   ],
   "hierarchies": [],
@@ -91,7 +91,7 @@
     {
       "name": "D_OFS_ACTIVITY_WORK_SKILL",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS, AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"AID\", type text}, {\"WORK_SKILL_ID\", type text}, {\"REQUIRED_LEVEL\", type text}, {\"PREFERABLE_LEVEL\", type text}, {\"SYS_UPDATE_TS\", type text}, {\"AID\", type text}, {\"WORK_SKILL_ID\", type text}, {\"REQUIRED_LEVEL\", type text}, {\"PREFERABLE_LEVEL\", type text}, {\"SYS_UPDATE_TS\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "// ERROR: Error generating M-query for table D_OFS_ACTIVITY_WORK_SKILL: Unexpected error in LLM service client for table D_OFS_ACTIVITY_WORK_SKILL: 'NoneType' object is not subscriptable\nlet\n    Source = Table.FromRows({})\nin\n    Source"
     }
   ],
   "has_widget_serialization": false,

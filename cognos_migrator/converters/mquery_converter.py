@@ -39,50 +39,51 @@ class MQueryConverter:
         Raises:
             Exception: If the LLM service fails or returns invalid results
         """
-        self.logger.info(f"Converting source query to M-query for table: {table.name}")
-        
-        # Check if table has source_query attribute
-        if not hasattr(table, 'source_query'):
-            error_msg = f"Table {table.name} does not have a source_query attribute"
+        if not hasattr(table, 'name'):
+            error_msg = "Table object has no name attribute"
             self.logger.error(error_msg)
             raise Exception(error_msg)
             
-        # Log if source_query is empty
-        if not table.source_query:
-            self.logger.info(f"Table {table.name} has empty source_query - this will be handled by the LLM service")
+        self.logger.info(f"Converting source query to M-query for table: {table.name}")
         
         # Prepare enhanced context for LLM service
-        context = self._build_enhanced_context(table, report_spec, data_sample)
-        
-        # Log the context being sent to the LLM service
-        self.logger.info(f"Enhanced context for table {table.name}:")
-        self.logger.info(f"  - Table name: {context['table_name']}")
-        self.logger.info(f"  - Columns: {json.dumps([col['name'] for col in context['columns']], indent=2)}")
-        self.logger.info(f"  - Source query: {context['source_query'][:100]}..." if context.get('source_query') else "  - Source query: None")
-        if 'source_info' in context:
-            self.logger.info(f"  - Source type: {context['source_info']['source_type']}")
-        
-        # Add options for enhanced M-query generation
-        context['options'] = {
-            'query_folding_preference': 'BestEffort',
-            'error_handling_strategy': 'RemoveErrors',
-            'add_buffer': False,
-            'add_documentation_comments': True
-        }
-        
-        # Call LLM service to generate M-query
-        self.logger.info(f"Sending request to LLM service for enhanced M-query generation for table {table.name}")
-        m_query = self.llm_service_client.generate_m_query(context)
-        
-        # Clean and format the M-query
-        cleaned_m_query = self._clean_m_query(m_query)
-        self.logger.info(f"Successfully generated M-query for table {table.name}")
-        
-        return cleaned_m_query
+        try:
+            context = self._build_enhanced_context(table, report_spec, data_sample)
+            
+            # Log the context being sent to the LLM service
+            self.logger.info(f"Enhanced context for table {table.name}:")
+            self.logger.info(f"  - Table name: {context.get('table_name')}")
+            self.logger.info(f"  - Columns: {json.dumps([col['name'] for col in context.get('columns', [])], indent=2)}")
+            self.logger.info(f"  - Source query: {context.get('source_query', '')[:100]}..." if context.get('source_query') else "  - Source query: None")
+            if 'source_info' in context:
+                self.logger.info(f"  - Source type: {context['source_info'].get('source_type')}")
+            
+            # Add options for enhanced M-query generation
+            context['options'] = {
+                'query_folding_preference': 'BestEffort',
+                'error_handling_strategy': 'RemoveErrors',
+                'add_buffer': False,
+                'add_documentation_comments': True
+            }
+            
+            # Call LLM service to generate M-query
+            self.logger.info(f"Sending request to LLM service for enhanced M-query generation for table {table.name}")
+            m_query = self.llm_service_client.generate_m_query(context)
+            
+            # Clean and format the M-query
+            cleaned_m_query = self._clean_m_query(m_query)
+            self.logger.info(f"Successfully generated M-query for table {table.name}")
+            
+            return cleaned_m_query
+            
+        except Exception as e:
+            error_msg = f"Error generating M-query for table {table.name}: {str(e)}"
+            self.logger.error(error_msg)
+            # Return a minimal M-query that creates an empty table
+            return f"// ERROR: {error_msg}\nlet\n    Source = Table.FromRows({{}})\nin\n    Source"
     
     def _build_context(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> Dict[str, Any]:
-        """
-        Build basic context dictionary for LLM service (legacy method)
+        """Build basic context dictionary for LLM service
         
         Args:
             table: Table object
@@ -92,15 +93,42 @@ class MQueryConverter:
         Returns:
             Context dictionary for LLM service
         """
-        # Build basic context with table information
+        # Build basic context with table information and deduplicate columns
+        unique_columns = {}
+        
+        # Safely get columns from table
+        columns = getattr(table, 'columns', [])
+        if columns is None:
+            columns = []
+            self.logger.warning(f"Table {table.name} has no columns")
+        
+        for col in columns:
+            if not hasattr(col, 'name'):
+                self.logger.warning(f"Column in table {table.name} has no name attribute")
+                continue
+                
+            col_name = col.name.lower()  # Case-insensitive deduplication
+            if col_name not in unique_columns:
+                # Safely get column attributes
+                data_type = getattr(col, 'data_type', None)
+                if data_type is None:
+                    data_type = 'string'  # Default to string if no type specified
+                    
+                unique_columns[col_name] = {
+                    'name': col.name,
+                    'data_type': data_type.value if hasattr(data_type, 'value') else str(data_type),
+                    'description': getattr(col, 'description', None)
+                }
+        
+        # Log duplicate columns if any were found
+        if len(unique_columns) < len(columns):
+            self.logger.info(f"Found {len(columns) - len(unique_columns)} duplicate columns in table {table.name}")
+        
+        # Build context with safe defaults
         context = {
             'table_name': table.name,
-            'columns': [{
-                'name': col.name,
-                'data_type': col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type),
-                'description': col.description if hasattr(col, 'description') else None
-            } for col in table.columns],
-            'source_query': table.source_query,
+            'columns': list(unique_columns.values()),
+            'source_query': getattr(table, 'source_query', None)
         }
         
         # Add report specification if available
@@ -135,50 +163,77 @@ class MQueryConverter:
         
         # Determine source type from table metadata
         if hasattr(table, 'source_type'):
-            source_type = table.source_type
-        elif hasattr(table, 'database_type') and table.database_type:
-            source_type = table.database_type
-        elif table.source_query and 'SELECT' in table.source_query.upper():
+            source_type = getattr(table, 'source_type')
+        elif hasattr(table, 'database_type') and getattr(table, 'database_type'):
+            source_type = getattr(table, 'database_type')
+        elif getattr(table, 'source_query', None) and 'SELECT' in str(getattr(table, 'source_query')).upper():
             source_type = "SqlServer"  # Default to SQL Server for SQL queries
         elif hasattr(table, 'cognos_path') and table.cognos_path:
             source_type = "CognosFrameworkManager"
         
-        # Build connection details
-        if hasattr(table, 'database_name') and table.database_name:
-            connection_details['database'] = table.database_name
-        if hasattr(table, 'server_name') and table.server_name:
-            connection_details['server'] = table.server_name
-        if hasattr(table, 'schema_name') and table.schema_name:
-            connection_details['schema'] = table.schema_name
-        if hasattr(table, 'cognos_path') and table.cognos_path:
-            connection_details['package_path'] = table.cognos_path
+        # Add connection details based on source type
+        if source_type == "CognosFrameworkManager":
+            connection_details['package_path'] = getattr(table, 'cognos_path', None)
+            connection_details['namespace'] = getattr(table, 'namespace', None)
+        elif source_type == "SqlServer":
+            connection_details['server'] = getattr(table, 'server', None)
+            connection_details['database'] = getattr(table, 'database', None)
         
-        # Add source info to context
+        # Add source information to context
         context['source_info'] = {
             'source_type': source_type,
             'connection_details': connection_details
         }
         
-        # Extract filters from report spec if available
-        if report_spec:
-            filters = self._extract_filters_from_report_spec(report_spec, table.name)
-            if filters:
-                context['report_filters'] = filters
-            
-            # Extract calculations from report spec if available
-            calculations = self._extract_calculations_from_report_spec(report_spec, table.name)
-            if calculations:
-                context['report_calculations'] = calculations
+        # Add filters if available
+        filters = getattr(table, 'filters', [])
+        if filters:
+            filter_list = []
+            for filter_item in filters:
+                if not hasattr(filter_item, 'column_name') or not hasattr(filter_item, 'operator'):
+                    self.logger.warning(f"Filter item in table {table.name} missing required attributes")
+                    continue
+                filter_list.append({
+                    'column_name': filter_item.column_name,
+                    'operator': filter_item.operator,
+                    'values': getattr(filter_item, 'values', [])
+                })
+            if filter_list:
+                context['report_filters'] = filter_list
         
-        # Extract relationships if available
-        if hasattr(table, 'relationships') and table.relationships:
-            context['relationships'] = [{
-                'from_table': rel.from_table,
-                'from_column': rel.from_column,
-                'to_table': rel.to_table,
-                'to_column': rel.to_column,
-                'join_type': rel.join_type if hasattr(rel, 'join_type') else 'Inner'
-            } for rel in table.relationships]
+        # Add calculations if available
+        calculations = getattr(table, 'calculations', [])
+        if calculations:
+            calc_list = []
+            for calc_item in calculations:
+                if not hasattr(calc_item, 'new_column_name') or not hasattr(calc_item, 'source_expression'):
+                    self.logger.warning(f"Calculation item in table {table.name} missing required attributes")
+                    continue
+                calc_list.append({
+                    'new_column_name': calc_item.new_column_name,
+                    'source_expression': calc_item.source_expression,
+                    'description': getattr(calc_item, 'description', None)
+                })
+            if calc_list:
+                context['report_calculations'] = calc_list
+        
+        # Add relationships if available
+        relationships = getattr(table, 'relationships', [])
+        if relationships:
+            rel_list = []
+            for rel in relationships:
+                if not all(hasattr(rel, attr) for attr in ['from_table', 'from_column', 'to_table', 'to_column', 'join_type']):
+                    self.logger.warning(f"Relationship in table {table.name} missing required attributes")
+                    continue
+                rel_list.append({
+                    'from_table': rel.from_table,
+                    'from_column': rel.from_column,
+                    'to_table': rel.to_table,
+                    'to_column': rel.to_column,
+                    'join_type': rel.join_type
+                })
+            if rel_list:
+                context['relationships'] = rel_list
         
         return context
     

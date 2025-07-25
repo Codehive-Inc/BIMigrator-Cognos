@@ -327,7 +327,7 @@ table 'D_OFS_DOMINION_MESSAGE'
     partition 'D_OFS_DOMINION_MESSAGE' = m
         mode: import
         source = 
-            // ERROR: Error building M-expression for table D_OFS_DOMINION_MESSAGE: name 'table_name' is not defined
+            // ERROR: Error generating M-query for table D_OFS_DOMINION_MESSAGE: Unexpected error in LLM service client for table D_OFS_DOMINION_MESSAGE: 'NoneType' object is not subscriptable
 let
     Source = Table.FromRows({})
 in

@@ -3,10 +3,14 @@
     "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
     "id": "",
     "left": {
-      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]"
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
     },
     "right": {
-      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]"
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
     },
     "join_expression": ""
   },
@@ -14,10 +18,14 @@
     "name": "Resource Hierarchy <--> Meter Activity (Fact)",
     "id": "",
     "left": {
-      "query_subject": "[Business Layer].[Resource Hierarchy]"
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
     },
     "right": {
-      "query_subject": "[Business Layer].[Meter Activity (Fact)]"
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
     },
     "join_expression": ""
   },
@@ -25,10 +33,29 @@
     "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
     "id": "",
     "left": {
-      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]"
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
     },
     "right": {
-      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]"
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
     },
     "join_expression": ""
   },
@@ -36,10 +63,59 @@
     "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
     "id": "",
     "left": {
-      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]"
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
     },
     "right": {
-      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]"
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
     },
     "join_expression": ""
   },
@@ -47,10 +123,14 @@
     "name": "Resource Hierarchy <--> Meter Activity (Fact)",
     "id": "",
     "left": {
-      "query_subject": "[Business Layer].[Resource Hierarchy]"
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
     },
     "right": {
-      "query_subject": "[Business Layer].[Meter Activity (Fact)]"
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
     },
     "join_expression": ""
   },
@@ -58,10 +138,224 @@
     "name": "Resource Hierarchy <--> Meter Activity (Fact)",
     "id": "",
     "left": {
-      "query_subject": "[Business Layer].[Resource Hierarchy]"
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
     },
     "right": {
-      "query_subject": "[Business Layer].[Meter Activity (Fact)]"
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "F_OFS_DOM_ACTIVITY_DTL_METER <--> F_OFS_DOMINION_ACTIVITY_DETAIL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database Layer].[F_OFS_DOM_ACTIVITY_DTL_METER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database Layer].[F_OFS_DOMINION_ACTIVITY_DETAIL]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "Resource Hierarchy <--> Meter Activity (Fact)",
+    "id": "",
+    "left": {
+      "query_subject": "[Business Layer].[Resource Hierarchy]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Business Layer].[Meter Activity (Fact)]",
+      "mincard": "one",
+      "maxcard": "many"
     },
     "join_expression": ""
   }

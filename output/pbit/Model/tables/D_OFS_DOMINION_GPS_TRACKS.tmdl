@@ -79,12 +79,11 @@ table 'D_OFS_DOMINION_GPS_TRACKS'
     partition 'D_OFS_DOMINION_GPS_TRACKS' = m
         mode: import
         source = 
-            	let
-					Source = Sql.Database("", "", [Query = "Select AID, QUEUE_ID, LONGITUDE, LATITUDE, DISTANCE, STATUS, IDLE, TIME_ID, SYS_UPDATE_TS, AID, QUEUE_ID, LONGITUDE, LATITUDE, DISTANCE, STATUS, IDLE, TIME_ID, SYS_UPDATE_TS"]),
-					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
-					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AID", type text}, {"QUEUE_ID", type text}, {"LONGITUDE", type text}, {"LATITUDE", type text}, {"DISTANCE", type text}, {"STATUS", type text}, {"IDLE", type text}, {"TIME_ID", type text}, {"SYS_UPDATE_TS", type text}, {"AID", type text}, {"QUEUE_ID", type text}, {"LONGITUDE", type text}, {"LATITUDE", type text}, {"DISTANCE", type text}, {"STATUS", type text}, {"IDLE", type text}, {"TIME_ID", type text}, {"SYS_UPDATE_TS", type text}})
-				in
-					#"Changed Types"
+            // ERROR: Error generating M-query for table D_OFS_DOMINION_GPS_TRACKS: Unexpected error in LLM service client for table D_OFS_DOMINION_GPS_TRACKS: 'NoneType' object is not subscriptable
+let
+    Source = Table.FromRows({})
+in
+    Source
         
 
 

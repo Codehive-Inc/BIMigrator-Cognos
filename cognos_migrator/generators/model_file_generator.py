@@ -556,24 +556,70 @@ class ModelFileGenerator:
             columns.append(column)
 
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
-        """Build M expression for table partition using MQueryConverter"""
-        self.logger.info(f"Building M-expression for table: {table.name}")
+        """Build M expression for table partition using MQueryConverter
         
-        # Check if table has source_query
-        if hasattr(table, 'source_query'):
-            self.logger.info(f"Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
-        else:
-            self.logger.info(f"Table {table.name} does not have source_query attribute")
-        
+        Args:
+            table: Table to build M-query for
+            report_spec: Optional report specification XML
+            
+        Returns:
+            M-query string for table partition
+            
+        Raises:
+            Exception: If M-query generation fails
+        """
         if not self.mquery_converter:
-            error_msg = f"M-query converter is not configured but required for M-query generation for table {table.name}"
-            self.logger.error(error_msg)
-            raise ValueError(error_msg)
+            raise ValueError("MQueryConverter is required for M-query generation")
         
         try:
+            # First try to load from extracted JSON if it exists
+            extracted_dir = get_extracted_dir(Path(os.getcwd()))
+            if extracted_dir:
+                json_file = extracted_dir / f"table_{table.name}.json"
+                if json_file.exists():
+                    try:
+                        with open(json_file, 'r', encoding='utf-8') as f:
+                            table_json = json.load(f)
+                            # Get unique columns from JSON
+                            columns = [{
+                                'name': col['source_name'],
+                                'data_type': col['datatype'],
+                                'description': col.get('description')
+                            } for col in table_json.get('columns', [])]
+                            
+                            # Build context for LLM service
+                            context = {
+                                'table_name': table.name,
+                                'columns': columns,
+                                'source_query': table.source_query,
+                                'source_info': {
+                                    'source_type': 'CognosFrameworkManager',
+                                    'connection_details': {
+                                        'package_path': getattr(table, 'cognos_path', None)
+                                    }
+                                }
+                            }
+                            
+                            # Add report spec if available
+                            if report_spec:
+                                context['report_spec'] = self.mquery_converter._extract_relevant_report_spec(report_spec, table.name)
+                            
+                            # Generate M-query using LLM service
+                            m_query = self.mquery_converter.convert_to_m_query(table, report_spec)
+                            
+                            # Clean and format the M-query
+                            m_query = self.mquery_converter._clean_m_query(m_query)
+                            
+                            self.logger.info(f"Successfully built M-expression for table {table.name} using JSON columns")
+                            return m_query
+                    except Exception as e:
+                        self.logger.warning(f"Error loading JSON for table {table.name}: {e}")
+            
+            # Fallback to direct conversion if JSON loading fails
             m_expression = self.mquery_converter.convert_to_m_query(table, report_spec)
-            self.logger.info(f"Successfully built M-expression for table {table.name}")
+            self.logger.info(f"Successfully built M-expression for table {table.name} using direct conversion")
             return m_expression
+            
         except Exception as e:
             error_msg = f"Error building M-expression for table {table.name}: {str(e)}"
             self.logger.error(error_msg)

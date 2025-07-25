@@ -245,16 +245,5 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ],
-  "hierarchies": [],
-  "partitions": [
-    {
-      "name": "D_OFS_DOM_SERVICE_REQUEST",
-      "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select REQUEST_ID, REQUEST_DATE, REQUEST_PID, REQUEST_AID, REQUEST_INVID, PROPERTY_10, PROPERTY_11, PROPERTY_380, CREATED_DATE, SUBJECT, TEXT, TYPE_ID, USER_ID, VEHICLE_ID, SYS_UPDATE_TS, REQUEST_ID, REQUEST_DATE, REQUEST_PID, REQUEST_AID, REQUEST_INVID, PROPERTY_10, PROPERTY_11, PROPERTY_380, CREATED_DATE, SUBJECT, TEXT, TYPE_ID, USER_ID, VEHICLE_ID, SYS_UPDATE_TS\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"REQUEST_ID\", type text}, {\"REQUEST_DATE\", type text}, {\"REQUEST_PID\", type text}, {\"REQUEST_AID\", type text}, {\"REQUEST_INVID\", type text}, {\"PROPERTY_10\", type text}, {\"PROPERTY_11\", type text}, {\"PROPERTY_380\", type text}, {\"CREATED_DATE\", type text}, {\"SUBJECT\", type text}, {\"TEXT\", type text}, {\"TYPE_ID\", type text}, {\"USER_ID\", type text}, {\"VEHICLE_ID\", type text}, {\"SYS_UPDATE_TS\", type text}, {\"REQUEST_ID\", type text}, {\"REQUEST_DATE\", type text}, {\"REQUEST_PID\", type text}, {\"REQUEST_AID\", type text}, {\"REQUEST_INVID\", type text}, {\"PROPERTY_10\", type text}, {\"PROPERTY_11\", type text}, {\"PROPERTY_380\", type text}, {\"CREATED_DATE\", type text}, {\"SUBJECT\", type text}, {\"TEXT\", type text}, {\"TYPE_ID\", type text}, {\"USER_ID\", type text}, {\"VEHICLE_ID\", type text}, {\"SYS_UPDATE_TS\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
-    }
-  ],
-  "has_widget_serialization": false,
-  "visual_type": null,
-  "column_settings": null
+  ]
 }

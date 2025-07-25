@@ -20,9 +20,41 @@
       "name": "Presentation Layer",
       "type": "",
       "id": ""
+    },
+    {
+      "name": "Shared OFS Reporting",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Database Layer",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Business Layer",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Presentation Layer",
+      "type": "",
+      "id": ""
     }
   ],
   "dataSources": [
+    {
+      "id": "",
+      "type": "",
+      "cmDataSource": "Shared OFS Reporting",
+      "schema": "CDM"
+    },
+    {
+      "id": "",
+      "type": "",
+      "cmDataSource": "Shared OFS Reporting",
+      "schema": "CDM"
+    },
     {
       "id": "",
       "type": "",

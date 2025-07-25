@@ -47,12 +47,11 @@ table 'D_OFS_ACTIVITY_WORK_SKILL'
     partition 'D_OFS_ACTIVITY_WORK_SKILL' = m
         mode: import
         source = 
-            	let
-					Source = Sql.Database("", "", [Query = "Select AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS, AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS"]),
-					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
-					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AID", type text}, {"WORK_SKILL_ID", type text}, {"REQUIRED_LEVEL", type text}, {"PREFERABLE_LEVEL", type text}, {"SYS_UPDATE_TS", type text}, {"AID", type text}, {"WORK_SKILL_ID", type text}, {"REQUIRED_LEVEL", type text}, {"PREFERABLE_LEVEL", type text}, {"SYS_UPDATE_TS", type text}})
-				in
-					#"Changed Types"
+            // ERROR: Error generating M-query for table D_OFS_ACTIVITY_WORK_SKILL: Unexpected error in LLM service client for table D_OFS_ACTIVITY_WORK_SKILL: 'NoneType' object is not subscriptable
+let
+    Source = Table.FromRows({})
+in
+    Source
         
 
 

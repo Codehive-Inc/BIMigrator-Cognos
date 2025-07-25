@@ -16,19 +16,28 @@ import json
 class BasePackageExtractor:
     """Base extractor for Cognos Framework Manager package files"""
     
-    def __init__(self, logger=None):
+    def __init__(self, xml_file_path: str):
         """Initialize the base package extractor
         
         Args:
-            logger: Optional logger instance
+            xml_file_path: Path to the XML file
         """
-        self.logger = logger or logging.getLogger(__name__)
-        # Support multiple possible namespace versions
+        self.xml_file_path = xml_file_path
+        self.logger = logging.getLogger(__name__)
+        
+        # Define XML namespaces - support multiple versions
         self.namespaces = {
-            'bmt': 'http://www.developer.cognos.com/schemas/bmt/60/12',  # Common in newer files
-            'ns': 'http://www.developer.cognos.com/schemas/bmt/60/7',    # For backward compatibility
+            'bmt': 'http://www.developer.cognos.com/schemas/bmt/60/7',  # Common version
+            'ns': 'http://www.developer.cognos.com/schemas/bmt/60/7',
+            'bmtse': 'http://www.developer.cognos.com/schemas/bmt/60/12',  # Newer version
+            'nsse': 'http://www.developer.cognos.com/schemas/bmt/60/12',
+            'bmtpe': 'http://www.developer.cognos.com/schemas/bmt/60/3',  # Older version
+            'nspe': 'http://www.developer.cognos.com/schemas/bmt/60/3',
             'xsi': 'http://www.w3.org/2001/XMLSchema-instance'
         }
+        # Register namespaces for proper XML parsing
+        for prefix, uri in self.namespaces.items():
+            ET.register_namespace(prefix, uri)
     
     def extract_from_package(self, package_content: ET.Element) -> Dict[str, Any]:
         """Extract data from package content

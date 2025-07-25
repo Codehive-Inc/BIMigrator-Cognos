@@ -199,7 +199,7 @@ table 'D_OFS_DOMINION_QUEUE_DETAIL'
     partition 'D_OFS_DOMINION_QUEUE_DETAIL' = m
         mode: import
         source = 
-            // ERROR: Error building M-expression for table D_OFS_DOMINION_QUEUE_DETAIL: name 'table_name' is not defined
+            // ERROR: Error generating M-query for table D_OFS_DOMINION_QUEUE_DETAIL: Unexpected error in LLM service client for table D_OFS_DOMINION_QUEUE_DETAIL: 'NoneType' object is not subscriptable
 let
     Source = Table.FromRows({})
 in
