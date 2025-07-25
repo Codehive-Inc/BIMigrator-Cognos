@@ -85,6 +85,8 @@ class Table:
     name: str
     columns: List[Column]
     source_query: Optional[str] = None
+    server: Optional[str] = None
+    database: Optional[str] = None
     partition_mode: str = "import"
     description: Optional[str] = None
     annotations: Dict[str, Any] = field(default_factory=dict)

@@ -365,8 +365,21 @@ class ConsolidatedPackageExtractor:
             source_query = qs['sql_definition']['sql']
             self.logger.info(f"Extracted SQL for table {qs['name']}: {source_query}")
         
+        # Extract server and database from sql_definition if available
+        server = None
+        database = None
+        if 'sql_definition' in qs and qs['sql_definition']:
+            server = qs['sql_definition'].get('server')
+            database = qs['sql_definition'].get('database')
+        
         # Create table with columns and source query
-        table = Table(name=qs['name'], columns=columns, source_query=source_query)
+        table = Table(
+            name=qs['name'],
+            columns=columns,
+            source_query=source_query,
+            server=server,
+            database=database
+        )
         
         # Add table to data model's tables list
         data_model.tables.append(table)

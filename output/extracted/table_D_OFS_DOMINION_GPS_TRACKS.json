@@ -155,7 +155,7 @@
     {
       "name": "D_OFS_DOMINION_GPS_TRACKS",
       "source_type": "m",
-      "expression": "// ERROR: Error generating M-query for table D_OFS_DOMINION_GPS_TRACKS: Unexpected error in LLM service client for table D_OFS_DOMINION_GPS_TRACKS: 'NoneType' object is not subscriptable\nlet\n    Source = Table.FromRows({})\nin\n    Source"
+      "expression": "// ERROR: Error building M-expression for table D_OFS_DOMINION_GPS_TRACKS: Error generating M-query for table D_OFS_DOMINION_GPS_TRACKS: Unexpected error in LLM service client for table D_OFS_DOMINION_GPS_TRACKS: 'NoneType' object is not subscriptable\nlet\n    Source = Table.FromRows({})\nin\n    Source"
     }
   ],
   "has_widget_serialization": false,

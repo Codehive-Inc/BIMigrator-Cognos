@@ -616,14 +616,21 @@ class ModelFileGenerator:
                         self.logger.warning(f"Error loading JSON for table {table.name}: {e}")
             
             # Fallback to direct conversion if JSON loading fails
-            m_expression = self.mquery_converter.convert_to_m_query(table, report_spec)
-            self.logger.info(f"Successfully built M-expression for table {table.name} using direct conversion")
-            return m_expression
+            try:
+                m_expression = self.mquery_converter.convert_to_m_query(table, report_spec)
+                self.logger.info(f"Successfully built M-expression for table {table.name} using direct conversion")
+                return m_expression
+            except Exception as e:
+                error_msg = f"Error building M-expression for table {table.name}: {str(e)}"
+                self.logger.error(error_msg)
+                # Return an empty table M-query with error comment
+                return f"// ERROR: {error_msg}\nlet\n    Source = Table.FromRows({{}})\nin\n    Source"
             
         except Exception as e:
             error_msg = f"Error building M-expression for table {table.name}: {str(e)}"
             self.logger.error(error_msg)
-            raise ValueError(error_msg) from e
+            # Return an empty table M-query with error comment
+            return f"// ERROR: {error_msg}\nlet\n    Source = Table.FromRows({{}})\nin\n    Source"
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""

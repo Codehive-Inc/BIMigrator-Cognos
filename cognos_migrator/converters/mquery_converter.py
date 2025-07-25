@@ -79,8 +79,8 @@ class MQueryConverter:
         except Exception as e:
             error_msg = f"Error generating M-query for table {table.name}: {str(e)}"
             self.logger.error(error_msg)
-            # Return a minimal M-query that creates an empty table
-            return f"// ERROR: {error_msg}\nlet\n    Source = Table.FromRows({{}})\nin\n    Source"
+            # Raise the exception instead of returning an error M-query
+            raise ValueError(error_msg) from e
     
     def _build_context(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> Dict[str, Any]:
         """Build basic context dictionary for LLM service
@@ -127,9 +127,23 @@ class MQueryConverter:
         # Build context with safe defaults
         context = {
             'table_name': table.name,
-            'columns': list(unique_columns.values()),
-            'source_query': getattr(table, 'source_query', None)
+            'columns': list(unique_columns.values())
         }
+        
+        # Handle source query
+        source_query = getattr(table, 'source_query', None)
+        if source_query:
+            # Remove database name from query if it's in square brackets at the start
+            if '[' in source_query and ']' in source_query:
+                parts = source_query.split('.')
+                if len(parts) > 1 and parts[0].startswith('SELECT'):
+                    # Don't modify SELECT queries that happen to have brackets
+                    context['source_query'] = source_query
+                else:
+                    # Remove the database prefix from the query
+                    context['source_query'] = '.'.join(parts[1:]) if len(parts) > 1 else parts[0]
+            else:
+                context['source_query'] = source_query
         
         # Add report specification if available
         if report_spec:
@@ -176,14 +190,22 @@ class MQueryConverter:
             connection_details['package_path'] = getattr(table, 'cognos_path', None)
             connection_details['namespace'] = getattr(table, 'namespace', None)
         elif source_type == "SqlServer":
-            connection_details['server'] = getattr(table, 'server', None)
-            connection_details['database'] = getattr(table, 'database', None)
+            # Use server and database from table if available
+            server = table.server if hasattr(table, 'server') else None
+            database = table.database if hasattr(table, 'database') else None
+            
+            # Only add non-None values
+            if server:
+                connection_details['server'] = server
+            if database:
+                connection_details['database'] = database
         
-        # Add source information to context
-        context['source_info'] = {
-            'source_type': source_type,
-            'connection_details': connection_details
-        }
+        # Add source information to context only if we have valid connection details
+        if connection_details:
+            context['source_info'] = {
+                'source_type': source_type,
+                'connection_details': connection_details
+            }
         
         # Add filters if available
         filters = getattr(table, 'filters', [])

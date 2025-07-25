@@ -231,7 +231,16 @@ class PackageQuerySubjectExtractor(BasePackageExtractor):
                                 column_elem = sql_elem.find(f'.//{def_prefix}:column', self.namespaces)
                                 table_elem = sql_elem.find(f'.//{def_prefix}:table', self.namespaces)
                                 if column_elem is not None and table_elem is not None:
-                                    sql_definition['sql'] = f"SELECT {column_elem.text} FROM {table_elem.text}"
+                                    # Split table reference into database and table parts
+                                    table_parts = table_elem.text.split('.')
+                                    if len(table_parts) > 1:
+                                        # Extract database name and clean it
+                                        database = table_parts[0].strip('[]')
+                                        table_name = table_parts[-1]
+                                        sql_definition['sql'] = f"SELECT {column_elem.text} FROM {table_name}"
+                                        sql_definition['database'] = database
+                                    else:
+                                        sql_definition['sql'] = f"SELECT {column_elem.text} FROM {table_elem.text}"
                             else:
                                 # Direct SQL text
                                 sql_definition['sql'] = sql_elem.text.strip() if sql_elem.text else None
@@ -248,6 +257,11 @@ class PackageQuerySubjectExtractor(BasePackageExtractor):
                                 ds_elem = db_query.find(f'.//{def_prefix}:sources/{def_prefix}:dataSourceRef', self.namespaces)
                                 if ds_elem is not None and ds_elem.text:
                                     sql_definition['dataSourceRef'] = ds_elem.text.strip()
+                                    # Extract server and database from data source ref
+                                    # Format is typically [].[dataSources].[Database]
+                                    parts = ds_elem.text.strip().split('.')[-1].strip('[]')
+                                    sql_definition['server'] = 'localhost'  # Default to localhost
+                                    sql_definition['database'] = parts
                                 
                                 break
                     

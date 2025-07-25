@@ -1,6 +1,22 @@
 table 'D_OFS_DOMINION_GPS_TRACKS'
 
 
+    column 'TIME_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'AID'
         dataType: string
         summarizeBy: none
@@ -57,29 +73,13 @@ table 'D_OFS_DOMINION_GPS_TRACKS'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TIME_ID'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: TIME_ID
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'SYS_UPDATE_TS'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SYS_UPDATE_TS
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 
     partition 'D_OFS_DOMINION_GPS_TRACKS' = m
         mode: import
         source = 
-            // ERROR: Error generating M-query for table D_OFS_DOMINION_GPS_TRACKS: Unexpected error in LLM service client for table D_OFS_DOMINION_GPS_TRACKS: 'NoneType' object is not subscriptable
+            // ERROR: Error building M-expression for table D_OFS_DOMINION_GPS_TRACKS: Error generating M-query for table D_OFS_DOMINION_GPS_TRACKS: Unexpected error in LLM service client for table D_OFS_DOMINION_GPS_TRACKS: 'NoneType' object is not subscriptable
 let
     Source = Table.FromRows({})
 in

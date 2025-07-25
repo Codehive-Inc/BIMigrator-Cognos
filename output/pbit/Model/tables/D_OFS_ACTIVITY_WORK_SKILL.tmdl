@@ -9,6 +9,14 @@ table 'D_OFS_ACTIVITY_WORK_SKILL'
         annotation SummarizationSetBy = Automatic
 
         
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'WORK_SKILL_ID'
         dataType: string
         summarizeBy: none
@@ -33,25 +41,18 @@ table 'D_OFS_ACTIVITY_WORK_SKILL'
         annotation SummarizationSetBy = Automatic
 
         
-    column 'SYS_UPDATE_TS'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SYS_UPDATE_TS
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 
     partition 'D_OFS_ACTIVITY_WORK_SKILL' = m
         mode: import
         source = 
-            // ERROR: Error generating M-query for table D_OFS_ACTIVITY_WORK_SKILL: Unexpected error in LLM service client for table D_OFS_ACTIVITY_WORK_SKILL: 'NoneType' object is not subscriptable
-let
-    Source = Table.FromRows({})
-in
-    Source
+            	let
+					Source = Sql.Database("localhost", "Shared OFS Reporting", [Query = "SELECT * FROM D_OFS_ACTIVITY_WORK_SKILL"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AID", type text}, {"SYS_UPDATE_TS", type text}, {"WORK_SKILL_ID", type text}, {"REQUIRED_LEVEL", type text}, {"PREFERABLE_LEVEL", type text}})
+				in
+					#"Changed Types"
         
 
 

@@ -50,10 +50,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_ACTIVITY_WORK_SKILL",
+      "sql": "SELECT * FROM D_OFS_ACTIVITY_WORK_SKILL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -142,10 +144,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_GPS_TRACKS",
+      "sql": "SELECT * FROM D_OFS_DOMINION_GPS_TRACKS",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -512,10 +516,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_MESSAGE",
+      "sql": "SELECT * FROM D_OFS_DOMINION_MESSAGE",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -736,10 +742,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_QUEUE_DETAIL",
+      "sql": "SELECT * FROM D_OFS_DOMINION_QUEUE_DETAIL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -802,10 +810,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_TYPE_LIST",
+      "sql": "SELECT * FROM D_OFS_DOMINION_TYPE_LIST",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -850,10 +860,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOM_MESSAGE_TEXT",
+      "sql": "SELECT * FROM D_OFS_DOM_MESSAGE_TEXT",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -1060,10 +1072,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOM_RESOURCE_HIERARCHY",
+      "sql": "SELECT * FROM D_OFS_DOM_RESOURCE_HIERARCHY",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -1205,10 +1219,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOM_SERVICE_REQUEST",
+      "sql": "SELECT * FROM D_OFS_DOM_SERVICE_REQUEST",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -1262,10 +1278,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_PROPERTY",
+      "sql": "SELECT * FROM D_OFS_PROPERTY",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -1319,10 +1337,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_PROP_LOOKUP",
+      "sql": "SELECT * FROM D_OFS_PROP_LOOKUP",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -1376,10 +1396,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_RESOURCE_WORK_SKILL",
+      "sql": "SELECT * FROM D_OFS_RESOURCE_WORK_SKILL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -1433,10 +1455,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_WORK_SKILLS",
+      "sql": "SELECT * FROM D_OFS_WORK_SKILLS",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -2581,10 +2605,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "sql": "SELECT * FROM F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -3772,10 +3798,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].F_OFS_DOM_ACTIVITY_DTL_METER",
+      "sql": "SELECT * FROM F_OFS_DOM_ACTIVITY_DTL_METER",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -6625,10 +6653,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_ACTIVITY_WORK_SKILL",
+      "sql": "SELECT * FROM D_OFS_ACTIVITY_WORK_SKILL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -6717,10 +6747,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_GPS_TRACKS",
+      "sql": "SELECT * FROM D_OFS_DOMINION_GPS_TRACKS",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7087,10 +7119,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_MESSAGE",
+      "sql": "SELECT * FROM D_OFS_DOMINION_MESSAGE",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7311,10 +7345,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_QUEUE_DETAIL",
+      "sql": "SELECT * FROM D_OFS_DOMINION_QUEUE_DETAIL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7377,10 +7413,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOMINION_TYPE_LIST",
+      "sql": "SELECT * FROM D_OFS_DOMINION_TYPE_LIST",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7425,10 +7463,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOM_MESSAGE_TEXT",
+      "sql": "SELECT * FROM D_OFS_DOM_MESSAGE_TEXT",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7635,10 +7675,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOM_RESOURCE_HIERARCHY",
+      "sql": "SELECT * FROM D_OFS_DOM_RESOURCE_HIERARCHY",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7780,10 +7822,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_DOM_SERVICE_REQUEST",
+      "sql": "SELECT * FROM D_OFS_DOM_SERVICE_REQUEST",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7837,10 +7881,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_PROPERTY",
+      "sql": "SELECT * FROM D_OFS_PROPERTY",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7894,10 +7940,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_PROP_LOOKUP",
+      "sql": "SELECT * FROM D_OFS_PROP_LOOKUP",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -7951,10 +7999,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_RESOURCE_WORK_SKILL",
+      "sql": "SELECT * FROM D_OFS_RESOURCE_WORK_SKILL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -8008,10 +8058,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].D_OFS_WORK_SKILLS",
+      "sql": "SELECT * FROM D_OFS_WORK_SKILLS",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -9156,10 +9208,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "sql": "SELECT * FROM F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {
@@ -10347,10 +10401,12 @@
       }
     ],
     "sql_definition": {
-      "sql": "SELECT * FROM [Shared OFS Reporting].F_OFS_DOM_ACTIVITY_DTL_METER",
+      "sql": "SELECT * FROM F_OFS_DOM_ACTIVITY_DTL_METER",
+      "database": "Shared OFS Reporting",
       "type": "dbQuery",
       "tableType": "table",
-      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]"
+      "dataSourceRef": "[].[dataSources].[Shared OFS Reporting]",
+      "server": "localhost"
     }
   },
   {

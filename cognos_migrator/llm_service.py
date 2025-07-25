@@ -256,16 +256,19 @@ class LLMServiceClient:
                 result = response.json()
                 
                 # Log validation results if available
-                if 'validation_result' in result:
-                    validation = result['validation_result']
-                    if validation['is_valid']:
+                validation_result = result.get('validation_result', {})
+                if validation_result:
+                    is_valid = validation_result.get('is_valid', False)
+                    if is_valid:
                         self.logger.info(f"M-query validation passed for table {table_name}")
                     else:
-                        self.logger.warning(f"M-query validation failed for table {table_name}: {validation['issues']}")
+                        issues = validation_result.get('issues', [])
+                        self.logger.warning(f"M-query validation failed for table {table_name}: {issues}")
                 
                 # Log explanation if available
-                if 'explanation' in result and result['explanation']:
-                    self.logger.info(f"M-query explanation: {result['explanation'][:200]}...")
+                explanation = result.get('explanation')
+                if explanation:
+                    self.logger.info(f"M-query explanation: {explanation[:200]}...")
                 
             except (requests.exceptions.RequestException, KeyError):
                 # Fall back to the basic endpoint if enhanced fails
@@ -281,19 +284,24 @@ class LLMServiceClient:
             
             # Log the complete API response structure (excluding potentially large fields)
             log_result = result.copy()
-            if 'explanation' in log_result and log_result['explanation'] and len(log_result['explanation']) > 200:
-                log_result['explanation'] = log_result['explanation'][:200] + '...'
+            explanation = log_result.get('explanation')
+            if explanation and len(explanation) > 200:
+                log_result['explanation'] = explanation[:200] + '...'
             self.logger.info(f"Complete API response: {json.dumps(log_result, indent=2)}")
             
-            if 'm_query' in result:
+            # Get the M-query safely
+            m_query = result.get('m_query')
+            if m_query:
                 self.logger.info(f"Successfully generated M-query for table {table_name}")
                 # Log performance notes if available
-                if 'performance_notes' in result and result['performance_notes']:
-                    self.logger.info(f"Performance notes: {result['performance_notes']}")
+                performance_notes = result.get('performance_notes')
+                if performance_notes:
+                    self.logger.info(f"Performance notes: {performance_notes}")
                 # Log confidence score
-                if 'confidence' in result:
-                    self.logger.info(f"Confidence score: {result['confidence']}")
-                return result['m_query']
+                confidence = result.get('confidence')
+                if confidence is not None:
+                    self.logger.info(f"Confidence score: {confidence}")
+                return m_query
             else:
                 error_msg = f"LLM service response missing 'm_query' field for table {table_name}: {result}"
                 self.logger.error(error_msg)
