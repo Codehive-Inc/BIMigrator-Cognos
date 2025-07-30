@@ -1,18 +1,21 @@
 """
 M-Query Converter for converting SQL and other data sources to Power BI M-query format.
-Uses LLM service to generate optimized M-queries.
+Uses LLM service to generate optimized M-queries with validation and fallback support.
 """
 import logging
 import re
 import json
+import os
 from typing import Dict, Any, Optional, List
 
 from ..llm_service import LLMServiceClient
 from ..models import Table
+from ..strategies import MigrationStrategyConfig
+from .enhanced_mquery_converter import EnhancedMQueryConverter
 
 
 class MQueryConverter:
-    """Converts data source queries to Power BI M-query format using LLM service"""
+    """Converts data source queries to Power BI M-query format with validation and fallback"""
     
     def __init__(self, llm_service_client: LLMServiceClient):
         """
@@ -23,6 +26,34 @@ class MQueryConverter:
         """
         self.llm_service_client = llm_service_client
         self.logger = logging.getLogger(__name__)
+        
+        # Check if enhanced mode is enabled via environment variable
+        use_enhanced = os.getenv('USE_ENHANCED_MQUERY_CONVERTER', 'true').lower() == 'true'
+        
+        if use_enhanced:
+            # Use enhanced converter with validation and fallback
+            self._init_enhanced_converter()
+        else:
+            # Keep original behavior for backward compatibility
+            self._use_enhanced = False
+    
+    def _init_enhanced_converter(self):
+        """Initialize the enhanced converter with configuration"""
+        # Create configuration based on environment variables
+        config = MigrationStrategyConfig(
+            enable_post_validation=os.getenv('ENABLE_MQUERY_VALIDATION', 'true').lower() == 'true',
+            enable_select_all_fallback=os.getenv('ENABLE_SELECT_ALL_FALLBACK', 'true').lower() == 'true',
+            query_folding_preference=os.getenv('QUERY_FOLDING_PREFERENCE', 'BestEffort'),
+            confidence_threshold=float(os.getenv('MQUERY_CONFIDENCE_THRESHOLD', '0.6'))
+        )
+        
+        # Create enhanced converter
+        self._enhanced_converter = EnhancedMQueryConverter(
+            llm_service_client=self.llm_service_client,
+            strategy_config=config,
+            logger=self.logger
+        )
+        self._use_enhanced = True
     
     def convert_to_m_query(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
         """
@@ -37,8 +68,17 @@ class MQueryConverter:
             M-query string
             
         Raises:
-            Exception: If the LLM service fails or returns invalid results
+            Exception: If the LLM service fails or returns invalid results (in legacy mode)
         """
+        # Use enhanced converter if available
+        if hasattr(self, '_use_enhanced') and self._use_enhanced:
+            return self._enhanced_converter.convert_to_m_query(
+                table=table,
+                report_spec=report_spec,
+                data_sample=data_sample
+            )
+        
+        # Original implementation (legacy mode)
         self.logger.info(f"Converting source query to M-query for table: {table.name}")
         
         # Check if table has source_query attribute
@@ -252,3 +292,15 @@ class MQueryConverter:
         expression = re.sub(r'\}\}\s*,\s*\{\{', r'}}, {{', expression)
         
         return expression
+    
+    def get_conversion_report(self) -> Dict[str, Any]:
+        """Get conversion report if using enhanced converter"""
+        if hasattr(self, '_use_enhanced') and self._use_enhanced:
+            return self._enhanced_converter.get_conversion_report()
+        else:
+            return {"message": "Conversion reporting not available in legacy mode"}
+    
+    def reset_history(self):
+        """Reset conversion history if using enhanced converter"""
+        if hasattr(self, '_use_enhanced') and self._use_enhanced:
+            self._enhanced_converter.reset_history()
