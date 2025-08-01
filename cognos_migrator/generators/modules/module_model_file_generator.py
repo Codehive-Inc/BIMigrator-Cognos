@@ -341,7 +341,8 @@ class ModuleModelFileGenerator:
                 # Create a valid M-query with proper indentation that will work with pbi-tools
                 # Put the error information in a proper M-query comment
                 error_content += f"            let\n"
-                error_content += f"                /* ERROR: {str(e).replace('*/', '*\\/').strip()} */\n"
+                error_msg = str(e).replace('*/', '* /').strip()
+                error_content += f"                /* ERROR: {error_msg} */\n"
                 error_content += f"                Source = Table.FromRows({{}})\n"
                 error_content += f"            in\n"
                 error_content += f"                Source\n"
