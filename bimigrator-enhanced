@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Enhanced BIMigrator-Cognos CLI wrapper script
+# This script provides an easy way to run the enhanced CLI from anywhere
+
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Set Python path to include the project root
+export PYTHONPATH="${SCRIPT_DIR}:${PYTHONPATH}"
+
+# Run the enhanced CLI with all arguments
+python3 "${SCRIPT_DIR}/cognos_migrator/enhanced_cli.py" "$@"
