@@ -1,0 +1,6 @@
+let
+    Source = Excel.Workbook(File.Contents("{{file_path}}"), null, true),
+    {{sheet_name}}_Sheet = Source{[Item="{{sheet_name}}",Kind="Sheet"]}{[Data]},
+    #"Promoted Headers" = Table.PromoteHeaders({{sheet_name}}_Sheet, [PromoteAllScalars=true])
+in
+    #"Promoted Headers"

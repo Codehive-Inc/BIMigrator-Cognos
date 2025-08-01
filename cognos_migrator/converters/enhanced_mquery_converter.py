@@ -12,6 +12,7 @@ from cognos_migrator.models import Table, Column, DataType
 from cognos_migrator.llm_service import LLMServiceClient
 from cognos_migrator.strategies import FallbackStrategy, MigrationStrategyConfig
 from cognos_migrator.validators import MQueryValidator
+from cognos_migrator.templates.mquery import create_mquery_template_engine, MQueryTemplateEngine
 
 
 class EnhancedMQueryConverter:
@@ -44,6 +45,9 @@ class EnhancedMQueryConverter:
         
         # Track conversions for reporting
         self.conversion_history = []
+        
+        # Initialize M-Query template engine
+        self.template_engine = create_mquery_template_engine()
     
     def convert_to_m_query(self, 
                           table: Table, 
@@ -217,59 +221,98 @@ class EnhancedMQueryConverter:
     def _create_select_all_fallback(self, 
                                   table: Table,
                                   context: Dict[str, Any]) -> str:
-        """Create a SELECT * fallback M-Query"""
-        source_info = context.get('source_info', {})
-        source_type = source_info.get('source_type', 'unknown')
-        
-        if source_type == 'sql' and context.get('source_query'):
-            # SQL with query
-            return f'''let
-    // FALLBACK: SELECT * with original SQL query
-    // Table: {table.name}
-    // Generated: {datetime.now().isoformat()}
-    Source = Sql.Database(
-        "YOUR_SERVER",    // TODO: Configure server
-        "YOUR_DATABASE",  // TODO: Configure database
-        [Query="{context['source_query']}"]
-    ),
-    
-    // Ensure all columns are included
-    Result = Source
-in
-    Result'''
-        
-        else:
-            # Generic SELECT * template
-            # Build column definitions
-            column_defs = []
-            if context.get('columns'):
-                for col in context['columns'][:10]:  # Limit to first 10
-                    col_name = col.get('name', 'Column')
-                    col_type = self._map_to_m_type(col.get('data_type', 'text'))
-                    column_defs.append(f'        {{"{col_name}", {col_type}}}')
+        """Create a SELECT * fallback M-Query using templates"""
+        try:
+            # Prepare source information for template
+            source_info = {
+                'source_type': 'sql',
+                'server': context.get('server', 'localhost'),
+                'database': context.get('database', 'DefaultDB'),
+                'schema': context.get('schema', 'dbo'),
+                'table_name': table.name
+            }
             
-            column_text = ",\n".join(column_defs) if column_defs else '        {"Column1", type text}'
+            # Use template engine to generate fallback M-Query
+            result = self.template_engine.generate_mquery_with_fallback(
+                table.name, 
+                source_info
+            )
             
-            return f'''let
-    // FALLBACK: SELECT * template
-    // Table: {table.name}
+            if result['success']:
+                return result['mquery']
+            else:
+                # Ultimate fallback if template fails
+                return self._create_basic_fallback(table.name, source_info)
+                
+        except Exception as e:
+            self.logger.warning(f"Template-based fallback failed: {e}")
+            # Ultimate fallback
+            return self._create_basic_fallback(table.name, {
+                'server': 'localhost',
+                'database': 'DefaultDB', 
+                'schema': 'dbo',
+                'table_name': table.name
+            })
+    
+    def _create_basic_fallback(self, table_name: str, source_info: Dict[str, Any]) -> str:
+        """Create basic fallback when all other methods fail"""
+        server = source_info.get('server', 'localhost')
+        database = source_info.get('database', 'DefaultDB')
+        schema = source_info.get('schema', 'dbo')
+        
+        return f'''let
+    // ULTIMATE FALLBACK: Basic SELECT * query
+    // Table: {table_name}
     // Generated: {datetime.now().isoformat()}
-    // TODO: Configure data source connection
-    
-    Source = Table.FromRows(
-        {{}},  // TODO: Add data source
-        type table [
-            {", ".join([f'"{col.get("name", "Column")}" = {self._map_to_m_type(col.get("data_type", "any"))}'
-                       for col in (context.get("columns", [{"name": "Column1", "data_type": "text"}])[:5]])}
-        ]
-    ),
-    
-    // Type transformations
-    #"Changed Type" = Table.TransformColumnTypes(Source, {{
-{column_text}
-    }})
+    Source = Sql.Database("{server}", "{database}"),
+    SelectAll = Value.NativeQuery(Source, "SELECT * FROM {schema}.{table_name}")
 in
-    #"Changed Type"'''
+    SelectAll'''
+    
+    def generate_mquery_from_template(self, 
+                                    table: Table,
+                                    cognos_query: str = None,
+                                    context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Generate M-Query using template system"""
+        try:
+            # Prepare source information
+            source_info = {
+                'source_type': 'sql',
+                'server': context.get('server', 'localhost') if context else 'localhost',
+                'database': context.get('database', 'DefaultDB') if context else 'DefaultDB',
+                'schema': context.get('schema', 'dbo') if context else 'dbo',
+                'query': cognos_query or f'SELECT * FROM {table.name}',
+                'enable_folding': True
+            }
+            
+            # Use template engine for primary generation
+            result = self.template_engine.generate_mquery_with_fallback(
+                table.name,
+                source_info
+            )
+            
+            if result['success']:
+                return {
+                    'success': True,
+                    'mquery': result['mquery'],
+                    'template_used': True,
+                    'fallback_used': result.get('fallback_used', False),
+                    'method': result.get('method', 'template')
+                }
+            else:
+                return {
+                    'success': False,
+                    'error': result.get('error', 'Template generation failed'),
+                    'template_used': True
+                }
+                
+        except Exception as e:
+            self.logger.error(f"Template-based M-Query generation failed: {e}")
+            return {
+                'success': False,
+                'error': str(e),
+                'template_used': True
+            }
     
     def _create_fallback_mquery(self,
                               table: Table,

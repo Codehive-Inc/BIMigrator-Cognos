@@ -1,0 +1,6 @@
+let
+    Source = Sql.Database("{{server}}", "{{database}}"),
+    {{table_name}} = Source{[Schema="{{schema}}", Item="{{table_name}}"]}{["Data"]},
+    QueryResult = Value.NativeQuery(Source, "{{query}}")
+in
+    QueryResult

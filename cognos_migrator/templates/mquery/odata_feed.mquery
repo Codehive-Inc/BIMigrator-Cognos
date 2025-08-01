@@ -1,0 +1,6 @@
+let
+    Source = OData.Feed("{{url}}"),
+    {{entity_set}}_Table = Source{{{entity_set}}},
+    Navigation = {{entity_set}}_Table{[Name="{{entity_set}}"]}{[Data]}
+in
+    Navigation

@@ -1,0 +1,6 @@
+let
+    Source = Sql.Database("{{server}}", "{{database}}"),
+    // Fallback: Simple SELECT * to ensure data loads
+    SelectAll = Value.NativeQuery(Source, "SELECT * FROM {{schema}}.{{table_name}}")
+in
+    SelectAll

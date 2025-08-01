@@ -1,0 +1,5 @@
+let
+    Source = Sql.Database("{{server}}", "{{database}}", [CreateNavigationProperties=false]),
+    {{table_name}} = Source{[Schema="{{schema}}", Item="{{table_name}}"]}{["Data"]}
+in
+    {{table_name}}

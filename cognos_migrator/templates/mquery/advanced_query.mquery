@@ -1,0 +1,5 @@
+let
+    Source = Sql.Database("{{server}}", "{{database}}", [EnableFolding={{enable_folding}}]),
+    CustomQuery = Value.NativeQuery(Source, "{{query}}")
+in
+    CustomQuery
