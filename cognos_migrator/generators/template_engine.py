@@ -10,7 +10,7 @@ import json
 
 from cognos_migrator.utils.json_encoder import ModelJSONEncoder, model_to_dict
 
-import pybars
+# Removed pybars - using Jinja2 templates only
 from jinja2 import Environment, FileSystemLoader, Template
 
 
@@ -33,7 +33,7 @@ class TemplateEngine:
         # Initialize template cache
         self.templates = {}
         self.template_info = {}
-        self.handlebars_compiler = pybars.Compiler()
+        # Using Jinja2 only - no handlebars compiler needed
         
         # Initialize Jinja2 environment
         self.jinja_env = Environment(
@@ -54,8 +54,7 @@ class TemplateEngine:
         if not self.template_directory.exists():
             raise FileNotFoundError(f"Template directory not found: {self.template_directory}")
         
-        # Define which templates use which engine
-        handlebars_templates = ['table']
+        # All templates use Jinja2
         
         template_files = {
             # Model templates
@@ -92,12 +91,8 @@ class TemplateEngine:
             with open(template_path, 'r', encoding='utf-8') as f:
                 template_content = f.read()
                 
-            if template_name in handlebars_templates:
-                # Compile handlebars template
-                self.templates[template_name] = self.handlebars_compiler.compile(template_content)
-            else:
-                # Compile Jinja2 template
-                self.templates[template_name] = self.jinja_env.from_string(template_content)
+            # All templates use Jinja2
+            self.templates[template_name] = self.jinja_env.from_string(template_content)
                 
         # Store the template info for later use
         self.template_info = template_files
@@ -127,17 +122,12 @@ class TemplateEngine:
         self.logger.debug(f"Rendering template: {template_name}")
         self.logger.debug(f"Context keys: {list(context.keys())}")
         
-        if template_name == 'table':
-            # Use handlebars for table template
-            result = template(context)
-            return result
-        else:
-            # Use Jinja2 for other templates
-            try:
-                return self._render_jinja_template(template, context)
-            except Exception as e:
-                self.logger.error(f"Error rendering template {template_name}: {e}")
-                raise
+        # All templates use Jinja2
+        try:
+            return self._render_jinja_template(template, context)
+        except Exception as e:
+            self.logger.error(f"Error rendering template {template_name}: {e}")
+            raise
     
     def _render_jinja_template(self, template: Template, context: Dict[str, Any]) -> str:
         """Render a Jinja2 template with the given context"""
