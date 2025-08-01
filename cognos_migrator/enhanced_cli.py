@@ -14,23 +14,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 import logging
 
-# Import enhanced_main functions
-from cognos_migrator.enhanced_main import (
-    test_cognos_connection_enhanced,
-    migrate_module_with_enhanced_validation,
-    migrate_single_report_with_enhanced_validation,
-    post_process_module_with_enhanced_validation
-)
-
-# Import dashboard
-from cognos_migrator.dashboard.quality_dashboard import create_standalone_dashboard
-
-# Import WebSocket client for progress tracking
-from cognos_migrator.common.websocket_client import (
-    set_websocket_post_function,
-    set_task_info,
-    set_websocket_url as configure_websocket_url
-)
+# Note: Enhanced main functions are imported lazily to avoid circular imports
 
 
 class EnhancedCLI:
@@ -39,6 +23,48 @@ class EnhancedCLI:
     def __init__(self):
         self.parser = self._create_parser()
         self.logger = self._setup_logging()
+        self._enhanced_main = None
+        self._dashboard = None
+        self._websocket_client = None
+    
+    def _import_enhanced_main(self):
+        """Lazy import of enhanced main functions"""
+        if self._enhanced_main is None:
+            from cognos_migrator.enhanced_main import (
+                test_cognos_connection_enhanced,
+                migrate_module_with_enhanced_validation,
+                migrate_single_report_with_enhanced_validation,
+                post_process_module_with_enhanced_validation
+            )
+            self._enhanced_main = {
+                'test_connection': test_cognos_connection_enhanced,
+                'migrate_module': migrate_module_with_enhanced_validation,
+                'migrate_report': migrate_single_report_with_enhanced_validation,
+                'post_process': post_process_module_with_enhanced_validation
+            }
+        return self._enhanced_main
+    
+    def _import_dashboard(self):
+        """Lazy import of dashboard"""
+        if self._dashboard is None:
+            from cognos_migrator.dashboard.quality_dashboard import create_standalone_dashboard
+            self._dashboard = create_standalone_dashboard
+        return self._dashboard
+    
+    def _import_websocket_client(self):
+        """Lazy import of WebSocket client"""
+        if self._websocket_client is None:
+            from cognos_migrator.common.websocket_client import (
+                set_websocket_post_function,
+                set_task_info,
+                set_websocket_url as configure_websocket_url
+            )
+            self._websocket_client = {
+                'set_post_function': set_websocket_post_function,
+                'set_task_info': set_task_info,
+                'configure_url': configure_websocket_url
+            }
+        return self._websocket_client
         
     def _setup_logging(self) -> logging.Logger:
         """Setup logging configuration"""
@@ -396,7 +422,8 @@ Examples:
         # Set up WebSocket if enabled
         if args.get('enable_websocket') or config.get('websocket_config', {}).get('enabled', False):
             websocket_url = args.get('websocket_url') or config.get('websocket_config', {}).get('url', 'ws://localhost:8765')
-            configure_websocket_url(websocket_url)
+            ws_client = self._import_websocket_client()
+            ws_client['configure_url'](websocket_url)
             self.logger.info(f"WebSocket progress tracking enabled at {websocket_url}")
     
     def _parse_validation_config(self, config_str: str) -> Dict[str, Any]:
@@ -411,7 +438,8 @@ Examples:
         """Handle test-connection command"""
         self.logger.info("Testing Cognos connection...")
         
-        result = test_cognos_connection_enhanced(
+        enhanced_main = self._import_enhanced_main()
+        result = enhanced_main['test_connection'](
             cognos_url=args.cognos_url,
             session_key=args.session_key,
             enable_validation=args.enable_validation
@@ -442,11 +470,13 @@ Examples:
         
         # Setup WebSocket if enabled
         if args.enable_websocket:
-            configure_websocket_url(args.websocket_url)
-            set_task_info(f"module_{args.module_id}", 100)
+            ws_client = self._import_websocket_client()
+            ws_client['configure_url'](args.websocket_url)
+            ws_client['set_task_info'](f"module_{args.module_id}", 100)
         
         # Execute migration
-        result = migrate_module_with_enhanced_validation(
+        enhanced_main = self._import_enhanced_main()
+        result = enhanced_main['migrate_module'](
             module_id=args.module_id,
             output_path=args.output_path,
             cognos_url=args.cognos_url,
@@ -473,7 +503,8 @@ Examples:
         validation_config = self._parse_validation_config(args.validation_config)
         
         # Execute migration
-        result = migrate_single_report_with_enhanced_validation(
+        enhanced_main = self._import_enhanced_main()
+        result = enhanced_main['migrate_report'](
             report_id=args.report_id,
             output_path=args.output_path,
             cognos_url=args.cognos_url,
@@ -495,7 +526,8 @@ Examples:
         report_ids = args.report_ids.split(',') if args.report_ids else None
         
         # Execute post-processing
-        result = post_process_module_with_enhanced_validation(
+        enhanced_main = self._import_enhanced_main()
+        result = enhanced_main['post_process'](
             module_id=args.module_id,
             output_path=args.output_path,
             cognos_url=args.cognos_url,
@@ -521,7 +553,8 @@ Examples:
         self.logger.info(f"Launching quality dashboard on {args.host}:{args.port}...")
         
         # Create and run dashboard
-        dashboard = create_standalone_dashboard(db_path=args.db_path)
+        create_dashboard = self._import_dashboard()
+        dashboard = create_dashboard(db_path=args.db_path)
         
         print(f"\n✓ Dashboard running at http://{args.host}:{args.port}")
         print("Press Ctrl+C to stop")
@@ -555,7 +588,8 @@ Examples:
             output_path = os.path.join(args.output_base_path, module_id)
             
             try:
-                result = migrate_module_with_enhanced_validation(
+                enhanced_main = self._import_enhanced_main()
+                result = enhanced_main['migrate_module'](
                     module_id=module_id,
                     output_path=output_path,
                     cognos_url=args.cognos_url,
@@ -591,7 +625,8 @@ Examples:
         self.logger.info(f"Validating module {args.module_id}...")
         
         # Perform dry-run migration with validation
-        result = migrate_module_with_enhanced_validation(
+        enhanced_main = self._import_enhanced_main()
+        result = enhanced_main['migrate_module'](
             module_id=args.module_id,
             output_path="/tmp/validation_test",  # Temporary path
             cognos_url=args.cognos_url,
