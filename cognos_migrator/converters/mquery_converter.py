@@ -11,7 +11,8 @@ from typing import Dict, Any, Optional, List
 from ..llm_service import LLMServiceClient
 from ..models import Table
 from ..strategies import MigrationStrategyConfig
-from .enhanced_mquery_converter import EnhancedMQueryConverter
+# Removed circular import - will use lazy loading if enhanced features needed
+# from .enhanced_mquery_converter import EnhancedMQueryConverter
 
 
 class MQueryConverter:
@@ -47,13 +48,26 @@ class MQueryConverter:
             confidence_threshold=float(os.getenv('MQUERY_CONFIDENCE_THRESHOLD', '0.6'))
         )
         
-        # Create enhanced converter
-        self._enhanced_converter = EnhancedMQueryConverter(
-            llm_service_client=self.llm_service_client,
-            strategy_config=config,
-            logger=self.logger
-        )
+        # Lazy loading for enhanced converter to avoid circular imports
+        self._enhanced_converter = None
         self._use_enhanced = True
+        self._enhanced_config = {
+            'llm_service_client': self.llm_service_client,
+            'strategy_config': config,
+            'logger': self.logger
+        }
+    
+    def _get_enhanced_converter(self):
+        """Lazy load enhanced converter to avoid circular imports"""
+        if self._enhanced_converter is None:
+            try:
+                from .enhanced_mquery_converter import EnhancedMQueryConverter
+                self._enhanced_converter = EnhancedMQueryConverter(**self._enhanced_config)
+            except ImportError as e:
+                self.logger.warning(f"Enhanced converter not available: {e}")
+                self._use_enhanced = False
+                return None
+        return self._enhanced_converter
     
     def convert_to_m_query(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
         """
@@ -72,7 +86,9 @@ class MQueryConverter:
         """
         # Use enhanced converter if available
         if hasattr(self, '_use_enhanced') and self._use_enhanced:
-            return self._enhanced_converter.convert_to_m_query(
+            enhanced_converter = self._get_enhanced_converter()
+            if enhanced_converter:
+                return enhanced_converter.convert_to_m_query(
                 table=table,
                 report_spec=report_spec,
                 data_sample=data_sample
