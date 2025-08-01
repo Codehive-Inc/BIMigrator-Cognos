@@ -9,5 +9,5 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Set Python path to include the project root
 export PYTHONPATH="${SCRIPT_DIR}:${PYTHONPATH}"
 
-# Run the enhanced CLI with all arguments
-python3 "${SCRIPT_DIR}/cognos_migrator/enhanced_cli.py" "$@"
+# Run the enhanced CLI with all arguments (SOLID version)
+python3 "${SCRIPT_DIR}/cognos_migrator/enhanced_cli_v2.py" "$@"
