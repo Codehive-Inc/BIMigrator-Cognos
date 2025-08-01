@@ -2,6 +2,9 @@
 Configuration system for enhanced migration features
 """
 
+# Import original config classes for backward compatibility
+from ..config import MigrationConfig, CognosConfig
+
 from .fallback_config import (
     ValidationConfig,
     FallbackConfig, 
@@ -16,6 +19,10 @@ from .fallback_config import (
 )
 
 __all__ = [
+    # Original config classes (backward compatibility)
+    'MigrationConfig',
+    'CognosConfig',
+    # Enhanced config classes
     'ValidationConfig',
     'FallbackConfig',
     'LLMConfig', 
