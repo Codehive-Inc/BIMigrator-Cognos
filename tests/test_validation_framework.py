@@ -26,6 +26,7 @@ from cognos_migrator.config.fallback_config import EnhancedMigrationConfig, Conf
 from cognos_migrator.reporting.migration_reporter import MigrationReporter
 from cognos_migrator.converters.enhanced_expression_converter import EnhancedExpressionConverter
 from cognos_migrator.converters.enhanced_mquery_converter import EnhancedMQueryConverter
+from cognos_migrator.templates.mquery import get_template_manager
 
 
 class TestExpressionValidator:
