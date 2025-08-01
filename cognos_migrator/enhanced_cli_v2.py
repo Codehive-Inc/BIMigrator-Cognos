@@ -7,7 +7,8 @@ This replaces the monolithic enhanced_cli.py with a modular approach.
 """
 
 import sys
-from cognos_migrator.cli import EnhancedCLI
+# Direct import to avoid circular dependencies
+from cognos_migrator.cli.main_cli import EnhancedCLI
 
 
 def main():
