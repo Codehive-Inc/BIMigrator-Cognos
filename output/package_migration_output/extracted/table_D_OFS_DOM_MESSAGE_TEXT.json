@@ -133,16 +133,5 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ],
-  "hierarchies": [],
-  "partitions": [
-    {
-      "name": "D_OFS_DOM_MESSAGE_TEXT",
-      "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be an error\n\t\t\t\tin\n\t\t\t\t\tthe provided table information. The columns \"MESSAGE_MQID\", \"MESSAGE_SUBJECT\", \"MESSAGE_TEXT\", and \"SYS_UPDATE_TS\" are listed twice, which is not valid for a table structure. Please provide the correct and unique column names for the table."
-    }
-  ],
-  "has_widget_serialization": false,
-  "visual_type": null,
-  "column_settings": null
+  ]
 }

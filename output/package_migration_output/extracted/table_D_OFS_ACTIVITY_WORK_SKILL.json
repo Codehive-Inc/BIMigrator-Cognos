@@ -165,16 +165,5 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ],
-  "hierarchies": [],
-  "partitions": [
-    {
-      "name": "D_OFS_ACTIVITY_WORK_SKILL",
-      "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS, AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS from D_OFS_ACTIVITY_WORK_SKILL\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"AID\", type text}, {\"WORK_SKILL_ID\", type text}, {\"REQUIRED_LEVEL\", type text}, {\"PREFERABLE_LEVEL\", type text}, {\"SYS_UPDATE_TS\", type text}, {\"AID\", type text}, {\"WORK_SKILL_ID\", type text}, {\"REQUIRED_LEVEL\", type text}, {\"PREFERABLE_LEVEL\", type text}, {\"SYS_UPDATE_TS\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
-    }
-  ],
-  "has_widget_serialization": false,
-  "visual_type": null,
-  "column_settings": null
+  ]
 }

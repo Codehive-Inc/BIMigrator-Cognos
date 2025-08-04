@@ -349,7 +349,7 @@ class CognosModuleParser:
                 from_column=rel_data.get('fromColumn', ''),
                 to_table=rel_data.get('toTable', ''),
                 to_column=rel_data.get('toColumn', ''),
-                id=rel_data.get('name', 'Unknown_Relationship'),
+                # Let the Relationship class generate a UUID instead of using a descriptive name
                 from_cardinality=self._map_cardinality(rel_data.get('cardinality', '1:*')),
                 cross_filtering_behavior=rel_data.get('crossFilterBehavior', 'single'),
                 is_active=rel_data.get('isActive', True)
@@ -381,7 +381,7 @@ class CognosModuleParser:
                 from_column=left_column,
                 to_table=right_table,
                 to_column=right_column,
-                id=f"{left_table}_{left_column}_to_{right_table}_{right_column}",
+                # Let the Relationship class generate a UUID instead of using a descriptive name
                 from_cardinality=cardinality_map.get(join_type, 'many_to_one'),
                 cross_filtering_behavior='single',
                 is_active=True

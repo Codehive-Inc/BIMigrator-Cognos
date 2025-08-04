@@ -47,12 +47,11 @@ table 'D_OFS_ACTIVITY_WORK_SKILL'
     partition 'D_OFS_ACTIVITY_WORK_SKILL' = m
         mode: import
         source = 
-            	let
-					Source = Sql.Database("", "", [Query = "Select AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS, AID, WORK_SKILL_ID, REQUIRED_LEVEL, PREFERABLE_LEVEL, SYS_UPDATE_TS from D_OFS_ACTIVITY_WORK_SKILL"]),
-					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
-					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AID", type text}, {"WORK_SKILL_ID", type text}, {"REQUIRED_LEVEL", type text}, {"PREFERABLE_LEVEL", type text}, {"SYS_UPDATE_TS", type text}, {"AID", type text}, {"WORK_SKILL_ID", type text}, {"REQUIRED_LEVEL", type text}, {"PREFERABLE_LEVEL", type text}, {"SYS_UPDATE_TS", type text}})
+            // ERROR: Error communicating with LLM service for table D_OFS_ACTIVITY_WORK_SKILL: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cefb2c0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
 				in
-					#"Changed Types"
+				Source
         
 
 

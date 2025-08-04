@@ -183,7 +183,11 @@ table 'Resource Hierarchy'
     partition 'Resource Hierarchy' = m
         mode: import
         source = 
-            let Source = Sql.Database("", "", [Query = "Select OWNER_ID, OWNER_NAME, PROVIDER_ID, PROVIDER_NAME, PROVIDER_TYPE, PROVIDER_ACTIVE, PARENT_LEVEL, DATE_FORMAT, EMAIL_ADDRESS, MESSAGE_LANGUAGE, NOT_AVAILABLE_FOR_ROUTING, PERSONNEL_TYPE, PHONE, RESOURCE_EXTERNAL_ID, RESOURCE_ID, RESOURCE_PARENT, ROUTING_PROFILE, SHARED_RESOURCE, TIME_FORMAT, TIME_ZONE_CD, VEHICLE_ID, SYS_UPDATE_TS, OWNER_ID, OWNER_NAME, PROVIDER_ID, PROVIDER_NAME, PROVIDER_TYPE, PROVIDER_ACTIVE, PARENT_LEVEL, DATE_FORMAT, EMAIL_ADDRESS, MESSAGE_LANGUAGE, NOT_AVAILABLE_FOR_ROUTING, PERSONNEL_TYPE, PHONE, RESOURCE_EXTERNAL_ID, RESOURCE_ID, RESOURCE_PARENT, ROUTING_PROFILE, SHARED_RESOURCE, TIME_FORMAT, TIME_ZONE_CD, VEHICLE_ID, SYS_UPDATE_TS from ResourceHierarchy"]), #"Removed Errors" = Table.RemoveRowsWithErrors(Source), #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"OWNER_ID", type text}, {"OWNER_NAME", type text}, {"PROVIDER_ID", type text}, {"PROVIDER_NAME", type text}, {"PROVIDER_TYPE", type text}, {"PROVIDER_ACTIVE", type text}, {"PARENT_LEVEL", type text}, {"DATE_FORMAT", type text}, {"EMAIL_ADDRESS", type text}, {"MESSAGE_LANGUAGE", type text}, {"NOT_AVAILABLE_FOR_ROUTING", type text}, {"PERSONNEL_TYPE", type text}, {"PHONE", type text}, {"RESOURCE_EXTERNAL_ID", type text}, {"RESOURCE_ID", type text}, {"RESOURCE_PARENT", type text}, {"ROUTING_PROFILE", type text}, {"SHARED_RESOURCE", type text}, {"TIME_FORMAT", type text}, {"TIME_ZONE_CD", type text}, {"VEHICLE_ID", type text}, {"SYS_UPDATE_TS", type text}, {"OWNER_ID", type text}, {"OWNER_NAME", type text}, {"PROVIDER_ID", type text}, {"PROVIDER_NAME", type text}, {"PROVIDER_TYPE", type text}, {"PROVIDER_ACTIVE", type text}, {"PARENT_LEVEL", type text}, {"DATE_FORMAT", type text}, {"EMAIL_ADDRESS", type text}, {"MESSAGE_LANGUAGE", type text}, {"NOT_AVAILABLE_FOR_ROUTING", type text}, {"PERSONNEL_TYPE", type text}, {"PHONE", type text}, {"RESOURCE_EXTERNAL_ID", type text}, {"RESOURCE_ID", type text}, {"RESOURCE_PARENT", type text}, {"ROUTING
+            // ERROR: Error communicating with LLM service for table Resource Hierarchy: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10ce161e0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
         
 
 

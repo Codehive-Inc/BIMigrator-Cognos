@@ -165,16 +165,5 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ],
-  "hierarchies": [],
-  "partitions": [
-    {
-      "name": "D_OFS_PROP_LOOKUP",
-      "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select PROP_ID, PROP_LID, PROP_INDEX, PROP_TEXT, SYS_UPDATE_TS, PROP_ID, PROP_LID, PROP_INDEX, PROP_TEXT, SYS_UPDATE_TS\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"PROP_ID\", type text}, {\"PROP_LID\", type text}, {\"PROP_INDEX\", type text}, {\"PROP_TEXT\", type text}, {\"SYS_UPDATE_TS\", type text}, {\"PROP_ID\", type text}, {\"PROP_LID\", type text}, {\"PROP_INDEX\", type text}, {\"PROP_TEXT\", type text}, {\"SYS_UPDATE_TS\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
-    }
-  ],
-  "has_widget_serialization": false,
-  "visual_type": null,
-  "column_settings": null
+  ]
 }

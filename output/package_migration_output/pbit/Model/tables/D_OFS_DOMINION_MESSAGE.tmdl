@@ -327,7 +327,11 @@ table 'D_OFS_DOMINION_MESSAGE'
     partition 'D_OFS_DOMINION_MESSAGE' = m
         mode: import
         source = 
-            let Source = Sql.Database("", "", [Query = "Select"]), #"Removed Errors" = Table.RemoveRowsWithErrors(Source), #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"QUEUE_ID", type text}, {"ACTIVITY_FEATURES", type text}, {"ACTIVITY_LOCATION_ID", type text}, {"ACTIVITY_TRAVELING_TIME", type text}, {"DELIVERY_WINDOW_END", type text}, {"MASTER_ACTIVITY_ID", type text}, {"REPORTED_END_TIME_OF_ACT", type text}, {"SERVICE_WINDOW_END", type text}, {"SERVICE_WINDOW_START", type text}, {"TEAMWORK_ID", type text}, {"TEMPLATE_ID", type text}, {"TIME_SLOT_ID", type text}, {"ADDRESS", type text}, {"APPT_AUPDATE_FLAGS", type text}, {"APPT_EXT_ID", type text}, {"APPT_ID", type text}, {"CUST_EXT_ID", type text}, {"DURATION", type text}, {"INV_ID", type text}, {"LOCAL_TIME", type text}, {"MESSAGE_DATA", type text}, {"MESSAGE_EXT_ID", type text}, {"METHOD", type text}, {"MFID", type text}, {"MQID", type text}, {"MSID", type text}, {"MSTYPE", type text}, {"PAS_FLAG", type text}, {"RECIPIENT", type text}, {"RESULT", type text}, {"RESULT_DESC", type text}, {"SCENARIO_NAME", type text}, {"SCENARIO_STEP", type text}, {"TIME_ID", type text}, {"TIME_DELIVERED_END", type text}, {"TIME_DELIVERED_START", type text}, {"TIMEFROM", type text}, {"TIMETO", type text}, {"TRIGGER_NAME", type text}, {"SYS_UPDATE_TS", type text}, {"QUEUE_ID", type text}, {"ACTIVITY_FEATURES", type text}, {"ACTIVITY_LOCATION_ID", type text}, {"ACTIVITY_TRAVELING_TIME", type text}, {"DELIVERY_WINDOW_END", type text}, {"MASTER_ACTIVITY_ID", type text}, {"REPORTED_END_TIME_OF_ACT", type text}, {"SERVICE_WINDOW_END", type text}, {"SERVICE_WINDOW_START", type text}, {"TEAMWORK_ID", type text}, {"TEMPLATE_ID", type text}, {"TIME_SLOT_ID", type text}, {"ADDRESS", type text}, {"APPT_AUPDATE_FLAGS", type text}, {"APPT_EXT_ID", type text}, {"APPT_ID", type text},
+            // ERROR: Error communicating with LLM service for table D_OFS_DOMINION_MESSAGE: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cef8d10>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
         
 
 

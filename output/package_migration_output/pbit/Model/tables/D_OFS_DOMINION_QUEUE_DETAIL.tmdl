@@ -199,7 +199,11 @@ table 'D_OFS_DOMINION_QUEUE_DETAIL'
     partition 'D_OFS_DOMINION_QUEUE_DETAIL' = m
         mode: import
         source = 
-            let Source = Sql.Database("", "", [Query = "Select QUEUE_ID, QUEUE_DATE, NOT_AVAILABLE_FOR_ROUTING, PERSONNEL_TYPE, PHONE, QUEUE_REACTIVATION_TIME, QUOTA_MANAGEMENT, RESOURCE_TYPE, CALENDAR_END_TIME, CALENDAR_START_TIME, PROPERTY_12, PROPERTY_302, PROPERTY_375, PROPERTY_379, PROPERTY_381, PROPERTY_84, PROVIDER_EXT_ID, PROVIDER_ID, PROVIDER_POOL, PROVIDER_SOURCE, PROVIDER_TIMEZONE, QUEUE_ACTIVATE_TIME, QUEUE_DEACTIVATE_TIME, SYS_UPDATE_TS, QUEUE_ID, QUEUE_DATE, NOT_AVAILABLE_FOR_ROUTING, PERSONNEL_TYPE, PHONE, QUEUE_REACTIVATION_TIME, QUOTA_MANAGEMENT, RESOURCE_TYPE, CALENDAR_END_TIME, CALENDAR_START_TIME, PROPERTY_12, PROPERTY_302, PROPERTY_375, PROPERTY_379, PROPERTY_381, PROPERTY_84, PROVIDER_EXT_ID, PROVIDER_ID, PROVIDER_POOL, PROVIDER_SOURCE, PROVIDER_TIMEZONE, QUEUE_ACTIVATE_TIME, QUEUE_DEACTIVATE_TIME, SYS_UPDATE_TS from D_OFS_DOMINION_QUEUE_DETAIL"]), #"Removed Errors" = Table.RemoveRowsWithErrors(Source), #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"QUEUE_ID", type text}, {"QUEUE_DATE", type text}, {"NOT_AVAILABLE_FOR_ROUTING", type text}, {"PERSONNEL_TYPE", type text}, {"PHONE", type text}, {"QUEUE_REACTIVATION_TIME", type text}, {"QUOTA_MANAGEMENT", type text}, {"RESOURCE_TYPE", type text}, {"CALENDAR_END_TIME", type text}, {"CALENDAR_START_TIME", type text}, {"PROPERTY_12", type text}, {"PROPERTY_302", type text}, {"PROPERTY_375", type text}, {"PROPERTY_379", type text}, {"PROPERTY_381", type text}, {"PROPERTY_84", type text}, {"PROVIDER_EXT_ID", type text}, {"PROVIDER_ID", type text}, {"PROVIDER_POOL", type text}, {"PROVIDER_SOURCE", type text}, {"PROVIDER_TIMEZONE", type text}, {"QUEUE_ACTIVATE_TIME", type text}, {"QUEUE_DEACTIVATE_TIME", type text}, {"SYS_UPDATE_TS", type text}, {"QUEUE_ID", type text}, {"QUEUE_DATE", type text}, {"NOT_AVAILABLE_FOR_ROUTING", type text}, {"PERSONNEL_TYPE", type text
+            // ERROR: Error communicating with LLM service for table D_OFS_DOMINION_QUEUE_DETAIL: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cfaa300>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
         
 
 

@@ -1031,7 +1031,11 @@ table 'F_OFS_DOMINION_ACTIVITY_DETAIL'
     partition 'F_OFS_DOMINION_ACTIVITY_DETAIL' = m
         mode: import
         source = 
-            let Source = Sql.Database("", "", [Query = "Select"]), #"Removed Errors" = Table.RemoveRowsWithErrors(Source), #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ACCT_STATUS", type text}, {"ACTIVITY_FEATURES", type text}, {"ACTIVITY_LOCATION_ID", type text}, {"ACTIVITY_TIME_OF_ASSIGNMENT", type text}, {"ACTIVITY_TIME_OF_BOOKING", type text}, {"ACTIVITY_TRAVELING_TIME", type text}, {"ADDRESS", type text}, {"ADDRESS_LINE_2", type text}, {"APPT_AID", type text}, {"APPT_AMASTER_AID", type text}, {"APPT_ASTATUS", type text}, {"APPT_ATYPE", type text}, {"APPT_AWORKTYPE", type text}, {"APPT_CDEVICE", type text}, {"APPT_COMPLETION_FIELD_REMARKS", type text}, {"APPT_CONSTANT_2", type text}, {"APPT_CONSTANT_3", type text}, {"APPT_CPHONE", type text}, {"APPT_MATCH", type text}, {"APPT_PHONE_EXTENSION", type text}, {"APPT_PREMISE_PHONE_NUMBER", type text}, {"APPT_TRANSFORMER_GRID", type text}, {"APPT_XA_GRID", type text}, {"APPT_EXT_ID", type text}, {"APPT_NUMBER", type text}, {"ARM_STATUS", type text}, {"AUTO_ROUTED_TO_DATE", type text}, {"AUTO_ROUTED_TO_RESOURCE", type text}, {"CANCELLATION_REASON", type text}, {"CANT_GET_IN_COMMENTS", type text}, {"CANT_GET_IN_REASON", type text}, {"CHANGE_SERVICE_TYPE_OHUG", type text}, {"CITY", type text}, {"COMMENTS", type text}, {"COMPLETION_ACTION_TAKEN_MO", type text}, {"COMPLETION_ACTION_TAKEN_NP", type text}, {"COMPLETION_ACTION_TAKEN_TG", type text}, {"COMPLETION_FORM_ACT_TAKEN_GRP", type text}, {"COMPLETION_FORM_DIS_NEW_METER", type text}, {"COMPLETION_FORM_DIS_OLD_METER", type text}, {"COMPLETION_FORM_INITIAL_VIEW", type text}, {"COORDINATE_STATUS", type text}, {"COORDINATE_X", type text}, {"COORDINATE_Y", type text}, {"CREW_ID", type text}, {"CUST
+            // ERROR: Error communicating with LLM service for table F_OFS_DOMINION_ACTIVITY_DETAIL: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cef9790>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
         
 
 

@@ -308,8 +308,8 @@ class ConsolidatedPackageExtractor:
                     from_table=left_table,  # Use simple table name
                     from_column=left_col,
                     to_table=right_table,    # Use simple table name
-                    to_column=right_col,
-                    id=f"Relationship_{left_table}_{right_table}"
+                    to_column=right_col
+                    # Let the Relationship class generate a UUID instead of using a descriptive name
                 )
                 
                 # Add relationship to data model's relationships list
