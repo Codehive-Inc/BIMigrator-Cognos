@@ -438,12 +438,12 @@ class ModelFileGenerator:
             else:
                 self.logger.warning(f"Cannot load data items: extracted_dir is not valid: {extracted_dir}")
         
-        # If we have data items, use them as columns
+        # IMPROVED DEDUPLICATION: Always deduplicate columns regardless of source
+        # First, deduplicate data items by column name (case-insensitive) if we have data items
+        unique_items = {}
+        duplicate_items = []
+        
         if data_items:
-            # First, deduplicate data items by column name (case-insensitive)
-            unique_items = {}
-            duplicate_items = []
-            
             for item in data_items:
                 column_name = item.get('name', 'Column')
                 column_name_lower = column_name.lower()
@@ -490,9 +490,29 @@ class ModelFileGenerator:
                     'annotations': {'SummarizationSetBy': summarization_set_by}
                 }
                 columns.append(column)
-        else:
-            # If no data items, use the table columns
+        elif table.columns:
+            # If no data items, use the table columns but still deduplicate
+            # Create a dictionary to track unique columns by name (case-insensitive)
+            unique_columns = {}
+            duplicate_cols = []
+            
             for col in table.columns:
+                column_name = col.name
+                column_name_lower = column_name.lower()
+                
+                if column_name_lower not in unique_columns:
+                    unique_columns[column_name_lower] = col
+                else:
+                    duplicate_cols.append(column_name)
+            
+            # Log information about duplicates
+            if duplicate_cols:
+                self.logger.info(f"Found {len(duplicate_cols)} duplicate column names in table.columns for {table.name}")
+                self.logger.info(f"Duplicate column names: {duplicate_cols}")
+                self.logger.info(f"Using only unique column names for TMDL template generation")
+            
+            # Use deduplicated columns
+            for col in unique_columns.values():
                 column_name = col.name
                 is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
                 source_column = column_name
