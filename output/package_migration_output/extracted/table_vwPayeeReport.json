@@ -1,16 +1,16 @@
 {
-  "source_name": "INSTALLED METER",
-  "name": "INSTALLED METER",
+  "source_name": "vwPayeeReport",
+  "name": "vwPayeeReport",
   "lineage_tag": null,
   "description": null,
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "ID_MTR",
+      "source_name": "Season",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_MTR",
+      "source_column": "Season",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -22,11 +22,27 @@
       }
     },
     {
-      "source_name": "CD_MTR_MFG",
+      "source_name": "ApplicableYear",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicableYear",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "State",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_MFG",
+      "source_column": "State",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -38,11 +54,11 @@
       }
     },
     {
-      "source_name": "CD_SVC_TYP",
+      "source_name": "AuthorizationType",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_SVC_TYP",
+      "source_column": "AuthorizationType",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -54,11 +70,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_SET",
-      "datatype": "dateTime",
+      "source_name": "VendorID",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "DT_MTR_SET",
+      "source_column": "VendorID",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -70,11 +86,11 @@
       }
     },
     {
-      "source_name": "ID_PREM",
+      "source_name": "Vendor",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_PREM",
+      "source_column": "Vendor",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -86,11 +102,11 @@
       }
     },
     {
-      "source_name": "ID_SPT",
+      "source_name": "Agency",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_SPT",
+      "source_column": "Agency",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -102,27 +118,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_REMV",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_REMV",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QY_MTR_REMV_INDX",
+      "source_name": "Date Submitted",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QY_MTR_REMV_INDX",
+      "source_column": "Date Submitted",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -134,11 +134,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_REMV_RSN",
+      "source_name": "PaidByEnergyShare",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_REMV_RSN",
+      "source_column": "PaidByEnergyShare",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -150,11 +150,11 @@
       }
     },
     {
-      "source_name": "ID_MTR",
+      "source_name": "EditLink",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_MTR",
+      "source_column": "EditLink",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -166,11 +166,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_MFG",
+      "source_name": "Season",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_MFG",
+      "source_column": "Season",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -182,11 +182,27 @@
       }
     },
     {
-      "source_name": "CD_SVC_TYP",
+      "source_name": "ApplicableYear",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicableYear",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "State",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_SVC_TYP",
+      "source_column": "State",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -198,27 +214,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_SET",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_SET",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ID_PREM",
+      "source_name": "AuthorizationType",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_PREM",
+      "source_column": "AuthorizationType",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -230,11 +230,27 @@
       }
     },
     {
-      "source_name": "ID_SPT",
+      "source_name": "VendorID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VendorID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Vendor",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_SPT",
+      "source_column": "Vendor",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -246,27 +262,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_REMV",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_REMV",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QY_MTR_REMV_INDX",
+      "source_name": "Agency",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QY_MTR_REMV_INDX",
+      "source_column": "Agency",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -278,11 +278,43 @@
       }
     },
     {
-      "source_name": "CD_MTR_REMV_RSN",
+      "source_name": "Date Submitted",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_REMV_RSN",
+      "source_column": "Date Submitted",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PaidByEnergyShare",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PaidByEnergyShare",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EditLink",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EditLink",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -297,9 +329,9 @@
   "hierarchies": [],
   "partitions": [
     {
-      "name": "INSTALLED METER",
+      "name": "vwPayeeReport",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN, ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}, {\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].vwPayeeReport\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"Season\", type text}, {\"ApplicableYear\", Int64.Type}, {\"State\", type text}, {\"AuthorizationType\", type text}, {\"VendorID\", Int64.Type}, {\"Vendor\", type text}, {\"Agency\", type text}, {\"Date Submitted\", type text}, {\"PaidByEnergyShare\", type text}, {\"EditLink\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

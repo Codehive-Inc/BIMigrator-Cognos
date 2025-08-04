@@ -1,16 +1,32 @@
 {
-  "source_name": "INSTALLED METER",
-  "name": "INSTALLED METER",
+  "source_name": "Matching Credit Report",
+  "name": "Matching Credit Report",
   "lineage_tag": null,
   "description": null,
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "ID_MTR",
+      "source_name": "AgencyID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AgencyID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AgencyName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_MTR",
+      "source_column": "AgencyName",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -22,11 +38,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_MFG",
+      "source_name": "ApplicantFirstName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_MFG",
+      "source_column": "ApplicantFirstName",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -38,11 +54,11 @@
       }
     },
     {
-      "source_name": "CD_SVC_TYP",
+      "source_name": "ApplicantMiddleName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_SVC_TYP",
+      "source_column": "ApplicantMiddleName",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -54,27 +70,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_SET",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_SET",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ID_PREM",
+      "source_name": "ApplicantLastName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_PREM",
+      "source_column": "ApplicantLastName",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -86,11 +86,11 @@
       }
     },
     {
-      "source_name": "ID_SPT",
+      "source_name": "ApplicantAddress",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_SPT",
+      "source_column": "ApplicantAddress",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -102,27 +102,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_REMV",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_REMV",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QY_MTR_REMV_INDX",
+      "source_name": "ApplicantCity",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QY_MTR_REMV_INDX",
+      "source_column": "ApplicantCity",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -134,11 +118,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_REMV_RSN",
+      "source_name": "ApplicantState",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_REMV_RSN",
+      "source_column": "ApplicantState",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -150,11 +134,11 @@
       }
     },
     {
-      "source_name": "ID_MTR",
+      "source_name": "ApplicantZip",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_MTR",
+      "source_column": "ApplicantZip",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -166,11 +150,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_MFG",
+      "source_name": "AmountDue",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_MFG",
+      "source_column": "AmountDue",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -182,11 +166,11 @@
       }
     },
     {
-      "source_name": "CD_SVC_TYP",
+      "source_name": "MatchingEnergyCredit",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_SVC_TYP",
+      "source_column": "MatchingEnergyCredit",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -198,27 +182,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_SET",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_SET",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ID_PREM",
+      "source_name": "PaidByEnergyShare",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_PREM",
+      "source_column": "PaidByEnergyShare",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -230,11 +198,27 @@
       }
     },
     {
-      "source_name": "ID_SPT",
+      "source_name": "AgencyID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AgencyID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AgencyName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_SPT",
+      "source_column": "AgencyName",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -246,27 +230,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_REMV",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_REMV",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QY_MTR_REMV_INDX",
+      "source_name": "ApplicantFirstName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QY_MTR_REMV_INDX",
+      "source_column": "ApplicantFirstName",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -278,11 +246,139 @@
       }
     },
     {
-      "source_name": "CD_MTR_REMV_RSN",
+      "source_name": "ApplicantMiddleName",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_REMV_RSN",
+      "source_column": "ApplicantMiddleName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantLastName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantLastName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantAddress",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantAddress",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantCity",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantCity",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantState",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantState",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicantZip",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicantZip",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AmountDue",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AmountDue",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MatchingEnergyCredit",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MatchingEnergyCredit",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PaidByEnergyShare",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PaidByEnergyShare",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -297,9 +393,9 @@
   "hierarchies": [],
   "partitions": [
     {
-      "name": "INSTALLED METER",
+      "name": "Matching Credit Report",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN, ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}, {\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"select Agency___MC_Report.AgencyID as AgencyID, Agency___MC_Report.AgencyName as AgencyName, Authorization___MC_Report.ApplicantFirstName as ApplicantFirstName, Authorization___MC_Report.ApplicantMiddleName as ApplicantMiddleName, Authorization___MC_Report.ApplicantLastName as ApplicantLastName, Authorization___MC_Report.ApplicantAddress as ApplicantAddress, Authorization___MC_Report.ApplicantCity as ApplicantCity, Authorization___MC_Report.ApplicantState as ApplicantState, Authorization___MC_Report.ApplicantZip as ApplicantZip, Authorization___MC_Report.AmountDue as AmountDue, Authorization___MC_Report.MatchingEnergyCredit as MatchingEnergyCredit, Authorization___MC_Report.PaidByEnergyShare as PaidByEnergyShare from [Shared_Energy_Share].tblAgency Agency___MC_Report, [Shared_Energy_Share].tblAuthorization Authorization___MC_Report where (Agency___MC_Report.AgencyID = Authorization___MC_Report.AgencyID)\"]),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(Source, {{\"AgencyID\", Int64.Type}, {\"AgencyName\", type text}, {\"ApplicantFirstName\", type text}, {\"ApplicantMiddleName\", type text}, {\"ApplicantLastName\", type text}, {\"ApplicantAddress\", type text}, {\"ApplicantCity\", type text}, {\"ApplicantState\", type text}, {\"ApplicantZip\", type text}, {\"AmountDue\", type text}, {\"MatchingEnergyCredit\", type text}, {\"PaidByEnergyShare\", type text}}),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(#\"Changed Types\")\n\t\t\t\tin\n\t\t\t\t\t#\"Removed Errors\""
     }
   ],
   "has_widget_serialization": false,

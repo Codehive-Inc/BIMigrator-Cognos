@@ -1,466 +1,402 @@
-table 'STANDARD ACCOUNT DATA'
+table 'Agency'
 
 
-    column 'ID_BA'
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyUserID'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_BA
+        sourceColumn: AgencyUserID
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_CUST'
+    column 'AgencyName'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_CUST
+        sourceColumn: AgencyName
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_PREM'
+    column 'Address1'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_PREM
+        sourceColumn: Address1
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_HSE_NO'
+    column 'Address2'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_HSE_NO
+        sourceColumn: Address2
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_HSE_NO_MOD'
+    column 'City'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_HSE_NO_MOD
+        sourceColumn: City
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_CRDNL_DIR'
+    column 'State'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_CRDNL_DIR
+        sourceColumn: State
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_STR_NM'
+    column 'Zip'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_STR_NM
+        sourceColumn: Zip
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_STR_SX'
+    column 'Phone'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_STR_SX
+        sourceColumn: Phone
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_DIR_SX'
+    column 'Fax'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_DIR_SX
+        sourceColumn: Fax
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_MODIFIER'
+    column 'ContactName'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_MODIFIER
+        sourceColumn: ContactName
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_SVC_CITY'
+    column 'Email'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_SVC_CITY
+        sourceColumn: Email
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_SVC_ST'
+    column 'DistributionAgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DistributionAgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DivisionID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DivisionID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyType'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_SVC_ST
+        sourceColumn: AgencyType
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_SVC_ZIP'
+    column 'IsActive'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_SVC_ZIP
+        sourceColumn: IsActive
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'AD_SVC_ZIP_SX'
+    column 'CreatedBy'
         dataType: string
         summarizeBy: none
-        sourceColumn: AD_SVC_ZIP_SX
+        sourceColumn: CreatedBy
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TX_ADDTL_ADDR_INFO'
+    column 'datecreated'
         dataType: string
         summarizeBy: none
-        sourceColumn: TX_ADDTL_ADDR_INFO
+        sourceColumn: datecreated
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TX_HOME_AREACD'
+    column 'UpdatedBy'
         dataType: string
         summarizeBy: none
-        sourceColumn: TX_HOME_AREACD
+        sourceColumn: UpdatedBy
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TX_HOME_PHN_NO'
+    column 'LastUpdated'
         dataType: string
         summarizeBy: none
-        sourceColumn: TX_HOME_PHN_NO
+        sourceColumn: LastUpdated
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TX_BUS_AREACD'
+    column 'Season'
         dataType: string
         summarizeBy: none
-        sourceColumn: TX_BUS_AREACD
+        sourceColumn: Season
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TX_BUS_PHN_NO'
+    column 'Date Submitted'
         dataType: string
         summarizeBy: none
-        sourceColumn: TX_BUS_PHN_NO
+        sourceColumn: Date Submitted
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TX_BUS_PHN_EXTN'
+    column 'FuelType'
         dataType: string
         summarizeBy: none
-        sourceColumn: TX_BUS_PHN_EXTN
+        sourceColumn: FuelType
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_MTR_RTE'
+    column 'PaidByEnergyShare'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_MTR_RTE
+        sourceColumn: PaidByEnergyShare
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'CD_ACCT_CL'
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Type'
         dataType: string
         summarizeBy: none
-        sourceColumn: CD_ACCT_CL
+        sourceColumn: Type
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'CD_BA_STAT'
+    column 'Applicant Name'
         dataType: string
         summarizeBy: none
-        sourceColumn: CD_BA_STAT
+        sourceColumn: Applicant Name
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'NM_CUST'
+    column 'EditLink'
         dataType: string
         summarizeBy: none
-        sourceColumn: NM_CUST
+        sourceColumn: EditLink
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_SSN'
+    column 'AmountDueVeteranVoucher'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_SSN
+        sourceColumn: AmountDueVeteranVoucher
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_DLN'
+    column 'AmountDueDisabilityVoucher'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_DLN
+        sourceColumn: AmountDueDisabilityVoucher
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'QY_GAS_MTR'
+    column 'TotalVeteranVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabilityVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
         dataType: string
         summarizeBy: none
-        sourceColumn: QY_GAS_MTR
+        sourceColumn: ApplicantAddress
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'QY_ELE_MTR'
+    column 'ApplicantCity'
         dataType: string
         summarizeBy: none
-        sourceColumn: QY_ELE_MTR
+        sourceColumn: ApplicantCity
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'QY_NMTR'
+    column 'ApplicantState'
         dataType: string
         summarizeBy: none
-        sourceColumn: QY_NMTR
+        sourceColumn: ApplicantState
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_BILL_CY'
+    column 'ApplicantZip'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_BILL_CY
+        sourceColumn: ApplicantZip
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'FL_CPLNT_PEND'
+    column 'ApplicantPhone'
         dataType: string
         summarizeBy: none
-        sourceColumn: FL_CPLNT_PEND
+        sourceColumn: ApplicantPhone
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'FL_VIP'
+    column 'DepositGuarantee'
         dataType: string
         summarizeBy: none
-        sourceColumn: FL_VIP
+        sourceColumn: DepositGuarantee
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'FL_LS'
+    column 'IsOver60'
         dataType: string
         summarizeBy: none
-        sourceColumn: FL_LS
+        sourceColumn: IsOver60
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'CD_EA'
+    column 'IsMedical'
         dataType: string
         summarizeBy: none
-        sourceColumn: CD_EA
+        sourceColumn: IsMedical
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'CD_PA'
+    column 'NumberOfCust'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: NumberOfCust
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalVeteran'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteran
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsInterestedInWeatherization'
         dataType: string
         summarizeBy: none
-        sourceColumn: CD_PA
+        sourceColumn: IsInterestedInWeatherization
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'FL_BNKCY'
+    column 'DominionAccountNumber'
         dataType: string
         summarizeBy: none
-        sourceColumn: FL_BNKCY
+        sourceColumn: DominionAccountNumber
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ID_AD_SEQ'
+    column 'BusinessType'
         dataType: string
         summarizeBy: none
-        sourceColumn: ID_AD_SEQ
+        sourceColumn: BusinessType
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'FL_CORP_NM'
+    column 'CustomBusinessType'
         dataType: string
         summarizeBy: none
-        sourceColumn: FL_CORP_NM
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_TOWN'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_TOWN
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'DT_PEND_SO'
-        dataType: dateTime
-        summarizeBy: none
-        sourceColumn: DT_PEND_SO
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'DT_PEND_NPSO'
-        dataType: dateTime
-        summarizeBy: none
-        sourceColumn: DT_PEND_NPSO
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_BAD_DEBT'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_BAD_DEBT
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_SPEC_ACCT'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_SPEC_ACCT
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_RO'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_RO
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'FL_EMPL'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: FL_EMPL
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_NPSO'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_NPSO
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_LPP_STAT'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_LPP_STAT
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'FL_CAPP'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: FL_CAPP
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'QY_PWQ'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: QY_PWQ
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'ID_PHN_SEQ'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: ID_PHN_SEQ
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'ID_PHN_SEQ_2'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: ID_PHN_SEQ_2
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'ID_FED_TAX'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: ID_FED_TAX
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'FL_ADDTL_CUST'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: FL_ADDTL_CUST
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'FL_DEP_ON_HAND'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: FL_DEP_ON_HAND
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'FL_SCC'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: FL_SCC
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'FL_REP'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: FL_REP
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_CMPNY'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_CMPNY
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'CD_CR_RATING'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CD_CR_RATING
+        sourceColumn: CustomBusinessType
 
         annotation SummarizationSetBy = Automatic
 
@@ -468,14 +404,15 @@ table 'STANDARD ACCOUNT DATA'
 
 
 
-    partition 'STANDARD ACCOUNT DATA' = m
+    partition 'Agency' = m
         mode: import
         source = 
-            // ERROR: name 'table_name' is not defined
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAgency"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AgencyID", Int64.Type}, {"AgencyUserID", type text}, {"AgencyName", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"Zip", type text}, {"Phone", type text}, {"Fax", type text}, {"ContactName", type text}, {"Email", type text}, {"DistributionAgencyID", Int64.Type}, {"DivisionID", Int64.Type}, {"AgencyType", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type text}, {"UpdatedBy", type text}, {"LastUpdated", type text}, {"Season", type text}, {"Date Submitted", type text}, {"FuelType", type text}, {"PaidByEnergyShare", type text}, {"ApplicableYear", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"Type", type text}, {"Applicant Name", type text}, {"EditLink", type text}, {"AmountDueVeteranVoucher", type text}, {"AmountDueDisabilityVoucher", type text}, {"TotalVeteranVoucher", Int64.Type}, {"TotalDisabilityVoucher", Int64.Type}, {"ApplicantAddress", type text}, {"ApplicantCity", type text}, {"ApplicantState", type text}, {"ApplicantZip", type text}, {"ApplicantPhone", type text}, {"DepositGuarantee", type text}, {"IsOver60", type text}, {"IsMedical", type text}, {"NumberOfCust", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalDisabled", Int64.Type}, {"TotalVeteran", Int64.Type}, {"IsInterestedInWeatherization", type text}, {"DominionAccountNumber", type text}, {"BusinessType", type text}, {"CustomBusinessType", type text}})
+				in
+					#"Changed Types"
         
 
 

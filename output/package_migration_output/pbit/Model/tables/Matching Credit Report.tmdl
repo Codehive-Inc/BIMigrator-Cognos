@@ -1,0 +1,116 @@
+table 'Matching Credit Report'
+
+
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantFirstName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantFirstName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantMiddleName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantMiddleName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantLastName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantLastName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantAddress
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantCity'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantCity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantZip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantZip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDue'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDue
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MatchingEnergyCredit'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MatchingEnergyCredit
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Matching Credit Report' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("", "", [Query = "select Agency___MC_Report.AgencyID as AgencyID, Agency___MC_Report.AgencyName as AgencyName, Authorization___MC_Report.ApplicantFirstName as ApplicantFirstName, Authorization___MC_Report.ApplicantMiddleName as ApplicantMiddleName, Authorization___MC_Report.ApplicantLastName as ApplicantLastName, Authorization___MC_Report.ApplicantAddress as ApplicantAddress, Authorization___MC_Report.ApplicantCity as ApplicantCity, Authorization___MC_Report.ApplicantState as ApplicantState, Authorization___MC_Report.ApplicantZip as ApplicantZip, Authorization___MC_Report.AmountDue as AmountDue, Authorization___MC_Report.MatchingEnergyCredit as MatchingEnergyCredit, Authorization___MC_Report.PaidByEnergyShare as PaidByEnergyShare from [Shared_Energy_Share].tblAgency Agency___MC_Report, [Shared_Energy_Share].tblAuthorization Authorization___MC_Report where (Agency___MC_Report.AgencyID = Authorization___MC_Report.AgencyID)"]),
+					#"Changed Types" = Table.TransformColumnTypes(Source, {{"AgencyID", Int64.Type}, {"AgencyName", type text}, {"ApplicantFirstName", type text}, {"ApplicantMiddleName", type text}, {"ApplicantLastName", type text}, {"ApplicantAddress", type text}, {"ApplicantCity", type text}, {"ApplicantState", type text}, {"ApplicantZip", type text}, {"AmountDue", type text}, {"MatchingEnergyCredit", type text}, {"PaidByEnergyShare", type text}}),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(#"Changed Types")
+				in
+					#"Removed Errors"
+        
+
+
+
+    annotation PBI_ResultType = Table

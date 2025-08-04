@@ -1,13 +1,18 @@
 {
-  "name": "CAM Dmail Reporting",
+  "name": "Energy Share",
   "namespaces": [
     {
-      "name": "CAM Dmail Reporting",
+      "name": "Shared_Energy_Share",
       "type": "",
       "id": ""
     },
     {
-      "name": "Data Layer",
+      "name": "Database Layer",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Presentation Layer",
       "type": "",
       "id": ""
     }
@@ -16,14 +21,16 @@
     {
       "id": "",
       "type": "",
-      "cmDataSource": "ELECTRIC_NON_GENERATION_CBMS_MIRROR",
-      "schema": "CTKINP"
+      "cmDataSource": "Shared_Energy_Share",
+      "schema": "dbo",
+      "catalog": ""
     },
     {
       "id": "",
       "type": "",
-      "cmDataSource": "ELECTRIC_NON_GENERATION_CBMS_MIRROR",
-      "schema": "CTKINP"
+      "cmDataSource": "Shared_Energy_Share",
+      "schema": "dbo",
+      "catalog": ""
     }
   ]
 }

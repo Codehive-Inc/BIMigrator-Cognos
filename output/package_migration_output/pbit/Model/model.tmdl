@@ -6,17 +6,26 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["CU01TB01", "CU04TB22", "CU04TB70", "STANDARD ACCOUNT DATA", "BILLABLE ELECTRIC", "INSTALLED METER"]
+annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown", "Payee Report", "Matching Credit Report"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
 
-ref table 'CU01TB01'
-ref table 'CU04TB22'
-ref table 'CU04TB70'
-ref table 'STANDARD ACCOUNT DATA'
-ref table 'BILLABLE ELECTRIC'
-ref table 'INSTALLED METER'
+ref table 'Agency'
+ref table 'tblAgencyTerritory'
+ref table 'Assistance'
+ref table 'Authorization'
+ref table 'Financial'
+ref table 'Territory'
+ref table 'Vendor'
+ref table 'vwAssistanceReport'
+ref table 'vwAuthorizationsByAgency'
+ref table 'vwFinancialReport'
+ref table 'vwPayeeReport'
+ref table 'vwFinancialReportDrillDown'
+ref table 'vwAssistanceReportDrillDown'
+ref table 'Payee Report'
+ref table 'Matching Credit Report'
 
 ref cultureInfo en-US

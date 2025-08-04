@@ -427,7 +427,7 @@ class MQueryConverter:
             return formatted_query
         
         except Exception as e:
-            self.logger.error(f"Error cleaning M-query for table {table_name}: {str(e)}")
+            self.logger.error(f"Error cleaning M-query: {str(e)}")
             return m_query  # Return the original query if cleaning fails
     
     def _format_table_expression(self, expression):

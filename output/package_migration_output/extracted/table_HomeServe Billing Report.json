@@ -1,16 +1,16 @@
 {
-  "source_name": "INSTALLED METER",
-  "name": "INSTALLED METER",
+  "source_name": "HomeServe Billing Report",
+  "name": "HomeServe Billing Report",
   "lineage_tag": null,
   "description": null,
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "ID_MTR",
+      "source_name": "Bill Period",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_MTR",
+      "source_column": "Bill Period",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -22,11 +22,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_MFG",
+      "source_name": "Billing Period Date",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_MFG",
+      "source_column": "Billing Period Date",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -38,11 +38,11 @@
       }
     },
     {
-      "source_name": "CD_SVC_TYP",
+      "source_name": "State",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_SVC_TYP",
+      "source_column": "State",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -54,27 +54,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_SET",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_SET",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ID_PREM",
+      "source_name": "Fee Type",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_PREM",
+      "source_column": "Fee Type",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -86,11 +70,59 @@
       }
     },
     {
-      "source_name": "ID_SPT",
+      "source_name": "Total",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Total Home Serve Fee",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total Home Serve Fee",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Total Dominion Fee",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total Dominion Fee",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Bill Period Month",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_SPT",
+      "source_column": "Bill Period Month",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -102,27 +134,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_REMV",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_REMV",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QY_MTR_REMV_INDX",
+      "source_name": "Bill Month (YYYY-Mon)",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QY_MTR_REMV_INDX",
+      "source_column": "Bill Month (YYYY-Mon)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -134,11 +150,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_REMV_RSN",
+      "source_name": "Bill Period (YYYYMMDD)",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_REMV_RSN",
+      "source_column": "Bill Period (YYYYMMDD)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -150,11 +166,11 @@
       }
     },
     {
-      "source_name": "ID_MTR",
+      "source_name": "Bill Period",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_MTR",
+      "source_column": "Bill Period",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -166,11 +182,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_MFG",
+      "source_name": "Billing Period Date",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_MFG",
+      "source_column": "Billing Period Date",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -182,11 +198,11 @@
       }
     },
     {
-      "source_name": "CD_SVC_TYP",
+      "source_name": "State",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_SVC_TYP",
+      "source_column": "State",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -198,27 +214,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_SET",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_SET",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ID_PREM",
+      "source_name": "Fee Type",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_PREM",
+      "source_column": "Fee Type",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -230,11 +230,59 @@
       }
     },
     {
-      "source_name": "ID_SPT",
+      "source_name": "Total",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Total Home Serve Fee",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total Home Serve Fee",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Total Dominion Fee",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total Dominion Fee",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Bill Period Month",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "ID_SPT",
+      "source_column": "Bill Period Month",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -246,27 +294,11 @@
       }
     },
     {
-      "source_name": "DT_MTR_REMV",
-      "datatype": "dateTime",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "DT_MTR_REMV",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "QY_MTR_REMV_INDX",
+      "source_name": "Bill Month (YYYY-Mon)",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QY_MTR_REMV_INDX",
+      "source_column": "Bill Month (YYYY-Mon)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -278,11 +310,11 @@
       }
     },
     {
-      "source_name": "CD_MTR_REMV_RSN",
+      "source_name": "Bill Period (YYYYMMDD)",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "CD_MTR_REMV_RSN",
+      "source_column": "Bill Period (YYYYMMDD)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -297,9 +329,9 @@
   "hierarchies": [],
   "partitions": [
     {
-      "name": "INSTALLED METER",
+      "name": "HomeServe Billing Report",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN, ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}, {\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select [Bill Period], [Billing Period Date], [State], [Fee Type], [Total], [Total Home Serve Fee], [Total Dominion Fee], [Bill Period Month], [Bill Month (YYYY - Mon)], [Bill Period (YYYYMMDD)], [Bill Period], [Billing Period Date], [State], [Fee Type], [Total], [Total Home Serve Fee], [Total Dominion Fee], [Bill Period Month], [Bill Month (YYYY - Mon)], [Bill Period (YYYYMMDD)] from [HomeServe Billing Report]\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"Bill Period\", type text}, {\"Billing Period Date\", type text}, {\"State\", type text}, {\"Fee Type\", type text}, {\"Total\", Int64.Type}, {\"Total Home Serve Fee\", Int64.Type}, {\"Total Dominion Fee\", Int64.Type}, {\"Bill Period Month\", type text}, {\"Bill Month (YYYY - Mon)\", type text}, {\"Bill Period (YYYYMMDD)\", type text}, {\"Bill Period\", type text}, {\"Billing Period Date\", type text}, {\"State\", type text}, {\"Fee Type\", type text}, {\"Total\", Int64.Type}, {\"Total Home Serve Fee\", Int64.Type}, {\"Total Dominion Fee\", Int64.Type}, {\"Bill Period Month\", type text}, {\"Bill Month (YYYY - Mon)\", type text}, {\"Bill Period (YYYYMMDD)\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
     }
   ],
   "has_widget_serialization": false,

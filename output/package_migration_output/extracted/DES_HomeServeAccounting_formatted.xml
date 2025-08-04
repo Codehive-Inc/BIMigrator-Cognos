@@ -1,0 +1,502 @@
+<?xml version="1.0" ?>
+<project xmlns="http://www.developer.cognos.com/schemas/bmt/60/12" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" containsDynamicContent="false" xsi:schemaLocation="http://www.developer.cognos.com/schemas/bmt/60/12 BMTModelSpecification.xsd">
+  <name>DES_HomeServeAccounting</name>
+  <property name="included" type="hidden">true</property>
+  <locales>
+    <locale>en</locale>
+  </locales>
+  <defaultLocale>en</defaultLocale>
+  <physicalSources/>
+  <namespace>
+    <name locale="en">DES_HomeServeAccounting</name>
+    <lastChanged>2020-08-13T05:58:47</lastChanged>
+    <lastChangedBy>PARAG01</lastChangedBy>
+    <property name="included" type="hidden">true</property>
+    <namespace>
+      <name locale="en">Data Layer</name>
+      <lastChanged>2020-08-13T05:59:12</lastChanged>
+      <lastChangedBy>PARAG01</lastChangedBy>
+      <querySubject status="valid">
+        <name locale="en">V_HS_SUMMARY_REPORT</name>
+        <lastChanged>2021-02-09T08:23:30</lastChanged>
+        <lastChangedBy>PARAG01</lastChangedBy>
+        <definition>
+          <dbQuery>
+            <sources>
+              <dataSourceRef>[].[dataSources].[DES_HomeServeAccounting]</dataSourceRef>
+            </sources>
+            <sql type="cognos">
+              Select 
+              <column>*</column>
+              from
+              <table>[DES_HomeServeAccounting].V_HS_SUMMARY_REPORT</table>
+            </sql>
+            <tableType>view</tableType>
+          </dbQuery>
+        </definition>
+        <determinants/>
+        <queryItem>
+          <name locale="en">VHSR_BILLING_PERIOD</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_BILLING_PERIOD</externalName>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>25</precision>
+          <scale>0</scale>
+          <size>52</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">VHSR_BILLING_TS</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_BILLING_TS</externalName>
+          <usage>identifier</usage>
+          <datatype>dateTime</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>12</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">VHSR_UDC_STATE</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_UDC_STATE</externalName>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>25</precision>
+          <scale>0</scale>
+          <size>52</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">VHSR_FEE_TYPE</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_FEE_TYPE</externalName>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>50</precision>
+          <scale>0</scale>
+          <size>102</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">VHSR_TOTAL_MONTHLY_FEE</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_TOTAL_MONTHLY_FEE</externalName>
+          <usage>fact</usage>
+          <datatype>int64</datatype>
+          <precision>0</precision>
+          <scale>2</scale>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">VHSR_TOTAL_HS_FEE</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_TOTAL_HS_FEE</externalName>
+          <usage>fact</usage>
+          <datatype>int64</datatype>
+          <precision>0</precision>
+          <scale>2</scale>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">VHSR_TOTAL_DOM_FEE</name>
+          <lastChanged>2020-08-13T05:58:47</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>VHSR_TOTAL_DOM_FEE</externalName>
+          <usage>fact</usage>
+          <datatype>int64</datatype>
+          <precision>0</precision>
+          <scale>2</scale>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+      </querySubject>
+    </namespace>
+    <namespace>
+      <name locale="en">Business Layer</name>
+      <lastChanged>2020-08-13T05:59:25</lastChanged>
+      <lastChangedBy>PARAG01</lastChangedBy>
+      <property name="included" type="hidden">true</property>
+      <querySubject status="valid">
+        <name locale="en">HomeServe Billing Report</name>
+        <lastChanged>2021-02-09T08:23:22</lastChanged>
+        <lastChangedBy>PARAG01</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <definition>
+          <modelQuery>
+            <sql type="cognos">
+              Select 
+              <column>*</column>
+              from
+              <table/>
+            </sql>
+          </modelQuery>
+        </definition>
+        <queryItem>
+          <name locale="en">Bill Period</name>
+          <lastChanged>2020-08-13T06:01:53</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_BILLING_PERIOD]</refobj>
+          </expression>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>25</precision>
+          <scale>0</scale>
+          <size>52</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Billing Period Date</name>
+          <lastChanged>2020-08-13T06:02:03</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_BILLING_TS]</refobj>
+          </expression>
+          <usage>identifier</usage>
+          <datatype>dateTime</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>12</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">State</name>
+          <lastChanged>2020-08-13T06:02:07</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_UDC_STATE]</refobj>
+          </expression>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>25</precision>
+          <scale>0</scale>
+          <size>52</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Fee Type</name>
+          <lastChanged>2020-08-13T06:02:20</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_FEE_TYPE]</refobj>
+          </expression>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>50</precision>
+          <scale>0</scale>
+          <size>102</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Total</name>
+          <lastChanged>2020-08-13T06:02:28</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_TOTAL_MONTHLY_FEE]</refobj>
+          </expression>
+          <usage>fact</usage>
+          <datatype>int64</datatype>
+          <precision>0</precision>
+          <scale>2</scale>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Total Home Serve Fee</name>
+          <lastChanged>2020-08-13T06:02:38</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_TOTAL_HS_FEE]</refobj>
+          </expression>
+          <usage>fact</usage>
+          <datatype>int64</datatype>
+          <precision>0</precision>
+          <scale>2</scale>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Total Dominion Fee</name>
+          <lastChanged>2020-08-13T06:03:05</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_TOTAL_DOM_FEE]</refobj>
+          </expression>
+          <usage>fact</usage>
+          <datatype>int64</datatype>
+          <precision>0</precision>
+          <scale>2</scale>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Bill Period Month</name>
+          <lastChanged>2020-08-13T06:04:22</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            trunc(
+            <refobj>[Business Layer].[HomeServe Billing Report].[Billing Period Date]</refobj>
+             ,'MM')
+          </expression>
+          <usage>identifier</usage>
+          <datatype>dateTime</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>12</size>
+          <nullable>true</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Bill Month (YYYY-Mon)</name>
+          <lastChanged>2020-08-13T06:06:28</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            to_char(
+            <refobj>[Business Layer].[HomeServe Billing Report].[Billing Period Date]</refobj>
+              , 'Mon - YYYY')
+          </expression>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>19</precision>
+          <scale>0</scale>
+          <size>40</size>
+          <nullable>true</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+        <queryItem>
+          <name locale="en">Bill Period (YYYYMMDD)</name>
+          <lastChanged>2020-08-13T10:12:16</lastChanged>
+          <lastChangedBy>PARAG01</lastChangedBy>
+          <property name="included" type="hidden">true</property>
+          <expression>
+            to_char( 
+            <refobj>[Business Layer].[HomeServe Billing Report].[Bill Period Month]</refobj>
+              , 'YYYYMMDD')
+          </expression>
+          <usage>attribute</usage>
+          <datatype>characterLength16</datatype>
+          <precision>8</precision>
+          <scale>0</scale>
+          <size>18</size>
+          <nullable>true</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+          <collationSequenceName>en</collationSequenceName>
+          <collationSequenceLevel>1</collationSequenceLevel>
+        </queryItem>
+      </querySubject>
+    </namespace>
+  </namespace>
+  <dataSources>
+    <dataSource>
+      <name>DES_HomeServeAccounting</name>
+      <cmDataSource>DES_HomeServeAccounting</cmDataSource>
+      <schema>HSACCT</schema>
+      <type>
+        <queryType>relational</queryType>
+        <interface>OR</interface>
+      </type>
+    </dataSource>
+  </dataSources>
+  <parameterMaps>
+    <parameterMap hidden="true">
+      <name>_env</name>
+      <!--This reserved map supplies default values for session variables.-->
+    </parameterMap>
+    <parameterMap hidden="true">
+      <name>_governor</name>
+      <!--This reserved map specifies query governor limits.-->
+    </parameterMap>
+  </parameterMaps>
+  <securityViews>
+    <securityView>
+      <name>DES_HomeServeAccounting</name>
+      <definition>
+        <set includeRule="include">
+          <refobj>[DES_HomeServeAccounting]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Bill Period]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Billing Period Date]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[State]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Fee Type]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Total]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Total Home Serve Fee]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Total Dominion Fee]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Bill Period Month]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Bill Month (YYYY-Mon)]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report].[Bill Period (YYYYMMDD)]</refobj>
+          <refobj>[Business Layer].[HomeServe Billing Report]</refobj>
+          <refobj>[Business Layer]</refobj>
+        </set>
+        <set includeRule="hide">
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_BILLING_PERIOD]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_BILLING_TS]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_UDC_STATE]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_FEE_TYPE]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_TOTAL_MONTHLY_FEE]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_TOTAL_HS_FEE]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT].[VHSR_TOTAL_DOM_FEE]</refobj>
+          <refobj>[Data Layer].[V_HS_SUMMARY_REPORT]</refobj>
+          <refobj>[Data Layer]</refobj>
+        </set>
+      </definition>
+      <access/>
+      <functionSets>
+        <functionSet>
+          <functionSetID>V_Aster</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_DB2</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Exasol</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Greenplum</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Informix</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_MSAccess</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_MySQL</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Netezza</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Oracle</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Paraccel</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Postgres</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Redbrick</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_SAPBW</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_SQLServer</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Sybase</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Teradata</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Vectorwise</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Vertica</functionSetID>
+        </functionSet>
+      </functionSets>
+      <qosOverrides/>
+    </securityView>
+  </securityViews>
+  <packages>
+    <package>
+      <name locale="en">DES_HomeServeAccounting</name>
+      <description locale="en"/>
+      <lastChanged>2021-02-09T08:23:39</lastChanged>
+      <lastChangedBy>PARAG01</lastChangedBy>
+      <screenTip locale="en"/>
+      <lastPublished>2020-08-13T10:34:19</lastPublished>
+      <lastPublishedCMPath>/content</lastPublishedCMPath>
+      <locales>
+        <locale>en</locale>
+      </locales>
+      <definition>
+        <viewref>[].[securityViews].[DES_HomeServeAccounting]</viewref>
+      </definition>
+      <adminAccess/>
+      <useV5DataServer>false</useV5DataServer>
+    </package>
+  </packages>
+</project>
