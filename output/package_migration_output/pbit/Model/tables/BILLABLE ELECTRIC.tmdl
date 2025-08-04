@@ -127,11 +127,12 @@ table 'BILLABLE ELECTRIC'
     partition 'BILLABLE ELECTRIC' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table BILLABLE ELECTRIC: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x105c4c590>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = Sql.Database("", "", [Query = "Select ID_PREM, ID_SPT, TS_BILL_UNIT, ID_BA, CD_BILLED, QY_DAYS_USED, DT_BILL_END, CD_REBATE_RSN, DT_BU_STAT, CD_RDG_SRCE, CD_RDG_INFO, CD_RDG_RSN, QY_TOT_UNIT, CD_SEASON, FL_PRORT, ID_PREM, ID_SPT, TS_BILL_UNIT, ID_BA, CD_BILLED, QY_DAYS_USED, DT_BILL_END, CD_REBATE_RSN, DT_BU_STAT, CD_RDG_SRCE, CD_RDG_INFO, CD_RDG_RSN, QY_TOT_UNIT, CD_SEASON, FL_PRORT from [BILLABLE ELECTRIC]"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ID_PREM", type text}, {"ID_SPT", type text}, {"TS_BILL_UNIT", type text}, {"ID_BA", type text}, {"CD_BILLED", type text}, {"QY_DAYS_USED", type text}, {"DT_BILL_END", type datetime}, {"CD_REBATE_RSN", type text}, {"DT_BU_STAT", type datetime}, {"CD_RDG_SRCE", type text}, {"CD_RDG_INFO", type text}, {"CD_RDG_RSN", type text}, {"QY_TOT_UNIT", type text}, {"CD_SEASON", type text}, {"FL_PRORT", type text}, {"ID_PREM", type text}, {"ID_SPT", type text}, {"TS_BILL_UNIT", type text}, {"ID_BA", type text}, {"CD_BILLED", type text}, {"QY_DAYS_USED", type text}, {"DT_BILL_END", type datetime}, {"CD_REBATE_RSN", type text}, {"DT_BU_STAT", type datetime}, {"CD_RDG_SRCE", type text}, {"CD_RDG_INFO", type text}, {"CD_RDG_RSN", type text}, {"QY_TOT_UNIT", type text}, {"CD_SEASON", type text}, {"FL_PRORT", type text}})
+				in
+					#"Changed Types"
         
 
 

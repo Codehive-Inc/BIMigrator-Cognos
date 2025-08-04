@@ -15,9 +15,9 @@
     {
       "id": "Relationship_CU04TB70_CU04TB22",
       "from_table": "CU04TB70",
-      "from_column": "ID_PREM",
+      "from_column": "ID_SPT",
       "to_table": "CU04TB22",
-      "to_column": "ID_PREM",
+      "to_column": "ID_SPT",
       "cardinality_type": "fromCardinality",
       "cardinality_value": "many",
       "cross_filtering_behavior": "BothDirections",

@@ -5,8 +5,8 @@ relationship Relationship_CU01TB01_CU04TB70
 	fromCardinality: many
 	isActive: true
 relationship Relationship_CU04TB70_CU04TB22
-	fromColumn: 'CU04TB70'.ID_PREM
-	toColumn: 'CU04TB22'.ID_PREM
+	fromColumn: 'CU04TB70'.ID_SPT
+	toColumn: 'CU04TB22'.ID_SPT
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true

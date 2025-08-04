@@ -293,5 +293,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "CU04TB70",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN, ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN from CU04TB70\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}, {\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

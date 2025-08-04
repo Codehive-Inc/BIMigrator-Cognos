@@ -79,11 +79,12 @@ table 'INSTALLED METER'
     partition 'INSTALLED METER' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table INSTALLED METER: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x105cfeff0>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
-			in
-				Source
+            	let
+					Source = Sql.Database("", "", [Query = "Select ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN, ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN from [INSTALLED METER]"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ID_MTR", type text}, {"CD_MTR_MFG", type text}, {"CD_SVC_TYP", type text}, {"DT_MTR_SET", type datetime}, {"ID_PREM", type text}, {"ID_SPT", type text}, {"DT_MTR_REMV", type datetime}, {"QY_MTR_REMV_INDX", type text}, {"CD_MTR_REMV_RSN", type text}, {"ID_MTR", type text}, {"CD_MTR_MFG", type text}, {"CD_SVC_TYP", type text}, {"DT_MTR_SET", type datetime}, {"ID_PREM", type text}, {"ID_SPT", type text}, {"DT_MTR_REMV", type datetime}, {"QY_MTR_REMV_INDX", type text}, {"CD_MTR_REMV_RSN", type text}})
+				in
+					#"Changed Types"
         
 
 
