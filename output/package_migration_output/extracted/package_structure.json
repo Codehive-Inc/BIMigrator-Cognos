@@ -1,13 +1,18 @@
 {
-  "name": "Energy Share",
+  "name": "Shared OFS Reporting",
   "namespaces": [
     {
-      "name": "Shared_Energy_Share",
+      "name": "Shared OFS Reporting",
       "type": "",
       "id": ""
     },
     {
       "name": "Database Layer",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Business Layer",
       "type": "",
       "id": ""
     },
@@ -21,16 +26,14 @@
     {
       "id": "",
       "type": "",
-      "cmDataSource": "Shared_Energy_Share",
-      "schema": "dbo",
-      "catalog": ""
+      "cmDataSource": "Shared OFS Reporting",
+      "schema": "CDM"
     },
     {
       "id": "",
       "type": "",
-      "cmDataSource": "Shared_Energy_Share",
-      "schema": "dbo",
-      "catalog": ""
+      "cmDataSource": "Shared OFS Reporting",
+      "schema": "CDM"
     }
   ]
 }

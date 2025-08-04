@@ -286,17 +286,19 @@ class LLMServiceClient:
             self.logger.info(f"Complete API response: {json.dumps(log_result, indent=2)}")
             
             if 'm_query' in result:
-                self.logger.info(f"Successfully generated M-query for table {table_name}")
+                self.logger.info(f"[MQUERY_TRACKING] Successfully generated M-query for table {table_name}")
+                # Log the actual M-query content
+                self.logger.info(f"[MQUERY_TRACKING] LLM service generated M-query for table {table_name}: {result['m_query'][:200]}...")
                 # Log performance notes if available
                 if 'performance_notes' in result and result['performance_notes']:
-                    self.logger.info(f"Performance notes: {result['performance_notes']}")
+                    self.logger.info(f"[MQUERY_TRACKING] Performance notes: {result['performance_notes']}")
                 # Log confidence score
                 if 'confidence' in result:
-                    self.logger.info(f"Confidence score: {result['confidence']}")
+                    self.logger.info(f"[MQUERY_TRACKING] Confidence score: {result['confidence']}")
                 return result['m_query']
             else:
                 error_msg = f"LLM service response missing 'm_query' field for table {table_name}: {result}"
-                self.logger.error(error_msg)
+                self.logger.error(f"[MQUERY_TRACKING] {error_msg}")
                 raise Exception(error_msg)
                 
         except requests.exceptions.RequestException as e:

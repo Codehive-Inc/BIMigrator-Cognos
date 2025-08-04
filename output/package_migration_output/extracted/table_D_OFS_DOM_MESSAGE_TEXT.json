@@ -1,0 +1,148 @@
+{
+  "source_name": "D_OFS_DOM_MESSAGE_TEXT",
+  "name": "D_OFS_DOM_MESSAGE_TEXT",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "MESSAGE_MQID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MESSAGE_MQID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MESSAGE_SUBJECT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MESSAGE_SUBJECT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MESSAGE_TEXT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MESSAGE_TEXT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MESSAGE_MQID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MESSAGE_MQID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MESSAGE_SUBJECT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MESSAGE_SUBJECT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MESSAGE_TEXT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MESSAGE_TEXT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "D_OFS_DOM_MESSAGE_TEXT",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tI'm sorry,\n\t\t\t\t\tbut there seems to be an error\n\t\t\t\tin\n\t\t\t\t\tthe provided table information. The columns \"MESSAGE_MQID\", \"MESSAGE_SUBJECT\", \"MESSAGE_TEXT\", and \"SYS_UPDATE_TS\" are listed twice, which is not valid for a table structure. Please provide the correct and unique column names for the table."
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

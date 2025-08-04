@@ -1,0 +1,59 @@
+table 'D_OFS_PROPERTY'
+
+
+    column 'PROP_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_LABEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_LABEL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_ENTITY_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_ENTITY_TYPE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_NAME
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'D_OFS_PROPERTY' = m
+        mode: import
+        source = 
+            	let
+					I'm sorry,
+					but there seems to be a misunderstanding
+				in
+					the provided information. The SQL query or connection details are missing, which are essential to generate the M - Query. Please provide the SQL query or the necessary connection details to proceed.
+        
+
+
+
+    annotation PBI_ResultType = Table

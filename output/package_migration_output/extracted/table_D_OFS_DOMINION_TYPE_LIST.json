@@ -1,0 +1,212 @@
+{
+  "source_name": "D_OFS_DOMINION_TYPE_LIST",
+  "name": "D_OFS_DOMINION_TYPE_LIST",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "TYPE_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_LANG",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_LANG",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_LABEL",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_LABEL",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_TEXT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_TEXT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_NAME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_NAME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_LANG",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_LANG",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_LABEL",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_LABEL",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_TEXT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_TEXT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TYPE_NAME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TYPE_NAME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "D_OFS_DOMINION_TYPE_LIST",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select TYPE_ID, TYPE_LANG, TYPE_LABEL, TYPE_TEXT, TYPE_NAME, SYS_UPDATE_TS, TYPE_ID, TYPE_LANG, TYPE_LABEL, TYPE_TEXT, TYPE_NAME, SYS_UPDATE_TS from D_OFS_DOMINION_TYPE_LIST\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"TYPE_ID\", type text}, {\"TYPE_LANG\", type text}, {\"TYPE_LABEL\", type text}, {\"TYPE_TEXT\", type text}, {\"TYPE_NAME\", type text}, {\"SYS_UPDATE_TS\", type text}, {\"TYPE_ID\", type text}, {\"TYPE_LANG\", type text}, {\"TYPE_LABEL\", type text}, {\"TYPE_TEXT\", type text}, {\"TYPE_NAME\", type text}, {\"SYS_UPDATE_TS\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

@@ -1,0 +1,12 @@
+relationship Relationship_F_OFS_DOM_ACTIVITY_DTL_METER_F_OFS_DOMINION_ACTIVITY_DETAIL
+	fromColumn: 'F_OFS_DOM_ACTIVITY_DTL_METER'.APPT_AID
+	toColumn: 'F_OFS_DOMINION_ACTIVITY_DETAIL'.APPT_AID
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+relationship Relationship_Resource Hierarchy_Meter Activity (Fact)
+	fromColumn: 'Resource Hierarchy'.RESOURCE_EXTERNAL_ID
+	toColumn: 'Meter Activity (Fact)'.RESOURCE_EXTERNAL_ID
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true

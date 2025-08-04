@@ -39,28 +39,30 @@ class MQueryConverter:
         Raises:
             Exception: If the LLM service fails or returns invalid results
         """
-        self.logger.info(f"Converting source query to M-query for table: {table.name}")
+        self.logger.info(f"[MQUERY_TRACKING] Converting source query to M-query for table: {table.name}")
         
         # Check if table has source_query attribute
         if not hasattr(table, 'source_query'):
             error_msg = f"Table {table.name} does not have a source_query attribute"
-            self.logger.error(error_msg)
+            self.logger.error(f"[MQUERY_TRACKING] {error_msg}")
             raise Exception(error_msg)
             
         # Log if source_query is empty
         if not table.source_query:
-            self.logger.info(f"Table {table.name} has empty source_query - this will be handled by the LLM service")
+            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} has empty source_query - this will be handled by the LLM service")
+        else:
+            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} source_query: {table.source_query[:200]}...")
         
         # Prepare enhanced context for LLM service
         context = self._build_enhanced_context(table, report_spec, data_sample)
         
         # Log the context being sent to the LLM service
-        self.logger.info(f"Enhanced context for table {table.name}:")
-        self.logger.info(f"  - Table name: {context['table_name']}")
-        self.logger.info(f"  - Columns: {json.dumps([col['name'] for col in context['columns']], indent=2)}")
-        self.logger.info(f"  - Source query: {context['source_query'][:100]}..." if context.get('source_query') else "  - Source query: None")
+        self.logger.info(f"[MQUERY_TRACKING] Enhanced context for table {table.name}:")
+        self.logger.info(f"[MQUERY_TRACKING]   - Table name: {context['table_name']}")
+        self.logger.info(f"[MQUERY_TRACKING]   - Columns: {json.dumps([col['name'] for col in context['columns']], indent=2)}")
+        self.logger.info(f"[MQUERY_TRACKING]   - Source query: {context['source_query'][:200]}..." if context.get('source_query') else "[MQUERY_TRACKING]   - Source query: None")
         if 'source_info' in context:
-            self.logger.info(f"  - Source type: {context['source_info']['source_type']}")
+            self.logger.info(f"[MQUERY_TRACKING]   - Source type: {context['source_info']['source_type']}")
         
         # Add options for enhanced M-query generation
         context['options'] = {
@@ -71,12 +73,13 @@ class MQueryConverter:
         }
         
         # Call LLM service to generate M-query
-        self.logger.info(f"Sending request to LLM service for enhanced M-query generation for table {table.name}")
+        self.logger.info(f"[MQUERY_TRACKING] Sending request to LLM service for enhanced M-query generation for table {table.name}")
         m_query = self.llm_service_client.generate_m_query(context)
+        self.logger.info(f"[MQUERY_TRACKING] Raw M-query from LLM service for table {table.name}: {m_query[:200]}...")
         
         # Clean and format the M-query
         cleaned_m_query = self._clean_m_query(m_query)
-        self.logger.info(f"Successfully generated M-query for table {table.name}")
+        self.logger.info(f"[MQUERY_TRACKING] Cleaned M-query for table {table.name}: {cleaned_m_query[:200]}...")
         
         return cleaned_m_query
     
@@ -343,7 +346,7 @@ class MQueryConverter:
         """
         try:
             # Log original query for debugging
-            self.logger.debug(f"Original M-query before cleaning: {m_query}")
+            self.logger.info(f"[MQUERY_TRACKING] Original M-query before cleaning: {m_query[:200]}...")
             
             # Fix comment formatting - replace spaced comment delimiters and ensure no spaces
             m_query = m_query.replace('/ *', '/*').replace('* /', '*/')
@@ -358,7 +361,7 @@ class MQueryConverter:
             let_in_parts = re.split(r'\s+in\s+', m_query, 1)
             
             if len(let_in_parts) != 2:
-                self.logger.warning(f"M-query for table {table_name} doesn't have the expected 'let...in' structure")
+                self.logger.warning(f"[MQUERY_TRACKING] M-query doesn't have the expected 'let...in' structure")
                 return m_query
                 
             let_part = let_in_parts[0].strip()

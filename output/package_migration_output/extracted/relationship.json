@@ -1,11 +1,11 @@
 {
   "relationships": [
     {
-      "id": "Relationship_CU01TB01_CU04TB70",
-      "from_table": "CU01TB01",
-      "from_column": "ID_PREM",
-      "to_table": "CU04TB70",
-      "to_column": "ID_PREM",
+      "id": "Relationship_F_OFS_DOM_ACTIVITY_DTL_METER_F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "from_table": "F_OFS_DOM_ACTIVITY_DTL_METER",
+      "from_column": "APPT_AID",
+      "to_table": "F_OFS_DOMINION_ACTIVITY_DETAIL",
+      "to_column": "APPT_AID",
       "cardinality_type": "fromCardinality",
       "cardinality_value": "many",
       "cross_filtering_behavior": "BothDirections",
@@ -13,11 +13,11 @@
       "join_on_date_behavior": null
     },
     {
-      "id": "Relationship_CU04TB70_CU04TB22",
-      "from_table": "CU04TB70",
-      "from_column": "ID_SPT",
-      "to_table": "CU04TB22",
-      "to_column": "ID_SPT",
+      "id": "Relationship_Resource Hierarchy_Meter Activity (Fact)",
+      "from_table": "Resource Hierarchy",
+      "from_column": "RESOURCE_EXTERNAL_ID",
+      "to_table": "Meter Activity (Fact)",
+      "to_column": "RESOURCE_EXTERNAL_ID",
       "cardinality_type": "fromCardinality",
       "cardinality_value": "many",
       "cross_filtering_behavior": "BothDirections",

@@ -1,0 +1,68 @@
+table 'D_OFS_DOMINION_TYPE_LIST'
+
+
+    column 'TYPE_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_LANG'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_LANG
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_LABEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_LABEL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_TEXT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_TEXT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_NAME
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'D_OFS_DOMINION_TYPE_LIST' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("", "", [Query = "Select TYPE_ID, TYPE_LANG, TYPE_LABEL, TYPE_TEXT, TYPE_NAME, SYS_UPDATE_TS, TYPE_ID, TYPE_LANG, TYPE_LABEL, TYPE_TEXT, TYPE_NAME, SYS_UPDATE_TS from D_OFS_DOMINION_TYPE_LIST"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"TYPE_ID", type text}, {"TYPE_LANG", type text}, {"TYPE_LABEL", type text}, {"TYPE_TEXT", type text}, {"TYPE_NAME", type text}, {"SYS_UPDATE_TS", type text}, {"TYPE_ID", type text}, {"TYPE_LANG", type text}, {"TYPE_LABEL", type text}, {"TYPE_TEXT", type text}, {"TYPE_NAME", type text}, {"SYS_UPDATE_TS", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

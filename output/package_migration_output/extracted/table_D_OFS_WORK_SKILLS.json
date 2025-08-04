@@ -1,0 +1,180 @@
+{
+  "source_name": "D_OFS_WORK_SKILLS",
+  "name": "D_OFS_WORK_SKILLS",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "PID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "WORK_SKILL_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "WORK_SKILL_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RATIO",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RATIO",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PROVIDER_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PROVIDER_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "WORK_SKILL_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "WORK_SKILL_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RATIO",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RATIO",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PROVIDER_ID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PROVIDER_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SYS_UPDATE_TS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SYS_UPDATE_TS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "D_OFS_WORK_SKILLS",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select PID, WORK_SKILL_ID, RATIO, PROVIDER_ID, SYS_UPDATE_TS, PID, WORK_SKILL_ID, RATIO, PROVIDER_ID, SYS_UPDATE_TS from D_OFS_WORK_SKILLS\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"PID\", type text}, {\"WORK_SKILL_ID\", type text}, {\"RATIO\", type text}, {\"PROVIDER_ID\", type text}, {\"SYS_UPDATE_TS\", type text}, {\"PID\", type text}, {\"WORK_SKILL_ID\", type text}, {\"RATIO\", type text}, {\"PROVIDER_ID\", type text}, {\"SYS_UPDATE_TS\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

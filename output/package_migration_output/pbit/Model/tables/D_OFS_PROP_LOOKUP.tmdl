@@ -1,0 +1,60 @@
+table 'D_OFS_PROP_LOOKUP'
+
+
+    column 'PROP_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_LID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_LID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_INDEX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_INDEX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROP_TEXT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROP_TEXT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'D_OFS_PROP_LOOKUP' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("", "", [Query = "Select PROP_ID, PROP_LID, PROP_INDEX, PROP_TEXT, SYS_UPDATE_TS, PROP_ID, PROP_LID, PROP_INDEX, PROP_TEXT, SYS_UPDATE_TS"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"PROP_ID", type text}, {"PROP_LID", type text}, {"PROP_INDEX", type text}, {"PROP_TEXT", type text}, {"SYS_UPDATE_TS", type text}, {"PROP_ID", type text}, {"PROP_LID", type text}, {"PROP_INDEX", type text}, {"PROP_TEXT", type text}, {"SYS_UPDATE_TS", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

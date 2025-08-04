@@ -196,6 +196,10 @@ class ModelFileGenerator:
                 # Render table template
                 content = self.template_engine.render('table', context)
 
+                # Log the M-query being written to the TMDL file
+                if 'm_expression' in context:
+                    self.logger.info(f"[MQUERY_TRACKING] M-query being written to TMDL for table {table.name}: {context['m_expression'][:200]}...")
+                
                 # Use report name for table file if available, otherwise use original table name
                 table_name = table.name
                 if report_name and table.name == "Data":
@@ -536,16 +540,17 @@ class ModelFileGenerator:
             
         # Use the provided M-query or generate it if not provided
         if m_query is not None:
-            self.logger.info(f"Using pre-generated M-query for table {table.name}")
+            self.logger.info(f"[MQUERY_TRACKING] Using pre-generated M-query for table {table.name}: {m_query[:200]}...")
             m_expression = m_query
         else:
             # Fallback to generating M-query if not provided
             try:
-                self.logger.warning(f"No pre-generated M-query provided for table {table.name}, generating now")
+                self.logger.warning(f"[MQUERY_TRACKING] No pre-generated M-query provided for table {table.name}, generating now")
                 m_expression = self._build_m_expression(table, report_spec)
+                self.logger.info(f"[MQUERY_TRACKING] Generated M-query in _build_table_context for table {table.name}: {m_expression[:200]}...")
             except Exception as e:
-                self.logger.error(f"Error building M-expression for table {table.name}: {e}")
-                m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource"
+                self.logger.error(f"[MQUERY_TRACKING] Error building M-expression for table {table.name}: {e}")
+                m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\t\tin\n\t\t\t\tSource"
         
         # Add partition information to the context
         partitions = []
@@ -553,8 +558,9 @@ class ModelFileGenerator:
         # Skip partition preparation for module migrations
         is_module_migration = project_metadata.get('is_module_migration', False) if project_metadata else False
         if is_module_migration:
-            self.logger.info(f"Skipping partition preparation for module migration: {table_name}")
+            self.logger.info(f"[MQUERY_TRACKING] Skipping partition preparation for module migration: {table_name}")
         elif m_expression:
+            self.logger.info(f"[MQUERY_TRACKING] Adding M-query to partition for table {table_name}: {m_expression[:200]}...")
             partitions.append({
                 'name': table_name,
                 'source_type': 'm',
@@ -575,13 +581,13 @@ class ModelFileGenerator:
     
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
         """Build M expression for table partition using MQueryConverter"""
-        self.logger.info(f"Building M-expression for table: {table.name}")
+        self.logger.info(f"[MQUERY_TRACKING] Building M-expression for table: {table.name}")
         
         # Check if table has source_query
         if hasattr(table, 'source_query'):
-            self.logger.info(f"Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
+            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} has source query: {table.source_query[:100] if table.source_query else 'None'}...")
         else:
-            self.logger.info(f"Table {table.name} does not have source_query attribute")
+            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} does not have source_query attribute")
         
         if not self.mquery_converter:
             error_msg = f"M-query converter is not configured but required for M-query generation for table {table.name}"
@@ -589,8 +595,10 @@ class ModelFileGenerator:
             raise Exception(error_msg)
         
         # Use the MQueryConverter to generate the M-query
-        self.logger.info(f"Generating optimized M-query for table {table.name} using M-query converter")
-        return self.mquery_converter.convert_to_m_query(table, report_spec)
+        self.logger.info(f"[MQUERY_TRACKING] Generating optimized M-query for table {table.name} using M-query converter")
+        m_query = self.mquery_converter.convert_to_m_query(table, report_spec)
+        self.logger.info(f"[MQUERY_TRACKING] Generated M-query for table {table.name}: {m_query[:200]}...")
+        return m_query
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""
