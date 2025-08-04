@@ -1,0 +1,24 @@
+{
+  "relationships": [
+    {
+      "id": "Relationship_CU01TB01_CU04TB70",
+      "fromTable": "CU01TB01",
+      "fromColumn": "ID_PREM",
+      "toTable": "CU04TB70",
+      "toColumn": "ID_PREM",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "BothDirections"
+    },
+    {
+      "id": "Relationship_CU04TB70_CU04TB22",
+      "fromTable": "CU04TB70",
+      "fromColumn": "ID_PREM",
+      "toTable": "CU04TB22",
+      "toColumn": "ID_PREM",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "BothDirections"
+    }
+  ]
+}

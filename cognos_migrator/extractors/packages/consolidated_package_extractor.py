@@ -305,11 +305,11 @@ class ConsolidatedPackageExtractor:
                 
                 # Create relationship with a name - using the simple table names instead of fully qualified names
                 relationship = Relationship(
-                    name=f"Relationship_{left_table}_{right_table}",
                     from_table=left_table,  # Use simple table name
                     from_column=left_col,
                     to_table=right_table,    # Use simple table name
-                    to_column=right_col
+                    to_column=right_col,
+                    id=f"Relationship_{left_table}_{right_table}"
                 )
                 
                 # Add relationship to data model's relationships list

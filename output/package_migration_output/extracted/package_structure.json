@@ -1,0 +1,29 @@
+{
+  "name": "CAM Dmail Reporting",
+  "namespaces": [
+    {
+      "name": "CAM Dmail Reporting",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Data Layer",
+      "type": "",
+      "id": ""
+    }
+  ],
+  "dataSources": [
+    {
+      "id": "",
+      "type": "",
+      "cmDataSource": "ELECTRIC_NON_GENERATION_CBMS_MIRROR",
+      "schema": "CTKINP"
+    },
+    {
+      "id": "",
+      "type": "",
+      "cmDataSource": "ELECTRIC_NON_GENERATION_CBMS_MIRROR",
+      "schema": "CTKINP"
+    }
+  ]
+}

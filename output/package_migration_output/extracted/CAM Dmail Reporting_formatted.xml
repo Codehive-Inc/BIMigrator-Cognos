@@ -1,0 +1,3636 @@
+<?xml version="1.0" ?>
+<project xmlns="http://www.developer.cognos.com/schemas/bmt/60/12" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" containsDynamicContent="false" xsi:schemaLocation="http://www.developer.cognos.com/schemas/bmt/60/12 BMTModelSpecification.xsd">
+  <name>CAM Dmail Reporting</name>
+  <property name="included" type="hidden">true</property>
+  <locales>
+    <locale>en</locale>
+  </locales>
+  <defaultLocale>en</defaultLocale>
+  <physicalSources/>
+  <namespace>
+    <name locale="en">CAM Dmail Reporting</name>
+    <lastChanged>2020-12-16T09:28:29</lastChanged>
+    <lastChangedBy>RAJEND7</lastChangedBy>
+    <property name="included" type="hidden">true</property>
+    <namespace>
+      <name locale="en">Data Layer</name>
+      <lastChanged>2020-12-16T09:08:35</lastChanged>
+      <lastChangedBy>RAJEND7</lastChangedBy>
+      <querySubject status="valid">
+        <name locale="en">CU01TB01</name>
+        <lastChanged>2020-12-10T13:37:17</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <definition>
+          <dbQuery>
+            <sources>
+              <dataSourceRef>[].[dataSources].[ELECTRIC_NON_GENERATION_CBMS_MIRROR]</dataSourceRef>
+            </sources>
+            <sql type="cognos">
+              Select 
+              <column>*</column>
+              from
+              <table>[ELECTRIC_NON_GENERATION_CBMS_MIRROR].CU01TB01</table>
+            </sql>
+            <tableType>table</tableType>
+          </dbQuery>
+        </definition>
+        <determinants>
+          <determinant>
+            <name>ID_BA</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>ID_BA_NM_CUST</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>CD_TOWN_ID_BA_NM_CUST</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>AD_HSE_NO_AD_MODIFIER_AD_STR_NM_AD_SVC_CITY_AD_SVC_ST_ID_BA_TX_ADDTL_ADDR_INFO</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>AD_HSE_NO_AD_MODIFIER_AD_STR_NM_CD_TOWN_ID_BA_TX_ADDTL_ADDR_INFO</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>AD_SVC_CITY_AD_SVC_ST_ID_BA_NM_CUST</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>ID_BA_ID_SSN</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+          <determinant>
+            <name>ID_BA_TX_HOME_AREACD_TX_HOME_PHN_NO</name>
+            <key>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+              <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+        </determinants>
+        <queryItem>
+          <name locale="en">ID_BA</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_BA</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>10</precision>
+          <scale>0</scale>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_CUST</name>
+          <lastChanged>2020-12-16T09:21:01</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_CUST</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>9</precision>
+          <scale>0</scale>
+          <size>5</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_PREM</name>
+          <lastChanged>2020-12-16T09:21:04</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_PREM</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>9</precision>
+          <scale>0</scale>
+          <size>5</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_HSE_NO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_HSE_NO</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>5</precision>
+          <scale>0</scale>
+          <size>3</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_HSE_NO_MOD</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_HSE_NO_MOD</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>3</precision>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_CRDNL_DIR</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_CRDNL_DIR</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_STR_NM</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_STR_NM</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>22</precision>
+          <size>46</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_STR_SX</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_STR_SX</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>4</precision>
+          <size>10</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_DIR_SX</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_DIR_SX</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_MODIFIER</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_MODIFIER</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>5</precision>
+          <size>12</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_SVC_CITY</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_SVC_CITY</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>15</precision>
+          <size>32</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_SVC_ST</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_SVC_ST</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_SVC_ZIP</name>
+          <lastChanged>2020-12-16T09:21:04</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_SVC_ZIP</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>5</precision>
+          <scale>0</scale>
+          <size>3</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">AD_SVC_ZIP_SX</name>
+          <lastChanged>2020-12-16T09:21:04</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>AD_SVC_ZIP_SX</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TX_ADDTL_ADDR_INFO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TX_ADDTL_ADDR_INFO</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>23</precision>
+          <size>48</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TX_HOME_AREACD</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TX_HOME_AREACD</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>3</precision>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TX_HOME_PHN_NO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TX_HOME_PHN_NO</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>8</precision>
+          <size>18</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TX_BUS_AREACD</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TX_BUS_AREACD</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>3</precision>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TX_BUS_PHN_NO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TX_BUS_PHN_NO</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>8</precision>
+          <size>18</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TX_BUS_PHN_EXTN</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TX_BUS_PHN_EXTN</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>4</precision>
+          <size>10</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_MTR_RTE</name>
+          <lastChanged>2020-12-16T09:21:04</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_MTR_RTE</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>5</precision>
+          <scale>0</scale>
+          <size>3</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_ACCT_CL</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_ACCT_CL</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_BA_STAT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_BA_STAT</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">NM_CUST</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>NM_CUST</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>28</precision>
+          <size>58</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_SSN</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_SSN</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>9</precision>
+          <scale>0</scale>
+          <size>5</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_DLN</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_DLN</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>18</precision>
+          <size>38</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_GAS_MTR</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_GAS_MTR</externalName>
+          <usage>fact</usage>
+          <datatype>decimal</datatype>
+          <precision>2</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_ELE_MTR</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_ELE_MTR</externalName>
+          <usage>fact</usage>
+          <datatype>decimal</datatype>
+          <precision>2</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_NMTR</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_NMTR</externalName>
+          <usage>fact</usage>
+          <datatype>decimal</datatype>
+          <precision>2</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_BILL_CY</name>
+          <lastChanged>2020-12-16T09:21:04</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_BILL_CY</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_CPLNT_PEND</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_CPLNT_PEND</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_VIP</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_VIP</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_LS</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_LS</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_EA</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_EA</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_PA</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_PA</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_BNKCY</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_BNKCY</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_AD_SEQ</name>
+          <lastChanged>2020-12-16T09:21:05</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_AD_SEQ</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_CORP_NM</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_CORP_NM</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_TOWN</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_TOWN</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>4</precision>
+          <size>10</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">DT_PEND_SO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>DT_PEND_SO</externalName>
+          <usage>identifier</usage>
+          <datatype>date</datatype>
+          <precision>0</precision>
+          <size>4</size>
+          <nullable>true</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">DT_PEND_NPSO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>DT_PEND_NPSO</externalName>
+          <usage>identifier</usage>
+          <datatype>date</datatype>
+          <precision>0</precision>
+          <size>4</size>
+          <nullable>true</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_BAD_DEBT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_BAD_DEBT</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_SPEC_ACCT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_SPEC_ACCT</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_RO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_RO</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_EMPL</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_EMPL</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_NPSO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_NPSO</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_LPP_STAT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_LPP_STAT</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_CAPP</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_CAPP</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_PWQ</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_PWQ</externalName>
+          <usage>fact</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_PHN_SEQ</name>
+          <lastChanged>2020-12-16T09:21:05</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_PHN_SEQ</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_PHN_SEQ_2</name>
+          <lastChanged>2020-12-16T09:21:05</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_PHN_SEQ_2</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_FED_TAX</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_FED_TAX</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>9</precision>
+          <size>20</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_ADDTL_CUST</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_ADDTL_CUST</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_DEP_ON_HAND</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_DEP_ON_HAND</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_SCC</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_SCC</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_REP</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_REP</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_CMPNY</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_CMPNY</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>3</precision>
+          <size>8</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_CR_RATING</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_CR_RATING</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+      </querySubject>
+      <querySubject status="valid">
+        <name locale="en">CU04TB22</name>
+        <lastChanged>2020-12-10T13:37:17</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <definition>
+          <dbQuery>
+            <sources>
+              <dataSourceRef>[].[dataSources].[ELECTRIC_NON_GENERATION_CBMS_MIRROR]</dataSourceRef>
+            </sources>
+            <sql type="cognos">
+              Select 
+              <column>*</column>
+              from
+              <table>[ELECTRIC_NON_GENERATION_CBMS_MIRROR].CU04TB22</table>
+            </sql>
+            <tableType>table</tableType>
+          </dbQuery>
+        </definition>
+        <determinants>
+          <determinant>
+            <name>ID_PREM_ID_SPT_TS_BILL_UNIT</name>
+            <key>
+              <refobj>[Data Layer].[CU04TB22].[ID_PREM]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[ID_SPT]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[TS_BILL_UNIT]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU04TB22].[CD_BILLED]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[CD_RDG_INFO]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[CD_RDG_RSN]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[CD_RDG_SRCE]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[CD_REBATE_RSN]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[CD_SEASON]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[DT_BILL_END]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[DT_BU_STAT]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[FL_PRORT]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[ID_BA]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[QY_DAYS_USED]</refobj>
+              <refobj>[Data Layer].[CU04TB22].[QY_TOT_UNIT]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+        </determinants>
+        <queryItem>
+          <name locale="en">ID_PREM</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_PREM</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>9</precision>
+          <scale>0</scale>
+          <size>5</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_SPT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_SPT</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">TS_BILL_UNIT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>TS_BILL_UNIT</externalName>
+          <usage>identifier</usage>
+          <datatype>dateTime</datatype>
+          <precision>0</precision>
+          <scale>6</scale>
+          <size>12</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_BA</name>
+          <lastChanged>2020-12-16T09:21:25</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_BA</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>10</precision>
+          <scale>0</scale>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_BILLED</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_BILLED</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_DAYS_USED</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_DAYS_USED</externalName>
+          <usage>fact</usage>
+          <datatype>decimal</datatype>
+          <precision>3</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">DT_BILL_END</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>DT_BILL_END</externalName>
+          <usage>identifier</usage>
+          <datatype>date</datatype>
+          <precision>0</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_REBATE_RSN</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_REBATE_RSN</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">DT_BU_STAT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>DT_BU_STAT</externalName>
+          <usage>identifier</usage>
+          <datatype>date</datatype>
+          <precision>0</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_RDG_SRCE</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_RDG_SRCE</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_RDG_INFO</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_RDG_INFO</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_RDG_RSN</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_RDG_RSN</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_TOT_UNIT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_TOT_UNIT</externalName>
+          <usage>fact</usage>
+          <datatype>decimal</datatype>
+          <precision>9</precision>
+          <scale>0</scale>
+          <size>5</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_SEASON</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_SEASON</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">FL_PRORT</name>
+          <lastChanged>2020-12-10T13:37:17</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>FL_PRORT</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+      </querySubject>
+      <querySubject status="valid">
+        <name locale="en">CU04TB70</name>
+        <lastChanged>2020-12-10T13:37:18</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <definition>
+          <dbQuery>
+            <sources>
+              <dataSourceRef>[].[dataSources].[ELECTRIC_NON_GENERATION_CBMS_MIRROR]</dataSourceRef>
+            </sources>
+            <sql type="cognos">
+              Select 
+              <column>*</column>
+              from
+              <table>[ELECTRIC_NON_GENERATION_CBMS_MIRROR].CU04TB70</table>
+            </sql>
+            <tableType>table</tableType>
+          </dbQuery>
+        </definition>
+        <determinants>
+          <determinant>
+            <name>CD_MTR_MFG_CD_SVC_TYP_DT_MTR_SET_ID_MTR_ID_PREM</name>
+            <key>
+              <refobj>[Data Layer].[CU04TB70].[ID_MTR]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[CD_MTR_MFG]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[CD_SVC_TYP]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[DT_MTR_SET]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[ID_PREM]</refobj>
+            </key>
+            <attributes>
+              <refobj>[Data Layer].[CU04TB70].[CD_MTR_REMV_RSN]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[DT_MTR_REMV]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[ID_SPT]</refobj>
+              <refobj>[Data Layer].[CU04TB70].[QY_MTR_REMV_INDX]</refobj>
+            </attributes>
+            <canGroup>false</canGroup>
+            <identifiesRow>true</identifiesRow>
+          </determinant>
+        </determinants>
+        <queryItem>
+          <name locale="en">ID_MTR</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_MTR</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>10</precision>
+          <size>22</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_MTR_MFG</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_MTR_MFG</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_SVC_TYP</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_SVC_TYP</externalName>
+          <usage>identifier</usage>
+          <datatype>character</datatype>
+          <precision>1</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">DT_MTR_SET</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>DT_MTR_SET</externalName>
+          <usage>identifier</usage>
+          <datatype>date</datatype>
+          <precision>0</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_PREM</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_PREM</externalName>
+          <usage>identifier</usage>
+          <datatype>decimal</datatype>
+          <precision>9</precision>
+          <scale>0</scale>
+          <size>5</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">ID_SPT</name>
+          <lastChanged>2020-12-16T09:21:41</lastChanged>
+          <lastChangedBy>RAJEND7</lastChangedBy>
+          <property name="included" type="hidden">false</property>
+          <externalName>ID_SPT</externalName>
+          <usage>identifier</usage>
+          <datatype>int16</datatype>
+          <precision>0</precision>
+          <scale>0</scale>
+          <size>2</size>
+          <nullable>false</nullable>
+          <regularAggregate>count</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">DT_MTR_REMV</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>DT_MTR_REMV</externalName>
+          <usage>identifier</usage>
+          <datatype>date</datatype>
+          <precision>0</precision>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">QY_MTR_REMV_INDX</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>QY_MTR_REMV_INDX</externalName>
+          <usage>fact</usage>
+          <datatype>decimal</datatype>
+          <precision>7</precision>
+          <scale>0</scale>
+          <size>4</size>
+          <nullable>false</nullable>
+          <regularAggregate>sum</regularAggregate>
+          <semiAggregate>sum</semiAggregate>
+        </queryItem>
+        <queryItem>
+          <name locale="en">CD_MTR_REMV_RSN</name>
+          <lastChanged>2020-12-10T13:37:18</lastChanged>
+          <property name="included" type="hidden">false</property>
+          <externalName>CD_MTR_REMV_RSN</externalName>
+          <usage>attribute</usage>
+          <datatype>character</datatype>
+          <precision>2</precision>
+          <size>6</size>
+          <nullable>false</nullable>
+          <regularAggregate>unsupported</regularAggregate>
+          <semiAggregate>unsupported</semiAggregate>
+        </queryItem>
+      </querySubject>
+      <relationship status="valid">
+        <name>CU01TB01 &lt;--&gt; CU04TB70</name>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+          =
+          <refobj>[Data Layer].[CU04TB70].[ID_PREM]</refobj>
+        </expression>
+        <left>
+          <refobj>[Data Layer].[CU01TB01]</refobj>
+          <mincard>one</mincard>
+          <maxcard>one</maxcard>
+        </left>
+        <right>
+          <refobj>[Data Layer].[CU04TB70]</refobj>
+          <mincard>one</mincard>
+          <maxcard>many</maxcard>
+        </right>
+      </relationship>
+      <relationship status="valid">
+        <name>CU04TB70 &lt;--&gt; CU04TB22</name>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[ID_PREM]</refobj>
+          =
+          <refobj>[Data Layer].[CU04TB22].[ID_PREM]</refobj>
+        </expression>
+        <left>
+          <refobj>[Data Layer].[CU04TB70]</refobj>
+          <mincard>one</mincard>
+          <maxcard>one</maxcard>
+        </left>
+        <right>
+          <refobj>[Data Layer].[CU04TB22]</refobj>
+          <mincard>one</mincard>
+          <maxcard>many</maxcard>
+        </right>
+      </relationship>
+    </namespace>
+    <querySubject status="valid">
+      <name locale="en">STANDARD ACCOUNT DATA</name>
+      <lastChanged>2020-12-16T09:26:17</lastChanged>
+      <lastChangedBy>RAJEND7</lastChangedBy>
+      <property name="included" type="hidden">true</property>
+      <definition>
+        <modelQuery>
+          <sql type="cognos">
+            Select 
+            <column>*</column>
+            from
+            <table/>
+          </sql>
+        </modelQuery>
+      </definition>
+      <queryItem>
+        <name locale="en">ID_BA</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>10</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_CUST</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>5</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_PREM</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>5</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_HSE_NO</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>5</precision>
+        <scale>0</scale>
+        <size>3</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_HSE_NO_MOD</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>3</precision>
+        <scale>0</scale>
+        <size>8</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_CRDNL_DIR</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_STR_NM</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>22</precision>
+        <scale>0</scale>
+        <size>46</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_STR_SX</name>
+        <lastChanged>2020-12-16T09:25:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>4</precision>
+        <scale>0</scale>
+        <size>10</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_DIR_SX</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_MODIFIER</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>5</precision>
+        <scale>0</scale>
+        <size>12</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_SVC_CITY</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>15</precision>
+        <scale>0</scale>
+        <size>32</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_SVC_ST</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_SVC_ZIP</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>5</precision>
+        <scale>0</scale>
+        <size>3</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">AD_SVC_ZIP_SX</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TX_ADDTL_ADDR_INFO</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>23</precision>
+        <scale>0</scale>
+        <size>48</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TX_HOME_AREACD</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>3</precision>
+        <scale>0</scale>
+        <size>8</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TX_HOME_PHN_NO</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>8</precision>
+        <scale>0</scale>
+        <size>18</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TX_BUS_AREACD</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>3</precision>
+        <scale>0</scale>
+        <size>8</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TX_BUS_PHN_NO</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>8</precision>
+        <scale>0</scale>
+        <size>18</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TX_BUS_PHN_EXTN</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>4</precision>
+        <scale>0</scale>
+        <size>10</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_MTR_RTE</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>5</precision>
+        <scale>0</scale>
+        <size>3</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_ACCT_CL</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_BA_STAT</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">NM_CUST</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>28</precision>
+        <scale>0</scale>
+        <size>58</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_SSN</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>5</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_DLN</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>18</precision>
+        <scale>0</scale>
+        <size>38</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_GAS_MTR</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>decimal</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_ELE_MTR</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>decimal</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_NMTR</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>decimal</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_BILL_CY</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_CPLNT_PEND</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_VIP</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_LS</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_EA</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_PA</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_BNKCY</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_AD_SEQ</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_CORP_NM</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_TOWN</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>4</precision>
+        <scale>0</scale>
+        <size>10</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">DT_PEND_SO</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>date</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>true</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">DT_PEND_NPSO</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>date</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>true</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_BAD_DEBT</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_SPEC_ACCT</name>
+        <lastChanged>2020-12-16T09:25:54</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_RO</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_EMPL</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_NPSO</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_LPP_STAT</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_CAPP</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_PWQ</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_PHN_SEQ</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_PHN_SEQ_2</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_FED_TAX</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>20</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_ADDTL_CUST</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_DEP_ON_HAND</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_SCC</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_REP</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_CMPNY</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>3</precision>
+        <scale>0</scale>
+        <size>8</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_CR_RATING</name>
+        <lastChanged>2020-12-16T09:25:55</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+    </querySubject>
+    <querySubject status="valid">
+      <name locale="en">BILLABLE ELECTRIC</name>
+      <lastChanged>2020-12-16T09:26:57</lastChanged>
+      <lastChangedBy>RAJEND7</lastChangedBy>
+      <property name="included" type="hidden">true</property>
+      <definition>
+        <modelQuery>
+          <sql type="cognos">
+            Select 
+            <column>*</column>
+            from
+            <table/>
+          </sql>
+        </modelQuery>
+      </definition>
+      <queryItem>
+        <name locale="en">ID_PREM</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[ID_PREM]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>5</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_SPT</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[ID_SPT]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">TS_BILL_UNIT</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[TS_BILL_UNIT]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>dateTime</datatype>
+        <precision>0</precision>
+        <scale>6</scale>
+        <size>12</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_BA</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[ID_BA]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>10</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_BILLED</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[CD_BILLED]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_DAYS_USED</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[QY_DAYS_USED]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>decimal</datatype>
+        <precision>3</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">DT_BILL_END</name>
+        <lastChanged>2020-12-16T09:26:52</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[DT_BILL_END]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>date</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_REBATE_RSN</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[CD_REBATE_RSN]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">DT_BU_STAT</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[DT_BU_STAT]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>date</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_RDG_SRCE</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[CD_RDG_SRCE]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_RDG_INFO</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[CD_RDG_INFO]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_RDG_RSN</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[CD_RDG_RSN]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_TOT_UNIT</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[QY_TOT_UNIT]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>decimal</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>5</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_SEASON</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[CD_SEASON]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">FL_PRORT</name>
+        <lastChanged>2020-12-16T09:26:53</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB22].[FL_PRORT]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+    </querySubject>
+    <querySubject status="valid">
+      <name locale="en">INSTALLED METER</name>
+      <lastChanged>2020-12-16T09:27:30</lastChanged>
+      <lastChangedBy>RAJEND7</lastChangedBy>
+      <property name="included" type="hidden">true</property>
+      <definition>
+        <modelQuery>
+          <sql type="cognos">
+            Select 
+            <column>*</column>
+            from
+            <table/>
+          </sql>
+        </modelQuery>
+      </definition>
+      <queryItem>
+        <name locale="en">ID_MTR</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[ID_MTR]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>10</precision>
+        <scale>0</scale>
+        <size>22</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_MTR_MFG</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[CD_MTR_MFG]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_SVC_TYP</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[CD_SVC_TYP]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>character</datatype>
+        <precision>1</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">DT_MTR_SET</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[DT_MTR_SET]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>date</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_PREM</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[ID_PREM]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>decimal</datatype>
+        <precision>9</precision>
+        <scale>0</scale>
+        <size>5</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">ID_SPT</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[ID_SPT]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>int16</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>2</size>
+        <nullable>false</nullable>
+        <regularAggregate>count</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">DT_MTR_REMV</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[DT_MTR_REMV]</refobj>
+        </expression>
+        <usage>identifier</usage>
+        <datatype>date</datatype>
+        <precision>0</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">QY_MTR_REMV_INDX</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[QY_MTR_REMV_INDX]</refobj>
+        </expression>
+        <usage>fact</usage>
+        <datatype>decimal</datatype>
+        <precision>7</precision>
+        <scale>0</scale>
+        <size>4</size>
+        <nullable>false</nullable>
+        <regularAggregate>sum</regularAggregate>
+        <semiAggregate>sum</semiAggregate>
+        <collationSequenceName>en</collationSequenceName>
+        <collationSequenceLevel>1</collationSequenceLevel>
+      </queryItem>
+      <queryItem>
+        <name locale="en">CD_MTR_REMV_RSN</name>
+        <lastChanged>2020-12-16T09:27:27</lastChanged>
+        <lastChangedBy>RAJEND7</lastChangedBy>
+        <property name="included" type="hidden">true</property>
+        <expression>
+          <refobj>[Data Layer].[CU04TB70].[CD_MTR_REMV_RSN]</refobj>
+        </expression>
+        <usage>attribute</usage>
+        <datatype>character</datatype>
+        <precision>2</precision>
+        <scale>0</scale>
+        <size>6</size>
+        <nullable>false</nullable>
+        <regularAggregate>unsupported</regularAggregate>
+        <semiAggregate>unsupported</semiAggregate>
+        <collationSequenceLevel>0</collationSequenceLevel>
+      </queryItem>
+    </querySubject>
+  </namespace>
+  <dataSources>
+    <dataSource>
+      <name>ELECTRIC_NON_GENERATION_CBMS_MIRROR</name>
+      <cmDataSource>ELECTRIC_NON_GENERATION_CBMS_MIRROR</cmDataSource>
+      <schema>CTKINP</schema>
+      <type>
+        <queryType>relational</queryType>
+        <interface>D2</interface>
+      </type>
+    </dataSource>
+  </dataSources>
+  <parameterMaps>
+    <parameterMap hidden="true">
+      <name>_env</name>
+      <!--This reserved map supplies default values for session variables.-->
+    </parameterMap>
+    <parameterMap hidden="true">
+      <name>_governor</name>
+      <!--This reserved map specifies query governor limits.-->
+    </parameterMap>
+  </parameterMaps>
+  <securityViews>
+    <securityView>
+      <name>CAM Dmail Reporting</name>
+      <definition>
+        <set includeRule="include">
+          <refobj>[CAM Dmail Reporting]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_BA]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_CUST]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_PREM]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_HSE_NO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_HSE_NO_MOD]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_CRDNL_DIR]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_STR_NM]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_STR_SX]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_DIR_SX]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_MODIFIER]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_SVC_CITY]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_SVC_ST]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_SVC_ZIP]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[AD_SVC_ZIP_SX]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[TX_ADDTL_ADDR_INFO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[TX_HOME_AREACD]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[TX_HOME_PHN_NO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[TX_BUS_AREACD]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[TX_BUS_PHN_NO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[TX_BUS_PHN_EXTN]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_MTR_RTE]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_ACCT_CL]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_BA_STAT]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[NM_CUST]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_SSN]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_DLN]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[QY_GAS_MTR]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[QY_ELE_MTR]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[QY_NMTR]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_BILL_CY]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_CPLNT_PEND]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_VIP]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_LS]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_EA]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_PA]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_BNKCY]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_AD_SEQ]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_CORP_NM]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_TOWN]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[DT_PEND_SO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[DT_PEND_NPSO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_BAD_DEBT]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_SPEC_ACCT]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_RO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_EMPL]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_NPSO]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_LPP_STAT]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_CAPP]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[QY_PWQ]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_PHN_SEQ]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_PHN_SEQ_2]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[ID_FED_TAX]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_ADDTL_CUST]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_DEP_ON_HAND]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_SCC]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[FL_REP]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_CMPNY]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA].[CD_CR_RATING]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[ID_PREM]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[ID_SPT]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[TS_BILL_UNIT]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[ID_BA]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[CD_BILLED]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[QY_DAYS_USED]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[DT_BILL_END]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[CD_REBATE_RSN]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[DT_BU_STAT]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[CD_RDG_SRCE]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[CD_RDG_INFO]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[CD_RDG_RSN]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[QY_TOT_UNIT]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[CD_SEASON]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC].[FL_PRORT]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[ID_MTR]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[CD_MTR_MFG]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[CD_SVC_TYP]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[DT_MTR_SET]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[ID_PREM]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[ID_SPT]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[DT_MTR_REMV]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[QY_MTR_REMV_INDX]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER].[CD_MTR_REMV_RSN]</refobj>
+          <refobj>[CAM Dmail Reporting].[STANDARD ACCOUNT DATA]</refobj>
+          <refobj>[CAM Dmail Reporting].[BILLABLE ELECTRIC]</refobj>
+          <refobj>[CAM Dmail Reporting].[INSTALLED METER]</refobj>
+        </set>
+        <set includeRule="hide">
+          <refobj>[Data Layer].[CU01TB01].[ID_BA]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_CUST]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_PREM]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_CRDNL_DIR]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_STR_NM]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_STR_SX]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_DIR_SX]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_MODIFIER]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_CITY]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_ST]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[TX_HOME_AREACD]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[TX_BUS_AREACD]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_MTR_RTE]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_ACCT_CL]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_BA_STAT]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[NM_CUST]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_SSN]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_DLN]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[QY_GAS_MTR]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[QY_ELE_MTR]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[QY_NMTR]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_BILL_CY]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_CPLNT_PEND]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_VIP]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_LS]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_EA]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_PA]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_BNKCY]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_AD_SEQ]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_CORP_NM]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_TOWN]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[DT_PEND_SO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[DT_PEND_NPSO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_BAD_DEBT]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_SPEC_ACCT]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_RO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_EMPL]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_NPSO]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_LPP_STAT]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_CAPP]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[QY_PWQ]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[ID_FED_TAX]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_ADDTL_CUST]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_SCC]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[FL_REP]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_CMPNY]</refobj>
+          <refobj>[Data Layer].[CU01TB01].[CD_CR_RATING]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[ID_PREM]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[ID_SPT]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[TS_BILL_UNIT]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[ID_BA]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[CD_BILLED]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[QY_DAYS_USED]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[DT_BILL_END]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[CD_REBATE_RSN]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[DT_BU_STAT]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[CD_RDG_SRCE]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[CD_RDG_INFO]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[CD_RDG_RSN]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[QY_TOT_UNIT]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[CD_SEASON]</refobj>
+          <refobj>[Data Layer].[CU04TB22].[FL_PRORT]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[ID_MTR]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[CD_MTR_MFG]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[CD_SVC_TYP]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[DT_MTR_SET]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[ID_PREM]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[ID_SPT]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[DT_MTR_REMV]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[QY_MTR_REMV_INDX]</refobj>
+          <refobj>[Data Layer].[CU04TB70].[CD_MTR_REMV_RSN]</refobj>
+          <refobj>[Data Layer].[CU01TB01]</refobj>
+          <refobj>[Data Layer].[CU04TB22]</refobj>
+          <refobj>[Data Layer].[CU04TB70]</refobj>
+          <refobj>[Data Layer]</refobj>
+        </set>
+      </definition>
+      <access/>
+      <functionSets>
+        <functionSet>
+          <functionSetID>V_Aster</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_DB2</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Exasol</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Greenplum</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Informix</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_MSAccess</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_MySQL</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Netezza</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Oracle</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Paraccel</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Postgres</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Redbrick</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_SAPBW</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_SQLServer</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Sybase</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Teradata</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Vectorwise</functionSetID>
+        </functionSet>
+        <functionSet>
+          <functionSetID>V_Vertica</functionSetID>
+        </functionSet>
+      </functionSets>
+      <qosOverrides/>
+    </securityView>
+  </securityViews>
+  <packages>
+    <package>
+      <name locale="en">CAM Dmail Reporting</name>
+      <description locale="en"/>
+      <lastChanged>2020-12-18T15:41:50</lastChanged>
+      <lastChangedBy>RAJEND7</lastChangedBy>
+      <screenTip locale="en"/>
+      <lastPublished>2020-12-16T09:30:52</lastPublished>
+      <lastPublishedCMPath>/content/folder[@name='Dominion Virginia Power']/folder[@name='CSC']</lastPublishedCMPath>
+      <locales>
+        <locale>en</locale>
+      </locales>
+      <definition>
+        <viewref>[].[securityViews].[CAM Dmail Reporting]</viewref>
+      </definition>
+      <adminAccess/>
+      <useV5DataServer>false</useV5DataServer>
+    </package>
+  </packages>
+</project>

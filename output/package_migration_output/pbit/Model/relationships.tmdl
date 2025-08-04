@@ -1,0 +1,12 @@
+relationship Relationship_CU01TB01_CU04TB70
+	fromColumn: 'CU01TB01'.ID_PREM
+	toColumn: 'CU04TB70'.ID_PREM
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+relationship Relationship_CU04TB70_CU04TB22
+	fromColumn: 'CU04TB70'.ID_PREM
+	toColumn: 'CU04TB22'.ID_PREM
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true

@@ -574,18 +574,43 @@ class ModelFileGenerator:
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""
-        relationships_context = []
+        # Deduplicate relationships based on from/to tables and columns
+        unique_relationships = {}
         for rel in relationships:
+            # Create a unique key for the relationship
+            key = f"{rel.from_table}:{rel.from_column}:{rel.to_table}:{rel.to_column}"
+            # Only keep one relationship per unique combination
+            if key not in unique_relationships:
+                unique_relationships[key] = rel
+            else:
+                self.logger.warning(f"Duplicate relationship found: {key}. Using first occurrence.")
+        
+        self.logger.info(f"Found {len(relationships)} relationships, {len(unique_relationships)} unique")
+        
+        # Create context for template rendering
+        relationships_context = []
+        for rel in unique_relationships.values():
+            # Determine which cardinality to use (fromCardinality or toCardinality)
+            # We only use one of them in the template, not both
+            cardinality_type = 'fromCardinality'
+            cardinality_value = rel.from_cardinality
+            
+            # If to_cardinality is explicitly set, use that instead
+            if rel.to_cardinality is not None:
+                cardinality_type = 'toCardinality'
+                cardinality_value = rel.to_cardinality
+            
             relationship_data = {
-                'id': rel.name,  # Use name as the ID for the template
-                'name': rel.name,
+                'id': rel.id,  # Use UUID as the ID
                 'from_table': rel.from_table,
                 'from_column': rel.from_column,
                 'to_table': rel.to_table,
                 'to_column': rel.to_column,
-                'cardinality': rel.cardinality,
-                'cross_filter_direction': rel.cross_filter_direction,
-                'is_active': rel.is_active
+                'cardinality_type': cardinality_type,
+                'cardinality_value': cardinality_value,
+                'cross_filtering_behavior': rel.cross_filtering_behavior,
+                'is_active': rel.is_active,
+                'join_on_date_behavior': rel.join_on_date_behavior
             }
             relationships_context.append(relationship_data)
             
@@ -598,6 +623,41 @@ class ModelFileGenerator:
         relationships_file = model_dir / 'relationships.tmdl'
         with open(relationships_file, 'w', encoding='utf-8') as f:
             f.write(content)
+            
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save relationships as JSON
+            relationships_json = []
+            for rel in unique_relationships.values():
+                rel_json = {
+                    "id": rel.id,
+                    "fromTable": rel.from_table,
+                    "fromColumn": rel.from_column,
+                    "toTable": rel.to_table,
+                    "toColumn": rel.to_column,
+                    "isActive": rel.is_active
+                }
+                
+                # Add cardinality
+                if rel.to_cardinality is not None:
+                    rel_json["toCardinality"] = rel.to_cardinality
+                else:
+                    rel_json["fromCardinality"] = rel.from_cardinality
+                    
+                # Add cross filtering behavior
+                rel_json["crossFilteringBehavior"] = rel.cross_filtering_behavior
+                
+                # Add join on date behavior if present
+                if rel.join_on_date_behavior:
+                    rel_json["joinOnDateBehavior"] = rel.join_on_date_behavior
+                    
+                relationships_json.append(rel_json)
+                
+            save_json_to_extracted_dir(extracted_dir, "relationships.json", {"relationships": relationships_json})
+            
+        self.logger.info(f"Generated relationships file: {relationships_file}")
+
         
         # Save to extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
