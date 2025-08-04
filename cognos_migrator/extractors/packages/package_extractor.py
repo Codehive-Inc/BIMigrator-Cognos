@@ -487,7 +487,7 @@ class PackageExtractor:
                         from_column=rel['source_columns'][0],
                         to_table=rel['target_table'],
                         to_column=rel['target_columns'][0],
-                        cross_filter_direction="both"
+                        cross_filtering_behavior="BothDirections"
                     )
                     relationships.append(relationship)
             

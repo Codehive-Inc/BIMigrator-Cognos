@@ -1,0 +1,59 @@
+table 'D_OFS_ACTIVITY_WORK_SKILL'
+
+
+    column 'AID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_SKILL_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORK_SKILL_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUIRED_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUIRED_LEVEL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREFERABLE_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREFERABLE_LEVEL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'D_OFS_ACTIVITY_WORK_SKILL' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table D_OFS_ACTIVITY_WORK_SKILL: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cefb2c0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

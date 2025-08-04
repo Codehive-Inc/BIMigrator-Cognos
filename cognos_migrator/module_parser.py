@@ -263,11 +263,11 @@ class CognosModuleParser:
                                 
                                 if pk_column:
                                     relationship = Relationship(
-                                        name=f"{table_name}_{column}_to_{other_table}_{pk_column}",
                                         from_table=table_name,
                                         from_column=column,
                                         to_table=other_table,
                                         to_column=pk_column,
+                                        id=f"{table_name}_{column}_to_{other_table}_{pk_column}",
                                         cardinality="many_to_one",
                                         cross_filter_behavior="single",
                                         is_active=True
@@ -307,13 +307,13 @@ class CognosModuleParser:
             if 'modelRelationships' in module:
                 for rel_def in module['modelRelationships']:
                     relationship = Relationship(
-                        name=rel_def.get('name', 'Unknown_Relationship'),
                         from_table=rel_def.get('fromTable', ''),
                         from_column=rel_def.get('fromColumn', ''),
                         to_table=rel_def.get('toTable', ''),
                         to_column=rel_def.get('toColumn', ''),
-                        cardinality=self._map_cardinality(rel_def.get('cardinality', '1:*')),
-                        cross_filter_behavior=rel_def.get('crossFilterBehavior', 'single'),
+                        id=rel_def.get('name', 'Unknown_Relationship'),
+                        from_cardinality=self._map_cardinality(rel_def.get('cardinality', '1:*')),
+                        cross_filtering_behavior=rel_def.get('crossFilterBehavior', 'single'),
                         is_active=rel_def.get('isActive', True)
                     )
                     relationships.append(relationship)
@@ -345,13 +345,13 @@ class CognosModuleParser:
         """Parse relationship from metadata"""
         try:
             return Relationship(
-                name=rel_data.get('name', 'Unknown_Relationship'),
                 from_table=rel_data.get('fromTable', ''),
                 from_column=rel_data.get('fromColumn', ''),
                 to_table=rel_data.get('toTable', ''),
                 to_column=rel_data.get('toColumn', ''),
-                cardinality=self._map_cardinality(rel_data.get('cardinality', '1:*')),
-                cross_filter_behavior=rel_data.get('crossFilterBehavior', 'single'),
+                # Let the Relationship class generate a UUID instead of using a descriptive name
+                from_cardinality=self._map_cardinality(rel_data.get('cardinality', '1:*')),
+                cross_filtering_behavior=rel_data.get('crossFilterBehavior', 'single'),
                 is_active=rel_data.get('isActive', True)
             )
         except Exception as e:
@@ -377,13 +377,13 @@ class CognosModuleParser:
             }
             
             relationship = Relationship(
-                name=f"{left_table}_{left_column}_to_{right_table}_{right_column}",
                 from_table=left_table,
                 from_column=left_column,
                 to_table=right_table,
                 to_column=right_column,
-                cardinality=cardinality_map.get(join_type, 'many_to_one'),
-                cross_filter_behavior='single',
+                # Let the Relationship class generate a UUID instead of using a descriptive name
+                from_cardinality=cardinality_map.get(join_type, 'many_to_one'),
+                cross_filtering_behavior='single',
                 is_active=True
             )
             

@@ -581,13 +581,13 @@ class CognosModuleMigratorExplicit:
             for rel_dict in powerbi_relationships:
                 # Create Relationship object from dictionary
                 relationship = Relationship(
-                    name=rel_dict.get('id', str(uuid.uuid4())),
                     from_table=rel_dict.get('from_table', ''),
                     from_column=rel_dict.get('from_column', ''),
                     to_table=rel_dict.get('to_table', ''),
                     to_column=rel_dict.get('to_column', ''),
-                    cardinality=rel_dict.get('cardinality', 'many'),
-                    cross_filter_direction=rel_dict.get('cross_filter_behavior', 'OneDirection'),
+                    id=rel_dict.get('id', str(uuid.uuid4())),
+                    from_cardinality=rel_dict.get('cardinality', 'many'),
+                    cross_filtering_behavior=rel_dict.get('cross_filter_behavior', 'OneDirection'),
                     is_active=rel_dict.get('is_active', True)
                 )
                 relationship_objects.append(relationship)
@@ -1270,7 +1270,7 @@ class CognosModuleMigratorExplicit:
                 from_column=rel_data.get('from_column', ''),
                 to_table=rel_data.get('to_table', ''),
                 to_column=rel_data.get('to_column', ''),
-                cardinality=rel_data.get('cardinality', 'OneToMany')
+                from_cardinality=rel_data.get('cardinality', 'OneToMany')
             )
             relationships.append(relationship)
         

@@ -54,3 +54,8 @@ python -c "from cognos_migrator.migrations.package import migrate_package_with_e
 
 # Migrate a Framework Manager package with specific reports
 python -c "from cognos_migrator.migrations.package import migrate_package_with_reports_explicit_session; print(migrate_package_with_reports_explicit_session('./path/to/package.xml', './output/package_migration_output', 'COGNOS_URL', 'SESSION_KEY', report_ids=['REPORT_ID1', 'REPORT_ID2']))"
+
+
+worrking
+
+python3 -c "from cognos_migrator.migrations.package import migrate_package_with_explicit_session; migrate_package_with_explicit_session(package_file_path='examples/packages/CAM Dmail Reporting.xml', output_path='output/package_migration_output', cognos_url='http://localhost:9300', session_key='CAM MTsxMDE6OGY2NmJiMDUtMDFhZS04ZDA1LTk1ZDYtZTkyZjI4ZDg5N2VkOjE4MjEyNzU0MDI7MDszOzA7')"

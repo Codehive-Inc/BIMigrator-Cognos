@@ -3,7 +3,8 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Literal
+import uuid
 
 __all__ = [
     # Enums
@@ -94,14 +95,25 @@ class Table:
 @dataclass
 class Relationship:
     """Table relationship definition"""
-    name: str
     from_table: str
     from_column: str
     to_table: str
     to_column: str
-    cardinality: str = "many_to_one"
-    cross_filter_direction: str = "single"
+    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    # Cardinality values should be 'one' or 'many'
+    # In TMDL, we use either fromCardinality or toCardinality, not both
+    # Default is 'many' for fromCardinality
+    from_cardinality: Literal['one', 'many'] = 'many'
+    to_cardinality: Optional[Literal['one', 'many']] = None
+    # Cross filtering behavior values should be 'BothDirections', 'OneDirection', or 'Automatic'
+    cross_filtering_behavior: Literal['BothDirections', 'OneDirection', 'Automatic'] = 'BothDirections'
     is_active: bool = True
+    join_on_date_behavior: Optional[Literal['datePartOnly']] = None
+    
+    @property
+    def name(self) -> str:
+        """Legacy property for backward compatibility"""
+        return self.id
 
 
 @dataclass

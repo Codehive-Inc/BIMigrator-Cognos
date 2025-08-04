@@ -1,0 +1,67 @@
+table 'D_OFS_DOMINION_TYPE_LIST'
+
+
+    column 'TYPE_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_ID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_LANG'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_LANG
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_LABEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_LABEL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_TEXT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_TEXT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_NAME
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SYS_UPDATE_TS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SYS_UPDATE_TS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'D_OFS_DOMINION_TYPE_LIST' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table D_OFS_DOMINION_TYPE_LIST: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cfe8bc0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

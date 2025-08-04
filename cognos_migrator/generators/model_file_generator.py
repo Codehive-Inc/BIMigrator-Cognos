@@ -196,6 +196,10 @@ class ModelFileGenerator:
                 # Render table template
                 content = self.template_engine.render('table', context)
 
+                # Log the M-query being written to the TMDL file
+                if 'm_expression' in context:
+                    self.logger.info(f"[MQUERY_TRACKING] M-query being written to TMDL for table {table.name}: {context['m_expression'][:200]}...")
+                
                 # Use report name for table file if available, otherwise use original table name
                 table_name = table.name
                 if report_name and table.name == "Data":
@@ -438,12 +442,12 @@ class ModelFileGenerator:
             else:
                 self.logger.warning(f"Cannot load data items: extracted_dir is not valid: {extracted_dir}")
         
-        # If we have data items, use them as columns
+        # IMPROVED DEDUPLICATION: Always deduplicate columns regardless of source
+        # First, deduplicate data items by column name (case-insensitive) if we have data items
+        unique_items = {}
+        duplicate_items = []
+        
         if data_items:
-            # First, deduplicate data items by column name (case-insensitive)
-            unique_items = {}
-            duplicate_items = []
-            
             for item in data_items:
                 column_name = item.get('name', 'Column')
                 column_name_lower = column_name.lower()
@@ -490,9 +494,29 @@ class ModelFileGenerator:
                     'annotations': {'SummarizationSetBy': summarization_set_by}
                 }
                 columns.append(column)
-        else:
-            # If no data items, use the table columns
+        elif table.columns:
+            # If no data items, use the table columns but still deduplicate
+            # Create a dictionary to track unique columns by name (case-insensitive)
+            unique_columns = {}
+            duplicate_cols = []
+            
             for col in table.columns:
+                column_name = col.name
+                column_name_lower = column_name.lower()
+                
+                if column_name_lower not in unique_columns:
+                    unique_columns[column_name_lower] = col
+                else:
+                    duplicate_cols.append(column_name)
+            
+            # Log information about duplicates
+            if duplicate_cols:
+                self.logger.info(f"Found {len(duplicate_cols)} duplicate column names in table.columns for {table.name}")
+                self.logger.info(f"Duplicate column names: {duplicate_cols}")
+                self.logger.info(f"Using only unique column names for TMDL template generation")
+            
+            # Use deduplicated columns
+            for col in unique_columns.values():
                 column_name = col.name
                 is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
                 source_column = column_name
@@ -516,16 +540,17 @@ class ModelFileGenerator:
             
         # Use the provided M-query or generate it if not provided
         if m_query is not None:
-            self.logger.info(f"Using pre-generated M-query for table {table.name}")
+            self.logger.info(f"[MQUERY_TRACKING] Using pre-generated M-query for table {table.name}: {m_query[:200]}...")
             m_expression = m_query
         else:
             # Fallback to generating M-query if not provided
             try:
-                self.logger.warning(f"No pre-generated M-query provided for table {table.name}, generating now")
+                self.logger.warning(f"[MQUERY_TRACKING] No pre-generated M-query provided for table {table.name}, generating now")
                 m_expression = self._build_m_expression(table, report_spec)
+                self.logger.info(f"[MQUERY_TRACKING] Generated M-query in _build_table_context for table {table.name}: {m_expression[:200]}...")
             except Exception as e:
-                self.logger.error(f"Error building M-expression for table {table.name}: {e}")
-                m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource"
+                self.logger.error(f"[MQUERY_TRACKING] Error building M-expression for table {table.name}: {e}")
+                m_expression = f"// ERROR: {str(e)}\nlet\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\t\tin\n\t\t\t\tSource"
         
         # Add partition information to the context
         partitions = []
@@ -533,8 +558,9 @@ class ModelFileGenerator:
         # Skip partition preparation for module migrations
         is_module_migration = project_metadata.get('is_module_migration', False) if project_metadata else False
         if is_module_migration:
-            self.logger.info(f"Skipping partition preparation for module migration: {table_name}")
+            self.logger.info(f"[MQUERY_TRACKING] Skipping partition preparation for module migration: {table_name}")
         elif m_expression:
+            self.logger.info(f"[MQUERY_TRACKING] Adding M-query to partition for table {table_name}: {m_expression[:200]}...")
             partitions.append({
                 'name': table_name,
                 'source_type': 'm',
@@ -555,13 +581,13 @@ class ModelFileGenerator:
     
     def _build_m_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
         """Build M expression for table partition using MQueryConverter"""
-        self.logger.info(f"Building M-expression for table: {table.name}")
+        self.logger.info(f"[MQUERY_TRACKING] Building M-expression for table: {table.name}")
         
         # Check if table has source_query
         if hasattr(table, 'source_query'):
-            self.logger.info(f"Table {table.name} has source query: {table.source_query[:50] if table.source_query else 'None'}...")
+            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} has source query: {table.source_query[:100] if table.source_query else 'None'}...")
         else:
-            self.logger.info(f"Table {table.name} does not have source_query attribute")
+            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} does not have source_query attribute")
         
         if not self.mquery_converter:
             error_msg = f"M-query converter is not configured but required for M-query generation for table {table.name}"
@@ -569,23 +595,50 @@ class ModelFileGenerator:
             raise Exception(error_msg)
         
         # Use the MQueryConverter to generate the M-query
-        self.logger.info(f"Generating optimized M-query for table {table.name} using M-query converter")
-        return self.mquery_converter.convert_to_m_query(table, report_spec)
+        self.logger.info(f"[MQUERY_TRACKING] Generating optimized M-query for table {table.name} using M-query converter")
+        m_query = self.mquery_converter.convert_to_m_query(table, report_spec)
+        self.logger.info(f"[MQUERY_TRACKING] Generated M-query for table {table.name}: {m_query[:200]}...")
+        return m_query
     
     def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
         """Generate relationships.tmdl file"""
-        relationships_context = []
+        # Deduplicate relationships based on from/to tables and columns
+        unique_relationships = {}
         for rel in relationships:
+            # Create a unique key for the relationship
+            key = f"{rel.from_table}:{rel.from_column}:{rel.to_table}:{rel.to_column}"
+            # Only keep one relationship per unique combination
+            if key not in unique_relationships:
+                unique_relationships[key] = rel
+            else:
+                self.logger.warning(f"Duplicate relationship found: {key}. Using first occurrence.")
+        
+        self.logger.info(f"Found {len(relationships)} relationships, {len(unique_relationships)} unique")
+        
+        # Create context for template rendering
+        relationships_context = []
+        for rel in unique_relationships.values():
+            # Determine which cardinality to use (fromCardinality or toCardinality)
+            # We only use one of them in the template, not both
+            cardinality_type = 'fromCardinality'
+            cardinality_value = rel.from_cardinality
+            
+            # If to_cardinality is explicitly set, use that instead
+            if rel.to_cardinality is not None:
+                cardinality_type = 'toCardinality'
+                cardinality_value = rel.to_cardinality
+            
             relationship_data = {
-                'id': rel.name,  # Use name as the ID for the template
-                'name': rel.name,
+                'id': rel.id,  # Use UUID as the ID
                 'from_table': rel.from_table,
                 'from_column': rel.from_column,
                 'to_table': rel.to_table,
                 'to_column': rel.to_column,
-                'cardinality': rel.cardinality,
-                'cross_filter_direction': rel.cross_filter_direction,
-                'is_active': rel.is_active
+                'cardinality_type': cardinality_type,
+                'cardinality_value': cardinality_value,
+                'cross_filtering_behavior': rel.cross_filtering_behavior,
+                'is_active': rel.is_active,
+                'join_on_date_behavior': rel.join_on_date_behavior
             }
             relationships_context.append(relationship_data)
             
@@ -598,6 +651,41 @@ class ModelFileGenerator:
         relationships_file = model_dir / 'relationships.tmdl'
         with open(relationships_file, 'w', encoding='utf-8') as f:
             f.write(content)
+            
+        # Save to extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        if extracted_dir:
+            # Save relationships as JSON
+            relationships_json = []
+            for rel in unique_relationships.values():
+                rel_json = {
+                    "id": rel.id,
+                    "fromTable": rel.from_table,
+                    "fromColumn": rel.from_column,
+                    "toTable": rel.to_table,
+                    "toColumn": rel.to_column,
+                    "isActive": rel.is_active
+                }
+                
+                # Add cardinality
+                if rel.to_cardinality is not None:
+                    rel_json["toCardinality"] = rel.to_cardinality
+                else:
+                    rel_json["fromCardinality"] = rel.from_cardinality
+                    
+                # Add cross filtering behavior
+                rel_json["crossFilteringBehavior"] = rel.cross_filtering_behavior
+                
+                # Add join on date behavior if present
+                if rel.join_on_date_behavior:
+                    rel_json["joinOnDateBehavior"] = rel.join_on_date_behavior
+                    
+                relationships_json.append(rel_json)
+                
+            save_json_to_extracted_dir(extracted_dir, "relationships.json", {"relationships": relationships_json})
+            
+        self.logger.info(f"Generated relationships file: {relationships_file}")
+
         
         # Save to extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
