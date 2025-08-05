@@ -304,12 +304,22 @@ class ConsolidatedPackageExtractor:
                     self.logger.warning(f"Skipping relationship between {left_table} and {right_table}: couldn't determine join columns")
                     continue
                 
+                # Extract just the column name without table name prefix
+                # Pattern could be: TableName.ColumnName or just ColumnName
+                if left_col and '.' in left_col:
+                    parts = left_col.split('.')
+                    left_col = parts[-1]  # Take the last part after the last dot
+                
+                if right_col and '.' in right_col:
+                    parts = right_col.split('.')
+                    right_col = parts[-1]  # Take the last part after the last dot
+                
                 # Create relationship with a name - using the simple table names instead of fully qualified names
                 relationship = Relationship(
                     from_table=left_table,  # Use simple table name
-                    from_column=left_col,
+                    from_column=left_col,    # Use just the column name without table prefix
                     to_table=right_table,    # Use simple table name
-                    to_column=right_col
+                    to_column=right_col      # Use just the column name without table prefix
                     # Let the Relationship class generate a UUID instead of using a descriptive name
                 )
                 

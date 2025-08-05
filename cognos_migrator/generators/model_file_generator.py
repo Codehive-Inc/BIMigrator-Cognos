@@ -633,12 +633,30 @@ class ModelFileGenerator:
                 cardinality_type = 'toCardinality'
                 cardinality_value = rel.to_cardinality
             
+            # Format table names according to TMDL rules
+            # Table names with spaces need to be quoted
+            from_table = f"'{rel.from_table}'" if ' ' in rel.from_table else rel.from_table
+            to_table = f"'{rel.to_table}'" if ' ' in rel.to_table else rel.to_table
+            
+            # Clean up column names by removing table name prefixes if they exist
+            from_column = rel.from_column
+            to_column = rel.to_column
+            
+            # Remove table name from column if it's included
+            if from_column and '.' in from_column:
+                parts = from_column.split('.')
+                from_column = parts[-1]  # Take the last part after the last dot
+                
+            if to_column and '.' in to_column:
+                parts = to_column.split('.')
+                to_column = parts[-1]  # Take the last part after the last dot
+            
             relationship_data = {
                 'id': rel.id,  # Use UUID as the ID
-                'from_table': rel.from_table,
-                'from_column': rel.from_column,
-                'to_table': rel.to_table,
-                'to_column': rel.to_column,
+                'from_table': from_table,
+                'from_column': from_column,
+                'to_table': to_table,
+                'to_column': to_column,
                 'cardinality_type': cardinality_type,
                 'cardinality_value': cardinality_value,
                 'cross_filtering_behavior': rel.cross_filtering_behavior,
@@ -663,12 +681,25 @@ class ModelFileGenerator:
             # Save relationships as JSON
             relationships_json = []
             for rel in unique_relationships.values():
+                # Extract just the column name without table name prefix
+                from_column = rel.from_column
+                to_column = rel.to_column
+                
+                # Remove table name from column if it's included
+                if from_column and '.' in from_column:
+                    parts = from_column.split('.')
+                    from_column = parts[-1]  # Take the last part after the last dot
+                    
+                if to_column and '.' in to_column:
+                    parts = to_column.split('.')
+                    to_column = parts[-1]  # Take the last part after the last dot
+                
                 rel_json = {
                     "id": rel.id,
                     "fromTable": rel.from_table,
-                    "fromColumn": rel.from_column,
+                    "fromColumn": from_column,
                     "toTable": rel.to_table,
-                    "toColumn": rel.to_column,
+                    "toColumn": to_column,
                     "isActive": rel.is_active
                 }
                 
@@ -693,13 +724,8 @@ class ModelFileGenerator:
 
         
         # Save to extracted directory if applicable
-        extracted_dir = get_extracted_dir(model_dir)
-        if extracted_dir:
-            # Save relationships info as JSON
-            relationship_json = {
-                "relationships": relationships_context
-            }
-            save_json_to_extracted_dir(extracted_dir, "relationship.json", relationship_json)
+        # We already saved relationships.json with the correct format earlier
+        # No need to save a duplicate relationship.json file
             
         self.logger.info(f"Generated relationships file: {relationships_file}")
     
