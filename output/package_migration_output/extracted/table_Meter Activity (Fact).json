@@ -55,7 +55,7 @@
     },
     {
       "source_name": "ACTIVITY_TIME_OF_ASSIGNMENT",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_TIME_OF_ASSIGNMENT",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "ACTIVITY_TIME_OF_BOOKING",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_TIME_OF_BOOKING",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "ACTIVITY_TRAVELING_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_TRAVELING_TIME",
@@ -1879,7 +1879,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_1_1",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_1_1",
@@ -1895,7 +1895,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_1_2",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_1_2",
@@ -1911,7 +1911,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_1_3",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_1_3",
@@ -1927,7 +1927,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_2_1",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_2_1",
@@ -1943,7 +1943,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_2_2",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_2_2",
@@ -1959,7 +1959,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_2_3",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_2_3",
@@ -1975,7 +1975,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_3_1",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_3_1",
@@ -1991,7 +1991,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_3_2",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_3_2",
@@ -2007,7 +2007,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_3_3",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_3_3",
@@ -2407,7 +2407,7 @@
     },
     {
       "source_name": "AUTO_ROUTED_TO_DATE",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "AUTO_ROUTED_TO_DATE",
@@ -2855,7 +2855,7 @@
     },
     {
       "source_name": "ETA",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ETA",
@@ -3287,7 +3287,7 @@
     },
     {
       "source_name": "QUEUE_ACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_ACTIVATION_TIME",
@@ -3303,7 +3303,7 @@
     },
     {
       "source_name": "QUEUE_DATE",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DATE",
@@ -3319,7 +3319,7 @@
     },
     {
       "source_name": "QUEUE_DEACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DEACTIVATION_TIME",
@@ -3351,7 +3351,7 @@
     },
     {
       "source_name": "QUEUE_REACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_REACTIVATION_TIME",
@@ -3383,7 +3383,7 @@
     },
     {
       "source_name": "RECEIVED",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECEIVED",
@@ -3767,7 +3767,7 @@
     },
     {
       "source_name": "SLA_WINDOW_END",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SLA_WINDOW_END",
@@ -3783,7 +3783,7 @@
     },
     {
       "source_name": "SLA_WINDOW_START",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SLA_WINDOW_START",
@@ -3895,7 +3895,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS",
@@ -3911,7 +3911,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS_DETAIL",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS_DETAIL",
@@ -3927,7 +3927,7 @@
     },
     {
       "source_name": "TIME_DELIVERED_END",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_DELIVERED_END",
@@ -3943,7 +3943,7 @@
     },
     {
       "source_name": "TIME_DELIVERED_START",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_DELIVERED_START",
@@ -4087,7 +4087,7 @@
     },
     {
       "source_name": "WORKING_DAY_END",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WORKING_DAY_END",
@@ -4103,7 +4103,7 @@
     },
     {
       "source_name": "WORKING_DAY_START",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WORKING_DAY_START",
@@ -4199,7 +4199,7 @@
     },
     {
       "source_name": "ACTIVITY_TIME_OF_ASSIGNMENT",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_TIME_OF_ASSIGNMENT",
@@ -4215,7 +4215,7 @@
     },
     {
       "source_name": "ACTIVITY_TIME_OF_BOOKING",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_TIME_OF_BOOKING",
@@ -4231,7 +4231,7 @@
     },
     {
       "source_name": "ACTIVITY_TRAVELING_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_TRAVELING_TIME",
@@ -6023,7 +6023,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_1_1",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_1_1",
@@ -6039,7 +6039,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_1_2",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_1_2",
@@ -6055,7 +6055,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_1_3",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_1_3",
@@ -6071,7 +6071,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_2_1",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_2_1",
@@ -6087,7 +6087,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_2_2",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_2_2",
@@ -6103,7 +6103,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_2_3",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_2_3",
@@ -6119,7 +6119,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_3_1",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_3_1",
@@ -6135,7 +6135,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_3_2",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_3_2",
@@ -6151,7 +6151,7 @@
     },
     {
       "source_name": "APPT_READ_DATE_3_3",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "APPT_READ_DATE_3_3",
@@ -6551,7 +6551,7 @@
     },
     {
       "source_name": "AUTO_ROUTED_TO_DATE",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "AUTO_ROUTED_TO_DATE",
@@ -6999,7 +6999,7 @@
     },
     {
       "source_name": "ETA",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ETA",
@@ -7431,7 +7431,7 @@
     },
     {
       "source_name": "QUEUE_ACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_ACTIVATION_TIME",
@@ -7447,7 +7447,7 @@
     },
     {
       "source_name": "QUEUE_DATE",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DATE",
@@ -7463,7 +7463,7 @@
     },
     {
       "source_name": "QUEUE_DEACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DEACTIVATION_TIME",
@@ -7495,7 +7495,7 @@
     },
     {
       "source_name": "QUEUE_REACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_REACTIVATION_TIME",
@@ -7527,7 +7527,7 @@
     },
     {
       "source_name": "RECEIVED",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECEIVED",
@@ -7911,7 +7911,7 @@
     },
     {
       "source_name": "SLA_WINDOW_END",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SLA_WINDOW_END",
@@ -7927,7 +7927,7 @@
     },
     {
       "source_name": "SLA_WINDOW_START",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SLA_WINDOW_START",
@@ -8039,7 +8039,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS",
@@ -8055,7 +8055,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS_DETAIL",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS_DETAIL",
@@ -8071,7 +8071,7 @@
     },
     {
       "source_name": "TIME_DELIVERED_END",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_DELIVERED_END",
@@ -8087,7 +8087,7 @@
     },
     {
       "source_name": "TIME_DELIVERED_START",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_DELIVERED_START",
@@ -8231,7 +8231,7 @@
     },
     {
       "source_name": "WORKING_DAY_END",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WORKING_DAY_END",
@@ -8247,7 +8247,7 @@
     },
     {
       "source_name": "WORKING_DAY_START",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "WORKING_DAY_START",

@@ -1,0 +1,106 @@
+﻿table C_SAP_D_WORKER_ALL
+	excludeFromModelRefresh
+
+	column Email
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Email
+
+		annotation SummarizationSetBy = Automatic
+
+	column EnterpriseID
+		dataType: string
+		summarizeBy: none
+		sourceColumn: EnterpriseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Current_Position
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Current_Position
+
+		annotation SummarizationSetBy = Automatic
+
+	column Last_Name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Last_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column First_Name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: First_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Archive
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Archive
+
+		annotation SummarizationSetBy = Automatic
+
+	column Org_Unit
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Org_Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column Current_Status_CD
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Current_Status_CD
+
+		annotation SummarizationSetBy = Automatic
+
+	column Current_Status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Current_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column SCD_IS_CURRENT_YN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SCD_IS_CURRENT_YN
+
+		annotation SummarizationSetBy = Automatic
+
+	column PHISHME_WITH_TITLE_FILTER
+		dataType: string
+		summarizeBy: none
+		sourceColumn: PHISHME_WITH_TITLE_FILTER
+
+		annotation SummarizationSetBy = Automatic
+
+	partition C_SAP_D_WORKER_ALL = m
+		mode: import
+		source =
+				let
+				    Source = Oracle.Database("CDMP", [HierarchicalNavigation=true, Query="SELECT#(lf)    rtrim(A.""INTERNET_EMAIL_AD"", ' ') AS ""Email"", A.""ENTERPRISE_ID"" AS ""EnterpriseID"",A.""CURRENT_POSITION_NM"" AS ""Current_Position"",#(lf)    A.""WORKER_LAST_NM"" AS ""Last_Name"", #(lf)    A.""WORKER_FIRST_NM"" AS ""First_Name"", #(lf)    CAST(NULL AS CHAR(1)) AS ""Archive"", #(lf)    A.""ORGANIZATION_UNIT_NAME"" AS ""Org_Unit"", #(lf)    A.""LOCATION_DESCRIPTION"" AS ""Location"", #(lf)    A.""COMPANY_DESCRIPTION"" AS ""Company"", #(lf)    A.""CURRENT_STATUS_CD"" AS ""Current_Status_CD"", #(lf)    A.""CURRENT_STATUS_DESC"" AS ""Current_Status"",#(lf)#(tab)A.""SCD_IS_CURRENT_YN"",(case when #(lf) A.""ENTERPRISE_ID"" IN ( #(lf)        'thoma35', #(lf)        'heathe8', #(lf)        'thom190', #(lf)        'robe930' ) then 'N' else 'Y' end) as PhishMe_with_Title_filter#(lf)FROM#(lf)    ""SAP"".""D_WORKER_ALL""  A#(lf)WHERE ""SCD_IS_CURRENT_YN"" = 'Y' and#(lf)    A.""CURRENT_STATUS_CD"" IN ( #(lf)        1, #(lf)        5 ) AND#(lf)    UPPER(A.""CURRENT_POSITION_NM"") <> 'PHYSICAL ACCESS ONLY' AND#(lf)    NOT ( rtrim(A.""INTERNET_EMAIL_AD"", ' ') IS NULL ) AND#(lf)    NOT ( rtrim(A.""INTERNET_EMAIL_AD"", ' ') LIKE '%dom.com')"])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

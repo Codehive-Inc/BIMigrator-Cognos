@@ -1,0 +1,58 @@
+﻿relationship 2b76d3f4-1f3e-cc2c-39a8-f518304bc5f2
+	toCardinality: many
+	fromColumn: I_D_OFS_DOM_RESOURCE_HIERARCHY.RESOURCE_ID
+	toColumn: C_DOM_ACTIVITY_DETAIL_DTL_METER.RESOURCE_ID
+
+relationship 7054b222-f2b8-46f7-8026-5d9b2ce889d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: A_F_OFS_DOM_AUTO_ROUTING.AUTO_ROUTED_TO_DATE
+	toColumn: LocalDateTable_9f42c05f-3025-4592-b928-d85151e148cd.Date
+
+relationship 1a29588a-b35a-096b-9121-7b0fe83710c0
+	toCardinality: many
+	fromColumn: C_DOM_ACTIVITY_DETAIL_DTL_METER.OFFICE
+	toColumn: C_OFFICE_DESCRIPTION.OFFICE
+
+relationship fa1528b4-0307-46f9-aaca-114c99ca1b68
+	joinOnDateBehavior: datePartOnly
+	fromColumn: C_DIM_DATE.Dates
+	toColumn: LocalDateTable_02ca10d7-1d08-48ba-8296-8d2555d3849a.Date
+
+relationship 03bb2ea9-3c86-4e05-9dbe-69e911d3cc89
+	joinOnDateBehavior: datePartOnly
+	fromColumn: A_F_OFS_DOM_AUTO_ROUTING.ASSIGNMENT_TIME
+	toColumn: LocalDateTable_39655841-974d-4845-ae9a-ef74f8ab8edb.Date
+
+relationship c38bfdb3-d3e4-cb17-3952-977cde0619fc
+	fromColumn: A_F_OFS_DOM_AUTO_ROUTING.ASSIGNMENT_DATE
+	toColumn: C_DIM_DATE.Dates
+
+relationship 604df09d-dff2-48d7-8e78-1c7966dcfe20
+	joinOnDateBehavior: datePartOnly
+	fromColumn: A_F_OFS_DOM_AUTO_ROUTING.SYS_UPDATE_TS
+	toColumn: LocalDateTable_9ad93ebe-8a65-4562-8f05-b390e1206038.Date
+
+relationship e1078ae2-f15c-4b01-8aa8-26cfa97776d9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: C_DOM_ACTIVITY_DETAIL_DTL_METER.QUEUE_DATE
+	toColumn: LocalDateTable_d567ef7c-9f36-4bb0-9f6a-25ca970815f7.Date
+
+relationship 78f98241-a8cf-d9b6-f5e2-faf3629ab06e
+	fromColumn: C_DOM_ACTIVITY_DETAIL_DTL_METER.QUEUE_DT
+	toColumn: C_DIM_DATE.Dates
+
+relationship 7f270405-32d9-480c-bc4a-889170137c3a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: C_DOM_ACTIVITY_DETAIL_DTL_METER.RECEIVED
+	toColumn: LocalDateTable_fa5a35c3-9daa-41ca-bc3f-6337873541cb.Date
+
+relationship 7a7c0363-97f8-48aa-9b15-8ab0f92fa979
+	joinOnDateBehavior: datePartOnly
+	fromColumn: C_DOM_ACTIVITY_DETAIL_DTL_METER.RECEIVED_DT
+	toColumn: LocalDateTable_2e72c5ad-0136-4930-b5ac-b89e739de531.Date
+
+relationship cd54738b-05d8-4efc-b5d0-46501891bc05
+	joinOnDateBehavior: datePartOnly
+	fromColumn: A_F_OFS_DOM_AUTO_ROUTING.'SYS_UPDATE _DATE'
+	toColumn: LocalDateTable_589112fc-9397-48e7-9d4e-41e4dce8d0b7.Date
+

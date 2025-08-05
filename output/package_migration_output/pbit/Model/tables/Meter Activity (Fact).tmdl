@@ -26,7 +26,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'ACTIVITY_TIME_OF_ASSIGNMENT'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: ACTIVITY_TIME_OF_ASSIGNMENT
 
@@ -34,7 +34,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'ACTIVITY_TIME_OF_BOOKING'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: ACTIVITY_TIME_OF_BOOKING
 
@@ -42,7 +42,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'ACTIVITY_TRAVELING_TIME'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: ACTIVITY_TRAVELING_TIME
 
@@ -938,7 +938,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_1_1'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_1_1
 
@@ -946,7 +946,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_1_2'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_1_2
 
@@ -954,7 +954,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_1_3'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_1_3
 
@@ -962,7 +962,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_2_1'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_2_1
 
@@ -970,7 +970,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_2_2'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_2_2
 
@@ -978,7 +978,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_2_3'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_2_3
 
@@ -986,7 +986,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_3_1'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_3_1
 
@@ -994,7 +994,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_3_2'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_3_2
 
@@ -1002,7 +1002,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'APPT_READ_DATE_3_3'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_3_3
 
@@ -1202,7 +1202,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'AUTO_ROUTED_TO_DATE'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: AUTO_ROUTED_TO_DATE
 
@@ -1426,7 +1426,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'ETA'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: ETA
 
@@ -1642,7 +1642,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'QUEUE_ACTIVATION_TIME'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: QUEUE_ACTIVATION_TIME
 
@@ -1650,7 +1650,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'QUEUE_DATE'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: QUEUE_DATE
 
@@ -1658,7 +1658,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'QUEUE_DEACTIVATION_TIME'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: QUEUE_DEACTIVATION_TIME
 
@@ -1674,7 +1674,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'QUEUE_REACTIVATION_TIME'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: QUEUE_REACTIVATION_TIME
 
@@ -1690,7 +1690,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'RECEIVED'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: RECEIVED
 
@@ -1882,7 +1882,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'SLA_WINDOW_END'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: SLA_WINDOW_END
 
@@ -1890,7 +1890,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'SLA_WINDOW_START'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: SLA_WINDOW_START
 
@@ -1946,7 +1946,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'SYS_UPDATE_TS'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: SYS_UPDATE_TS
 
@@ -1954,7 +1954,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'SYS_UPDATE_TS_DETAIL'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: SYS_UPDATE_TS_DETAIL
 
@@ -1962,7 +1962,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'TIME_DELIVERED_END'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: TIME_DELIVERED_END
 
@@ -1970,7 +1970,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'TIME_DELIVERED_START'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: TIME_DELIVERED_START
 
@@ -2042,7 +2042,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'WORKING_DAY_END'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: WORKING_DAY_END
 
@@ -2050,7 +2050,7 @@ table 'Meter Activity (Fact)'
 
         
     column 'WORKING_DAY_START'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: WORKING_DAY_START
 
@@ -2079,7 +2079,7 @@ table 'Meter Activity (Fact)'
     partition 'Meter Activity (Fact)' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Meter Activity (Fact): HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10ce14fe0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table Meter Activity (Fact): HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x108605280>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

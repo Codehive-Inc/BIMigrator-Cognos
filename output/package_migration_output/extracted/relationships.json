@@ -1,7 +1,7 @@
 {
   "relationships": [
     {
-      "id": "aa7d2807-53ba-4b72-b395-e5da9000fa3c",
+      "id": "fc233bd5-018a-410b-8bff-38cfb015dffa",
       "fromTable": "F_OFS_DOM_ACTIVITY_DTL_METER",
       "fromColumn": "APPT_AID",
       "toTable": "F_OFS_DOMINION_ACTIVITY_DETAIL",
@@ -11,11 +11,11 @@
       "crossFilteringBehavior": "BothDirections"
     },
     {
-      "id": "1a6cc016-0ff9-4bcd-a78c-c9ec1b450580",
+      "id": "43e315eb-78ae-4be3-951b-f8b6d4312ffb",
       "fromTable": "Resource Hierarchy",
-      "fromColumn": "RESOURCE_EXTERNAL_ID",
+      "fromColumn": "VEHICLE_ID",
       "toTable": "Meter Activity (Fact)",
-      "toColumn": "RESOURCE_EXTERNAL_ID",
+      "toColumn": "VEHICLE_ID",
       "isActive": true,
       "fromCardinality": "many",
       "crossFilteringBehavior": "BothDirections"

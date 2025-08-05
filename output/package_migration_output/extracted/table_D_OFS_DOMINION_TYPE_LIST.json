@@ -87,7 +87,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS",
@@ -183,7 +183,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS",

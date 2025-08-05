@@ -1,0 +1,121 @@
+{
+  "name": "780048fd99a0965bade2",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 10.495626822157435,
+        "y": 0,
+        "z": 0,
+        "width": 1044.3148688046647,
+        "height": 577.259475218659,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "select \"T1\".\"C0\" \"ELECTRIC_DOMINANT_CUSTOMER_NM\", \"T1\".\"C1\" \"ELECTRIC_DOMINANT_CUSTOMER_SK\", \"T1\".\"C2\" \"ELECTRIC_ACCOUNT_SK\", \"T1\".\"C3\" \"ELECTRIC_ACCOUNT_ID\", \"T1\".\"C6\" \"BILL_SVC_UNIT_AMT\", \"T1\".\"C7\" \"DEMAND_BILL_CD_QTY\", \"T0\".\"C0\" \"Data_Item1\", \"T1\".\"C6\" \"Total_BILL_SVC_UNIT_AMT_\", \"T1\".\"C4\" \"SORT\", \"T1\".\"C5\" \"Customer_Name\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " from ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "select count(distinct \"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_ID\") \"C0\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " from \"CDM\".\"D_ELECTRIC_DOMINANT_CUSTOMER\" \"D_ELECTRIC_DOMINANT_CUSTOMER\", \"CDM\".\"F_ELECTRIC_BILLING\" \"F_ELECTRIC_BILLING\", \"CDM\".\"D_ELECTRIC_ACCOUNT\" \"D_ELECTRIC_ACCOUNT\", \"CDM\".\"F_ELECTRIC_CUSTOMER_CROSS_REF\" \"F_ELECTRIC_CUSTOMER_CROSS_REF\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " where \"F_ELECTRIC_BILLING\".\"READING_TO_DT\"<sysdate and (\"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" in (924) or 924=999999) and "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"F_ELECTRIC_BILLING\".\"READING_TO_DT\">=CAST( ( :PQ2 ) AS TIMESTAMP ) and \"F_ELECTRIC_BILLING\".\"READING_TO_DT\"<=CAST( ( :PQ1 ) AS TIMESTAMP ) "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " and \"F_ELECTRIC_CUSTOMER_CROSS_REF\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\"=\"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" and \"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_SK\"=\"F_ELECTRIC_CUSTOMER_CROSS_REF\".\"ELECTRIC_ACCOUNT_SK\" and \"F_ELECTRIC_BILLING\".\"ELECTRIC_ACCOUNT_SK\"=\"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_SK\") \"T0\", ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "select \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\" \"C0\", \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" \"C1\", \"F_ELECTRIC_BILLING\".\"ELECTRIC_ACCOUNT_SK\" \"C2\", \"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_ID\" \"C3\", case  when \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 1 else 0 end  \"C4\", case  when \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 'UNCATEGORIZED' else \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\" end  \"C5\", sum(\"F_ELECTRIC_BILLING\".\"BILL_SVC_UNIT_AMT\") \"C6\", sum(\"F_ELECTRIC_BILLING\".\"DEMAND_BILL_CD_QTY\") \"C7\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " from \"CDM\".\"D_ELECTRIC_DOMINANT_CUSTOMER\" \"D_ELECTRIC_DOMINANT_CUSTOMER\", \"CDM\".\"F_ELECTRIC_BILLING\" \"F_ELECTRIC_BILLING\", \"CDM\".\"D_ELECTRIC_ACCOUNT\" \"D_ELECTRIC_ACCOUNT\", \"CDM\".\"F_ELECTRIC_CUSTOMER_CROSS_REF\" \"F_ELECTRIC_CUSTOMER_CROSS_REF\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " where \"F_ELECTRIC_BILLING\".\"READING_TO_DT\"<sysdate and (\"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" in (924) or 924=999999) and \"F_ELECTRIC_BILLING\".\"READING_TO_DT\">=CAST( ( :PQ2 ) AS TIMESTAMP ) and \"F_ELECTRIC_BILLING\".\"READING_TO_DT\"<=CAST( ( :PQ1 ) AS TIMESTAMP ) and \"F_ELECTRIC_CUSTOMER_CROSS_REF\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\"=\"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" and \"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_SK\"=\"F_ELECTRIC_CUSTOMER_CROSS_REF\".\"ELECTRIC_ACCOUNT_SK\" and \"F_ELECTRIC_BILLING\".\"ELECTRIC_ACCOUNT_SK\"=\"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_SK\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " group by \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\", \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\", \"F_ELECTRIC_BILLING\".\"ELECTRIC_ACCOUNT_SK\", \"D_ELECTRIC_ACCOUNT\".\"ELECTRIC_ACCOUNT_ID\", case  when \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 1 else 0 end , case  when \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 'UNCATEGORIZED' else \"D_ELECTRIC_DOMINANT_CUSTOMER\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\" end ) \"T1\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " "
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

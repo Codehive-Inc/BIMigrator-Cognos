@@ -1,0 +1,2717 @@
+{
+  "name": "af9416049afd708218ac",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 215.74257987628397,
+        "y": 26.150615742579877,
+        "z": 0,
+        "width": 672.07082458430284,
+        "height": 487.70898359911467,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "WITH ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"Campign_Backup\" AS ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS_BCKUP\".\"CAMPAIGN_LABEL\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS_BCKUP\".\"DATE_OF_CAMPAIGN\" as DATE)) AS \"Date_of_Campaign\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\") AS \"Recipient_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION_BCKUP\".\"METHOD_OF_PHISH\" AS \"Method_of_Phish\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM(",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CASE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 WHEN ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     \"F_PHISHING_SIMULATION_BCKUP\".\"FAILURE_YN\" IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'TRUE', ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'Yes' )",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     THEN",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         1",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 ELSE 0",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END) AS \"Failure_Count\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"CDM\".\"D_PHISHING_SIMULATIONS\" \"D_PHISHING_SIMULATIONS_BCKUP\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INNER JOIN \"CDM\".\"F_PHISHING_SIMULATION_BCKUP\" \"F_PHISHING_SIMULATION_BCKUP\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ON \"D_PHISHING_SIMULATIONS_BCKUP\".\"RECIPIENT_GROUP\" = \"F_PHISHING_SIMULATION_BCKUP\".\"RECIPIENT_GROUP\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\") IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'ankit06' ) AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\") IS NULL ) ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS_BCKUP\".\"CAMPAIGN_LABEL\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS_BCKUP\".\"DATE_OF_CAMPAIGN\" as DATE)), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\"), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION_BCKUP\".\"METHOD_OF_PHISH\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"Campign_Current\" AS ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS\".\"CAMPAIGN_LABEL\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS\".\"DATE_OF_CAMPAIGN\" as DATE)) AS \"Date_of_Campaign\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\") AS \"Recipient_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION\".\"METHOD_OF_PHISH\" AS \"Method_of_Phish\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM(",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CASE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 WHEN ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     \"F_PHISHING_SIMULATION\".\"FAILURE_YN\" IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'TRUE', ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'Yes' )",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     THEN",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         1",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 ELSE 0",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END) AS \"Failure_Count\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"CDM\".\"D_PHISHING_SIMULATIONS\" \"D_PHISHING_SIMULATIONS\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INNER JOIN \"CDM\".\"F_PHISHING_SIMULATION\" \"F_PHISHING_SIMULATION\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ON \"D_PHISHING_SIMULATIONS\".\"RECIPIENT_GROUP\" = \"F_PHISHING_SIMULATION\".\"RECIPIENT_GROUP\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\") IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'ankit06' ) AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\") IS NULL ) ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS\".\"CAMPAIGN_LABEL\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS\".\"DATE_OF_CAMPAIGN\" as DATE)), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\"), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION\".\"METHOD_OF_PHISH\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"D_WORKER\" AS ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_SK\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"ENTERPRISE_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_LAST_NM\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_FIRST_NM\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_POSITION_NM\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_TELEPHONE_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_TIE_LINE_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"HOME_PHONE_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"FAX_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_PHONE_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_PIN_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_TYPE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_SERVICE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"INTERNET_EMAIL_AD\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRINTER_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"BUSINESS_UNIT_DESCRIPTION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"ORGANIZATION_UNIT_NAME\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"LOCATION_DESCRIPTION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"FLOOR\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DAZEL_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_STATUS_CD\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_STATUS_DESC\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"NICK_NM\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CELLULAR_PHONE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COMPANY_DESCRIPTION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"BUSINESS_UNIT_CODE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COMPANY_CODE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"ORGANIZATION_UNIT_CODE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_LOCATION_CODE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"EXTENSION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COST_CENTER_NUMBER\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COST_CENTER_DESCRIPTION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_TYPE_CD\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SAP_PERSONNEL_NUM_CD\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"NOTES_EMAIL_AD\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_MAIN_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_SUB1_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_SUB2_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"EMPLOYEE_SUB_GROUP\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"REPORTS_TO_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SCD_IS_CURRENT_YN\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SCD_EFFECTIVE_TS\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SCD_END_TS\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SYS_UPDATE_TS\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"IDENTITY_KEY\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_BUSINESS_CATEGORY\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PREVIOUS_BUSINESS_CATEGORY\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SYS_CREATE_TS\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_MAIN_ID_LEGACY\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_LOCATION_STATE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_ADUSER_PRINCIPAL_NAME\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"VENDOR_NM\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"EMAIL_ADDRESS_ACTIVE_YN\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_BUS_CONT_PHONE\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_BUS_CONT_PHONE2\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_BUS_CONT_EMAIL\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_OTHER_LOCATION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_ALT_LOCATION\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_ALT_LOCATION2\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"SAP\".\"D_WORKER_ALL\" \"D_WORKER_ALL\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"SCD_IS_CURRENT_YN\" = 'Y'",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"PhishMe\" AS ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"ENTERPRISE_ID\" AS \"Enterprise_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         CASE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             WHEN ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 \"D_WORKER\".\"WORKER_FIRST_NM\" IS NULL OR",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 \"D_WORKER\".\"WORKER_LAST_NM\" IS NULL",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 THEN",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     NULL",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ELSE \"D_WORKER\".\"WORKER_FIRST_NM\" || ' ' || \"D_WORKER\".\"WORKER_LAST_NM\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         END AS \"Name\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"INTERNET_EMAIL_AD\" AS \"Email\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"WORKER_LAST_NM\" AS \"Last_Name\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"WORKER_FIRST_NM\" AS \"First_Name\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"ORGANIZATION_UNIT_NAME\" AS \"Org_Unit\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"LOCATION_DESCRIPTION\" AS \"Location\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"COMPANY_DESCRIPTION\" AS \"Company\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_STATUS_CD\" AS \"Current_Status_CD\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_STATUS_DESC\" AS \"Current_Status\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_POSITION_NM\" AS \"Current_Position\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"REPORTS_TO_EID\" AS \"Reports_To_EID\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_STATUS_CD\" IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             1, ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             5 ) AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_POSITION_NM\" <> 'PHYSICAL ACCESS ONLY' AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( \"D_WORKER\".\"ENTERPRISE_ID\" IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'thoma35', ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'brend54', ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'robe930' ) ) AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"ENTERPRISE_ID\" IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'ankit06' ) AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( rtrim(\"D_WORKER\".\"INTERNET_EMAIL_AD\", ' ') IS NULL ) AND",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( rtrim(\"D_WORKER\".\"INTERNET_EMAIL_AD\", ' ') LIKE '%dom.com' )",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"Campign\" AS ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Campaign_Label\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Date_of_Campaign\" AS \"Date_of_Campaign\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Recipient_EID\" AS \"Recipient_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Method_of_Phish\" AS \"Method_of_Phish\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM(\"Union1\".\"Failure_Count\") AS \"Failure_Count\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Campaign_Label\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Date_of_Campaign\" AS \"Date_of_Campaign\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Recipient_EID\" AS \"Recipient_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Method_of_Phish\" AS \"Method_of_Phish\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Failure_Count\" AS \"Failure_Count\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         UNION ALL",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Campaign_Label\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Date_of_Campaign\" AS \"Date_of_Campaign\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Recipient_EID\" AS \"Recipient_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Method_of_Phish\" AS \"Method_of_Phish\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Failure_Count\" AS \"Failure_Count\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         ) \"Union1\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Date_of_Campaign\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Recipient_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Method_of_Phish\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"RSF_Final\" AS ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     (",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Enterprise_ID\" AS \"EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Name\" AS \"Name\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Email\" AS \"Email\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Current_Position\" AS \"Title\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Company\" AS \"Company\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Reports_To_EID\" AS \"Reports_To_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Campign\".\"Campaign_Label\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM(NVL(\"Campign\".\"Failure_Count\", 0)) AS \"Failure_Count\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         MIN(\"Campign\".\"Campaign_Label\") AS \"Min1\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             LEFT OUTER JOIN \"Campign\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ON \"PhishMe\".\"Enterprise_ID\" = \"Campign\".\"Recipient_EID\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Enterprise_ID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Name\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Email\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Current_Position\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Company\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Reports_To_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Campign\".\"Campaign_Label\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     )",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " SELECT",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"EID\" AS \"EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Name\" AS \"Name\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Email\" AS \"Email\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Title\" AS \"Title\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Company\" AS \"Company\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Reports_To_EID\" AS \"Reports_To_EID\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Campaign_Label\" AS \"Campaign_Label\", ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Failure_Count\" AS \"Failure_Count\"",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " FROM",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\" ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " WHERE ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     substr(\"RSF_Final\".\"Min1\", 3, 2) IN ( ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         '2025' )",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontFamily": "-apple-system, BlinkMacSystemFont, Segoe UI, system-ui, Apple Color Emoji, Segoe UI Emoji, Segoe UI Web, sans-serif",
+                      "fontSize": "14px"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

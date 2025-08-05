@@ -23,7 +23,7 @@
     },
     {
       "source_name": "QUEUE_DATE",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DATE",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "QUEUE_REACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_REACTIVATION_TIME",
@@ -343,7 +343,7 @@
     },
     {
       "source_name": "QUEUE_ACTIVATE_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_ACTIVATE_TIME",
@@ -359,7 +359,7 @@
     },
     {
       "source_name": "QUEUE_DEACTIVATE_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DEACTIVATE_TIME",
@@ -375,7 +375,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS",
@@ -407,7 +407,7 @@
     },
     {
       "source_name": "QUEUE_DATE",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DATE",
@@ -471,7 +471,7 @@
     },
     {
       "source_name": "QUEUE_REACTIVATION_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_REACTIVATION_TIME",
@@ -727,7 +727,7 @@
     },
     {
       "source_name": "QUEUE_ACTIVATE_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_ACTIVATE_TIME",
@@ -743,7 +743,7 @@
     },
     {
       "source_name": "QUEUE_DEACTIVATE_TIME",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUEUE_DEACTIVATE_TIME",
@@ -759,7 +759,7 @@
     },
     {
       "source_name": "SYS_UPDATE_TS",
-      "datatype": "string",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SYS_UPDATE_TS",

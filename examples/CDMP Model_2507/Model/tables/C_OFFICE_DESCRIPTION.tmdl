@@ -1,0 +1,30 @@
+﻿table C_OFFICE_DESCRIPTION
+	excludeFromModelRefresh
+
+	column OFFICE
+		dataType: string
+		summarizeBy: none
+		sourceColumn: OFFICE
+
+		annotation SummarizationSetBy = Automatic
+
+	column OFFICE_DESCRIPTION
+		dataType: string
+		summarizeBy: none
+		sourceColumn: OFFICE_DESCRIPTION
+
+		annotation SummarizationSetBy = Automatic
+
+	partition C_OFFICE_DESCRIPTION = m
+		mode: import
+		source =
+				let
+				    Source = Oracle.Database("CDMP", [HierarchicalNavigation=true, Query="Select distinct A.OFFICE , (CASE A.OFFICE#(lf)WHEN '01' THEN 'RICHMOND'#(lf)          WHEN  '02'   THEN 'PETERSBURG'#(lf)          WHEN  '03'   THEN 'NORTHERN NECK'#(lf)          WHEN  '04'   THEN 'GLOUCESTER'#(lf)          WHEN  '05'   THEN 'MIDLOTHIAN'#(lf)          WHEN  '06'   THEN 'EAST RICHMOND'#(lf)          WHEN  '21'   THEN 'NORFOLK'#(lf)          WHEN  '22'   THEN 'PENINSULA'#(lf)          WHEN  '23'   THEN 'CHESAPEAKE'#(lf)          WHEN  '25'   THEN 'VIRGINIA BEACH'#(lf)          WHEN  '26'   THEN 'CHUCKATUCK'#(lf)          WHEN  '28'   THEN 'WILLIAMSBURG'#(lf)          WHEN  '41'   THEN 'ALEX/ARLINGTON'#(lf)          WHEN  '42'   THEN 'FREDERICKSBURG'#(lf)          WHEN  '43'   THEN 'FAIRFAX'#(lf)          WHEN  '44'   THEN 'HERNDON'#(lf)          WHEN  '45'   THEN 'WOODBRIDGE'#(lf)          WHEN  '46'   THEN 'SPRINGFIELD'#(lf)          WHEN  '47'   THEN 'WARRENTON'#(lf)          WHEN  '48'   THEN 'LEESBURG'#(lf)          WHEN  '61'   THEN 'ROANOKE RAPIDS'#(lf)          WHEN  '62'   THEN 'ALBEMARLE'#(lf)          WHEN  '63'   THEN 'FARMVILLE'#(lf)          WHEN  '64'   THEN 'SOUTH HILL'#(lf)          WHEN  '65'   THEN 'SOUTH BOSTON'#(lf)          WHEN  '66'   THEN 'ALTAVISTA'#(lf)          WHEN  '67'   THEN 'AHOSKIE'#(lf)          WHEN  '68'   THEN 'OUTER BANKS'#(lf)          WHEN  '71'   THEN 'ELIZABETH CITY'#(lf)          WHEN  '81'   THEN 'CHARLOTTESVILLE'#(lf)          WHEN  '82'   THEN 'BLUE RIDGE'#(lf)          WHEN  '84'   THEN 'SHENANDOAH'#(lf)          WHEN  '85'   THEN 'ROCKBRIDGE'#(lf)          WHEN  '86'   THEN 'ALLEGHANY'#(lf)          WHEN  '87'   THEN 'ORANGE'#(lf)          ELSE 'No Office Defined'#(lf)END) as OFFICE_DESCRIPTION #(lf)from ""CDM"".""F_OFS_DOMINION_ACTIVITY_DETAIL"" A"]),
+				    #"Removed Duplicates" = Table.Distinct(Source)
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

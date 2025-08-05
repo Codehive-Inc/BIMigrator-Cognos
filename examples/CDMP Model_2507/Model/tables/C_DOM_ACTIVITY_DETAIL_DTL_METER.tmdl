@@ -1,0 +1,222 @@
+﻿table C_DOM_ACTIVITY_DETAIL_DTL_METER
+
+	column ADDRESS
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: ADDRESS
+
+		annotation SummarizationSetBy = Automatic
+
+	column APPT_AID
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: APPT_AID
+
+		annotation SummarizationSetBy = Automatic
+
+	column APPT_METER_NUMBER_1
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: APPT_METER_NUMBER_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column APPT_METER_NUMBER_2
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: APPT_METER_NUMBER_2
+
+		annotation SummarizationSetBy = Automatic
+
+	column APPT_METER_NUMBER_3
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: APPT_METER_NUMBER_3
+
+		annotation SummarizationSetBy = Automatic
+
+	column PREMISE_ID
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: PREMISE_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUEUE_DATE
+		dataType: dateTime
+		formatString: MMM dd, yyyy
+		sourceProviderType: Date
+		summarizeBy: none
+		sourceColumn: QUEUE_DATE
+
+		variation Variation
+			isDefault
+			relationship: e1078ae2-f15c-4b01-8aa8-26cfa97776d9
+			defaultHierarchy: LocalDateTable_d567ef7c-9f36-4bb0-9f6a-25ca970815f7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column APPT_ASTATUS
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: APPT_ASTATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column OFFICE
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: OFFICE
+
+		annotation SummarizationSetBy = Automatic
+
+	column RECEIVED
+		dataType: dateTime
+		formatString: MMM dd, yyyy HH:MM:SS AM/PM
+		sourceProviderType: Date
+		summarizeBy: none
+		sourceColumn: RECEIVED
+
+		variation Variation
+			isDefault
+			relationship: 7f270405-32d9-480c-bc4a-889170137c3a
+			defaultHierarchy: LocalDateTable_fa5a35c3-9daa-41ca-bc3f-6337873541cb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column RESOURCE_ID
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: RESOURCE_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RESOURCE_NAME
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: RESOURCE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column WORK_TYPE_SPECIFIC
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: WORK_TYPE_SPECIFIC
+
+		annotation SummarizationSetBy = Automatic
+
+	column WORK_ZONE
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: WORK_ZONE
+
+		annotation SummarizationSetBy = Automatic
+
+	column Full_Address
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: Full_Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'C_Meter Number (1,2,3)' = C_DOM_ACTIVITY_DETAIL_DTL_METER[APPT_METER_NUMBER_1] &  "," & C_DOM_ACTIVITY_DETAIL_DTL_METER[APPT_METER_NUMBER_2] & "," & C_DOM_ACTIVITY_DETAIL_DTL_METER[APPT_METER_NUMBER_3]
+		displayFolder: Filters
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column C_ImagePic1 = "http://OJRPSVM01/OFSPhotoProd/dominion_363_" & C_DOM_ACTIVITY_DETAIL_DTL_METER[APPT_AID] & "_capture_image.jpg"
+		displayFolder: Filters
+		dataCategory: WebUrl
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column C_ImagePic2 = "http://OJRPSVM01/OFSPhotoProd/dominion_364_" & C_DOM_ACTIVITY_DETAIL_DTL_METER[APPT_AID] & "_capture_image.jpg"
+		displayFolder: Filters
+		dataCategory: WebUrl
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column C_ImagePic3 = "http://OJRPSVM01/OFSPhotoProd/dominion_365_" & C_DOM_ACTIVITY_DETAIL_DTL_METER[APPT_AID] & "_capture_image.jpg"
+		displayFolder: Filters
+		dataCategory: WebUrl
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column C_FILTER_WORK_TYPE_SPECIFIC
+		dataType: string
+		displayFolder: Filters
+		summarizeBy: none
+		sourceColumn: C_FILTER_WORK_TYPE_SPECIFIC
+
+		annotation SummarizationSetBy = Automatic
+
+	column RECEIVED_DT
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: RECEIVED_DT
+
+		variation Variation
+			isDefault
+			relationship: 7a7c0363-97f8-48aa-9b15-8ab0f92fa979
+			defaultHierarchy: LocalDateTable_2e72c5ad-0136-4930-b5ac-b89e739de531.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column QUEUE_DT
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: QUEUE_DT
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition C_DOM_ACTIVITY_DETAIL_DTL_METER = m
+		mode: import
+		source =
+				let
+				    Source = Oracle.Database("CDMP", [HierarchicalNavigation=true, Query="Select  #(lf)  A.""ADDRESS"" , B.""APPT_AID"" , B.""APPT_METER_NUMBER_1"" , B.""APPT_METER_NUMBER_2"" , B.""APPT_METER_NUMBER_3"" ""APPT_METER_NUMBER_3"", A.""PREMISE_ID"" , B.""QUEUE_DATE"" , A.""APPT_ASTATUS"" , A.""OFFICE"" ""OFFICE"",   A.""RECEIVED"" ""RECEIVED"", A.""RESOURCE_ID"" ""RESOURCE_ID"", A.""RESOURCE_NAME"" ""RESOURCE_NAME"", A.""WORK_TYPE_SPECIFIC"" ""WORK_TYPE_SPECIFIC"", A.""WORK_ZONE"" ""WORK_ZONE"", case  when nvl(A.""ADDRESS"", ' ') is null  or nvl(A.""ADDRESS_LINE_2"", ' ') is null  or nvl(A.""CITY"", ' ') is null  or nvl(A.""STATE"", ' ') is null  or nvl(A.""ZIP_CODE"", ' ') is null  then  null  else nvl(A.""ADDRESS"", ' ') || ' ' || nvl(A.""ADDRESS_LINE_2"", ' ') || ' ' || nvl(A.""CITY"", ' ') || ' ' || nvl(A.""STATE"", ' ') || ' ' || nvl(A.""ZIP_CODE"", ' ') end  ""Full_Address"",(case #(lf)when A.WORK_TYPE_SPECIFIC IN ('SOMOVM','SOMONR','SOEXDI','SOEXDM','SOEXDN'#(lf),'SOEXED','SOEXEQ','SOEXEU' ,'SOEXRC','SOEXSN','SOEXST','SOMOCM','SORM','SOEXER','SOMONC','SMOOT','SOMOTG','SOMOVF')#(lf)OR #(lf)A.WORK_TYPE_SPECIFIC  like  'SOEXF%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC  like 'SOEXH%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC like 'SOEXN%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC like 'SOEXO%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC like 'SOT%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC like 'SOI%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC like 'SONP%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC  like 'SORD%'#(lf)OR#(lf)A.WORK_TYPE_SPECIFIC like 'SORD%'#(lf)then 'Y' else 'N' end) as C_FILTER_WORK_TYPE_SPECIFIC#(lf)from ""CDM"".""F_OFS_DOMINION_ACTIVITY_DETAIL"" A,#(lf) ""CDM"".""F_OFS_DOM_ACTIVITY_DTL_METER"" B#(lf) where A.""APPT_AID""=B.""APPT_AID"" #(lf) and A.""QUEUE_DATE""=B.""QUEUE_DATE"" #(lf) and A.""QUEUE_QID""=B.""QUEUE_QID"""]),
+				    #"Duplicated Column" = Table.DuplicateColumn(Source, "RECEIVED", "RECEIVED - Copy"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Duplicated Column",{{"RECEIVED - Copy", "RECEIVED_DT"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"RECEIVED_DT", type date}}),
+				    #"Duplicated Column1" = Table.DuplicateColumn(#"Changed Type", "QUEUE_DATE", "QUEUE_DATE - Copy"),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Duplicated Column1",{{"QUEUE_DATE - Copy", "QUEUE_DT"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns1",{{"QUEUE_DT", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

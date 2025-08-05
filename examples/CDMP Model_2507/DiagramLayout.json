@@ -1,0 +1,201 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 852,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "I_D_OFS_DOM_RESOURCE_HIERARCHY",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 0
+          },
+          "nodeIndex": "A_F_OFS_DOM_AUTO_ROUTING",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1136,
+            "y": 86
+          },
+          "nodeIndex": "C_OFFICE_DESCRIPTION",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852,
+            "y": 0
+          },
+          "nodeIndex": "C_DOM_ACTIVITY_DETAIL_DTL_METER",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1420,
+            "y": 26
+          },
+          "nodeIndex": "C_DIM_DATE",
+          "nodeLineageTag": "3b9ef9e4-706b-4c96-bed5-ab0e073587cf",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1704,
+            "y": 0
+          },
+          "nodeIndex": "C_SAP_D_WORKER_ALL",
+          "nodeLineageTag": "bd60b1de-04a6-4d88-84b4-889919c6da72",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 1,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": -83.666667938232422,
+            "y": -51
+          },
+          "nodeIndex": "I_D_OFS_DOM_RESOURCE_HIERARCHY",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": -25.666667938232422,
+            "y": 285
+          },
+          "nodeIndex": "C_OFFICE_DESCRIPTION",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 323.33333206176758,
+            "y": 1
+          },
+          "nodeIndex": "C_DOM_ACTIVITY_DETAIL_DTL_METER",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 1",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 2,
+      "scrollPosition": {
+        "x": 0,
+        "y": 154
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1.3333320617675781,
+            "y": 1
+          },
+          "nodeIndex": "C_DIM_DATE",
+          "nodeLineageTag": "3b9ef9e4-706b-4c96-bed5-ab0e073587cf",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 390.33333206176758,
+            "y": 7
+          },
+          "nodeIndex": "A_F_OFS_DOM_AUTO_ROUTING",
+          "nodeLineageTag": "bbd3533e-cc68-432b-9c22-8132522eed80",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 282.33333206176758,
+            "y": 394
+          },
+          "nodeIndex": "C_DOM_ACTIVITY_DETAIL_DTL_METER",
+          "nodeLineageTag": "4dc7863e-4e75-492e-ad51-6bd184a100e3",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 2",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

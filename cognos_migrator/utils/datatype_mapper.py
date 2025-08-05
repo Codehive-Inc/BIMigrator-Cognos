@@ -16,12 +16,15 @@ def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> Tuple[s
         Tuple[str, str]: The recommended Power BI data type and summarize_by value
     """
     # Extract needed properties
-    name = item.get('identifier', '')  # Using 'identifier' field for more accurate column naming
+    name = item.get('identifier', '') or item.get('name', '')  # Use 'name' if 'identifier' is not available
     expression = item.get('expression', '')
     data_type = item.get('dataType', '')
     data_usage = item.get('dataUsage', '')
     is_calculation = item.get('type') == 'calculation'
     aggregate = item.get('aggregate', 'none')
+    
+    # Check for XML datatype value (e.g., 'dateTime')
+    xml_datatype = item.get('datatype', '')
     
     # Default fallback
     powerbi_type = "string"
@@ -29,7 +32,13 @@ def map_cognos_to_powerbi_datatype(item: Dict[str, Any], logger=None) -> Tuple[s
     
     # Log input parameters if logger is provided
     if logger:
-        logger.debug(f"Mapping data type for {name}: dataType={data_type}, dataUsage={data_usage}, is_calculation={is_calculation}, aggregate={aggregate}")
+        logger.debug(f"Mapping data type for {name}: dataType={data_type}, dataUsage={data_usage}, is_calculation={is_calculation}, aggregate={aggregate}, xml_datatype={xml_datatype}")
+    
+    # Priority Level 0: Check for XML dateTime datatype
+    if xml_datatype and xml_datatype.lower() == 'datetime':
+        if logger:
+            logger.info(f"Found dateTime XML datatype for {name}, setting to datetime")
+        return "datetime", "none"
         
     
     # Priority Level 1: Based on dataUsage

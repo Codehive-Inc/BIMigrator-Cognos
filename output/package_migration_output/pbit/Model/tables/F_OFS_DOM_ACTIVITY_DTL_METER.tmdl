@@ -18,7 +18,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'QUEUE_DATE'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: QUEUE_DATE
 
@@ -730,7 +730,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_1_1'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_1_1
 
@@ -738,7 +738,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_1_2'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_1_2
 
@@ -746,7 +746,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_1_3'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_1_3
 
@@ -754,7 +754,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_2_1'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_2_1
 
@@ -762,7 +762,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_2_2'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_2_2
 
@@ -770,7 +770,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_2_3'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_2_3
 
@@ -778,7 +778,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_3_1'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_3_1
 
@@ -786,7 +786,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_3_2'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_3_2
 
@@ -794,7 +794,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'APPT_READ_DATE_3_3'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: APPT_READ_DATE_3_3
 
@@ -1058,7 +1058,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 
         
     column 'SYS_UPDATE_TS'
-        dataType: string
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: SYS_UPDATE_TS
 
@@ -1071,7 +1071,7 @@ table 'F_OFS_DOM_ACTIVITY_DTL_METER'
     partition 'F_OFS_DOM_ACTIVITY_DTL_METER' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table F_OFS_DOM_ACTIVITY_DTL_METER: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10cfa9220>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table F_OFS_DOM_ACTIVITY_DTL_METER: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x108811310>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

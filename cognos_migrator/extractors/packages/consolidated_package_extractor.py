@@ -347,8 +347,9 @@ class ConsolidatedPackageExtractor:
                 data_type = DataType.DOUBLE
             elif cognos_type.lower() == 'boolean':
                 data_type = DataType.BOOLEAN
-            elif cognos_type.lower() in ['date', 'time', 'timestamp']:
+            elif cognos_type.lower() in ['date', 'time', 'timestamp', 'datetime']:
                 data_type = DataType.DATE
+                self.logger.info(f"Mapped column {item['name']} with datatype {cognos_type} to DATE")
             else:
                 data_type = DataType.STRING
                 

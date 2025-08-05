@@ -1,0 +1,171 @@
+﻿table A_F_OFS_DOM_AUTO_ROUTING
+
+	column AID
+		dataType: string
+		isNullable: false
+		sourceProviderType: Decimal(38, 127)
+		summarizeBy: none
+		sourceColumn: AID
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column AUTO_ROUTED_TO_DATE
+		dataType: dateTime
+		formatString: MMM dd, yyyy HH:MM:SS AM/PM
+		sourceProviderType: Date
+		summarizeBy: none
+		sourceColumn: AUTO_ROUTED_TO_DATE
+
+		variation Variation
+			isDefault
+			relationship: 7054b222-f2b8-46f7-8026-5d9b2ce889d6
+			defaultHierarchy: LocalDateTable_9f42c05f-3025-4592-b928-d85151e148cd.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column AUTO_ROUTED_TO_PROVIDER_ID
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: AUTO_ROUTED_TO_PROVIDER_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column AUTO_ROUTED_TO_PROVIDER_NAME
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: AUTO_ROUTED_TO_PROVIDER_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column FIRST_MAN_OP
+		dataType: double
+		sourceProviderType: Decimal(38, 127)
+		summarizeBy: none
+		sourceColumn: FIRST_MAN_OP
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FIRST_MAN_OP_INTERFACE
+		dataType: double
+		sourceProviderType: Decimal(38, 127)
+		summarizeBy: none
+		sourceColumn: FIRST_MAN_OP_INTERFACE
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FIRST_MAN_OP_USER_ID
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: FIRST_MAN_OP_USER_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASSIGNMENT_TIME
+		dataType: dateTime
+		formatString: MMM dd, yyyy HH:MM:SS AM/PM
+		sourceProviderType: Date
+		summarizeBy: none
+		sourceColumn: ASSIGNMENT_TIME
+
+		variation Variation
+			isDefault
+			relationship: 03bb2ea9-3c86-4e05-9dbe-69e911d3cc89
+			defaultHierarchy: LocalDateTable_39655841-974d-4845-ae9a-ef74f8ab8edb.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PREMISE_ID
+		dataType: string
+		sourceProviderType: Decimal(38, 127)
+		summarizeBy: none
+		sourceColumn: PREMISE_ID
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column SYS_UPDATE_TS
+		dataType: dateTime
+		formatString: MMM dd, yyyy HH:MM:SS AM/PM
+		sourceProviderType: Date
+		summarizeBy: none
+		sourceColumn: SYS_UPDATE_TS
+
+		variation Variation
+			isDefault
+			relationship: 604df09d-dff2-48d7-8e78-1c7966dcfe20
+			defaultHierarchy: LocalDateTable_9ad93ebe-8a65-4562-8f05-b390e1206038.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column ASSIGNMENT_DATE
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: ASSIGNMENT_DATE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'SYS_UPDATE _DATE'
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: SYS_UPDATE _DATE
+
+		variation Variation
+			isDefault
+			relationship: cd54738b-05d8-4efc-b5d0-46501891bc05
+			defaultHierarchy: LocalDateTable_589112fc-9397-48e7-9d4e-41e4dce8d0b7.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition A_F_OFS_DOM_AUTO_ROUTING = m
+		mode: import
+		source =
+				let
+				    Source = Oracle.Database("CDMP", [HierarchicalNavigation=true]),
+				    CDM = Source{[Schema="CDM"]}[Data],
+				    F_OFS_DOM_AUTO_ROUTING1 = CDM{[Name="F_OFS_DOM_AUTO_ROUTING"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(F_OFS_DOM_AUTO_ROUTING1,{{"ASSIGNMENT_TIME", type datetime}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "ASSIGNMENT_TIME", "ASSIGNMENT_TIME - Copy"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Duplicated Column",{{"ASSIGNMENT_TIME - Copy", "ASSIGNMENT_DATE"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"ASSIGNMENT_DATE", type date}}),
+				    #"Duplicated Column1" = Table.DuplicateColumn(#"Changed Type1", "SYS_UPDATE_TS", "SYS_UPDATE_TS - Copy"),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Duplicated Column1",{{"SYS_UPDATE_TS - Copy", "SYS_UPDATE _DATE"}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Renamed Columns1",{{"SYS_UPDATE _DATE", type date}})
+				in
+				    #"Changed Type2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

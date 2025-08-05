@@ -1,0 +1,156 @@
+{
+  "name": "e9c02c8319367aabe323",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 25.757631337612995,
+        "y": 197.47517358836632,
+        "z": 0,
+        "width": 1077.5275776234771,
+        "height": 377.77859295165729,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "tableEx",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Email"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.First_Name"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Last_Name"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Archive"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Org_Unit"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Location"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Company"
+        },
+        {
+          "queryRef": "C_SAP_D_WORKER_ALL.Current_Position"
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "c",
+          "Entity": "C_SAP_D_WORKER_ALL",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Email"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Email",
+          "NativeReferenceName": "Email"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "First_Name"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.First_Name",
+          "NativeReferenceName": "First_Name"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Last_Name"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Last_Name",
+          "NativeReferenceName": "Last_Name"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Archive"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Archive",
+          "NativeReferenceName": "Archive"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Org_Unit"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Org_Unit",
+          "NativeReferenceName": "Org_Unit"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Location"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Location",
+          "NativeReferenceName": "Location"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Company"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Company",
+          "NativeReferenceName": "Company"
+        },
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "c"
+              }
+            },
+            "Property": "Current_Position"
+          },
+          "Name": "C_SAP_D_WORKER_ALL.Current_Position",
+          "NativeReferenceName": "Current_Position"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

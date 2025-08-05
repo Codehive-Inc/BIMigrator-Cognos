@@ -1,0 +1,268 @@
+{
+  "name": "61b9e153423cf429faa4",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 10.495626822157435,
+        "y": 0,
+        "z": 0,
+        "width": 793.469387755102,
+        "height": 628.68804664723041,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "select \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\" \"ELECTRIC_DOMINANT_CUSTOMER_NM\", \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" \"ELECTRIC_DOMINANT_CUSTOMER_SK\", \"SQL2\".\"FULL_DOMINANT_COMPANY_NAME\" \"FULL_DOMINANT_COMPANY_NAME\", \"SQL2\".\"COMSUMP_TOT_UNITS_QTY\" \"COMSUMP_TOT_UNITS_QTY\", case  when \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 'UNCATEGORIZED' else \"SQL2\".\"FULL_DOMINANT_COMPANY_NAME\" end  \"Customer_name\", case  when \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 1 else 0 end  \"SORT\", \"SQL2\".\"MAX_PEAK_DEMAND_KW\" \"MAX_PEAK_DEMAND_KW\", min(\"SQL2\".\"COMSUMP_TOT_UNITS_QTY\") \"Total_COMSUMP_TOT_UNITS_QTY_\", min(\"SQL2\".\"MAX_PEAK_DEMAND_KW\") \"Total_MAX_OFFPEAK_DEMAND_\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " from (SELECT A.ELECTRIC_DOMINANT_CUSTOMER_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_CUSTOMER_SK,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_CUSTOMER_NM || '/' ||"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_1 || '/' ||"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_2 || '/' ||"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_3 as FULL_DOMINANT_COMPANY_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              SUM(CONSUMP_TOT_UNITS_QTY) AS COMSUMP_TOT_UNITS_QTY,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              GREATEST (MAX (D.demand_units_on_qty), MAX (D.demand_units_off_qty))"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     AS max_peak_demand_kw"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       FROM CDM.D_ELECTRIC_DOMINANT_CUSTOMER A"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            LEFT OUTER JOIN CDM.F_ELECTRIC_CUSTOMER_CROSS_REF B "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 ON A.ELECTRIC_DOMINANT_CUSTOMER_SK = B.ELECTRIC_DOMINANT_CUSTOMER_SK"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            LEFT OUTER JOIN CDM.D_ELECTRIC_ACCOUNT C"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 ON B.ELECTRIC_ACCOUNT_SK = C.ELECTRIC_ACCOUNT_SK"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                   AND C.ACCOUNT_STATUS_ID IN ('A', 'P', 'F')"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                   AND C.IS_KEY_ACCOUNT_YN = 'Y',"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            CDM.F_ELECTRIC_BILLING D"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       WHERE C.ELECTRIC_ACCOUNT_SK = D.ELECTRIC_ACCOUNT_SK"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        AND D.READING_TO_DT >= to_date('2024-07-25','YYYY-MM-DD')"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "          AND D.READING_TO_DT <= to_date('2025-07-25', 'YYYY-MM-DD')"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         --E.CURRENT_RATE_CD = 105"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       GROUP BY A.ELECTRIC_DOMINANT_CUSTOMER_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               A.ELECTRIC_DOMINANT_CUSTOMER_SK,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_1,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_2,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_3"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            ) \"SQL2\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " where \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\" in (999999) or 999999=999999"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " group by \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\", \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_SK\", \"SQL2\".\"FULL_DOMINANT_COMPANY_NAME\", \"SQL2\".\"COMSUMP_TOT_UNITS_QTY\", case  when \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 'UNCATEGORIZED' else \"SQL2\".\"FULL_DOMINANT_COMPANY_NAME\" end , case  when \"SQL2\".\"ELECTRIC_DOMINANT_CUSTOMER_NM\"='UNKNOWN' then 1 else 0 end , \"SQL2\".\"MAX_PEAK_DEMAND_KW\""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

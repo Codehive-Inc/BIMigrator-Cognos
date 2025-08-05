@@ -1,0 +1,89 @@
+﻿table C_DIM_DATE
+
+	column Dates
+		dataType: dateTime
+		formatString: Long Date
+		summarizeBy: none
+		sourceColumn: Dates
+
+		variation Variation
+			isDefault
+			relationship: fa1528b4-0307-46f9-aaca-114c99ca1b68
+			defaultHierarchy: LocalDateTable_02ca10d7-1d08-48ba-8296-8d2555d3849a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	column Month
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = User
+
+	column MonthName
+		dataType: string
+		summarizeBy: none
+		sourceColumn: MonthName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShortMonthName
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ShortMonthName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = User
+
+	column QtrText
+		dataType: string
+		summarizeBy: none
+		sourceColumn: QtrText
+
+		annotation SummarizationSetBy = Automatic
+
+	partition C_DIM_DATE = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjDUByJDSwsDpdhYAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [StartDate = _t]),
+				    #"Added Custom" = Table.AddColumn(Source, "EndDate", each Date.From(DateTime.LocalNow())),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom",{{"EndDate", type date}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Changed Type2",{{"StartDate", type date}}),
+				    #"Added Custom1" = Table.AddColumn(#"Changed Type", "Dates", each {Number.From([StartDate])..Number.From([EndDate])}),
+				    #"Expanded Dates" = Table.ExpandListColumn(#"Added Custom1", "Dates"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded Dates",{{"Dates", type date}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Changed Type1",{"StartDate", "EndDate"}),
+				    #"Added Custom2" = Table.AddColumn(#"Removed Columns1", "Year", each Date.Year([Dates])),
+				    #"Added Custom3" = Table.AddColumn(#"Added Custom2", "Month", each Date.Month([Dates])),
+				    #"Added Custom4" = Table.AddColumn(#"Added Custom3", "MonthName", each Date.MonthName([Dates])),
+				    #"Added Custom5" = Table.AddColumn(#"Added Custom4", "ShortMonthName", each Text.Start([MonthName],3)),
+				    #"Added Custom6" = Table.AddColumn(#"Added Custom5", "Quarter", each Date.QuarterOfYear([Dates])),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom6",{{"Quarter", type text}}),
+				    #"Added Custom7" = Table.AddColumn(#"Changed Type3", "QtrText", each "Qtr "& [Quarter]),
+				    #"Changed Type4" = Table.TransformColumnTypes(#"Added Custom7",{{"Quarter", Int64.Type}, {"Year", Int64.Type}, {"Month", Int64.Type}})
+				in
+				    #"Changed Type4"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
