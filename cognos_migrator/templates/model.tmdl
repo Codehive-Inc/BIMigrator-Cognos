@@ -14,7 +14,11 @@ annotation __PBI_TimeIntelligenceEnabled = {{ time_intelligence_enabled }}
 annotation PBIDesktopVersion = {{ desktop_version }}
 
 {% for table in tables %}
+{% if ' ' in table %}
 ref table '{{ table }}'
+{% else %}
+ref table {{ table }}
+{% endif %}
 {% endfor %}
 
 ref cultureInfo {{ default_culture }}

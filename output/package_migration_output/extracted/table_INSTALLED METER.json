@@ -1,0 +1,308 @@
+{
+  "source_name": "INSTALLED METER",
+  "name": "INSTALLED METER",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "ID_MTR",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID_MTR",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CD_MTR_MFG",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CD_MTR_MFG",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CD_SVC_TYP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CD_SVC_TYP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DT_MTR_SET",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DT_MTR_SET",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ID_PREM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID_PREM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ID_SPT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID_SPT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DT_MTR_REMV",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DT_MTR_REMV",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QY_MTR_REMV_INDX",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QY_MTR_REMV_INDX",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CD_MTR_REMV_RSN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CD_MTR_REMV_RSN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ID_MTR",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID_MTR",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CD_MTR_MFG",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CD_MTR_MFG",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CD_SVC_TYP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CD_SVC_TYP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DT_MTR_SET",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DT_MTR_SET",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ID_PREM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID_PREM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ID_SPT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID_SPT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DT_MTR_REMV",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DT_MTR_REMV",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QY_MTR_REMV_INDX",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QY_MTR_REMV_INDX",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CD_MTR_REMV_RSN",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CD_MTR_REMV_RSN",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "INSTALLED METER",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN, ID_MTR, CD_MTR_MFG, CD_SVC_TYP, DT_MTR_SET, ID_PREM, ID_SPT, DT_MTR_REMV, QY_MTR_REMV_INDX, CD_MTR_REMV_RSN\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}, {\"ID_MTR\", type text}, {\"CD_MTR_MFG\", type text}, {\"CD_SVC_TYP\", type text}, {\"DT_MTR_SET\", type datetime}, {\"ID_PREM\", type text}, {\"ID_SPT\", type text}, {\"DT_MTR_REMV\", type datetime}, {\"QY_MTR_REMV_INDX\", type text}, {\"CD_MTR_REMV_RSN\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

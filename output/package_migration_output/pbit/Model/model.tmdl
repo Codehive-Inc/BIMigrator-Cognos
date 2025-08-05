@@ -6,43 +6,23 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["D_OFS_ACTIVITY_WORK_SKILL", "D_OFS_DOMINION_GPS_TRACKS", "D_OFS_DOMINION_MESSAGE", "D_OFS_DOMINION_QUEUE_DETAIL", "D_OFS_DOMINION_TYPE_LIST", "D_OFS_DOM_MESSAGE_TEXT", "D_OFS_DOM_RESOURCE_HIERARCHY", "D_OFS_DOM_SERVICE_REQUEST", "D_OFS_PROPERTY", "D_OFS_PROP_LOOKUP", "D_OFS_RESOURCE_WORK_SKILL", "D_OFS_WORK_SKILLS", "F_OFS_DOMINION_ACTIVITY_DETAIL", "F_OFS_DOM_ACTIVITY_DTL_METER", "Meter Activity (Fact)", "Resource Hierarchy", "LocalDateTable_4c0f4789-8ab9-4a97-8ba4-327963d37d5f", "LocalDateTable_9a877abd-b43c-4be9-925f-c40fa580c73a", "LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd", "LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb", "LocalDateTable_da45fb3a-eee8-42d1-b690-2e274c2e7257", "LocalDateTable_d7fcf904-3f01-4018-95f0-aadb18c825ba", "LocalDateTable_19247373-77d9-4454-a404-ecfff052f562", "LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b", "LocalDateTable_bff5fe0b-afa7-4c0d-8f0d-ccc107a753d1", "LocalDateTable_4271c313-df3c-4738-be8a-0566818fb613", "LocalDateTable_94c0a1e7-d813-4217-8375-e17b5070dcf6", "LocalDateTable_da27d88f-62c3-4572-898a-fe0d12f7f3f6", "LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56", "LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755", "LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb", "LocalDateTable_1f9b1b30-7c4d-45cf-8727-a78676cded6e"]
+annotation PBI_QueryOrder = ["CU01TB01", "CU04TB22", "CU04TB70", "STANDARD ACCOUNT DATA", "BILLABLE ELECTRIC", "INSTALLED METER", "LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121", "LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158", "LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742", "LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15", "LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11", "LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
 
-ref table 'D_OFS_ACTIVITY_WORK_SKILL'
-ref table 'D_OFS_DOMINION_GPS_TRACKS'
-ref table 'D_OFS_DOMINION_MESSAGE'
-ref table 'D_OFS_DOMINION_QUEUE_DETAIL'
-ref table 'D_OFS_DOMINION_TYPE_LIST'
-ref table 'D_OFS_DOM_MESSAGE_TEXT'
-ref table 'D_OFS_DOM_RESOURCE_HIERARCHY'
-ref table 'D_OFS_DOM_SERVICE_REQUEST'
-ref table 'D_OFS_PROPERTY'
-ref table 'D_OFS_PROP_LOOKUP'
-ref table 'D_OFS_RESOURCE_WORK_SKILL'
-ref table 'D_OFS_WORK_SKILLS'
-ref table 'F_OFS_DOMINION_ACTIVITY_DETAIL'
-ref table 'F_OFS_DOM_ACTIVITY_DTL_METER'
-ref table 'Meter Activity (Fact)'
-ref table 'Resource Hierarchy'
-ref table 'LocalDateTable_4c0f4789-8ab9-4a97-8ba4-327963d37d5f'
-ref table 'LocalDateTable_9a877abd-b43c-4be9-925f-c40fa580c73a'
-ref table 'LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd'
-ref table 'LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb'
-ref table 'LocalDateTable_da45fb3a-eee8-42d1-b690-2e274c2e7257'
-ref table 'LocalDateTable_d7fcf904-3f01-4018-95f0-aadb18c825ba'
-ref table 'LocalDateTable_19247373-77d9-4454-a404-ecfff052f562'
-ref table 'LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b'
-ref table 'LocalDateTable_bff5fe0b-afa7-4c0d-8f0d-ccc107a753d1'
-ref table 'LocalDateTable_4271c313-df3c-4738-be8a-0566818fb613'
-ref table 'LocalDateTable_94c0a1e7-d813-4217-8375-e17b5070dcf6'
-ref table 'LocalDateTable_da27d88f-62c3-4572-898a-fe0d12f7f3f6'
-ref table 'LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56'
-ref table 'LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755'
-ref table 'LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb'
-ref table 'LocalDateTable_1f9b1b30-7c4d-45cf-8727-a78676cded6e'
+ref table CU01TB01
+ref table CU04TB22
+ref table CU04TB70
+ref table 'STANDARD ACCOUNT DATA'
+ref table 'BILLABLE ELECTRIC'
+ref table 'INSTALLED METER'
+ref table LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121
+ref table LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158
+ref table LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742
+ref table LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15
+ref table LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11
+ref table LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282
 
 ref cultureInfo en-US

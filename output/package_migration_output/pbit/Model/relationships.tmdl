@@ -1,629 +1,125 @@
-relationship 28e891a7-d7c9-4ca4-99f9-d48b316d7c41
+relationship 9c008c93-90b8-42b8-9e4e-2cd62bcbc239
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_ACTIVITY_WORK_SKILL.SYS_UPDATE_TS
-	toColumn: LocalDateTable_4c0f4789-8ab9-4a97-8ba4-327963d37d5f.Date
+	fromColumn: CU01TB01.DT_PEND_SO
+	toColumn: LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship cd4874b9-bbc5-4bf9-9488-f25983f7f146
+relationship 3d19ab88-a836-4b0a-b890-b4e06dcfe997
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_GPS_TRACKS.TIME_ID
-	toColumn: LocalDateTable_9a877abd-b43c-4be9-925f-c40fa580c73a.Date
+	fromColumn: CU01TB01.DT_PEND_NPSO
+	toColumn: LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship e0e22969-1d00-45e9-92a1-3d975f2eaa07
+relationship 173a9025-3749-4568-8e95-0a981bdadb4a
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_GPS_TRACKS.SYS_UPDATE_TS
-	toColumn: LocalDateTable_9a877abd-b43c-4be9-925f-c40fa580c73a.Date
+	fromColumn: CU04TB22.TS_BILL_UNIT
+	toColumn: LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship ebad8f91-e83e-4164-8c17-cb7a6560be71
+relationship 81d1d48a-5d44-401e-853f-c1b1030152f7
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_MESSAGE.TIMEFROM
-	toColumn: LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd.Date
+	fromColumn: CU04TB22.DT_BILL_END
+	toColumn: LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship a76394f9-e75a-4533-bac8-e34cd296a0f7
+relationship 4bf74618-f694-4628-9680-1f42043ae914
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_MESSAGE.TIMETO
-	toColumn: LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd.Date
+	fromColumn: CU04TB22.DT_BU_STAT
+	toColumn: LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship 2127c6a9-5c93-4f38-96be-36e4c2b8146b
+relationship 06326d44-1888-463b-9fc8-09c59b2f07ae
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_MESSAGE.SYS_UPDATE_TS
-	toColumn: LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd.Date
+	fromColumn: CU04TB70.DT_MTR_SET
+	toColumn: LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship 09747f15-c10f-4cab-9be3-897fd49593be
+relationship c1b9e79d-58a7-40c8-87ca-5d8cbbb98c46
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_QUEUE_DETAIL.QUEUE_DATE
-	toColumn: LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb.Date
+	fromColumn: CU04TB70.DT_MTR_REMV
+	toColumn: LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship 0f688ea2-e5da-4065-8678-996f3cec54c7
+relationship f8780e13-4f66-40c5-b612-c955b766467d
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_QUEUE_DETAIL.QUEUE_REACTIVATION_TIME
-	toColumn: LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb.Date
+	fromColumn: 'STANDARD ACCOUNT DATA'.DT_PEND_SO
+	toColumn: LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship e5ff4af7-e92f-4c66-8644-3a56fd283205
+relationship b2449372-17c9-496e-99fe-398c2f616601
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_QUEUE_DETAIL.QUEUE_ACTIVATE_TIME
-	toColumn: LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb.Date
+	fromColumn: 'STANDARD ACCOUNT DATA'.DT_PEND_NPSO
+	toColumn: LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship c5331bf2-e025-4039-b767-4b1c1a9cfcff
+relationship e12dfd8c-589b-4229-af5f-3c98088a1b0c
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_QUEUE_DETAIL.QUEUE_DEACTIVATE_TIME
-	toColumn: LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb.Date
+	fromColumn: 'BILLABLE ELECTRIC'.TS_BILL_UNIT
+	toColumn: LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship fef114e1-b09a-4d3a-a29f-d44688ebdf06
+relationship 763a714e-4838-4c66-9647-ef95be9d283b
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_QUEUE_DETAIL.SYS_UPDATE_TS
-	toColumn: LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb.Date
+	fromColumn: 'BILLABLE ELECTRIC'.DT_BILL_END
+	toColumn: LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship 5202b3db-4b87-4a17-8325-051efb951d31
+relationship a820dcd1-1301-4399-a3e8-8050ba52dcaf
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOMINION_TYPE_LIST.SYS_UPDATE_TS
-	toColumn: LocalDateTable_da45fb3a-eee8-42d1-b690-2e274c2e7257.Date
+	fromColumn: 'BILLABLE ELECTRIC'.DT_BU_STAT
+	toColumn: LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship 94611696-daa2-4347-9857-637eaff66b88
+relationship 01750c7f-907a-43ab-9911-a66178d586e4
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOM_MESSAGE_TEXT.SYS_UPDATE_TS
-	toColumn: LocalDateTable_d7fcf904-3f01-4018-95f0-aadb18c825ba.Date
+	fromColumn: 'INSTALLED METER'.DT_MTR_SET
+	toColumn: LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship bf9db40d-212d-4814-9360-d3f4581ad342
+relationship 03448e3c-b37b-4ef4-a299-8500ce2f427e
 	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOM_RESOURCE_HIERARCHY.SYS_UPDATE_TS
-	toColumn: LocalDateTable_19247373-77d9-4454-a404-ecfff052f562.Date
+	fromColumn: 'INSTALLED METER'.DT_MTR_REMV
+	toColumn: LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: true
 
-relationship 9cfa717e-6db2-4666-96b4-742c3a4afe3c
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOM_SERVICE_REQUEST.REQUEST_DATE
-	toColumn: LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 639aa9f0-1c1a-45bf-ab33-df757b810b61
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOM_SERVICE_REQUEST.CREATED_DATE
-	toColumn: LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 67f538ae-0481-4794-899c-738c94822137
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_DOM_SERVICE_REQUEST.SYS_UPDATE_TS
-	toColumn: LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship e17ab7ea-d6f7-495b-86a5-33c5e7b9be99
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_PROPERTY.SYS_UPDATE_TS
-	toColumn: LocalDateTable_bff5fe0b-afa7-4c0d-8f0d-ccc107a753d1.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 834ff20e-c0f8-4343-8f4e-e2538da908d1
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_PROP_LOOKUP.SYS_UPDATE_TS
-	toColumn: LocalDateTable_4271c313-df3c-4738-be8a-0566818fb613.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 1d84f45a-d514-4a68-8f3a-275b74b03812
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_RESOURCE_WORK_SKILL.SYS_UPDATE_TS
-	toColumn: LocalDateTable_94c0a1e7-d813-4217-8375-e17b5070dcf6.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 39b8bdae-d971-4818-a357-d6b8e7d5133a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: D_OFS_WORK_SKILLS.SYS_UPDATE_TS
-	toColumn: LocalDateTable_da27d88f-62c3-4572-898a-fe0d12f7f3f6.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship efefd85f-aee4-48b5-8de7-edba36147b2d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.ACTIVITY_TIME_OF_ASSIGNMENT
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship bdb3cb78-e2de-4bff-930f-398fd1289a41
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.ACTIVITY_TIME_OF_BOOKING
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 8172dc1d-fbd4-4c55-a76a-bf70d45d2d57
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.ACTIVITY_TRAVELING_TIME
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 378acb31-121f-4dc2-b230-362f05476b43
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.AUTO_ROUTED_TO_DATE
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship e3e43c43-f817-4d09-817c-f881e43a5959
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.ETA
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship e25ec871-f238-4c39-a1b0-20cdddbbf193
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.QUEUE_ACTIVATION_TIME
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 00c4c278-951b-46bc-a274-b822a727664b
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.QUEUE_DEACTIVATION_TIME
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship d770adff-3765-427a-a112-c7bf3649570e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.QUEUE_REACTIVATION_TIME
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship d5b794bb-9776-473c-bc78-1be634c38370
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.QUEUE_DATE
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship dae91f28-fc79-40d8-95c8-ac2b96a908a6
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.RECEIVED
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 2d75f838-ff3a-45e3-8692-dda449d0b33e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.SLA_WINDOW_END
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship ad9ef600-0c79-43cb-9bc4-8c83285ef0f6
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.SLA_WINDOW_START
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship daba0b31-fb9c-4305-922b-101ff7b165f5
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.TIME_DELIVERED_END
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship d116ebcb-9806-4909-ba5a-ab869cd3b8a9
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.TIME_DELIVERED_START
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 492884e1-1a81-4dbc-a241-4ae9a6b35634
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.WORKING_DAY_END
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 5edb8c78-6fbe-4232-b8c6-7cd6988c3f44
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.WORKING_DAY_START
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship b3b83faf-3bd0-4ef3-a0ab-1a69684e7d7e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.SYS_UPDATE_TS
-	toColumn: LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 53ced8ce-ae4f-4a77-b56e-9619e7639d0a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.QUEUE_DATE
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship a4e68279-e29c-46f1-a4b2-df0e00e31c3a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_1_1
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 2df52038-1d3a-4965-a5b5-b42038336baf
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_1_2
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 6c3776d8-25ba-411e-9075-4c45c18b055d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_1_3
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship cbe0bd50-c01c-4a00-98ff-f921bf873938
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_2_1
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 78270b63-7f5e-447a-bbea-73edd6d41229
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_2_2
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship c952ce01-089b-4cae-ad98-2c9b1c3ace54
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_2_3
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 7bbfa522-6586-4eda-899f-504268b6d888
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_3_1
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 126a1b49-50c6-418c-b59b-b5c7455d51e1
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_3_2
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 017ea594-59b5-4d15-9096-8b033d50e4c2
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_READ_DATE_3_3
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 89ac7e69-606c-4939-998f-5fd18802838d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.SYS_UPDATE_TS
-	toColumn: LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 39ed5964-dd52-4454-b8e6-38224bf4b16a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.ACTIVITY_TIME_OF_ASSIGNMENT
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 17a21abe-9dc1-4626-96b2-08da4888b873
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.ACTIVITY_TIME_OF_BOOKING
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 385ff314-aef8-4d57-988f-f160f0607219
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.ACTIVITY_TRAVELING_TIME
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 2238a14c-7d52-4176-a333-ecf3c18c2652
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_1_1
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 188e41b5-138e-497f-8f94-c1889281effd
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_1_2
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 7726803f-d34c-408f-84c9-05bf6fa33b5d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_1_3
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 6be42546-9cbc-43cf-ae3d-20c2023ad278
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_2_1
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 9bac16e7-dbdc-4bf8-bff3-bcd2d8b5be08
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_2_2
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship ddb23e26-647b-43b8-a5f4-6422eebca30a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_2_3
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship b810105b-6c97-47b4-b6bb-e2fb6a8296af
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_3_1
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 509b60f2-6d08-4596-a966-37172565b0e2
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_3_2
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 8b9cc3ef-4dc9-4c94-80d2-e7a690d1c2de
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.APPT_READ_DATE_3_3
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship d8b6e13c-e99b-4879-bfa7-4d0108514a9d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.AUTO_ROUTED_TO_DATE
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 7866b5bd-fb55-473c-b684-3b501f188fe1
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.ETA
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 980ecacb-b2ab-4e2f-9c97-6116ef3a19dd
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.QUEUE_ACTIVATION_TIME
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 07747eb8-b166-49c6-a730-b10fed70dbc5
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.QUEUE_DATE
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 7a41353e-d76a-4c82-b1fc-4161d828f7c8
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.QUEUE_DEACTIVATION_TIME
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 2bd55fd7-a7db-4ec4-bc2b-71c314e4750a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.QUEUE_REACTIVATION_TIME
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 19c03510-5bbe-440c-ac54-85c98769a807
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.RECEIVED
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship fd2a1658-58fc-4591-b96e-9e5237b3ca0f
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.SLA_WINDOW_END
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship e062901e-ef99-42bc-a442-568fcbdb99cd
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.SLA_WINDOW_START
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 995681a0-1dc3-4e5a-accf-e5ef3906397e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.SYS_UPDATE_TS
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 6a1c4fbe-332c-447d-924c-4f715ae16bda
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.SYS_UPDATE_TS_DETAIL
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship e8dc5a80-0d8e-4585-bea3-8bae11fae03d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.TIME_DELIVERED_END
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 175ac516-dfc4-4942-80fa-a4997539d7a0
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.TIME_DELIVERED_START
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 60f281fe-6fc2-4d13-aa6b-ac7cec225a88
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.WORKING_DAY_END
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship 8e6baea1-6460-4ab9-9015-3ff626189d7e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Meter Activity (Fact)'.WORKING_DAY_START
-	toColumn: LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship bae739d2-b910-4c4c-b24c-99c6f8f2aefa
-	joinOnDateBehavior: datePartOnly
-	fromColumn: 'Resource Hierarchy'.SYS_UPDATE_TS
-	toColumn: LocalDateTable_1f9b1b30-7c4d-45cf-8727-a78676cded6e.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: true
-
-relationship a91c6e34-dc44-42ec-93cf-0f549163534b
-	fromColumn: F_OFS_DOM_ACTIVITY_DTL_METER.APPT_AID
-	toColumn: F_OFS_DOMINION_ACTIVITY_DETAIL.APPT_AID
+relationship c7324ba5-2e18-4752-b686-3e1cb6ae1a89
+	fromColumn: CU01TB01.ID_PREM
+	toColumn: CU04TB70.ID_PREM
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship b8266cfb-5483-4586-9150-8184a4502852
-	fromColumn: 'Resource Hierarchy'.VEHICLE_ID
-	toColumn: 'Meter Activity (Fact)'.VEHICLE_ID
+relationship dc394a33-9dca-4163-b648-fba5d60257e7
+	fromColumn: CU04TB70.ID_PREM
+	toColumn: CU04TB22.ID_PREM
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true

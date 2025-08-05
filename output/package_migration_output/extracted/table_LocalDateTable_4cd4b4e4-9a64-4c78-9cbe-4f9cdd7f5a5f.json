@@ -1,0 +1,55 @@
+{
+  "name": "LocalDateTable_4cd4b4e4-9a64-4c78-9cbe-4f9cdd7f5a5f",
+  "source_name": "LocalDateTable_4cd4b4e4-9a64-4c78-9cbe-4f9cdd7f5a5f",
+  "description": "Date table for LocalDateTable_4cd4b4e4-9a64-4c78-9cbe-4f9cdd7f5a5f",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "Date",
+      "datatype": "dateTime",
+      "format_string": "General Date",
+      "lineage_tag": null,
+      "source_column": "Date",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Year",
+      "datatype": "int64",
+      "format_string": "0",
+      "lineage_tag": null,
+      "source_column": "Year",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Month",
+      "datatype": "int64",
+      "format_string": "0",
+      "lineage_tag": null,
+      "source_column": "Month",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "MonthName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MonthName",
+      "summarize_by": "none"
+    },
+    {
+      "source_name": "Day",
+      "datatype": "int64",
+      "format_string": "0",
+      "lineage_tag": null,
+      "source_column": "Day",
+      "summarize_by": "none"
+    }
+  ],
+  "partitions": [
+    {
+      "name": "LocalDateTable_4cd4b4e4-9a64-4c78-9cbe-4f9cdd7f5a5f",
+      "source_type": "calculated",
+      "expression": "CALENDAR(DATE(2015, 1, 1), DATE(2025, 12, 31))"
+    }
+  ]
+}
