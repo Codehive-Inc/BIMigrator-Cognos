@@ -453,7 +453,7 @@ class ConsolidatedPackageExtractor:
         
         # Create a single date table for this source table
         date_table_id = str(uuid.uuid4())
-        date_table_name = f"LocalDateTable_{table.name}_{date_table_id[:8]}"
+        date_table_name = f"LocalDateTable_{date_table_id}"
         
         # Store the date table information in the data model's metadata for later use in file generation
         data_model.date_tables.append({
