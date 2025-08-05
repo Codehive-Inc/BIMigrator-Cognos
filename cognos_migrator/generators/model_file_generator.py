@@ -810,8 +810,8 @@ class ModelFileGenerator:
     
     def _generate_expressions_file(self, data_model: DataModel, model_dir: Path):
         """Generate expressions.tmdl file"""
-        # Skip if no expressions
-        if not data_model.expressions:
+        # Skip if no expressions or expressions attribute doesn't exist
+        if not hasattr(data_model, 'expressions') or not data_model.expressions:
             return
         
         context = {}

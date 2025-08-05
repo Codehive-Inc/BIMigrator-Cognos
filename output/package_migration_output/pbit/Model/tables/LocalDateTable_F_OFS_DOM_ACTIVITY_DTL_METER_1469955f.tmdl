@@ -1,4 +1,4 @@
-table LocalDateTable_D_OFS_PROPERTY_5cb4039c
+table LocalDateTable_F_OFS_DOM_ACTIVITY_DTL_METER_1469955f
 	isHidden
 	isPrivate
 
@@ -90,7 +90,7 @@ table LocalDateTable_D_OFS_PROPERTY_5cb4039c
 
 		annotation TemplateId = DateHierarchy
 
-	partition LocalDateTable_D_OFS_PROPERTY_5cb4039c = calculated
+	partition LocalDateTable_F_OFS_DOM_ACTIVITY_DTL_METER_1469955f = calculated
 		mode: import
 		source = Calendar(Date(2015,1,1), Date(2015,1,1))
 

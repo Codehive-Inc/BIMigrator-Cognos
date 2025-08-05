@@ -11,4 +11,5 @@ relationship {{ relationship.id }}
 	{{ relationship.cardinality_type }}: {{ relationship.cardinality_value }}
 	isActive: {% if relationship.is_active %}true{% else %}false{% endif %}
 
+
 {% endfor %}

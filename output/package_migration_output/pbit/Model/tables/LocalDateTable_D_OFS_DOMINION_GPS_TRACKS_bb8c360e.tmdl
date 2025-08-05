@@ -1,4 +1,4 @@
-table LocalDateTable_D_OFS_DOMINION_TYPE_LIST_e6348e26
+table LocalDateTable_D_OFS_DOMINION_GPS_TRACKS_bb8c360e
 	isHidden
 	isPrivate
 
@@ -90,7 +90,7 @@ table LocalDateTable_D_OFS_DOMINION_TYPE_LIST_e6348e26
 
 		annotation TemplateId = DateHierarchy
 
-	partition LocalDateTable_D_OFS_DOMINION_TYPE_LIST_e6348e26 = calculated
+	partition LocalDateTable_D_OFS_DOMINION_GPS_TRACKS_bb8c360e = calculated
 		mode: import
 		source = Calendar(Date(2015,1,1), Date(2015,1,1))
 

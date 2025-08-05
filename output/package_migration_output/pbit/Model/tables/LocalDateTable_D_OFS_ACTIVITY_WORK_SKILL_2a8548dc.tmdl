@@ -1,4 +1,4 @@
-table LocalDateTable_D_OFS_DOM_MESSAGE_TEXT_4f42f869
+table LocalDateTable_D_OFS_ACTIVITY_WORK_SKILL_2a8548dc
 	isHidden
 	isPrivate
 
@@ -90,7 +90,7 @@ table LocalDateTable_D_OFS_DOM_MESSAGE_TEXT_4f42f869
 
 		annotation TemplateId = DateHierarchy
 
-	partition LocalDateTable_D_OFS_DOM_MESSAGE_TEXT_4f42f869 = calculated
+	partition LocalDateTable_D_OFS_ACTIVITY_WORK_SKILL_2a8548dc = calculated
 		mode: import
 		source = Calendar(Date(2015,1,1), Date(2015,1,1))
 
