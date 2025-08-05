@@ -59,6 +59,11 @@ class ModelFileGenerator:
         # Generate table files
         self._generate_table_files(data_model.tables, model_dir, report_spec, report_name, project_metadata)
         
+        # Generate date table files if they exist
+        if hasattr(data_model, 'date_tables') and data_model.date_tables:
+            self._generate_date_table_files(data_model.date_tables, model_dir)
+            self.logger.info(f"Generated {len(data_model.date_tables)} date table files")
+        
         # Generate relationships file
         if data_model.relationships:
             self._generate_relationships_file(data_model.relationships, model_dir)
@@ -781,8 +786,34 @@ class ModelFileGenerator:
             
         self.logger.info(f"Generated culture file: {culture_file}")
     
+    def _generate_date_table_files(self, date_tables: List[Dict], model_dir: Path):
+        """Generate date table files
+        
+        Args:
+            date_tables: List of date table dictionaries
+            model_dir: Directory to write the files to
+        """
+        tables_dir = model_dir / 'tables'
+        tables_dir.mkdir(exist_ok=True)
+        
+        for date_table in date_tables:
+            # Get the date table name and content
+            date_table_name = date_table['name']
+            date_table_content = date_table['template_content']
+            
+            # Write the date table file
+            date_table_file = tables_dir / f"{date_table_name}.tmdl"
+            with open(date_table_file, 'w', encoding='utf-8') as f:
+                f.write(date_table_content)
+            
+            self.logger.info(f"Generated date table file: {date_table_file}")
+    
     def _generate_expressions_file(self, data_model: DataModel, model_dir: Path):
         """Generate expressions.tmdl file"""
+        # Skip if no expressions
+        if not data_model.expressions:
+            return
+        
         context = {}
         
         content = self.template_engine.render('expressions', context)

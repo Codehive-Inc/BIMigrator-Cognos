@@ -10,6 +10,7 @@ import re
 import json
 import os
 import shutil
+import uuid
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
@@ -372,6 +373,9 @@ class ConsolidatedPackageExtractor:
         # Add table to data model's tables list
         data_model.tables.append(table)
         
+        # Create date tables for datetime columns
+        self._create_date_tables_for_datetime_columns(table, data_model)
+        
         return table
         
     def _deduplicate_columns(self, table: Table) -> None:
@@ -411,6 +415,73 @@ class ConsolidatedPackageExtractor:
             self.logger.info(f"Column names after deduplication: {after_column_names}")
         else:
             self.logger.info(f"No duplicate columns found in table {table.name}")
+    
+    def _create_date_tables_for_datetime_columns(self, table: Table, data_model: DataModel) -> None:
+        """Create a single date table for all datetime columns in a table
+        
+        Args:
+            table: The table containing datetime columns
+            data_model: The data model to add the date table to
+        """
+        # Find datetime columns in the table
+        datetime_columns = [col for col in table.columns if col.data_type == DataType.DATE]
+        
+        if not datetime_columns:
+            return
+            
+        self.logger.info(f"Found {len(datetime_columns)} datetime columns in table {table.name}")
+        
+        # Get the template path
+        template_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
+                                   'templates', 'DateTableTemplate.tmdl')
+        
+        if not os.path.exists(template_path):
+            self.logger.warning(f"DateTableTemplate.tmdl not found at {template_path}. Skipping date table creation.")
+            return
+        
+        # Read the template content
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                template_content = f.read()
+        except Exception as e:
+            self.logger.error(f"Failed to read DateTableTemplate.tmdl: {e}")
+            return
+        
+        # Initialize date_tables attribute if it doesn't exist
+        if not hasattr(data_model, 'date_tables'):
+            data_model.date_tables = []
+        
+        # Create a single date table for this source table
+        date_table_id = str(uuid.uuid4())
+        date_table_name = f"LocalDateTable_{table.name}_{date_table_id[:8]}"
+        
+        # Store the date table information in the data model's metadata for later use in file generation
+        data_model.date_tables.append({
+            'id': date_table_id,
+            'name': date_table_name,
+            'source_table': table.name,
+            'source_column': datetime_columns[0].name,  # Use the first column as reference
+            'template_content': template_content.replace('DateTableTemplate_19728d8e-9427-4914-8bc5-607973681b1e', date_table_name)
+        })
+        
+        self.logger.info(f"Created date table {date_table_name} for table {table.name}")
+        
+        # Create relationships between each datetime column and the date table
+        for column in datetime_columns:
+            relationship = Relationship(
+                id=str(uuid.uuid4()),  # Generate a UUID for the relationship
+                from_table=table.name,
+                from_column=f"{table.name}.{column.name}",
+                to_table=date_table_name,
+                to_column="Date",
+                cross_filtering_behavior="automatic",
+                join_on_date_behavior="datePartOnly"  # Add this to match the example
+            )
+            
+            # Add the relationship to the data model
+            data_model.relationships.append(relationship)
+            
+            self.logger.info(f"Created relationship between {table.name}[{column.name}] and {date_table_name}[Date]")
     
     def _find_referenced_table(self, model_qs: Dict[str, Any], data_model: DataModel) -> Optional[Table]:
         """Find the table referenced by a model query subject

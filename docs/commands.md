@@ -59,3 +59,5 @@ python -c "from cognos_migrator.migrations.package import migrate_package_with_r
 worrking
 
 python3 -c "from cognos_migrator.migrations.package import migrate_package_with_explicit_session; migrate_package_with_explicit_session(package_file_path='examples/packages/CAM Dmail Reporting.xml', output_path='output/package_migration_output', cognos_url='http://localhost:9300', session_key='CAM MTsxMDE6OGY2NmJiMDUtMDFhZS04ZDA1LTk1ZDYtZTkyZjI4ZDg5N2VkOjE4MjEyNzU0MDI7MDszOzA7')"
+
+python migrate_fm_package.py --package-file examples/packages/Shared\ OFS\ Reporting.xml --output-path output/package_migration_output --cognos-url http://localhost:9300 --session-key "CAM MTsxMDE6OGY2NmJiMDUtMDFhZS04ZDA1LTk1ZDYtZTkyZjI4ZDg5N2VkOjE4MjEyNzU0MDI7MDszOzA7" --log-module package_migration

@@ -183,7 +183,7 @@ table 'D_OFS_DOM_RESOURCE_HIERARCHY'
     partition 'D_OFS_DOM_RESOURCE_HIERARCHY' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table D_OFS_DOM_RESOURCE_HIERARCHY: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1085a1970>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table D_OFS_DOM_RESOURCE_HIERARCHY: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1106827e0>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in
