@@ -78,8 +78,8 @@ class MQueryTemplateEngine(TemplateEngine):
                 with open(template_path, 'r', encoding='utf-8') as f:
                     template_content = f.read()
                 
-                # Use Jinja2 for M-Query file templates (they use {{ }} syntax)
-                self.templates[template_name] = self.jinja_env.from_string(template_content)
+                # Store as raw template - do simple string replacement instead of Jinja2 parsing
+                self.templates[template_name] = template_content
                 self.template_info[template_name] = template_info
                 
                 self.logger.info(f"Loaded M-Query template: {template_name}")
@@ -94,6 +94,23 @@ class MQueryTemplateEngine(TemplateEngine):
             return result['mquery']
         else:
             raise ValueError(f"M-Query generation failed: {result.get('error', 'Unknown error')}")
+    
+    def render(self, template_name: str, context: Dict[str, Any]) -> str:
+        """Override render to handle raw string templates with simple substitution"""
+        if template_name not in self.templates:
+            raise ValueError(f"Template not found: {template_name}")
+        
+        template_content = self.templates[template_name]
+        
+        # If it's a raw string (not a Jinja2 Template object), do simple substitution
+        if isinstance(template_content, str):
+            result = template_content
+            for key, value in context.items():
+                result = result.replace(f"{{{{{key}}}}}", str(value))
+            return result
+        else:
+            # Fall back to parent render method for Jinja2 templates
+            return super().render(template_name, context)
     
     def render_mquery_file(self, template_name: str, context: Dict[str, Any]) -> str:
         """Render M-Query using file-based templates"""
@@ -230,8 +247,8 @@ class MQueryTemplateEngine(TemplateEngine):
 def create_mquery_template_engine(template_directory: str = None) -> MQueryTemplateEngine:
     """Create M-Query template engine instance"""
     if template_directory is None:
-        # Use default template directory
-        current_dir = Path(__file__).parent.parent
+        # Use default template directory - parent.parent is cognos_migrator, then templates
+        current_dir = Path(__file__).parent.parent.parent  # Go up from mquery -> templates -> cognos_migrator
         template_directory = current_dir / "templates"
     
     return MQueryTemplateEngine(str(template_directory))

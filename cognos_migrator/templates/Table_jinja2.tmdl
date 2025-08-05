@@ -1,0 +1,99 @@
+table '{{ source_name }}'
+
+    {% if is_hidden %}
+    isHidden
+    {% endif %}
+
+    {% for column in columns %}
+    {% if column.is_calculated %}
+    column '{{ column.source_name }}' = ```
+            {{ column.source_column }}
+    ```
+        dataType: {{ column.datatype }}
+        {% if column.summarize_by %}
+        summarizeBy: {{ column.summarize_by }}
+        {% endif %}
+    {% else %}
+    column '{{ column.source_name }}'
+        dataType: {{ column.datatype }}
+        {% if column.summarize_by %}
+        summarizeBy: {{ column.summarize_by }}
+        {% endif %}
+        {% if column.source_column %}
+        sourceColumn: {{ column.source_column }}
+        {% endif %}
+    {% endif %}
+        {% if column.format_string %}
+        formatString: {{ column.format_string }}
+        {% endif %}
+
+        {% if column.is_hidden %}
+        isHidden
+        {% endif %}
+        {% if column.data_category %}
+        dataCategory: {{ column.data_category }}
+        {% endif %}
+        {% if column.is_data_type_inferred %}
+        isDataTypeInferred: {{ column.is_data_type_inferred }}
+        {% endif %}
+        {% if column.annotations and column.annotations.SummarizationSetBy %}
+        annotation SummarizationSetBy = {{ column.annotations.SummarizationSetBy }}
+        {% else %}
+        annotation SummarizationSetBy = Automatic
+        {% endif %}
+
+        {% if column.annotations and column.annotations.PBI_FormatHint %}
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        {% endif %}
+        
+    {% endfor %}
+
+    {% for measure in measures %}
+    measure '{{ measure.source_name }}' = ```
+            {{ measure.expression }}
+    ```
+        {% if measure.format_string %}
+        formatString: {{ measure.format_string }}
+        {% endif %}
+
+        {% if measure.is_hidden %}
+        isHidden
+        {% endif %}
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    {% endfor %}
+
+    {% for hierarchy in hierarchies %}
+    hierarchy {{ hierarchy.name }}
+
+        {% if hierarchy.is_hidden %}
+        isHidden
+        {% endif %}
+        {% for level in hierarchy.levels %}
+        level {{ level.name }}
+            column: {{ level.column_name }}
+            {% if level.ordinal %}
+            ordinal: {{ level.ordinal }}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% for partition in partitions %}
+    partition '{{ partition.name }}' = {{ partition.source_type }}
+        mode: import
+        source = 
+            {{ partition.expression }}
+        
+
+    {% endfor %}
+
+    {% if has_widget_serialization %}
+    annotation TableWidgetSerialization =
+        {
+          "VisualType": {{ visual_type }},
+          "Columns": {{ column_settings }}
+        }
+    {% endif %}
+
+    annotation PBI_ResultType = Table

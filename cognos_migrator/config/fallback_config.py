@@ -85,6 +85,15 @@ class EnhancedMigrationConfig:
     fallback: FallbackConfig = None
     llm: LLMConfig = None
     reporting: ReportingConfig = None
+    # Original MigrationConfig compatibility fields
+    output_directory: str = "output"
+    template_directory: str = ""
+    preserve_structure: bool = True
+    include_metadata: bool = True
+    generate_documentation: bool = True
+    llm_service_url: Optional[str] = None
+    llm_service_api_key: Optional[str] = None
+    llm_service_enabled: bool = True
     
     def __post_init__(self):
         if self.validation is None:
@@ -132,6 +141,40 @@ class ConfigurationManager:
         if self._config is None:
             self._config = self.load_config()
         return self._config
+    
+    def update_config(self, config_updates: Dict[str, Any]):
+        """Update current configuration with provided values"""
+        if self._config is None:
+            self._config = self.load_config()
+        
+        # Apply updates to the current config
+        if 'validation' in config_updates:
+            validation_updates = config_updates['validation']
+            if isinstance(validation_updates, dict):
+                for key, value in validation_updates.items():
+                    if hasattr(self._config.validation, key):
+                        setattr(self._config.validation, key, value)
+        
+        if 'fallback' in config_updates:
+            fallback_updates = config_updates['fallback']
+            if isinstance(fallback_updates, dict):
+                for key, value in fallback_updates.items():
+                    if hasattr(self._config.fallback, key):
+                        setattr(self._config.fallback, key, value)
+        
+        if 'llm' in config_updates:
+            llm_updates = config_updates['llm']
+            if isinstance(llm_updates, dict):
+                for key, value in llm_updates.items():
+                    if hasattr(self._config.llm, key):
+                        setattr(self._config.llm, key, value)
+        
+        if 'reporting' in config_updates:
+            reporting_updates = config_updates['reporting']
+            if isinstance(reporting_updates, dict):
+                for key, value in reporting_updates.items():
+                    if hasattr(self._config.reporting, key):
+                        setattr(self._config.reporting, key, value)
     
     def save_config(self, config: EnhancedMigrationConfig, file_path: Optional[str] = None) -> str:
         """

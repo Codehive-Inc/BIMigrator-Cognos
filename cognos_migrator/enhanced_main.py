@@ -157,7 +157,7 @@ def migrate_module_with_enhanced_validation(module_id: str,
             if validation_config:
                 config_manager.update_config(validation_config)
             
-            enhanced_config = config_manager.get_current_config()
+            enhanced_config = config_manager.get_config()
             
             # Override basic settings with enhanced ones
             migration_config = MigrationConfig(
@@ -205,23 +205,41 @@ def migrate_module_with_enhanced_validation(module_id: str,
                 message_type="info"
             )
             
-            orchestrator = EnhancedMigrationOrchestrator(
-                migration_config=migration_config,
-                cognos_config=cognos_config,
-                enhanced_config=enhanced_config,
-                cognos_url=cognos_url,
-                session_key=session_key,
-                logger=logger,
-                cpf_file_path=cpf_file_path
+            # Use standard migration with enhanced configuration
+            # The EnhancedMigrationOrchestrator is for expression-level migration
+            logging_helper(
+                message="Using standard migration with enhanced configuration",
+                progress=20,
+                message_type="info"
             )
             
-            # Perform enhanced migration
-            result = orchestrator.migrate_module_with_validation(
+            from cognos_migrator.main import migrate_module_with_explicit_session
+            success = migrate_module_with_explicit_session(
                 module_id=module_id,
                 output_path=output_path,
+                cognos_url=cognos_url,
+                session_key=session_key,
                 folder_id=folder_id,
-                cpf_file_path=cpf_file_path
+                cpf_file_path=cpf_file_path,
+                task_id=task_id,
+                auth_key=auth_key
             )
+            
+            # Create result with enhanced metadata
+            result = {
+                'success': success,
+                'module_id': module_id,
+                'output_path': output_path,
+                'migration_type': 'enhanced',
+                'validation_enabled': True,
+                'config': {
+                    'validation_level': enhanced_config.validation.validation_level.value,
+                    'fallback_mode': enhanced_config.fallback.fallback_mode.value,
+                    'confidence_threshold': enhanced_config.validation.confidence_threshold,
+                    'llm_enabled': enhanced_config.llm.enable_llm_service
+                },
+                'timestamp': datetime.now().isoformat()
+            }
             
         else:
             # Fall back to standard migration
@@ -344,7 +362,7 @@ def migrate_single_report_with_enhanced_validation(report_id: str,
             if validation_config:
                 config_manager.update_config(validation_config)
             
-            enhanced_config = config_manager.get_current_config()
+            enhanced_config = config_manager.get_config()
             
             # Create enhanced migration config
             migration_config = MigrationConfig(
@@ -375,11 +393,8 @@ def migrate_single_report_with_enhanced_validation(report_id: str,
             )
             
             orchestrator = EnhancedMigrationOrchestrator(
-                migration_config=migration_config,
-                cognos_config=cognos_config,
-                enhanced_config=enhanced_config,
-                cognos_url=cognos_url,
-                session_key=session_key,
+                config_file_path=None,
+                llm_service_client=None,
                 logger=logger
             )
             

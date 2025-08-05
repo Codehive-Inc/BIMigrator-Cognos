@@ -66,28 +66,35 @@ class CognosClient:
             bool: True if connection is successful, False otherwise
         """
         try:
-            # Create a simple session with the provided credentials
+            # Try enhanced validation first if available
+            try:
+                from .validation.session_validator import quick_validate
+                return quick_validate(cognos_url, session_key)
+            except ImportError:
+                pass
+            
+            # Fallback to simple validation
             session = requests.Session()
             session.headers.update({
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'IBM-BA-Authorization': session_key  # Using hardcoded auth key
+                'IBM-BA-Authorization': session_key
             })
             
-            # Try to verify the session
-            response = session.get(
-                f"{cognos_url}/session",
-                timeout=30
-            )
+            # Try multiple endpoints in order of reliability
+            endpoints = ['/content', '/modules', '/capabilities']
             
-            if response.status_code == 200:
-                # Check if session is valid and not anonymous
+            for endpoint in endpoints:
                 try:
-                    session_data = response.json()
-                    if session_data and not session_data.get('isAnonymous', True):
+                    response = session.get(f"{cognos_url}{endpoint}", timeout=10)
+                    
+                    if response.status_code == 200:
                         return True
+                    elif response.status_code == 401:
+                        return False
+                    # Continue on server errors (5xx)
                 except:
-                    pass
+                    continue
                     
             return False
             
@@ -260,13 +267,30 @@ class CognosClient:
     def _verify_session(self) -> bool:
         """Verify if the current session is valid"""
         try:
-            response = self._make_request('GET', '/session')
-            if response.status_code == 200:
-                self.logger.info("Session is valid")
-                return True
-            else:
-                self.logger.warning(f"Session verification failed: {response.status_code}")
-                return False
+            # Try multiple endpoints for verification
+            verification_endpoints = ['/content', '/modules', '/capabilities']
+            
+            for endpoint in verification_endpoints:
+                try:
+                    response = self._make_request('GET', endpoint)
+                    if response.status_code == 200:
+                        self.logger.info(f"Session verified successfully using {endpoint}")
+                        return True
+                    elif response.status_code == 401:
+                        self.logger.warning(f"Session invalid: 401 Unauthorized at {endpoint}")
+                        return False
+                except CognosAPIError as e:
+                    # If it's a clear auth error, return False
+                    if "401" in str(e) or "Unauthorized" in str(e):
+                        return False
+                    # Otherwise try next endpoint
+                    self.logger.debug(f"Verification failed at {endpoint}, trying next: {e}")
+                    continue
+                except Exception:
+                    continue
+            
+            self.logger.warning("Session verification failed on all endpoints")
+            return False
         except Exception as e:
             self.logger.error(f"Session verification error: {e}")
             return False

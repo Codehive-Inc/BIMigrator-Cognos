@@ -1,5 +1,5 @@
 """
-LLM Service Client for M-Query Generation
+Enhanced LLM Service Client for M-Query Generation with Error Handling
 """
 
 import json
@@ -82,13 +82,44 @@ class LLMServiceClient:
         try:
             headers = {'Content-Type': 'application/json'}
             
-            # Prepare the payload for the LLM service according to the API spec
+            # Prepare enhanced payload with error handling requirements
+            enhanced_context = {
+                **context,
+                'source_type': context.get('source_type', 'sql'),
+                'error_handling_requirements': {
+                    'wrap_with_try_otherwise': True,
+                    'include_fallback_empty_table': True,
+                    'preserve_schema_on_error': True,
+                    'add_error_info_column': True,
+                    'connection_retry_logic': False  # Keep simple for now
+                },
+                'generation_guidelines': [
+                    "Always wrap database connections with try...otherwise",
+                    "Include fallback to empty table with correct schema on error",
+                    "Add error information column when connection fails",
+                    "Use proper M error records with Reason, Message, and Detail",
+                    "Test for HasError before accessing Value",
+                    "Implement graceful degradation for each transformation step"
+                ]
+            }
+            
             payload = {
-                'context': context,
+                'context': enhanced_context,
                 'options': {
                     'optimize_for_performance': True,
-                    'include_comments': True
-                }
+                    'include_comments': True,
+                    'error_handling_mode': 'comprehensive',
+                    'include_exception_handling': True,
+                    'fallback_strategy': 'empty_table_with_schema',
+                    'use_template_mode': True,
+                    'template_compliance': 'guided'
+                },
+                'system_prompt_additions': [
+                    "Generate M-Query code with comprehensive exception handling",
+                    "Use try...otherwise blocks for all potentially failing operations",
+                    "Include proper error records and fallback mechanisms",
+                    "Ensure the query won't break Power BI refresh even if data source is unavailable"
+                ]
             }
             
             # Make the request to the FastAPI endpoint
@@ -107,14 +138,34 @@ class LLMServiceClient:
             self.logger.info(f"Complete API response: {json.dumps(result, indent=2)}")
             
             if 'm_query' in result:
-                self.logger.info(f"Successfully generated M-query for table {table_name}")
+                m_query = result['m_query']
+                
+                # Validate error handling in generated M-Query
+                validation_result = self._validate_error_handling(m_query)
+                
+                if validation_result['has_error_handling']:
+                    self.logger.info(f"✅ Generated M-query has proper error handling for table {table_name}")
+                else:
+                    self.logger.warning(f"⚠️  Generated M-query lacks error handling for table {table_name}, applying fallback")
+                    m_query = self._add_error_handling_wrapper(m_query, context)
+                
+                # Log enhanced features
+                if result.get('template_used'):
+                    self.logger.info(f"Template-based generation used for {table_name}")
+                
+                if result.get('validation', {}).get('is_valid'):
+                    self.logger.info(f"DAX API validation passed for {table_name}")
+                
                 # Log performance notes if available
                 if 'performance_notes' in result and result['performance_notes']:
                     self.logger.info(f"Performance notes: {result['performance_notes']}")
+                
                 # Log confidence score
-                if 'confidence' in result:
-                    self.logger.info(f"Confidence score: {result['confidence']}")
-                return result['m_query']
+                confidence = result.get('confidence', 1.0)
+                if confidence:
+                    self.logger.info(f"Generation confidence: {confidence:.2f} for {table_name}")
+                
+                return m_query
             else:
                 error_msg = f"LLM service response missing 'm_query' field for table {table_name}: {result}"
                 self.logger.error(error_msg)
@@ -163,3 +214,85 @@ let
     #"Changed Type" = Source
 in
     #"Changed Type"'''
+    
+    def _validate_error_handling(self, m_query: str) -> Dict[str, Any]:
+        """
+        Validate that M-Query includes proper error handling
+        
+        Args:
+            m_query: The generated M-Query string
+            
+        Returns:
+            Dictionary with validation results
+        """
+        validation = {
+            'has_try_otherwise': 'try' in m_query and 'otherwise' in m_query,
+            'has_error_checking': '[HasError]' in m_query or 'HasError' in m_query,
+            'has_error_records': 'error [' in m_query or 'Reason =' in m_query,
+            'has_fallback_table': any(x in m_query for x in ['Table.FromColumns', 'Table.FromRows']),
+            'has_let_in_structure': 'let' in m_query and 'in' in m_query
+        }
+        
+        # Overall assessment
+        validation['has_error_handling'] = (
+            validation['has_try_otherwise'] and 
+            validation['has_error_checking'] and 
+            validation['has_fallback_table']
+        )
+        
+        return validation
+    
+    def _add_error_handling_wrapper(self, m_query: str, context: Dict[str, Any]) -> str:
+        """
+        Wrap M-Query with error handling if it's missing
+        
+        Args:
+            m_query: Original M-Query without error handling
+            context: Context information for generating fallback
+            
+        Returns:
+            M-Query wrapped with error handling
+        """
+        table_name = context.get('table_name', 'Table')
+        columns = context.get('columns', [])
+        
+        # Build column definitions for fallback
+        column_names = [f'"{col.get("name", f"Column{i+1}")}"' for i, col in enumerate(columns)]
+        empty_columns = [f'{{}}' for _ in columns]
+        
+        wrapped_query = f"""
+// Enhanced with error handling by BIMigrator
+let
+    // Attempt to execute original query
+    AttemptQuery = try (
+        {m_query.strip()}
+    ) otherwise error [
+        Reason = "QueryExecutionFailed",
+        Message = "Failed to execute M-Query for {table_name}",
+        Detail = "Check data source connectivity and query syntax"
+    ],
+    
+    // Handle query result with fallback
+    Result = if AttemptQuery[HasError] then
+        let
+            // Create empty table with expected schema
+            EmptyTable = Table.FromColumns(
+                {{{', '.join(empty_columns)}}},
+                {{{', '.join(column_names)}}}
+            ),
+            // Add error information column
+            WithErrorInfo = Table.AddColumn(
+                EmptyTable,
+                "_QueryError",
+                each "Query failed: " & Text.From(AttemptQuery[Error][Message])
+            )
+        in
+            WithErrorInfo
+    else
+        AttemptQuery[Value]
+in
+    Result
+"""
+        
+        self.logger.info(f"Applied error handling wrapper to M-Query for {table_name}")
+        return wrapped_query

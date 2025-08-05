@@ -59,7 +59,7 @@ class TemplateEngine:
         template_files = {
             # Model templates
             'database': {'filename': 'database.tmdl', 'path': 'Model', 'target_filename': 'database.tmdl'},
-            'table': {'filename': 'Table.tmdl', 'path': 'Model/tables', 'target_filename': '{table_name}.tmdl'},
+            'table': {'filename': 'Table_jinja2.tmdl', 'path': 'Model/tables', 'target_filename': '{table_name}.tmdl'},
             'relationship': {'filename': 'relationship.tmdl', 'path': 'Model', 'target_filename': 'relationships.tmdl'},
             'model': {'filename': 'model.tmdl', 'path': 'Model', 'target_filename': 'model.tmdl'},
             'culture': {'filename': 'culture.tmdl', 'path': 'Model/cultures', 'target_filename': '{culture_name}.tmdl'},
@@ -88,11 +88,17 @@ class TemplateEngine:
                 self.logger.warning(f"Template file not found: {template_path}")
                 continue
                 
-            with open(template_path, 'r', encoding='utf-8') as f:
-                template_content = f.read()
-                
-            # All templates use Jinja2
-            self.templates[template_name] = self.jinja_env.from_string(template_content)
+            try:
+                with open(template_path, 'r', encoding='utf-8') as f:
+                    template_content = f.read()
+                    
+                # All templates use Jinja2
+                self.templates[template_name] = self.jinja_env.from_string(template_content)
+                self.logger.debug(f"Loaded template: {template_name}")
+            except Exception as e:
+                self.logger.warning(f"Failed to load template {template_name}: {e}")
+                # Create a fallback template
+                self.templates[template_name] = self.jinja_env.from_string(f"<!-- Template {template_name} failed to load: {e} -->")
                 
         # Store the template info for later use
         self.template_info = template_files
