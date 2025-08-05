@@ -726,6 +726,14 @@ class ModelFileGenerator:
                 table_name = safe_report_name
             table_names.append(table_name)
         
+        # Add date table names if they exist
+        date_table_names = []
+        if hasattr(data_model, 'date_tables') and data_model.date_tables:
+            for date_table in data_model.date_tables:
+                date_table_names.append(date_table['name'])
+            self.logger.info(f"Including date table references in model.tmdl: {date_table_names}")
+            table_names.extend(date_table_names)
+        
         self.logger.info(f"Including table references in model.tmdl: {table_names}")
             
         context = {
@@ -796,6 +804,9 @@ class ModelFileGenerator:
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
         
+        # Get extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        
         for date_table in date_tables:
             # Get the date table name and content
             date_table_name = date_table['name']
@@ -807,6 +818,73 @@ class ModelFileGenerator:
                 f.write(date_table_content)
             
             self.logger.info(f"Generated date table file: {date_table_file}")
+            
+            # Save to extracted directory if applicable
+            if extracted_dir:
+                # Create a basic JSON representation of the date table
+                date_table_json = {
+                    "name": date_table_name,
+                    "source_name": date_table_name,
+                    "description": f"Date table for {date_table_name}",
+                    "is_hidden": False,
+                    "columns": [
+                        {
+                            "source_name": "Date",
+                            "datatype": "dateTime",
+                            "format_string": "General Date",
+                            "lineage_tag": None,
+                            "source_column": "Date",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "Year",
+                            "datatype": "int64",
+                            "format_string": "0",
+                            "lineage_tag": None,
+                            "source_column": "Year",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "Month",
+                            "datatype": "int64",
+                            "format_string": "0",
+                            "lineage_tag": None,
+                            "source_column": "Month",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "MonthName",
+                            "datatype": "string",
+                            "format_string": None,
+                            "lineage_tag": None,
+                            "source_column": "MonthName",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "Day",
+                            "datatype": "int64",
+                            "format_string": "0",
+                            "lineage_tag": None,
+                            "source_column": "Day",
+                            "summarize_by": "none"
+                        }
+                    ],
+                    "partitions": [
+                        {
+                            "name": date_table_name,
+                            "source_type": "calculated",
+                            "expression": f"CALENDAR(DATE(2015, 1, 1), DATE(2025, 12, 31))"
+                        }
+                    ]
+                }
+                
+                # Save as table_[TableName].json
+                save_json_to_extracted_dir(extracted_dir, f"table_{date_table_name}.json", date_table_json)
+                self.logger.info(f"Saved date table JSON to extracted directory: table_{date_table_name}.json")
+                
+                # Also save the date table definition as a separate JSON file
+                save_json_to_extracted_dir(extracted_dir, f"date_table_{date_table_name}.json", date_table)
+                self.logger.info(f"Saved date table definition to extracted directory: date_table_{date_table_name}.json")
     
     def _generate_expressions_file(self, data_model: DataModel, model_dir: Path):
         """Generate expressions.tmdl file"""

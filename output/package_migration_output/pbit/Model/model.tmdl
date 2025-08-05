@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["D_OFS_ACTIVITY_WORK_SKILL", "D_OFS_DOMINION_GPS_TRACKS", "D_OFS_DOMINION_MESSAGE", "D_OFS_DOMINION_QUEUE_DETAIL", "D_OFS_DOMINION_TYPE_LIST", "D_OFS_DOM_MESSAGE_TEXT", "D_OFS_DOM_RESOURCE_HIERARCHY", "D_OFS_DOM_SERVICE_REQUEST", "D_OFS_PROPERTY", "D_OFS_PROP_LOOKUP", "D_OFS_RESOURCE_WORK_SKILL", "D_OFS_WORK_SKILLS", "F_OFS_DOMINION_ACTIVITY_DETAIL", "F_OFS_DOM_ACTIVITY_DTL_METER", "Meter Activity (Fact)", "Resource Hierarchy"]
+annotation PBI_QueryOrder = ["D_OFS_ACTIVITY_WORK_SKILL", "D_OFS_DOMINION_GPS_TRACKS", "D_OFS_DOMINION_MESSAGE", "D_OFS_DOMINION_QUEUE_DETAIL", "D_OFS_DOMINION_TYPE_LIST", "D_OFS_DOM_MESSAGE_TEXT", "D_OFS_DOM_RESOURCE_HIERARCHY", "D_OFS_DOM_SERVICE_REQUEST", "D_OFS_PROPERTY", "D_OFS_PROP_LOOKUP", "D_OFS_RESOURCE_WORK_SKILL", "D_OFS_WORK_SKILLS", "F_OFS_DOMINION_ACTIVITY_DETAIL", "F_OFS_DOM_ACTIVITY_DTL_METER", "Meter Activity (Fact)", "Resource Hierarchy", "LocalDateTable_D_OFS_ACTIVITY_WORK_SKILL_861fc5fa", "LocalDateTable_D_OFS_DOMINION_GPS_TRACKS_19c597f4", "LocalDateTable_D_OFS_DOMINION_MESSAGE_ae3efc81", "LocalDateTable_D_OFS_DOMINION_QUEUE_DETAIL_66dc4cc1", "LocalDateTable_D_OFS_DOMINION_TYPE_LIST_897d2cf9", "LocalDateTable_D_OFS_DOM_MESSAGE_TEXT_d2e82b68", "LocalDateTable_D_OFS_DOM_RESOURCE_HIERARCHY_eefe06ef", "LocalDateTable_D_OFS_DOM_SERVICE_REQUEST_73c13a43", "LocalDateTable_D_OFS_PROPERTY_8c2d5dd6", "LocalDateTable_D_OFS_PROP_LOOKUP_ebece0bf", "LocalDateTable_D_OFS_RESOURCE_WORK_SKILL_689896d3", "LocalDateTable_D_OFS_WORK_SKILLS_23cadc2b", "LocalDateTable_F_OFS_DOMINION_ACTIVITY_DETAIL_fb416198", "LocalDateTable_F_OFS_DOM_ACTIVITY_DTL_METER_9d1ab2b2", "LocalDateTable_Meter Activity (Fact)_afecce0b", "LocalDateTable_Resource Hierarchy_c8b6b161"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -28,5 +28,21 @@ ref table 'F_OFS_DOMINION_ACTIVITY_DETAIL'
 ref table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 ref table 'Meter Activity (Fact)'
 ref table 'Resource Hierarchy'
+ref table 'LocalDateTable_D_OFS_ACTIVITY_WORK_SKILL_861fc5fa'
+ref table 'LocalDateTable_D_OFS_DOMINION_GPS_TRACKS_19c597f4'
+ref table 'LocalDateTable_D_OFS_DOMINION_MESSAGE_ae3efc81'
+ref table 'LocalDateTable_D_OFS_DOMINION_QUEUE_DETAIL_66dc4cc1'
+ref table 'LocalDateTable_D_OFS_DOMINION_TYPE_LIST_897d2cf9'
+ref table 'LocalDateTable_D_OFS_DOM_MESSAGE_TEXT_d2e82b68'
+ref table 'LocalDateTable_D_OFS_DOM_RESOURCE_HIERARCHY_eefe06ef'
+ref table 'LocalDateTable_D_OFS_DOM_SERVICE_REQUEST_73c13a43'
+ref table 'LocalDateTable_D_OFS_PROPERTY_8c2d5dd6'
+ref table 'LocalDateTable_D_OFS_PROP_LOOKUP_ebece0bf'
+ref table 'LocalDateTable_D_OFS_RESOURCE_WORK_SKILL_689896d3'
+ref table 'LocalDateTable_D_OFS_WORK_SKILLS_23cadc2b'
+ref table 'LocalDateTable_F_OFS_DOMINION_ACTIVITY_DETAIL_fb416198'
+ref table 'LocalDateTable_F_OFS_DOM_ACTIVITY_DTL_METER_9d1ab2b2'
+ref table 'LocalDateTable_Meter Activity (Fact)_afecce0b'
+ref table 'LocalDateTable_Resource Hierarchy_c8b6b161'
 
 ref cultureInfo en-US
