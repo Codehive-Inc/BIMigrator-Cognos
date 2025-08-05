@@ -1,4 +1,4 @@
-table 'D_OFS_DOMINION_MESSAGE'
+table D_OFS_DOMINION_MESSAGE
 
 
     column 'QUEUE_ID'
@@ -327,7 +327,7 @@ table 'D_OFS_DOMINION_MESSAGE'
     partition 'D_OFS_DOMINION_MESSAGE' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table D_OFS_DOMINION_MESSAGE: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11060fb60>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table D_OFS_DOMINION_MESSAGE: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10b44f380>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

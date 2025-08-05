@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["D_OFS_ACTIVITY_WORK_SKILL", "D_OFS_DOMINION_GPS_TRACKS", "D_OFS_DOMINION_MESSAGE", "D_OFS_DOMINION_QUEUE_DETAIL", "D_OFS_DOMINION_TYPE_LIST", "D_OFS_DOM_MESSAGE_TEXT", "D_OFS_DOM_RESOURCE_HIERARCHY", "D_OFS_DOM_SERVICE_REQUEST", "D_OFS_PROPERTY", "D_OFS_PROP_LOOKUP", "D_OFS_RESOURCE_WORK_SKILL", "D_OFS_WORK_SKILLS", "F_OFS_DOMINION_ACTIVITY_DETAIL", "F_OFS_DOM_ACTIVITY_DTL_METER", "Meter Activity (Fact)", "Resource Hierarchy", "LocalDateTable_39fa8af2-eac7-4b45-8e94-c6187d5fd8ce", "LocalDateTable_ae1d7b50-4656-46e3-9292-95cf5c7a71a6", "LocalDateTable_ba7a54f8-b632-4fc2-afcf-c66b20c49b2d", "LocalDateTable_c90e44a4-bf8e-4a8f-b6ae-ea00bc590b09", "LocalDateTable_dfa08c0a-90d0-4887-804c-946375c07fb8", "LocalDateTable_67f3ddfe-163a-4382-b638-b74fec9b0797", "LocalDateTable_7cea5bc2-90d1-43d0-a134-391f845977c6", "LocalDateTable_4205d89e-767f-44e8-bf8c-b17fb8729c5a", "LocalDateTable_1b25994d-ed92-4a27-b173-fc1771317811", "LocalDateTable_3d51751e-11cc-4f4d-a911-32d3da876064", "LocalDateTable_04be290c-3ed0-4872-822c-ac15161f26e2", "LocalDateTable_b601a83c-f074-4874-b86d-9b6ef276e5e7", "LocalDateTable_d3083809-5cb8-4cd8-b0a0-f49a20ca46e0", "LocalDateTable_eee8a4a8-5f48-4019-95fb-506c3a83c5c2", "LocalDateTable_3a97833d-4851-4491-869d-cb7e89184c3d", "LocalDateTable_7b512fa3-ff54-47f8-82d1-5eafbe8c4344"]
+annotation PBI_QueryOrder = ["D_OFS_ACTIVITY_WORK_SKILL", "D_OFS_DOMINION_GPS_TRACKS", "D_OFS_DOMINION_MESSAGE", "D_OFS_DOMINION_QUEUE_DETAIL", "D_OFS_DOMINION_TYPE_LIST", "D_OFS_DOM_MESSAGE_TEXT", "D_OFS_DOM_RESOURCE_HIERARCHY", "D_OFS_DOM_SERVICE_REQUEST", "D_OFS_PROPERTY", "D_OFS_PROP_LOOKUP", "D_OFS_RESOURCE_WORK_SKILL", "D_OFS_WORK_SKILLS", "F_OFS_DOMINION_ACTIVITY_DETAIL", "F_OFS_DOM_ACTIVITY_DTL_METER", "Meter Activity (Fact)", "Resource Hierarchy", "LocalDateTable_4c0f4789-8ab9-4a97-8ba4-327963d37d5f", "LocalDateTable_9a877abd-b43c-4be9-925f-c40fa580c73a", "LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd", "LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb", "LocalDateTable_da45fb3a-eee8-42d1-b690-2e274c2e7257", "LocalDateTable_d7fcf904-3f01-4018-95f0-aadb18c825ba", "LocalDateTable_19247373-77d9-4454-a404-ecfff052f562", "LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b", "LocalDateTable_bff5fe0b-afa7-4c0d-8f0d-ccc107a753d1", "LocalDateTable_4271c313-df3c-4738-be8a-0566818fb613", "LocalDateTable_94c0a1e7-d813-4217-8375-e17b5070dcf6", "LocalDateTable_da27d88f-62c3-4572-898a-fe0d12f7f3f6", "LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56", "LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755", "LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb", "LocalDateTable_1f9b1b30-7c4d-45cf-8727-a78676cded6e"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -28,21 +28,21 @@ ref table 'F_OFS_DOMINION_ACTIVITY_DETAIL'
 ref table 'F_OFS_DOM_ACTIVITY_DTL_METER'
 ref table 'Meter Activity (Fact)'
 ref table 'Resource Hierarchy'
-ref table 'LocalDateTable_39fa8af2-eac7-4b45-8e94-c6187d5fd8ce'
-ref table 'LocalDateTable_ae1d7b50-4656-46e3-9292-95cf5c7a71a6'
-ref table 'LocalDateTable_ba7a54f8-b632-4fc2-afcf-c66b20c49b2d'
-ref table 'LocalDateTable_c90e44a4-bf8e-4a8f-b6ae-ea00bc590b09'
-ref table 'LocalDateTable_dfa08c0a-90d0-4887-804c-946375c07fb8'
-ref table 'LocalDateTable_67f3ddfe-163a-4382-b638-b74fec9b0797'
-ref table 'LocalDateTable_7cea5bc2-90d1-43d0-a134-391f845977c6'
-ref table 'LocalDateTable_4205d89e-767f-44e8-bf8c-b17fb8729c5a'
-ref table 'LocalDateTable_1b25994d-ed92-4a27-b173-fc1771317811'
-ref table 'LocalDateTable_3d51751e-11cc-4f4d-a911-32d3da876064'
-ref table 'LocalDateTable_04be290c-3ed0-4872-822c-ac15161f26e2'
-ref table 'LocalDateTable_b601a83c-f074-4874-b86d-9b6ef276e5e7'
-ref table 'LocalDateTable_d3083809-5cb8-4cd8-b0a0-f49a20ca46e0'
-ref table 'LocalDateTable_eee8a4a8-5f48-4019-95fb-506c3a83c5c2'
-ref table 'LocalDateTable_3a97833d-4851-4491-869d-cb7e89184c3d'
-ref table 'LocalDateTable_7b512fa3-ff54-47f8-82d1-5eafbe8c4344'
+ref table 'LocalDateTable_4c0f4789-8ab9-4a97-8ba4-327963d37d5f'
+ref table 'LocalDateTable_9a877abd-b43c-4be9-925f-c40fa580c73a'
+ref table 'LocalDateTable_c86c3a23-f4f9-44ce-be09-006a40f930dd'
+ref table 'LocalDateTable_59e88492-edb7-45b7-89d3-a5d5b9f188eb'
+ref table 'LocalDateTable_da45fb3a-eee8-42d1-b690-2e274c2e7257'
+ref table 'LocalDateTable_d7fcf904-3f01-4018-95f0-aadb18c825ba'
+ref table 'LocalDateTable_19247373-77d9-4454-a404-ecfff052f562'
+ref table 'LocalDateTable_285ed09d-b6b7-4352-a525-d645c914a17b'
+ref table 'LocalDateTable_bff5fe0b-afa7-4c0d-8f0d-ccc107a753d1'
+ref table 'LocalDateTable_4271c313-df3c-4738-be8a-0566818fb613'
+ref table 'LocalDateTable_94c0a1e7-d813-4217-8375-e17b5070dcf6'
+ref table 'LocalDateTable_da27d88f-62c3-4572-898a-fe0d12f7f3f6'
+ref table 'LocalDateTable_4481434a-fcde-47a9-a649-f9b9ac040a56'
+ref table 'LocalDateTable_d331bb94-588e-4b24-882d-9ace0609e755'
+ref table 'LocalDateTable_7c113a49-4617-4989-b3a1-afd2600937fb'
+ref table 'LocalDateTable_1f9b1b30-7c4d-45cf-8727-a78676cded6e'
 
 ref cultureInfo en-US

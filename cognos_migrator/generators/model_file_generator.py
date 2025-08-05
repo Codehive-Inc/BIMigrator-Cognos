@@ -572,6 +572,9 @@ class ModelFileGenerator:
                 'expression': m_expression
             })
         
+        # Check if table name has spaces or special characters
+        has_spaces_or_special_chars = ' ' in table_name or re.search(r'[^a-zA-Z0-9_]', table_name) is not None
+        
         context = {
             'name': table_name,
             'table_name': table_name,
@@ -579,7 +582,8 @@ class ModelFileGenerator:
             'columns': columns,
             'partitions': partitions,
             'partition_name': f"{table_name}-partition",
-            'm_expression': m_expression
+            'm_expression': m_expression,
+            'has_spaces_or_special_chars': has_spaces_or_special_chars
         }
         
         return context
