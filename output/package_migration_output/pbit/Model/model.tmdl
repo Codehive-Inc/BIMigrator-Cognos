@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["CU01TB01", "CU04TB22", "CU04TB70", "STANDARD ACCOUNT DATA", "BILLABLE ELECTRIC", "INSTALLED METER", "LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121", "LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158", "LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742", "LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15", "LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11", "LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282"]
+annotation PBI_QueryOrder = ["CU01TB01", "CU04TB22", "CU04TB70", "STANDARD ACCOUNT DATA", "BILLABLE ELECTRIC", "INSTALLED METER", "LocalDateTable_a7805bde-9b7f-492a-8e40-0dac4e30d69c", "LocalDateTable_eeb776f4-41cc-4b1c-a70d-f16374e02099", "LocalDateTable_473e1e1e-13af-4020-9372-d29023d0e666", "LocalDateTable_34938b11-c400-4076-85c7-9b7aef652e99", "LocalDateTable_e12d6fc9-c6b3-4c48-b4a3-86c59d082f8e", "LocalDateTable_5bfbe74c-5062-40f1-bc24-96da4b2bbafb"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
@@ -18,11 +18,11 @@ ref table CU04TB70
 ref table 'STANDARD ACCOUNT DATA'
 ref table 'BILLABLE ELECTRIC'
 ref table 'INSTALLED METER'
-ref table LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121
-ref table LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158
-ref table LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742
-ref table LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15
-ref table LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11
-ref table LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282
+ref table LocalDateTable_a7805bde-9b7f-492a-8e40-0dac4e30d69c
+ref table LocalDateTable_eeb776f4-41cc-4b1c-a70d-f16374e02099
+ref table LocalDateTable_473e1e1e-13af-4020-9372-d29023d0e666
+ref table LocalDateTable_34938b11-c400-4076-85c7-9b7aef652e99
+ref table LocalDateTable_e12d6fc9-c6b3-4c48-b4a3-86c59d082f8e
+ref table LocalDateTable_5bfbe74c-5062-40f1-bc24-96da4b2bbafb
 
 ref cultureInfo en-US
