@@ -334,13 +334,18 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
                 break
     
     # Create a new data model with the filtered tables
-    filtered_model = DataModel(
-        name=data_model.name,
-        tables=filtered_tables,
-        relationships=data_model.relationships,  # Keep all relationships for now
-        measures=data_model.measures,
-        perspectives=data_model.perspectives
-    )
+    filtered_model_args = {
+        'name': data_model.name,
+        'tables': filtered_tables,
+        'relationships': data_model.relationships,  # Keep all relationships for now
+        'measures': data_model.measures
+    }
+    
+    # Add perspectives if available in the data model
+    if hasattr(data_model, 'perspectives'):
+        filtered_model_args['perspectives'] = data_model.perspectives
+        
+    filtered_model = DataModel(**filtered_model_args)
     
     # Filter relationships to include only those between remaining tables
     filtered_table_names = {table.name for table in filtered_tables}
@@ -362,7 +367,8 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                        report_ids: List[str] = None,
                                        cpf_file_path: str = None,
                                        task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+                                       auth_key: str = "IBM-BA-Authorization",
+                                       dry_run: bool = False) -> bool:
     """Migrate a Cognos Framework Manager package file to Power BI with explicit session credentials
     and include specific reports
     
@@ -378,12 +384,13 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         cpf_file_path: Optional path to CPF file for enhanced metadata
         task_id: Optional task ID for tracking (default: auto-generated)
         auth_key: The authentication header key (default: IBM-BA-Authorization)
+        dry_run: If True, skips actual Cognos API calls and uses dummy data for testing (default: False)
         
     Returns:
         bool: True if migration was successful, False otherwise
         
     Raises:
-        CognosAPIError: If session is expired or invalid
+        CognosAPIError: If session is expired or invalid (not in dry_run mode)
     """
     # Generate task ID if not provided
     if task_id is None:
@@ -444,37 +451,60 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                 message_type="info"
             )
             
-            for i, report_id in enumerate(report_ids):
-                log_info(f"Migrating report {i+1}/{len(report_ids)}: {report_id}")
+            if dry_run:
+                # In dry run mode, skip actual report migration and use dummy table references
+                log_info("Dry run mode: Skipping actual report migration and using dummy table references")
                 
-                logging_helper(
-                    message=f"Migrating report {i+1}/{len(report_ids)}: {report_id}",
-                    progress=10 + int((i / len(report_ids)) * 20),
-                    message_type="info"
-                )
-                
-                # Use the report migration function with explicit session
-                report_output_path = str(reports_dir / report_id)
-                report_success = migrate_single_report_with_explicit_session(
-                    report_id=report_id,
-                    output_path=report_output_path,
-                    cognos_url=cognos_url,
-                    session_key=session_key,
-                    task_id=f"{task_id}_report_{i}",
-                    auth_key=auth_key
-                )
-                
-                if report_success:
-                    log_info(f"Report migration successful: {report_id}")
+                # Create dummy report directories
+                for i, report_id in enumerate(report_ids):
+                    report_output_path = reports_dir / report_id
+                    report_output_path.mkdir(exist_ok=True)
                     successful_report_ids.append(report_id)
                     
-                    # Extract table references from the migrated report
-                    report_tables = extract_tables_from_report(report_output_path)
-                    if report_tables:
-                        report_table_references.update(report_tables)
-                        log_info(f"Extracted {len(report_tables)} table references from report {report_id}")
-                else:
-                    log_warning(f"Report migration failed: {report_id}")
+                    # Generate some dummy table references for testing
+                    dummy_tables = [f"TABLE_{i}_{j}" for j in range(3)]
+                    report_table_references.update(dummy_tables)
+                    log_info(f"Added dummy table references for report {report_id}: {dummy_tables}")
+                    
+                    # Progress update
+                    logging_helper(
+                        message=f"Dry run: Processed report {i+1}/{len(report_ids)}: {report_id}",
+                        progress=10 + int((i / len(report_ids)) * 20),
+                        message_type="info"
+                    )
+            else:
+                # Normal mode: Actually migrate reports via Cognos API
+                for i, report_id in enumerate(report_ids):
+                    log_info(f"Migrating report {i+1}/{len(report_ids)}: {report_id}")
+                    
+                    logging_helper(
+                        message=f"Migrating report {i+1}/{len(report_ids)}: {report_id}",
+                        progress=10 + int((i / len(report_ids)) * 20),
+                        message_type="info"
+                    )
+                    
+                    # Use the report migration function with explicit session
+                    report_output_path = str(reports_dir / report_id)
+                    report_success = migrate_single_report_with_explicit_session(
+                        report_id=report_id,
+                        output_path=report_output_path,
+                        cognos_url=cognos_url,
+                        session_key=session_key,
+                        task_id=f"{task_id}_report_{i}",
+                        auth_key=auth_key
+                    )
+                    
+                    if report_success:
+                        log_info(f"Report migration successful: {report_id}")
+                        successful_report_ids.append(report_id)
+                        
+                        # Extract table references from the migrated report
+                        report_tables = extract_tables_from_report(report_output_path)
+                        if report_tables:
+                            report_table_references.update(report_tables)
+                            log_info(f"Extracted {len(report_tables)} table references from report {report_id}")
+                    else:
+                        log_warning(f"Report migration failed: {report_id}")
         
         # Step 2: Extract package information
         logging_helper(

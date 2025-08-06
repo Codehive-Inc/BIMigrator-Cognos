@@ -1,0 +1,3360 @@
+[
+  {
+    "name": "CU01TB01",
+    "id": "",
+    "type": "",
+    "status": "valid",
+    "items": [
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_CUST",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO_MOD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_CRDNL_DIR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_DIR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_MODIFIER",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_CITY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP_SX",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TX_ADDTL_ADDR_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_EXTN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_MTR_RTE",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_ACCT_CL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_BA_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "NM_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_SSN",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_DLN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_GAS_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_ELE_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_NMTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_BILL_CY",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CPLNT_PEND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_VIP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_LS",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_EA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_PA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_BNKCY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_AD_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CORP_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_TOWN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_PEND_SO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "DT_PEND_NPSO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "CD_BAD_DEBT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SPEC_ACCT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_EMPL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_NPSO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_LPP_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_CAPP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_PWQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ_2",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_FED_TAX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_ADDTL_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_DEP_ON_HAND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_SCC",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_REP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CMPNY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CR_RATING",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_CUST",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO_MOD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_CRDNL_DIR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_DIR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_MODIFIER",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_CITY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP_SX",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TX_ADDTL_ADDR_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_EXTN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_MTR_RTE",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_ACCT_CL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_BA_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "NM_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_SSN",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_DLN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_GAS_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_ELE_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_NMTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_BILL_CY",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CPLNT_PEND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_VIP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_LS",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_EA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_PA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_BNKCY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_AD_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CORP_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_TOWN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_PEND_SO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "DT_PEND_NPSO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "CD_BAD_DEBT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SPEC_ACCT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_EMPL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_NPSO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_LPP_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_CAPP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_PWQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ_2",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_FED_TAX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_ADDTL_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_DEP_ON_HAND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_SCC",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_REP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CMPNY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CR_RATING",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      }
+    ],
+    "sql_definition": {
+      "sql": "Select",
+      "type": "dbQuery",
+      "tableType": "table",
+      "dataSourceRef": "[].[dataSources].[ELECTRIC_NON_GENERATION_CBMS_MIRROR]"
+    }
+  },
+  {
+    "name": "CU04TB22",
+    "id": "",
+    "type": "",
+    "status": "valid",
+    "items": [
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TS_BILL_UNIT",
+        "id": "",
+        "datatype": "dateTime",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_BILLED",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_DAYS_USED",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "DT_BILL_END",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_REBATE_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_BU_STAT",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_SRCE",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_TOT_UNIT",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_SEASON",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_PRORT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TS_BILL_UNIT",
+        "id": "",
+        "datatype": "dateTime",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_BILLED",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_DAYS_USED",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "DT_BILL_END",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_REBATE_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_BU_STAT",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_SRCE",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_TOT_UNIT",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_SEASON",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_PRORT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      }
+    ],
+    "sql_definition": {
+      "sql": "Select",
+      "type": "dbQuery",
+      "tableType": "table",
+      "dataSourceRef": "[].[dataSources].[ELECTRIC_NON_GENERATION_CBMS_MIRROR]"
+    }
+  },
+  {
+    "name": "CU04TB70",
+    "id": "",
+    "type": "",
+    "status": "valid",
+    "items": [
+      {
+        "name": "ID_MTR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_MFG",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SVC_TYP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_SET",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_REMV",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_MTR_REMV_INDX",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_REMV_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_MTR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_MFG",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SVC_TYP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_SET",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_REMV",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_MTR_REMV_INDX",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_REMV_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      }
+    ],
+    "sql_definition": {
+      "sql": "Select",
+      "type": "dbQuery",
+      "tableType": "table",
+      "dataSourceRef": "[].[dataSources].[ELECTRIC_NON_GENERATION_CBMS_MIRROR]"
+    }
+  },
+  {
+    "name": "STANDARD ACCOUNT DATA",
+    "id": "",
+    "type": "",
+    "status": "valid",
+    "items": [
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_BA]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_CUST",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_CUST]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_PREM]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_HSE_NO]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO_MOD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_CRDNL_DIR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_CRDNL_DIR]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_STR_NM]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_STR_SX]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_DIR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_DIR_SX]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_MODIFIER",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_MODIFIER]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_CITY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_CITY]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_ST]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_ZIP]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP_SX",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TX_ADDTL_ADDR_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[TX_HOME_AREACD]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[TX_BUS_AREACD]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_EXTN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_MTR_RTE",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_MTR_RTE]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_ACCT_CL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_ACCT_CL]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_BA_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_BA_STAT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "NM_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[NM_CUST]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_SSN",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_SSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_DLN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[ID_DLN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_GAS_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_GAS_MTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_ELE_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_ELE_MTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_NMTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_NMTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_BILL_CY",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_BILL_CY]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CPLNT_PEND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_CPLNT_PEND]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_VIP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_VIP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_LS",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_LS]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_EA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_EA]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_PA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_PA]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_BNKCY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_BNKCY]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_AD_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_AD_SEQ]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CORP_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_CORP_NM]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_TOWN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[CD_TOWN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_PEND_SO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[DT_PEND_SO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "DT_PEND_NPSO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[DT_PEND_NPSO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "CD_BAD_DEBT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_BAD_DEBT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SPEC_ACCT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_SPEC_ACCT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_RO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_EMPL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_EMPL]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_NPSO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_NPSO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_LPP_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_LPP_STAT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_CAPP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_CAPP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_PWQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_PWQ]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_PHN_SEQ]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ_2",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_FED_TAX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[ID_FED_TAX]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_ADDTL_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_ADDTL_CUST]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_DEP_ON_HAND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_SCC",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_SCC]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_REP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_REP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CMPNY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_CMPNY]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CR_RATING",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_CR_RATING]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_BA]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_CUST",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_CUST]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_PREM]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_HSE_NO]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_HSE_NO_MOD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_HSE_NO_MOD]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_CRDNL_DIR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_CRDNL_DIR]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_STR_NM]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_STR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_STR_SX]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_DIR_SX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[AD_DIR_SX]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_MODIFIER",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_MODIFIER]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_CITY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_CITY]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_ST]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_ZIP]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "AD_SVC_ZIP_SX",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[AD_SVC_ZIP_SX]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TX_ADDTL_ADDR_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[TX_ADDTL_ADDR_INFO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[TX_HOME_AREACD]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_HOME_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[TX_HOME_PHN_NO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_AREACD",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[TX_BUS_AREACD]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_NO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[TX_BUS_PHN_NO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "TX_BUS_PHN_EXTN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[TX_BUS_PHN_EXTN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_MTR_RTE",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_MTR_RTE]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_ACCT_CL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_ACCT_CL]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_BA_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_BA_STAT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "NM_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[NM_CUST]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_SSN",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_SSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_DLN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[ID_DLN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_GAS_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_GAS_MTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_ELE_MTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_ELE_MTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "QY_NMTR",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_NMTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_BILL_CY",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_BILL_CY]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CPLNT_PEND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_CPLNT_PEND]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_VIP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_VIP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_LS",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_LS]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_EA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_EA]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_PA",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_PA]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_BNKCY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_BNKCY]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_AD_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_AD_SEQ]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "FL_CORP_NM",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_CORP_NM]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_TOWN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[CD_TOWN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_PEND_SO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[DT_PEND_SO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "DT_PEND_NPSO",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[DT_PEND_NPSO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": true
+      },
+      {
+        "name": "CD_BAD_DEBT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_BAD_DEBT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SPEC_ACCT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_SPEC_ACCT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_RO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_EMPL",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_EMPL]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_NPSO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_NPSO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_LPP_STAT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_LPP_STAT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_CAPP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_CAPP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_PWQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU01TB01].[QY_PWQ]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_PHN_SEQ]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_PHN_SEQ_2",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU01TB01].[ID_PHN_SEQ_2]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_FED_TAX",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[ID_FED_TAX]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_ADDTL_CUST",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_ADDTL_CUST]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_DEP_ON_HAND",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_DEP_ON_HAND]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_SCC",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_SCC]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_REP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[FL_REP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CMPNY",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_CMPNY]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_CR_RATING",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU01TB01].[CD_CR_RATING]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      }
+    ],
+    "sql_definition": {
+      "sql": "Select",
+      "type": "modelQuery"
+    }
+  },
+  {
+    "name": "BILLABLE ELECTRIC",
+    "id": "",
+    "type": "",
+    "status": "valid",
+    "items": [
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[ID_PREM]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[ID_SPT]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TS_BILL_UNIT",
+        "id": "",
+        "datatype": "dateTime",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[TS_BILL_UNIT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[ID_BA]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_BILLED",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_BILLED]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_DAYS_USED",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU04TB22].[QY_DAYS_USED]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "DT_BILL_END",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[DT_BILL_END]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_REBATE_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_REBATE_RSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_BU_STAT",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[DT_BU_STAT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_SRCE",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_RDG_SRCE]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_RDG_INFO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_RDG_RSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_TOT_UNIT",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU04TB22].[QY_TOT_UNIT]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_SEASON",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_SEASON]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_PRORT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[FL_PRORT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[ID_PREM]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[ID_SPT]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "TS_BILL_UNIT",
+        "id": "",
+        "datatype": "dateTime",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[TS_BILL_UNIT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_BA",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[ID_BA]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "CD_BILLED",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_BILLED]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_DAYS_USED",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU04TB22].[QY_DAYS_USED]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "DT_BILL_END",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[DT_BILL_END]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_REBATE_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_REBATE_RSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_BU_STAT",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB22].[DT_BU_STAT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_SRCE",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_RDG_SRCE]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_INFO",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_RDG_INFO]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_RDG_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_RDG_RSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_TOT_UNIT",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU04TB22].[QY_TOT_UNIT]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_SEASON",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[CD_SEASON]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "FL_PRORT",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB22].[FL_PRORT]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      }
+    ],
+    "sql_definition": {
+      "sql": "Select",
+      "type": "modelQuery"
+    }
+  },
+  {
+    "name": "INSTALLED METER",
+    "id": "",
+    "type": "",
+    "status": "valid",
+    "items": [
+      {
+        "name": "ID_MTR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[ID_MTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_MFG",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[CD_MTR_MFG]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SVC_TYP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[CD_SVC_TYP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_SET",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[DT_MTR_SET]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[ID_PREM]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[ID_SPT]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_REMV",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[DT_MTR_REMV]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_MTR_REMV_INDX",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU04TB70].[QY_MTR_REMV_INDX]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_REMV_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB70].[CD_MTR_REMV_RSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_MTR",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[ID_MTR]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_MFG",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[CD_MTR_MFG]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "CD_SVC_TYP",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[CD_SVC_TYP]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_SET",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[DT_MTR_SET]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "ID_PREM",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[ID_PREM]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "ID_SPT",
+        "id": "",
+        "datatype": "int16",
+        "powerbi_datatype": "String",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[ID_SPT]]",
+        "expression_type": "reference",
+        "regularAggregate": "count",
+        "nullable": false
+      },
+      {
+        "name": "DT_MTR_REMV",
+        "id": "",
+        "datatype": "date",
+        "powerbi_datatype": "DateTime",
+        "usage": "identifier",
+        "expression": "[[Data Layer].[CU04TB70].[DT_MTR_REMV]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      },
+      {
+        "name": "QY_MTR_REMV_INDX",
+        "id": "",
+        "datatype": "decimal",
+        "powerbi_datatype": "Decimal",
+        "usage": "fact",
+        "expression": "[[Data Layer].[CU04TB70].[QY_MTR_REMV_INDX]]",
+        "expression_type": "reference",
+        "regularAggregate": "sum",
+        "nullable": false
+      },
+      {
+        "name": "CD_MTR_REMV_RSN",
+        "id": "",
+        "datatype": "character",
+        "powerbi_datatype": "String",
+        "usage": "attribute",
+        "expression": "[[Data Layer].[CU04TB70].[CD_MTR_REMV_RSN]]",
+        "expression_type": "reference",
+        "regularAggregate": "unsupported",
+        "nullable": false
+      }
+    ],
+    "sql_definition": {
+      "sql": "Select",
+      "type": "modelQuery"
+    }
+  }
+]
