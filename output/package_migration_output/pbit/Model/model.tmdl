@@ -6,23 +6,53 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["CU01TB01", "CU04TB22", "CU04TB70", "STANDARD ACCOUNT DATA", "BILLABLE ELECTRIC", "INSTALLED METER", "LocalDateTable_a7805bde-9b7f-492a-8e40-0dac4e30d69c", "LocalDateTable_eeb776f4-41cc-4b1c-a70d-f16374e02099", "LocalDateTable_473e1e1e-13af-4020-9372-d29023d0e666", "LocalDateTable_34938b11-c400-4076-85c7-9b7aef652e99", "LocalDateTable_e12d6fc9-c6b3-4c48-b4a3-86c59d082f8e", "LocalDateTable_5bfbe74c-5062-40f1-bc24-96da4b2bbafb"]
+annotation PBI_QueryOrder = ["PURCHASE_ORDER_DESCRIPTIONS", "PURCHASE_ORDER_LINE", "SITES", "ITEM_NUMBER", "ITEM_SITE_EXTRACT", "MANUFACTURER", "STORAGE_LOCATION", "INVENTORY_ADJUSTMENTS", "ITEM_ROOT_EXTENDED_DESCRIPTION", "ITEM_SITE_DESCRIPTIONS", "MATERIAL_CHARGES", "PURCHASE_ORDER_RECEIPT", "REQUISITION_DESCRIPTIONS", "REQUISITION_EXTRACT", "EQUIPMENT", "WORK_ORDERS", "WO_COMMENTS", "WO_DOCUMENTS", "WO_MATERIALS", "WO_SERVICES", "WO_STEPS", "WO_SUPPLEMENTAL", "WO_TEST_EQUIP", "MODEL_WORK_ORDER", "ITT_MATERIAL", "ITEM_NUM_IND", "EQUIP_HISTORY", "MAT_TEST", "WO_USED_MATERIALS", "EQUIP_DOCUMENTS", "LocalDateTable_81ed7f8e-9074-4e72-b574-d965ae2e987e", "LocalDateTable_ba6ef200-6c84-4686-bbb2-097974b2cb8c", "LocalDateTable_aa062cbc-ec07-4c03-aebf-a1dff0c870a2", "LocalDateTable_4cb2f519-f11f-4ad8-a8c2-d7dc07a96794", "LocalDateTable_637ce6fd-57c2-4c0b-88c7-2fb7bb67100c", "LocalDateTable_7ea6c933-3e74-4ead-bba0-d251244f35e2", "LocalDateTable_45f5cf36-4430-478c-bc92-d1342b3fc235", "LocalDateTable_97c130eb-a1e7-47bc-a015-2fcf17c4e95a", "LocalDateTable_43fe4b8a-4757-4137-a0db-228460a3b498", "LocalDateTable_0f95be9d-4e47-434b-b904-362c506f7565", "LocalDateTable_954bf660-1692-4215-b66f-a4facac51eb9", "LocalDateTable_ee94fdb9-e5ce-41f1-9d5e-a06ea0f486a6"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
 
-ref table CU01TB01
-ref table CU04TB22
-ref table CU04TB70
-ref table 'STANDARD ACCOUNT DATA'
-ref table 'BILLABLE ELECTRIC'
-ref table 'INSTALLED METER'
-ref table LocalDateTable_a7805bde-9b7f-492a-8e40-0dac4e30d69c
-ref table LocalDateTable_eeb776f4-41cc-4b1c-a70d-f16374e02099
-ref table LocalDateTable_473e1e1e-13af-4020-9372-d29023d0e666
-ref table LocalDateTable_34938b11-c400-4076-85c7-9b7aef652e99
-ref table LocalDateTable_e12d6fc9-c6b3-4c48-b4a3-86c59d082f8e
-ref table LocalDateTable_5bfbe74c-5062-40f1-bc24-96da4b2bbafb
+ref table PURCHASE_ORDER_DESCRIPTIONS
+ref table PURCHASE_ORDER_LINE
+ref table SITES
+ref table ITEM_NUMBER
+ref table ITEM_SITE_EXTRACT
+ref table MANUFACTURER
+ref table STORAGE_LOCATION
+ref table INVENTORY_ADJUSTMENTS
+ref table ITEM_ROOT_EXTENDED_DESCRIPTION
+ref table ITEM_SITE_DESCRIPTIONS
+ref table MATERIAL_CHARGES
+ref table PURCHASE_ORDER_RECEIPT
+ref table REQUISITION_DESCRIPTIONS
+ref table REQUISITION_EXTRACT
+ref table EQUIPMENT
+ref table WORK_ORDERS
+ref table WO_COMMENTS
+ref table WO_DOCUMENTS
+ref table WO_MATERIALS
+ref table WO_SERVICES
+ref table WO_STEPS
+ref table WO_SUPPLEMENTAL
+ref table WO_TEST_EQUIP
+ref table MODEL_WORK_ORDER
+ref table ITT_MATERIAL
+ref table ITEM_NUM_IND
+ref table EQUIP_HISTORY
+ref table MAT_TEST
+ref table WO_USED_MATERIALS
+ref table EQUIP_DOCUMENTS
+ref table LocalDateTable_81ed7f8e-9074-4e72-b574-d965ae2e987e
+ref table LocalDateTable_ba6ef200-6c84-4686-bbb2-097974b2cb8c
+ref table LocalDateTable_aa062cbc-ec07-4c03-aebf-a1dff0c870a2
+ref table LocalDateTable_4cb2f519-f11f-4ad8-a8c2-d7dc07a96794
+ref table LocalDateTable_637ce6fd-57c2-4c0b-88c7-2fb7bb67100c
+ref table LocalDateTable_7ea6c933-3e74-4ead-bba0-d251244f35e2
+ref table LocalDateTable_45f5cf36-4430-478c-bc92-d1342b3fc235
+ref table LocalDateTable_97c130eb-a1e7-47bc-a015-2fcf17c4e95a
+ref table LocalDateTable_43fe4b8a-4757-4137-a0db-228460a3b498
+ref table LocalDateTable_0f95be9d-4e47-434b-b904-362c506f7565
+ref table LocalDateTable_954bf660-1692-4215-b66f-a4facac51eb9
+ref table LocalDateTable_ee94fdb9-e5ce-41f1-9d5e-a06ea0f486a6
 
 ref cultureInfo en-US

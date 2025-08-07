@@ -1,0 +1,1622 @@
+[
+  {
+    "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MANUFACTURER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> SITES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_COMMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_MATERIALS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_STEPS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_STEPS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_MATERIALS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_MATERIALS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_SERVICES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_SERVICES]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_TEST_EQUIP]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_COMMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_COMMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_NUM_IND]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIP_HISTORY",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> ITT_MATERIAL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITT_MATERIAL]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_NUMBER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_STEPS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_STEPS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIP_DOCUMENTS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "EQUIP_HISTORY <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MANUFACTURER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> SITES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_COMMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_MATERIALS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_STEPS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_STEPS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_MATERIALS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_MATERIALS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_SERVICES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_SERVICES]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_TEST_EQUIP]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_COMMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_COMMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_NUM_IND]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIP_HISTORY",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> ITT_MATERIAL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITT_MATERIAL]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_NUMBER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_STEPS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_STEPS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIP_DOCUMENTS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "EQUIP_HISTORY <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MANUFACTURER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> SITES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_COMMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_MATERIALS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_STEPS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_STEPS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_MATERIALS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_MATERIALS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_SERVICES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_SERVICES]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_TEST_EQUIP]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> WO_COMMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_COMMENTS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_NUM_IND]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIP_HISTORY",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "zero",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "SITE_NUMBER <-> ITT_MATERIAL",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[SITES]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITT_MATERIAL]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[ITEM_NUMBER]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "MODEL_WORK_ORDER <-> WO_STEPS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[WO_STEPS]",
+      "mincard": "zero",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[WORK_ORDERS]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIP_DOCUMENTS]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "EQUIP_HISTORY <-> EQUIPMENT",
+    "id": "",
+    "left": {
+      "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "right": {
+      "query_subject": "[Database_Layer].[EQUIPMENT]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "join_expression": ""
+  }
+]

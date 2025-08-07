@@ -70,6 +70,13 @@ class ConsolidatedPackageExtractor:
             tree = ET.parse(package_file_path)
             root = tree.getroot()
             
+            # Update namespaces on all extractors from the root element
+            self.structure_extractor.update_namespaces_from_root(root)
+            self.query_subject_extractor.update_namespaces_from_root(root)
+            self.relationship_extractor.update_namespaces_from_root(root)
+            self.calculation_extractor.update_namespaces_from_root(root)
+            self.logger.info(f"Updated namespaces on all extractors from {package_file_path}")
+            
             # Save a formatted version of the XML file if output directory is specified
             if output_path:
                 self._save_formatted_xml(package_file_path, output_path)

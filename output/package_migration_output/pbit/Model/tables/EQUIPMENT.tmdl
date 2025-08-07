@@ -1,0 +1,99 @@
+table EQUIPMENT
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_DESC
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERIAL_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERIAL_NUMBER
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_CODE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_CRITICALITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_CRITICALITY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LAST_ITEM_NUMBER
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREFERRED_ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREFERRED_ITEM_NUMBER
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_STATUS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'EQUIPMENT' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table EQUIPMENT: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1094db110>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table
