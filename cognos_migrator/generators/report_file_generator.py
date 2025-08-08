@@ -3,6 +3,7 @@ Report file generator for Power BI projects.
 """
 import logging
 import json
+import re
 from pathlib import Path
 from typing import Dict, Any, Optional, Union
 
@@ -220,76 +221,132 @@ class ReportFileGenerator:
                     width = getattr(section, 'width', 1280)
                     height = getattr(section, 'height', 720)
                 
+                # Generate unique ID for section name (similar to Power BI's format)
+                import uuid
+                section_unique_id = uuid.uuid4().hex[:20]
+                
+                # Build context with Power BI compatible fields
                 context = {
+                    # Legacy fields (kept for backward compatibility)
                     'section_id': section_id,
                     'section_name': section_name,
                     'section_display_name': section_display_name,
                     'visuals': visuals,
-                    # Add default layout information
+                    # Layout information
                     'layout': {
                         'width': width,
                         'height': height,
                         'display_option': 'FitToPage'
-                    }
+                    },
+                    
+                    # New fields for Power BI compatibility
+                    'name': section_unique_id,
+                    'displayName': section_display_name,
+                    'ordinal': i,
+                    'displayOption': 1,
+                    'width': width,
+                    'height': height
                 }
                 
+                # Create a sanitized name for the section directory
+                sanitized_name = self._sanitize_filename(section_name)
+                section_dir_name = f"{i:03d}_{sanitized_name}"
+                section_dir = sections_dir / section_dir_name
+                section_dir.mkdir(exist_ok=True)
+                
+                # Generate section.json in the section directory
                 template_name = 'report_section'
                 content = self.template_engine.render(template_name, context)
-                
-                # Get template info to determine the target filename format
-                template_info = self.template_engine.get_template_info(template_name)
-                target_filename = template_info['target_filename']
-                
-                # Replace any placeholders in the target filename
-                if '{section_id}' in target_filename:
-                    actual_filename = target_filename.replace('{section_id}', context['section_id'])
-                else:
-                    actual_filename = f"{context['section_id']}.json"
-                
-                # Create the output file
-                section_file = sections_dir / actual_filename
+                section_file = section_dir / "section.json"
                 with open(section_file, 'w', encoding='utf-8') as f:
                     f.write(content)
-                    
+                
+                # Create empty config.json in the section directory
+                config_file = section_dir / "config.json"
+                with open(config_file, 'w', encoding='utf-8') as f:
+                    f.write("{}")
+                
+                # Create empty filters.json in the section directory as an empty array
+                filters_file = section_dir / "filters.json"
+                with open(filters_file, 'w', encoding='utf-8') as f:
+                    f.write("[]")
+                
+                # Save to extracted directory if applicable
+                extracted_dir = get_extracted_dir(report_dir)
+                if extracted_dir:
+                    try:
+                        # Try to parse the content as JSON
+                        section_data = json.loads(content)
+                        save_json_to_extracted_dir(extracted_dir, f"section_{i}.json", section_data)
+                    except json.JSONDecodeError:
+                        self.logger.warning(f"Could not parse section content as JSON for section {i}")
+                
                 self.logger.info(f"Generated report section file: {section_file}")
                 logging_helper(message=f"Generated report section file: {section_file}",
-                               message_type="info")
+                            message_type="info")
         else:
-            # Generate a default section
+            # Generate a default section if no sections are provided
+            # Generate unique ID for section name
+            import uuid
+            section_unique_id = uuid.uuid4().hex[:20]
+            
             context = {
-                'section_id': 'section1',
+                # Legacy fields
+                'section_id': 'section0',
                 'section_name': 'Page 1',
                 'section_display_name': 'Page 1',
                 'visuals': [],
-                # Add default layout information
+                # Layout information
                 'layout': {
                     'width': 1280,
                     'height': 720,
                     'display_option': 'FitToPage'
-                }
+                },
+                
+                # New fields for Power BI compatibility
+                'name': section_unique_id,
+                'displayName': 'Page 1',
+                'ordinal': 0,
+                'displayOption': 1,
+                'width': 1280,
+                'height': 1280
             }
             
+            # Create a directory for the default section
+            section_dir_name = "000_Page 1"
+            section_dir = sections_dir / section_dir_name
+            section_dir.mkdir(exist_ok=True)
+            
+            # Generate section.json in the section directory
             template_name = 'report_section'
             content = self.template_engine.render(template_name, context)
-            
-            # Get template info to determine the target filename format
-            template_info = self.template_engine.get_template_info(template_name)
-            target_filename = template_info['target_filename']
-            
-            # Replace any placeholders in the target filename
-            if '{section_id}' in target_filename:
-                actual_filename = target_filename.replace('{section_id}', context['section_id'])
-            else:
-                actual_filename = f"{context['section_id']}.json"
-            
-            # Create the output file
-            section_file = sections_dir / actual_filename
+            section_file = section_dir / "section.json"
             with open(section_file, 'w', encoding='utf-8') as f:
                 f.write(content)
-                
-            self.logger.info(f"Generated default report section file: {section_file}")
-            logging_helper(message=f"Generated default report section file: {section_file}",
-                           message_type="info")
+            
+            # Create empty config.json in the section directory
+            config_file = section_dir / "config.json"
+            with open(config_file, 'w', encoding='utf-8') as f:
+                f.write("{}")
+            
+            # Create empty filters.json in the section directory as an empty array
+            filters_file = section_dir / "filters.json"
+            with open(filters_file, 'w', encoding='utf-8') as f:
+                f.write("[]")
+            
+            # Save to extracted directory if applicable
+            extracted_dir = get_extracted_dir(report_dir)
+            if extracted_dir:
+                try:
+                    # Try to parse the content as JSON
+                    section_data = json.loads(content)
+                    save_json_to_extracted_dir(extracted_dir, "section_0.json", section_data)
+                except json.JSONDecodeError:
+                    self.logger.warning("Could not parse default section content as JSON")
+            
+            self.logger.info(f"Generated report section file: {section_file}")
+            logging_helper(message=f"Generated report section file: {section_file}",
+                        message_type="info")
     
     def _generate_diagram_layout(self, report_dir: Path):
         """Generate diagram layout file"""
@@ -328,5 +385,25 @@ class ReportFileGenerator:
             self.logger.info(f"Generated diagram layout file: {layout_file}")
         except Exception as e:
             self.logger.error(f"Error generating diagram layout: {e}")
-    
 
+    def _sanitize_filename(self, filename: str) -> str:
+        """Sanitize a filename to be safe for file system use
+        
+        Args:
+            filename: Filename to sanitize
+            
+        Returns:
+            Sanitized filename
+        """
+        # Replace invalid characters with underscores
+        invalid_chars = r'[<>:"/\\|?*]'
+        sanitized = re.sub(invalid_chars, '_', filename)
+        
+        # Remove leading/trailing spaces and dots
+        sanitized = sanitized.strip('. ')
+        
+        # Ensure the filename is not empty
+        if not sanitized:
+            sanitized = 'unnamed'
+            
+        return sanitized
