@@ -1,23 +1,13 @@
 {
-  "name": "Shared OFS Reporting",
+  "name": "CAM Dmail Reporting",
   "namespaces": [
     {
-      "name": "Shared OFS Reporting",
+      "name": "CAM Dmail Reporting",
       "type": "",
       "id": ""
     },
     {
-      "name": "Database Layer",
-      "type": "",
-      "id": ""
-    },
-    {
-      "name": "Business Layer",
-      "type": "",
-      "id": ""
-    },
-    {
-      "name": "Presentation Layer",
+      "name": "Data Layer",
       "type": "",
       "id": ""
     }
@@ -26,14 +16,14 @@
     {
       "id": "",
       "type": "",
-      "cmDataSource": "Shared OFS Reporting",
-      "schema": "CDM"
+      "cmDataSource": "ELECTRIC_NON_GENERATION_CBMS_MIRROR",
+      "schema": "CTKINP"
     },
     {
       "id": "",
       "type": "",
-      "cmDataSource": "Shared OFS Reporting",
-      "schema": "CDM"
+      "cmDataSource": "ELECTRIC_NON_GENERATION_CBMS_MIRROR",
+      "schema": "CTKINP"
     }
   ]
 }

@@ -190,7 +190,16 @@ class BasePackageExtractor:
             'date': 'DateTime',
             'time': 'DateTime',
             'timestamp': 'DateTime',
+            'datetime': 'DateTime',  # Handle lowercase datetime
             'boolean': 'Boolean'
         }
         
-        return type_mapping.get(cognos_type.lower(), 'String')
+        # Convert to lowercase for case-insensitive matching
+        cognos_type_lower = cognos_type.lower()
+        
+        # Special handling for dateTime variations
+        if cognos_type_lower == 'datetime' or 'date' in cognos_type_lower or 'time' in cognos_type_lower:
+            self.logger.info(f"Mapping Cognos type '{cognos_type}' to DateTime")
+            return 'DateTime'
+            
+        return type_mapping.get(cognos_type_lower, 'String')

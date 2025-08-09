@@ -1,0 +1,32 @@
+﻿model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["A_F_OFS_DOM_AUTO_ROUTING","I_D_OFS_DOM_RESOURCE_HIERARCHY","C_DOM_ACTIVITY_DETAIL_DTL_METER","C_OFFICE_DESCRIPTION","C_DIM_DATE","DT","C_SAP_D_WORKER_ALL"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.144.1378.0 (25.06)+cba1e61f16ea36d44901f06fa446299040122394
+
+ref table A_F_OFS_DOM_AUTO_ROUTING
+ref table I_D_OFS_DOM_RESOURCE_HIERARCHY
+ref table C_DOM_ACTIVITY_DETAIL_DTL_METER
+ref table DateTableTemplate_19728d8e-9427-4914-8bc5-607973681b1e
+ref table LocalDateTable_9f42c05f-3025-4592-b928-d85151e148cd
+ref table C_OFFICE_DESCRIPTION
+ref table C_DIM_DATE
+ref table LocalDateTable_02ca10d7-1d08-48ba-8296-8d2555d3849a
+ref table LocalDateTable_39655841-974d-4845-ae9a-ef74f8ab8edb
+ref table LocalDateTable_9ad93ebe-8a65-4562-8f05-b390e1206038
+ref table LocalDateTable_d567ef7c-9f36-4bb0-9f6a-25ca970815f7
+ref table LocalDateTable_fa5a35c3-9daa-41ca-bc3f-6337873541cb
+ref table LocalDateTable_2e72c5ad-0136-4930-b5ac-b89e739de531
+ref table LocalDateTable_589112fc-9397-48e7-9d4e-41e4dce8d0b7
+ref table C_SAP_D_WORKER_ALL
+
+ref cultureInfo en-US
+

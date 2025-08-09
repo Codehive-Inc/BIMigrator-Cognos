@@ -59,6 +59,11 @@ class ModelFileGenerator:
         # Generate table files
         self._generate_table_files(data_model.tables, model_dir, report_spec, report_name, project_metadata)
         
+        # Generate date table files if they exist
+        if hasattr(data_model, 'date_tables') and data_model.date_tables:
+            self._generate_date_table_files(data_model.date_tables, model_dir)
+            self.logger.info(f"Generated {len(data_model.date_tables)} date table files")
+        
         # Generate relationships file
         if data_model.relationships:
             self._generate_relationships_file(data_model.relationships, model_dir)
@@ -567,6 +572,9 @@ class ModelFileGenerator:
                 'expression': m_expression
             })
         
+        # Check if table name has spaces or special characters
+        has_spaces_or_special_chars = ' ' in table_name or re.search(r'[^a-zA-Z0-9_]', table_name) is not None
+        
         context = {
             'name': table_name,
             'table_name': table_name,
@@ -574,7 +582,8 @@ class ModelFileGenerator:
             'columns': columns,
             'partitions': partitions,
             'partition_name': f"{table_name}-partition",
-            'm_expression': m_expression
+            'm_expression': m_expression,
+            'has_spaces_or_special_chars': has_spaces_or_special_chars
         }
         
         return context
@@ -628,12 +637,30 @@ class ModelFileGenerator:
                 cardinality_type = 'toCardinality'
                 cardinality_value = rel.to_cardinality
             
+            # Format table names according to TMDL rules
+            # Table names with spaces need to be quoted
+            from_table = f"'{rel.from_table}'" if ' ' in rel.from_table else rel.from_table
+            to_table = f"'{rel.to_table}'" if ' ' in rel.to_table else rel.to_table
+            
+            # Clean up column names by removing table name prefixes if they exist
+            from_column = rel.from_column
+            to_column = rel.to_column
+            
+            # Remove table name from column if it's included
+            if from_column and '.' in from_column:
+                parts = from_column.split('.')
+                from_column = parts[-1]  # Take the last part after the last dot
+                
+            if to_column and '.' in to_column:
+                parts = to_column.split('.')
+                to_column = parts[-1]  # Take the last part after the last dot
+            
             relationship_data = {
                 'id': rel.id,  # Use UUID as the ID
-                'from_table': rel.from_table,
-                'from_column': rel.from_column,
-                'to_table': rel.to_table,
-                'to_column': rel.to_column,
+                'from_table': from_table,
+                'from_column': from_column,
+                'to_table': to_table,
+                'to_column': to_column,
                 'cardinality_type': cardinality_type,
                 'cardinality_value': cardinality_value,
                 'cross_filtering_behavior': rel.cross_filtering_behavior,
@@ -658,12 +685,25 @@ class ModelFileGenerator:
             # Save relationships as JSON
             relationships_json = []
             for rel in unique_relationships.values():
+                # Extract just the column name without table name prefix
+                from_column = rel.from_column
+                to_column = rel.to_column
+                
+                # Remove table name from column if it's included
+                if from_column and '.' in from_column:
+                    parts = from_column.split('.')
+                    from_column = parts[-1]  # Take the last part after the last dot
+                    
+                if to_column and '.' in to_column:
+                    parts = to_column.split('.')
+                    to_column = parts[-1]  # Take the last part after the last dot
+                
                 rel_json = {
                     "id": rel.id,
                     "fromTable": rel.from_table,
-                    "fromColumn": rel.from_column,
+                    "fromColumn": from_column,
                     "toTable": rel.to_table,
-                    "toColumn": rel.to_column,
+                    "toColumn": to_column,
                     "isActive": rel.is_active
                 }
                 
@@ -688,13 +728,8 @@ class ModelFileGenerator:
 
         
         # Save to extracted directory if applicable
-        extracted_dir = get_extracted_dir(model_dir)
-        if extracted_dir:
-            # Save relationships info as JSON
-            relationship_json = {
-                "relationships": relationships_context
-            }
-            save_json_to_extracted_dir(extracted_dir, "relationship.json", relationship_json)
+        # We already saved relationships.json with the correct format earlier
+        # No need to save a duplicate relationship.json file
             
         self.logger.info(f"Generated relationships file: {relationships_file}")
     
@@ -720,6 +755,14 @@ class ModelFileGenerator:
                 safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
                 table_name = safe_report_name
             table_names.append(table_name)
+        
+        # Add date table names if they exist
+        date_table_names = []
+        if hasattr(data_model, 'date_tables') and data_model.date_tables:
+            for date_table in data_model.date_tables:
+                date_table_names.append(date_table['name'])
+            self.logger.info(f"Including date table references in model.tmdl: {date_table_names}")
+            table_names.extend(date_table_names)
         
         self.logger.info(f"Including table references in model.tmdl: {table_names}")
             
@@ -781,8 +824,104 @@ class ModelFileGenerator:
             
         self.logger.info(f"Generated culture file: {culture_file}")
     
+    def _generate_date_table_files(self, date_tables: List[Dict], model_dir: Path):
+        """Generate date table files
+        
+        Args:
+            date_tables: List of date table dictionaries
+            model_dir: Directory to write the files to
+        """
+        tables_dir = model_dir / 'tables'
+        tables_dir.mkdir(exist_ok=True)
+        
+        # Get extracted directory if applicable
+        extracted_dir = get_extracted_dir(model_dir)
+        
+        for date_table in date_tables:
+            # Get the date table name and content
+            date_table_name = date_table['name']
+            date_table_content = date_table['template_content']
+            
+            # Write the date table file
+            date_table_file = tables_dir / f"{date_table_name}.tmdl"
+            with open(date_table_file, 'w', encoding='utf-8') as f:
+                f.write(date_table_content)
+            
+            self.logger.info(f"Generated date table file: {date_table_file}")
+            
+            # Save to extracted directory if applicable
+            if extracted_dir:
+                # Create a basic JSON representation of the date table
+                date_table_json = {
+                    "name": date_table_name,
+                    "source_name": date_table_name,
+                    "description": f"Date table for {date_table_name}",
+                    "is_hidden": False,
+                    "columns": [
+                        {
+                            "source_name": "Date",
+                            "datatype": "dateTime",
+                            "format_string": "General Date",
+                            "lineage_tag": None,
+                            "source_column": "Date",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "Year",
+                            "datatype": "int64",
+                            "format_string": "0",
+                            "lineage_tag": None,
+                            "source_column": "Year",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "Month",
+                            "datatype": "int64",
+                            "format_string": "0",
+                            "lineage_tag": None,
+                            "source_column": "Month",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "MonthName",
+                            "datatype": "string",
+                            "format_string": None,
+                            "lineage_tag": None,
+                            "source_column": "MonthName",
+                            "summarize_by": "none"
+                        },
+                        {
+                            "source_name": "Day",
+                            "datatype": "int64",
+                            "format_string": "0",
+                            "lineage_tag": None,
+                            "source_column": "Day",
+                            "summarize_by": "none"
+                        }
+                    ],
+                    "partitions": [
+                        {
+                            "name": date_table_name,
+                            "source_type": "calculated",
+                            "expression": f"CALENDAR(DATE(2015, 1, 1), DATE(2025, 12, 31))"
+                        }
+                    ]
+                }
+                
+                # Save as table_[TableName].json
+                save_json_to_extracted_dir(extracted_dir, f"table_{date_table_name}.json", date_table_json)
+                self.logger.info(f"Saved date table JSON to extracted directory: table_{date_table_name}.json")
+                
+                # Also save the date table definition as a separate JSON file
+                save_json_to_extracted_dir(extracted_dir, f"date_table_{date_table_name}.json", date_table)
+                self.logger.info(f"Saved date table definition to extracted directory: date_table_{date_table_name}.json")
+    
     def _generate_expressions_file(self, data_model: DataModel, model_dir: Path):
         """Generate expressions.tmdl file"""
+        # Skip if no expressions or expressions attribute doesn't exist
+        if not hasattr(data_model, 'expressions') or not data_model.expressions:
+            return
+        
         context = {}
         
         content = self.template_engine.render('expressions', context)

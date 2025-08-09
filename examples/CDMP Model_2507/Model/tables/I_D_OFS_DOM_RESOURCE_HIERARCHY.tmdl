@@ -1,0 +1,30 @@
+﻿table I_D_OFS_DOM_RESOURCE_HIERARCHY
+
+	column PROVIDER_NAME
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: PROVIDER_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column RESOURCE_ID
+		dataType: string
+		sourceProviderType: Varchar2
+		summarizeBy: none
+		sourceColumn: RESOURCE_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition I_D_OFS_DOM_RESOURCE_HIERARCHY = m
+		mode: import
+		source =
+				let
+				    Source = Oracle.Database("CDMP", [HierarchicalNavigation=true, Query="Select distinct trim(upper(PROVIDER_NAME)) PROVIDER_NAME,RESOURCE_ID  from CDM.D_OFS_DOM_RESOURCE_HIERARCHY"])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

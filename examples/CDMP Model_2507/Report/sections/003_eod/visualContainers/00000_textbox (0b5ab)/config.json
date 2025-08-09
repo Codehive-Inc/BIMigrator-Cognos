@@ -1,0 +1,1808 @@
+{
+  "name": "0b5abd41327def3b922c",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 10,
+        "y": 0,
+        "width": 280,
+        "height": 280,
+        "z": 0,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "WITH "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"Campign_Backup\" AS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS_BCKUP\".\"CAMPAIGN_LABEL\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS_BCKUP\".\"DATE_OF_CAMPAIGN\" as DATE)) AS \"Date_of_Campaign\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\") AS \"Recipient_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION_BCKUP\".\"METHOD_OF_PHISH\" AS \"Method_of_Phish\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CASE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 WHEN "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     \"F_PHISHING_SIMULATION_BCKUP\".\"FAILURE_YN\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'TRUE', "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'Yes' )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     THEN"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         1"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 ELSE 0"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END) AS \"Failure_Count\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"CDM\".\"D_PHISHING_SIMULATIONS\" \"D_PHISHING_SIMULATIONS_BCKUP\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INNER JOIN \"CDM\".\"F_PHISHING_SIMULATION_BCKUP\" \"F_PHISHING_SIMULATION_BCKUP\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ON \"D_PHISHING_SIMULATIONS_BCKUP\".\"RECIPIENT_GROUP\" = \"F_PHISHING_SIMULATION_BCKUP\".\"RECIPIENT_GROUP\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\") IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            SELECT Trim (regexp_substr ( :user_name, '[^,]+', 1, level )) FROM dual"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            CONNECT BY regexp_substr ( :user_name, '[^,]+', 1, level ) IS NOT NULL )  AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\") IS NULL ) "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS_BCKUP\".\"CAMPAIGN_LABEL\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS_BCKUP\".\"DATE_OF_CAMPAIGN\" as DATE)), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION_BCKUP\".\"ENTERPRISE_ID\"), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION_BCKUP\".\"METHOD_OF_PHISH\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"Campign_Current\" AS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS\".\"CAMPAIGN_LABEL\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS\".\"DATE_OF_CAMPAIGN\" as DATE)) AS \"Date_of_Campaign\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\") AS \"Recipient_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION\".\"METHOD_OF_PHISH\" AS \"Method_of_Phish\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CASE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 WHEN "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     \"F_PHISHING_SIMULATION\".\"FAILURE_YN\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'TRUE', "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         'Yes' )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     THEN"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         1"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 ELSE 0"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END) AS \"Failure_Count\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"CDM\".\"D_PHISHING_SIMULATIONS\" \"D_PHISHING_SIMULATIONS\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INNER JOIN \"CDM\".\"F_PHISHING_SIMULATION\" \"F_PHISHING_SIMULATION\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ON \"D_PHISHING_SIMULATIONS\".\"RECIPIENT_GROUP\" = \"F_PHISHING_SIMULATION\".\"RECIPIENT_GROUP\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\") IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            SELECT Trim (regexp_substr ( :user_name, '[^,]+', 1, level )) FROM dual"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            CONNECT BY regexp_substr ( :user_name, '[^,]+', 1, level ) IS NOT NULL ) AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\") IS NULL ) "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_PHISHING_SIMULATIONS\".\"CAMPAIGN_LABEL\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         TRUNC(cast(\"D_PHISHING_SIMULATIONS\".\"DATE_OF_CAMPAIGN\" as DATE)), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         LOWER(\"F_PHISHING_SIMULATION\".\"ENTERPRISE_ID\"), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"F_PHISHING_SIMULATION\".\"METHOD_OF_PHISH\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"D_WORKER\" AS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_SK\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"ENTERPRISE_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_LAST_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_FIRST_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_POSITION_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_TELEPHONE_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_TIE_LINE_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"HOME_PHONE_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"FAX_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_PHONE_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_PIN_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_TYPE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PAGER_SERVICE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"INTERNET_EMAIL_AD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRINTER_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"BUSINESS_UNIT_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"ORGANIZATION_UNIT_NAME\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"LOCATION_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"FLOOR\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DAZEL_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_STATUS_CD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_STATUS_DESC\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"NICK_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CELLULAR_PHONE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COMPANY_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"BUSINESS_UNIT_CODE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COMPANY_CODE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"ORGANIZATION_UNIT_CODE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_LOCATION_CODE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"EXTENSION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COST_CENTER_NUMBER\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"COST_CENTER_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"WORKER_TYPE_CD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SAP_PERSONNEL_NUM_CD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"NOTES_EMAIL_AD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_MAIN_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_SUB1_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_SUB2_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"EMPLOYEE_SUB_GROUP\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"REPORTS_TO_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SCD_IS_CURRENT_YN\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SCD_EFFECTIVE_TS\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SCD_END_TS\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SYS_UPDATE_TS\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"IDENTITY_KEY\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CURRENT_BUSINESS_CATEGORY\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PREVIOUS_BUSINESS_CATEGORY\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"SYS_CREATE_TS\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"CODE_OF_CONDUCT_MAIN_ID_LEGACY\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"PRIMARY_LOCATION_STATE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_ADUSER_PRINCIPAL_NAME\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"VENDOR_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"EMAIL_ADDRESS_ACTIVE_YN\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_BUS_CONT_PHONE\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_BUS_CONT_PHONE2\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_BUS_CONT_EMAIL\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_OTHER_LOCATION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_ALT_LOCATION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER_ALL\".\"DOM_ALT_LOCATION2\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"SAP\".\"D_WORKER_ALL\" \"D_WORKER_ALL\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"SCD_IS_CURRENT_YN\" = 'Y'"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"PhishMe\" AS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"ENTERPRISE_ID\" AS \"Enterprise_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         CASE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             WHEN "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 \"D_WORKER\".\"WORKER_FIRST_NM\" IS NULL OR"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 \"D_WORKER\".\"WORKER_LAST_NM\" IS NULL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 THEN"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                     NULL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ELSE \"D_WORKER\".\"WORKER_FIRST_NM\" || ' ' || \"D_WORKER\".\"WORKER_LAST_NM\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         END AS \"Name\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"INTERNET_EMAIL_AD\" AS \"Email\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"WORKER_LAST_NM\" AS \"Last_Name\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"WORKER_FIRST_NM\" AS \"First_Name\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"ORGANIZATION_UNIT_NAME\" AS \"Org_Unit\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"LOCATION_DESCRIPTION\" AS \"Location\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"COMPANY_DESCRIPTION\" AS \"Company\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_STATUS_CD\" AS \"Current_Status_CD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_STATUS_DESC\" AS \"Current_Status\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_POSITION_NM\" AS \"Current_Position\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"REPORTS_TO_EID\" AS \"Reports_To_EID\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_STATUS_CD\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             1, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             5 ) AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"CURRENT_POSITION_NM\" <> 'PHYSICAL ACCESS ONLY' AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( \"D_WORKER\".\"ENTERPRISE_ID\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'thoma35', "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'brend54', "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             'robe930' ) ) AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"D_WORKER\".\"ENTERPRISE_ID\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            SELECT Trim (regexp_substr ( :user_name, '[^,]+', 1, level )) FROM dual"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            CONNECT BY regexp_substr ( :user_name, '[^,]+', 1, level ) IS NOT NULL )  AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( rtrim(\"D_WORKER\".\"INTERNET_EMAIL_AD\", ' ') IS NULL ) AND"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         NOT ( rtrim(\"D_WORKER\".\"INTERNET_EMAIL_AD\", ' ') LIKE '%dom.com' )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"Campign\" AS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Campaign_Label\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Date_of_Campaign\" AS \"Date_of_Campaign\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Recipient_EID\" AS \"Recipient_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Method_of_Phish\" AS \"Method_of_Phish\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM(\"Union1\".\"Failure_Count\") AS \"Failure_Count\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Campaign_Label\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Date_of_Campaign\" AS \"Date_of_Campaign\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Recipient_EID\" AS \"Recipient_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Method_of_Phish\" AS \"Method_of_Phish\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\".\"Failure_Count\" AS \"Failure_Count\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Backup\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         UNION ALL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Campaign_Label\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Date_of_Campaign\" AS \"Date_of_Campaign\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Recipient_EID\" AS \"Recipient_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Method_of_Phish\" AS \"Method_of_Phish\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\".\"Failure_Count\" AS \"Failure_Count\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             \"Campign_Current\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         ) \"Union1\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Date_of_Campaign\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Recipient_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Union1\".\"Method_of_Phish\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ), "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " \"RSF_Final\" AS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Enterprise_ID\" AS \"EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Name\" AS \"Name\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Email\" AS \"Email\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Current_Position\" AS \"Title\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Company\" AS \"Company\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Reports_To_EID\" AS \"Reports_To_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Campign\".\"Campaign_Label\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SUM(NVL(\"Campign\".\"Failure_Count\", 0)) AS \"Failure_Count\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         MIN(\"Campign\".\"Campaign_Label\") AS \"Min1\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             LEFT OUTER JOIN \"Campign\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ON \"PhishMe\".\"Enterprise_ID\" = \"Campign\".\"Recipient_EID\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     GROUP BY "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Enterprise_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Name\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Email\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Current_Position\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Company\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"PhishMe\".\"Reports_To_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         \"Campign\".\"Campaign_Label\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"EID\" AS \"EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Name\" AS \"Name\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Email\" AS \"Email\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Title\" AS \"Title\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Company\" AS \"Company\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Reports_To_EID\" AS \"Reports_To_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Campaign_Label\" AS \"Campaign_Label\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\".\"Failure_Count\" AS \"Failure_Count\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "   "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     \"RSF_Final\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "      :y_year = 'All'"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "      OR"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "      substr(\"RSF_Final\".\"Min1\", 1, 4) IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         :y_year )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " "
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

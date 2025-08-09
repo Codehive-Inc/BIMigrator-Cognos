@@ -1,4 +1,8 @@
+{{#if has_spaces_or_special_chars}}
 table '{{source_name}}'
+{{else}}
+table {{source_name}}
+{{/if}}
 
     {{#if is_hidden}}
     isHidden

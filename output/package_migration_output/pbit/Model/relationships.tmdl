@@ -1,12 +1,126 @@
-relationship aa7d2807-53ba-4b72-b395-e5da9000fa3c
-	fromColumn: 'F_OFS_DOM_ACTIVITY_DTL_METER'.APPT_AID
-	toColumn: 'F_OFS_DOMINION_ACTIVITY_DETAIL'.APPT_AID
+relationship 9c008c93-90b8-42b8-9e4e-2cd62bcbc239
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU01TB01.DT_PEND_SO
+	toColumn: LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 3d19ab88-a836-4b0a-b890-b4e06dcfe997
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU01TB01.DT_PEND_NPSO
+	toColumn: LocalDateTable_c098dccd-dd03-4a16-9cfc-e6765508e121.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 173a9025-3749-4568-8e95-0a981bdadb4a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU04TB22.TS_BILL_UNIT
+	toColumn: LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 81d1d48a-5d44-401e-853f-c1b1030152f7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU04TB22.DT_BILL_END
+	toColumn: LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 4bf74618-f694-4628-9680-1f42043ae914
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU04TB22.DT_BU_STAT
+	toColumn: LocalDateTable_0340cabf-a792-4ad7-8a56-b8d4aebbf158.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 06326d44-1888-463b-9fc8-09c59b2f07ae
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU04TB70.DT_MTR_SET
+	toColumn: LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship c1b9e79d-58a7-40c8-87ca-5d8cbbb98c46
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CU04TB70.DT_MTR_REMV
+	toColumn: LocalDateTable_389a60b6-3b25-4d77-a706-96f71554f742.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship f8780e13-4f66-40c5-b612-c955b766467d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'STANDARD ACCOUNT DATA'.DT_PEND_SO
+	toColumn: LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship b2449372-17c9-496e-99fe-398c2f616601
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'STANDARD ACCOUNT DATA'.DT_PEND_NPSO
+	toColumn: LocalDateTable_5b24ebb1-ecc2-4f48-84e7-60c7cd4f8c15.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship e12dfd8c-589b-4229-af5f-3c98088a1b0c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'BILLABLE ELECTRIC'.TS_BILL_UNIT
+	toColumn: LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 763a714e-4838-4c66-9647-ef95be9d283b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'BILLABLE ELECTRIC'.DT_BILL_END
+	toColumn: LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship a820dcd1-1301-4399-a3e8-8050ba52dcaf
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'BILLABLE ELECTRIC'.DT_BU_STAT
+	toColumn: LocalDateTable_e48d3e90-cede-417a-8345-c680cbcb8e11.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 01750c7f-907a-43ab-9911-a66178d586e4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'INSTALLED METER'.DT_MTR_SET
+	toColumn: LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 03448e3c-b37b-4ef4-a299-8500ce2f427e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'INSTALLED METER'.DT_MTR_REMV
+	toColumn: LocalDateTable_c889bee3-5cf5-4621-bfd0-037f00757282.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship c7324ba5-2e18-4752-b686-3e1cb6ae1a89
+	fromColumn: CU01TB01.ID_PREM
+	toColumn: CU04TB70.ID_PREM
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
-relationship 1a6cc016-0ff9-4bcd-a78c-c9ec1b450580
-	fromColumn: 'Resource Hierarchy'.RESOURCE_EXTERNAL_ID
-	toColumn: 'Meter Activity (Fact)'.RESOURCE_EXTERNAL_ID
+
+relationship dc394a33-9dca-4163-b648-fba5d60257e7
+	fromColumn: CU04TB70.ID_PREM
+	toColumn: CU04TB22.ID_PREM
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
+

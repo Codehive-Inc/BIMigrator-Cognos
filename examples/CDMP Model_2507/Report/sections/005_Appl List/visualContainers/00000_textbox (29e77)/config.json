@@ -1,0 +1,3173 @@
+{
+  "name": "29e7737c45c23d919225",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 10.495626822157435,
+        "y": 0,
+        "z": 0,
+        "width": 831.25364431486889,
+        "height": 495.39358600583091,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "with "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ApplicationIdentifiers62 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ApplicationIdentifiers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppProductionServers56 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppProductionServers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "P_Servers60 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (Shared_IT_Config_Management....{Select   * , 'Production' as Server_Type from  Servers "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    where isactive = 1}),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "P_Servers57 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers60.Id  as  Id,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers60.\"Value\"  as  Value2,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers60.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers60"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Prod_Servers as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppProductionServers56.TechnicalEnvironmentId  as  TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers57.Value2  as  Production_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers57.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppProductionServers56,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers57"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           (P_Servers57.Id = AppProductionServers56.ServerId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppTestQAServers58 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppTestQAServers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TQ_Servers61 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (Shared_IT_Config_Management....{Select   * , 'Test/QA' as Server_Type from  Servers where isactive = 1}),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TQ_Servers59 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers61.Id  as  Id,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers61.\"Value\"  as  Value2,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers61.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers61"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Test_Servers as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppTestQAServers58.TechnicalEnvironmentId  as  TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers59.Value2  as  Test_QA_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers59.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppTestQAServers58,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers59"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           (AppTestQAServers58.ServerId = TQ_Servers59.Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "All_Servers218(TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                Production_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                Server_Type) as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ((select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Prod_Servers.TechnicalEnvironmentId  as  TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Prod_Servers.Production_Server_Name  as  Production_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Prod_Servers.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Prod_Servers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     UNION ALL "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Test_Servers.TechnicalEnvironmentId  as  TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Test_Servers.Test_QA_Server_Name  as  Test_QA_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Test_Servers.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Test_Servers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TechnicalEnvironments65 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.TechnicalEnvironments"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ApplicationIdentifiers37 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ApplicationIdentifiers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Responsibilities38 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.Responsibilities"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppBusinessAreas49 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppBusinessAreas"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ADUsers_for_IT_Directors as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "T as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "T43 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "T44 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "T45 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "T46 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "T47 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "BusinessAreas48 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.BusinessAreas"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ADUsers_for_Project_Managers as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ADUsers_for_Account_Managers as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ADUsers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Responsibilities_Related as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ApplicationIdentifiers37.Id  as  App_Id,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ApplicationIdentifiers37.AppName  as  AppName"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               ApplicationIdentifiers37"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               Responsibilities38"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (ApplicationIdentifiers37.Id = Responsibilities38.AppIdentifierId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AppBusinessAreas49"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (Responsibilities38.Id = AppBusinessAreas49.ResponsibilityId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ADUsers_for_IT_Directors"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (ADUsers_for_IT_Directors.Id = Responsibilities38.ITDirectorId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           T"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (T.Id = Responsibilities38.AppContactId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           T43"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (T43.Id = Responsibilities38.AppContactBackupId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           T44"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (T44.Id = Responsibilities38.ApplicationArchitectId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           T45"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (T45.Id = Responsibilities38.TechSupport1Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           T46"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (T46.Id = Responsibilities38.TechSupport2Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           T47"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (T47.Id = Responsibilities38.TechSupport3Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           BusinessAreas48"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (BusinessAreas48.Id = AppBusinessAreas49.BusinessAreaId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ADUsers_for_Project_Managers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (ADUsers_for_Project_Managers.Id = Responsibilities38.ProjectManagerId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ADUsers_for_Account_Managers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (ADUsers_for_Account_Managers.Id = Responsibilities38.AccountManagerId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppStatus21 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppStatus"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ApplicationIdentifiers19 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ApplicationIdentifiers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AdditionalInformations31 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AdditionalInformations"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Responsibilities32 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.Responsibilities"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppBusinessAreas33 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppBusinessAreas"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Classifications22 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.Classifications"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppClassifications34 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppClassifications"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TechnicalEnvironments20 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.TechnicalEnvironments"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppProductTechnologies35 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppProductTechnologies"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ProductTechnologies26 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.ProductTechnologies"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AvailabilityRequirements28 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AvailabilityRequirements"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "InstallationProcedureTypes29 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.InstallationProcedureTypes"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TechEnvDocTypes30 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.TechEnvDocTypes"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppTechEnvDocTypes36 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppTechEnvDocTypes"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppProductionServers50 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppProductionServers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "P_Servers54 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (Shared_IT_Config_Management....{Select   * , 'Production' as Server_Type from  Servers "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    where isactive = 1}),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "P_Servers as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers54.Id  as  Id,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers54.\"Value\"  as  Value2,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers54.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers54"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Prod_Servers24 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppProductionServers50.TechnicalEnvironmentId  as  TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers.Value2  as  Production_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppProductionServers50,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           P_Servers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           (P_Servers.Id = AppProductionServers50.ServerId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "AppTestQAServers52 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.AppTestQAServers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TQ_Servers55 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (Shared_IT_Config_Management....{Select   * , 'Test/QA' as Server_Type from  Servers where isactive = 1}),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TQ_Servers as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers55.Id  as  Id,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers55.\"Value\"  as  Value2,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers55.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers55"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Test_Servers25 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppTestQAServers52.TechnicalEnvironmentId  as  TechnicalEnvironmentId,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers.Value2  as  Test_QA_Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers.Server_Type  as  Server_Type"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AppTestQAServers52,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TQ_Servers"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           (AppTestQAServers52.ServerId = TQ_Servers.Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "BusinessAreas27 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.BusinessAreas"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "DatabaseTypes23 as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           *"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Shared_IT_Config_Management.ITConfigMgmt.dbo.DatabaseTypes"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     where IsActive = 1),"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Technical_Environment_Related as "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    (select "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ApplicationIdentifiers19.AppName  as  AppName,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           case when (TechnicalEnvironments20.IsVendorSoftware = 1) then 'Yes' when (TechnicalEnvironments20.IsVendorSoftware = 0) then 'No' else null end  as  Vendor_Packaged_Software_"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AppStatus21"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               ApplicationIdentifiers19"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (AppStatus21.Id = ApplicationIdentifiers19.AppStatusId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AdditionalInformations31"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (ApplicationIdentifiers19.Id = AdditionalInformations31.AppIdentifierId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               Responsibilities32"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (ApplicationIdentifiers19.Id = Responsibilities32.AppIdentifierId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AppBusinessAreas33"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (Responsibilities32.Id = AppBusinessAreas33.ResponsibilityId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               Classifications22"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AppClassifications34"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (Classifications22.Id = AppClassifications34.ClassificationId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               TechnicalEnvironments20"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (TechnicalEnvironments20.Id = AppClassifications34.TechnicalEnvironmentId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AppProductTechnologies35"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (TechnicalEnvironments20.Id = AppProductTechnologies35.TechnicalEnvironmentId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               ProductTechnologies26"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (ProductTechnologies26.Id = AppProductTechnologies35.ProductTechnologyId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (ApplicationIdentifiers19.Id = TechnicalEnvironments20.AppIdentifierId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            full outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           AvailabilityRequirements28"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (AvailabilityRequirements28.Id = TechnicalEnvironments20.AvailReqId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           InstallationProcedureTypes29"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (InstallationProcedureTypes29.Id = TechnicalEnvironments20.InstallationProcedureTypeId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               TechEnvDocTypes30"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "               AppTechEnvDocTypes36"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                on (TechEnvDocTypes30.Id = AppTechEnvDocTypes36.TechEnvDocTypeId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (TechnicalEnvironments20.Id = AppTechEnvDocTypes36.TechnicalEnvironmentId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Prod_Servers24"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (TechnicalEnvironments20.Id = Prod_Servers24.TechnicalEnvironmentId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Test_Servers25"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (TechnicalEnvironments20.Id = Test_Servers25.TechnicalEnvironmentId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           BusinessAreas27"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (BusinessAreas27.Id = AppBusinessAreas33.BusinessAreaId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           DatabaseTypes23"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (DatabaseTypes23.Id = AdditionalInformations31.DatabaseType1Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "select distinct "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       ApplicationIdentifiers62.Id  as  Application_Id,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       ApplicationIdentifiers62.AppName  as  Application_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       All_Servers63.Production_Server_Name  as  Server_Name,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       All_Servers63.Server_Type  as  Server_Type,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       Technical_Environment_Related.Vendor_Packaged_Software_  as  Vendor_Packaged_Software_"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " from "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       ApplicationIdentifiers62"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        left outer join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           All_Servers218 All_Servers63"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           TechnicalEnvironments65"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (All_Servers63.TechnicalEnvironmentId = TechnicalEnvironments65.Id)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Responsibilities_Related"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (Responsibilities_Related.App_Id = TechnicalEnvironments65.AppIdentifierId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            join "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           Technical_Environment_Related"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            on (Technical_Environment_Related.AppName = Responsibilities_Related.AppName)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        on (ApplicationIdentifiers62.Id = TechnicalEnvironments65.AppIdentifierId)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " where "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       (All_Servers63.Production_Server_Name in (' MGADLEMSVMUX04'))"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

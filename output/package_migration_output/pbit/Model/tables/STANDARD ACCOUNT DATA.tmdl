@@ -1,0 +1,479 @@
+table 'STANDARD ACCOUNT DATA'
+
+
+    column 'ID_BA'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_BA
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_CUST'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_CUST
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_PREM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_PREM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_HSE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_HSE_NO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_HSE_NO_MOD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_HSE_NO_MOD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_CRDNL_DIR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_CRDNL_DIR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_STR_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_STR_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_STR_SX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_STR_SX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_DIR_SX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_DIR_SX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_MODIFIER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_MODIFIER
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_SVC_CITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_SVC_CITY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_SVC_ST'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_SVC_ST
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_SVC_ZIP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_SVC_ZIP
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AD_SVC_ZIP_SX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AD_SVC_ZIP_SX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TX_ADDTL_ADDR_INFO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TX_ADDTL_ADDR_INFO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TX_HOME_AREACD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TX_HOME_AREACD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TX_HOME_PHN_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TX_HOME_PHN_NO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TX_BUS_AREACD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TX_BUS_AREACD
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TX_BUS_PHN_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TX_BUS_PHN_NO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TX_BUS_PHN_EXTN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TX_BUS_PHN_EXTN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_MTR_RTE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_MTR_RTE
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_ACCT_CL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_ACCT_CL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_BA_STAT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_BA_STAT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NM_CUST'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NM_CUST
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_SSN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_SSN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_DLN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_DLN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QY_GAS_MTR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QY_GAS_MTR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QY_ELE_MTR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QY_ELE_MTR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QY_NMTR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QY_NMTR
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_BILL_CY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_BILL_CY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_CPLNT_PEND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_CPLNT_PEND
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_VIP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_VIP
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_LS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_LS
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_EA'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_EA
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_PA'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_PA
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_BNKCY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_BNKCY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_AD_SEQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_AD_SEQ
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_CORP_NM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_CORP_NM
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_TOWN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_TOWN
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DT_PEND_SO'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DT_PEND_SO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DT_PEND_NPSO'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DT_PEND_NPSO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_BAD_DEBT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_BAD_DEBT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_SPEC_ACCT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_SPEC_ACCT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_RO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_RO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_EMPL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_EMPL
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_NPSO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_NPSO
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_LPP_STAT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_LPP_STAT
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_CAPP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_CAPP
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QY_PWQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QY_PWQ
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_PHN_SEQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_PHN_SEQ
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_PHN_SEQ_2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_PHN_SEQ_2
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ID_FED_TAX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ID_FED_TAX
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_ADDTL_CUST'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_ADDTL_CUST
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_DEP_ON_HAND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_DEP_ON_HAND
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_SCC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_SCC
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FL_REP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FL_REP
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_CMPNY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_CMPNY
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CD_CR_RATING'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CD_CR_RATING
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'STANDARD ACCOUNT DATA' = m
+        mode: import
+        source = 
+            let Source = Sql.Database("", "", [Query = "Select * from [STANDARD ACCOUNT DATA]"]), #"Removed Errors" = Table.RemoveRowsWithErrors(Source), #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ID_BA", type text}, {"ID_CUST", type text}, {"ID_PREM", type text}, {"AD_HSE_NO", type text}, {"AD_HSE_NO_MOD", type text}, {"AD_CRDNL_DIR", type text}, {"AD_STR_NM", type text}, {"AD_STR_SX", type text}, {"AD_DIR_SX", type text}, {"AD_MODIFIER", type text}, {"AD_SVC_CITY", type text}, {"AD_SVC_ST", type text}, {"AD_SVC_ZIP", type text}, {"AD_SVC_ZIP_SX", type text}, {"TX_ADDTL_ADDR_INFO", type text}, {"TX_HOME_AREACD", type text}, {"TX_HOME_PHN_NO", type text}, {"TX_BUS_AREACD", type text}, {"TX_BUS_PHN_NO", type text}, {"TX_BUS_PHN_EXTN", type text}, {"ID_MTR_RTE", type text}, {"CD_ACCT_CL", type text}, {"CD_BA_STAT", type text}, {"NM_CUST", type text}, {"ID_SSN", type text}, {"ID_DLN", type text}, {"QY_GAS_MTR", type text}, {"QY_ELE_MTR", type text}, {"QY_NMTR", type text}, {"ID_BILL_CY", type text}, {"FL_CPLNT_PEND", type text}, {"FL_VIP", type text}, {"FL_LS", type text}, {"CD_EA", type text}, {"CD_PA", type text}, {"FL_BNKCY", type text}, {"ID_AD_SEQ", type text}, {"FL_CORP_NM", type text}, {"CD_TOWN", type text}, {"DT_PEND_SO", type datetime}, {"DT_PEND_NPSO", type datetime}, {"CD_BAD_DEBT", type text}, {"CD_SPEC_ACCT", type text}, {"CD_RO", type text}, {"FL_EMPL", type text}, {"CD_NPSO", type text}, {"CD_LPP_STAT", type text}, {"FL_CAPP", type text}, {"QY_PWQ", type
+        
+
+
+
+    annotation PBI_ResultType = Table

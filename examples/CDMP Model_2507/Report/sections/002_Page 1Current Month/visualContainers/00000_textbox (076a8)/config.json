@@ -1,0 +1,2004 @@
+{
+  "name": "076a8303d6cf52a7ff80",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 0,
+        "y": 36.734693877551024,
+        "z": 0,
+        "width": 1139.8250728862974,
+        "height": 565.71428571428578,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "SELECT DISTINCT "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    \"Reports_To_Qry\".\"CURRENT_POSITION_NM\" AS \"CURRENT_POSITION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    \"Phishing_Qry\".\"CURRENT_POSITION_NM\" AS \"CURRENT_POSITION_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    \"Reports_To_Qry\".\"POSITION_FLAG\" AS \"Position_Flag\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"WORKER_ID\" AS \"WORKER_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"WORKER_NAME\" AS \"WORKER_NAME\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"EMAIL\" AS \"EMAIL\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"CURRENT_POSITION_NM\" AS \"CURRENT_POSITION_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"BUSINESS_UNIT_DESCRIPTION\" AS \"BUSINESS_UNIT_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"ORGANIZATION_UNIT_NAME\" AS \"ORGANIZATION_UNIT_NAME\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"LOCATION_DESCRIPTION\" AS \"LOCATION_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"COMPANY_DESCRIPTION\" AS \"COMPANY_DESCRIPTION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"CODE_OF_CONDUCT_MAIN_ID\" AS \"CODE_OF_CONDUCT_MAIN_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"REPORTS_TO_EID\" AS \"REPORTS_TO_EID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"REPORTS_TO_CURR_POS_NM\" AS \"REPORTS_TO_NAME\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"ROOT_ID\" AS \"ROOT_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"ROOT_NAME\" AS \"ROOT_NAME\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"POSITION_FLAG\" AS \"POSITION_FLAG\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         SELECT "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.WORKER_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1. WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.EMAIL,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.CURRENT_POSITION_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.BUSINESS_UNIT_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.CODE_OF_CONDUCT_MAIN_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.REPORTS_TO_EID ,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q2.REPORTS_TO_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q2.REPORTS_TO_EMAIL,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q2.REPORTS_TO_CURR_POS_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q2.REPORTS_TO_ORG_UNIT_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.ROOT_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     Q1.ROOT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    CASE WHEN (upper(CURRENT_POSITION_NM) like 'EVP%' or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                           upper(CURRENT_POSITION_NM) like '%EXEC%VP%'  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                           upper(CURRENT_POSITION_NM) like 'SVP%' or  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                           upper(CURRENT_POSITION_NM) like 'SR%VP%'   or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                           upper(CURRENT_POSITION_NM) like '%PRESIDENT%' and upper(CURRENT_POSITION_NM) not like '%VICE%PRESIDENT%') then 'ABOVE VP'"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                WHEN ((upper(CURRENT_POSITION_NM) like '%VP%' and  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                            upper(CURRENT_POSITION_NM) not like '%EVP%' and upper(CURRENT_POSITION_NM) not like '%EXEC%VP%' and"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                            upper(CURRENT_POSITION_NM) not like '%SVP%' and upper(CURRENT_POSITION_NM) not like '%SR%VP%') or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                            (upper(CURRENT_POSITION_NM) like 'SITE%PRESIDENT%') or (upper(CURRENT_POSITION_NM) like 'VICE%') ) then 'VP'                  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                  ELSE NULL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END as POSITION_FLAG"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            lower(WORKER_ID) as WORKER_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            WORKER_FIRST_NM||', '||WORKER_LAST_NM as REPORTS_TO_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INTERNET_EMAIL_AD as REPORTS_TO_EMAIL,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            CURRENT_POSITION_NM as REPORTS_TO_CURR_POS_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            ORGANIZATION_UNIT_NAME  as REPORTS_TO_ORG_UNIT_NM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         FROM   SAP.D_WORKER_ALL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         WHERE   SCD_IS_CURRENT_YN = 'Y' and "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         CURRENT_STATUS_CD in (1,5) )Q2,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(SELECT "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            lower(WORKER_ID) as WORKER_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            lower(REPORTS_TO_EID) as REPORTS_TO_EID ,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            EMAIL,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            CURRENT_POSITION_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             BUSINESS_UNIT_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CODE_OF_CONDUCT_MAIN_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           CONNECT_BY_ROOT WORKER_ID as ROOT_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "           CONNECT_BY_ROOT WORKER_NAME as ROOT_NAME"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ( SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            WORKER_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            REPORTS_TO_EID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            WORKER_FIRST_NM||', '||WORKER_LAST_NM as WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INTERNET_EMAIL_AD as EMAIL,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CURRENT_POSITION_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             BUSINESS_UNIT_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CODE_OF_CONDUCT_MAIN_ID"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         FROM   SAP.D_WORKER_ALL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "         WHERE   SCD_IS_CURRENT_YN = 'Y' and "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         CURRENT_STATUS_CD in (1,5)                   "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "CONNECT BY   NOCYCLE PRIOR lower(WORKER_ID) = lower(REPORTS_TO_EID)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "START WITH   lower(WORKER_ID)   = lower( 'pankti1')    )Q1"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "WHERE Q1.REPORTS_TO_EID = Q2.WORKER_ID"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        ) \"D_WORKER_ALL_RPT_QRY_Prompt_\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        NOT ( \"D_WORKER_ALL_RPT_QRY_Prompt_\".\"WORKER_ID\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            SELECT DISTINCT "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                \"OFFICERS_EXCLUSIVE_LIST\".\"ENTERPRISE_ID\" AS \"WORKER_ID\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1. WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.INTERNET_EMAIL_AD,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.CURRENT_POSITION_NM, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.Reports_to_EID, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q2.REPORTS_TO_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.current_Business_category,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.worker_type_cd,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CASE WHEN (upper(CURRENT_POSITION_NM) like 'EVP%' or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        upper(CURRENT_POSITION_NM) like '%EXEC%VP%'  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        upper(CURRENT_POSITION_NM) like 'SVP%' or  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        upper(CURRENT_POSITION_NM) like 'SR%VP%'   or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        upper(CURRENT_POSITION_NM) like 'SR%VP%'   or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        upper(CURRENT_POSITION_NM) like 'SEN%PRESIDENT%'  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        upper(CURRENT_POSITION_NM) like '%PRESIDENT%' and upper(CURRENT_POSITION_NM) not like '%VICE%PRESIDENT%') then 'ABOVE VP'"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                  WHEN ((upper(CURRENT_POSITION_NM) like '%VP%' and  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         upper(CURRENT_POSITION_NM) not like '%EVP%' and upper(CURRENT_POSITION_NM) not like '%EXEC%VP%' and"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         upper(CURRENT_POSITION_NM) not like '%SVP%' and upper(CURRENT_POSITION_NM) not like '%SR%VP%') or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        (upper(CURRENT_POSITION_NM) like 'SITE%PRESIDENT%') or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        (upper(CURRENT_POSITION_NM) like 'VICE%') ) then 'VP LEVEL'                  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                  ELSE NULL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END as POSITION_FLAG"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(select  lower(ENTERPRISE_ID) AS ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             WORKER_FIRST_NM||' '||WORKER_LAST_NM as WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INTERNET_EMAIL_AD,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CURRENT_POSITION_NM, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             lower(Reports_to_EID) AS Reports_to_EID, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             current_Business_category,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             worker_type_cd"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  from sap.d_worker_all "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  where  SCD_IS_CURRENT_YN = 'Y'  and        "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    CURRENT_STATUS_CD in (1,5)    and"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    WORKER_TYPE_CD = 'E' and  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     lower(ENTERPRISE_ID) not in ('thoma35','robe930' ) and  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "/*  As per new req 08/10/2020,  exclude VP above positions  */"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  ( upper(CURRENT_POSITION_NM) like 'EVP%'  or  upper(CURRENT_POSITION_NM) like '%EXEC%VP%'  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    upper(CURRENT_POSITION_NM) like 'SVP%' or  upper(CURRENT_POSITION_NM) like 'SR%VP%'     or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "   (upper(CURRENT_POSITION_NM) like '%PRESIDENT%' ) or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "   (upper(CURRENT_POSITION_NM) like 'SITE%PRESIDENT%') or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "   (upper(CURRENT_POSITION_NM) like 'VICE%') or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "   (upper(CURRENT_POSITION_NM) like 'VP%')  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "   (upper(CURRENT_POSITION_NM) like '%VP%') "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ")Q1,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " (select  lower(ENTERPRISE_ID) AS ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             WORKER_FIRST_NM||' '||WORKER_LAST_NM as REPORTS_TO_NAME"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  from sap.d_worker_all "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  where  SCD_IS_CURRENT_YN = 'Y'  and        "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    CURRENT_STATUS_CD in (1,5)  )Q2"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "where Q1.Reports_to_EID = Q2.ENTERPRISE_ID(+)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "/*"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1. WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.INTERNET_EMAIL_AD,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.CURRENT_POSITION_NM, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.Reports_to_EID, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q2.REPORTS_TO_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.current_Business_category,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             Q1.worker_type_cd,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CASE WHEN (upper(CURRENT_POSITION_NM) like 'EVP%' or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                     upper(CURRENT_POSITION_NM) like '%EXEC%VP%'  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                     upper(CURRENT_POSITION_NM) like 'SVP%' or  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                     upper(CURRENT_POSITION_NM) like 'SR%VP%'   or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                     upper(CURRENT_POSITION_NM) like '%PRESIDENT%') then 'ABOVE VP'"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                  ELSE NULL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             END as POSITION_FLAG"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(select  lower(ENTERPRISE_ID) AS ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             WORKER_FIRST_NM||' '||WORKER_LAST_NM as WORKER_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             INTERNET_EMAIL_AD,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             CURRENT_POSITION_NM, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             COMPANY_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             LOCATION_DESCRIPTION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             ORGANIZATION_UNIT_NAME,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             lower(Reports_to_EID) AS Reports_to_EID, "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             current_Business_category,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             worker_type_cd"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  from sap.d_worker_all "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  where  SCD_IS_CURRENT_YN = 'Y'  and        "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    CURRENT_STATUS_CD in (1,5)    and"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    WORKER_TYPE_CD = 'E' and  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "     lower(ENTERPRISE_ID) not in ('thoma35', 'robe930' ) and  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " (  upper(CURRENT_POSITION_NM) like 'EVP%'  or  upper(CURRENT_POSITION_NM) like '%EXEC%VP%'  or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    upper(CURRENT_POSITION_NM) like 'SVP%' or  upper(CURRENT_POSITION_NM) like 'SR%VP%'     or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  ( upper(CURRENT_POSITION_NM) like '%PRESIDENT%' and upper(CURRENT_POSITION_NM) not like '%VICE%PRESIDENT%') ) )Q1,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " (select  lower(ENTERPRISE_ID) AS ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             WORKER_FIRST_NM||' '||WORKER_LAST_NM as REPORTS_TO_NAME"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  from sap.d_worker_all "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  where  SCD_IS_CURRENT_YN = 'Y'  and        "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    CURRENT_STATUS_CD in (1,5)  )Q2"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "where Q1.Reports_to_EID = Q2.ENTERPRISE_ID */"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                ) \"OFFICERS_EXCLUSIVE_LIST\" ) )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "    ) \"Reports_To_Qry\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        INNER JOIN "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"ENTERPRISE_ID\" AS \"ENTERPRISE_ID\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"WORKER_FIRST_NM\" AS \"WORKER_FIRST_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"WORKER_LAST_NM\" AS \"WORKER_LAST_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"INTERNET_EMAIL_AD\" AS \"INTERNET_EMAIL_AD\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"CURRENT_POSITION_NM\" AS \"CURRENT_POSITION_NM\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"LOCATION\" AS \"LOCATION\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"DEPARTMENT\" AS \"DEPARTMENT\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"COMPANY\" AS \"COMPANY\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"DATE_OF_CAMPAIGN\" AS \"DATE_OF_CAMPAIGN\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"SENDER_EMAIL\" AS \"SENDER_EMAIL\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"RECIPIENT_GROUP\" AS \"RECIPIENT_GROUP\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"FAILURE_YN\" AS \"FAILURE_YN\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             select  "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PH.RECIPIENT_GROUP,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PH.FAILURE_YN,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PH.ENTERPRISE_ID,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "DW.WORKER_FIRST_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "DW.WORKER_LAST_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "DW.INTERNET_EMAIL_AD,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "DW.CURRENT_POSITION_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PH.LOCATION,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PH.DEPARTMENT,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PH.COMPANY,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PS.DATE_OF_CAMPAIGN,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PS.SENDER_EMAIL"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "SAP.D_WORKER_ALL DW,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "CDM.F_PHISHING_SIMULATION PH,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "CDM.D_PHISHING_SIMULATIONS PS"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "where "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "lower(DW.ENTERPRISE_ID) = lower(PH.ENTERPRISE_ID)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "and PH.RECIPIENT_GROUP = PS.RECIPIENT_GROUP"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "and DW.SCD_IS_CURRENT_YN = 'Y'"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "and DW.CURRENT_STATUS_CD in (1,5)"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "and (PH.FAILURE_YN in ('TRUE','Yes') )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Order by  RECIPIENT_GROUP Desc"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            ) \"PHISHING_FAILURE_DETAILS\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        WHERE "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            \"PHISHING_FAILURE_DETAILS\".\"RECIPIENT_GROUP\" IN ( "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                SELECT DISTINCT "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                    \"Latest_Month\".\"LM_RECIPIENT_GROUP\" AS \"LM_RECIPIENT_GROUP\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                    ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                    SELECT"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        \"PHISHING_LATEST_CAMPAIGN\".\"RECPT_GROUP\" AS \"LM_RECIPIENT_GROUP\", "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        \"PHISHING_LATEST_CAMPAIGN\".\"CAMPIGN_DATE\" AS \"LM_DATE_OF_CAMPAIGN\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                    FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        ("
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                         SELECT A.RECIPIENT_GROUP as RECPT_GROUP,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 A.DATE_OF_CAMPAIGN as CAMPIGN_DATE,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                 A.DATA_VALIDATION_FLAG as DATA_VALIDATION_FLAG"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "FROM"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(SELECT RECIPIENT_GROUP,  DATE_OF_CAMPAIGN,DATA_VALIDATION_FLAG FROM CDM.D_PHISHING_SIMULATIONS ) A,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "(SELECT MAX(DATE_OF_CAMPAIGN) AS \"END_DATE\" "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "  FROM ( SELECT DATE_OF_CAMPAIGN "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                      FROM CDM.D_PHISHING_SIMULATIONS "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                          where ( 'BAJIBA1'  in ('APP_ESD_Network_Apps_Window_6', 'Active Directory', 'All Authenticated Users', 'Analytics Explorers', 'App_AZPowerBIPro_6', 'App_BiC2PBITechM_6', 'App_BiCognosConsumer_6', 'App_BiEprod_Author_6', 'App_CybarkUser_6', 'App_EmmaDTMSReports_6', 'App_VDIITBI_6', 'Authors', 'C841_to_C1021_Upgrade_By_Snehal Project Member', 'C841_to_C1021_Upgrade_By_Snehal Shared Files Access', 'COCACCESS1', 'COCACCESS1T', 'COCACCESS3', 'COCACCESS3M', 'COCACCESS4', 'COCACCESS4M', 'COCACCESS5', 'COCACCESS5G', 'COCACCESS5P', 'COCACCESS6', 'COCACCESS7', 'COCACCESS7T', 'COCACCESS8', 'COCACCESS8M', 'COCACCESS9', 'COCGROUP6', 'Cognos', 'Cognos Insight Users', 'Consumers', 'Ctx_EArmWmisProd_6', 'DFSRootMap', 'DFSRootMap_P', 'DYN_AZM365M3BaseLicense_6', 'DYN_EAEAccess', 'DYN_EWPAccess', 'DYN_EmployeesWithoutDirectReports', 'DYN_ITAll', 'DYN_InformationTechnologyAll_6', 'DYN_NERCQUAL7Y', 'DYN_NonUnion_6', 'DYN_OKTAMFARollout', 'DYN_OKTAORGMFA_6', 'DYN_PPMSMacroBlocking_6', 'DYN_PulseSecureMobileUsers_6', 'DYN_ServEnvTomorrow_6', 'DYN_Services Company_6', 'DomEmployeeTypeAll', 'DomEmployeeTypeC', 'DomITContractors', 'DomNonManagers', 'Domain Users', 'Everyone', 'GF_Department_IT TECHNOLOGY SERVICES', 'GF_OfficeLocation_THOMAS F FARRELL II BUILDING', 'GF_State_VA', 'GF_Title_CONTRACTOR', 'MBULoginScript', 'MM_Group_Services_All', 'MotioCI Ad Hoc Revert', 'MotioCI Bulk Update', 'MotioCI Documentation Tab', 'MotioCI Model Tab', 'MotioCI System Access', 'MotioCI Test Scripts', 'MotioCI Testing', 'MotioCI Timeline', 'MotioCI Webdav Access', 'NERCQualBA', 'PANKTI1', 'Project Member', 'Query Users', 'SCR_Outlook_Shared_PSTs', 'Shared Files Access', 'Shared Files Developer' ) "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                       or"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                       'PARAG01'  in ('APP_ESD_Network_Apps_Window_6', 'Active Directory', 'All Authenticated Users', 'Analytics Explorers', 'App_AZPowerBIPro_6', 'App_BiC2PBITechM_6', 'App_BiCognosConsumer_6', 'App_BiEprod_Author_6', 'App_CybarkUser_6', 'App_EmmaDTMSReports_6', 'App_VDIITBI_6', 'Authors', 'C841_to_C1021_Upgrade_By_Snehal Project Member', 'C841_to_C1021_Upgrade_By_Snehal Shared Files Access', 'COCACCESS1', 'COCACCESS1T', 'COCACCESS3', 'COCACCESS3M', 'COCACCESS4', 'COCACCESS4M', 'COCACCESS5', 'COCACCESS5G', 'COCACCESS5P', 'COCACCESS6', 'COCACCESS7', 'COCACCESS7T', 'COCACCESS8', 'COCACCESS8M', 'COCACCESS9', 'COCGROUP6', 'Cognos', 'Cognos Insight Users', 'Consumers', 'Ctx_EArmWmisProd_6', 'DFSRootMap', 'DFSRootMap_P', 'DYN_AZM365M3BaseLicense_6', 'DYN_EAEAccess', 'DYN_EWPAccess', 'DYN_EmployeesWithoutDirectReports', 'DYN_ITAll', 'DYN_InformationTechnologyAll_6', 'DYN_NERCQUAL7Y', 'DYN_NonUnion_6', 'DYN_OKTAMFARollout', 'DYN_OKTAORGMFA_6', 'DYN_PPMSMacroBlocking_6', 'DYN_PulseSecureMobileUsers_6', 'DYN_ServEnvTomorrow_6', 'DYN_Services Company_6', 'DomEmployeeTypeAll', 'DomEmployeeTypeC', 'DomITContractors', 'DomNonManagers', 'Domain Users', 'Everyone', 'GF_Department_IT TECHNOLOGY SERVICES', 'GF_OfficeLocation_THOMAS F FARRELL II BUILDING', 'GF_State_VA', 'GF_Title_CONTRACTOR', 'MBULoginScript', 'MM_Group_Services_All', 'MotioCI Ad Hoc Revert', 'MotioCI Bulk Update', 'MotioCI Documentation Tab', 'MotioCI Model Tab', 'MotioCI System Access', 'MotioCI Test Scripts', 'MotioCI Testing', 'MotioCI Timeline', 'MotioCI Webdav Access', 'NERCQualBA', 'PANKTI1', 'Project Member', 'Query Users', 'SCR_Outlook_Shared_PSTs', 'Shared Files Access', 'Shared Files Developer')"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                       or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                       'Web_MossItrmSecPolicyPhish_6M'  in ('APP_ESD_Network_Apps_Window_6', 'Active Directory', 'All Authenticated Users', 'Analytics Explorers', 'App_AZPowerBIPro_6', 'App_BiC2PBITechM_6', 'App_BiCognosConsumer_6', 'App_BiEprod_Author_6', 'App_CybarkUser_6', 'App_EmmaDTMSReports_6', 'App_VDIITBI_6', 'Authors', 'C841_to_C1021_Upgrade_By_Snehal Project Member', 'C841_to_C1021_Upgrade_By_Snehal Shared Files Access', 'COCACCESS1', 'COCACCESS1T', 'COCACCESS3', 'COCACCESS3M', 'COCACCESS4', 'COCACCESS4M', 'COCACCESS5', 'COCACCESS5G', 'COCACCESS5P', 'COCACCESS6', 'COCACCESS7', 'COCACCESS7T', 'COCACCESS8', 'COCACCESS8M', 'COCACCESS9', 'COCGROUP6', 'Cognos', 'Cognos Insight Users', 'Consumers', 'Ctx_EArmWmisProd_6', 'DFSRootMap', 'DFSRootMap_P', 'DYN_AZM365M3BaseLicense_6', 'DYN_EAEAccess', 'DYN_EWPAccess', 'DYN_EmployeesWithoutDirectReports', 'DYN_ITAll', 'DYN_InformationTechnologyAll_6', 'DYN_NERCQUAL7Y', 'DYN_NonUnion_6', 'DYN_OKTAMFARollout', 'DYN_OKTAORGMFA_6', 'DYN_PPMSMacroBlocking_6', 'DYN_PulseSecureMobileUsers_6', 'DYN_ServEnvTomorrow_6', 'DYN_Services Company_6', 'DomEmployeeTypeAll', 'DomEmployeeTypeC', 'DomITContractors', 'DomNonManagers', 'Domain Users', 'Everyone', 'GF_Department_IT TECHNOLOGY SERVICES', 'GF_OfficeLocation_THOMAS F FARRELL II BUILDING', 'GF_State_VA', 'GF_Title_CONTRACTOR', 'MBULoginScript', 'MM_Group_Services_All', 'MotioCI Ad Hoc Revert', 'MotioCI Bulk Update', 'MotioCI Documentation Tab', 'MotioCI Model Tab', 'MotioCI System Access', 'MotioCI Test Scripts', 'MotioCI Testing', 'MotioCI Timeline', 'MotioCI Webdav Access', 'NERCQualBA', 'PANKTI1', 'Project Member', 'Query Users', 'SCR_Outlook_Shared_PSTs', 'Shared Files Access', 'Shared Files Developer')"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                       or "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                                        DATA_VALIDATION_FLAG = 'Y' )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "             )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " )B"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "WHERE to_char(A.DATE_OF_CAMPAIGN, 'YYYYMM') =  to_char(B.\"END_DATE\", 'YYYYMM')"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                        ) \"PHISHING_LATEST_CAMPAIGN\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "                    ) \"Latest_Month\" )"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        ) \"Phishing_Qry\""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "        ON \"Reports_To_Qry\".\"WORKER_ID\" = \"Phishing_Qry\".\"ENTERPRISE_ID\""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

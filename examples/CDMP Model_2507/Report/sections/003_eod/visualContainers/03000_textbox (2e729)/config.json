@@ -1,0 +1,93 @@
+{
+  "name": "2e7294392eec4168b273",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 300,
+        "y": 314,
+        "width": 280,
+        "height": 280,
+        "z": 3000,
+        "tabOrder": 3000
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "SELECT A.ELECTRIC_DOMINANT_CUSTOMER_NM,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_CUSTOMER_SK,"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_CUSTOMER_NM || '/' ||"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_1 || '/' ||"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_2 || '/' ||"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              A.ELECTRIC_DOMINANT_SUBSIDIARY_3 as FULL_DOMINANT_COMPANY_NAME"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "       "
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "              FROM CDM.D_ELECTRIC_DOMINANT_CUSTOMER A"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "            "
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
