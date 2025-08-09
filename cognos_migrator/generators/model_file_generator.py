@@ -651,6 +651,9 @@ class ModelFileGenerator:
         
         # Prepare relationships data for template rendering
         relationships_context = []
+        # Track unique relationships to avoid duplicates
+        unique_relationships = set()
+        
         for rel in data_model.relationships:
             # Map model tables to source tables in relationships
             from_table = rel.from_table
@@ -680,11 +683,11 @@ class ModelFileGenerator:
             from_table_formatted = f"'{from_table}'" if ' ' in from_table else from_table
             to_table_formatted = f"'{to_table}'" if ' ' in to_table else to_table
             
-            # Clean up column names by removing table name prefixes if they exist
+            # Extract just the column names without table prefixes
             from_column = rel.from_column
             to_column = rel.to_column
             
-            # Remove table name from column if it's included
+            # If column already includes table name, extract just the column part
             if from_column and '.' in from_column:
                 parts = from_column.split('.')
                 from_column = parts[-1]  # Take the last part after the last dot
@@ -692,6 +695,18 @@ class ModelFileGenerator:
             if to_column and '.' in to_column:
                 parts = to_column.split('.')
                 to_column = parts[-1]  # Take the last part after the last dot
+            
+            # Create a unique signature for this relationship to avoid duplicates
+            # Use the actual table and column names for the signature
+            rel_signature = f"{from_table}.{from_column}:{to_table}.{to_column}"
+            
+            # Skip if we've already processed this relationship
+            if rel_signature in unique_relationships:
+                self.logger.info(f"Skipping duplicate relationship: {rel_signature}")
+                continue
+                
+            # Add to our tracking set
+            unique_relationships.add(rel_signature)
             
             relationship_data = {
                 'id': rel.id,
@@ -706,6 +721,8 @@ class ModelFileGenerator:
                 'join_on_date_behavior': rel.join_on_date_behavior
             }
             relationships_context.append(relationship_data)
+        
+        self.logger.info(f"Filtered {len(data_model.relationships)} relationships to {len(relationships_context)} unique relationships")
         
         # Create context for template rendering
         context = {
