@@ -728,6 +728,10 @@ class ModelFileGenerator:
                 parts = to_column.split('.')
                 to_column = parts[-1]  # Take the last part after the last dot
             
+            # Format column names - if they contain spaces, they need to be quoted
+            from_column_formatted = f"'{from_column}'" if ' ' in from_column else from_column
+            to_column_formatted = f"'{to_column}'" if ' ' in to_column else to_column
+            
             # Create a unique signature for this relationship to avoid duplicates
             # Use the actual table and column names for the signature
             rel_signature = f"{from_table}.{from_column}:{to_table}.{to_column}"
@@ -740,12 +744,21 @@ class ModelFileGenerator:
             # Add to our tracking set
             unique_relationships.add(rel_signature)
             
+            # Determine which cardinality to use (fromCardinality or toCardinality)
+            cardinality_type = 'fromCardinality'
+            cardinality_value = rel.from_cardinality
+            
+            # If to_cardinality is explicitly set, use that instead
+            if rel.to_cardinality is not None:
+                cardinality_type = 'toCardinality'
+                cardinality_value = rel.to_cardinality
+            
             relationship_data = {
                 'id': rel.id,
                 'from_table': from_table_formatted,
-                'from_column': from_column,
+                'from_column': from_column_formatted,
                 'to_table': to_table_formatted,
-                'to_column': to_column,
+                'to_column': to_column_formatted,
                 'cardinality_type': cardinality_type,
                 'cardinality_value': cardinality_value,
                 'cross_filtering_behavior': rel.cross_filtering_behavior,
@@ -776,9 +789,9 @@ class ModelFileGenerator:
                 rel_json = {
                     "id": rel['id'],
                     "fromTable": rel['from_table'].strip("'"),  # Remove quotes if present
-                    "fromColumn": rel['from_column'],
+                    "fromColumn": rel['from_column'].strip("'"),  # Remove quotes if present
                     "toTable": rel['to_table'].strip("'"),  # Remove quotes if present
-                    "toColumn": rel['to_column'],
+                    "toColumn": rel['to_column'].strip("'"),  # Remove quotes if present
                     "isActive": rel['is_active']
                 }
                 

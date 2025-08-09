@@ -357,5 +357,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Vendor",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].tblVendor\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"VendorID\", Int64.Type}, {\"Name\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"IsDominionVendor\", type text}, {\"IsActive\", type text}, {\"DefaultState\", type text}, {\"sellsDominion\", type text}, {\"sellsOtherElectric\", type text}, {\"sellsFuelOil\", type text}, {\"sellsCoalOrWood\", type text}, {\"sellsNaturalGas\", type text}, {\"sellsKerosene\", type text}, {\"sellsPropane\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type datetime}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type datetime}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

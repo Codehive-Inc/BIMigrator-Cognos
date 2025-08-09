@@ -485,5 +485,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Agency",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].tblAgency\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"AgencyID\", Int64.Type}, {\"AgencyUserID\", type text}, {\"AgencyName\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"Zip\", type text}, {\"Phone\", type text}, {\"Fax\", type text}, {\"ContactName\", type text}, {\"Email\", type text}, {\"DistributionAgencyID\", Int64.Type}, {\"DivisionID\", Int64.Type}, {\"AgencyType\", type text}, {\"IsActive\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type datetime}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type datetime}, {\"ApplicantFirstName\", type text}, {\"ApplicantMiddleName\", type text}, {\"ApplicantLastName\", type text}, {\"ApplicantAddress\", type text}, {\"ApplicantCity\", type text}, {\"ApplicantState\", type text}, {\"ApplicantZip\", type text}, {\"AmountDue\", type text}, {\"MatchingEnergyCredit\", type text}, {\"PaidByEnergyShare\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

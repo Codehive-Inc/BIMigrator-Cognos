@@ -63,11 +63,12 @@ table Territory
     partition 'Territory' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Territory: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1054ba6c0>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblTerritory"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}})
 				in
-				Source
+					#"Changed Types"
         
 
 

@@ -247,11 +247,12 @@ table Authorization
     partition 'Authorization' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Authorization: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x104819490>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAuthorization"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AuthorizationID", Int64.Type}, {"AgencyID", Int64.Type}, {"VendorID", Int64.Type}, {"ApplicableDate", type datetime}, {"ApplicantNumber", type text}, {"AuthorizationType", type text}, {"VendorAccountNumber", type text}, {"FuelType", type text}, {"IsOver60", type text}, {"ApplicantFirstName", type text}, {"ApplicantMiddleName", type text}, {"ApplicantLastName", type text}, {"ApplicantPhone", type text}, {"ApplicantAddress", type text}, {"ApplicantCity", type text}, {"ApplicantState", type text}, {"ApplicantZip", type text}, {"TotalAssisted", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalDisabled", Int64.Type}, {"AmountDue", type text}, {"MatchingEnergyCredit", type text}, {"PaidByEnergyShare", type text}, {"DepositGuarantee", type text}, {"PaymentAuthorizedBy", type text}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}})
 				in
-				Source
+					#"Changed Types"
         
 
 

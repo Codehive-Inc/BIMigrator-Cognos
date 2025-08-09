@@ -199,11 +199,12 @@ table vwAssistanceReport
     partition 'vwAssistanceReport' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwAssistanceReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1053bf7a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].vwAssistanceReport"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"Season", type text}, {"AssistanceReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"AgencyName", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"TotalVeteran", Int64.Type}, {"TotalWeatherInterested", Int64.Type}, {"HouseholdsAssisted", Int64.Type}, {"Denials", Int64.Type}, {"PreparedBy", type text}, {"PreparedDate", type datetime}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}, {"TotalAssisted", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalDisabled", Int64.Type}, {"TotalVeteranVoucher", Int64.Type}, {"TotalDisabilityVoucher", Int64.Type}, {"EditLink", type text}})
 				in
-				Source
+					#"Changed Types"
         
 
 
