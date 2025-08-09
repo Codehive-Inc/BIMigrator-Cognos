@@ -1,0 +1,57 @@
+{
+  "source_name": "Report_with_Calculations",
+  "name": "Report_with_Calculations",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "Region",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Region",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "No of Unique Orders",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Orders Returned (Multiple Returns per Order)",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ]
+}

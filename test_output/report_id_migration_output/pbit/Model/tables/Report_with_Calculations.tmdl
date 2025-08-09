@@ -1,0 +1,51 @@
+table Report_with_Calculations
+
+
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'No of Unique Orders' = ```
+            count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Orders Returned (Multiple Returns per Order)' = ```
+            case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+
+
+
+    partition 'Report_with_Calculations' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table Report_with_Calculations: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10a9f1340>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table
