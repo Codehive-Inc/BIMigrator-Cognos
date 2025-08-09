@@ -119,7 +119,7 @@ table Financial
     partition 'Financial' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Financial: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x110e29640>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table Financial: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x105389eb0>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

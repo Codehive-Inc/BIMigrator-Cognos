@@ -644,10 +644,33 @@ class ModelFileGenerator:
         
         # Create a mapping of model tables to their source tables
         model_to_source_table = {}
+        # Create a mapping of source table names (with prefix) to table file names (without prefix)
+        source_table_to_file_name = {}
+        
         for table in data_model.tables:
+            # Map model tables to source tables
             if not table.metadata.get('is_source_table') and table.metadata.get('original_source_table'):
                 model_to_source_table[table.name] = table.metadata.get('original_source_table')
                 self.logger.info(f"Mapping model table {table.name} to source table {table.metadata.get('original_source_table')}")
+            
+            # Create mapping from source table names (with prefix) to table file names (without prefix)
+            if table.metadata.get('is_source_table'):
+                # The table file name is the table.name (without prefix)
+                # The source table name might be in the SQL or metadata
+                source_name = table.name  # Default to the table name
+                
+                # Check if we can extract a source name from SQL
+                if table.source_query:
+                    match = re.search(r'from\s+\[?[\w\.]+\]?\.([\w]+)', table.source_query, re.IGNORECASE)
+                    if match:
+                        extracted_name = match.group(1)
+                        if extracted_name != table.name:
+                            source_name = extracted_name
+                            self.logger.info(f"Extracted source name {source_name} from SQL for table {table.name}")
+                
+                # Map the source table name to the file name
+                source_table_to_file_name[source_name] = table.name
+                self.logger.info(f"Mapping source table {source_name} to file name {table.name}")
         
         # Prepare relationships data for template rendering
         relationships_context = []
@@ -668,6 +691,15 @@ class ModelFileGenerator:
             if to_table in model_to_source_table:
                 self.logger.info(f"Replacing model table {to_table} with source table {model_to_source_table[to_table]} in relationship")
                 to_table = model_to_source_table[to_table]
+            
+            # Now map source table names to file names for consistency
+            if from_table in source_table_to_file_name:
+                self.logger.info(f"Mapping source table {from_table} to file name {source_table_to_file_name[from_table]} in relationship")
+                from_table = source_table_to_file_name[from_table]
+                
+            if to_table in source_table_to_file_name:
+                self.logger.info(f"Mapping source table {to_table} to file name {source_table_to_file_name[to_table]} in relationship")
+                to_table = source_table_to_file_name[to_table]
             
             # Determine which cardinality to use (fromCardinality or toCardinality)
             cardinality_type = 'fromCardinality'
@@ -794,7 +826,10 @@ class ModelFileGenerator:
         # Create context for template rendering
         context = {
             'model_name': report_name or 'Model',
-            'tables': [table.name for table in filtered_tables]
+            'tables': [table.name for table in filtered_tables],
+            'default_culture': 'en-US',  # Add default culture value
+            'time_intelligence_enabled': 'true',  # Add time intelligence value
+            'desktop_version': '2.118.1063.0 (23.06)'  # Add desktop version value
         }
         
         # Generate model file
@@ -810,7 +845,8 @@ class ModelFileGenerator:
         if extracted_dir:
             model_json = {
                 "name": report_name or 'Model',
-                "tables": [table.name for table in filtered_tables]
+                "tables": [table.name for table in filtered_tables],
+                "culture": "en-US"  # Add culture to JSON as well
             }
             save_json_to_extracted_dir(extracted_dir, "model.json", model_json)
     
