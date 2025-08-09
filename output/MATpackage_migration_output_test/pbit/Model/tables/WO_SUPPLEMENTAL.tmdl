@@ -1,0 +1,59 @@
+table WO_SUPPLEMENTAL
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUMMARY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUMMARY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_SUPPLEMENTAL' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table WO_SUPPLEMENTAL: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10826e330>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,139 @@
+table WO_MATERIALS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERIAL_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERIAL_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_MEAS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_MEAS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QTY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_MATERIALS' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table WO_MATERIALS: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10821ff20>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

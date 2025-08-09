@@ -1,0 +1,24 @@
+{
+  "calculations": [
+    {
+      "TableName": "MaterialInquiryDetail_UC012",
+      "FormulaCaptionCognos": "LOC_1",
+      "CognosName": "LOC_1",
+      "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "LOC_1",
+      "FormulaDax": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+      "Status": "needs_review"
+    },
+    {
+      "TableName": "MaterialInquiryDetail_UC012",
+      "FormulaCaptionCognos": "LOC_2",
+      "CognosName": "LOC_2",
+      "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "LOC_2",
+      "FormulaDax": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+      "Status": "needs_review"
+    }
+  ]
+}

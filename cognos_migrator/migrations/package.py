@@ -23,6 +23,7 @@ from ..generators import PowerBIProjectGenerator
 from ..extractors.packages import ConsolidatedPackageExtractor
 from .report import migrate_single_report_with_explicit_session
 from ..consolidation import consolidate_model_tables
+from .report import migrate_single_report
 
 
 def migrate_package_with_explicit_session(package_file_path: str,
@@ -365,15 +366,13 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
                 from ..models import Table, Column
                 
                 central_date_table = Table(
-                    id=date_table['id'],
                     name='CentralDateTable',
-                    display_name='Central Date Table',
                     description='Centralized date dimension table',
                     columns=[
-                        Column(name='Date', data_type='datetime'),
-                        Column(name='Year', data_type='int64'),
-                        Column(name='Month', data_type='int64'),
-                        Column(name='Day', data_type='int64')
+                        Column(name='Date', data_type='datetime', source_column='Date'),
+                        Column(name='Year', data_type='int64', source_column='Year'),
+                        Column(name='Month', data_type='int64', source_column='Month'),
+                        Column(name='Day', data_type='int64', source_column='Day')
                     ]
                 )
                 filtered_tables.append(central_date_table)
@@ -413,10 +412,6 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     # Add perspectives if available in the data model
     if hasattr(data_model, 'perspectives'):
         filtered_model_args['perspectives'] = data_model.perspectives
-        
-    # Add date_tables if available in the data model
-    if hasattr(data_model, 'date_tables'):
-        filtered_model_args['date_tables'] = data_model.date_tables
         
     filtered_model = DataModel(**filtered_model_args)
     
@@ -697,4 +692,165 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
             message_type="error"
         )
         
+        return False
+
+def migrate_package_with_local_reports(package_file_path: str,
+                                       output_path: str,
+                                       report_file_paths: List[str],
+                                       task_id: Optional[str] = None) -> bool:
+    """Migrate a Cognos Framework Manager package and local report files to a shared Power BI model.
+    
+    Args:
+        package_file_path (str): Path to the FM package file.
+        output_path (str): Path where migration output will be saved.
+        report_file_paths (List[str]): List of paths to local report XML files.
+        task_id (Optional[str]): Optional task ID for tracking.
+        
+    Returns:
+        bool: True if migration was successful, False otherwise.
+    """
+    if task_id is None:
+        task_id = str(uuid.uuid4())
+    
+    configure_logging()
+    set_task_info(task_id, total_steps=10)
+    
+    log_info(f"Starting migration for package '{package_file_path}' with {len(report_file_paths)} local reports.")
+    logging_helper(
+        message=f"Starting migration for package '{Path(package_file_path).name}'",
+        progress=0,
+        message_type="info"
+    )
+    
+    try:
+        output_dir = Path(output_path)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        extracted_dir = output_dir / "extracted"
+        extracted_dir.mkdir(exist_ok=True)
+        
+        reports_dir = output_dir / "reports"
+        reports_dir.mkdir(exist_ok=True)
+        
+        pbit_dir = output_dir / "pbit"
+        pbit_dir.mkdir(exist_ok=True)
+        
+        report_table_references = set()
+        
+        if report_file_paths:
+            logging_helper(
+                message=f"Migrating {len(report_file_paths)} associated reports",
+                progress=10,
+                message_type="info"
+            )
+            
+            for i, report_file in enumerate(report_file_paths):
+                report_name = Path(report_file).stem
+                log_info(f"Migrating report {i+1}/{len(report_file_paths)}: {report_file}")
+                
+                logging_helper(
+                    message=f"Migrating report {report_name}",
+                    progress=10 + int((i / len(report_file_paths)) * 20),
+                    message_type="info"
+                )
+                
+                report_output_path = str(reports_dir / report_name)
+                report_success = migrate_single_report(
+                    output_path=report_output_path,
+                    cognos_url="http://dummy-url", # Not needed for file migration
+                    session_key="dummy-key",     # Not needed for file migration
+                    report_file_path=report_file,
+                    task_id=f"{task_id}_report_{i}"
+                )
+                
+                if report_success:
+                    log_info(f"Report migration successful: {report_file}")
+                    report_tables = extract_tables_from_report(report_output_path)
+                    if report_tables:
+                        report_table_references.update(report_tables)
+                        log_info(f"Extracted {len(report_tables)} table references from report {report_name}")
+                else:
+                    log_warning(f"Report migration failed for file: {report_file}")
+        
+        logging_helper(
+            message="Extracting package information",
+            progress=30,
+            message_type="info"
+        )
+        
+        package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))
+        package_info = package_extractor.extract_package(package_file_path, str(extracted_dir))
+        
+        with open(extracted_dir / "package_info.json", 'w', encoding='utf-8') as f:
+            json.dump(package_info, f, indent=2)
+        log_info(f"Extracted package information: {package_info['name']}")
+        
+        logging_helper(
+            message="Converting to Power BI data model",
+            progress=50,
+            message_type="info"
+        )
+        
+        data_model = package_extractor.convert_to_data_model(package_info)
+        consolidate_model_tables(str(extracted_dir))
+        log_info(f"Converted to data model with {len(data_model.tables)} tables")
+        
+        if report_table_references:
+            logging_helper(
+                message="Filtering data model based on report references",
+                progress=60,
+                message_type="info"
+            )
+            data_model = filter_data_model_tables(data_model, report_table_references)
+            log_info(f"Filtered data model now has {len(data_model.tables)} tables")
+        
+        logging_helper(
+            message="Creating Power BI project",
+            progress=70,
+            message_type="info"
+        )
+        
+        from ..models import Report, ReportPage
+        report = Report(
+            id=f"report_{package_info['name'].lower().replace(' ', '_')}",
+            name=package_info['name'],
+            sections=[ReportPage(name="page1", display_name="Dashboard", visuals=[])]
+        )
+        
+        pbi_project = PowerBIProject(
+            name=package_info['name'],
+            data_model=data_model,
+            report=report
+        )
+        
+        logging_helper(
+            message="Generating Power BI files",
+            progress=90,
+            message_type="info"
+        )
+        
+        config = MigrationConfig(
+            template_directory=str(Path(__file__).parent.parent / 'templates'),
+            llm_service_url=os.environ.get('DAX_API_URL', 'http://localhost:8080'),
+            llm_service_enabled=True
+        )
+        generator = PowerBIProjectGenerator(config=config)
+        success = generator.generate_project(pbi_project, pbit_dir)
+        
+        if success:
+            log_info(f"Generated shared model in: {pbit_dir}")
+            logging_helper(
+                message="Migration completed successfully",
+                progress=100,
+                message_type="success"
+            )
+        else:
+            log_error("Failed to generate Power BI project files.")
+            logging_helper(message="Failed to generate project", progress=100, message_type="error")
+
+        return success
+        
+    except Exception as e:
+        log_error(f"Migration failed: {e}")
+        logging_helper(message=f"Migration failed: {e}", progress=100, message_type="error")
         return False

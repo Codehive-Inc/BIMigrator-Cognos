@@ -1,0 +1,39 @@
+table ITEM_NUM_IND
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAP_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'ITEM_NUM_IND' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table ITEM_NUM_IND: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1082b7530>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

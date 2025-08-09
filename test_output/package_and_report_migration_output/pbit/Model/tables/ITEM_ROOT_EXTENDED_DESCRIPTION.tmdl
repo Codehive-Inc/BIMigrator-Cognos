@@ -1,0 +1,229 @@
+table ITEM_ROOT_EXTENDED_DESCRIPTION
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ROOT_DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOTAL_NUMBER_SEGMENTS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOTAL_NUMBER_SEGMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NUMBER_SEGMENTS_SELECTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: NUMBER_SEGMENTS_SELECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'ITEM_ROOT_EXTENDED_DESCRIPTION' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table ITEM_ROOT_EXTENDED_DESCRIPTION: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x109f63800>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,30 @@
+import os
+from cognos_migrator.migrations.package import migrate_package_with_local_reports
+
+def test_package_and_report_migration():
+    """
+    Tests the migration of a package and a local report file to a shared semantic model.
+    """
+    package_file = "examples/packages/ELECTRIC_GENERATION_MAT.xml"
+    report_file = "examples/Report XMLs DE/MaterialInquiryDetail_UC012.xml"
+    output_dir = "test_output/package_and_report_migration_output"
+
+    os.makedirs(output_dir, exist_ok=True)
+    print(f"Created output directory: {output_dir}")
+
+    print(f"Starting migration for package '{package_file}' and report '{report_file}'")
+
+    success = migrate_package_with_local_reports(
+        package_file_path=package_file,
+        output_path=output_dir,
+        report_file_paths=[report_file]
+    )
+
+    if success:
+        print("Shared semantic model migration completed successfully.")
+        print(f"Output saved in: {output_dir}")
+    else:
+        print("Shared semantic model migration failed.")
+
+if __name__ == "__main__":
+    test_package_and_report_migration() 

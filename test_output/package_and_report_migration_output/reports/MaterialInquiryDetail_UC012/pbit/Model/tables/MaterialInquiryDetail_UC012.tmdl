@@ -1,0 +1,361 @@
+table MaterialInquiryDetail_UC012
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HAND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QTY_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MINIMUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MINIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONSUMABLE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CONSUMABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAXIMUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MAXIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_ISSUED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_LAST_ISSUED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RETURNED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RETURNED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECEIVED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UTC_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRIMARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRIMARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SECONDARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SECONDARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVENT_MAINTENANCE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREVENT_MAINTENANCE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAP_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_1' = ```
+            substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 11,2)
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_2' = ```
+            substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 11,2)
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHARGED_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHARGED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRANSACTION_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MaterialInquiryDetail_UC012' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table MaterialInquiryDetail_UC012: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10a48bfb0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

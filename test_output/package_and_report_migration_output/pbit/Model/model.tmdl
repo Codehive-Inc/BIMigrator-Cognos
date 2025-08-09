@@ -1,0 +1,21 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["ITEM_NUMBER", "ITEM_ROOT_EXTENDED_DESCRIPTION", "ITEM_SITE_DESCRIPTIONS", "PURCHASE_ORDER_DESCRIPTIONS", "REQUISITION_DESCRIPTIONS"]
+
+annotation __PBI_TimeIntelligenceEnabled = true
+
+annotation PBIDesktopVersion = 2.118.1063.0 (23.06)
+
+ref table ITEM_NUMBER
+ref table ITEM_ROOT_EXTENDED_DESCRIPTION
+ref table ITEM_SITE_DESCRIPTIONS
+ref table PURCHASE_ORDER_DESCRIPTIONS
+ref table REQUISITION_DESCRIPTIONS
+
+ref cultureInfo en-US
