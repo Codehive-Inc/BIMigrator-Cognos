@@ -79,8 +79,8 @@ table vwPayeeReport
         
         variation Variation
             isDefault
-            relationship: 9ac7fb97-4361-4e64-b79e-4deaf2a2fd9c
-            defaultHierarchy: LocalDateTable_41be1d3d-7ce0-4344-9fe9-6e1ec41c7206.'Date Hierarchy'
+            relationship: b9307a34-9363-4c0c-8844-f598872464cf
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -106,6 +106,16 @@ table vwPayeeReport
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwPayeeReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwPayeeReport'[Date Submitted])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'vwPayeeReport' = m

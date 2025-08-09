@@ -1,7 +1,7 @@
 {
-  "name": "LocalDateTable_b3d2be2f-7a32-4915-bdbe-a7e09fd7d6f4",
-  "source_name": "LocalDateTable_b3d2be2f-7a32-4915-bdbe-a7e09fd7d6f4",
-  "description": "Date table for LocalDateTable_b3d2be2f-7a32-4915-bdbe-a7e09fd7d6f4",
+  "name": "CentralDateTable",
+  "source_name": "CentralDateTable",
+  "description": "Date table for CentralDateTable",
   "is_hidden": false,
   "columns": [
     {
@@ -47,7 +47,7 @@
   ],
   "partitions": [
     {
-      "name": "LocalDateTable_b3d2be2f-7a32-4915-bdbe-a7e09fd7d6f4",
+      "name": "CentralDateTable",
       "source_type": "calculated",
       "expression": "CALENDAR(DATE(2015, 1, 1), DATE(2025, 12, 31))"
     }

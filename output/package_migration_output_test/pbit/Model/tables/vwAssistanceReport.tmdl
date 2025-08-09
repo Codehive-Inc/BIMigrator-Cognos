@@ -127,10 +127,6 @@ table vwAssistanceReport
         sourceColumn: PreparedDate
 
         
-        variation Variation
-            isDefault
-            relationship: 57a67024-8ad8-4b4b-8393-b1512c12e585
-            defaultHierarchy: LocalDateTable_624ef4c1-556c-4abb-9c7c-098e77eecf37.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -153,8 +149,8 @@ table vwAssistanceReport
         
         variation Variation
             isDefault
-            relationship: 2378db55-c68a-4b49-acd8-cec474d82419
-            defaultHierarchy: LocalDateTable_624ef4c1-556c-4abb-9c7c-098e77eecf37.'Date Hierarchy'
+            relationship: 9029d884-cf99-4759-9621-1a6cd9d54953
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -175,10 +171,6 @@ table vwAssistanceReport
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 72e610b9-b7a5-42ed-8df2-9d6e66a26f34
-            defaultHierarchy: LocalDateTable_624ef4c1-556c-4abb-9c7c-098e77eecf37.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -254,6 +246,56 @@ table vwAssistanceReport
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[PreparedDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[PreparedDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'vwAssistanceReport' = m

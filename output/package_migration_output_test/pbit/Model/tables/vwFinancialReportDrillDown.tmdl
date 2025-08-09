@@ -69,8 +69,8 @@ table vwFinancialReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 90744969-b6f8-499e-a0e3-01bcac30492a
-            defaultHierarchy: LocalDateTable_f0e32eca-4380-4651-8a4e-7e9487937e07.'Date Hierarchy'
+            relationship: 9ef69655-bb52-47af-bc7f-5602bd2045b3
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -311,10 +311,6 @@ table vwFinancialReportDrillDown
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: bef375a7-8c27-4791-b22c-2dd6f01cbe60
-            defaultHierarchy: LocalDateTable_f0e32eca-4380-4651-8a4e-7e9487937e07.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -335,10 +331,6 @@ table vwFinancialReportDrillDown
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 8d6b9eba-8cff-468c-a19b-662aa378b3f6
-            defaultHierarchy: LocalDateTable_f0e32eca-4380-4651-8a4e-7e9487937e07.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -354,6 +346,56 @@ table vwFinancialReportDrillDown
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[ApplicableDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'vwFinancialReportDrillDown' = m

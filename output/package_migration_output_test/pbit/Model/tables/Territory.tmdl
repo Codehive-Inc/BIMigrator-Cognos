@@ -49,8 +49,8 @@ table Territory
         
         variation Variation
             isDefault
-            relationship: e8aee17c-497e-4d86-9be2-6623f42d5aa3
-            defaultHierarchy: LocalDateTable_2418059e-ae62-4209-85a2-035f723ef4a3.'Date Hierarchy'
+            relationship: 62615f0a-4a0c-45f1-9609-a82bc8417edd
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -71,15 +71,41 @@ table Territory
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: e863ec12-53a1-4f47-92e0-b4afe4702b7f
-            defaultHierarchy: LocalDateTable_2418059e-ae62-4209-85a2-035f723ef4a3.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblTerritory'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblTerritory'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblTerritory'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblTerritory'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblTerritory'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblTerritory'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Territory' = m

@@ -41,13 +41,11 @@ table {{source_name}}
         isDataTypeInferred: {{is_data_type_inferred}}
         {{/if}}
         
-        {{#if is_datetime}}
+        {{#if relationship_info}}
         variation Variation
             isDefault
-            {{#if relationship_info}}
             relationship: {{relationship_info.id}}
             defaultHierarchy: {{{relationship_info.hierarchy}}}
-            {{/if}}
         {{/if}}
 
         {{#if annotations.SummarizationSetBy}}

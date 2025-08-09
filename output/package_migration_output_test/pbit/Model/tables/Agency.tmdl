@@ -179,8 +179,8 @@ table Agency
         
         variation Variation
             isDefault
-            relationship: 59a05f92-8ca7-4e79-894a-24090be03b25
-            defaultHierarchy: LocalDateTable_b3d2be2f-7a32-4915-bdbe-a7e09fd7d6f4.'Date Hierarchy'
+            relationship: bbbb509f-5d3b-4612-b965-7fd17e8b0d29
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -201,10 +201,6 @@ table Agency
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 70656eaa-4c2e-4590-bcf0-305433a6e388
-            defaultHierarchy: LocalDateTable_b3d2be2f-7a32-4915-bdbe-a7e09fd7d6f4.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -310,6 +306,36 @@ table Agency
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAgency'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAgency'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAgency'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAgency'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAgency'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAgency'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Agency' = m

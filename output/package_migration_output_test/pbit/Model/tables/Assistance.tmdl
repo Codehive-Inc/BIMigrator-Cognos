@@ -87,10 +87,6 @@ table Assistance
         sourceColumn: PreparedDate
 
         
-        variation Variation
-            isDefault
-            relationship: 27271d29-7770-4322-b679-9ed0bfa78f35
-            defaultHierarchy: LocalDateTable_d2d13ad3-f3cc-4733-82ec-5082f04af21e.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -113,8 +109,8 @@ table Assistance
         
         variation Variation
             isDefault
-            relationship: 51b36429-8dae-4909-a97b-148e2fe83ac0
-            defaultHierarchy: LocalDateTable_d2d13ad3-f3cc-4733-82ec-5082f04af21e.'Date Hierarchy'
+            relationship: 9cf6fee9-47be-44fd-9a16-8b228c58cf47
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -135,15 +131,61 @@ table Assistance
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 8a6ea38d-5ca7-4803-84dc-8858fc636ef3
-            defaultHierarchy: LocalDateTable_d2d13ad3-f3cc-4733-82ec-5082f04af21e.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[PreparedDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAssistanceReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[PreparedDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Assistance' = m

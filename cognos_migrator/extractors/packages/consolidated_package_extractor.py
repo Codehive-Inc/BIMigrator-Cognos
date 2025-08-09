@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from typing import Dict, List, Optional, Any
 
-from cognos_migrator.models import DataType, DataModel, Table, Column, Relationship
+from cognos_migrator.models import DataType, DataModel, Table, Column, Relationship, Measure
 
 from .base_package_extractor import BasePackageExtractor
 from .package_structure_extractor import PackageStructureExtractor
@@ -194,6 +194,9 @@ class ConsolidatedPackageExtractor:
             
             # Create data model with empty tables list (will add tables later)
             data_model = DataModel(name=package_info['name'], tables=tables)
+
+            # Create a single, central date table for the entire model
+            self._create_central_date_table(data_model)
             
             # Track query subjects by type for later processing
             db_query_subjects = []
@@ -465,26 +468,86 @@ class ConsolidatedPackageExtractor:
             self.logger.info(f"No duplicate columns found in table {table.name}")
     
     def _create_date_tables_for_datetime_columns(self, table: Table, data_model: DataModel) -> None:
-        """Create a single date table for all datetime columns in a table
+        """Create relationships between datetime columns and the central date table.
         
         Args:
             table: The table containing datetime columns
-            data_model: The data model to add the date table to
+            data_model: The data model which contains the central date table
         """
-        # Find datetime columns in the table
-        datetime_columns = [col for col in table.columns if col.data_type == DataType.DATE]
+        # Find datetime columns in the table, sorted case-insensitively
+        datetime_columns = sorted([col for col in table.columns if col.data_type == DataType.DATE], key=lambda x: x.name.lower())
         
         if not datetime_columns:
             return
             
         self.logger.info(f"Found {len(datetime_columns)} datetime columns in table {table.name}")
         
+        # The central date table should already be created.
+        if not hasattr(data_model, 'date_tables') or not data_model.date_tables:
+            self.logger.warning(f"Central date table not found. Skipping date relationship creation for table {table.name}.")
+            return
+        
+        central_date_table = data_model.date_tables[0]
+        date_table_name = central_date_table['name']
+
+        # The first datetime column (alphabetically) will have the active relationship.
+        primary_column = datetime_columns[0]
+        
+        # Create relationships for all datetime columns
+        for i, column in enumerate(datetime_columns):
+            is_active = (i == 0) # Only the first relationship is active
+            relationship_id = str(uuid.uuid4())
+            
+            relationship = Relationship(
+                id=relationship_id,
+                from_table=table.name,
+                from_column=f"{table.name}.{column.name}",
+                to_table=date_table_name,
+                to_column="Date",
+                cross_filtering_behavior="automatic",
+                join_on_date_behavior="datePartOnly",
+                is_active=is_active
+            )
+            
+            data_model.relationships.append(relationship)
+            self.logger.info(f"Created relationship for {table.name}[{column.name}] to {date_table_name}[Date] (Active: {is_active})")
+
+            # Store relationship info in the column's metadata for the active relationship's variation
+            if is_active:
+                if not hasattr(column, 'metadata'):
+                    column.metadata = {}
+                column.metadata['relationship_info'] = {
+                    'id': relationship_id,
+                    'hierarchy': f"{date_table_name}.'Date Hierarchy'"
+                }
+            # For inactive relationships, create a DAX measure
+            else:
+                measure_name = f"Count of Rows by {column.name}"
+                expression = (
+                    f"CALCULATE(\n"
+                    f"    COUNTROWS('{table.name}'),\n"
+                    f"    USERELATIONSHIP('{date_table_name}'[Date], '{table.name}'[{column.name}])\n"
+                    f")"
+                )
+                
+                measure = Measure(name=measure_name, expression=expression)
+                
+                # Add the measure to the table's measures list
+                if not hasattr(table, 'measures'):
+                    table.measures = []
+                table.measures.append(measure)
+                self.logger.info(f"Created DAX measure '{measure_name}' for inactive relationship on {table.name}[{column.name}]")
+
+    def _create_central_date_table(self, data_model: DataModel) -> None:
+        """Creates a single, central date table for the data model."""
+        self.logger.info("Creating a single central date table for the model.")
+
         # Get the template path
         template_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
                                    'templates', 'DateTableTemplate.tmdl')
         
         if not os.path.exists(template_path):
-            self.logger.warning(f"DateTableTemplate.tmdl not found at {template_path}. Skipping date table creation.")
+            self.logger.warning(f"DateTableTemplate.tmdl not found at {template_path}. Skipping central date table creation.")
             return
         
         # Read the template content
@@ -499,47 +562,17 @@ class ConsolidatedPackageExtractor:
         if not hasattr(data_model, 'date_tables'):
             data_model.date_tables = []
         
-        # Create a single date table for this source table
-        date_table_id = str(uuid.uuid4())
-        date_table_name = f"LocalDateTable_{date_table_id}"
+        # Create the central date table
+        date_table_name = "CentralDateTable"
         
-        # Store the date table information in the data model's metadata for later use in file generation
         data_model.date_tables.append({
-            'id': date_table_id,
+            'id': str(uuid.uuid4()),
             'name': date_table_name,
-            'source_table': table.name,
-            'source_column': datetime_columns[0].name,  # Use the first column as reference
             'template_content': template_content.replace('DateTableTemplate_19728d8e-9427-4914-8bc5-607973681b1e', date_table_name)
         })
         
-        self.logger.info(f"Created date table {date_table_name} for table {table.name}")
-        
-        # Create relationships between each datetime column and the date table
-        for column in datetime_columns:
-            relationship_id = str(uuid.uuid4())
-            relationship = Relationship(
-                id=relationship_id,  # Generate a UUID for the relationship
-                from_table=table.name,
-                from_column=f"{table.name}.{column.name}",
-                to_table=date_table_name,
-                to_column="Date",
-                cross_filtering_behavior="automatic",
-                join_on_date_behavior="datePartOnly"  # Add this to match the example
-            )
-            
-            # Add the relationship to the data model
-            data_model.relationships.append(relationship)
-            
-            # Store relationship info in the column's metadata for the template
-            if not hasattr(column, 'metadata'):
-                column.metadata = {}
-            column.metadata['relationship_info'] = {
-                'id': relationship_id,
-                'hierarchy': f"{date_table_name}.'Date Hierarchy'"
-            }
-            
-            self.logger.info(f"Created relationship between {table.name}[{column.name}] and {date_table_name}[Date]")
-    
+        self.logger.info(f"Successfully created central date table: {date_table_name}")
+
     def _find_referenced_table(self, model_qs: Dict[str, Any], data_model: DataModel) -> Optional[Table]:
         """Find the table referenced by a model query subject
         

@@ -19,8 +19,8 @@ table vwAuthorizationsByAgency
         
         variation Variation
             isDefault
-            relationship: 7115248e-7908-4cd3-a3cd-ac94402a573c
-            defaultHierarchy: LocalDateTable_b7cb99de-cebd-4f51-aa5c-d4b913aafc04.'Date Hierarchy'
+            relationship: 73d44a0b-86fa-4425-8cfb-b3dfd026c742
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -326,6 +326,16 @@ table vwAuthorizationsByAgency
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAuthorizationsByAgency'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAuthorizationsByAgency'[Date Submitted])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'vwAuthorizationsByAgency' = m

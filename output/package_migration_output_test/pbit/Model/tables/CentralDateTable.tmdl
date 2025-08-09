@@ -1,4 +1,4 @@
-table LocalDateTable_f0e32eca-4380-4651-8a4e-7e9487937e07
+table CentralDateTable
 	isHidden
 	isPrivate
 	showAsVariationsOnly
@@ -91,7 +91,7 @@ table LocalDateTable_f0e32eca-4380-4651-8a4e-7e9487937e07
 
 		annotation TemplateId = DateHierarchy
 
-	partition LocalDateTable_f0e32eca-4380-4651-8a4e-7e9487937e07 = calculated
+	partition CentralDateTable = calculated
 		mode: import
 		source = Calendar(Date(2015,1,1), Date(2015,1,1))
 

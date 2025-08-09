@@ -99,8 +99,8 @@ table vwAssistanceReportDrillDown
         
         variation Variation
             isDefault
-            relationship: c44b0126-8a43-4ac8-981d-ec907a705c8e
-            defaultHierarchy: LocalDateTable_983ce444-f3cd-4dbe-8260-a73cb4da49ea.'Date Hierarchy'
+            relationship: cdc835f1-53e9-4026-885b-fc4542fa077f
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -121,10 +121,6 @@ table vwAssistanceReportDrillDown
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: c0f72f72-e235-4850-8d68-1c4711a8578b
-            defaultHierarchy: LocalDateTable_983ce444-f3cd-4dbe-8260-a73cb4da49ea.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -220,6 +216,36 @@ table vwAssistanceReportDrillDown
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReportDrillDown'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReportDrillDown'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwAssistanceReportDrillDown'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReportDrillDown'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'vwAssistanceReportDrillDown' = m

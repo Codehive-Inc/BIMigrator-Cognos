@@ -229,8 +229,8 @@ table vwFinancialReport
         
         variation Variation
             isDefault
-            relationship: 1b288058-4b67-4c8e-b9a0-dadb618b5dda
-            defaultHierarchy: LocalDateTable_2dc4e31d-9e5c-4e81-b3ed-d43097de6ea7.'Date Hierarchy'
+            relationship: 9dc7ac27-dc1e-4f62-b1bb-5268a988b88b
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -251,10 +251,6 @@ table vwFinancialReport
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 4b176c78-6b44-4115-ad09-f9fbbc6f4408
-            defaultHierarchy: LocalDateTable_2dc4e31d-9e5c-4e81-b3ed-d43097de6ea7.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -390,6 +386,36 @@ table vwFinancialReport
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReport'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('vwFinancialReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'vwFinancialReport' = m

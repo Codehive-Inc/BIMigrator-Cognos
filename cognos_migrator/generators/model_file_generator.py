@@ -616,6 +616,7 @@ class ModelFileGenerator:
             'table_name': table_name,
             'source_name': table_name,
             'columns': columns,
+            'measures': table.measures if hasattr(table, 'measures') else [],
             'partitions': partitions,
             'partition_name': f"{table_name}-partition",
             'm_expression': m_expression,

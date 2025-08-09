@@ -85,6 +85,7 @@ class Table:
     """Table definition"""
     name: str
     columns: List[Column]
+    measures: List['Measure'] = field(default_factory=list)
     source_query: Optional[str] = None
     partition_mode: str = "import"
     description: Optional[str] = None

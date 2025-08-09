@@ -119,8 +119,8 @@ table Financial
         
         variation Variation
             isDefault
-            relationship: 5875a99f-b437-421b-bda2-3297bc45b732
-            defaultHierarchy: LocalDateTable_31e85641-aa99-4b8b-bd1a-1064fccd3903.'Date Hierarchy'
+            relationship: 784394e9-56ca-43b2-a7ef-1639dcb0a8d2
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -141,15 +141,41 @@ table Financial
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: f4a4a7f1-7fa7-4c32-88c0-46729851993f
-            defaultHierarchy: LocalDateTable_31e85641-aa99-4b8b-bd1a-1064fccd3903.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblFinancialReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblFinancialReport'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblFinancialReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblFinancialReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblFinancialReport'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblFinancialReport'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Financial' = m

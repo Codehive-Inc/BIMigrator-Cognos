@@ -199,8 +199,8 @@ table Vendor
         
         variation Variation
             isDefault
-            relationship: 25c2fd9f-6555-4196-b642-4548f9295c60
-            defaultHierarchy: LocalDateTable_33e299a5-ebff-46ed-90c1-8803c84236d0.'Date Hierarchy'
+            relationship: 27f40b7a-12ef-4072-9b7c-93dca19493df
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -221,15 +221,41 @@ table Vendor
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 66214ab3-cb0d-4111-8662-c1956b4da1c9
-            defaultHierarchy: LocalDateTable_33e299a5-ebff-46ed-90c1-8803c84236d0.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblVendor'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblVendor'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblVendor'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblVendor'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblVendor'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblVendor'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Vendor' = m

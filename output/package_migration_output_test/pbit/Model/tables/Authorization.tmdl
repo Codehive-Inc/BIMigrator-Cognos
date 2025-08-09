@@ -39,8 +39,8 @@ table Authorization
         
         variation Variation
             isDefault
-            relationship: 179b7395-a7b2-45f5-bf67-616d35ffb5a0
-            defaultHierarchy: LocalDateTable_9adac517-f8d3-43bf-89fd-476720feea52.'Date Hierarchy'
+            relationship: da078722-8e40-4c60-a64b-857d463a5c26
+            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -281,10 +281,6 @@ table Authorization
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: d260a034-e4bf-4b4d-b18e-a2e9f2b4b587
-            defaultHierarchy: LocalDateTable_9adac517-f8d3-43bf-89fd-476720feea52.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
@@ -305,15 +301,61 @@ table Authorization
         sourceColumn: LastUpdated
 
         
-        variation Variation
-            isDefault
-            relationship: 66f10ec4-0a9b-4226-89a9-83807828a39f
-            defaultHierarchy: LocalDateTable_9adac517-f8d3-43bf-89fd-476720feea52.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 
         
 
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAuthorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[ApplicableDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAuthorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAuthorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAuthorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure '' = ```
+            CALCULATE(
+    COUNTROWS('tblAuthorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
 
 
     partition 'Authorization' = m
