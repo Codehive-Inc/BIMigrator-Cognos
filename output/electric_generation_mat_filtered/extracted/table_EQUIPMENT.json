@@ -1,0 +1,329 @@
+{
+  "source_name": "EQUIPMENT",
+  "name": "EQUIPMENT",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "SITE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MARK_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MARK_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIPMENT_DESC",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIPMENT_DESC",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SERIAL_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SERIAL_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VENDOR_CODE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VENDOR_CODE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIPMENT_CRITICALITY",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIPMENT_CRITICALITY",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LAST_ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LAST_ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PREFERRED_ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PREFERRED_ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIPMENT_STATUS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIPMENT_STATUS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MARK_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MARK_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIPMENT_DESC",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIPMENT_DESC",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SERIAL_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SERIAL_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VENDOR_CODE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VENDOR_CODE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIPMENT_CRITICALITY",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIPMENT_CRITICALITY",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LAST_ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LAST_ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PREFERRED_ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PREFERRED_ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIPMENT_STATUS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIPMENT_STATUS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ]
+}

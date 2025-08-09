@@ -299,6 +299,30 @@ def extract_tables_from_expression(expression: str) -> Set[str]:
     return tables
 
 
+def load_table_filtering_settings() -> Dict[str, Any]:
+    """Load table filtering settings from settings.json
+    
+    Returns:
+        Dictionary containing table filtering settings
+    """
+    settings = {}
+    try:
+        with open('settings.json', 'r') as f:
+            settings = json.load(f)
+    except FileNotFoundError:
+        logging.warning("settings.json not found. Using default settings.")
+    
+    # Get table filtering settings with defaults
+    table_filtering = settings.get('table_filtering', {})
+    filtering_mode = table_filtering.get('mode', 'include-all')  # Default to include all tables
+    always_include = table_filtering.get('always_include', [])
+    
+    return {
+        'mode': filtering_mode,
+        'always_include': always_include
+    }
+
+
 def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) -> DataModel:
     """Filter the data model to include only tables referenced by reports
     
@@ -309,15 +333,60 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     Returns:
         Filtered data model with only referenced tables
     """
-    if not table_references:
-        # If no table references, return the original model
+    # Load table filtering settings
+    filtering_settings = load_table_filtering_settings()
+    filtering_mode = filtering_settings['mode']
+    always_include = filtering_settings['always_include']
+    
+    # If mode is not 'filter-reports', return the original model
+    if filtering_mode != 'filter-reports':
+        logging.info(f"Table filtering mode is '{filtering_mode}', not filtering tables")
         return data_model
+    
+    # If no table references and no always_include tables, return the original model
+    if not table_references and not always_include:
+        logging.warning("No table references or always_include tables found, returning original model")
+        return data_model
+    
+    # Add always_include tables to the references
+    if always_include:
+        logging.info(f"Adding {len(always_include)} always_include tables to references: {always_include}")
+        table_references.update(always_include)
     
     # Create a new data model with only the referenced tables
     filtered_tables = []
     
+    # Check if CentralDateTable is in always_include and add it from date_tables if present
+    if 'CentralDateTable' in always_include and hasattr(data_model, 'date_tables'):
+        central_date_table_found = False
+        for date_table in data_model.date_tables:
+            if date_table['name'] == 'CentralDateTable':
+                # Create a Table object from the date table info
+                from ..models import Table, Column
+                
+                central_date_table = Table(
+                    id=date_table['id'],
+                    name='CentralDateTable',
+                    display_name='Central Date Table',
+                    description='Centralized date dimension table',
+                    columns=[
+                        Column(name='Date', data_type='datetime'),
+                        Column(name='Year', data_type='int64'),
+                        Column(name='Month', data_type='int64'),
+                        Column(name='Day', data_type='int64')
+                    ]
+                )
+                filtered_tables.append(central_date_table)
+                central_date_table_found = True
+                logging.info("Added CentralDateTable from date_tables to filtered tables")
+                break
+                
+        if not central_date_table_found:
+            logging.warning("CentralDateTable was in always_include but not found in date_tables")
+    
+    # Process regular tables
     for table in data_model.tables:
-        # Check if table name is in references
+        # Check if table name is in references or always_include
         if table.name in table_references:
             filtered_tables.append(table)
             continue
@@ -344,6 +413,10 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     # Add perspectives if available in the data model
     if hasattr(data_model, 'perspectives'):
         filtered_model_args['perspectives'] = data_model.perspectives
+        
+    # Add date_tables if available in the data model
+    if hasattr(data_model, 'date_tables'):
+        filtered_model_args['date_tables'] = data_model.date_tables
         
     filtered_model = DataModel(**filtered_model_args)
     

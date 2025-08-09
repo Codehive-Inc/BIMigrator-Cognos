@@ -1,3 +1,9 @@
 {
-  "date_table_mode": "visible"
-} 
+  "date_table_mode": "visible",
+  "table_filtering": {
+    "mode": "filter-reports",
+    "always_include": [
+      "CentralDateTable"
+    ]
+  }
+}
