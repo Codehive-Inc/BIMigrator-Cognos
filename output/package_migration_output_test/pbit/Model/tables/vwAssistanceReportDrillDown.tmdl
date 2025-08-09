@@ -97,10 +97,6 @@ table vwAssistanceReportDrillDown
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: 62eab5d8-9df0-47d1-bef1-5bf3a2a50068
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

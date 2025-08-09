@@ -117,10 +117,6 @@ table Financial
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: 9d7efa04-d534-4f7a-aea1-c9a3862d1923
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

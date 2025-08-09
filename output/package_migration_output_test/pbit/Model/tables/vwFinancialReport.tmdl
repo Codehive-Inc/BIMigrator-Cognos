@@ -227,10 +227,6 @@ table vwFinancialReport
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: ad92d7aa-9b89-46fa-88bc-a5fb5dcb80d4
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

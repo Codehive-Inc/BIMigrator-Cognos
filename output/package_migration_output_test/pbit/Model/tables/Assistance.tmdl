@@ -107,10 +107,6 @@ table Assistance
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: 88789959-e455-473d-9105-8035a92beaa5
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

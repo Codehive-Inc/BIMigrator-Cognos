@@ -197,10 +197,6 @@ table Vendor
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: 4fa87909-438b-47f7-8b3c-9b5283e41d8b
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

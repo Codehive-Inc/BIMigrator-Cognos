@@ -6,24 +6,24 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown"]
+annotation PBI_QueryOrder = ["Agency", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "tblAgencyTerritory", "vwAssistanceReport", "vwAssistanceReportDrillDown", "vwAuthorizationsByAgency", "vwFinancialReport", "vwFinancialReportDrillDown", "vwPayeeReport"]
 
 annotation __PBI_TimeIntelligenceEnabled = true
 
 annotation PBIDesktopVersion = 2.118.1063.0 (23.06)
 
 ref table Agency
-ref table tblAgencyTerritory
 ref table Assistance
 ref table Authorization
 ref table Financial
 ref table Territory
 ref table Vendor
+ref table tblAgencyTerritory
 ref table vwAssistanceReport
+ref table vwAssistanceReportDrillDown
 ref table vwAuthorizationsByAgency
 ref table vwFinancialReport
-ref table vwPayeeReport
 ref table vwFinancialReportDrillDown
-ref table vwAssistanceReportDrillDown
+ref table vwPayeeReport
 
 ref cultureInfo en-US

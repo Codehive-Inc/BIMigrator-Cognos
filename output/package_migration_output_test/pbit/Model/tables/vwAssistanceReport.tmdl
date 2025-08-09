@@ -147,10 +147,6 @@ table vwAssistanceReport
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: 749b21b6-7a48-444b-a248-c818fb87cc2a
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

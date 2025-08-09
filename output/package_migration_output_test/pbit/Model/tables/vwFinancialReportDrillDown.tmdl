@@ -67,10 +67,6 @@ table vwFinancialReportDrillDown
         sourceColumn: ApplicableDate
 
         
-        variation Variation
-            isDefault
-            relationship: bb26565a-08ca-4853-b9fc-5af044bebf1a
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

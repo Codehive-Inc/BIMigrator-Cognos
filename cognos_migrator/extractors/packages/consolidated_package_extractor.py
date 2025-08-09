@@ -246,6 +246,9 @@ class ConsolidatedPackageExtractor:
                 else:
                     # Create a new table if no matching reference found
                     self._create_table_from_query_subject(qs, data_model)
+
+            # Sort tables alphabetically to ensure deterministic processing for primary variation
+            data_model.tables.sort(key=lambda t: t.name)
             
             # Convert relationships
             for rel in package_info['relationships']:
@@ -548,14 +551,18 @@ class ConsolidatedPackageExtractor:
             data_model.relationships.append(relationship)
             self.logger.info(f"Created relationship for {table.name}[{column.name}] to {date_table_name}[Date] (Active: {is_active})")
 
-            # Store relationship info in the column's metadata for the active relationship's variation
-            if is_active:
+            # Store relationship info in the column's metadata for the active relationship's variation.
+            # Only one column in the entire model can have this default variation.
+            if is_active and not data_model.has_primary_date_variation:
                 if not hasattr(column, 'metadata'):
                     column.metadata = {}
                 column.metadata['relationship_info'] = {
                     'id': relationship_id,
                     'hierarchy': f"{date_table_name}.'Date Hierarchy'"
                 }
+                # Set the flag so no other column gets the variation
+                data_model.has_primary_date_variation = True
+                self.logger.info(f"Designated {table.name}[{column.name}] as the primary date variation for the model.")
 
     def _create_central_date_table(self, data_model: DataModel) -> None:
         """Creates a single, central date table for the data model."""

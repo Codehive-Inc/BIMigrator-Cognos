@@ -77,10 +77,6 @@ table vwPayeeReport
         sourceColumn: Date Submitted
 
         
-        variation Variation
-            isDefault
-            relationship: 813990c9-8e8e-4dbe-8d72-0df53b87e157
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

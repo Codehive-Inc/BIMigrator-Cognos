@@ -2,18 +2,18 @@
   "name": "Model",
   "tables": [
     "Agency",
-    "tblAgencyTerritory",
     "Assistance",
     "Authorization",
     "Financial",
     "Territory",
     "Vendor",
+    "tblAgencyTerritory",
     "vwAssistanceReport",
+    "vwAssistanceReportDrillDown",
     "vwAuthorizationsByAgency",
     "vwFinancialReport",
-    "vwPayeeReport",
     "vwFinancialReportDrillDown",
-    "vwAssistanceReportDrillDown"
+    "vwPayeeReport"
   ],
   "culture": "en-US"
 }

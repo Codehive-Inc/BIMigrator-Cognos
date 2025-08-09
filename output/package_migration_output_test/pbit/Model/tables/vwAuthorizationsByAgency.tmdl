@@ -17,10 +17,6 @@ table vwAuthorizationsByAgency
         sourceColumn: Date Submitted
 
         
-        variation Variation
-            isDefault
-            relationship: 777f0429-bd81-436d-9342-f0ae9c7d1b7c
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

@@ -37,10 +37,6 @@ table Authorization
         sourceColumn: ApplicableDate
 
         
-        variation Variation
-            isDefault
-            relationship: ac8fcf1b-44c8-47a0-acb7-305d273c944b
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

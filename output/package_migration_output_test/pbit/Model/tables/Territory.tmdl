@@ -47,10 +47,6 @@ table Territory
         sourceColumn: datecreated
 
         
-        variation Variation
-            isDefault
-            relationship: f9038c89-ae3c-4a0b-a125-d108759d011c
-            defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
 

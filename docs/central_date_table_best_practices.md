@@ -39,4 +39,29 @@ measure 'Count of Rows by LastUpdated' = ```
         )
 ```
 ```
-This provides a ready-to-use example that developers can either use directly or adapt for more complex calculations, demonstrating how to slice the data by a non-default date field. This saves time and enforces the correct DAX pattern for handling multiple date fields. 
+This provides a ready-to-use example that developers can either use directly or adapt for more complex calculations, demonstrating how to slice the data by a non-default date field. This saves time and enforces the correct DAX pattern for handling multiple date fields.
+
+## A Note on Variations: The Single Default Hierarchy Rule
+
+A `variation` in Power BI is a powerful shortcut that provides a better user experience. It tells the report editor: "When a user drags this column into a visual, automatically use the hierarchy from the related dimension table (e.g., `CentralDateTable.'Date Hierarchy'`) as the default."
+
+However, Power BI enforces a strict, model-wide rule: **A specific hierarchy in a shared dimension table can only be designated as the default `variation` for ONE column across the ENTIRE data model.**
+
+### The Automated Solution
+
+The BIMigrator-Cognos tool handles this limitation automatically and deterministically.
+
+1.  **A Single Primary Table is Chosen**: The migrator identifies all tables with date columns and sorts them alphabetically. The **first table in this list** is designated as the primary fact table for date analysis.
+
+2.  **Variation is Applied Once**: The `variation` block is added **only** to the primary date column of this single, primary table.
+
+3.  **Other Tables**: All other tables will still have their active and inactive relationships to the `CentralDateTable`, and their automatically generated DAX measures will work perfectly. They simply will not have the `variation` notation.
+
+### What This Means for Developers
+
+*   **Relationships:** All active and inactive relationships will function as expected for all tables.
+*   **User Experience:**
+    *   When you drag the primary date column from the **primary table** (e.g., `Assistance[datecreated]`) into a visual, it will automatically expand to the Year, Quarter, Month, Day hierarchy.
+    *   When you drag a primary date column from any **other table** (e.g., `Agency[datecreated]`) into a visual, it will appear as a raw `datetime` value. To analyze it by month or year, you must drag the `Month` or `Year` fields directly from the `CentralDateTable` into the visual, and it will work perfectly.
+
+This approach ensures the model is always valid while retaining the vast majority of the time-intelligence functionality and user convenience. 
