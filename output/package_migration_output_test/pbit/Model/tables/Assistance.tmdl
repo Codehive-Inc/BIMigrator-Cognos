@@ -132,7 +132,7 @@ table Assistance
 
         
 
-    measure 'Assistance - Count by datecreated' = ```
+    measure 'tblAssistanceReport - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Assistance'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[datecreated])
@@ -142,7 +142,7 @@ table Assistance
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Assistance - Count by LastUpdated' = ```
+    measure 'tblAssistanceReport - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Assistance'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[LastUpdated])
@@ -152,7 +152,7 @@ table Assistance
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Assistance - Count by PreparedDate' = ```
+    measure 'tblAssistanceReport - Count by PreparedDate' = ```
             CALCULATE(
     COUNTROWS('Assistance'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[PreparedDate])

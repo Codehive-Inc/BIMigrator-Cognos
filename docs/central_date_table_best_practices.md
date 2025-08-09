@@ -64,4 +64,30 @@ The BIMigrator-Cognos tool handles this limitation automatically and determinist
     *   When you drag the primary date column from the **primary table** (e.g., `Assistance[datecreated]`) into a visual, it will automatically expand to the Year, Quarter, Month, Day hierarchy.
     *   When you drag a primary date column from any **other table** (e.g., `Agency[datecreated]`) into a visual, it will appear as a raw `datetime` value. To analyze it by month or year, you must drag the `Month` or `Year` fields directly from the `CentralDateTable` into the visual, and it will work perfectly.
 
-This approach ensures the model is always valid while retaining the vast majority of the time-intelligence functionality and user convenience. 
+This approach ensures the model is always valid while retaining the vast majority of the time-intelligence functionality and user convenience.
+
+## Configuration via `settings.json`
+
+The behavior of the `CentralDateTable` can be controlled via the `settings.json` file in the root of the project. This allows you to choose the appropriate mode for your specific reporting needs without changing the code.
+
+```json
+{
+  "date_table_mode": "visible"
+}
+```
+
+### Available Modes
+
+#### 1. `visible` (Default and Recommended)
+
+This is the standard best practice for Power BI development.
+- **The `CentralDateTable` is visible** in the Fields pane.
+- **No `variation` blocks are created**.
+- Report developers can build measures and slice data by dragging in columns from the visible `CentralDateTable`.
+
+#### 2. `hidden`
+
+This mode prioritizes the convenience of the `variation` shortcut at the cost of model flexibility.
+- **The `CentralDateTable` is hidden** and uses the `showAsVariationsOnly` property.
+- A **`variation` block is added** to the primary date column of the primary fact table.
+- This allows the auto-expanding hierarchy to work on that one column, but the `CentralDateTable` itself cannot be used for general analysis. 

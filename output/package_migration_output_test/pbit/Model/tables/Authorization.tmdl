@@ -302,7 +302,7 @@ table Authorization
 
         
 
-    measure 'Authorization - Count by ApplicableDate' = ```
+    measure 'tblAuthorization - Count by ApplicableDate' = ```
             CALCULATE(
     COUNTROWS('Authorization'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Authorization'[ApplicableDate])
@@ -312,7 +312,7 @@ table Authorization
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Authorization - Count by datecreated' = ```
+    measure 'tblAuthorization - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Authorization'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Authorization'[datecreated])
@@ -322,7 +322,7 @@ table Authorization
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Authorization - Count by LastUpdated' = ```
+    measure 'tblAuthorization - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Authorization'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Authorization'[LastUpdated])

@@ -222,7 +222,7 @@ table Vendor
 
         
 
-    measure 'Vendor - Count by datecreated' = ```
+    measure 'tblVendor - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Vendor'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Vendor'[datecreated])
@@ -232,7 +232,7 @@ table Vendor
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Vendor - Count by LastUpdated' = ```
+    measure 'tblVendor - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Vendor'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Vendor'[LastUpdated])

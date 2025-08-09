@@ -136,6 +136,7 @@ class DataModel:
     relationships: List[Relationship] = field(default_factory=list)
     measures: List[Measure] = field(default_factory=list)
     has_primary_date_variation: bool = False
+    date_table_mode: str = "visible"  # 'visible' or 'hidden'
     compatibility_level: int = 1550
     culture: str = "en-US"
     annotations: Dict[str, Any] = field(default_factory=dict)

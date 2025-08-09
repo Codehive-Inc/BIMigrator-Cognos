@@ -72,7 +72,7 @@ table Territory
 
         
 
-    measure 'Territory - Count by datecreated' = ```
+    measure 'tblTerritory - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Territory'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Territory'[datecreated])
@@ -82,7 +82,7 @@ table Territory
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Territory - Count by LastUpdated' = ```
+    measure 'tblTerritory - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Territory'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Territory'[LastUpdated])

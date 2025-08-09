@@ -142,7 +142,7 @@ table Financial
 
         
 
-    measure 'Financial - Count by datecreated' = ```
+    measure 'tblFinancialReport - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Financial'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Financial'[datecreated])
@@ -152,7 +152,7 @@ table Financial
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Financial - Count by LastUpdated' = ```
+    measure 'tblFinancialReport - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Financial'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Financial'[LastUpdated])

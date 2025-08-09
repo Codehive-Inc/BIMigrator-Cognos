@@ -187,13 +187,24 @@ class ConsolidatedPackageExtractor:
             DataModel instance
         """
         try:
+            # Load settings from settings.json
+            settings = {}
+            try:
+                with open('settings.json', 'r') as f:
+                    settings = json.load(f)
+            except FileNotFoundError:
+                self.logger.warning("settings.json not found. Using default settings.")
+            
+            date_table_mode = settings.get('date_table_mode', 'visible')
+            self.logger.info(f"Using date table mode: {date_table_mode}")
+
             self.logger.info(f"Converting package {package_info['name']} to data model")
             
             # Create tables list for data model
             tables = []
             
-            # Create data model with empty tables list (will add tables later)
-            data_model = DataModel(name=package_info['name'], tables=tables)
+            # Create data model with empty tables list and settings
+            data_model = DataModel(name=package_info['name'], tables=tables, date_table_mode=date_table_mode)
 
             # Create a single, central date table for the entire model
             self._create_central_date_table(data_model)
@@ -341,41 +352,6 @@ class ConsolidatedPackageExtractor:
             
             self.logger.info(f"Successfully converted package to data model with {len(data_model.tables)} tables and {len(data_model.relationships)} relationships")
             
-            # Generate DAX measures for inactive date relationships after all tables and relationships are finalized
-            if hasattr(data_model, 'date_tables') and data_model.date_tables:
-                central_date_table_name = data_model.date_tables[0]['name']
-                for relationship in data_model.relationships:
-                    if relationship.to_table == central_date_table_name and not relationship.is_active:
-                        from_table_name = relationship.from_table
-                        from_column_name = relationship.from_column
-
-                        # The from_column might be 'TableName.ColumnName', so split it.
-                        if '.' in from_column_name:
-                            from_column_name = from_column_name.split('.')[-1]
-
-                        # Find the table object from the final list of tables
-                        table_obj = next((t for t in data_model.tables if t.name == from_table_name), None)
-                        if not table_obj:
-                            continue
-
-                        measure_name = f"{table_obj.name} - Count by {from_column_name}"
-                        # Use table_obj.name to ensure the final, model-friendly table name is used in the DAX expression
-                        expression = (
-                            f"CALCULATE(\n"
-                            f"    COUNTROWS('{table_obj.name}'),\n"
-                            f"    USERELATIONSHIP('{central_date_table_name}'[Date], '{table_obj.name}'[{from_column_name}])\n"
-                            f")"
-                        )
-                        measure = Measure(name=measure_name, expression=expression)
-                        
-                        if not hasattr(table_obj, 'measures'):
-                            table_obj.measures = []
-
-                        # Add the measure only if a measure with the same name doesn't already exist
-                        if not any(m.name == measure_name for m in table_obj.measures):
-                            table_obj.measures.append(measure)
-                            self.logger.info(f"Created DAX measure '{measure_name}' for inactive relationship on {table_obj.name}[{from_column_name}]")
-
             return data_model
             
         except Exception as e:
@@ -552,8 +528,8 @@ class ConsolidatedPackageExtractor:
             self.logger.info(f"Created relationship for {table.name}[{column.name}] to {date_table_name}[Date] (Active: {is_active})")
 
             # Store relationship info in the column's metadata for the active relationship's variation.
-            # Only one column in the entire model can have this default variation.
-            if is_active and not data_model.has_primary_date_variation:
+            # Only one column in the entire model can have this default variation, and only in 'hidden' mode.
+            if is_active and data_model.date_table_mode == 'hidden' and not data_model.has_primary_date_variation:
                 if not hasattr(column, 'metadata'):
                     column.metadata = {}
                 column.metadata['relationship_info'] = {
@@ -563,17 +539,35 @@ class ConsolidatedPackageExtractor:
                 # Set the flag so no other column gets the variation
                 data_model.has_primary_date_variation = True
                 self.logger.info(f"Designated {table.name}[{column.name}] as the primary date variation for the model.")
+            elif not is_active:
+                # For inactive relationships, create a DAX measure
+                measure_name = f"{table.name} - Count by {column.name}"
+                expression = (
+                    f"CALCULATE(\n"
+                    f"    COUNTROWS('{table.name}'),\n"
+                    f"    USERELATIONSHIP('{date_table_name}'[Date], '{table.name}'[{column.name}])\n"
+                    f")"
+                )
+                measure = Measure(name=measure_name, expression=expression)
+                
+                if not hasattr(table, 'measures'):
+                    table.measures = []
+                
+                if not any(m.name == measure_name for m in table.measures):
+                    table.measures.append(measure)
+                    self.logger.info(f"Created DAX measure '{measure_name}' for inactive relationship on {table.name}[{column.name}]")
 
     def _create_central_date_table(self, data_model: DataModel) -> None:
         """Creates a single, central date table for the data model."""
         self.logger.info("Creating a single central date table for the model.")
 
-        # Get the template path
+        # Determine which template to use based on the mode
+        template_filename = f"DateTableTemplate_{data_model.date_table_mode.capitalize()}.tmdl"
         template_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
-                                   'templates', 'DateTableTemplate.tmdl')
+                                   'templates', template_filename)
         
         if not os.path.exists(template_path):
-            self.logger.warning(f"DateTableTemplate.tmdl not found at {template_path}. Skipping central date table creation.")
+            self.logger.warning(f"{template_filename} not found at {template_path}. Skipping central date table creation.")
             return
         
         # Read the template content
@@ -755,3 +749,13 @@ class ConsolidatedPackageExtractor:
                 if rel.to_table == original_name:
                     rel.to_table = new_name
                     self.logger.info(f"Updated relationship to_table from {original_name} to {new_name}")
+            
+            # Also update the DAX expressions of any measures on this table
+            if hasattr(table, 'measures'):
+                for measure in table.measures:
+                    # Use a regex to replace the old table name, case-insensitively
+                    # This is safer than a simple string replace
+                    old_expression = measure.expression
+                    measure.expression = re.sub(f"'{re.escape(original_name)}'", f"'{new_name}'", old_expression, flags=re.IGNORECASE)
+                    if old_expression != measure.expression:
+                        self.logger.info(f"Updated measure '{measure.name}' DAX from using '{original_name}' to '{new_name}'")
