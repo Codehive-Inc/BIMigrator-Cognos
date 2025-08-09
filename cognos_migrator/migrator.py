@@ -878,6 +878,72 @@ class CognosModuleMigratorExplicit:
             self.logger.error(f"Migration failed for report {report_id}: {e}")
             return False
     
+    def migrate_report_from_file(self, report_file_path: str, output_path: str) -> bool:
+        """Migrate a single Cognos report from a local XML file
+        
+        Args:
+            report_file_path: Path to the local report XML file
+            output_path: Path where migration output will be saved
+            
+        Returns:
+            bool: True if migration was successful, False otherwise
+        """
+        try:
+            self.logger.info(f"Starting migration of report from file: {report_file_path}")
+            
+            # Create output directory structure
+            output_dir = Path(output_path)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            
+            extracted_dir = output_dir / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            pbit_dir = output_dir / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
+            
+            # Step 1: Read report specification from the local file
+            with open(report_file_path, 'r', encoding='utf-8') as f:
+                report_spec = f.read()
+            
+            # Create a CognosReport object from the file content
+            from cognos_migrator.models import CognosReport
+            report_name = Path(report_file_path).stem
+            cognos_report = CognosReport(
+                id=report_name,
+                name=report_name,
+                specification=report_spec,
+                metadata={'name': report_name}
+            )
+            
+            # Save raw Cognos report data to extracted folder
+            self._save_extracted_report_data(cognos_report, extracted_dir)
+            
+            # Step 2: Convert to Power BI structures
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            if not powerbi_project:
+                self.logger.error(f"Failed to convert report from file: {report_file_path}")
+                return False
+            
+            # If CPF metadata is available, enhance the Power BI project with it
+            if self.cpf_extractor and self.cpf_metadata_enhancer:
+                self.cpf_metadata_enhancer.enhance_project(powerbi_project)
+            
+            # Step 3: Generate Power BI project files
+            success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
+            if not success:
+                self.logger.error(f"Failed to generate Power BI project files")
+                return False
+            
+            # Step 4: Generate documentation
+            self.doc_generator.generate_migration_report(powerbi_project, extracted_dir)
+            
+            self.logger.info(f"Successfully migrated report from file {report_file_path} to {output_path}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Migration failed for report file {report_file_path}: {e}")
+            return False
+    
     def _save_extracted_report_data(self, cognos_report, extracted_dir):
         """Save extracted report data to files for investigation
         

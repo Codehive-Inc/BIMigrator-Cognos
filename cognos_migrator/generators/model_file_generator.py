@@ -121,37 +121,11 @@ class ModelFileGenerator:
         
         if report_name:
             self.logger.info(f"Using report name '{report_name}' for table naming")
-            
-        # Track source tables to avoid duplicates
-        source_tables = {}
-        model_tables = {}
-        
-        # First pass: identify source tables and model tables
-        for table in tables:
-            # Check if this is a source table (dbQuery)
-            if table.metadata.get('is_source_table'):
-                source_tables[table.name] = table
-                self.logger.info(f"Identified source table: {table.name}")
-            # Check if this is a model table referencing a source table
-            elif table.metadata.get('original_source_table'):
-                referenced_table = table.metadata.get('original_source_table')
-                model_tables[table.name] = referenced_table
-                self.logger.info(f"Identified model table: {table.name} referencing {referenced_table}")
-        
-        # Second pass: generate table files only for source tables
+
+        # In a consolidated model, all tables are treated as source tables.
         for table in tables:
             table_name = table.name
             
-            # Skip model tables that reference source tables we already have
-            if table_name in model_tables:
-                self.logger.info(f"Skipping model table {table_name} as it references source table {model_tables[table_name]}")
-                continue
-                
-            # Only generate tables for source tables
-            if not table.metadata.get('is_source_table'):
-                self.logger.info(f"Skipping table {table_name} as it is not a source table")
-                continue
-                
             try:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
                 
