@@ -40,15 +40,6 @@ table {{source_name}}
         {{#if is_data_type_inferred}}
         isDataTypeInferred: {{is_data_type_inferred}}
         {{/if}}
-        {{#if annotations.SummarizationSetBy}}
-        annotation SummarizationSetBy = {{annotations.SummarizationSetBy}}
-        {{else}}
-        annotation SummarizationSetBy = Automatic
-        {{/if}}
-
-        {{#if annotations.PBI_FormatHint}}
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        {{/if}}
         
         {{#if is_datetime}}
         variation Variation
@@ -57,6 +48,16 @@ table {{source_name}}
             relationship: {{relationship_info.id}}
             defaultHierarchy: {{{relationship_info.hierarchy}}}
             {{/if}}
+        {{/if}}
+
+        {{#if annotations.SummarizationSetBy}}
+        annotation SummarizationSetBy = {{annotations.SummarizationSetBy}}
+        {{else}}
+        annotation SummarizationSetBy = Automatic
+        {{/if}}
+
+        {{#if annotations.PBI_FormatHint}}
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
         {{/if}}
         
     {{/each}}

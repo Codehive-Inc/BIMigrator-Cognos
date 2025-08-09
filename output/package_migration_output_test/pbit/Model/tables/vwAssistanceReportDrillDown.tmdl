@@ -6,197 +6,218 @@ table vwAssistanceReportDrillDown
         summarizeBy: none
         sourceColumn: Season
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AssistanceReportID'
         dataType: int64
         summarizeBy: none
         sourceColumn: AssistanceReportID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AuthorizationID'
         dataType: int64
         summarizeBy: none
         sourceColumn: AuthorizationID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AgencyID'
         dataType: int64
         summarizeBy: none
         sourceColumn: AgencyID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AgencyName'
         dataType: string
         summarizeBy: none
         sourceColumn: AgencyName
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'State'
         dataType: string
         summarizeBy: none
         sourceColumn: State
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'ApplicableMonth'
         dataType: int64
         summarizeBy: none
         sourceColumn: ApplicableMonth
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'ApplicableYear'
         dataType: int64
         summarizeBy: none
         sourceColumn: ApplicableYear
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'CreatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: CreatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'datecreated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: datecreated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: 2a395d57-88c1-4cc0-928a-5641078f4792
-            defaultHierarchy: LocalDateTable_cfa70697-ccbb-4405-b17c-afea4e460056.'Date Hierarchy'
+            relationship: c44b0126-8a43-4ac8-981d-ec907a705c8e
+            defaultHierarchy: LocalDateTable_983ce444-f3cd-4dbe-8260-a73cb4da49ea.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'UpdatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: UpdatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'LastUpdated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: LastUpdated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: a542294c-183b-467f-ad68-fdd43928289c
-            defaultHierarchy: LocalDateTable_cfa70697-ccbb-4405-b17c-afea4e460056.'Date Hierarchy'
+            relationship: c0f72f72-e235-4850-8d68-1c4711a8578b
+            defaultHierarchy: LocalDateTable_983ce444-f3cd-4dbe-8260-a73cb4da49ea.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'TotalVeteranVoucher'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalVeteranVoucher
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalDisabilityVoucher'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalDisabilityVoucher
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalAssisted'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalAssisted
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalOver60'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalOver60
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalUnder5'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalUnder5
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalDisabled'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalDisabled
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalVeteran'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalVeteran
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TotalWeatherInterested'
         dataType: int64
         summarizeBy: none
         sourceColumn: TotalWeatherInterested
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'EditLink'
         dataType: string
         summarizeBy: none
         sourceColumn: EditLink
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
 
 
@@ -204,11 +225,12 @@ table vwAssistanceReportDrillDown
     partition 'vwAssistanceReportDrillDown' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwAssistanceReportDrillDown: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e9f10>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].vwAssistanceReportDrillDown"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"Season", type text}, {"AssistanceReportID", Int64.Type}, {"AuthorizationID", Int64.Type}, {"AgencyID", Int64.Type}, {"AgencyName", type text}, {"State", type text}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}, {"TotalVeteranVoucher", Int64.Type}, {"TotalDisabilityVoucher", Int64.Type}, {"TotalAssisted", Int64.Type}, {"TotalOver60", Int64.Type}, {"TotalUnder5", Int64.Type}, {"TotalDisabled", Int64.Type}, {"TotalVeteran", Int64.Type}, {"TotalWeatherInterested", Int64.Type}, {"EditLink", type text}})
 				in
-				Source
+					#"Changed Types"
         
 
 

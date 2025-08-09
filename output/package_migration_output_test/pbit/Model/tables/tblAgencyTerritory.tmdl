@@ -6,27 +6,30 @@ table tblAgencyTerritory
         summarizeBy: none
         sourceColumn: AgencyTerritoryID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AgencyID'
         dataType: int64
         summarizeBy: none
         sourceColumn: AgencyID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'TerritoryID'
         dataType: int64
         summarizeBy: none
         sourceColumn: TerritoryID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
 
 
@@ -34,11 +37,12 @@ table tblAgencyTerritory
     partition 'tblAgencyTerritory' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table tblAgencyTerritory: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e8b30>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAgencyTerritory"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}, {"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}})
 				in
-				Source
+					#"Changed Types"
         
 
 

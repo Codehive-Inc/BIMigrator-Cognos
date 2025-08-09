@@ -613,5 +613,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "vwFinancialReport",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].vwFinancialReport\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"FinancialReportID\", Int64.Type}, {\"Zip\", type text}, {\"ContactName\", type text}, {\"AgencyID\", Int64.Type}, {\"Season\", type text}, {\"AgencyName\", type text}, {\"Address1\", type text}, {\"Address2\", type text}, {\"City\", type text}, {\"State\", type text}, {\"ApplicableMonth\", Int64.Type}, {\"ApplicableYear\", Int64.Type}, {\"TOTAL\", type text}, {\"BalanceForward\", type text}, {\"EnergyShareCheckAmount\", type text}, {\"EnergySharePartnerAmount\", type text}, {\"AmountSpentPayingEnergyBills\", type text}, {\"BalanceOnHand\", type text}, {\"PreparedBy\", type text}, {\"Adjustment\", type text}, {\"AdjustmentReason\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type datetime}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type datetime}, {\"itemizedDominion\", type text}, {\"itemizedOtherElectric\", type text}, {\"itemizedFuelOil\", type text}, {\"itemizedCoalWood\", type text}, {\"itemizedNaturalGas\", type text}, {\"itemizedKerosene\", type text}, {\"itemizedPropaneBottledGas\", type text}, {\"itemizedNumberofDepositsGuaranteed\", type text}, {\"EditLink\", type text}, {\"DirectIndividualContributions\", Int64.Type}, {\"DirectRecipientContributions\", Int64.Type}, {\"itemizedCoalOrWood\", type text}, {\"itemizedPropane\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

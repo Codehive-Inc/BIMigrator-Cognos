@@ -549,5 +549,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "vwFinancialReportDrillDown",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].vwFinancialReportDrillDown\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ApplicableYear\", Int64.Type}, {\"ApplicableMonth\", Int64.Type}, {\"FinancialReportID\", Int64.Type}, {\"AuthorizationID\", Int64.Type}, {\"AgencyID\", Int64.Type}, {\"VendorID\", Int64.Type}, {\"ApplicableDate\", type datetime}, {\"ApplicantNumber\", type text}, {\"AuthorizationType\", type text}, {\"VendorAccountNumber\", type text}, {\"FuelType\", type text}, {\"IsOver60\", type text}, {\"ApplicantFirstName\", type text}, {\"ApplicantMiddleName\", type text}, {\"ApplicantLastName\", type text}, {\"ApplicantPhone\", type text}, {\"ApplicantAddress\", type text}, {\"ApplicantCity\", type text}, {\"ApplicantState\", type text}, {\"ApplicantZip\", type text}, {\"TotalAssisted\", Int64.Type}, {\"TotalUnder5\", Int64.Type}, {\"TotalOver60\", Int64.Type}, {\"TotalDisabled\", Int64.Type}, {\"AmountDue\", type text}, {\"MatchingEnergyCredit\", type text}, {\"PaidByEnergyShare\", type text}, {\"DepositGuarantee\", type text}, {\"PaymentAuthorizedBy\", type text}, {\"CreatedBy\", type text}, {\"datecreated\", type datetime}, {\"UpdatedBy\", type text}, {\"LastUpdated\", type datetime}, {\"EditLink\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

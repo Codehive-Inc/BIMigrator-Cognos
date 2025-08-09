@@ -6,129 +6,142 @@ table Assistance
         summarizeBy: none
         sourceColumn: AssistanceReportID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AgencyID'
         dataType: int64
         summarizeBy: none
         sourceColumn: AgencyID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'ApplicableMonth'
         dataType: int64
         summarizeBy: none
         sourceColumn: ApplicableMonth
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'ApplicableYear'
         dataType: int64
         summarizeBy: none
         sourceColumn: ApplicableYear
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'HouseholdsAssisted'
         dataType: int64
         summarizeBy: none
         sourceColumn: HouseholdsAssisted
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'Applications'
         dataType: int64
         summarizeBy: none
         sourceColumn: Applications
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'Denials'
         dataType: int64
         summarizeBy: none
         sourceColumn: Denials
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'PreparedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: PreparedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'PreparedDate'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: PreparedDate
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: 9babdae3-4ee1-48f2-aa5c-220f2efd9329
-            defaultHierarchy: LocalDateTable_415dbaa0-7837-403c-bfc9-0948bab32fed.'Date Hierarchy'
+            relationship: 27271d29-7770-4322-b679-9ed0bfa78f35
+            defaultHierarchy: LocalDateTable_d2d13ad3-f3cc-4733-82ec-5082f04af21e.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'CreatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: CreatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'datecreated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: datecreated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: 0bec85ac-6830-4a6d-acbb-69827ac8ee10
-            defaultHierarchy: LocalDateTable_415dbaa0-7837-403c-bfc9-0948bab32fed.'Date Hierarchy'
+            relationship: 51b36429-8dae-4909-a97b-148e2fe83ac0
+            defaultHierarchy: LocalDateTable_d2d13ad3-f3cc-4733-82ec-5082f04af21e.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'UpdatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: UpdatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'LastUpdated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: LastUpdated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: a0d9706b-0ddf-4a68-a72a-0e4e3f0bc8b6
-            defaultHierarchy: LocalDateTable_415dbaa0-7837-403c-bfc9-0948bab32fed.'Date Hierarchy'
+            relationship: 8a6ea38d-5ca7-4803-84dc-8858fc636ef3
+            defaultHierarchy: LocalDateTable_d2d13ad3-f3cc-4733-82ec-5082f04af21e.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
 
 
@@ -136,11 +149,12 @@ table Assistance
     partition 'Assistance' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Assistance: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049ebe60>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAssistanceReport"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AssistanceReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"HouseholdsAssisted", Int64.Type}, {"Applications", Int64.Type}, {"Denials", Int64.Type}, {"PreparedBy", type text}, {"PreparedDate", type datetime}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}})
 				in
-				Source
+					#"Changed Types"
         
 
 

@@ -517,5 +517,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "vwAuthorizationsByAgency",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"\", \"\", [Query = \"Select * from [Shared_Energy_Share].vwAuthorizationsByAgency\"]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(Source),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"Season\", type text}, {\"Date Submitted\", type datetime}, {\"FuelType\", type text}, {\"PaidByEnergyShare\", type text}, {\"State\", type text}, {\"ApplicableYear\", Int64.Type}, {\"ApplicableMonth\", Int64.Type}, {\"AgencyName\", type text}, {\"Type\", type text}, {\"Applicant Name\", type text}, {\"EditLink\", type text}, {\"AmountDueVeteranVoucher\", type text}, {\"AmountDueDisabilityVoucher\", type text}, {\"TotalVeteranVoucher\", Int64.Type}, {\"TotalDisabilityVoucher\", Int64.Type}, {\"ApplicantAddress\", type text}, {\"ApplicantCity\", type text}, {\"ApplicantState\", type text}, {\"ApplicantZip\", type text}, {\"DepositGuarantee\", type text}, {\"IsOver60\", type text}, {\"IsMedical\", type text}, {\"NumberOfCust\", Int64.Type}, {\"TotalUnder5\", Int64.Type}, {\"TotalOver60\", Int64.Type}, {\"TotalDisabled\", Int64.Type}, {\"TotalVeteran\", Int64.Type}, {\"IsInterestedInWeatherization\", type text}, {\"DominionAccountNumber\", type text}, {\"BusinessType\", type text}, {\"CustomBusinessType\", type text}, {\"ApplicantPhone\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

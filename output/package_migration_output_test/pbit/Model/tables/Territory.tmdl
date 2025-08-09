@@ -6,71 +6,78 @@ table Territory
         summarizeBy: none
         sourceColumn: TerritoryID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'Name'
         dataType: string
         summarizeBy: none
         sourceColumn: Name
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'IsActive'
         dataType: string
         summarizeBy: none
         sourceColumn: IsActive
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'CreatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: CreatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'datecreated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: datecreated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: 791d5dac-fabc-47df-bf82-d8cb33ab5565
-            defaultHierarchy: LocalDateTable_e288f074-73db-4f06-82c2-71cd3834a83f.'Date Hierarchy'
+            relationship: e8aee17c-497e-4d86-9be2-6623f42d5aa3
+            defaultHierarchy: LocalDateTable_2418059e-ae62-4209-85a2-035f723ef4a3.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'UpdatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: UpdatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'LastUpdated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: LastUpdated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: dc9ad1ff-cd3c-4dcf-9a0a-0a8cfe639fed
-            defaultHierarchy: LocalDateTable_e288f074-73db-4f06-82c2-71cd3834a83f.'Date Hierarchy'
+            relationship: e863ec12-53a1-4f47-92e0-b4afe4702b7f
+            defaultHierarchy: LocalDateTable_2418059e-ae62-4209-85a2-035f723ef4a3.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
 
 
@@ -78,11 +85,12 @@ table Territory
     partition 'Territory' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Territory: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e81d0>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblTerritory"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"TerritoryID", Int64.Type}, {"Name", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}})
 				in
-				Source
+					#"Changed Types"
         
 
 

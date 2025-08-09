@@ -6,134 +6,148 @@ table Financial
         summarizeBy: none
         sourceColumn: FinancialReportID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AgencyID'
         dataType: int64
         summarizeBy: none
         sourceColumn: AgencyID
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'ApplicableMonth'
         dataType: int64
         summarizeBy: none
         sourceColumn: ApplicableMonth
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'ApplicableYear'
         dataType: int64
         summarizeBy: none
         sourceColumn: ApplicableYear
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'BalanceForward'
         dataType: string
         summarizeBy: none
         sourceColumn: BalanceForward
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'EnergyShareCheckAmount'
         dataType: string
         summarizeBy: none
         sourceColumn: EnergyShareCheckAmount
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'EnergySharePartnerAmount'
         dataType: string
         summarizeBy: none
         sourceColumn: EnergySharePartnerAmount
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'AmountSpentPayingEnergyBills'
         dataType: string
         summarizeBy: none
         sourceColumn: AmountSpentPayingEnergyBills
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'BalanceOnHand'
         dataType: string
         summarizeBy: none
         sourceColumn: BalanceOnHand
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'PreparedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: PreparedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'CreatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: CreatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'datecreated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: datecreated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: 60400c12-8737-42d2-addf-f4396b8ae2de
-            defaultHierarchy: LocalDateTable_21454e1d-1a32-4cf7-b3bb-b1e0ee8b3467.'Date Hierarchy'
+            relationship: 5875a99f-b437-421b-bda2-3297bc45b732
+            defaultHierarchy: LocalDateTable_31e85641-aa99-4b8b-bd1a-1064fccd3903.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
     column 'UpdatedBy'
         dataType: string
         summarizeBy: none
         sourceColumn: UpdatedBy
 
+        
+
         annotation SummarizationSetBy = Automatic
 
-        
         
     column 'LastUpdated'
         dataType: dateTime
         summarizeBy: none
         sourceColumn: LastUpdated
 
-        annotation SummarizationSetBy = Automatic
-
         
         variation Variation
             isDefault
-            relationship: 6558b456-fb47-40dd-bf44-c56035d2563e
-            defaultHierarchy: LocalDateTable_21454e1d-1a32-4cf7-b3bb-b1e0ee8b3467.'Date Hierarchy'
+            relationship: f4a4a7f1-7fa7-4c32-88c0-46729851993f
+            defaultHierarchy: LocalDateTable_31e85641-aa99-4b8b-bd1a-1064fccd3903.'Date Hierarchy'
+
+        annotation SummarizationSetBy = Automatic
+
         
 
 
@@ -141,11 +155,12 @@ table Financial
     partition 'Financial' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Financial: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049cb230>: Failed to establish a new connection: [Errno 61] Connection refused'))
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblFinancialReport"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"FinancialReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"BalanceForward", type text}, {"EnergyShareCheckAmount", type text}, {"EnergySharePartnerAmount", type text}, {"AmountSpentPayingEnergyBills", type text}, {"BalanceOnHand", type text}, {"PreparedBy", type text}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}})
 				in
-				Source
+					#"Changed Types"
         
 
 
