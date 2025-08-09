@@ -471,7 +471,11 @@ table 'STANDARD ACCOUNT DATA'
     partition 'STANDARD ACCOUNT DATA' = m
         mode: import
         source = 
-            let Source = Sql.Database("", "", [Query = "Select * from [STANDARD ACCOUNT DATA]"]), #"Removed Errors" = Table.RemoveRowsWithErrors(Source), #"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ID_BA", type text}, {"ID_CUST", type text}, {"ID_PREM", type text}, {"AD_HSE_NO", type text}, {"AD_HSE_NO_MOD", type text}, {"AD_CRDNL_DIR", type text}, {"AD_STR_NM", type text}, {"AD_STR_SX", type text}, {"AD_DIR_SX", type text}, {"AD_MODIFIER", type text}, {"AD_SVC_CITY", type text}, {"AD_SVC_ST", type text}, {"AD_SVC_ZIP", type text}, {"AD_SVC_ZIP_SX", type text}, {"TX_ADDTL_ADDR_INFO", type text}, {"TX_HOME_AREACD", type text}, {"TX_HOME_PHN_NO", type text}, {"TX_BUS_AREACD", type text}, {"TX_BUS_PHN_NO", type text}, {"TX_BUS_PHN_EXTN", type text}, {"ID_MTR_RTE", type text}, {"CD_ACCT_CL", type text}, {"CD_BA_STAT", type text}, {"NM_CUST", type text}, {"ID_SSN", type text}, {"ID_DLN", type text}, {"QY_GAS_MTR", type text}, {"QY_ELE_MTR", type text}, {"QY_NMTR", type text}, {"ID_BILL_CY", type text}, {"FL_CPLNT_PEND", type text}, {"FL_VIP", type text}, {"FL_LS", type text}, {"CD_EA", type text}, {"CD_PA", type text}, {"FL_BNKCY", type text}, {"ID_AD_SEQ", type text}, {"FL_CORP_NM", type text}, {"CD_TOWN", type text}, {"DT_PEND_SO", type datetime}, {"DT_PEND_NPSO", type datetime}, {"CD_BAD_DEBT", type text}, {"CD_SPEC_ACCT", type text}, {"CD_RO", type text}, {"FL_EMPL", type text}, {"CD_NPSO", type text}, {"CD_LPP_STAT", type text}, {"FL_CAPP", type text}, {"QY_PWQ", type
+            // ERROR: Error communicating with LLM service for table STANDARD ACCOUNT DATA: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x104e9a3f0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
         
 
 

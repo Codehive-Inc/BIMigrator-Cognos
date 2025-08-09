@@ -27,7 +27,18 @@ class BasePackageExtractor:
         self.namespaces = {
             'bmt': 'http://www.developer.cognos.com/schemas/bmt/60/12',  # Common in newer files
             'ns': 'http://www.developer.cognos.com/schemas/bmt/60/7',    # For backward compatibility
+            'ns1': 'http://www.developer.cognos.com/schemas/bmt/60/1',   # For older files
+            'ns11': 'http://www.developer.cognos.com/schemas/bmt/60/11', # For version 11 files
             'xsi': 'http://www.w3.org/2001/XMLSchema-instance'
+        }
+        
+        # Map of namespace URLs to their preferred prefix
+        self.namespace_url_to_prefix = {
+            'http://www.developer.cognos.com/schemas/bmt/60/12': 'bmt',
+            'http://www.developer.cognos.com/schemas/bmt/60/7': 'ns',
+            'http://www.developer.cognos.com/schemas/bmt/60/1': 'ns1',
+            'http://www.developer.cognos.com/schemas/bmt/60/11': 'ns11',
+            'http://www.w3.org/2001/XMLSchema-instance': 'xsi'
         }
     
     def extract_from_package(self, package_content: ET.Element) -> Dict[str, Any]:
@@ -167,6 +178,54 @@ class BasePackageExtractor:
             
         except Exception as e:
             self.logger.error(f"Error saving data to {filename}: {e}")
+            return ""
+    
+    def update_namespaces_from_root(self, root: ET.Element) -> None:
+        """Update namespaces from the root element
+        
+        Args:
+            root: XML root element
+        """
+        try:
+            # Extract namespace from root tag
+            if root.tag.startswith('{'):
+                ns_url = root.tag[1:].split('}')[0]
+                if 'cognos.com/schemas/bmt/' in ns_url:
+                    # Determine which prefix to use based on the version
+                    prefix = self.namespace_url_to_prefix.get(ns_url, 'bmt')
+                    self.namespaces[prefix] = ns_url
+                    # Also update 'bmt' to point to this namespace for compatibility
+                    self.namespaces['bmt'] = ns_url
+                    self.logger.info(f"Updated {prefix} namespace to {ns_url}")
+            
+            # Extract namespaces from attributes
+            for attr, value in root.attrib.items():
+                if attr.endswith('}schemaLocation') and 'cognos.com/schemas/bmt/' in value:
+                    parts = value.split()
+                    for part in parts:
+                        if 'cognos.com/schemas/bmt/' in part:
+                            # Determine which prefix to use based on the version
+                            prefix = self.namespace_url_to_prefix.get(part, 'bmt')
+                            self.namespaces[prefix] = part
+                            # Also update 'bmt' to point to this namespace for compatibility
+                            self.namespaces['bmt'] = part
+                            self.logger.info(f"Updated {prefix} namespace from attributes to {part}")
+                            break
+                            
+            # Extract xmlns attributes directly
+            for attr, value in root.attrib.items():
+                if attr == 'xmlns' and 'cognos.com/schemas/bmt/' in value:
+                    prefix = self.namespace_url_to_prefix.get(value, 'bmt')
+                    self.namespaces[prefix] = value
+                    # Also update 'bmt' to point to this namespace for compatibility
+                    self.namespaces['bmt'] = value
+                    self.logger.info(f"Updated {prefix} namespace from xmlns to {value}")
+                elif attr.startswith('xmlns:') and 'cognos.com/schemas/bmt/' in value:
+                    prefix = attr.split(':', 1)[1]
+                    self.namespaces[prefix] = value
+                    self.logger.info(f"Updated {prefix} namespace from xmlns:{prefix} to {value}")
+        except Exception as e:
+            self.logger.warning(f"Failed to update namespaces from root: {e}")
             return ""
     
     def map_cognos_type_to_powerbi(self, cognos_type: str) -> str:

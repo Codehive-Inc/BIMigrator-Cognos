@@ -1,0 +1,418 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" useStyleVersion="11.6" expressionLocale="en-us">
+  <drillBehavior/>
+  <layouts>
+    <layout>
+      <reportPages>
+        <page name="Page1">
+          <style>
+            <defaultStyles>
+              <defaultStyle refStyle="pg"/>
+            </defaultStyles>
+          </style>
+          <pageBody>
+            <style>
+              <defaultStyles>
+                <defaultStyle refStyle="pb"/>
+              </defaultStyles>
+            </style>
+            <contents>
+              <table>
+                <style>
+                  <defaultStyles>
+                    <defaultStyle refStyle="tb"/>
+                  </defaultStyles>
+                  <CSS value="border-collapse:collapse;width:100%"/>
+                </style>
+                <tableRows>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents>
+                          <selectValue parameter="Parameter1" required="false" refQuery="Query2" autoSubmit="true">
+                            <useItem refDataItem="ProductID">
+                              <displayItem refDataItem="ProductName"/>
+                            </useItem>
+                            <style>
+                              <CSS value="border-collapse:collapse"/>
+                              <defaultStyles>
+                                <defaultStyle refStyle="ls"/>
+                                <defaultStyle refStyle="GuidedLayoutMargin"/>
+                              </defaultStyles>
+                            </style>
+                          </selectValue>
+                        </contents>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents>
+                          <block>
+                            <contents/>
+                            <style>
+                              <CSS value="height:4px"/>
+                            </style>
+                          </block>
+                        </contents>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents>
+                          <list horizontalPagination="true" name="List1" refQuery="Query1">
+                            <noDataHandler>
+                              <contents>
+                                <block>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>No Data Available</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding:16px;"/>
+                                  </style>
+                                </block>
+                              </contents>
+                            </noDataHandler>
+                            <style>
+                              <CSS value="border-collapse:collapse"/>
+                              <defaultStyles>
+                                <defaultStyle refStyle="ls"/>
+                                <defaultStyle refStyle="GuidedLayoutMargin"/>
+                              </defaultStyles>
+                            </style>
+                            <listColumns>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Country"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Country"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <listColumnRowSpan refDataItem="Country"/>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="State"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="State"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <listColumnRowSpan refDataItem="State"/>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Year"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Year"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <listColumnRowSpan refDataItem="Year"/>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="ProductName"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="ProductName"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <listColumnRowSpan refDataItem="ProductName"/>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Quarter"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Quarter"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Month"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Month"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="SalesAmount"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="SalesAmount"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Quantity"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="pd_2"/>
+                                      <defaultStyle refStyle="xm"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Quantity"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                      <defaultStyle refStyle="pd_1"/>
+                                    </defaultStyles>
+                                  </style>
+                                </listColumnBody>
+                              </listColumn>
+                            </listColumns>
+                            <listGroups>
+                              <listGroup refDataItem="Country"/>
+                              <listGroup refDataItem="State"/>
+                              <listGroup refDataItem="Year"/>
+                              <listGroup refDataItem="ProductName"/>
+                            </listGroups>
+                          </list>
+                        </contents>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                </tableRows>
+              </table>
+            </contents>
+          </pageBody>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
+          </XMLAttributes>
+        </page>
+      </reportPages>
+    </layout>
+  </layouts>
+</report>

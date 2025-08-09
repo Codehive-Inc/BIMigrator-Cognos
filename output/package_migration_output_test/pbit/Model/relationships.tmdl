@@ -1,0 +1,208 @@
+relationship 400fd638-5194-4abd-9891-31270c031312
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Agency.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 8d3d9479-781c-4b0c-b482-e09803d78d44
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Agency.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship dfc81634-1d89-4faa-99f2-751abd48e698
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Assistance.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 87fb9238-c137-4645-8b53-8b6acce4da9b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Assistance.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship e3d7859c-7eed-4537-9e3c-ddc6c1022988
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Assistance.PreparedDate
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship e7b6c656-1def-431b-bb35-0f032ff55cfb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Authorization.ApplicableDate
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 7eb9acf5-46c5-4cad-89e1-41cfc5516a71
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Authorization.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship e167f311-7804-4a1c-97b3-2fcf90bebbdc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Authorization.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship bb5686b4-73ef-4e91-a07c-fa2ce6dd3619
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Financial.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 8c36e6d5-5e2f-4272-a0c4-104575d5835e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Financial.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship e8a00d07-b41a-4dd7-84d7-472a84464b65
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Territory.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship b59a6b36-d3a0-476e-80e4-2f9a01a1a6e5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Territory.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship da810374-1406-4d5a-9505-119ce59f2f06
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Vendor.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 5048e748-3f8b-415d-a7b9-003b7e26bfa5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Vendor.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship d076f9f4-e083-4c0c-8e39-73fe58240e69
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwAssistanceReport.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 5410e999-8666-42fe-94f1-d5f8a4e747fb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwAssistanceReport.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 99f4ed3a-8e26-4244-83e9-2d543152937e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwAssistanceReport.PreparedDate
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 36b76d3e-380b-4f25-a05c-4182fb888c87
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwAuthorizationsByAgency.'Date Submitted'
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship e4d5f5ee-217f-46af-8cbd-f9e21618c89b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwFinancialReport.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship cab30027-ca8c-4839-99f3-a6fef8c2e302
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwFinancialReport.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 042f3eb2-6344-4a86-94ab-47e81494ad29
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwPayeeReport.'Date Submitted'
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 93632584-ef5b-4e40-b24b-808d8aef120f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwFinancialReportDrillDown.ApplicableDate
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship d416bf7a-9731-41ee-98d0-df6bf282f512
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwFinancialReportDrillDown.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 73ae17af-7f2d-4243-84aa-49df12fae768
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwFinancialReportDrillDown.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 9b83fed1-743c-43f4-99a2-12e1ae4e7123
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwAssistanceReportDrillDown.datecreated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 7a5af6ce-0abd-4b2f-8612-e93720c61ea7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: vwAssistanceReportDrillDown.LastUpdated
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+

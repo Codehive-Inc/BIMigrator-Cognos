@@ -1,0 +1,75 @@
+table Territory
+
+
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Name'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Name
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsActive'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsActive
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Territory' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table Territory: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x109953140>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

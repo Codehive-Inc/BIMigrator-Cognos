@@ -8,8 +8,9 @@ import json
 import logging
 import os
 import uuid
+import re
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Set
 from datetime import datetime
 
 from cognos_migrator.config import MigrationConfig, CognosConfig
@@ -17,9 +18,10 @@ from cognos_migrator.common.logging import configure_logging, log_info, log_warn
 from cognos_migrator.client import CognosClient, CognosAPIError
 from cognos_migrator.common.websocket_client import logging_helper, set_task_info
 from cognos_migrator.extractors.packages import PackageExtractor, ConsolidatedPackageExtractor
-from cognos_migrator.generators import PowerBIProjectGenerator
-from cognos_migrator.models import PowerBIProject
-from cognos_migrator.migrations.report import migrate_single_report_with_explicit_session
+from ..models import PowerBIProject, DataModel
+from ..generators import PowerBIProjectGenerator
+from ..extractors.packages import ConsolidatedPackageExtractor
+from .report import migrate_single_report_with_explicit_session
 from ..consolidation import consolidate_model_tables
 
 
@@ -182,9 +184,9 @@ def migrate_package_with_explicit_session(package_file_path: str,
         
         log_info(f"Generated PBIT file: {pbit_path}")
         
-        # Step 5: Complete migration
+        # Log completion
         logging_helper(
-            message="Migration completed successfully",
+            message=f"Package migration completed successfully: {package_info['name']}",
             progress=100,
             message_type="success"
         )
@@ -192,16 +194,171 @@ def migrate_package_with_explicit_session(package_file_path: str,
         return True
         
     except Exception as e:
-        log_error(f"Migration failed: {e}")
+        log_error(f"Error during package migration: {str(e)}")
         
         # Also send to WebSocket for frontend updates
         logging_helper(
-            message=f"Migration failed: {e}",
+            message=f"Error during package migration: {str(e)}",
             progress=100,
             message_type="error"
         )
         
         return False
+
+
+def extract_tables_from_report(report_output_path: str) -> Set[str]:
+    """Extract table references from a migrated report
+    
+    This function analyzes the extracted report data to identify which tables
+    are referenced by the report.
+    
+    Args:
+        report_output_path: Path to the migrated report output directory
+        
+    Returns:
+        Set of table names referenced by the report
+    """
+    table_references = set()
+    report_path = Path(report_output_path)
+    
+    # Check for extracted directory
+    extracted_dir = report_path / "extracted"
+    if not extracted_dir.exists():
+        return table_references
+    
+    # Check for report_data_items.json which contains column references
+    data_items_file = extracted_dir / "report_data_items.json"
+    if data_items_file.exists():
+        try:
+            with open(data_items_file, 'r', encoding='utf-8') as f:
+                data_items = json.load(f)
+                
+            # Extract table names from data items
+            for item in data_items:
+                # Look for table references in expressions
+                if "expression" in item and item["expression"]:
+                    tables = extract_tables_from_expression(item["expression"])
+                    table_references.update(tables)
+                
+                # Look for direct table references
+                if "tableName" in item and item["tableName"]:
+                    table_references.add(item["tableName"])
+        except Exception as e:
+            logging.error(f"Error extracting tables from report data items: {e}")
+    
+    # Check for report_queries.json which contains query references
+    queries_file = extracted_dir / "report_queries.json"
+    if queries_file.exists():
+        try:
+            with open(queries_file, 'r', encoding='utf-8') as f:
+                queries = json.load(f)
+                
+            # Extract table names from queries
+            for query in queries:
+                if "source" in query and query["source"]:
+                    # Extract table names from query source
+                    tables = extract_tables_from_expression(query["source"])
+                    table_references.update(tables)
+                    
+                if "tables" in query and isinstance(query["tables"], list):
+                    for table in query["tables"]:
+                        if isinstance(table, str):
+                            table_references.add(table)
+                        elif isinstance(table, dict) and "name" in table:
+                            table_references.add(table["name"])
+        except Exception as e:
+            logging.error(f"Error extracting tables from report queries: {e}")
+    
+    return table_references
+
+
+def extract_tables_from_expression(expression: str) -> Set[str]:
+    """Extract table names from a Cognos expression
+    
+    Args:
+        expression: Cognos expression string
+        
+    Returns:
+        Set of table names found in the expression
+    """
+    tables = set()
+    
+    if not expression or not isinstance(expression, str):
+        return tables
+    
+    # Pattern to match [namespace].[package].[table].[column] or [table].[column]
+    patterns = [
+        r'\[\w+\]\.\[\w+\]\.\[(\w+)\]',  # [namespace].[package].[table]
+        r'\[(\w+)\]\.\[\w+\]'             # [table].[column]
+    ]
+    
+    for pattern in patterns:
+        matches = re.findall(pattern, expression)
+        tables.update(matches)
+    
+    return tables
+
+
+def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) -> DataModel:
+    """Filter the data model to include only tables referenced by reports
+    
+    Args:
+        data_model: The original data model with all tables
+        table_references: Set of table names referenced by reports
+        
+    Returns:
+        Filtered data model with only referenced tables
+    """
+    if not table_references:
+        # If no table references, return the original model
+        return data_model
+    
+    # Create a new data model with only the referenced tables
+    filtered_tables = []
+    
+    for table in data_model.tables:
+        # Check if table name is in references
+        if table.name in table_references:
+            filtered_tables.append(table)
+            continue
+            
+        # Also check source_name if available
+        if hasattr(table, 'source_name') and table.source_name in table_references:
+            filtered_tables.append(table)
+            continue
+            
+        # Check for partial matches (table names might have prefixes/suffixes)
+        for ref in table_references:
+            if ref in table.name or (hasattr(table, 'source_name') and ref in table.source_name):
+                filtered_tables.append(table)
+                break
+    
+    # Create a new data model with the filtered tables
+    filtered_model_args = {
+        'name': data_model.name,
+        'tables': filtered_tables,
+        'relationships': data_model.relationships,  # Keep all relationships for now
+        'measures': data_model.measures
+    }
+    
+    # Add perspectives if available in the data model
+    if hasattr(data_model, 'perspectives'):
+        filtered_model_args['perspectives'] = data_model.perspectives
+        
+    filtered_model = DataModel(**filtered_model_args)
+    
+    # Filter relationships to include only those between remaining tables
+    filtered_table_names = {table.name for table in filtered_tables}
+    filtered_relationships = []
+    
+    for rel in filtered_model.relationships:
+        if (rel.from_table in filtered_table_names and 
+            rel.to_table in filtered_table_names):
+            filtered_relationships.append(rel)
+    
+    filtered_model.relationships = filtered_relationships
+    
+    return filtered_model
 
 
 def migrate_package_with_reports_explicit_session(package_file_path: str,
@@ -210,7 +367,8 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                        report_ids: List[str] = None,
                                        cpf_file_path: str = None,
                                        task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+                                       auth_key: str = "IBM-BA-Authorization",
+                                       dry_run: bool = False) -> bool:
     """Migrate a Cognos Framework Manager package file to Power BI with explicit session credentials
     and include specific reports
     
@@ -226,12 +384,13 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         cpf_file_path: Optional path to CPF file for enhanced metadata
         task_id: Optional task ID for tracking (default: auto-generated)
         auth_key: The authentication header key (default: IBM-BA-Authorization)
+        dry_run: If True, skips actual Cognos API calls and uses dummy data for testing (default: False)
         
     Returns:
         bool: True if migration was successful, False otherwise
         
     Raises:
-        CognosAPIError: If session is expired or invalid
+        CognosAPIError: If session is expired or invalid (not in dry_run mode)
     """
     # Generate task ID if not provided
     if task_id is None:
@@ -275,13 +434,82 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         extracted_dir = output_dir / "extracted"
         extracted_dir.mkdir(exist_ok=True)
         
+        reports_dir = output_dir / "reports"
+        reports_dir.mkdir(exist_ok=True)
+        
         pbit_dir = output_dir / "pbit"
         pbit_dir.mkdir(exist_ok=True)
         
-        # Step 1: Extract package information
+        # Step 1: Migrate associated reports if provided
+        successful_report_ids = []
+        report_table_references = set()  # Set to track tables referenced by reports
+        
+        if report_ids and len(report_ids) > 0:
+            logging_helper(
+                message=f"Migrating {len(report_ids)} associated reports",
+                progress=10,
+                message_type="info"
+            )
+            
+            if dry_run:
+                # In dry run mode, skip actual report migration and use dummy table references
+                log_info("Dry run mode: Skipping actual report migration and using dummy table references")
+                
+                # Create dummy report directories
+                for i, report_id in enumerate(report_ids):
+                    report_output_path = reports_dir / report_id
+                    report_output_path.mkdir(exist_ok=True)
+                    successful_report_ids.append(report_id)
+                    
+                    # Generate some dummy table references for testing
+                    dummy_tables = [f"TABLE_{i}_{j}" for j in range(3)]
+                    report_table_references.update(dummy_tables)
+                    log_info(f"Added dummy table references for report {report_id}: {dummy_tables}")
+                    
+                    # Progress update
+                    logging_helper(
+                        message=f"Dry run: Processed report {i+1}/{len(report_ids)}: {report_id}",
+                        progress=10 + int((i / len(report_ids)) * 20),
+                        message_type="info"
+                    )
+            else:
+                # Normal mode: Actually migrate reports via Cognos API
+                for i, report_id in enumerate(report_ids):
+                    log_info(f"Migrating report {i+1}/{len(report_ids)}: {report_id}")
+                    
+                    logging_helper(
+                        message=f"Migrating report {i+1}/{len(report_ids)}: {report_id}",
+                        progress=10 + int((i / len(report_ids)) * 20),
+                        message_type="info"
+                    )
+                    
+                    # Use the report migration function with explicit session
+                    report_output_path = str(reports_dir / report_id)
+                    report_success = migrate_single_report_with_explicit_session(
+                        report_id=report_id,
+                        output_path=report_output_path,
+                        cognos_url=cognos_url,
+                        session_key=session_key,
+                        task_id=f"{task_id}_report_{i}",
+                        auth_key=auth_key
+                    )
+                    
+                    if report_success:
+                        log_info(f"Report migration successful: {report_id}")
+                        successful_report_ids.append(report_id)
+                        
+                        # Extract table references from the migrated report
+                        report_tables = extract_tables_from_report(report_output_path)
+                        if report_tables:
+                            report_table_references.update(report_tables)
+                            log_info(f"Extracted {len(report_tables)} table references from report {report_id}")
+                    else:
+                        log_warning(f"Report migration failed: {report_id}")
+        
+        # Step 2: Extract package information
         logging_helper(
             message="Extracting package information",
-            progress=10,
+            progress=30,
             message_type="info"
         )
         
@@ -297,10 +525,10 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         log_info(f"Extracted package information: {package_info['name']}")
         
-        # Step 2: Convert to Power BI data model
+        # Step 3: Convert to Power BI data model
         logging_helper(
             message="Converting to Power BI data model",
-            progress=30,
+            progress=50,
             message_type="info"
         )
         
@@ -312,42 +540,20 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
-        # Step 3: Migrate associated reports if provided
-        successful_report_ids = []
-        
-        if report_ids and len(report_ids) > 0:
+        # Step 4: Filter tables based on report references
+        if report_ids and len(report_ids) > 0 and report_table_references:
             logging_helper(
-                message=f"Migrating {len(report_ids)} associated reports",
-                progress=40,
+                message=f"Filtering data model to include only tables referenced by reports",
+                progress=60,
                 message_type="info"
             )
             
-            for i, report_id in enumerate(report_ids):
-                log_info(f"Migrating report {i+1}/{len(report_ids)}: {report_id}")
-                
-                logging_helper(
-                    message=f"Migrating report {i+1}/{len(report_ids)}: {report_id}",
-                    progress=40 + int((i / len(report_ids)) * 20),
-                    message_type="info"
-                )
-                
-                # Use the report migration function with explicit session
-                report_success = migrate_single_report_with_explicit_session(
-                    report_id=report_id,
-                    output_path=str(output_dir / "reports" / report_id),
-                    cognos_url=cognos_url,
-                    session_key=session_key,
-                    task_id=f"{task_id}_report_{i}",
-                    auth_key=auth_key
-                )
-                
-                if report_success:
-                    log_info(f"Report migration successful: {report_id}")
-                    successful_report_ids.append(report_id)
-                else:
-                    log_warning(f"Report migration failed: {report_id}")
+            # Filter the data model to include only tables referenced by reports
+            data_model = filter_data_model_tables(data_model, report_table_references)
+            
+            log_info(f"Filtered data model now has {len(data_model.tables)} tables")
         
-        # Step 4: Create Power BI project
+        # Step 5: Create Power BI project
         logging_helper(
             message="Creating Power BI project",
             progress=70,

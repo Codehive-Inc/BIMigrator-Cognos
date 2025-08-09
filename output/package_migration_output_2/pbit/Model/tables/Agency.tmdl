@@ -1,0 +1,260 @@
+table Agency
+
+
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyUserID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyUserID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Address1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Address1
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Address2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Address2
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'City'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: City
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Zip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Zip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Phone'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Phone
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Fax'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Fax
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ContactName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ContactName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Email'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Email
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DistributionAgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DistributionAgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DivisionID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DivisionID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyType
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IsActive'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: IsActive
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantFirstName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantFirstName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantMiddleName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantMiddleName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantLastName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantLastName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantAddress'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantAddress
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantCity'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantCity
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantState'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantState
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicantZip'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ApplicantZip
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AmountDue'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AmountDue
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MatchingEnergyCredit'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MatchingEnergyCredit
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PaidByEnergyShare'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaidByEnergyShare
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Agency' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAgency"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AgencyID", Int64.Type}, {"AgencyUserID", type text}, {"AgencyName", type text}, {"Address1", type text}, {"Address2", type text}, {"City", type text}, {"State", type text}, {"Zip", type text}, {"Phone", type text}, {"Fax", type text}, {"ContactName", type text}, {"Email", type text}, {"DistributionAgencyID", Int64.Type}, {"DivisionID", Int64.Type}, {"AgencyType", type text}, {"IsActive", type text}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}, {"ApplicantFirstName", type text}, {"ApplicantMiddleName", type text}, {"ApplicantLastName", type text}, {"ApplicantAddress", type text}, {"ApplicantCity", type text}, {"ApplicantState", type text}, {"ApplicantZip", type text}, {"AmountDue", type text}, {"MatchingEnergyCredit", type text}, {"PaidByEnergyShare", type text}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,180 @@
+table Assistance
+
+
+    column 'AssistanceReportID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AssistanceReportID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'HouseholdsAssisted'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: HouseholdsAssisted
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Applications'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Applications
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Denials'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Denials
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PreparedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PreparedBy
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PreparedDate'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: PreparedDate
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'datecreated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LastUpdated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'tblAssistanceReport - Count by datecreated' = ```
+            CALCULATE(
+    COUNTROWS('Assistance'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[datecreated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'tblAssistanceReport - Count by LastUpdated' = ```
+            CALCULATE(
+    COUNTROWS('Assistance'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[LastUpdated])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'tblAssistanceReport - Count by PreparedDate' = ```
+            CALCULATE(
+    COUNTROWS('Assistance'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[PreparedDate])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'Assistance' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAssistanceReport"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AssistanceReportID", Int64.Type}, {"AgencyID", Int64.Type}, {"ApplicableMonth", Int64.Type}, {"ApplicableYear", Int64.Type}, {"HouseholdsAssisted", Int64.Type}, {"Applications", Int64.Type}, {"Denials", Int64.Type}, {"PreparedBy", type text}, {"PreparedDate", type datetime}, {"CreatedBy", type text}, {"datecreated", type datetime}, {"UpdatedBy", type text}, {"LastUpdated", type datetime}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

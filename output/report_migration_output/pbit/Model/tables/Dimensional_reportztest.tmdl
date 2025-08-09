@@ -1,0 +1,94 @@
+table Dimensional_reportztest
+
+
+    column 'Year'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: Year
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Quarter'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Quarter
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Month'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Month
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ProductName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Country
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SalesAmount'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: SalesAmount
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Quantity'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: Quantity
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'ProductID'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: ProductID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Dimensional_reportztest' = m
+        mode: import
+        source = 
+            	let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx"), null, true),
+					Sheet1_Sheet = Source{{[Item = "Sheet1",Kind = "Sheet"]}}[Data],
+					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars = true]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(#"Promoted Headers"),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"Year", type number}, {"Quarter", type text}, {"Month", type text}, {"ProductName", type text}, {"Country", type text}, {"State", type text}, {"SalesAmount", type number}, {"Quantity", type number}, {"ProductID", type number}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 from typing import Dict, List, Optional, Any
 
-from cognos_migrator.models import DataType, DataModel, Table, Column, Relationship
+from cognos_migrator.models import DataType, DataModel, Table, Column, Relationship, Measure
 
 from .base_package_extractor import BasePackageExtractor
 from .package_structure_extractor import PackageStructureExtractor
@@ -69,6 +69,13 @@ class ConsolidatedPackageExtractor:
             # Parse the XML file once
             tree = ET.parse(package_file_path)
             root = tree.getroot()
+            
+            # Update namespaces on all extractors from the root element
+            self.structure_extractor.update_namespaces_from_root(root)
+            self.query_subject_extractor.update_namespaces_from_root(root)
+            self.relationship_extractor.update_namespaces_from_root(root)
+            self.calculation_extractor.update_namespaces_from_root(root)
+            self.logger.info(f"Updated namespaces on all extractors from {package_file_path}")
             
             # Save a formatted version of the XML file if output directory is specified
             if output_path:
@@ -180,13 +187,27 @@ class ConsolidatedPackageExtractor:
             DataModel instance
         """
         try:
+            # Load settings from settings.json
+            settings = {}
+            try:
+                with open('settings.json', 'r') as f:
+                    settings = json.load(f)
+            except FileNotFoundError:
+                self.logger.warning("settings.json not found. Using default settings.")
+            
+            date_table_mode = settings.get('date_table_mode', 'visible')
+            self.logger.info(f"Using date table mode: {date_table_mode}")
+
             self.logger.info(f"Converting package {package_info['name']} to data model")
             
             # Create tables list for data model
             tables = []
             
-            # Create data model with empty tables list (will add tables later)
-            data_model = DataModel(name=package_info['name'], tables=tables)
+            # Create data model with empty tables list and settings
+            data_model = DataModel(name=package_info['name'], tables=tables, date_table_mode=date_table_mode)
+
+            # Create a single, central date table for the entire model
+            self._create_central_date_table(data_model)
             
             # Track query subjects by type for later processing
             db_query_subjects = []
@@ -231,11 +252,14 @@ class ConsolidatedPackageExtractor:
                 
                 if referenced_table:
                     # Enhance the existing table with the model query information
-                    self._enhance_table_with_model_query(qs, referenced_table)
+                    self._enhance_table_with_model_query(qs, referenced_table, data_model)
                     self.logger.info(f"Enhanced table {referenced_table.name} with model query from {qs['name']}")
                 else:
                     # Create a new table if no matching reference found
                     self._create_table_from_query_subject(qs, data_model)
+
+            # Sort tables alphabetically to ensure deterministic processing for primary variation
+            data_model.tables.sort(key=lambda t: t.name)
             
             # Convert relationships
             for rel in package_info['relationships']:
@@ -327,6 +351,7 @@ class ConsolidatedPackageExtractor:
                 data_model.relationships.append(relationship)
             
             self.logger.info(f"Successfully converted package to data model with {len(data_model.tables)} tables and {len(data_model.relationships)} relationships")
+            
             return data_model
             
         except Exception as e:
@@ -373,12 +398,43 @@ class ConsolidatedPackageExtractor:
         
         # Extract SQL from sql_definition if available
         source_query = None
+        metadata = {}
+        
         if 'sql_definition' in qs and qs['sql_definition'] and 'sql' in qs['sql_definition']:
             source_query = qs['sql_definition']['sql']
             self.logger.info(f"Extracted SQL for table {qs['name']}: {source_query}")
+            
+            # Determine if this is a source table or model table
+            query_type = qs['sql_definition'].get('type')
+            if query_type:
+                metadata['query_type'] = query_type
+                
+                # For dbQuery (source tables), mark as source table
+                if query_type == 'dbQuery':
+                    metadata['is_source_table'] = True
+                    self.logger.info(f"Table {qs['name']} identified as source table (dbQuery)")
+                    
+                    # Extract the table name from the SQL for verification
+                    match = re.search(r'from\s+\[?[\w\.]+\]?\.([\w]+)', source_query, re.IGNORECASE)
+                    if match:
+                        source_table_name = match.group(1)
+                        if source_table_name != qs['name']:
+                            self.logger.info(f"Source table name in SQL ({source_table_name}) differs from query subject name ({qs['name']})")
+                
+                # For modelQuery (model tables), extract the source table they reference
+                elif query_type == 'modelQuery':
+                    metadata['is_source_table'] = False
+                    self.logger.info(f"Table {qs['name']} identified as model table (modelQuery)")
+                    
+                    # Extract the original table name from the SQL
+                    match = re.search(r'from\s+\[?[\w\.]+\]?\.([\w]+)', source_query, re.IGNORECASE)
+                    if match:
+                        original_table_name = match.group(1)
+                        self.logger.info(f"Model query {qs['name']} references source table: {original_table_name}")
+                        metadata['original_source_table'] = original_table_name
         
         # Create table with columns and source query
-        table = Table(name=qs['name'], columns=columns, source_query=source_query)
+        table = Table(name=qs['name'], columns=columns, source_query=source_query, metadata=metadata)
         
         # Add table to data model's tables list
         data_model.tables.append(table)
@@ -427,26 +483,91 @@ class ConsolidatedPackageExtractor:
             self.logger.info(f"No duplicate columns found in table {table.name}")
     
     def _create_date_tables_for_datetime_columns(self, table: Table, data_model: DataModel) -> None:
-        """Create a single date table for all datetime columns in a table
+        """Create relationships between datetime columns and the central date table.
         
         Args:
             table: The table containing datetime columns
-            data_model: The data model to add the date table to
+            data_model: The data model which contains the central date table
         """
-        # Find datetime columns in the table
-        datetime_columns = [col for col in table.columns if col.data_type == DataType.DATE]
+        # Find datetime columns in the table, sorted case-insensitively
+        datetime_columns = sorted([col for col in table.columns if col.data_type == DataType.DATE], key=lambda x: x.name.lower())
         
         if not datetime_columns:
             return
             
         self.logger.info(f"Found {len(datetime_columns)} datetime columns in table {table.name}")
         
-        # Get the template path
+        # The central date table should already be created.
+        if not hasattr(data_model, 'date_tables') or not data_model.date_tables:
+            self.logger.warning(f"Central date table not found. Skipping date relationship creation for table {table.name}.")
+            return
+        
+        central_date_table = data_model.date_tables[0]
+        date_table_name = central_date_table['name']
+
+        # The first datetime column (alphabetically) will have the active relationship.
+        primary_column = datetime_columns[0]
+        
+        # Create relationships for all datetime columns
+        for i, column in enumerate(datetime_columns):
+            is_active = (i == 0) # Only the first relationship is active
+            relationship_id = str(uuid.uuid4())
+            
+            relationship = Relationship(
+                id=relationship_id,
+                from_table=table.name,
+                from_column=f"{table.name}.{column.name}",
+                to_table=date_table_name,
+                to_column="Date",
+                cross_filtering_behavior="automatic",
+                join_on_date_behavior="datePartOnly",
+                is_active=is_active
+            )
+            
+            data_model.relationships.append(relationship)
+            self.logger.info(f"Created relationship for {table.name}[{column.name}] to {date_table_name}[Date] (Active: {is_active})")
+
+            # Store relationship info in the column's metadata for the active relationship's variation.
+            # Only one column in the entire model can have this default variation, and only in 'hidden' mode.
+            if is_active and data_model.date_table_mode == 'hidden' and not data_model.has_primary_date_variation:
+                if not hasattr(column, 'metadata'):
+                    column.metadata = {}
+                column.metadata['relationship_info'] = {
+                    'id': relationship_id,
+                    'hierarchy': f"{date_table_name}.'Date Hierarchy'"
+                }
+                # Set the flag so no other column gets the variation
+                data_model.has_primary_date_variation = True
+                self.logger.info(f"Designated {table.name}[{column.name}] as the primary date variation for the model.")
+            elif not is_active:
+                # For inactive relationships, create a DAX measure
+                measure_name = f"{table.name} - Count by {column.name}"
+                expression = (
+                    f"CALCULATE(\n"
+                    f"    COUNTROWS('{table.name}'),\n"
+                    f"    USERELATIONSHIP('{date_table_name}'[Date], '{table.name}'[{column.name}])\n"
+                    f")"
+                )
+                measure = Measure(name=measure_name, expression=expression)
+                
+                if not hasattr(table, 'measures'):
+                    table.measures = []
+                
+                if not any(m.name == measure_name for m in table.measures):
+                    table.measures.append(measure)
+                    self.logger.info(f"Created DAX measure '{measure_name}' for inactive relationship on {table.name}[{column.name}]")
+
+    def _create_central_date_table(self, data_model: DataModel) -> None:
+        """Creates a single, central date table for the data model."""
+        self.logger.info("Creating a single central date table for the model.")
+
+        # Determine which template to use based on the mode
+        template_filename = f"DateTableTemplate_{data_model.date_table_mode.capitalize()}.tmdl"
         template_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
-                                   'templates', 'DateTableTemplate.tmdl')
+                                   'templates', template_filename)
         
         if not os.path.exists(template_path):
-            self.logger.warning(f"DateTableTemplate.tmdl not found at {template_path}. Skipping date table creation.")
+            self.logger.warning(f"{template_filename} not found at {template_path}. Skipping central date table creation.")
             return
         
         # Read the template content
@@ -461,38 +582,17 @@ class ConsolidatedPackageExtractor:
         if not hasattr(data_model, 'date_tables'):
             data_model.date_tables = []
         
-        # Create a single date table for this source table
-        date_table_id = str(uuid.uuid4())
-        date_table_name = f"LocalDateTable_{date_table_id}"
+        # Create the central date table
+        date_table_name = "CentralDateTable"
         
-        # Store the date table information in the data model's metadata for later use in file generation
         data_model.date_tables.append({
-            'id': date_table_id,
+            'id': str(uuid.uuid4()),
             'name': date_table_name,
-            'source_table': table.name,
-            'source_column': datetime_columns[0].name,  # Use the first column as reference
             'template_content': template_content.replace('DateTableTemplate_19728d8e-9427-4914-8bc5-607973681b1e', date_table_name)
         })
         
-        self.logger.info(f"Created date table {date_table_name} for table {table.name}")
-        
-        # Create relationships between each datetime column and the date table
-        for column in datetime_columns:
-            relationship = Relationship(
-                id=str(uuid.uuid4()),  # Generate a UUID for the relationship
-                from_table=table.name,
-                from_column=f"{table.name}.{column.name}",
-                to_table=date_table_name,
-                to_column="Date",
-                cross_filtering_behavior="automatic",
-                join_on_date_behavior="datePartOnly"  # Add this to match the example
-            )
-            
-            # Add the relationship to the data model
-            data_model.relationships.append(relationship)
-            
-            self.logger.info(f"Created relationship between {table.name}[{column.name}] and {date_table_name}[Date]")
-    
+        self.logger.info(f"Successfully created central date table: {date_table_name}")
+
     def _find_referenced_table(self, model_qs: Dict[str, Any], data_model: DataModel) -> Optional[Table]:
         """Find the table referenced by a model query subject
         
@@ -532,9 +632,9 @@ class ConsolidatedPackageExtractor:
             
             # Try to extract table name from SQL using regex
             # Look for FROM clause
-            from_match = re.search(r'\bFROM\s+\[?([^\]\s\[\)]+)\]?', sql, re.IGNORECASE)
+            from_match = re.search(r'\bFROM\s+\[?[\w\.]+\]?\.([\w]+)', sql, re.IGNORECASE)
             if from_match:
-                table_name = from_match.group(1).split('.')[-1]  # Get the last part after any schema/db qualifier
+                table_name = from_match.group(1)
                 self.logger.info(f"Extracted table name from FROM clause: {table_name}")
                 
                 # Look for a matching table in the data model
@@ -546,7 +646,7 @@ class ConsolidatedPackageExtractor:
                         return table
             
             # If FROM clause didn't work, try JOIN clauses
-            join_matches = re.findall(r'\bJOIN\s+\[?([^\]\s\[\)]+)\]?', sql, re.IGNORECASE)
+            join_matches = re.findall(r'\bJOIN\s+\[?[\w\.]+\]?\.([\w]+)', sql, re.IGNORECASE)
             if join_matches:
                 for join_table in join_matches:
                     table_name = join_table.split('.')[-1]  # Get the last part after any schema/db qualifier
@@ -572,7 +672,7 @@ class ConsolidatedPackageExtractor:
         self.logger.warning(f"Could not find referenced table for model query {model_qs['name']}")
         return None
 
-    def _enhance_table_with_model_query(self, model_qs: Dict[str, Any], table: Table) -> None:
+    def _enhance_table_with_model_query(self, model_qs: Dict[str, Any], table: Table, data_model: DataModel) -> None:
         """Enhance an existing table with information from a model query
         
         Args:
@@ -632,9 +732,30 @@ class ConsolidatedPackageExtractor:
         if table.name.lower().startswith('tbl') and not model_qs['name'].lower().startswith('tbl'):
             self.logger.info(f"Updating table name from {table.name} to {model_qs['name']} (more business-friendly)")
             
-            # Store the original name in metadata
+            # Store the original name in metadata for relationship updates
+            original_name = table.name
             table.metadata = table.metadata or {}
-            table.metadata['original_name'] = table.name
+            table.metadata['original_name'] = original_name
             
             # Update the name
-            table.name = model_qs['name']
+            new_name = model_qs['name']
+            table.name = new_name
+
+            # Update all existing relationships that point to the old table name
+            for rel in data_model.relationships:
+                if rel.from_table == original_name:
+                    rel.from_table = new_name
+                    self.logger.info(f"Updated relationship from_table from {original_name} to {new_name}")
+                if rel.to_table == original_name:
+                    rel.to_table = new_name
+                    self.logger.info(f"Updated relationship to_table from {original_name} to {new_name}")
+            
+            # Also update the DAX expressions of any measures on this table
+            if hasattr(table, 'measures'):
+                for measure in table.measures:
+                    # Use a regex to replace the old table name, case-insensitively
+                    # This is safer than a simple string replace
+                    old_expression = measure.expression
+                    measure.expression = re.sub(f"'{re.escape(original_name)}'", f"'{new_name}'", old_expression, flags=re.IGNORECASE)
+                    if old_expression != measure.expression:
+                        self.logger.info(f"Updated measure '{measure.name}' DAX from using '{original_name}' to '{new_name}'")

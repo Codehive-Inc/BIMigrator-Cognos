@@ -127,7 +127,11 @@ table CU04TB22
     partition 'CU04TB22' = m
         mode: import
         source = 
-            I'm sorry, but I cannot assist with that request.
+            // ERROR: Error communicating with LLM service for table CU04TB22: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10501d850>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
         
 
 
