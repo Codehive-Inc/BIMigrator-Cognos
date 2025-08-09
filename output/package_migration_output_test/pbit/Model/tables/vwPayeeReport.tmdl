@@ -79,7 +79,7 @@ table vwPayeeReport
         
         variation Variation
             isDefault
-            relationship: b9307a34-9363-4c0c-8844-f598872464cf
+            relationship: 0250d3f5-0fe9-4ce6-ad6f-deeaf035e52e
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -106,7 +106,7 @@ table vwPayeeReport
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by Date Submitted' = ```
             CALCULATE(
     COUNTROWS('vwPayeeReport'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwPayeeReport'[Date Submitted])

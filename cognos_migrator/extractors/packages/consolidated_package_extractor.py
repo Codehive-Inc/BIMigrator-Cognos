@@ -241,7 +241,7 @@ class ConsolidatedPackageExtractor:
                 
                 if referenced_table:
                     # Enhance the existing table with the model query information
-                    self._enhance_table_with_model_query(qs, referenced_table)
+                    self._enhance_table_with_model_query(qs, referenced_table, data_model)
                     self.logger.info(f"Enhanced table {referenced_table.name} with model query from {qs['name']}")
                 else:
                     # Create a new table if no matching reference found
@@ -337,6 +337,42 @@ class ConsolidatedPackageExtractor:
                 data_model.relationships.append(relationship)
             
             self.logger.info(f"Successfully converted package to data model with {len(data_model.tables)} tables and {len(data_model.relationships)} relationships")
+            
+            # Generate DAX measures for inactive date relationships after all tables and relationships are finalized
+            if hasattr(data_model, 'date_tables') and data_model.date_tables:
+                central_date_table_name = data_model.date_tables[0]['name']
+                for relationship in data_model.relationships:
+                    if relationship.to_table == central_date_table_name and not relationship.is_active:
+                        from_table_name = relationship.from_table
+                        from_column_name = relationship.from_column
+
+                        # The from_column might be 'TableName.ColumnName', so split it.
+                        if '.' in from_column_name:
+                            from_column_name = from_column_name.split('.')[-1]
+
+                        # Find the table object from the final list of tables
+                        table_obj = next((t for t in data_model.tables if t.name == from_table_name), None)
+                        if not table_obj:
+                            continue
+
+                        measure_name = f"Count of Rows by {from_column_name}"
+                        # Use table_obj.name to ensure the final, model-friendly table name is used in the DAX expression
+                        expression = (
+                            f"CALCULATE(\n"
+                            f"    COUNTROWS('{table_obj.name}'),\n"
+                            f"    USERELATIONSHIP('{central_date_table_name}'[Date], '{table_obj.name}'[{from_column_name}])\n"
+                            f")"
+                        )
+                        measure = Measure(name=measure_name, expression=expression)
+                        
+                        if not hasattr(table_obj, 'measures'):
+                            table_obj.measures = []
+
+                        # Add the measure only if a measure with the same name doesn't already exist
+                        if not any(m.name == measure_name for m in table_obj.measures):
+                            table_obj.measures.append(measure)
+                            self.logger.info(f"Created DAX measure '{measure_name}' for inactive relationship on {table_obj.name}[{from_column_name}]")
+
             return data_model
             
         except Exception as e:
@@ -520,23 +556,6 @@ class ConsolidatedPackageExtractor:
                     'id': relationship_id,
                     'hierarchy': f"{date_table_name}.'Date Hierarchy'"
                 }
-            # For inactive relationships, create a DAX measure
-            else:
-                measure_name = f"Count of Rows by {column.name}"
-                expression = (
-                    f"CALCULATE(\n"
-                    f"    COUNTROWS('{table.name}'),\n"
-                    f"    USERELATIONSHIP('{date_table_name}'[Date], '{table.name}'[{column.name}])\n"
-                    f")"
-                )
-                
-                measure = Measure(name=measure_name, expression=expression)
-                
-                # Add the measure to the table's measures list
-                if not hasattr(table, 'measures'):
-                    table.measures = []
-                table.measures.append(measure)
-                self.logger.info(f"Created DAX measure '{measure_name}' for inactive relationship on {table.name}[{column.name}]")
 
     def _create_central_date_table(self, data_model: DataModel) -> None:
         """Creates a single, central date table for the data model."""
@@ -652,7 +671,7 @@ class ConsolidatedPackageExtractor:
         self.logger.warning(f"Could not find referenced table for model query {model_qs['name']}")
         return None
 
-    def _enhance_table_with_model_query(self, model_qs: Dict[str, Any], table: Table) -> None:
+    def _enhance_table_with_model_query(self, model_qs: Dict[str, Any], table: Table, data_model: DataModel) -> None:
         """Enhance an existing table with information from a model query
         
         Args:
@@ -712,9 +731,20 @@ class ConsolidatedPackageExtractor:
         if table.name.lower().startswith('tbl') and not model_qs['name'].lower().startswith('tbl'):
             self.logger.info(f"Updating table name from {table.name} to {model_qs['name']} (more business-friendly)")
             
-            # Store the original name in metadata
+            # Store the original name in metadata for relationship updates
+            original_name = table.name
             table.metadata = table.metadata or {}
-            table.metadata['original_name'] = table.name
+            table.metadata['original_name'] = original_name
             
             # Update the name
-            table.name = model_qs['name']
+            new_name = model_qs['name']
+            table.name = new_name
+
+            # Update all existing relationships that point to the old table name
+            for rel in data_model.relationships:
+                if rel.from_table == original_name:
+                    rel.from_table = new_name
+                    self.logger.info(f"Updated relationship from_table from {original_name} to {new_name}")
+                if rel.to_table == original_name:
+                    rel.to_table = new_name
+                    self.logger.info(f"Updated relationship to_table from {original_name} to {new_name}")

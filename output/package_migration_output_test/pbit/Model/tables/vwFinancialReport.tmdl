@@ -229,7 +229,7 @@ table vwFinancialReport
         
         variation Variation
             isDefault
-            relationship: 9dc7ac27-dc1e-4f62-b1bb-5268a988b88b
+            relationship: 954fb3fd-3a0d-4b93-9d6f-773c8471a98c
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -386,7 +386,7 @@ table vwFinancialReport
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
     COUNTROWS('vwFinancialReport'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReport'[datecreated])
@@ -396,17 +396,7 @@ table vwFinancialReport
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('vwFinancialReport'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReport'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('vwFinancialReport'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReport'[LastUpdated])

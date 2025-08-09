@@ -109,7 +109,7 @@ table Assistance
         
         variation Variation
             isDefault
-            relationship: 9cf6fee9-47be-44fd-9a16-8b228c58cf47
+            relationship: 9716ceb0-e304-4c4e-b1a1-0850bea8d6c9
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -136,50 +136,30 @@ table Assistance
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
-    COUNTROWS('tblAssistanceReport'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[datecreated])
+    COUNTROWS('Assistance'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[datecreated])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
-    COUNTROWS('tblAssistanceReport'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[LastUpdated])
+    COUNTROWS('Assistance'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[LastUpdated])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by PreparedDate' = ```
             CALCULATE(
-    COUNTROWS('tblAssistanceReport'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblAssistanceReport'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[PreparedDate])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblAssistanceReport'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAssistanceReport'[PreparedDate])
+    COUNTROWS('Assistance'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[PreparedDate])
 )
     ```
 

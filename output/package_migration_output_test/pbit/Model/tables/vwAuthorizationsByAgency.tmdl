@@ -19,7 +19,7 @@ table vwAuthorizationsByAgency
         
         variation Variation
             isDefault
-            relationship: 73d44a0b-86fa-4425-8cfb-b3dfd026c742
+            relationship: 462e6a21-d4db-4096-9062-704120a2b95b
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -326,7 +326,7 @@ table vwAuthorizationsByAgency
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by Date Submitted' = ```
             CALCULATE(
     COUNTROWS('vwAuthorizationsByAgency'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwAuthorizationsByAgency'[Date Submitted])

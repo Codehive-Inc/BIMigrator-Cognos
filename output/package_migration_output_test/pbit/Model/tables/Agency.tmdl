@@ -179,7 +179,7 @@ table Agency
         
         variation Variation
             isDefault
-            relationship: bbbb509f-5d3b-4612-b965-7fd17e8b0d29
+            relationship: e72a6fa6-5530-4b4b-9119-dd3d3109d111
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -306,30 +306,20 @@ table Agency
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
-    COUNTROWS('tblAgency'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAgency'[datecreated])
+    COUNTROWS('Agency'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Agency'[datecreated])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
-    COUNTROWS('tblAgency'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAgency'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblAgency'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAgency'[LastUpdated])
+    COUNTROWS('Agency'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Agency'[LastUpdated])
 )
     ```
 

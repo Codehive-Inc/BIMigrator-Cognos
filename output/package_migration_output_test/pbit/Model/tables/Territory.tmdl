@@ -49,7 +49,7 @@ table Territory
         
         variation Variation
             isDefault
-            relationship: 62615f0a-4a0c-45f1-9609-a82bc8417edd
+            relationship: c63cf1f3-02a2-4420-9c70-15bf338665b2
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -76,30 +76,20 @@ table Territory
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
-    COUNTROWS('tblTerritory'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblTerritory'[datecreated])
+    COUNTROWS('Territory'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Territory'[datecreated])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
-    COUNTROWS('tblTerritory'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblTerritory'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblTerritory'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblTerritory'[LastUpdated])
+    COUNTROWS('Territory'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Territory'[LastUpdated])
 )
     ```
 

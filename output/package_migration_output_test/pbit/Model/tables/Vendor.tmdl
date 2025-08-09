@@ -199,7 +199,7 @@ table Vendor
         
         variation Variation
             isDefault
-            relationship: 27f40b7a-12ef-4072-9b7c-93dca19493df
+            relationship: 5edfe375-30e2-4520-8911-452098c879c5
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -226,30 +226,20 @@ table Vendor
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
-    COUNTROWS('tblVendor'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblVendor'[datecreated])
+    COUNTROWS('Vendor'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Vendor'[datecreated])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
-    COUNTROWS('tblVendor'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblVendor'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblVendor'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblVendor'[LastUpdated])
+    COUNTROWS('Vendor'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Vendor'[LastUpdated])
 )
     ```
 

@@ -69,7 +69,7 @@ table vwFinancialReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 9ef69655-bb52-47af-bc7f-5602bd2045b3
+            relationship: e2313daa-67de-435c-97eb-0dda0bbc87e4
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -346,7 +346,7 @@ table vwFinancialReportDrillDown
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by ApplicableDate' = ```
             CALCULATE(
     COUNTROWS('vwFinancialReportDrillDown'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[ApplicableDate])
@@ -356,7 +356,7 @@ table vwFinancialReportDrillDown
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
     COUNTROWS('vwFinancialReportDrillDown'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[datecreated])
@@ -366,27 +366,7 @@ table vwFinancialReportDrillDown
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('vwFinancialReportDrillDown'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[datecreated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('vwFinancialReportDrillDown'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('vwFinancialReportDrillDown'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwFinancialReportDrillDown'[LastUpdated])

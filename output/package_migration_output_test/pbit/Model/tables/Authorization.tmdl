@@ -39,7 +39,7 @@ table Authorization
         
         variation Variation
             isDefault
-            relationship: da078722-8e40-4c60-a64b-857d463a5c26
+            relationship: fdf1b695-c386-4e5f-a3e0-5b2cb9f9b74f
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -306,50 +306,30 @@ table Authorization
 
         
 
-    measure '' = ```
+    measure 'Count of Rows by ApplicableDate' = ```
             CALCULATE(
-    COUNTROWS('tblAuthorization'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[ApplicableDate])
+    COUNTROWS('Authorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Authorization'[ApplicableDate])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by datecreated' = ```
             CALCULATE(
-    COUNTROWS('tblAuthorization'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[datecreated])
+    COUNTROWS('Authorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Authorization'[datecreated])
 )
     ```
 
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure '' = ```
+    measure 'Count of Rows by LastUpdated' = ```
             CALCULATE(
-    COUNTROWS('tblAuthorization'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[datecreated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblAuthorization'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[LastUpdated])
-)
-    ```
-
-
-        annotation PBI_FormatHint = {"isGeneralNumber":true}
-        
-    measure '' = ```
-            CALCULATE(
-    COUNTROWS('tblAuthorization'),
-    USERELATIONSHIP('CentralDateTable'[Date], 'tblAuthorization'[LastUpdated])
+    COUNTROWS('Authorization'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'Authorization'[LastUpdated])
 )
     ```
 

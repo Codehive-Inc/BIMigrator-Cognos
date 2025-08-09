@@ -61,7 +61,7 @@ table {{source_name}}
     {{/each}}
 
     {{#each measures}}
-    measure '{{source_name}}' = ```
+    measure '{{name}}' = ```
             {{{expression}}}
     ```
         {{#if format_string}}
