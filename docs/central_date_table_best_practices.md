@@ -29,10 +29,10 @@ The power of inactive relationships comes from the `USERELATIONSHIP` DAX functio
 
 To promote this best practice and provide immediate utility, the BIMigrator-Cognos tool **automatically generates a sample DAX measure** for each inactive relationship it creates.
 
-For example, if the `Agency` table has an inactive relationship on its `LastUpdated` column, the following measure will be automatically added to the `Agency` table's definition:
+For example, if the `Agency` table has an inactive relationship on its `LastUpdated` column, the following measure (with a model-wide unique name) will be automatically added to the `Agency` table's definition:
 
 ```dax
-measure 'Count of Rows by LastUpdated' = ```
+measure 'Agency - Count by LastUpdated' = ```
         CALCULATE(
             COUNTROWS('Agency'),
             USERELATIONSHIP('CentralDateTable'[Date], 'Agency'[LastUpdated])

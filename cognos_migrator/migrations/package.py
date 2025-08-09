@@ -525,6 +525,18 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         log_info(f"Extracted package information: {package_info['name']}")
         
+        # Load settings from settings.json
+        settings = {}
+        try:
+            with open('settings.json', 'r') as f:
+                settings = json.load(f)
+        except FileNotFoundError:
+            log_warning("settings.json not found. Using default settings.")
+            
+        table_filtering_settings = settings.get('table_filtering', {})
+        filtering_mode = table_filtering_settings.get('mode', 'all')
+        always_include_tables = table_filtering_settings.get('always_include', [])
+        
         # Step 3: Convert to Power BI data model
         logging_helper(
             message="Converting to Power BI data model",
@@ -540,18 +552,23 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
         
-        # Step 4: Filter tables based on report references
-        if report_ids and len(report_ids) > 0 and report_table_references:
+        # Step 4: Filter tables based on settings
+        if filtering_mode == 'filter-reports' and report_ids:
             logging_helper(
-                message=f"Filtering data model to include only tables referenced by reports",
+                message="Filtering data model based on report and settings.json.",
                 progress=60,
                 message_type="info"
             )
             
-            # Filter the data model to include only tables referenced by reports
-            data_model = filter_data_model_tables(data_model, report_table_references)
+            # Combine report-referenced tables with manually included tables
+            final_table_references = report_table_references.union(set(always_include_tables))
+            
+            # Filter the data model
+            data_model = filter_data_model_tables(data_model, final_table_references)
             
             log_info(f"Filtered data model now has {len(data_model.tables)} tables")
+        else:
+            log_info("Skipping table filtering. Mode is 'all' or no reports were provided.")
         
         # Step 5: Create Power BI project
         logging_helper(

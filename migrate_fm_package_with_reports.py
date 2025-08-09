@@ -32,7 +32,7 @@ def main():
     # Parse report IDs from comma-separated string
     report_ids = [report_id.strip() for report_id in args.report_ids.split(',')]
     print(f"Migrating package with {len(report_ids)} reports: {report_ids}")
-    
+            
     # Call the enhanced migration function
     success = migrate_package_with_reports_explicit_session(
         package_file_path=args.package_file,
