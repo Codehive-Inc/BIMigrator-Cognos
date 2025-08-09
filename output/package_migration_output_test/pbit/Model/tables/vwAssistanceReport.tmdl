@@ -1,0 +1,247 @@
+table vwAssistanceReport
+
+
+    column 'Season'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Season
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'AssistanceReportID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AssistanceReportID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'AgencyName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: AgencyName
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'ApplicableMonth'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableMonth
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'ApplicableYear'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ApplicableYear
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalVeteran'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteran
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalWeatherInterested'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalWeatherInterested
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'HouseholdsAssisted'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: HouseholdsAssisted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'Denials'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: Denials
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'PreparedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PreparedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'PreparedDate'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: PreparedDate
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        variation Variation
+            isDefault
+            relationship: ed0f062c-b983-4b54-8cd1-f2b6dcc139e5
+            defaultHierarchy: &#x27;LocalDateTable_d2ac27f5-0bf3-4a8d-b96a-94709d35000e&#x27;.&#x27;Date Hierarchy&#x27;
+        
+    column 'CreatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CreatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'datecreated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: datecreated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        variation Variation
+            isDefault
+            relationship: b4175b42-ce56-4264-a4c4-511d77354b3d
+            defaultHierarchy: &#x27;LocalDateTable_d2ac27f5-0bf3-4a8d-b96a-94709d35000e&#x27;.&#x27;Date Hierarchy&#x27;
+        
+    column 'UpdatedBy'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UpdatedBy
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'LastUpdated'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LastUpdated
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        variation Variation
+            isDefault
+            relationship: f0b61b5a-26ca-4379-9551-9835504e9c97
+            defaultHierarchy: &#x27;LocalDateTable_d2ac27f5-0bf3-4a8d-b96a-94709d35000e&#x27;.&#x27;Date Hierarchy&#x27;
+        
+    column 'TotalAssisted'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalAssisted
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalOver60'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalOver60
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalUnder5'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalUnder5
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalDisabled'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabled
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalVeteranVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalVeteranVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'TotalDisabilityVoucher'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TotalDisabilityVoucher
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+    column 'EditLink'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EditLink
+
+        annotation SummarizationSetBy = Automatic
+
+        
+        
+
+
+
+    partition 'vwAssistanceReport' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table vwAssistanceReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009d490>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

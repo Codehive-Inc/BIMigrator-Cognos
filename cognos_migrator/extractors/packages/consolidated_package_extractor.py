@@ -516,8 +516,9 @@ class ConsolidatedPackageExtractor:
         
         # Create relationships between each datetime column and the date table
         for column in datetime_columns:
+            relationship_id = str(uuid.uuid4())
             relationship = Relationship(
-                id=str(uuid.uuid4()),  # Generate a UUID for the relationship
+                id=relationship_id,  # Generate a UUID for the relationship
                 from_table=table.name,
                 from_column=f"{table.name}.{column.name}",
                 to_table=date_table_name,
@@ -528,6 +529,14 @@ class ConsolidatedPackageExtractor:
             
             # Add the relationship to the data model
             data_model.relationships.append(relationship)
+            
+            # Store relationship info in the column's metadata for the template
+            if not hasattr(column, 'metadata'):
+                column.metadata = {}
+            column.metadata['relationship_info'] = {
+                'id': relationship_id,
+                'hierarchy': f"'{date_table_name}'.'Date Hierarchy'"
+            }
             
             self.logger.info(f"Created relationship between {table.name}[{column.name}] and {date_table_name}[Date]")
     

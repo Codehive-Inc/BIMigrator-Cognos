@@ -551,10 +551,12 @@ class ModelFileGenerator:
             
             # Use deduplicated columns
             for col in unique_columns.values():
+                from cognos_migrator.models import DataType
                 column_name = col.name
                 is_calculation = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
                 source_column = column_name
-                
+                is_datetime = col.data_type == DataType.DATE
+
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
                     source_column = calculations_map[column_name]
@@ -568,8 +570,13 @@ class ModelFileGenerator:
                     'is_calculated': is_calculation,
                     'summarize_by': getattr(col, 'summarize_by', 'none'),
                     'is_hidden': getattr(col, 'is_hidden', False),
-                    'annotations': {'SummarizationSetBy': 'Automatic'}
+                    'annotations': {'SummarizationSetBy': 'Automatic'},
+                    'is_datetime': is_datetime
                 }
+
+                if is_datetime and hasattr(col, 'metadata') and 'relationship_info' in col.metadata:
+                    column['relationship_info'] = col.metadata['relationship_info']
+
                 columns.append(column)
             
         # Use the provided M-query or generate it if not provided
