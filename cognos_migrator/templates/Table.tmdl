@@ -50,6 +50,15 @@ table {{source_name}}
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         {{/if}}
         
+        {{#if is_datetime}}
+        variation Variation
+            isDefault
+            {{#if relationship_info}}
+            relationship: {{relationship_info.id}}
+            defaultHierarchy: {{relationship_info.hierarchy}}
+            {{/if}}
+        {{/if}}
+        
     {{/each}}
 
     {{#each measures}}

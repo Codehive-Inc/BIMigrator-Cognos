@@ -1,7 +1,8 @@
 table DateTableTemplate_19728d8e-9427-4914-8bc5-607973681b1e
 	isHidden
 	isPrivate
-
+	showAsVariationsOnly
+	
 	column Date
 		dataType: dateTime
 		isHidden
