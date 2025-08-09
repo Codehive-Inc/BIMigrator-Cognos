@@ -66,7 +66,7 @@ class ModelFileGenerator:
         
         # Generate relationships file
         if data_model.relationships:
-            self._generate_relationships_file(data_model.relationships, model_dir)
+            self._generate_relationships_file(data_model, model_dir)
         
         # Generate model.tmdl
         self._generate_model_file(data_model, model_dir, report_name)
@@ -122,7 +122,36 @@ class ModelFileGenerator:
         if report_name:
             self.logger.info(f"Using report name '{report_name}' for table naming")
             
+        # Track source tables to avoid duplicates
+        source_tables = {}
+        model_tables = {}
+        
+        # First pass: identify source tables and model tables
         for table in tables:
+            # Check if this is a source table (dbQuery)
+            if table.metadata.get('is_source_table'):
+                source_tables[table.name] = table
+                self.logger.info(f"Identified source table: {table.name}")
+            # Check if this is a model table referencing a source table
+            elif table.metadata.get('original_source_table'):
+                referenced_table = table.metadata.get('original_source_table')
+                model_tables[table.name] = referenced_table
+                self.logger.info(f"Identified model table: {table.name} referencing {referenced_table}")
+        
+        # Second pass: generate table files only for source tables
+        for table in tables:
+            table_name = table.name
+            
+            # Skip model tables that reference source tables we already have
+            if table_name in model_tables:
+                self.logger.info(f"Skipping model table {table_name} as it references source table {model_tables[table_name]}")
+                continue
+                
+            # Only generate tables for source tables
+            if not table.metadata.get('is_source_table'):
+                self.logger.info(f"Skipping table {table_name} as it is not a source table")
+                continue
+                
             try:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
                 
@@ -609,26 +638,35 @@ class ModelFileGenerator:
         self.logger.info(f"[MQUERY_TRACKING] Generated M-query for table {table.name}: {m_query[:200]}...")
         return m_query
     
-    def _generate_relationships_file(self, relationships: List[Relationship], model_dir: Path):
-        """Generate relationships.tmdl file"""
-        # Deduplicate relationships based on from/to tables and columns
-        unique_relationships = {}
-        for rel in relationships:
-            # Create a unique key for the relationship
-            key = f"{rel.from_table}:{rel.from_column}:{rel.to_table}:{rel.to_column}"
-            # Only keep one relationship per unique combination
-            if key not in unique_relationships:
-                unique_relationships[key] = rel
-            else:
-                self.logger.warning(f"Duplicate relationship found: {key}. Using first occurrence.")
+    def _generate_relationships_file(self, data_model: DataModel, model_dir: Path):
+        """Generate relationships file for the data model"""
+        self.logger.info(f"Generating relationships file for {len(data_model.relationships)} relationships")
         
-        self.logger.info(f"Found {len(relationships)} relationships, {len(unique_relationships)} unique")
+        # Create a mapping of model tables to their source tables
+        model_to_source_table = {}
+        for table in data_model.tables:
+            if not table.metadata.get('is_source_table') and table.metadata.get('original_source_table'):
+                model_to_source_table[table.name] = table.metadata.get('original_source_table')
+                self.logger.info(f"Mapping model table {table.name} to source table {table.metadata.get('original_source_table')}")
         
-        # Create context for template rendering
+        # Prepare relationships data for template rendering
         relationships_context = []
-        for rel in unique_relationships.values():
+        for rel in data_model.relationships:
+            # Map model tables to source tables in relationships
+            from_table = rel.from_table
+            to_table = rel.to_table
+            
+            # If from_table is a model table, use its source table instead
+            if from_table in model_to_source_table:
+                self.logger.info(f"Replacing model table {from_table} with source table {model_to_source_table[from_table]} in relationship")
+                from_table = model_to_source_table[from_table]
+            
+            # If to_table is a model table, use its source table instead
+            if to_table in model_to_source_table:
+                self.logger.info(f"Replacing model table {to_table} with source table {model_to_source_table[to_table]} in relationship")
+                to_table = model_to_source_table[to_table]
+            
             # Determine which cardinality to use (fromCardinality or toCardinality)
-            # We only use one of them in the template, not both
             cardinality_type = 'fromCardinality'
             cardinality_value = rel.from_cardinality
             
@@ -639,8 +677,8 @@ class ModelFileGenerator:
             
             # Format table names according to TMDL rules
             # Table names with spaces need to be quoted
-            from_table = f"'{rel.from_table}'" if ' ' in rel.from_table else rel.from_table
-            to_table = f"'{rel.to_table}'" if ' ' in rel.to_table else rel.to_table
+            from_table_formatted = f"'{from_table}'" if ' ' in from_table else from_table
+            to_table_formatted = f"'{to_table}'" if ' ' in to_table else to_table
             
             # Clean up column names by removing table name prefixes if they exist
             from_column = rel.from_column
@@ -656,10 +694,10 @@ class ModelFileGenerator:
                 to_column = parts[-1]  # Take the last part after the last dot
             
             relationship_data = {
-                'id': rel.id,  # Use UUID as the ID
-                'from_table': from_table,
+                'id': rel.id,
+                'from_table': from_table_formatted,
                 'from_column': from_column,
-                'to_table': to_table,
+                'to_table': to_table_formatted,
                 'to_column': to_column,
                 'cardinality_type': cardinality_type,
                 'cardinality_value': cardinality_value,
@@ -668,132 +706,96 @@ class ModelFileGenerator:
                 'join_on_date_behavior': rel.join_on_date_behavior
             }
             relationships_context.append(relationship_data)
-            
+        
+        # Create context for template rendering
         context = {
             'relationships': relationships_context
         }
         
+        # Generate relationships file using template engine
         content = self.template_engine.render('relationship', context)
-        
         relationships_file = model_dir / 'relationships.tmdl'
         with open(relationships_file, 'w', encoding='utf-8') as f:
             f.write(content)
-            
+        
         # Save to extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
         if extracted_dir:
             # Save relationships as JSON
             relationships_json = []
-            for rel in unique_relationships.values():
-                # Extract just the column name without table name prefix
-                from_column = rel.from_column
-                to_column = rel.to_column
-                
-                # Remove table name from column if it's included
-                if from_column and '.' in from_column:
-                    parts = from_column.split('.')
-                    from_column = parts[-1]  # Take the last part after the last dot
-                    
-                if to_column and '.' in to_column:
-                    parts = to_column.split('.')
-                    to_column = parts[-1]  # Take the last part after the last dot
-                
+            for rel in relationships_context:
                 rel_json = {
-                    "id": rel.id,
-                    "fromTable": rel.from_table,
-                    "fromColumn": from_column,
-                    "toTable": rel.to_table,
-                    "toColumn": to_column,
-                    "isActive": rel.is_active
+                    "id": rel['id'],
+                    "fromTable": rel['from_table'].strip("'"),  # Remove quotes if present
+                    "fromColumn": rel['from_column'],
+                    "toTable": rel['to_table'].strip("'"),  # Remove quotes if present
+                    "toColumn": rel['to_column'],
+                    "isActive": rel['is_active']
                 }
                 
                 # Add cardinality
-                if rel.to_cardinality is not None:
-                    rel_json["toCardinality"] = rel.to_cardinality
+                if rel['cardinality_type'] == 'toCardinality':
+                    rel_json["toCardinality"] = rel['cardinality_value']
                 else:
-                    rel_json["fromCardinality"] = rel.from_cardinality
+                    rel_json["fromCardinality"] = rel['cardinality_value']
                     
                 # Add cross filtering behavior
-                rel_json["crossFilteringBehavior"] = rel.cross_filtering_behavior
+                rel_json["crossFilteringBehavior"] = rel['cross_filtering_behavior']
                 
                 # Add join on date behavior if present
-                if rel.join_on_date_behavior:
-                    rel_json["joinOnDateBehavior"] = rel.join_on_date_behavior
+                if rel['join_on_date_behavior']:
+                    rel_json["joinOnDateBehavior"] = rel['join_on_date_behavior']
                     
                 relationships_json.append(rel_json)
                 
-            save_json_to_extracted_dir(extracted_dir, "relationships.json", {"relationships": relationships_json})
-            
-        self.logger.info(f"Generated relationships file: {relationships_file}")
-
-        
-        # Save to extracted directory if applicable
-        # We already saved relationships.json with the correct format earlier
-        # No need to save a duplicate relationship.json file
+            with open(extracted_dir / 'relationships.json', 'w', encoding='utf-8') as f:
+                json.dump(relationships_json, f, indent=2)
             
         self.logger.info(f"Generated relationships file: {relationships_file}")
     
     def _generate_model_file(self, data_model: DataModel, model_dir: Path, report_name: Optional[str] = None):
         """Generate model.tmdl file"""
-        # Get extracted directory if applicable
-        extracted_dir = get_extracted_dir(model_dir)
+        self.logger.info(f"Generating model file")
         
-        if report_name:
-            self.logger.info(f"Using report name '{report_name}' for model naming")
+        # Create a mapping of model tables to their source tables
+        model_to_source_table = {}
+        source_tables = set()
         
-        # Use report name for model name if available
-        model_name = data_model.name
-        if report_name:
-            model_name = report_name
-        
-        # Get table names for references and query order
-        table_names = []
+        # Identify source tables and model tables
         for table in data_model.tables:
-            table_name = table.name
-            if report_name and table.name == "Data":
-                # Replace spaces with underscores and remove special characters
-                safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-                table_name = safe_report_name
-            table_names.append(table_name)
+            if table.metadata.get('is_source_table'):
+                source_tables.add(table.name)
+                self.logger.info(f"Identified source table for model: {table.name}")
+            elif table.metadata.get('original_source_table'):
+                model_to_source_table[table.name] = table.metadata.get('original_source_table')
+                self.logger.info(f"Identified model table: {table.name} referencing {table.metadata.get('original_source_table')}")
         
-        # Add date table names if they exist
-        date_table_names = []
-        if hasattr(data_model, 'date_tables') and data_model.date_tables:
-            for date_table in data_model.date_tables:
-                date_table_names.append(date_table['name'])
-            self.logger.info(f"Including date table references in model.tmdl: {date_table_names}")
-            table_names.extend(date_table_names)
+        # Filter tables to only include source tables
+        filtered_tables = [table for table in data_model.tables if table.metadata.get('is_source_table')]
+        self.logger.info(f"Filtered {len(data_model.tables)} tables to {len(filtered_tables)} source tables for model file")
         
-        self.logger.info(f"Including table references in model.tmdl: {table_names}")
-            
+        # Create context for template rendering
         context = {
-            'model_name': model_name,
-            'culture': data_model.culture or 'en-US',
-            'default_culture': data_model.culture or 'en-US',
-            'tables': table_names,
-            'time_intelligence_enabled': getattr(data_model, 'time_intelligence_enabled', '0'),
-            'desktop_version': getattr(data_model, 'desktop_version', '2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729')
+            'model_name': report_name or 'Model',
+            'tables': [table.name for table in filtered_tables]
         }
         
+        # Generate model file
         content = self.template_engine.render('model', context)
-        
         model_file = model_dir / 'model.tmdl'
         with open(model_file, 'w', encoding='utf-8') as f:
             f.write(content)
+            
+        self.logger.info(f"Generated model file: {model_file}")
         
         # Save to extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
         if extracted_dir:
-            # Save model info as JSON
             model_json = {
-                "name": data_model.name,
-                "culture": data_model.culture or 'en-US',
-                "compatibility_level": data_model.compatibility_level,
-                "default_power_bi_data_source_version": "powerBI_V3"
+                "name": report_name or 'Model',
+                "tables": [table.name for table in filtered_tables]
             }
             save_json_to_extracted_dir(extracted_dir, "model.json", model_json)
-            
-        self.logger.info(f"Generated model file: {model_file}")
     
     def _generate_culture_file(self, data_model: DataModel, model_dir: Path):
         """Generate culture.tmdl file"""

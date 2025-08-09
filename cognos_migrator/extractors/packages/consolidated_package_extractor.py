@@ -380,12 +380,43 @@ class ConsolidatedPackageExtractor:
         
         # Extract SQL from sql_definition if available
         source_query = None
+        metadata = {}
+        
         if 'sql_definition' in qs and qs['sql_definition'] and 'sql' in qs['sql_definition']:
             source_query = qs['sql_definition']['sql']
             self.logger.info(f"Extracted SQL for table {qs['name']}: {source_query}")
+            
+            # Determine if this is a source table or model table
+            query_type = qs['sql_definition'].get('type')
+            if query_type:
+                metadata['query_type'] = query_type
+                
+                # For dbQuery (source tables), mark as source table
+                if query_type == 'dbQuery':
+                    metadata['is_source_table'] = True
+                    self.logger.info(f"Table {qs['name']} identified as source table (dbQuery)")
+                    
+                    # Extract the table name from the SQL for verification
+                    match = re.search(r'from\s+\[?[\w\.]+\]?\.([\w]+)', source_query, re.IGNORECASE)
+                    if match:
+                        source_table_name = match.group(1)
+                        if source_table_name != qs['name']:
+                            self.logger.info(f"Source table name in SQL ({source_table_name}) differs from query subject name ({qs['name']})")
+                
+                # For modelQuery (model tables), extract the source table they reference
+                elif query_type == 'modelQuery':
+                    metadata['is_source_table'] = False
+                    self.logger.info(f"Table {qs['name']} identified as model table (modelQuery)")
+                    
+                    # Extract the original table name from the SQL
+                    match = re.search(r'from\s+\[?[\w\.]+\]?\.([\w]+)', source_query, re.IGNORECASE)
+                    if match:
+                        original_table_name = match.group(1)
+                        self.logger.info(f"Model query {qs['name']} references source table: {original_table_name}")
+                        metadata['original_source_table'] = original_table_name
         
         # Create table with columns and source query
-        table = Table(name=qs['name'], columns=columns, source_query=source_query)
+        table = Table(name=qs['name'], columns=columns, source_query=source_query, metadata=metadata)
         
         # Add table to data model's tables list
         data_model.tables.append(table)
@@ -539,9 +570,9 @@ class ConsolidatedPackageExtractor:
             
             # Try to extract table name from SQL using regex
             # Look for FROM clause
-            from_match = re.search(r'\bFROM\s+\[?([^\]\s\[\)]+)\]?', sql, re.IGNORECASE)
+            from_match = re.search(r'\bFROM\s+\[?[\w\.]+\]?\.([\w]+)', sql, re.IGNORECASE)
             if from_match:
-                table_name = from_match.group(1).split('.')[-1]  # Get the last part after any schema/db qualifier
+                table_name = from_match.group(1)
                 self.logger.info(f"Extracted table name from FROM clause: {table_name}")
                 
                 # Look for a matching table in the data model
@@ -553,7 +584,7 @@ class ConsolidatedPackageExtractor:
                         return table
             
             # If FROM clause didn't work, try JOIN clauses
-            join_matches = re.findall(r'\bJOIN\s+\[?([^\]\s\[\)]+)\]?', sql, re.IGNORECASE)
+            join_matches = re.findall(r'\bJOIN\s+\[?[\w\.]+\]?\.([\w]+)', sql, re.IGNORECASE)
             if join_matches:
                 for join_table in join_matches:
                     table_name = join_table.split('.')[-1]  # Get the last part after any schema/db qualifier

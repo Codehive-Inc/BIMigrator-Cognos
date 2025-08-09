@@ -1,0 +1,233 @@
+{
+  "source_name": "Financial",
+  "name": "Financial",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "FinancialReportID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "FinancialReportID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AgencyID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AgencyID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicableMonth",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicableMonth",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ApplicableYear",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ApplicableYear",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "BalanceForward",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "BalanceForward",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EnergyShareCheckAmount",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EnergyShareCheckAmount",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EnergySharePartnerAmount",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EnergySharePartnerAmount",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "AmountSpentPayingEnergyBills",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "AmountSpentPayingEnergyBills",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "BalanceOnHand",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "BalanceOnHand",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PreparedBy",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PreparedBy",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CreatedBy",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CreatedBy",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "datecreated",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "datecreated",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UpdatedBy",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UpdatedBy",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LastUpdated",
+      "datatype": "dateTime",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LastUpdated",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ]
+}

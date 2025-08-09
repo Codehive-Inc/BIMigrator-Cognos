@@ -1,0 +1,301 @@
+{
+  "relationships": [
+    {
+      "id": "f025f342-bd8c-44bb-811d-0b070f04b4c5",
+      "fromTable": "tblAgency",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_7e2fcf02-b07f-4018-8ff8-a0a8cc8c8693",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "8b510eda-191a-4b61-a6e5-d0a98d9f7e87",
+      "fromTable": "tblAgency",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_7e2fcf02-b07f-4018-8ff8-a0a8cc8c8693",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "f884e801-daa5-412d-879a-b9ca9f19a0fa",
+      "fromTable": "tblAssistanceReport",
+      "fromColumn": "PreparedDate",
+      "toTable": "LocalDateTable_a88792b8-ab03-4a70-803b-969ee69ab53e",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "0bf411ba-4527-4d9a-a3b6-bbb01e3e7dfc",
+      "fromTable": "tblAssistanceReport",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_a88792b8-ab03-4a70-803b-969ee69ab53e",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "842d0128-1ec7-42dc-abd2-8e80822b8ff6",
+      "fromTable": "tblAssistanceReport",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_a88792b8-ab03-4a70-803b-969ee69ab53e",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "08ff59ce-369b-4497-9ad5-08f022225d1d",
+      "fromTable": "tblAuthorization",
+      "fromColumn": "ApplicableDate",
+      "toTable": "LocalDateTable_006c48dd-33d8-4fb6-9def-75d92afb7de4",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "6f963bf7-c53c-4136-8ebf-0df37760002e",
+      "fromTable": "tblAuthorization",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_006c48dd-33d8-4fb6-9def-75d92afb7de4",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "a9f9db96-dafb-4d04-8a01-cc095ed2458f",
+      "fromTable": "tblAuthorization",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_006c48dd-33d8-4fb6-9def-75d92afb7de4",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "9891b560-7c7c-41ec-84c2-9104f5972f75",
+      "fromTable": "tblFinancialReport",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_cf51cd74-783f-477c-9237-42f48bc29e3e",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "7b1794fc-21f8-4ed4-b552-8595f5c2f12d",
+      "fromTable": "tblFinancialReport",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_cf51cd74-783f-477c-9237-42f48bc29e3e",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "a1d24b2e-0d73-4085-b6e1-aaa6c3fb3b14",
+      "fromTable": "tblTerritory",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_14980af3-9c79-4f2c-9f00-c85a19b49eae",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "14522c4c-1610-4cc4-bc74-b8493c6d9a42",
+      "fromTable": "tblTerritory",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_14980af3-9c79-4f2c-9f00-c85a19b49eae",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "9fa10a90-8b13-4fd5-b7ee-16424e9c2cfb",
+      "fromTable": "tblVendor",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_9805ade5-4303-4420-b725-19ca20690fa2",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "5b2d4f27-b374-4186-b94f-05ad130c01aa",
+      "fromTable": "tblVendor",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_9805ade5-4303-4420-b725-19ca20690fa2",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "9659597f-53e8-43ed-852e-1e2d907a2c90",
+      "fromTable": "vwAssistanceReport",
+      "fromColumn": "PreparedDate",
+      "toTable": "LocalDateTable_562e923b-c110-49c2-867f-d2524b705cbd",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "31641e33-63c6-4352-8e0f-4f61fd596f90",
+      "fromTable": "vwAssistanceReport",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_562e923b-c110-49c2-867f-d2524b705cbd",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "e6edf719-50dd-4ed8-8b12-f9aa79699e90",
+      "fromTable": "vwAssistanceReport",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_562e923b-c110-49c2-867f-d2524b705cbd",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "8a0eb273-cd98-49ae-90a5-9e6a3d6c624d",
+      "fromTable": "vwAuthorizationsByAgency",
+      "fromColumn": "Date Submitted",
+      "toTable": "LocalDateTable_1e1d1dca-5b48-4eda-bfcd-c943959db32e",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "c6f91e4a-8c2f-4f76-b889-4ee49b6a0a42",
+      "fromTable": "vwFinancialReport",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_b3a61890-a293-4ac7-b4da-76ebedbc466f",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "77937dd6-16d0-46d3-839b-48a7f6f3eb68",
+      "fromTable": "vwFinancialReport",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_b3a61890-a293-4ac7-b4da-76ebedbc466f",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "80b4d036-3f7e-4f1f-9894-9c4e0ff0305f",
+      "fromTable": "vwPayeeReport",
+      "fromColumn": "Date Submitted",
+      "toTable": "LocalDateTable_1fb36a38-101c-4134-93e5-6236be50b968",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "ea20198a-09a8-4326-b47e-e0917da4a1ca",
+      "fromTable": "vwFinancialReportDrillDown",
+      "fromColumn": "ApplicableDate",
+      "toTable": "LocalDateTable_44d72bd6-2c13-4266-8489-2dff720c1c13",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "3716476a-4904-4ced-add9-b4f0b0e4fa91",
+      "fromTable": "vwFinancialReportDrillDown",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_44d72bd6-2c13-4266-8489-2dff720c1c13",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "6af1ee50-78a5-44b0-ad97-a0dee170cbf6",
+      "fromTable": "vwFinancialReportDrillDown",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_44d72bd6-2c13-4266-8489-2dff720c1c13",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "ba06aff5-8295-47cb-875c-d154276b5742",
+      "fromTable": "vwAssistanceReportDrillDown",
+      "fromColumn": "datecreated",
+      "toTable": "LocalDateTable_4047156e-8841-4a96-92d6-df7ec5210b29",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "4cc6b470-1267-466f-99c4-40d2157e4bd2",
+      "fromTable": "vwAssistanceReportDrillDown",
+      "fromColumn": "LastUpdated",
+      "toTable": "LocalDateTable_4047156e-8841-4a96-92d6-df7ec5210b29",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    },
+    {
+      "id": "0e7accbe-3780-461b-8302-944911ced301",
+      "fromTable": "Payee Report",
+      "fromColumn": "Date Submitted",
+      "toTable": "LocalDateTable_ac03bff2-7901-40a8-a9ed-e95ea3a99820",
+      "toColumn": "Date",
+      "isActive": true,
+      "fromCardinality": "many",
+      "crossFilteringBehavior": "automatic",
+      "joinOnDateBehavior": "datePartOnly"
+    }
+  ]
+}

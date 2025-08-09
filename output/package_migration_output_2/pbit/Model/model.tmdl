@@ -1,0 +1,29 @@
+model Model
+	culture: 
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: 
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown"]
+
+annotation __PBI_TimeIntelligenceEnabled = 
+
+annotation PBIDesktopVersion = 
+
+ref table Agency
+ref table tblAgencyTerritory
+ref table Assistance
+ref table Authorization
+ref table Financial
+ref table Territory
+ref table Vendor
+ref table vwAssistanceReport
+ref table vwAuthorizationsByAgency
+ref table vwFinancialReport
+ref table vwPayeeReport
+ref table vwFinancialReportDrillDown
+ref table vwAssistanceReportDrillDown
+
+ref cultureInfo 
