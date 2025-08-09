@@ -99,7 +99,7 @@ table vwAssistanceReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 9b7d7176-7b54-4d7d-aefa-51c57f923df3
+            relationship: 62eab5d8-9df0-47d1-bef1-5bf3a2a50068
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -216,7 +216,7 @@ table vwAssistanceReportDrillDown
 
         
 
-    measure 'Count of Rows by datecreated' = ```
+    measure 'vwAssistanceReportDrillDown - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('vwAssistanceReportDrillDown'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReportDrillDown'[datecreated])
@@ -226,7 +226,7 @@ table vwAssistanceReportDrillDown
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Count of Rows by LastUpdated' = ```
+    measure 'vwAssistanceReportDrillDown - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('vwAssistanceReportDrillDown'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReportDrillDown'[LastUpdated])

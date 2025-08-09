@@ -119,7 +119,7 @@ table Financial
         
         variation Variation
             isDefault
-            relationship: 6fbbf1e3-2eca-47ee-8cc3-577b6a45d8af
+            relationship: 9d7efa04-d534-4f7a-aea1-c9a3862d1923
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -146,7 +146,7 @@ table Financial
 
         
 
-    measure 'Count of Rows by datecreated' = ```
+    measure 'Financial - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Financial'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Financial'[datecreated])
@@ -156,7 +156,7 @@ table Financial
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Count of Rows by LastUpdated' = ```
+    measure 'Financial - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Financial'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Financial'[LastUpdated])

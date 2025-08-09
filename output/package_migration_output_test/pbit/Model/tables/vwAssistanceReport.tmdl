@@ -149,7 +149,7 @@ table vwAssistanceReport
         
         variation Variation
             isDefault
-            relationship: 69207c32-a090-40be-9922-f4b05f9cdfda
+            relationship: 749b21b6-7a48-444b-a248-c818fb87cc2a
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -246,7 +246,7 @@ table vwAssistanceReport
 
         
 
-    measure 'Count of Rows by datecreated' = ```
+    measure 'vwAssistanceReport - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('vwAssistanceReport'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[datecreated])
@@ -256,7 +256,7 @@ table vwAssistanceReport
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Count of Rows by LastUpdated' = ```
+    measure 'vwAssistanceReport - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('vwAssistanceReport'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[LastUpdated])
@@ -266,7 +266,7 @@ table vwAssistanceReport
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Count of Rows by PreparedDate' = ```
+    measure 'vwAssistanceReport - Count by PreparedDate' = ```
             CALCULATE(
     COUNTROWS('vwAssistanceReport'),
     USERELATIONSHIP('CentralDateTable'[Date], 'vwAssistanceReport'[PreparedDate])

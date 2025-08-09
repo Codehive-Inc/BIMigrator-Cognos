@@ -355,7 +355,7 @@ class ConsolidatedPackageExtractor:
                         if not table_obj:
                             continue
 
-                        measure_name = f"Count of Rows by {from_column_name}"
+                        measure_name = f"{table_obj.name} - Count by {from_column_name}"
                         # Use table_obj.name to ensure the final, model-friendly table name is used in the DAX expression
                         expression = (
                             f"CALCULATE(\n"

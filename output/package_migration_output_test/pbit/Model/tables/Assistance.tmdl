@@ -109,7 +109,7 @@ table Assistance
         
         variation Variation
             isDefault
-            relationship: 9716ceb0-e304-4c4e-b1a1-0850bea8d6c9
+            relationship: 88789959-e455-473d-9105-8035a92beaa5
             defaultHierarchy: CentralDateTable.'Date Hierarchy'
 
         annotation SummarizationSetBy = Automatic
@@ -136,7 +136,7 @@ table Assistance
 
         
 
-    measure 'Count of Rows by datecreated' = ```
+    measure 'Assistance - Count by datecreated' = ```
             CALCULATE(
     COUNTROWS('Assistance'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[datecreated])
@@ -146,7 +146,7 @@ table Assistance
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Count of Rows by LastUpdated' = ```
+    measure 'Assistance - Count by LastUpdated' = ```
             CALCULATE(
     COUNTROWS('Assistance'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[LastUpdated])
@@ -156,7 +156,7 @@ table Assistance
 
         annotation PBI_FormatHint = {"isGeneralNumber":true}
         
-    measure 'Count of Rows by PreparedDate' = ```
+    measure 'Assistance - Count by PreparedDate' = ```
             CALCULATE(
     COUNTROWS('Assistance'),
     USERELATIONSHIP('CentralDateTable'[Date], 'Assistance'[PreparedDate])
