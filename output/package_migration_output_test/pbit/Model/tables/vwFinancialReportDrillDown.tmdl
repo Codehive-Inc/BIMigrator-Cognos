@@ -65,8 +65,8 @@ table vwFinancialReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 855baa93-0cff-4b39-b85c-be2b3879af69
-            defaultHierarchy: &#x27;LocalDateTable_d1df2d91-9b69-4263-b0f0-10a40361e372&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 8f130f20-dba9-4854-b5cd-c78793014159
+            defaultHierarchy: LocalDateTable_b51ada42-6f3f-40d3-bd1b-640d342923db.'Date Hierarchy'
         
     column 'ApplicantNumber'
         dataType: string
@@ -285,8 +285,8 @@ table vwFinancialReportDrillDown
         
         variation Variation
             isDefault
-            relationship: ddc90c09-f22c-4bac-9f5c-a16ac49ef3cf
-            defaultHierarchy: &#x27;LocalDateTable_d1df2d91-9b69-4263-b0f0-10a40361e372&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 0f4deed3-1591-440e-8faf-b1035a557021
+            defaultHierarchy: LocalDateTable_b51ada42-6f3f-40d3-bd1b-640d342923db.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -307,8 +307,8 @@ table vwFinancialReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 6ffd5907-acad-4d39-902d-7452c2a5485f
-            defaultHierarchy: &#x27;LocalDateTable_d1df2d91-9b69-4263-b0f0-10a40361e372&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: cd3a8888-8c8e-43a0-9c89-226159449e12
+            defaultHierarchy: LocalDateTable_b51ada42-6f3f-40d3-bd1b-640d342923db.'Date Hierarchy'
         
     column 'EditLink'
         dataType: string
@@ -325,7 +325,7 @@ table vwFinancialReportDrillDown
     partition 'vwFinancialReportDrillDown' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwFinancialReportDrillDown: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009d7f0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table vwFinancialReportDrillDown: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049eb0b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

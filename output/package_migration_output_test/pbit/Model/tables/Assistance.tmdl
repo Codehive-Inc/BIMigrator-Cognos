@@ -83,8 +83,8 @@ table Assistance
         
         variation Variation
             isDefault
-            relationship: 482d4bf6-a5d9-4006-8ca8-f602bf3b5f02
-            defaultHierarchy: &#x27;LocalDateTable_329552e9-df25-4665-8da5-8ce53ad0ddfe&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 9babdae3-4ee1-48f2-aa5c-220f2efd9329
+            defaultHierarchy: LocalDateTable_415dbaa0-7837-403c-bfc9-0948bab32fed.'Date Hierarchy'
         
     column 'CreatedBy'
         dataType: string
@@ -105,8 +105,8 @@ table Assistance
         
         variation Variation
             isDefault
-            relationship: 3448dd6f-1f2d-4512-8ad4-a6aa5d4cbaa9
-            defaultHierarchy: &#x27;LocalDateTable_329552e9-df25-4665-8da5-8ce53ad0ddfe&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 0bec85ac-6830-4a6d-acbb-69827ac8ee10
+            defaultHierarchy: LocalDateTable_415dbaa0-7837-403c-bfc9-0948bab32fed.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -127,8 +127,8 @@ table Assistance
         
         variation Variation
             isDefault
-            relationship: f032da4c-e223-4a5c-bb7d-726764c5f5e3
-            defaultHierarchy: &#x27;LocalDateTable_329552e9-df25-4665-8da5-8ce53ad0ddfe&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: a0d9706b-0ddf-4a68-a72a-0e4e3f0bc8b6
+            defaultHierarchy: LocalDateTable_415dbaa0-7837-403c-bfc9-0948bab32fed.'Date Hierarchy'
         
 
 
@@ -136,7 +136,7 @@ table Assistance
     partition 'Assistance' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Assistance: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009df70>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table Assistance: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049ebe60>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

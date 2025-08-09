@@ -55,7 +55,7 @@ table {{source_name}}
             isDefault
             {{#if relationship_info}}
             relationship: {{relationship_info.id}}
-            defaultHierarchy: {{relationship_info.hierarchy}}
+            defaultHierarchy: {{{relationship_info.hierarchy}}}
             {{/if}}
         {{/if}}
         

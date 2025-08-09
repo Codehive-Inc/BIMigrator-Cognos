@@ -535,7 +535,7 @@ class ConsolidatedPackageExtractor:
                 column.metadata = {}
             column.metadata['relationship_info'] = {
                 'id': relationship_id,
-                'hierarchy': f"'{date_table_name}'.'Date Hierarchy'"
+                'hierarchy': f"{date_table_name}.'Date Hierarchy'"
             }
             
             self.logger.info(f"Created relationship between {table.name}[{column.name}] and {date_table_name}[Date]")

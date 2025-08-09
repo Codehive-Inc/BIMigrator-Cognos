@@ -209,8 +209,8 @@ table vwFinancialReport
         
         variation Variation
             isDefault
-            relationship: 2d9c6904-5c09-4fed-a307-fc0be1489aaf
-            defaultHierarchy: &#x27;LocalDateTable_3b3c8c64-6521-4cac-94ac-49b77069558b&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: f98c1e1e-f5c3-4191-8609-196499fd69ac
+            defaultHierarchy: LocalDateTable_464ea0da-9950-40fa-b648-398c68c1c421.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -231,8 +231,8 @@ table vwFinancialReport
         
         variation Variation
             isDefault
-            relationship: 70fb6d4b-0411-4a1f-aa7d-8932592c2bf3
-            defaultHierarchy: &#x27;LocalDateTable_3b3c8c64-6521-4cac-94ac-49b77069558b&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 040ae62d-7be5-48c9-9a24-d9e6283940db
+            defaultHierarchy: LocalDateTable_464ea0da-9950-40fa-b648-398c68c1c421.'Date Hierarchy'
         
     column 'itemizedDominion'
         dataType: string
@@ -357,7 +357,7 @@ table vwFinancialReport
     partition 'vwFinancialReport' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwFinancialReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009e000>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table vwFinancialReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e9820>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

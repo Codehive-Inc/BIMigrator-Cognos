@@ -119,8 +119,8 @@ table vwAssistanceReport
         
         variation Variation
             isDefault
-            relationship: ed0f062c-b983-4b54-8cd1-f2b6dcc139e5
-            defaultHierarchy: &#x27;LocalDateTable_d2ac27f5-0bf3-4a8d-b96a-94709d35000e&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: e8a59b6d-9a2a-4767-b8d8-ac6fa6038e92
+            defaultHierarchy: LocalDateTable_34fe3e2d-4a48-4b4a-bf1d-21c2aa29a31e.'Date Hierarchy'
         
     column 'CreatedBy'
         dataType: string
@@ -141,8 +141,8 @@ table vwAssistanceReport
         
         variation Variation
             isDefault
-            relationship: b4175b42-ce56-4264-a4c4-511d77354b3d
-            defaultHierarchy: &#x27;LocalDateTable_d2ac27f5-0bf3-4a8d-b96a-94709d35000e&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 7809952e-1296-4dbd-afb9-b5046498ca11
+            defaultHierarchy: LocalDateTable_34fe3e2d-4a48-4b4a-bf1d-21c2aa29a31e.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -163,8 +163,8 @@ table vwAssistanceReport
         
         variation Variation
             isDefault
-            relationship: f0b61b5a-26ca-4379-9551-9835504e9c97
-            defaultHierarchy: &#x27;LocalDateTable_d2ac27f5-0bf3-4a8d-b96a-94709d35000e&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 3f49e57b-4b7f-4a92-9ad7-395439b7111a
+            defaultHierarchy: LocalDateTable_34fe3e2d-4a48-4b4a-bf1d-21c2aa29a31e.'Date Hierarchy'
         
     column 'TotalAssisted'
         dataType: int64
@@ -235,7 +235,7 @@ table vwAssistanceReport
     partition 'vwAssistanceReport' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwAssistanceReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009d490>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table vwAssistanceReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e9880>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

@@ -110,8 +110,8 @@ table Financial
         
         variation Variation
             isDefault
-            relationship: b4a2c2e7-bfcf-4104-9047-769ae2719679
-            defaultHierarchy: &#x27;LocalDateTable_a195ac98-5700-45ec-99b4-079d76666e79&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 60400c12-8737-42d2-addf-f4396b8ae2de
+            defaultHierarchy: LocalDateTable_21454e1d-1a32-4cf7-b3bb-b1e0ee8b3467.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -132,8 +132,8 @@ table Financial
         
         variation Variation
             isDefault
-            relationship: f40b2052-5331-4e11-b93d-392dcf726815
-            defaultHierarchy: &#x27;LocalDateTable_a195ac98-5700-45ec-99b4-079d76666e79&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 6558b456-fb47-40dd-bf44-c56035d2563e
+            defaultHierarchy: LocalDateTable_21454e1d-1a32-4cf7-b3bb-b1e0ee8b3467.'Date Hierarchy'
         
 
 
@@ -141,7 +141,7 @@ table Financial
     partition 'Financial' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Financial: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009e150>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table Financial: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049cb230>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

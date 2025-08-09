@@ -20,8 +20,8 @@ table vwAuthorizationsByAgency
         
         variation Variation
             isDefault
-            relationship: 62833d08-420a-476d-8889-ec71e71e972c
-            defaultHierarchy: &#x27;LocalDateTable_67419065-019c-45aa-9110-51b42cbe83fc&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: c41c0208-5a7e-4eb6-acc3-5463486879e3
+            defaultHierarchy: LocalDateTable_9d5b701d-d329-4e8b-8595-a0a7724570b0.'Date Hierarchy'
         
     column 'FuelType'
         dataType: string
@@ -299,7 +299,7 @@ table vwAuthorizationsByAgency
     partition 'vwAuthorizationsByAgency' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwAuthorizationsByAgency: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009c530>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table vwAuthorizationsByAgency: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x104a21700>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

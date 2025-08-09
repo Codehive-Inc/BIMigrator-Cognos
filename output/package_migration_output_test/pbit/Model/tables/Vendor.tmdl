@@ -182,8 +182,8 @@ table Vendor
         
         variation Variation
             isDefault
-            relationship: 7e68ea5a-6c1e-462e-b185-6058e07211ae
-            defaultHierarchy: &#x27;LocalDateTable_4169780d-867d-4d92-9e1c-744e918a8617&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: e2f26d07-6574-4991-8fb8-5e06915c380e
+            defaultHierarchy: LocalDateTable_8092874f-9344-4c9c-ae1f-25b1f823ba08.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -204,8 +204,8 @@ table Vendor
         
         variation Variation
             isDefault
-            relationship: d683393a-2695-45af-9414-c86c3c50cb5d
-            defaultHierarchy: &#x27;LocalDateTable_4169780d-867d-4d92-9e1c-744e918a8617&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 87c7f5c3-0ed4-405b-a195-a1ee1c4aab1b
+            defaultHierarchy: LocalDateTable_8092874f-9344-4c9c-ae1f-25b1f823ba08.'Date Hierarchy'
         
 
 
@@ -213,7 +213,7 @@ table Vendor
     partition 'Vendor' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Vendor: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009c890>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table Vendor: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049ea720>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

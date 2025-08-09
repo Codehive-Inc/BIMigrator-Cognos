@@ -92,8 +92,8 @@ table vwAssistanceReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 5f6452db-7f85-4517-9909-02dbfdfc8b2c
-            defaultHierarchy: &#x27;LocalDateTable_feb5b667-8617-4cc2-bd16-abcc094fad2b&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 2a395d57-88c1-4cc0-928a-5641078f4792
+            defaultHierarchy: LocalDateTable_cfa70697-ccbb-4405-b17c-afea4e460056.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -114,8 +114,8 @@ table vwAssistanceReportDrillDown
         
         variation Variation
             isDefault
-            relationship: 0409ef06-61bb-4273-96d5-095643b70335
-            defaultHierarchy: &#x27;LocalDateTable_feb5b667-8617-4cc2-bd16-abcc094fad2b&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: a542294c-183b-467f-ad68-fdd43928289c
+            defaultHierarchy: LocalDateTable_cfa70697-ccbb-4405-b17c-afea4e460056.'Date Hierarchy'
         
     column 'TotalVeteranVoucher'
         dataType: int64
@@ -204,7 +204,7 @@ table vwAssistanceReportDrillDown
     partition 'vwAssistanceReportDrillDown' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwAssistanceReportDrillDown: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10ff104d0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table vwAssistanceReportDrillDown: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e9f10>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

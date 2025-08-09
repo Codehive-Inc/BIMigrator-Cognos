@@ -74,8 +74,8 @@ table vwPayeeReport
         
         variation Variation
             isDefault
-            relationship: 8ba0ae6b-bb5d-412b-9b93-489ed6d95820
-            defaultHierarchy: &#x27;LocalDateTable_e2e91f29-8855-4c23-ab18-315e99239c73&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 107fb414-63ae-40e7-b839-52517a360d39
+            defaultHierarchy: LocalDateTable_64f41489-23d9-46a2-a750-e86f5b29e833.'Date Hierarchy'
         
     column 'PaidByEnergyShare'
         dataType: string
@@ -101,7 +101,7 @@ table vwPayeeReport
     partition 'vwPayeeReport' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table vwPayeeReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009e9c0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table vwPayeeReport: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e9d90>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in

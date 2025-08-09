@@ -47,8 +47,8 @@ table Territory
         
         variation Variation
             isDefault
-            relationship: 3b63f228-7d48-4cbf-8205-897b6bd80c9a
-            defaultHierarchy: &#x27;LocalDateTable_eb89bb98-05b4-4cae-8360-6e958c15265d&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: 791d5dac-fabc-47df-bf82-d8cb33ab5565
+            defaultHierarchy: LocalDateTable_e288f074-73db-4f06-82c2-71cd3834a83f.'Date Hierarchy'
         
     column 'UpdatedBy'
         dataType: string
@@ -69,8 +69,8 @@ table Territory
         
         variation Variation
             isDefault
-            relationship: 478f9726-fe72-4d13-8276-e3e25e59f1f5
-            defaultHierarchy: &#x27;LocalDateTable_eb89bb98-05b4-4cae-8360-6e958c15265d&#x27;.&#x27;Date Hierarchy&#x27;
+            relationship: dc9ad1ff-cd3c-4dcf-9a0a-0a8cfe639fed
+            defaultHierarchy: LocalDateTable_e288f074-73db-4f06-82c2-71cd3834a83f.'Date Hierarchy'
         
 
 
@@ -78,7 +78,7 @@ table Territory
     partition 'Territory' = m
         mode: import
         source = 
-            // ERROR: Error communicating with LLM service for table Territory: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x11009d640>: Failed to establish a new connection: [Errno 61] Connection refused'))
+            // ERROR: Error communicating with LLM service for table Territory: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1049e81d0>: Failed to establish a new connection: [Errno 61] Connection refused'))
 let
 				Source = Table.FromRows({})
 				in
