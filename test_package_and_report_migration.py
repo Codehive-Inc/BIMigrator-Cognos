@@ -12,7 +12,7 @@ def test_package_and_report_migration():
         "examples/Report XMLs DE/MaterialReceiptDetail_UC016.xml",
         "examples/Report XMLs DE/PartNumbers_UC013.xml"
     ]
-    output_dir = "test_output/package_and_report_migration_output"
+    output_dir = "test_output/package_and_report_migration_output_direct"
 
     os.makedirs(output_dir, exist_ok=True)
     print(f"Created output directory: {output_dir}")

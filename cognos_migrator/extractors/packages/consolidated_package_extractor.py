@@ -29,12 +29,14 @@ from .package_filter_extractor import PackageFilterExtractor
 class ConsolidatedPackageExtractor:
     """Coordinates the extraction of data from Cognos Framework Manager packages"""
     
-    def __init__(self, logger=None):
+    def __init__(self, config: Optional[Dict[str, Any]] = None, logger=None):
         """Initialize the consolidated package extractor
         
         Args:
+            config: Configuration settings dictionary
             logger: Optional logger instance
         """
+        self.config = config or {}
         self.logger = logger or logging.getLogger(__name__)
         
         # Initialize specialized extractors
@@ -134,21 +136,62 @@ class ConsolidatedPackageExtractor:
 
             # Apply filtering if required_tables is provided
             if required_tables:
-                self.logger.info(f"Filtering package to {len(required_tables)} required tables.")
-                
-                # Normalize the required table names for more robust matching
-                normalized_required = {t.lower().replace('_', '') for t in required_tables}
+                # Read the filtering mode from settings, default to "discover"
+                filter_mode = self.config.get('table_filtering', {}).get('mode', 'discover')
+                self.logger.info(f"Applying table filtering with mode: {filter_mode}")
 
-                # Filter query subjects (tables) with more robust matching
-                filtered_query_subjects = []
-                for qs in package_info.get('query_subjects', []):
-                    qs_name = qs.get('name', '').lower().replace('_', '')
-                    # Check for direct match or if the report table name is a substring
-                    if any(req_name == qs_name or req_name in qs_name for req_name in normalized_required):
-                        filtered_query_subjects.append(qs)
-                package_info['query_subjects'] = filtered_query_subjects
+                # Always perform the direct, exact match filtering first
+                normalized_required = {t.lower().replace('_', '') for t in required_tables}
+                direct_match_tables = [
+                    qs for qs in package_info.get('query_subjects', [])
+                    if qs.get('name', '').lower().replace('_', '') in normalized_required
+                ]
                 
-                # Get the names of the tables that were kept
+                if filter_mode == 'discover':
+                    # --- DISCOVER MODE ---
+                    self.logger.info("Discovering all related tables based on relationships.")
+                    # Start with direct matches, then find all related tables.
+                    all_query_subjects = package_info.get('query_subjects', [])
+                    all_relationships = package_info.get('relationships', [])
+
+                    # Get the names of all tables in the package for relationship traversal
+                    all_table_names = {qs.get('name') for qs in all_query_subjects}
+                    
+                    # Create a graph-like structure for relationships
+                    relationships_map = {name: [] for name in all_table_names}
+                    for rel in all_relationships:
+                        from_table = rel.get('from_table')
+                        to_table = rel.get('to_table')
+                        if from_table in relationships_map and to_table in relationships_map:
+                            relationships_map[from_table].append(to_table)
+                            relationships_map[to_table].append(from_table)
+                    
+                    # Use a queue for a breadth-first search to find all connected tables
+                    queue = [t.get('name') for t in direct_match_tables]
+                    discovered_tables = set(queue)
+                    
+                    head = 0
+                    while head < len(queue):
+                        current_table = queue[head]
+                        head += 1
+                        
+                        for related_table in relationships_map.get(current_table, []):
+                            if related_table not in discovered_tables:
+                                discovered_tables.add(related_table)
+                                queue.append(related_table)
+                    
+                    # Final list of tables is the full discovered set
+                    package_info['query_subjects'] = [
+                        qs for qs in all_query_subjects
+                        if qs.get('name') in discovered_tables
+                    ]
+                else:
+                    # --- DIRECT MODE ---
+                    self.logger.info("Using direct mode. Only including tables explicitly found in reports.")
+                    # Only include the tables that were directly identified.
+                    package_info['query_subjects'] = direct_match_tables
+
+                # Finally, filter the relationships to only include those between the kept tables
                 kept_table_names = {qs.get('name') for qs in package_info['query_subjects']}
 
                 # Filter relationships

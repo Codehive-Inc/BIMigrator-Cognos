@@ -1,0 +1,788 @@
+{
+  "source_name": "STORAGE_LOCATION",
+  "name": "STORAGE_LOCATION",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SEGMENTS",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SEGMENTS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION2",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_2",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION3",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION3",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_3",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_3",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION4",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION4",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_4",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_4",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION5",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION5",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_5",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_5",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION6",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION6",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_6",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_6",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION7",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION7",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_7",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_7",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION8",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION8",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_8",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_8",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION9",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION9",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_9",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_9",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION10",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION10",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_10",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_10",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SEGMENTS",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SEGMENTS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION2",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_2",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION3",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION3",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_3",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_3",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION4",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION4",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_4",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_4",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION5",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION5",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_5",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_5",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION6",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION6",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_6",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_6",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION7",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION7",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_7",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_7",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION8",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION8",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_8",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_8",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION9",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION9",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_9",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_9",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION10",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION10",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_NUMBER_10",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOC_NUMBER_10",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "STORAGE_LOCATION",
+      "source_type": "m",
+      "expression": "\nlet\n    Source = Excel.Workbook(File.Contents(\"C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx\"), null, true),\n    Sheet1_Sheet = Source{[Item=\"Sheet1\",Kind=\"Sheet\"]}[Data],\n    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),\n    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"ITEM_NUMBER\", type text}, {\"SITE_NUMBER\", type text}, {\"SEGMENTS\", type text}, {\"LOCATION1\", type text}, {\"LOC_NUMBER_1\", type text}, {\"LOCATION2\", type text}, {\"LOC_NUMBER_2\", type text}, {\"LOCATION3\", type text}, {\"LOC_NUMBER_3\", type text}, {\"LOCATION4\", type text}, {\"LOC_NUMBER_4\", type text}, {\"LOCATION5\", type text}, {\"LOC_NUMBER_5\", type text}, {\"LOCATION6\", type text}, {\"LOC_NUMBER_6\", type text}, {\"LOCATION7\", type text}, {\"LOC_NUMBER_7\", type text}, {\"LOCATION8\", type text}, {\"LOC_NUMBER_8\", type text}, {\"LOCATION9\", type text}, {\"LOC_NUMBER_9\", type text}, {\"LOCATION10\", type text}, {\"LOC_NUMBER_10\", type text}, {\"STOP\", type text}, {\"ITEM_NUMBER\", type text}, {\"SITE_NUMBER\", type text}, {\"SEGMENTS\", type text}, {\"LOCATION1\", type text}, {\"LOC_NUMBER_1\", type text}, {\"LOCATION2\", type text}, {\"LOC_NUMBER_2\", type text}, {\"LOCATION3\", type text}, {\"LOC_NUMBER_3\", type text}, {\"LOCATION4\", type text}, {\"LOC_NUMBER_4\", type text}, {\"LOCATION5\", type text}, {\"LOC_NUMBER_5\", type text}, {\"LOCATION6\", type text}, {\"LOC_NUMBER_6\", type text}, {\"LOCATION7\", type text}, {\"LOC_NUMBER_7\", type text}, {\"LOCATION8\", type text}, {\"LOC_NUMBER_8\", type text}, {\"LOCATION9\", type text}, {\"LOC_NUMBER_9\", type text}, {\"LOCATION10\", type text}, {\"LOC_NUMBER_10\", type text}, {\"STOP\", type text}})\nin\n    #\"Changed Type\"\n"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

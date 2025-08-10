@@ -87,11 +87,27 @@ class PowerBIProjectOrchestrator:
             output_dir = Path(output_path)
             output_dir.mkdir(parents=True, exist_ok=True)
             
+            # FILTERING DEBUG: Log the project data model tables at the start of generation
+            if project.data_model:
+                table_names = [table.name for table in project.data_model.tables]
+                self.logger.info(f"FILTERING DEBUG: PowerBIProjectOrchestrator received project with {len(project.data_model.tables)} tables")
+                self.logger.info(f"FILTERING DEBUG: Table names in project: {table_names}")
+                
+                # Check if table filtering settings are available in config
+                if hasattr(self.config, 'table_filtering'):
+                    self.logger.info(f"FILTERING DEBUG: Config has table_filtering attribute: {self.config.table_filtering}")
+                    
+                    # Add table filtering settings to data_model if not present
+                    if not hasattr(project.data_model, 'table_filtering'):
+                        project.data_model.table_filtering = self.config.table_filtering
+                        self.logger.info(f"FILTERING DEBUG: Added table_filtering to data_model: {self.config.table_filtering}")
+            
             # Generate project file
             self.project_file_generator.generate_project_file(project, output_dir)
             
             # Generate model files
             if project.data_model:
+                self.logger.info(f"FILTERING DEBUG: About to call model_file_generator.generate_model_files with {len(project.data_model.tables)} tables")
                 self.model_file_generator.generate_model_files(project.data_model, output_dir)
             
             # Generate report files

@@ -36,6 +36,15 @@ class ModelFileGenerator:
         model_dir = output_dir / 'Model'
         model_dir.mkdir(exist_ok=True)
         
+        # FILTERING DEBUG: Log the data model tables at the start of generation
+        table_names = [table.name for table in data_model.tables]
+        self.logger.info(f"FILTERING DEBUG: ModelFileGenerator received data_model with {len(data_model.tables)} tables")
+        self.logger.info(f"FILTERING DEBUG: Table names at start of generation: {table_names}")
+        
+        # Check if table filtering settings are available in data_model
+        if hasattr(data_model, 'table_filtering'):
+            self.logger.info(f"FILTERING DEBUG: Data model has table_filtering attribute: {data_model.table_filtering}")
+        
         # Get extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
         

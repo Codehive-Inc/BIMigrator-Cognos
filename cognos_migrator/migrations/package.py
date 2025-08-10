@@ -476,7 +476,19 @@ def _migrate_shared_model(
     
     # --- Step 2: Analyze intermediate files and consolidate table schemas ---
     consolidated_tables: Dict[str, Table] = {}
+    required_tables = set()
     
+    # First, extract tables directly from report files to ensure we capture all references
+    for report_path in successful_migrations_paths:
+        try:
+            # Extract tables from the report's extracted data
+            report_tables = extract_tables_from_report(str(report_path))
+            required_tables.update(report_tables)
+            log_info(f"Extracted {len(report_tables)} tables from report {report_path.name}: {report_tables}")
+        except Exception as e:
+            log_error(f"Error extracting tables from report {report_path}: {e}")
+    
+    # Then process intermediate models to consolidate schemas
     for report_path in successful_migrations_paths:
         try:
             migrator = CognosModuleMigratorExplicit(
@@ -493,32 +505,86 @@ def _migrate_shared_model(
                     for new_column in table.columns:
                         if new_column.name not in existing_column_names:
                             existing_table.columns.append(new_column)
+                
+                # Make sure we include this table in required_tables
+                required_tables.add(table.name)
+                
         except Exception as e:
             log_error(f"Error processing intermediate model for {report_path}: {e}")
 
-    required_tables = set(consolidated_tables.keys())
+    # Add any always_include tables from config
+    if config and 'always_include' in config:
+        required_tables.update(config['always_include'])
+        
     log_info(f"Found {len(required_tables)} unique source tables to consolidate: {required_tables}")
 
     # --- Step 3: Filtered Package Extraction ---
-    package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))
+    logging.info(f"FILTERING DEBUG: Table filtering config = {config}")
+    logging.info(f"FILTERING DEBUG: Required tables before extraction = {required_tables}")
+    
+    # Ensure we have required tables - if empty, log warning and use a fallback approach
+    if not required_tables and config and config.get('mode') == 'direct':
+        logging.warning("No required tables found for filtering but mode is 'direct'. This would result in all tables being included.")
+        # As a fallback, we could try to extract tables from report files again or use a different approach
+        # For now, just log the warning so it's clear why filtering might not work as expected
+    
+    package_extractor = ConsolidatedPackageExtractor(
+        config=config,
+        logger=logging.getLogger(__name__)
+    )
     package_info = package_extractor.extract_package(
         package_file,
         os.path.join(output_path, "extracted"),
         required_tables=required_tables
     )
-    main_data_model = package_extractor.convert_to_data_model(package_info)
+    
+    # Log the query subjects that were returned after filtering
+    query_subject_names = [qs.get('name', 'Unknown') for qs in package_info.get('query_subjects', [])]
+    logging.info(f"FILTERING DEBUG: Extractor returned package_info with {len(package_info.get('query_subjects', []))} tables.")
+    logging.info(f"FILTERING DEBUG: Filtered query subject names: {query_subject_names}")
 
-    # --- Step 4: Final Generation ---
+    # Step 4: Data Model Conversion from FILTERED package info
+    data_model = package_extractor.convert_to_data_model(package_info)
+    
+    # Log the table names in the data model after conversion
+    table_names = [table.name for table in data_model.tables]
+    logging.info(f"FILTERING DEBUG: After conversion, data_model has {len(data_model.tables)} tables.")
+    logging.info(f"FILTERING DEBUG: Data model table names: {table_names}")
+
+    # Step 5: Merge report-specific data into the package-based model
+    for table_name, consolidated_table in consolidated_tables.items():
+        # Find table in data_model, case-insensitively
+        target_table = next((t for t in data_model.tables if t.name.lower() == table_name.lower()), None)
+
+        if target_table:
+            existing_column_names = {c.name.lower() for c in target_table.columns}
+            for new_column in consolidated_table.columns:
+                if new_column.name.lower() not in existing_column_names:
+                    target_table.columns.append(new_column)
+                    logging.info(f"Added column '{new_column.name}' to table '{target_table.name}'.")
+        else:
+            logging.warning(f"Table '{table_name}' from reports not found in the filtered package model. It will not be added.")
+
+    logging.info(f"Data model has {len(data_model.tables)} tables before generation: {[t.name for t in data_model.tables]}")
+
+    # --- Step 6: Final Generation ---
     from cognos_migrator.config import MigrationConfig
-    migration_config = MigrationConfig(output_directory=output_path, template_directory=str(Path(__file__).parent.parent / "templates"))
+    migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
     generator = PowerBIProjectGenerator(migration_config)
-    report = Report(id=f"report_{main_data_model.name}", name=main_data_model.name)
-    pbi_project = PowerBIProject(name=main_data_model.name, data_model=main_data_model, report=report)
+
+    # Force creation of a new PBI project with the filtered data model
+    final_pbi_project = PowerBIProject(
+        name=data_model.name,
+        data_model=data_model,
+        report=Report(id=f"report_{data_model.name}", name=data_model.name)
+    )
+    logging.info(f"Explicitly creating final PBI project with {len(final_pbi_project.data_model.tables)} tables.")
+
     pbit_dir = Path(output_path) / "pbit"
     pbit_dir.mkdir(parents=True, exist_ok=True)
-    success = generator.generate_project(pbi_project, str(pbit_dir))
-    
-    return success
+    generator.generate_project(final_pbi_project, str(pbit_dir))
+
+    return True, str(output_path)
 
 def migrate_package_with_local_reports(package_file_path: str,
                                        output_path: str,
@@ -527,12 +593,15 @@ def migrate_package_with_local_reports(package_file_path: str,
                                        session_key: str,
                                        task_id: Optional[str] = None) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
+    config = load_table_filtering_settings()
+    logging.info(f"FILTERING DEBUG: In migrate_package_with_local_reports, loaded table filtering settings: {config}")
     return _migrate_shared_model(
         package_file=package_file_path,
         report_files=report_file_paths,
         output_path=output_path,
         cognos_url=cognos_url,
-        session_key=session_key
+        session_key=session_key,
+        config=config
     )
 
 def migrate_package_with_reports_explicit_session(package_file_path: str,

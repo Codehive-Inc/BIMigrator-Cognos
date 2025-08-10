@@ -1,0 +1,16 @@
+relationship f36f4e96-7868-4f76-949c-c21e1fbac0d0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_NUMBER.AUDIT_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 8665a296-9088-4ab3-a117-e87d8de62091
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_NUMBER.LAST_ISSUE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
