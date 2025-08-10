@@ -1,0 +1,303 @@
+table PURCHASE_ORDER_RECEIPT
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHANGE_ORDER_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHANGE_ORDER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_ENTERED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_RECEIVED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_REJECTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_REJECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_INSPECTOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_INSPECTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOREKEEPER_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOREKEEPER_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECEIPT_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECEIPT_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_RECEIVED_AT_SITE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_RECEIVED_AT_SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECEIPT_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECEIPT_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_STATUS_EFFECTIVE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_STATUS_EFFECTIVE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'HOLD_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: HOLD_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSR_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSR_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_IN_HOLD'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_IN_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECORD_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECORD_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITT_KEY_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITT_KEY_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'PURCHASE_ORDER_RECEIPT - Count by DATE_ENTERED' = ```
+            CALCULATE(
+    COUNTROWS('PURCHASE_ORDER_RECEIPT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'PURCHASE_ORDER_RECEIPT'[DATE_ENTERED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'PURCHASE_ORDER_RECEIPT - Count by DATE_RECEIVED_AT_SITE' = ```
+            CALCULATE(
+    COUNTROWS('PURCHASE_ORDER_RECEIPT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'PURCHASE_ORDER_RECEIPT'[DATE_RECEIVED_AT_SITE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'PURCHASE_ORDER_RECEIPT - Count by DATE_STATUS_EFFECTIVE' = ```
+            CALCULATE(
+    COUNTROWS('PURCHASE_ORDER_RECEIPT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'PURCHASE_ORDER_RECEIPT'[DATE_STATUS_EFFECTIVE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'PURCHASE_ORDER_RECEIPT' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"PO_NUMBER", type text}, {"CHANGE_ORDER_NUMBER", type text}, {"RELEASE_NUMBER", type text}, {"PO_LINE_NUMBER", type text}, {"DATE_ENTERED", type text}, {"TIME_ENTERED", type text}, {"QTY_RECEIVED", type text}, {"QTY_REJECTED", type text}, {"QA_CODE", type text}, {"SHELF_LIFE", type text}, {"QA_INSPECTOR", type text}, {"STOREKEEPER_ID", type text}, {"RECEIPT_NUMBER", type text}, {"UNIT_PRICE", type text}, {"ITEM_NUMBER", type text}, {"DATE_RECEIVED_AT_SITE", type text}, {"RECEIPT_CODE", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"HOLD_STATUS", type text}, {"DSR_NUMBER", type text}, {"QTY_IN_HOLD", type text}, {"RECORD_STATUS", type text}, {"STOP", type text}, {"ITT_KEY_NO", type text}, {"SITE_NUMBER", type text}, {"PO_NUMBER", type text}, {"CHANGE_ORDER_NUMBER", type text}, {"RELEASE_NUMBER", type text}, {"PO_LINE_NUMBER", type text}, {"DATE_ENTERED", type text}, {"TIME_ENTERED", type text}, {"QTY_RECEIVED", type text}, {"QTY_REJECTED", type text}, {"QA_CODE", type text}, {"SHELF_LIFE", type text}, {"QA_INSPECTOR", type text}, {"STOREKEEPER_ID", type text}, {"RECEIPT_NUMBER", type text}, {"UNIT_PRICE", type text}, {"ITEM_NUMBER", type text}, {"DATE_RECEIVED_AT_SITE", type text}, {"RECEIPT_CODE", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"HOLD_STATUS", type text}, {"DSR_NUMBER", type text}, {"QTY_IN_HOLD", type text}, {"RECORD_STATUS", type text}, {"STOP", type text}, {"ITT_KEY_NO", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

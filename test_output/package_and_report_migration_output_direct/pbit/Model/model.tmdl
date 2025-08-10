@@ -6,12 +6,18 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["ITEM_NUMBER"]
+annotation PBI_QueryOrder = ["ITEM_SITE_EXTRACT", "MANUFACTURER", "MATERIAL_CHARGES", "PURCHASE_ORDER_DESCRIPTIONS", "PURCHASE_ORDER_LINE", "PURCHASE_ORDER_RECEIPT", "STORAGE_LOCATION"]
 
 annotation __PBI_TimeIntelligenceEnabled = true
 
 annotation PBIDesktopVersion = 2.118.1063.0 (23.06)
 
-ref table ITEM_NUMBER
+ref table ITEM_SITE_EXTRACT
+ref table MANUFACTURER
+ref table MATERIAL_CHARGES
+ref table PURCHASE_ORDER_DESCRIPTIONS
+ref table PURCHASE_ORDER_LINE
+ref table PURCHASE_ORDER_RECEIPT
+ref table STORAGE_LOCATION
 
 ref cultureInfo en-US

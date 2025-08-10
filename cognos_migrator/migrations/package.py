@@ -25,6 +25,7 @@ from ..extractors.packages import ConsolidatedPackageExtractor
 from .report import migrate_single_report_with_explicit_session
 from ..consolidation import consolidate_model_tables
 from .report import migrate_single_report
+from ..migrator import CognosModuleMigratorExplicit
 
 
 def migrate_package_with_explicit_session(package_file_path: str,
@@ -303,10 +304,11 @@ def extract_tables_from_expression(expression: str) -> Set[str]:
     if not expression or not isinstance(expression, str):
         return tables
     
-    # Pattern to match [namespace].[package].[table].[column] or [table].[column]
+    # Pattern to match '[Namespace].[Table].[Column]' or '[Table].[Column]'
+    # Handles spaces and other characters in names by matching anything inside the brackets.
     patterns = [
-        r'\[\w+\]\.\[\w+\]\.\[(\w+)\]',  # [namespace].[package].[table]
-        r'\[(\w+)\]\.\[\w+\]'             # [table].[column]
+        r'\[[^\]]+\]\.\[([^\]]+)\]\.\[[^\]]+\]',  # Captures the middle part of a 3-part expression
+        r'\[([^\]]+)\]\.\[[^\]]+\]'              # Captures the first part of a 2-part expression
     ]
     
     for pattern in patterns:
@@ -477,57 +479,57 @@ def _migrate_shared_model(
     # --- Step 2: Analyze intermediate files and consolidate table schemas ---
     consolidated_tables: Dict[str, Table] = {}
     required_tables = set()
-    
-    # First, extract tables directly from report files to ensure we capture all references
-    for report_path in successful_migrations_paths:
-        try:
-            # Extract tables from the report's extracted data
-            report_tables = extract_tables_from_report(str(report_path))
-            required_tables.update(report_tables)
-            log_info(f"Extracted {len(report_tables)} tables from report {report_path.name}: {report_tables}")
-        except Exception as e:
-            log_error(f"Error extracting tables from report {report_path}: {e}")
-    
-    # Then process intermediate models to consolidate schemas
-    for report_path in successful_migrations_paths:
-        try:
-            migrator = CognosModuleMigratorExplicit(
-                cognos_url, session_key, output_path=str(report_path), llm_service=llm_service
-            )
-            intermediate_model = migrator._create_data_model_from_report(report_path / "extracted")
-            
-            for table in intermediate_model.tables:
-                if table.name not in consolidated_tables:
-                    consolidated_tables[table.name] = table
-                else:
-                    existing_table = consolidated_tables[table.name]
-                    existing_column_names = {c.name for c in existing_table.columns}
-                    for new_column in table.columns:
-                        if new_column.name not in existing_column_names:
-                            existing_table.columns.append(new_column)
-                
-                # Make sure we include this table in required_tables
-                required_tables.add(table.name)
-                
-        except Exception as e:
-            log_error(f"Error processing intermediate model for {report_path}: {e}")
 
-    # Add any always_include tables from config
-    if config and 'always_include' in config:
-        required_tables.update(config['always_include'])
-        
-    log_info(f"Found {len(required_tables)} unique source tables to consolidate: {required_tables}")
+    # Initialize the CognosModuleMigratorExplicit once
+    from cognos_migrator.config import MigrationConfig, CognosConfig
+    migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
+    cognos_config = CognosConfig(base_url=cognos_url, auth_key="session_key", auth_value=session_key)
+    migrator = CognosModuleMigratorExplicit(
+        migration_config=migration_config,
+        cognos_config=cognos_config,
+        cognos_url=cognos_url,
+        session_key=session_key
+    )
 
-    # --- Step 3: Filtered Package Extraction ---
-    logging.info(f"FILTERING DEBUG: Table filtering config = {config}")
-    logging.info(f"FILTERING DEBUG: Required tables before extraction = {required_tables}")
+    for report_path in successful_migrations_paths:
+        intermediate_model_path = report_path / "extracted"
+        if not intermediate_model_path.exists():
+            logging.warning(f"Intermediate model path does not exist, skipping: {intermediate_model_path}")
+            continue
+
+        intermediate_model = migrator._create_data_model_from_report(intermediate_model_path)
+        if not intermediate_model:
+            logging.warning(f"Could not create intermediate data model from {report_path.name}, skipping.")
+            continue
+
+        for table in intermediate_model.tables:
+            # This is now the single source for collecting required tables
+            required_tables.add(table.name)
+
+            if table.name not in consolidated_tables:
+                consolidated_tables[table.name] = table
+            else:
+                # Merge columns from the same source table used in different reports
+                existing_table = consolidated_tables[table.name]
+                existing_column_names = {c.name.lower() for c in existing_table.columns}
+                for new_column in table.columns:
+                    if new_column.name.lower() not in existing_column_names:
+                        existing_table.columns.append(new_column)
+
+    # Add any "always_include" tables from the configuration
+    if config:
+        always_include = config.get("table_filtering", {}).get("always_include", [])
+        if always_include:
+            required_tables.update(always_include)
+            logging.info(f"Adding {len(always_include)} 'always_include' tables: {always_include}")
+
+    # Safety check for direct mode
+    if not required_tables and config and config.get("table_filtering", {}).get("mode") == "direct":
+        logging.warning("No required tables were found and mode is 'direct'. This will result in an empty model.")
+
+    logging.info(f"Consolidated a final list of {len(required_tables)} required tables: {required_tables}")
     
-    # Ensure we have required tables - if empty, log warning and use a fallback approach
-    if not required_tables and config and config.get('mode') == 'direct':
-        logging.warning("No required tables found for filtering but mode is 'direct'. This would result in all tables being included.")
-        # As a fallback, we could try to extract tables from report files again or use a different approach
-        # For now, just log the warning so it's clear why filtering might not work as expected
-    
+    # --- Step 3: Package Extraction based on REQUIRED tables ---
     package_extractor = ConsolidatedPackageExtractor(
         config=config,
         logger=logging.getLogger(__name__)

@@ -1,0 +1,383 @@
+table MATERIAL_CHARGES
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHARGED_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CHARGED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_ENTERED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOREKEEPER_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOREKEEPER_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EMPLOYEE_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EMPLOYEE_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ISSUE_TICKET_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ISSUE_TICKET_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRANSACTION_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QUANTITY'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QUANTITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_VALUE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TRANSACTION_VALUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BU_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BU_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_INDICATOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_INDICATOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_STATUS_EFFECTIVE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_STATUS_EFFECTIVE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REFURB_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REFURB_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ISSUE_OVERRIDE_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ISSUE_OVERRIDE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECORD_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECORD_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_TO_RECONCILE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_TO_RECONCILE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSFER_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRANSFER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MATERIAL_CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MATERIAL_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ROOT_DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITT_KEY_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITT_KEY_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UTC_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PIT_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'MATERIAL_CHARGES - Count by CHARGED_DATE' = ```
+            CALCULATE(
+    COUNTROWS('MATERIAL_CHARGES'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MATERIAL_CHARGES'[CHARGED_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'MATERIAL_CHARGES - Count by DATE_ENTERED' = ```
+            CALCULATE(
+    COUNTROWS('MATERIAL_CHARGES'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MATERIAL_CHARGES'[DATE_ENTERED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'MATERIAL_CHARGES - Count by DATE_STATUS_EFFECTIVE' = ```
+            CALCULATE(
+    COUNTROWS('MATERIAL_CHARGES'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MATERIAL_CHARGES'[DATE_STATUS_EFFECTIVE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'MATERIAL_CHARGES' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"CHARGED_DATE", type text}, {"TIME_ENTERED", type text}, {"STOREKEEPER_ID", type text}, {"EMPLOYEE_ID", type text}, {"ISSUE_TICKET_NUMBER", type text}, {"TRANSACTION_TYPE", type text}, {"ADJUSTMENT_TYPE", type text}, {"QUANTITY", type text}, {"UNIT_PRICE", type text}, {"TRANSACTION_VALUE", type text}, {"JOB_NUMBER", type text}, {"BU_NUMBER", type text}, {"PO_NUMBER", type text}, {"PO_INDICATOR", type text}, {"DATE_ENTERED", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"REFURB_IND", type text}, {"ISSUE_OVERRIDE_IND", type text}, {"RECORD_STATUS", type text}, {"UNIT_OF_MEASURE", type text}, {"ADJUSTMENT_NUMBER", type text}, {"ADJUSTMENT_DESC", type text}, {"QTY_TO_RECONCILE", type text}, {"STOP", type text}, {"TRANSFER_NUMBER", type text}, {"MATERIAL_CLASS", type text}, {"ROOT_DESCRIPTION", type text}, {"ITT_KEY_NO", type text}, {"UTC_NO", type text}, {"PIT_IND", type text}, {"UM", type text}, {"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"CHARGED_DATE", type text}, {"TIME_ENTERED", type text}, {"STOREKEEPER_ID", type text}, {"EMPLOYEE_ID", type text}, {"ISSUE_TICKET_NUMBER", type text}, {"TRANSACTION_TYPE", type text}, {"ADJUSTMENT_TYPE", type text}, {"QUANTITY", type text}, {"UNIT_PRICE", type text}, {"TRANSACTION_VALUE", type text}, {"JOB_NUMBER", type text}, {"BU_NUMBER", type text}, {"PO_NUMBER", type text}, {"PO_INDICATOR", type text}, {"DATE_ENTERED", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"REFURB_IND", type text}, {"ISSUE_OVERRIDE_IND", type text}, {"RECORD_STATUS", type text}, {"UNIT_OF_MEASURE", type text}, {"ADJUSTMENT_NUMBER", type text}, {"ADJUSTMENT_DESC", type text}, {"QTY_TO_RECONCILE", type text}, {"STOP", type text}, {"TRANSFER_NUMBER", type text}, {"MATERIAL_CLASS", type text}, {"ROOT_DESCRIPTION", type text}, {"ITT_KEY_NO", type text}, {"UTC_NO", type text}, {"PIT_IND", type text}, {"UM", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table
