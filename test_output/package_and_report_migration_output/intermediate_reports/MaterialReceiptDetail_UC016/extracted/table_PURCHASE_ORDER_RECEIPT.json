@@ -1,0 +1,164 @@
+{
+  "source_name": "PURCHASE_ORDER_RECEIPT",
+  "name": "PURCHASE_ORDER_RECEIPT",
+  "lineage_tag": null,
+  "description": "Table created from source: PURCHASE_ORDER_RECEIPT",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "DATE_ENTERED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[DATE_ENTERED]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_LINE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RELEASE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_RECEIVED_AT_SITE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[DATE_RECEIVED_AT_SITE]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QTY_RECEIVED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[QTY_RECEIVED]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TIME_ENTERED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[TIME_ENTERED]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_PRICE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[UNIT_PRICE]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "PURCHASE_ORDER_RECEIPT",
+      "source_type": "m",
+      "expression": "\nlet\n    Source = Excel.Workbook(File.Contents(\"C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx\"), null, true),\n    Sheet1_Sheet = Source{[Item=\"Sheet1\",Kind=\"Sheet\"]}[Data],\n    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),\n    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"DATE_ENTERED\", type text}, {\"SITE_NUMBER\", type text}, {\"PO_NUMBER\", type text}, {\"PO_LINE_NUMBER\", type text}, {\"RELEASE_NUMBER\", type text}, {\"DATE_RECEIVED_AT_SITE\", type text}, {\"QTY_RECEIVED\", type text}, {\"TIME_ENTERED\", type text}, {\"UNIT_PRICE\", type text}})\nin\n    #\"Changed Type\"\n"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

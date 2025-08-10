@@ -136,16 +136,25 @@ class ConsolidatedPackageExtractor:
             if required_tables:
                 self.logger.info(f"Filtering package to {len(required_tables)} required tables.")
                 
-                # Filter query subjects (tables)
-                package_info['query_subjects'] = [
-                    qs for qs in package_info.get('query_subjects', [])
-                    if qs.get('name') in required_tables
-                ]
+                # Normalize the required table names for more robust matching
+                normalized_required = {t.lower().replace('_', '') for t in required_tables}
+
+                # Filter query subjects (tables) with more robust matching
+                filtered_query_subjects = []
+                for qs in package_info.get('query_subjects', []):
+                    qs_name = qs.get('name', '').lower().replace('_', '')
+                    # Check for direct match or if the report table name is a substring
+                    if any(req_name == qs_name or req_name in qs_name for req_name in normalized_required):
+                        filtered_query_subjects.append(qs)
+                package_info['query_subjects'] = filtered_query_subjects
                 
+                # Get the names of the tables that were kept
+                kept_table_names = {qs.get('name') for qs in package_info['query_subjects']}
+
                 # Filter relationships
                 package_info['relationships'] = [
                     rel for rel in package_info.get('relationships', [])
-                    if rel.get('from_table') in required_tables and rel.get('to_table') in required_tables
+                    if rel.get('from_table') in kept_table_names and rel.get('to_table') in kept_table_names
                 ]
                 self.logger.info(f"Filtered to {len(package_info['query_subjects'])} tables and {len(package_info['relationships'])} relationships.")
 

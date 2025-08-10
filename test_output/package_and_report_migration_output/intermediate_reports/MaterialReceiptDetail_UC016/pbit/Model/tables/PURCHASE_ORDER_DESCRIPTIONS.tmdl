@@ -1,0 +1,33 @@
+table PURCHASE_ORDER_DESCRIPTIONS
+
+
+    column 'DESCRIPTION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'PURCHASE_ORDER_DESCRIPTIONS' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"DESCRIPTION1", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

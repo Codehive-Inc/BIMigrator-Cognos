@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from typing import List, Dict, Any
+import re
 
 from cognos_migrator.models import DataModel, Table, Column
 
@@ -11,7 +12,7 @@ class ReportModelProcessor:
 
     def process(self) -> DataModel:
         queries = self._load_report_queries()
-        tables = self._create_tables_from_queries(queries)
+        tables = self._create_tables_from_source_tables(queries)
         return DataModel(name="ReportDataModel", tables=tables)
 
     def _load_report_queries(self) -> List[Dict[str, Any]]:
@@ -20,26 +21,48 @@ class ReportModelProcessor:
         with open(self.report_queries_path, 'r') as f:
             return json.load(f)
 
-    def _create_tables_from_queries(self, queries: List[Dict[str, Any]]) -> List[Table]:
-        tables = []
-        for query in queries:
-            columns = self._create_columns_from_data_items(query.get("data_items", []))
-            table = Table(
-                name=query.get("name"),
-                columns=columns,
-                description=f"Table created from query: {query.get('name')}",
-                metadata={"original_query_name": query.get("name")}
-            )
-            tables.append(table)
-        return tables
+    def _extract_source_table_from_expression(self, expression: str) -> str:
+        """Extracts the source table name from a column expression."""
+        if not expression or '.' not in expression:
+            return None
+        # This regex looks for a pattern like [Namespace].[TableName] and extracts TableName.
+        match = re.match(r'^\[[^\]]+\]\.\[([^\]]+)\]', expression)
+        if match:
+            return match.group(1)
+        # Handle cases that are not in the standard format (e.g., calculated columns)
+        return None
 
-    def _create_columns_from_data_items(self, data_items: List[Dict[str, Any]]) -> List[Column]:
-        columns = []
-        for item in data_items:
-            column = Column(
-                name=item.get("name"),
-                data_type="string",  # Placeholder, will need type mapping
-                source_column=item.get("expression")
-            )
-            columns.append(column)
-        return columns 
+    def _create_tables_from_source_tables(self, queries: List[Dict[str, Any]]) -> List[Table]:
+        """Creates a list of tables, with each table corresponding to a unique source."""
+        tables_dict: Dict[str, Table] = {}
+        
+        for query in queries:
+            for item in query.get("data_items", []):
+                expression = item.get("expression")
+                source_table_name = self._extract_source_table_from_expression(expression)
+                
+                if not source_table_name:
+                    # This item is likely a calculated column or literal, so we can't determine its source table.
+                    # In a future enhancement, we could try to assign it to a primary table from the query.
+                    continue
+                
+                # If we haven't seen this source table before, create a new Table object for it.
+                if source_table_name not in tables_dict:
+                    tables_dict[source_table_name] = Table(
+                        name=source_table_name,
+                        columns=[],
+                        description=f"Table created from source: {source_table_name}"
+                    )
+                
+                # Create the column for the data item.
+                column = Column(
+                    name=item.get("name"),
+                    data_type="string",  # Using a placeholder; a real implementation would map types.
+                    source_column=expression
+                )
+                
+                # Add the column to the correct table, avoiding duplicates.
+                if not any(c.name == column.name for c in tables_dict[source_table_name].columns):
+                    tables_dict[source_table_name].columns.append(column)
+
+        return list(tables_dict.values()) 

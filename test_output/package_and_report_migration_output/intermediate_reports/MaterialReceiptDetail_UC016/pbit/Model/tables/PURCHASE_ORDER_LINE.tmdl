@@ -1,0 +1,73 @@
+table PURCHASE_ORDER_LINE
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUESTOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUESTOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'PURCHASE_ORDER_LINE' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ITEM_NUMBER", type text}, {"JOB_NUMBER", type text}, {"UNIT_OF_MEASURE", type text}, {"REQUESTOR_NAME", type text}, {"VENDOR_NAME", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

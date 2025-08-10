@@ -1,0 +1,100 @@
+{
+  "source_name": "PURCHASE_ORDER_LINE",
+  "name": "PURCHASE_ORDER_LINE",
+  "lineage_tag": null,
+  "description": "Table created from source: PURCHASE_ORDER_LINE",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "JOB_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_LINE].[JOB_NUMBER]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_OF_MEASURE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_LINE].[UNIT_OF_MEASURE]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "REQUESTOR_NAME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_LINE].[REQUESTOR_NAME]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VENDOR_NAME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "[Database_Layer].[PURCHASE_ORDER_LINE].[VENDOR_NAME]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "PURCHASE_ORDER_LINE",
+      "source_type": "m",
+      "expression": "\nlet\n    Source = Excel.Workbook(File.Contents(\"C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx\"), null, true),\n    Sheet1_Sheet = Source{[Item=\"Sheet1\",Kind=\"Sheet\"]}[Data],\n    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),\n    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"ITEM_NUMBER\", type text}, {\"JOB_NUMBER\", type text}, {\"UNIT_OF_MEASURE\", type text}, {\"REQUESTOR_NAME\", type text}, {\"VENDOR_NAME\", type text}})\nin\n    #\"Changed Type\"\n"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

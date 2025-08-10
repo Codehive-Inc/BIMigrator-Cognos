@@ -499,13 +499,13 @@ def _migrate_shared_model(
     # --- Step 2: Analyze intermediate files ---
     required_tables = set()
     for report_path in successful_migrations:
-        tables_dir = report_path / "pbit/Model/tables"
-        if tables_dir.is_dir():
-            for tmdl_file in tables_dir.glob("*.tmdl"):
-                required_tables.add(tmdl_file.stem)
+        # Correctly extract source table names by analyzing the report's metadata
+        report_tables = extract_tables_from_report(str(report_path))
+        required_tables.update(report_tables)
     
+    # Always include the CentralDateTable
     required_tables.add("CentralDateTable")
-    log_info(f"Found {len(required_tables)} required tables from reports: {required_tables}")
+    log_info(f"Found {len(required_tables)} required source tables from reports: {required_tables}")
 
     # --- Step 3: Filtered Package Extraction ---
     package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))

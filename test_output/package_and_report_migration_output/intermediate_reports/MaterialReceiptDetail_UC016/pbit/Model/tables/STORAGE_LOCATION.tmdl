@@ -1,0 +1,43 @@
+table STORAGE_LOCATION
+
+
+    column 'LOCATION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'STORAGE_LOCATION' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"LOCATION1", type text}, {"LOCATION2", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

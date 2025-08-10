@@ -3,16 +3,21 @@ from cognos_migrator.migrations.package import migrate_package_with_local_report
 
 def test_package_and_report_migration():
     """
-    Tests the migration of a package and a local report file to a shared semantic model.
+    Tests the migration of a package and multiple local report files to a shared semantic model.
     """
     package_file = "examples/packages/ELECTRIC_GENERATION_MAT.xml"
-    report_file = "examples/Report XMLs DE/MaterialInquiryDetail_UC012.xml"
+    report_files = [
+        "examples/Report XMLs DE/MaterialAdjustmentDetail_UC017.xml",
+        "examples/Report XMLs DE/MaterialInquiryDetail_UC012.xml",
+        "examples/Report XMLs DE/MaterialReceiptDetail_UC016.xml",
+        "examples/Report XMLs DE/PartNumbers_UC013.xml"
+    ]
     output_dir = "test_output/package_and_report_migration_output"
 
     os.makedirs(output_dir, exist_ok=True)
     print(f"Created output directory: {output_dir}")
 
-    print(f"Starting migration for package '{package_file}' and report '{report_file}'")
+    print(f"Starting migration for package '{package_file}' and {len(report_files)} reports.")
 
     # Dummy values for Cognos connection details (required even for file-based migration)
     cognos_url = "http://dummy-cognos-url"
@@ -21,7 +26,7 @@ def test_package_and_report_migration():
     success = migrate_package_with_local_reports(
         package_file_path=package_file,
         output_path=output_dir,
-        report_file_paths=[report_file],
+        report_file_paths=report_files,
         cognos_url=cognos_url,
         session_key=session_key
     )

@@ -1,0 +1,83 @@
+table MANUFACTURER
+
+
+    column 'MFG_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MFG_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_PART_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MFG_PART_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MFG_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ACTIVITY_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ACTIVITY_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_CREATED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MANUFACTURER' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"MFG_CODE", type text}, {"MFG_PART_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"MFG_NAME", type text}, {"ACTIVITY_CODE", type text}, {"DATE_CREATED", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

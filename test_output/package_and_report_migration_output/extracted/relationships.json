@@ -1,0 +1,24 @@
+[
+  {
+    "id": "750642d4-f539-4988-8e62-c0e957204af3",
+    "fromTable": "ITEM_NUMBER",
+    "fromColumn": "AUDIT_DATE",
+    "toTable": "CentralDateTable",
+    "toColumn": "Date",
+    "isActive": true,
+    "fromCardinality": "many",
+    "crossFilteringBehavior": "automatic",
+    "joinOnDateBehavior": "datePartOnly"
+  },
+  {
+    "id": "a0ae6a74-c15b-4b09-b281-76c6328fa4f7",
+    "fromTable": "ITEM_NUMBER",
+    "fromColumn": "LAST_ISSUE",
+    "toTable": "CentralDateTable",
+    "toColumn": "Date",
+    "isActive": false,
+    "fromCardinality": "many",
+    "crossFilteringBehavior": "automatic",
+    "joinOnDateBehavior": "datePartOnly"
+  }
+]

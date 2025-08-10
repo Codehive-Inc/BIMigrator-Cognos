@@ -1,0 +1,63 @@
+table PURCHASE_ORDER_LINE
+
+
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'PURCHASE_ORDER_LINE' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"PO_NUMBER", type text}, {"PO_LINE_NUMBER", type text}, {"RELEASE_NUMBER", type text}, {"STATUS_DATE", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

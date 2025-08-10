@@ -1,0 +1,1583 @@
+{
+  "name": "ELECTRIC_GENERATION_MAT",
+  "query_subjects": [
+    {
+      "name": "PURCHASE_ORDER_DESCRIPTIONS",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "ITEM_NUMBER",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "SITE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "MARK_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_ALT",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SOURCE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ONBILL",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LAST_ISSUE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "AUDIT_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_IN_USE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "UNKNOWN",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MARK_NUMBER_COMPRESSED",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "MARK_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_ALT",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SOURCE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ONBILL",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LAST_ISSUE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "AUDIT_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_IN_USE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "UNKNOWN",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MARK_NUMBER_COMPRESSED",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ROOT_DESCRIPTION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE1",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE2",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE3",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE4",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE5",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ROOT_DESCRIPTION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE1",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE2",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE3",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE4",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TYPE5",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "ITEM_SITE_DESCRIPTIONS",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "REQUISITION_DESCRIPTIONS",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "REQUISITION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "REQUISITION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SEGMENT_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    }
+  ],
+  "relationships": [],
+  "calculations": {},
+  "filters": {},
+  "structure": {
+    "name": "ELECTRIC_GENERATION_MAT",
+    "namespaces": [
+      {
+        "name": "ELECTRIC_GENERATION_WPTMATT",
+        "type": "",
+        "id": ""
+      },
+      {
+        "name": "Database_Layer",
+        "type": "",
+        "id": ""
+      }
+    ],
+    "dataSources": [
+      {
+        "id": "",
+        "type": "",
+        "cmDataSource": "ELECTRIC_GENERATION_WPTMATT",
+        "schema": "MATWPT"
+      },
+      {
+        "id": "",
+        "type": "",
+        "cmDataSource": "ELECTRIC_GENERATION_WPTMATT",
+        "schema": "MATWPT"
+      }
+    ]
+  }
+}
