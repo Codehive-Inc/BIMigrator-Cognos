@@ -166,7 +166,7 @@ in
         if not table_json_path.exists():
             self.logger.warning(f"Table metadata file not found at {table_json_path}")
             return None
-
+                
         try:
             with open(table_json_path, 'r') as f:
                 return json.load(f)

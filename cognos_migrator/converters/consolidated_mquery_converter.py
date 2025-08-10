@@ -45,44 +45,51 @@ class ConsolidatedMQueryConverter(BaseMQueryConverter):
 
     def _build_consolidated_m_query(self, sql_query: str, table: Table, table_metadata: Optional[Dict]) -> str:
         """
-        Builds the M-query from the targeted SQL, including transformations.
+        Builds the M-query from the targeted SQL, including transformations,
+        with correct indentation for TMDL.
         """
-        final_step = "ExecuteQuery"
-        transform_types_section = ""
-        type_transformations = []
-
-        # Escape the SQL query for embedding in an M query string literal
         escaped_sql_query = sql_query.replace('"', '""')
 
-        required_columns = {col.name for col in table.columns}
+        # Base steps for the M-query
+        steps = [
+            f'Source = Sql.Database(#"DB Server", #"DB Name")',
+            f'ExecuteQuery = Value.NativeQuery(Source, "{escaped_sql_query}", null, [EnableFolding=true])',
+            f'#"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)'
+        ]
+        last_step_name = '#"Removed Errors"'
 
+        # Build type transformations if metadata is available
+        type_transformations = []
         if table_metadata and 'columns' in table_metadata:
             for col in table_metadata['columns']:
                 col_name = col.get('name')
-                if col_name in required_columns:
-                    powerbi_type = col.get('powerbi_datatype', 'string')
-                    mquery_type = "type text"
-                    if powerbi_type.lower() == 'int64':
-                        mquery_type = "Int64.Type"
-                    elif powerbi_type.lower() == 'double':
-                        mquery_type = "type number"
-                    elif powerbi_type.lower() == 'datetime':
-                        mquery_type = "type datetime"
-                    
-                    type_transformations.append(f'{{"{col_name}", {mquery_type}}}')
+                powerbi_type = col.get('powerbi_datatype', 'string')
+                mquery_type = "type text"
+                if powerbi_type.lower() == 'int64':
+                    mquery_type = "Int64.Type"
+                elif powerbi_type.lower() == 'double':
+                    mquery_type = "type number"
+                elif powerbi_type.lower() == 'datetime':
+                    mquery_type = "type datetime"
+
+                type_transformations.append(f'{{"{col_name}", {mquery_type}}}')
 
         if type_transformations:
-            transformations_list = ", ".join(type_transformations)
-            transform_types_section = f""",
-        #"Changed Type" = Table.TransformColumnTypes(ExecuteQuery, {{{transformations_list}}})"""
-            final_step = "#\"Changed Type\""
+            transformations_list_str = ", ".join(type_transformations)
+            type_step_str = f'#"Changed Type" = Table.TransformColumnTypes({last_step_name}, {{{transformations_list_str}}})'
+            steps.append(type_step_str)
+            last_step_name = '#"Changed Type"'
 
-        m_query_template = f'''let
-    Source = Sql.Database(#"DB Server", #"DB Name"),
-    ExecuteQuery = Value.NativeQuery(Source, "{escaped_sql_query}", null, [EnableFolding=true]){transform_types_section}
-in
-    {final_step}'''
-        return textwrap.dedent(m_query_template).strip()
+        # Join the steps with the correct indentation for the let expression
+        steps_str = (",\n" + " " * 20).join(steps)
+
+        # Use a simple f-string with hardcoded spaces to guarantee the correct final format.
+        m_query = f"""
+                let
+                    {steps_str}
+                in
+                    {last_step_name}"""
+        return m_query
 
     def _get_table_metadata(self, table: Table) -> Optional[Dict]:
         """Gets table metadata from the extracted package files."""

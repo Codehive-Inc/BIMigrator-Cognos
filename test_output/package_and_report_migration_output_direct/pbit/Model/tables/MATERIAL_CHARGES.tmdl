@@ -367,11 +367,13 @@ table MATERIAL_CHARGES
     partition 'MATERIAL_CHARGES' = m
         mode: import
         source = 
-            let
-    Source = Sql.Database(#"DB Server", #"DB Name"),
-    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""ITEM_NUMBER"", ""CHARGED_DATE"", ""TIME_ENTERED"", ""STOREKEEPER_ID"", ""EMPLOYEE_ID"", ""ISSUE_TICKET_NUMBER"", ""TRANSACTION_TYPE"", ""ADJUSTMENT_TYPE"", ""QUANTITY"", ""UNIT_PRICE"", ""TRANSACTION_VALUE"", ""JOB_NUMBER"", ""BU_NUMBER"", ""PO_NUMBER"", ""PO_INDICATOR"", ""DATE_ENTERED"", ""DATE_STATUS_EFFECTIVE"", ""REFURB_IND"", ""ISSUE_OVERRIDE_IND"", ""RECORD_STATUS"", ""UNIT_OF_MEASURE"", ""ADJUSTMENT_NUMBER"", ""ADJUSTMENT_DESC"", ""QTY_TO_RECONCILE"", ""STOP"", ""TRANSFER_NUMBER"", ""MATERIAL_CLASS"", ""ROOT_DESCRIPTION"", ""ITT_KEY_NO"", ""UTC_NO"", ""PIT_IND"", ""UM"" FROM ""MATERIAL_CHARGES""", null, [EnableFolding=true])
-in
-    ExecuteQuery
+            
+                let
+                    Source = Sql.Database(#"DB Server", #"DB Name"),
+                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""ITEM_NUMBER"", ""CHARGED_DATE"", ""TIME_ENTERED"", ""STOREKEEPER_ID"", ""EMPLOYEE_ID"", ""ISSUE_TICKET_NUMBER"", ""TRANSACTION_TYPE"", ""ADJUSTMENT_TYPE"", ""QUANTITY"", ""UNIT_PRICE"", ""TRANSACTION_VALUE"", ""JOB_NUMBER"", ""BU_NUMBER"", ""PO_NUMBER"", ""PO_INDICATOR"", ""DATE_ENTERED"", ""DATE_STATUS_EFFECTIVE"", ""REFURB_IND"", ""ISSUE_OVERRIDE_IND"", ""RECORD_STATUS"", ""UNIT_OF_MEASURE"", ""ADJUSTMENT_NUMBER"", ""ADJUSTMENT_DESC"", ""QTY_TO_RECONCILE"", ""STOP"", ""TRANSFER_NUMBER"", ""MATERIAL_CLASS"", ""ROOT_DESCRIPTION"", ""ITT_KEY_NO"", ""UTC_NO"", ""PIT_IND"", ""UM"" FROM ""MATERIAL_CHARGES""", null, [EnableFolding=true]),
+                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
+                in
+                    #"Removed Errors"
         
 
 
