@@ -1,0 +1,103 @@
+table WO_COMMENTS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_COMMENTS' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE", type text}, {"REC_TYP", type text}, {"WORKORDER", type text}, {"COMMENTS", type text}, {"COMMENTS2", type text}, {"LINE_NO", type text}, {"MODEL_TYPE", type text}, {"MARK_NUMBER", type text}, {"SITE", type text}, {"REC_TYP", type text}, {"WORKORDER", type text}, {"COMMENTS", type text}, {"COMMENTS2", type text}, {"LINE_NO", type text}, {"MODEL_TYPE", type text}, {"MARK_NUMBER", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

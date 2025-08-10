@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Set
 from datetime import datetime
+import shutil
 
 from cognos_migrator.config import MigrationConfig, CognosConfig
 from cognos_migrator.common.logging import configure_logging, log_info, log_warning, log_error, log_debug
@@ -445,72 +446,63 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
 
 
 def _migrate_shared_model(
-    package_file_path: str,
+    package_file: str,
+    report_files: List[str],
     output_path: str,
     cognos_url: str,
     session_key: str,
-    report_file_paths: Optional[List[str]] = None,
-    report_ids: Optional[List[str]] = None,
-    task_id: Optional[str] = None
+    llm_service: Optional[Dict[str, Any]] = None,
+    config: Optional[Dict[str, Any]] = None
 ) -> bool:
-    """Internal engine for the 'Migrate, Analyze, Filtered-Extract' strategy."""
-    
-    if task_id is None:
-        task_id = str(uuid.uuid4())
-    
+    """Helper function to orchestrate the shared model migration."""
+    # --- Step 1: Intermediate migration for each report ---
     intermediate_dir = Path(output_path) / "intermediate_reports"
+    shutil.rmtree(intermediate_dir, ignore_errors=True)
     intermediate_dir.mkdir(parents=True, exist_ok=True)
-    log_info(f"Using intermediate directory: {intermediate_dir}")
 
-    # --- Step 1: Migrate each report individually ---
-    successful_migrations = []
+    successful_migrations_paths = []
+    for report_file in report_files:
+        report_name = Path(report_file).stem
+        report_output_path = intermediate_dir / report_name
+        
+        success = migrate_single_report(
+            output_path=str(report_output_path),
+            cognos_url=cognos_url,
+            session_key=session_key,
+            report_file_path=report_file
+        )
+        if success:
+            successful_migrations_paths.append(report_output_path)
     
-    if report_file_paths:
-        for report_file in report_file_paths:
-            report_name = Path(report_file).stem
-            report_output_path = intermediate_dir / report_name
-            success = migrate_single_report(
-                output_path=str(report_output_path),
-                report_file_path=report_file,
-                cognos_url=cognos_url,
-                session_key=session_key
-            )
-            if success:
-                successful_migrations.append(report_output_path)
-            else:
-                log_error(f"Failed to migrate report file '{report_file}'. Halting.")
-                return False
-
-    if report_ids:
-        for report_id in report_ids:
-            report_output_path = intermediate_dir / report_id
-            success = migrate_single_report(
-                output_path=str(report_output_path),
-                report_id=report_id,
-                cognos_url=cognos_url,
-                session_key=session_key
-            )
-            if success:
-                successful_migrations.append(report_output_path)
-            else:
-                log_error(f"Failed to migrate report ID '{report_id}'. Halting.")
-                return False
-
-    # --- Step 2: Analyze intermediate files ---
-    required_tables = set()
-    for report_path in successful_migrations:
-        # Correctly extract source table names by analyzing the report's metadata
-        report_tables = extract_tables_from_report(str(report_path))
-        required_tables.update(report_tables)
+    # --- Step 2: Analyze intermediate files and consolidate table schemas ---
+    consolidated_tables: Dict[str, Table] = {}
     
-    # Always include the CentralDateTable
-    required_tables.add("CentralDateTable")
-    log_info(f"Found {len(required_tables)} required source tables from reports: {required_tables}")
+    for report_path in successful_migrations_paths:
+        try:
+            migrator = CognosModuleMigratorExplicit(
+                cognos_url, session_key, output_path=str(report_path), llm_service=llm_service
+            )
+            intermediate_model = migrator._create_data_model_from_report(report_path / "extracted")
+            
+            for table in intermediate_model.tables:
+                if table.name not in consolidated_tables:
+                    consolidated_tables[table.name] = table
+                else:
+                    existing_table = consolidated_tables[table.name]
+                    existing_column_names = {c.name for c in existing_table.columns}
+                    for new_column in table.columns:
+                        if new_column.name not in existing_column_names:
+                            existing_table.columns.append(new_column)
+        except Exception as e:
+            log_error(f"Error processing intermediate model for {report_path}: {e}")
+
+    required_tables = set(consolidated_tables.keys())
+    log_info(f"Found {len(required_tables)} unique source tables to consolidate: {required_tables}")
 
     # --- Step 3: Filtered Package Extraction ---
     package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))
     package_info = package_extractor.extract_package(
-        package_file_path,
+        package_file,
         os.path.join(output_path, "extracted"),
         required_tables=required_tables
     )
@@ -536,12 +528,11 @@ def migrate_package_with_local_reports(package_file_path: str,
                                        task_id: Optional[str] = None) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
     return _migrate_shared_model(
-        package_file_path=package_file_path,
+        package_file=package_file_path,
+        report_files=report_file_paths,
         output_path=output_path,
         cognos_url=cognos_url,
-        session_key=session_key,
-        report_file_paths=report_file_paths,
-        task_id=task_id
+        session_key=session_key
     )
 
 def migrate_package_with_reports_explicit_session(package_file_path: str,
@@ -554,10 +545,9 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                        dry_run: bool = False) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
     return _migrate_shared_model(
-        package_file_path=package_file_path,
+        package_file=package_file_path,
+        report_files=report_ids,
         output_path=output_path,
         cognos_url=cognos_url,
-        session_key=session_key,
-        report_ids=report_ids,
-        task_id=task_id
+        session_key=session_key
     )

@@ -1,0 +1,803 @@
+table ITEM_SITE_EXTRACT
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_CREATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TAX_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TAX_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FUNCTIONAL_GROUP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FUNCTIONAL_GROUP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MATERIAL_CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MATERIAL_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_RANK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_RANK
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_INVENTORIED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_INVENTORIED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_ORDER'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_ORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HAND'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_AVAILABLE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_AVAILABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MINIMUM'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MINIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAXIMUM'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MAXIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EOQ_QTY'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: EOQ_QTY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CYCLE_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CYCLE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECEIVED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FERC_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FERC_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRIMARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRIMARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SECONDARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SECONDARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXTRA_LOCS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXTRA_LOCS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_APPROVED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_APPROVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVER_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVER_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVER_BADGE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVER_BADGE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVAL_SWITCH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVAL_SWITCH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VALUE_ON_HAND'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: VALUE_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVIOUS_ITEM_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREVIOUS_ITEM_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ALLOCATED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ALLOCATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONSUMABLE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CONSUMABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVENT_MAINTENANCE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREVENT_MAINTENANCE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CORPORATE_SWITCH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CORPORATE_SWITCH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_OWNER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_OWNER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAFETY_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAFETY_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UTC_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_DEPT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_DEPT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IN_PROCESS_HOLD'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: IN_PROCESS_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_EXCESS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_EXCESS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NEW_RANK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NEW_RANK
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUB_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUB_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STRATIFIED_TRANS_COUNT'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: STRATIFIED_TRANS_COUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STRATIFIED_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STRATIFIED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOLERANCE_AMOUNT'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOLERANCE_AMOUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOLERANCE_PERCENTAGE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOLERANCE_PERCENTAGE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_LAST_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SITE_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HOLD'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_LAST_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ITEM_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PROPERTY_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PROPERTY_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PROPERTY_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PROPERTY_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_ISSUED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_ISSUED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RETURNED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RETURNED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRITICAL_ITEM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRITICAL_ITEM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REVIEW_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: REVIEW_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAP_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'ITEM_SITE_EXTRACT - Count by DATE_CREATED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[DATE_CREATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by DATE_LAST_APPROVED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[DATE_LAST_APPROVED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by DATE_LAST_INVENTORIED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[DATE_LAST_INVENTORIED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by DATE_LAST_ISSUED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[DATE_LAST_ISSUED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by DATE_LAST_RECEIVED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[DATE_LAST_RECEIVED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by DATE_LAST_RETURNED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[DATE_LAST_RETURNED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by ITEM_LAST_UPDATED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[ITEM_LAST_UPDATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by REVIEW_DATE' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[REVIEW_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by SHELF_LIFE_DATE' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[SHELF_LIFE_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by SITE_LAST_UPDATED' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[SITE_LAST_UPDATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_SITE_EXTRACT - Count by STRATIFIED_DATE' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_SITE_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_SITE_EXTRACT'[STRATIFIED_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'ITEM_SITE_EXTRACT' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"DESCRIPTION", type text}, {"UNIT_OF_MEASURE", type text}, {"DATE_CREATED", type text}, {"TAX_IND", type text}, {"UNIT_PRICE", type text}, {"TYPE_CODE", type text}, {"FUNCTIONAL_GROUP", type text}, {"MATERIAL_CLASS", type text}, {"STATUS", type text}, {"SITE_RANK", type text}, {"DATE_LAST_INVENTORIED", type text}, {"QTY_ON_ORDER", type text}, {"QTY_ON_HAND", type text}, {"QTY_AVAILABLE", type text}, {"MINIMUM", type text}, {"MAXIMUM", type text}, {"EOQ_QTY", type text}, {"QA_CODE", type text}, {"QA_LEVEL", type text}, {"CYCLE_IND", type text}, {"SHELF_LIFE_DATE", type text}, {"DATE_LAST_RECEIVED", type text}, {"FERC_CODE", type text}, {"PRIMARY_LOC", type text}, {"SECONDARY_LOC", type text}, {"EXTRA_LOCS", type text}, {"DATE_LAST_APPROVED", type text}, {"APPROVER_ID", type text}, {"APPROVER_BADGE_NUMBER", type text}, {"APPROVAL_SWITCH", type text}, {"QA_CERT1", type text}, {"QA_CERT2", type text}, {"QA_CERT3", type text}, {"QA_CERT4", type text}, {"VALUE_ON_HAND", type text}, {"PREVIOUS_ITEM_ID", type text}, {"QTY_ALLOCATED", type text}, {"CONSUMABLE", type text}, {"SHELF_LIFE", type text}, {"PREVENT_MAINTENANCE", type text}, {"CORPORATE_SWITCH", type text}, {"ITEM_OWNER", type text}, {"SAFETY_IND", type text}, {"UTC_IND", type text}, {"ITEM_DEPT", type text}, {"IN_PROCESS_HOLD", type text}, {"PIT", type text}, {"QTY_EXCESS", type text}, {"NEW_RANK", type text}, {"SUB_STATUS", type text}, {"STRATIFIED_TRANS_COUNT", type text}, {"STRATIFIED_DATE", type text}, {"TOLERANCE_AMOUNT", type text}, {"TOLERANCE_PERCENTAGE", type text}, {"SITE_LAST_UPDATED", type text}, {"QTY_ON_HOLD", type text}, {"ITEM_LAST_UPDATED", type text}, {"UNIT_OF_PROPERTY_NUMBER", type text}, {"UNIT_OF_PROPERTY_IND", type text}, {"DATE_LAST_ISSUED", type text}, {"DATE_LAST_RETURNED", type text}, {"CRITICAL_ITEM", type text}, {"REVIEW_DATE", type text}, {"STOP", type text}, {"SAP_IND", type text}, {"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"DESCRIPTION", type text}, {"UNIT_OF_MEASURE", type text}, {"DATE_CREATED", type text}, {"TAX_IND", type text}, {"UNIT_PRICE", type text}, {"TYPE_CODE", type text}, {"FUNCTIONAL_GROUP", type text}, {"MATERIAL_CLASS", type text}, {"STATUS", type text}, {"SITE_RANK", type text}, {"DATE_LAST_INVENTORIED", type text}, {"QTY_ON_ORDER", type text}, {"QTY_ON_HAND", type text}, {"QTY_AVAILABLE", type text}, {"MINIMUM", type text}, {"MAXIMUM", type text}, {"EOQ_QTY", type text}, {"QA_CODE", type text}, {"QA_LEVEL", type text}, {"CYCLE_IND", type text}, {"SHELF_LIFE_DATE", type text}, {"DATE_LAST_RECEIVED", type text}, {"FERC_CODE", type text}, {"PRIMARY_LOC", type text}, {"SECONDARY_LOC", type text}, {"EXTRA_LOCS", type text}, {"DATE_LAST_APPROVED", type text}, {"APPROVER_ID", type text}, {"APPROVER_BADGE_NUMBER", type text}, {"APPROVAL_SWITCH", type text}, {"QA_CERT1", type text}, {"QA_CERT2", type text}, {"QA_CERT3", type text}, {"QA_CERT4", type text}, {"VALUE_ON_HAND", type text}, {"PREVIOUS_ITEM_ID", type text}, {"QTY_ALLOCATED", type text}, {"CONSUMABLE", type text}, {"SHELF_LIFE", type text}, {"PREVENT_MAINTENANCE", type text}, {"CORPORATE_SWITCH", type text}, {"ITEM_OWNER", type text}, {"SAFETY_IND", type text}, {"UTC_IND", type text}, {"ITEM_DEPT", type text}, {"IN_PROCESS_HOLD", type text}, {"PIT", type text}, {"QTY_EXCESS", type text}, {"NEW_RANK", type text}, {"SUB_STATUS", type text}, {"STRATIFIED_TRANS_COUNT", type text}, {"STRATIFIED_DATE", type text}, {"TOLERANCE_AMOUNT", type text}, {"TOLERANCE_PERCENTAGE", type text}, {"SITE_LAST_UPDATED", type text}, {"QTY_ON_HOLD", type text}, {"ITEM_LAST_UPDATED", type text}, {"UNIT_OF_PROPERTY_NUMBER", type text}, {"UNIT_OF_PROPERTY_IND", type text}, {"DATE_LAST_ISSUED", type text}, {"DATE_LAST_RETURNED", type text}, {"CRITICAL_ITEM", type text}, {"REVIEW_DATE", type text}, {"STOP", type text}, {"SAP_IND", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

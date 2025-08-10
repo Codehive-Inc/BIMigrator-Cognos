@@ -1,0 +1,63 @@
+table WO_SUPPLEMENTAL
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUMMARY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUMMARY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_SUPPLEMENTAL' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE", type text}, {"WORKORDER", type text}, {"REC_TYP", type text}, {"SUMMARY", type text}, {"SITE", type text}, {"WORKORDER", type text}, {"REC_TYP", type text}, {"SUMMARY", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,123 @@
+table EQUIPMENT
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERIAL_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERIAL_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_CRITICALITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_CRITICALITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LAST_ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREFERRED_ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREFERRED_ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'EQUIPMENT' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE", type text}, {"MARK_NUMBER", type text}, {"EQUIPMENT_DESC", type text}, {"SERIAL_NUMBER", type text}, {"VENDOR_CODE", type text}, {"EQUIPMENT_CRITICALITY", type text}, {"LAST_ITEM_NUMBER", type text}, {"PREFERRED_ITEM_NUMBER", type text}, {"EQUIPMENT_STATUS", type text}, {"STOP", type text}, {"SITE", type text}, {"MARK_NUMBER", type text}, {"EQUIPMENT_DESC", type text}, {"SERIAL_NUMBER", type text}, {"VENDOR_CODE", type text}, {"EQUIPMENT_CRITICALITY", type text}, {"LAST_ITEM_NUMBER", type text}, {"PREFERRED_ITEM_NUMBER", type text}, {"EQUIPMENT_STATUS", type text}, {"STOP", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

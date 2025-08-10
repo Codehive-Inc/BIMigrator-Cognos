@@ -1,0 +1,133 @@
+table WO_STEPS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STEP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STEP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DURATION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DURATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRAFT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRAFT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QTY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAN_HOURS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MAN_HOURS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_STEPS' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE", type text}, {"WORKORDER", type text}, {"REC_TYP", type text}, {"STEP", type text}, {"DURATION", type text}, {"CRAFT", type text}, {"QTY", type text}, {"MAN_HOURS", type text}, {"DESCRIPTION", type text}, {"MODEL_TYPE", type text}, {"MARK_NUMBER", type text}, {"SITE", type text}, {"WORKORDER", type text}, {"REC_TYP", type text}, {"STEP", type text}, {"DURATION", type text}, {"CRAFT", type text}, {"QTY", type text}, {"MAN_HOURS", type text}, {"DESCRIPTION", type text}, {"MODEL_TYPE", type text}, {"MARK_NUMBER", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table
