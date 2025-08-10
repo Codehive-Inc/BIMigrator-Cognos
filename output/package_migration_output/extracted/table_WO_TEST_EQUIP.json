@@ -1,0 +1,137 @@
+{
+  "source_name": "WO_TEST_EQUIP",
+  "name": "WO_TEST_EQUIP",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "SITE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "WORKORDER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "WORKORDER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "REC_TYP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "REC_TYP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIP_NUM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIP_NUM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "WORKORDER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "WORKORDER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "REC_TYP",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "REC_TYP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EQUIP_NUM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EQUIP_NUM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ]
+}

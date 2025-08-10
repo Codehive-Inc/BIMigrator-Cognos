@@ -1,0 +1,50 @@
+table tblAgencyTerritory
+
+
+    column 'AgencyTerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyTerritoryID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AgencyID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: AgencyID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TerritoryID'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TerritoryID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'tblAgencyTerritory' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("", "", [Query = "Select * from [Shared_Energy_Share].tblAgencyTerritory"]),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(Source),
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}, {"AgencyTerritoryID", Int64.Type}, {"AgencyID", Int64.Type}, {"TerritoryID", Int64.Type}})
+				in
+					#"Changed Types"
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,44 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Agency", "tblAgencyTerritory", "Assistance", "Authorization", "Financial", "Territory", "Vendor", "vwAssistanceReport", "vwAuthorizationsByAgency", "vwFinancialReport", "vwPayeeReport", "vwFinancialReportDrillDown", "vwAssistanceReportDrillDown", "Payee Report", "Matching Credit Report", "LocalDateTable_7e2fcf02-b07f-4018-8ff8-a0a8cc8c8693", "LocalDateTable_a88792b8-ab03-4a70-803b-969ee69ab53e", "LocalDateTable_006c48dd-33d8-4fb6-9def-75d92afb7de4", "LocalDateTable_cf51cd74-783f-477c-9237-42f48bc29e3e", "LocalDateTable_14980af3-9c79-4f2c-9f00-c85a19b49eae", "LocalDateTable_9805ade5-4303-4420-b725-19ca20690fa2", "LocalDateTable_562e923b-c110-49c2-867f-d2524b705cbd", "LocalDateTable_1e1d1dca-5b48-4eda-bfcd-c943959db32e", "LocalDateTable_b3a61890-a293-4ac7-b4da-76ebedbc466f", "LocalDateTable_1fb36a38-101c-4134-93e5-6236be50b968", "LocalDateTable_44d72bd6-2c13-4266-8489-2dff720c1c13", "LocalDateTable_4047156e-8841-4a96-92d6-df7ec5210b29", "LocalDateTable_ac03bff2-7901-40a8-a9ed-e95ea3a99820"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBIDesktopVersion = 2.141.1253.0 (25.03)+74f9999a1e95f78c739f3ea2b96ba340e9ba8729
+
+ref table Agency
+ref table tblAgencyTerritory
+ref table Assistance
+ref table Authorization
+ref table Financial
+ref table Territory
+ref table Vendor
+ref table vwAssistanceReport
+ref table vwAuthorizationsByAgency
+ref table vwFinancialReport
+ref table vwPayeeReport
+ref table vwFinancialReportDrillDown
+ref table vwAssistanceReportDrillDown
+ref table 'Payee Report'
+ref table 'Matching Credit Report'
+ref table LocalDateTable_7e2fcf02-b07f-4018-8ff8-a0a8cc8c8693
+ref table LocalDateTable_a88792b8-ab03-4a70-803b-969ee69ab53e
+ref table LocalDateTable_006c48dd-33d8-4fb6-9def-75d92afb7de4
+ref table LocalDateTable_cf51cd74-783f-477c-9237-42f48bc29e3e
+ref table LocalDateTable_14980af3-9c79-4f2c-9f00-c85a19b49eae
+ref table LocalDateTable_9805ade5-4303-4420-b725-19ca20690fa2
+ref table LocalDateTable_562e923b-c110-49c2-867f-d2524b705cbd
+ref table LocalDateTable_1e1d1dca-5b48-4eda-bfcd-c943959db32e
+ref table LocalDateTable_b3a61890-a293-4ac7-b4da-76ebedbc466f
+ref table LocalDateTable_1fb36a38-101c-4134-93e5-6236be50b968
+ref table LocalDateTable_44d72bd6-2c13-4266-8489-2dff720c1c13
+ref table LocalDateTable_4047156e-8841-4a96-92d6-df7ec5210b29
+ref table LocalDateTable_ac03bff2-7901-40a8-a9ed-e95ea3a99820
+
+ref cultureInfo en-US

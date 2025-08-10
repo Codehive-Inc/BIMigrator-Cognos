@@ -7,6 +7,7 @@ This module orchestrates the generation of Power BI project files using speciali
 import logging
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import json
 
 from cognos_migrator.common.websocket_client import logging_helper
 
@@ -259,9 +260,47 @@ class PowerBIProjectOrchestrator:
             cognos_report: Cognos report structure
             report_dir: Report directory path
         """
+        # Build section references for config
+        section_references = []
+        
+        # Check if sections directory exists and has section folders
+        sections_dir = report_dir / 'sections'
+        if sections_dir.exists():
+            # Get all section directories (they should be named like 000_section1)
+            section_dirs = [d for d in sections_dir.iterdir() if d.is_dir()]
+            
+            # For each section directory, add a reference to the config
+            for section_dir in sorted(section_dirs):
+                # Read the section.json to get the section name
+                section_file = section_dir / 'section.json'
+                if section_file.exists():
+                    try:
+                        with open(section_file, 'r', encoding='utf-8') as f:
+                            section_data = json.loads(f.read())
+                            
+                        # Add section reference
+                        section_references.append({
+                            'properties': {
+                                'verticalAlignment': {
+                                    'expr': {
+                                        'Literal': {
+                                            'Value': "'Top'"
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    except Exception as e:
+                        self.logger.error(f"Failed to read section file {section_file}: {e}")
+        
+        # Build context with section references
         context = {
             'report_id': cognos_report.report_id if hasattr(cognos_report, 'report_id') else f"report_{cognos_report.name.lower().replace(' ', '_')}",
-            'report_name': cognos_report.name
+            'report_name': cognos_report.name,
+            'section_references': section_references,
+            'theme_name': 'CY24SU10',  # Use modern Power BI theme
+            'theme_version': '5.65',
+            'theme_type': 2
         }
         
         # Use the 'config' template which points to the new name
@@ -294,8 +333,8 @@ class PowerBIProjectOrchestrator:
         # Generate section files for each page
         if hasattr(cognos_report, 'pages') and cognos_report.pages:
             for i, page in enumerate(cognos_report.pages):
-                # Build context for page
-                context = self._build_enhanced_page_context(page)
+                # Build context for page with additional fields for Power BI compatibility
+                context = self._build_enhanced_page_context(page, i)
                 
                 # Add visuals if available
                 if hasattr(page, 'visuals') and page.visuals:
@@ -323,13 +362,28 @@ class PowerBIProjectOrchestrator:
                 # Render section template
                 content = self.template_engine.render('report_section', context)
                 
-                # Write section file
+                # Create a directory for each section with numeric prefix for Power BI compatibility
                 section_id = self._sanitize_filename(page.name) if hasattr(page, 'name') else f"section{i+1}"
-                section_file = sections_dir / f"{section_id}.json"
+                section_dir_name = f"{i:03d}_{section_id}"
+                section_dir = sections_dir / section_dir_name
+                section_dir.mkdir(exist_ok=True)
+                
+                # Write section.json file in the section directory
+                section_file = section_dir / "section.json"
                 with open(section_file, 'w', encoding='utf-8') as f:
                     f.write(content)
+                
+                # Create empty config.json in the section directory
+                config_file = section_dir / "config.json"
+                with open(config_file, 'w', encoding='utf-8') as f:
+                    f.write("{}")
+                
+                # Create empty filters.json in the section directory
+                filters_file = section_dir / "filters.json"
+                with open(filters_file, 'w', encoding='utf-8') as f:
+                    f.write("{}")
                     
-                self.logger.info(f"Generated enhanced section file: {section_file}")
+                self.logger.info(f"Generated enhanced section files in directory: {section_dir}")
         else:
             # Generate a default section
             context = {
@@ -353,18 +407,19 @@ class PowerBIProjectOrchestrator:
                 
             self.logger.info(f"Generated default section file: {section_file}")
     
-    def _build_enhanced_page_context(self, page) -> Dict[str, Any]:
+    def _build_enhanced_page_context(self, page, index) -> Dict[str, Any]:
         """Build enhanced context for page template
         
         Args:
             page: Page object
+            index: Page index
             
         Returns:
             Context dictionary
         """
         # Get page properties
-        page_id = self._sanitize_filename(page.name) if hasattr(page, 'name') else "section1"
-        page_name = page.name if hasattr(page, 'name') else "Page 1"
+        page_id = self._sanitize_filename(page.name) if hasattr(page, 'name') else f"section{index+1}"
+        page_name = page.name if hasattr(page, 'name') else f"Page {index+1}"
         page_display_name = page.display_name if hasattr(page, 'display_name') else page_name
         
         # Build context

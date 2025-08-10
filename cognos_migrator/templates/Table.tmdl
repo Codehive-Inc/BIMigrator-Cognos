@@ -40,6 +40,14 @@ table {{source_name}}
         {{#if is_data_type_inferred}}
         isDataTypeInferred: {{is_data_type_inferred}}
         {{/if}}
+        
+        {{#if relationship_info}}
+        variation Variation
+            isDefault
+            relationship: {{relationship_info.id}}
+            defaultHierarchy: {{{relationship_info.hierarchy}}}
+        {{/if}}
+
         {{#if annotations.SummarizationSetBy}}
         annotation SummarizationSetBy = {{annotations.SummarizationSetBy}}
         {{else}}
@@ -53,7 +61,7 @@ table {{source_name}}
     {{/each}}
 
     {{#each measures}}
-    measure '{{source_name}}' = ```
+    measure '{{name}}' = ```
             {{{expression}}}
     ```
         {{#if format_string}}
