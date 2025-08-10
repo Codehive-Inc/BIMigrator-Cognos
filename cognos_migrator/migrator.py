@@ -26,7 +26,7 @@ from cognos_migrator.extractors.modules import (
 )
 from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
 from cognos_migrator.enhancers import CPFMetadataEnhancer
-from cognos_migrator.converters import ExpressionConverter
+from cognos_migrator.converters import ExpressionConverter, ReportMQueryConverter, PackageMQueryConverter
 from cognos_migrator.module_parser import CognosModuleParser
 from cognos_migrator.generators import PowerBIProjectGenerator, DocumentationGenerator
 from cognos_migrator.generators.module_generators import ModuleModelFileGenerator
@@ -53,12 +53,13 @@ class CognosModuleMigratorExplicit:
         # Initialize generators with LLM service enabled
         from cognos_migrator.generators.template_engine import TemplateEngine
         from cognos_migrator.llm_service import LLMServiceClient
-        from cognos_migrator.converters import MQueryConverter
+        from cognos_migrator.converters import ReportMQueryConverter, PackageMQueryConverter
         
         template_engine = TemplateEngine(template_directory=migration_config.template_directory)
         
-        # Initialize M-query converter
-        mquery_converter = MQueryConverter()
+        # Initialize M-query converters for different migration types
+        report_mquery_converter = ReportMQueryConverter()
+        package_mquery_converter = PackageMQueryConverter()
 
         # Initialize LLM service client
         llm_service_client = None
@@ -76,13 +77,19 @@ class CognosModuleMigratorExplicit:
         # Create project generator
         self.project_generator = PowerBIProjectGenerator(migration_config)
         
-        # Initialize module-specific model file generator with M-query converter
+        # Initialize module-specific model file generator with appropriate M-query converter
         if hasattr(self.project_generator, 'model_file_generator'):
+            # We'll set the appropriate converter when we know the migration type
+            # Default to report converter for backward compatibility
             module_model_file_generator = ModuleModelFileGenerator(
                 template_engine, 
-                mquery_converter=mquery_converter
+                mquery_converter=report_mquery_converter
             )
             self.project_generator.model_file_generator = module_model_file_generator
+            
+            # Store both converters for later use based on migration type
+            self.report_mquery_converter = report_mquery_converter
+            self.package_mquery_converter = package_mquery_converter
             
         self.doc_generator = DocumentationGenerator(migration_config)
         
@@ -840,6 +847,12 @@ class CognosModuleMigratorExplicit:
                 self.logger.error(f"Failed to fetch Cognos report: {report_id}")
                 return False
             
+            # Re-initialize M-query converter with the correct output path using the report-specific converter
+            if self.project_generator.model_file_generator:
+                # Use the report-specific M-query converter for report migrations
+                self.report_mquery_converter = ReportMQueryConverter(output_path=str(output_dir))
+                self.project_generator.model_file_generator.mquery_converter = self.report_mquery_converter
+                
             # Save raw Cognos report data to extracted folder
             self._save_extracted_report_data(cognos_report, extracted_dir)
 
@@ -915,10 +928,11 @@ class CognosModuleMigratorExplicit:
                 metadata={'name': report_name}
             )
             
-            # Re-initialize M-query converter with the correct output path
+            # Re-initialize M-query converter with the correct output path using the report-specific converter
             if self.project_generator.model_file_generator:
-                from cognos_migrator.converters import MQueryConverter
-                self.project_generator.model_file_generator.mquery_converter = MQueryConverter(output_path=str(output_dir))
+                # Use the report-specific M-query converter for report migrations
+                self.report_mquery_converter = ReportMQueryConverter(output_path=str(output_dir))
+                self.project_generator.model_file_generator.mquery_converter = self.report_mquery_converter
             # Save raw Cognos report data to extracted folder
             self._save_extracted_report_data(cognos_report, extracted_dir)
             
