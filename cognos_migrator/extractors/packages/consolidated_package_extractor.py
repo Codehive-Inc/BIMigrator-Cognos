@@ -43,17 +43,18 @@ class ConsolidatedPackageExtractor:
         self.relationship_extractor = PackageRelationshipExtractor(logger)
         self.calculation_extractor = PackageCalculationExtractor(logger)
         self.filter_extractor = PackageFilterExtractor(logger)
-    
-    def extract_package(self, package_file_path: str, output_dir: str = None) -> Dict[str, Any]:
-        """Extract package information from an FM package file
-        
-        Args:
-            package_file_path: Path to the FM package file
-            output_dir: Optional directory to save extracted data as JSON files
-            
-        Returns:
-            Dictionary containing extracted package information
-        """
+
+    def _save_json(self, data: Dict[str, Any], file_path: str):
+        """Saves dictionary data to a JSON file."""
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2)
+            self.logger.info(f"Saved data to {file_path}")
+        except Exception as e:
+            self.logger.error(f"Failed to save data to {file_path}: {e}")
+
+    def extract_package(self, package_file_path: str, output_dir: str, required_tables: Optional[set] = None) -> Dict[str, Any]:
+        """Extracts and consolidates information from a package XML file."""
         try:
             self.logger.info(f"Extracting package from {package_file_path}")
             
@@ -130,6 +131,26 @@ class ConsolidatedPackageExtractor:
                 self.structure_extractor.save_to_json(package_info, output_path, "package_info.json")
             
             self.logger.info(f"Successfully extracted package: {package_info['name']}")
+
+            # Apply filtering if required_tables is provided
+            if required_tables:
+                self.logger.info(f"Filtering package to {len(required_tables)} required tables.")
+                
+                # Filter query subjects (tables)
+                package_info['query_subjects'] = [
+                    qs for qs in package_info.get('query_subjects', [])
+                    if qs.get('name') in required_tables
+                ]
+                
+                # Filter relationships
+                package_info['relationships'] = [
+                    rel for rel in package_info.get('relationships', [])
+                    if rel.get('from_table') in required_tables and rel.get('to_table') in required_tables
+                ]
+                self.logger.info(f"Filtered to {len(package_info['query_subjects'])} tables and {len(package_info['relationships'])} relationships.")
+
+            self._save_json(package_info, os.path.join(output_dir, f"{package_info['name']}_consolidated.json"))
+            
             return package_info
             
         except Exception as e:

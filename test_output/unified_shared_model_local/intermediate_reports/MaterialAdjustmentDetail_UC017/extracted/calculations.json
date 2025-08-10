@@ -1,0 +1,14 @@
+{
+  "calculations": [
+    {
+      "TableName": "MaterialAdjustmentDetail_UC017",
+      "FormulaCaptionCognos": "Cost",
+      "CognosName": "Cost",
+      "FormulaCognos": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "Cost",
+      "FormulaDax": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
+      "Status": "needs_review"
+    }
+  ]
+}
