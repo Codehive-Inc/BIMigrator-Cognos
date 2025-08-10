@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialAdjustmentDetail_UC017
-- **Migration Date**: 2025-08-10 13:31:59
+- **Migration Date**: 2025-08-10 14:14:56
 
 ## Data Model
 

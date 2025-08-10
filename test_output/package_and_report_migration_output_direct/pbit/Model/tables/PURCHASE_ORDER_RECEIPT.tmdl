@@ -287,15 +287,14 @@ table PURCHASE_ORDER_RECEIPT
     partition 'PURCHASE_ORDER_RECEIPT' = m
         mode: import
         source = 
-            
-let
-    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
-    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
-    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"PO_NUMBER", type text}, {"CHANGE_ORDER_NUMBER", type text}, {"RELEASE_NUMBER", type text}, {"PO_LINE_NUMBER", type text}, {"DATE_ENTERED", type text}, {"TIME_ENTERED", type text}, {"QTY_RECEIVED", type text}, {"QTY_REJECTED", type text}, {"QA_CODE", type text}, {"SHELF_LIFE", type text}, {"QA_INSPECTOR", type text}, {"STOREKEEPER_ID", type text}, {"RECEIPT_NUMBER", type text}, {"UNIT_PRICE", type text}, {"ITEM_NUMBER", type text}, {"DATE_RECEIVED_AT_SITE", type text}, {"RECEIPT_CODE", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"HOLD_STATUS", type text}, {"DSR_NUMBER", type text}, {"QTY_IN_HOLD", type text}, {"RECORD_STATUS", type text}, {"STOP", type text}, {"ITT_KEY_NO", type text}, {"SITE_NUMBER", type text}, {"PO_NUMBER", type text}, {"CHANGE_ORDER_NUMBER", type text}, {"RELEASE_NUMBER", type text}, {"PO_LINE_NUMBER", type text}, {"DATE_ENTERED", type text}, {"TIME_ENTERED", type text}, {"QTY_RECEIVED", type text}, {"QTY_REJECTED", type text}, {"QA_CODE", type text}, {"SHELF_LIFE", type text}, {"QA_INSPECTOR", type text}, {"STOREKEEPER_ID", type text}, {"RECEIPT_NUMBER", type text}, {"UNIT_PRICE", type text}, {"ITEM_NUMBER", type text}, {"DATE_RECEIVED_AT_SITE", type text}, {"RECEIPT_CODE", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"HOLD_STATUS", type text}, {"DSR_NUMBER", type text}, {"QTY_IN_HOLD", type text}, {"RECORD_STATUS", type text}, {"STOP", type text}, {"ITT_KEY_NO", type text}})
+            let
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+    ExecuteQuery = Value.NativeQuery(Source, "SELECT
+    ""SITE_NUMBER"",\n    ""PO_NUMBER"",\n    ""CHANGE_ORDER_NUMBER"",\n    ""RELEASE_NUMBER"",\n    ""PO_LINE_NUMBER"",\n    ""DATE_ENTERED"",\n    ""TIME_ENTERED"",\n    ""QTY_RECEIVED"",\n    ""QTY_REJECTED"",\n    ""QA_CODE"",\n    ""SHELF_LIFE"",\n    ""QA_INSPECTOR"",\n    ""STOREKEEPER_ID"",\n    ""RECEIPT_NUMBER"",\n    ""UNIT_PRICE"",\n    ""ITEM_NUMBER"",\n    ""DATE_RECEIVED_AT_SITE"",\n    ""RECEIPT_CODE"",\n    ""DATE_STATUS_EFFECTIVE"",\n    ""HOLD_STATUS"",\n    ""DSR_NUMBER"",\n    ""QTY_IN_HOLD"",\n    ""RECORD_STATUS"",\n    ""STOP"",\n    ""ITT_KEY_NO"",\n    ""SITE_NUMBER"",\n    ""PO_NUMBER"",\n    ""CHANGE_ORDER_NUMBER"",\n    ""RELEASE_NUMBER"",\n    ""PO_LINE_NUMBER"",\n    ""DATE_ENTERED"",\n    ""TIME_ENTERED"",\n    ""QTY_RECEIVED"",\n    ""QTY_REJECTED"",\n    ""QA_CODE"",\n    ""SHELF_LIFE"",\n    ""QA_INSPECTOR"",\n    ""STOREKEEPER_ID"",\n    ""RECEIPT_NUMBER"",\n    ""UNIT_PRICE"",\n    ""ITEM_NUMBER"",\n    ""DATE_RECEIVED_AT_SITE"",\n    ""RECEIPT_CODE"",\n    ""DATE_STATUS_EFFECTIVE"",\n    ""HOLD_STATUS"",\n    ""DSR_NUMBER"",\n    ""QTY_IN_HOLD"",\n    ""RECORD_STATUS"",\n    ""STOP"",\n    ""ITT_KEY_NO""
+FROM
+    ""PURCHASE_ORDER_RECEIPT""", null, [EnableFolding=true])
 in
-    #"Changed Type"
-
+    ExecuteQuery
         
 
 

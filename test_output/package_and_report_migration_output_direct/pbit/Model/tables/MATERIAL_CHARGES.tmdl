@@ -367,15 +367,14 @@ table MATERIAL_CHARGES
     partition 'MATERIAL_CHARGES' = m
         mode: import
         source = 
-            
-let
-    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
-    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
-    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"CHARGED_DATE", type text}, {"TIME_ENTERED", type text}, {"STOREKEEPER_ID", type text}, {"EMPLOYEE_ID", type text}, {"ISSUE_TICKET_NUMBER", type text}, {"TRANSACTION_TYPE", type text}, {"ADJUSTMENT_TYPE", type text}, {"QUANTITY", type text}, {"UNIT_PRICE", type text}, {"TRANSACTION_VALUE", type text}, {"JOB_NUMBER", type text}, {"BU_NUMBER", type text}, {"PO_NUMBER", type text}, {"PO_INDICATOR", type text}, {"DATE_ENTERED", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"REFURB_IND", type text}, {"ISSUE_OVERRIDE_IND", type text}, {"RECORD_STATUS", type text}, {"UNIT_OF_MEASURE", type text}, {"ADJUSTMENT_NUMBER", type text}, {"ADJUSTMENT_DESC", type text}, {"QTY_TO_RECONCILE", type text}, {"STOP", type text}, {"TRANSFER_NUMBER", type text}, {"MATERIAL_CLASS", type text}, {"ROOT_DESCRIPTION", type text}, {"ITT_KEY_NO", type text}, {"UTC_NO", type text}, {"PIT_IND", type text}, {"UM", type text}, {"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"CHARGED_DATE", type text}, {"TIME_ENTERED", type text}, {"STOREKEEPER_ID", type text}, {"EMPLOYEE_ID", type text}, {"ISSUE_TICKET_NUMBER", type text}, {"TRANSACTION_TYPE", type text}, {"ADJUSTMENT_TYPE", type text}, {"QUANTITY", type text}, {"UNIT_PRICE", type text}, {"TRANSACTION_VALUE", type text}, {"JOB_NUMBER", type text}, {"BU_NUMBER", type text}, {"PO_NUMBER", type text}, {"PO_INDICATOR", type text}, {"DATE_ENTERED", type text}, {"DATE_STATUS_EFFECTIVE", type text}, {"REFURB_IND", type text}, {"ISSUE_OVERRIDE_IND", type text}, {"RECORD_STATUS", type text}, {"UNIT_OF_MEASURE", type text}, {"ADJUSTMENT_NUMBER", type text}, {"ADJUSTMENT_DESC", type text}, {"QTY_TO_RECONCILE", type text}, {"STOP", type text}, {"TRANSFER_NUMBER", type text}, {"MATERIAL_CLASS", type text}, {"ROOT_DESCRIPTION", type text}, {"ITT_KEY_NO", type text}, {"UTC_NO", type text}, {"PIT_IND", type text}, {"UM", type text}})
+            let
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+    ExecuteQuery = Value.NativeQuery(Source, "SELECT
+    ""SITE_NUMBER"",\n    ""ITEM_NUMBER"",\n    ""CHARGED_DATE"",\n    ""TIME_ENTERED"",\n    ""STOREKEEPER_ID"",\n    ""EMPLOYEE_ID"",\n    ""ISSUE_TICKET_NUMBER"",\n    ""TRANSACTION_TYPE"",\n    ""ADJUSTMENT_TYPE"",\n    ""QUANTITY"",\n    ""UNIT_PRICE"",\n    ""TRANSACTION_VALUE"",\n    ""JOB_NUMBER"",\n    ""BU_NUMBER"",\n    ""PO_NUMBER"",\n    ""PO_INDICATOR"",\n    ""DATE_ENTERED"",\n    ""DATE_STATUS_EFFECTIVE"",\n    ""REFURB_IND"",\n    ""ISSUE_OVERRIDE_IND"",\n    ""RECORD_STATUS"",\n    ""UNIT_OF_MEASURE"",\n    ""ADJUSTMENT_NUMBER"",\n    ""ADJUSTMENT_DESC"",\n    ""QTY_TO_RECONCILE"",\n    ""STOP"",\n    ""TRANSFER_NUMBER"",\n    ""MATERIAL_CLASS"",\n    ""ROOT_DESCRIPTION"",\n    ""ITT_KEY_NO"",\n    ""UTC_NO"",\n    ""PIT_IND"",\n    ""UM"",\n    ""SITE_NUMBER"",\n    ""ITEM_NUMBER"",\n    ""CHARGED_DATE"",\n    ""TIME_ENTERED"",\n    ""STOREKEEPER_ID"",\n    ""EMPLOYEE_ID"",\n    ""ISSUE_TICKET_NUMBER"",\n    ""TRANSACTION_TYPE"",\n    ""ADJUSTMENT_TYPE"",\n    ""QUANTITY"",\n    ""UNIT_PRICE"",\n    ""TRANSACTION_VALUE"",\n    ""JOB_NUMBER"",\n    ""BU_NUMBER"",\n    ""PO_NUMBER"",\n    ""PO_INDICATOR"",\n    ""DATE_ENTERED"",\n    ""DATE_STATUS_EFFECTIVE"",\n    ""REFURB_IND"",\n    ""ISSUE_OVERRIDE_IND"",\n    ""RECORD_STATUS"",\n    ""UNIT_OF_MEASURE"",\n    ""ADJUSTMENT_NUMBER"",\n    ""ADJUSTMENT_DESC"",\n    ""QTY_TO_RECONCILE"",\n    ""STOP"",\n    ""TRANSFER_NUMBER"",\n    ""MATERIAL_CLASS"",\n    ""ROOT_DESCRIPTION"",\n    ""ITT_KEY_NO"",\n    ""UTC_NO"",\n    ""PIT_IND"",\n    ""UM""
+FROM
+    ""MATERIAL_CHARGES""", null, [EnableFolding=true])
 in
-    #"Changed Type"
-
+    ExecuteQuery
         
 
 

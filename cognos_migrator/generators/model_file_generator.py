@@ -212,12 +212,16 @@ class ModelFileGenerator:
                 
                 # Generate M-query once for both table TMDL and JSON
                 m_query = None
-                try:
-                    self.logger.info(f"Generating M-query for table {table.name} once to reuse")
-                    m_query = self._build_m_expression(table, report_spec)
-                    self.logger.info(f"Successfully generated M-query for table {table.name}")
-                except Exception as e:
-                    self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
+                if table.m_query:
+                    self.logger.info(f"Using pre-generated M-query for table {table.name}")
+                    m_query = table.m_query
+                else:
+                    try:
+                        self.logger.info(f"Generating M-query for table {table.name} once to reuse")
+                        m_query = self._build_m_expression(table, report_spec)
+                        self.logger.info(f"Successfully generated M-query for table {table.name}")
+                    except Exception as e:
+                        self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
                 
                 # Build table context with the data items
                 context = self._build_table_context(table, report_spec, table_data_items, extracted_dir, m_query, report_name, project_metadata)

@@ -26,6 +26,7 @@ from .report import migrate_single_report_with_explicit_session
 from ..consolidation import consolidate_model_tables
 from .report import migrate_single_report
 from ..migrator import CognosModuleMigratorExplicit
+from ..converters.consolidated_mquery_converter import ConsolidatedMQueryConverter
 
 
 def migrate_package_with_explicit_session(package_file_path: str,
@@ -566,6 +567,12 @@ def _migrate_shared_model(
                     logging.info(f"Added column '{new_column.name}' to table '{target_table.name}'.")
         else:
             logging.warning(f"Table '{table_name}' from reports not found in the filtered package model. It will not be added.")
+
+    # Now, we need to generate the M-queries for this consolidated model
+    # We will use our new, specialized converter for this.
+    consolidated_converter = ConsolidatedMQueryConverter(output_path=output_path)
+    for table in data_model.tables:
+        table.m_query = consolidated_converter.convert_to_m_query(table)
 
     logging.info(f"Data model has {len(data_model.tables)} tables before generation: {[t.name for t in data_model.tables]}")
 
