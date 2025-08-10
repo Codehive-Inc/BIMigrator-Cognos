@@ -57,9 +57,11 @@ class CognosModuleMigratorExplicit:
         
         template_engine = TemplateEngine(template_directory=migration_config.template_directory)
         
-        # Initialize LLM service client and M-query converter
+        # Initialize M-query converter
+        mquery_converter = MQueryConverter()
+
+        # Initialize LLM service client
         llm_service_client = None
-        mquery_converter = None
         
         if migration_config.llm_service_enabled and migration_config.llm_service_url:
             try:
@@ -67,12 +69,9 @@ class CognosModuleMigratorExplicit:
                     base_url=migration_config.llm_service_url,
                     api_key=migration_config.llm_service_api_key
                 )
-                mquery_converter = MQueryConverter(llm_service_client)
                 self.logger.info(f"LLM service client initialized with URL: {migration_config.llm_service_url}")
-                self.logger.info("M-query converter initialized with LLM service")
             except Exception as e:
                 self.logger.warning(f"Failed to initialize LLM service: {e}")
-                self.logger.warning("Proceeding without M-query conversion")
         
         # Create project generator
         self.project_generator = PowerBIProjectGenerator(migration_config)
@@ -916,6 +915,10 @@ class CognosModuleMigratorExplicit:
                 metadata={'name': report_name}
             )
             
+            # Re-initialize M-query converter with the correct output path
+            if self.project_generator.model_file_generator:
+                from cognos_migrator.converters import MQueryConverter
+                self.project_generator.model_file_generator.mquery_converter = MQueryConverter(output_path=str(output_dir))
             # Save raw Cognos report data to extracted folder
             self._save_extracted_report_data(cognos_report, extracted_dir)
             

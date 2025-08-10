@@ -43,7 +43,7 @@
     {
       "name": "Query1",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Excel.Workbook(File.Contents(\"C:\\\\Users\\\\PowerBIUser\\\\Documents\\\\sample_data.xlsx\"), null, true),\n\t\t\t\t\tSheet1_Sheet = Source{{[Item = \"Sheet1\",Kind = \"Sheet\"]}}[Data],\n\t\t\t\t\t#\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars = true]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(#\"Promoted Headers\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"CHARGED_DATE\", type text}, {\"TRANSACTION_TYPE\", type text}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"MATERIAL_CHARGES\"\".\"\"SITE_NUMBER\"\" AS \"\"SITE_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"CHARGED_DATE\"\" AS \"\"CHARGED_DATE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"TRANSACTION_TYPE\"\" AS \"\"TRANSACTION_TYPE\"\"\nFROM\n\"\"Database_Layer\"\".\"\"MATERIAL_CHARGES\"\"\nWHERE\n    [SITE_NUMBER]= ?SiteNumber?\n    AND     [ITEM_NUMBER]=?ItemNumber?\n    AND     [TRANSACTION_TYPE] is not null\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
     }
   ],
   "has_widget_serialization": false,

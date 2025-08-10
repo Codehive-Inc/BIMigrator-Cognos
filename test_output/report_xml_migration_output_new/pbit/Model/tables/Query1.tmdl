@@ -28,13 +28,20 @@ table Query1
         mode: import
         source = 
             	let
-					Source = Excel.Workbook(File.Contents("C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx"), null, true),
-					Sheet1_Sheet = Source{{[Item = "Sheet1",Kind = "Sheet"]}}[Data],
-					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars = true]),
-					#"Removed Errors" = Table.RemoveRowsWithErrors(#"Promoted Headers"),
-					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"CHARGED_DATE", type text}, {"TRANSACTION_TYPE", type text}})
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""MATERIAL_CHARGES"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
+    ""MATERIAL_CHARGES"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
+    ""MATERIAL_CHARGES"".""CHARGED_DATE"" AS ""CHARGED_DATE"",
+    ""MATERIAL_CHARGES"".""TRANSACTION_TYPE"" AS ""TRANSACTION_TYPE""
+FROM
+""Database_Layer"".""MATERIAL_CHARGES""
+WHERE
+    [SITE_NUMBER]= ?SiteNumber?
+    AND     [ITEM_NUMBER]=?ItemNumber?
+    AND     [TRANSACTION_TYPE] is not null", null, [EnableFolding=true])
 				in
-					#"Changed Types"
+					SQL
         
 
 
