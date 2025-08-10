@@ -317,26 +317,28 @@ table EQUIP_HISTORY
     partition 'EQUIP_HISTORY' = m
         mode: import
         source = 
-            	let
-					Source = Sql.Database(#"DB Server", #"DB Name"),
-					// Validate connection
-ValidateConnection = try Source otherwise error 
-"Failed to connect to database. Error: " & Text.From([Error][Message]),
-					// Execute query with folding
-ExecuteQuery = Value.NativeQuery(
-ValidateConnection, 
-"Select",
-null,
-[EnableFolding=true]
-),
-					// Validate results
-ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table EQUIP_HISTORY" else ExecuteQuery,
-					// Apply data type transformations
-TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$SITE", type string}, {"$WORKORDER", type string}, {"$UNIT", type string}, {"$JOB_NUMBER", type string}, {"$SUMMARY_SHORT", type string}, {"$EQ_WO", type string}, {"$SR_WO", type string}, {"$EXP_CL_CD", type string}, {"$GADS_APP_CD", type string}, {"$CONF_ENT_PERMIT", type string}, {"$X_FILE", type string}, {"$TAG_RPT_NO1", type string}, {"$NPRDS_APP", type string}, {"$DEV_RPT_NO", type string}, {"$DATE_EQP_OUT_SERV", type datetime}, {"$TIME_EQP_OUT_SERV", type string}, {"$DATE_RQST_INITIATED", type datetime}, {"$PLANNER_CD", type string}, {"$REAS_FOR_MAINT_CD", type string}, {"$REAS_FOR_MAINT_DSC", type string}, {"$SUMMARY", type string}, {"$SUMMARY2", type string}, {"$WORK_COMPLETED", type datetime}, {"$MODE_OF_OPERATION", type string}, {"$W_O_TYPE_CODE", type string}, {"$MARK_NO", type string}, {"$JOB_DESC", type string}, {"$MARK_NUMBER_COMPRESSED", type string}, {"$SITE", type string}, {"$WORKORDER", type string}, {"$UNIT", type string}, {"$JOB_NUMBER", type string}, {"$SUMMARY_SHORT", type string}, {"$EQ_WO", type string}, {"$SR_WO", type string}, {"$EXP_CL_CD", type string}, {"$GADS_APP_CD", type string}, {"$CONF_ENT_PERMIT", type string}, {"$X_FILE", type string}, {"$TAG_RPT_NO1", type string}, {"$NPRDS_APP", type string}, {"$DEV_RPT_NO", type string}, {"$DATE_EQP_OUT_SERV", type datetime}, {"$TIME_EQP_OUT_SERV", type string}, {"$DATE_RQST_INITIATED", type datetime}, {"$PLANNER_CD", type string}, {"$REAS_FOR_MAINT_CD", type string}, {"$REAS_FOR_MAINT_DSC", type string}, {"$SUMMARY", type string}, {"$SUMMARY2", type string}, {"$WORK_COMPLETED", type datetime}, {"$MODE_OF_OPERATION", type string}, {"$W_O_TYPE_CODE", type string}, {"$MARK_NO", type string}, {"$JOB_DESC", type string}, {"$MARK_NUMBER_COMPRESSED", type string} } ),
-					// Handle nulls appropriately
-HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
-				in
-					HandleNulls
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM EQUIP_HISTORY",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the EQUIP_HISTORY table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
         
 
 

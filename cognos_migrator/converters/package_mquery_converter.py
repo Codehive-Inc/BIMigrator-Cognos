@@ -3,6 +3,7 @@ Package-specific M-Query Converter for converting Cognos package queries to Powe
 """
 import json
 import re
+import textwrap
 from typing import Dict, Any, Optional, List
 from pathlib import Path
 
@@ -30,187 +31,145 @@ class PackageMQueryConverter(BaseMQueryConverter):
         """
         self.logger.info(f"[MQUERY_TRACKING] Converting source query to M-query for package table: {table.name}")
         
-        # For packages, we first try to use the source_query directly if available
-        if hasattr(table, 'source_query') and table.source_query:
-            self.logger.info(f"Using direct source query for package table {table.name}")
-            sql_query = table.source_query
-        else:
-            # Otherwise, try to build SQL from package metadata
-            sql_query = self._build_sql_from_package_metadata(table)
-            
-        if not sql_query:
-            self.logger.warning(f"Could not build SQL for package table {table.name}. Falling back to default M-query.")
-            return self._build_default_m_query(table)
+        # Get table metadata from table_*.json
+        table_metadata = self._get_table_metadata(table)
+        
+        # Build SQL from package metadata
+        sql_query = self._build_sql_from_package_metadata(table, table_metadata)
+        
+        # Build the M-query from the SQL statement
+        return self._build_m_query_from_sql(sql_query, table, table_metadata)
 
-        self.logger.info(f"Built SQL query for package table {table.name}: {sql_query}")
-        
-        # Get column metadata from query_subjects.json
-        column_metadata = self._get_column_metadata(table)
-        
-        # Generate M-query with metadata-driven transformations
-        m_query = self._build_m_query_from_sql(sql_query, table, column_metadata)
-        
-        # Clean and format the M-query
-        cleaned_m_query = self._clean_m_query(m_query)
-        self.logger.info(f"[MQUERY_TRACKING] Cleaned M-query for package table {table.name}: {cleaned_m_query[:200]}...")
-        
-        return cleaned_m_query
+    def _build_sql_from_package_metadata(self, table: Table, table_metadata: Optional[Dict]) -> str:
+        """
+        Build SQL query from package metadata by parsing the package XML.
+        """
+        if not hasattr(self, 'package_name') or not self.package_name:
+            if table_metadata and 'package_name' in table_metadata:
+                self.package_name = table_metadata['package_name']
+            else:
+                self.logger.warning("Package name not found, cannot locate package XML.")
+                return f"SELECT * FROM {table.name}"
 
-    def _get_column_metadata(self, table: Table) -> Optional[List[Dict]]:
-        """
-        Get column metadata from query_subjects.json for the given table
-        
-        Args:
-            table: Table object
-            
-        Returns:
-            List of column metadata dictionaries or None if not found
-        """
-        if not self.output_path:
-            return None
-            
-        query_subjects_path = Path(self.output_path) / "extracted" / "query_subjects.json"
-        if not query_subjects_path.exists():
-            return None
-            
+        package_xml_path = Path(self.output_path) / "extracted" / f"{self.package_name}.xml"
+
+        if not package_xml_path.exists():
+            self.logger.warning(f"Package XML file not found at {package_xml_path}")
+            return f"SELECT * FROM {table.name}"
+
         try:
-            with open(query_subjects_path, 'r') as f:
-                query_subjects = json.load(f)
-                
-            # Find the subject that matches this table
-            subject = next((s for s in query_subjects if s['name'] == table.name), None)
-            if not subject:
-                return None
-                
-            return subject.get('items', [])
-            
+            with open(package_xml_path, 'r', encoding='utf-8') as f:
+                xml_content = f.read()
         except Exception as e:
-            self.logger.error(f"Error reading query_subjects.json: {e}")
-            return None
+            self.logger.error(f"Error reading package XML file: {e}")
+            return f"SELECT * FROM {table.name}"
+        
+        # Using regex to find the query subject and SQL content.
+        # This is fragile but will work for the known structure.
+        query_subject_match = re.search(f'<querySubject.*?<name locale="en">{table.name}</name>.*?</querySubject>', xml_content, re.DOTALL)
+        if not query_subject_match:
+            query_subject_match = re.search(f'<querySubject.*?<name>{table.name}</name>.*?</querySubject>', xml_content, re.DOTALL)
 
-    def _build_m_query_from_sql(self, sql_query: str, table: Table, column_metadata: Optional[List[Dict]] = None) -> str:
-        """
-        Build M-query from SQL with metadata-driven transformations
+        if not query_subject_match:
+            self.logger.warning(f"Query subject for table '{table.name}' not found in package XML.")
+            return f"SELECT * FROM {table.name}"
+
+        sql_match = re.search(r'<sql type="cognos">(.*?)</sql>', query_subject_match.group(0), re.DOTALL)
+        if not sql_match:
+            self.logger.warning(f"SQL query not found for table {table.name} in package XML")
+            return f"SELECT * FROM {table.name}"
+
+        sql_content = sql_match.group(1).strip()
+
+        # Replace <column>...</column> with its content
+        processed_sql = re.sub(r'<column>(.*?)</column>', r'\1', sql_content, flags=re.DOTALL)
         
-        Args:
-            sql_query: SQL query string
-            table: Table object
-            column_metadata: Optional list of column metadata from query_subjects.json
-            
-        Returns:
-            M-query string with proper transformations
-        """
-        # Basic template with error handling and transformations
-        template = """
-            let
-                Source = Sql.Database(#"DB Server", #"DB Name"),
-                
-                // Validate connection
-                ValidateConnection = try Source otherwise error 
-                    "Failed to connect to database. Error: " & Text.From([Error][Message]),
-                    
-                // Execute query with folding
-                ExecuteQuery = Value.NativeQuery(
-                    ValidateConnection, 
-                    "{sql}",
-                    null,
-                    [EnableFolding=true]
-                ),
-                
-                // Validate results
-                ValidateResults = if Table.IsEmpty(ExecuteQuery) then
-                    error "No data returned from query for table {table}"
-                else
-                    ExecuteQuery{type_transformations}{null_handling}
-            in
-                {final_step}
-        """
+        # Replace <table>...</table> with its content
+        processed_sql = re.sub(r'<table>(.*?)</table>', r'\1', processed_sql, flags=re.DOTALL)
         
-        # Build type transformations if we have metadata
-        type_transforms = []
-        if column_metadata:
-            for col in column_metadata:
+        # Clean up extra whitespace and newlines
+        sql_query = ' '.join(processed_sql.split())
+
+        if not sql_query:
+            self.logger.warning(f"Extracted SQL query is empty for table {table.name}.")
+            return f"SELECT * FROM {table.name}"
+
+        return sql_query
+
+
+    def _build_m_query_from_sql(self, sql_query: str, table: Table, table_metadata: Optional[Dict] = None) -> str:
+        """
+        Build M-query from SQL with metadata-driven transformations and best practices.
+        """
+        final_step = "ValidateResults"
+        transform_types_section = ""
+        type_transformations = []
+
+        if table_metadata and 'columns' in table_metadata:
+            seen_columns = set()
+            for col in table_metadata['columns']:
                 col_name = col.get('name')
-                powerbi_type = col.get('powerbi_datatype', 'String')
-                if col_name:
-                    type_transforms.append(f'{{"${col_name}", type {powerbi_type.lower()}}}')
+                if col_name and col_name not in seen_columns:
+                    powerbi_type = col.get('powerbi_datatype', 'string')
                     
-        type_transformation_step = """
-                ,
-                // Apply data type transformations
-                TransformTypes = Table.TransformColumnTypes(
-                    ValidateResults,
-                    {
-                        %s
-                    }
-                )""" % ",\n                        ".join(type_transforms) if type_transforms else ""
-                
-        # Add null handling if we have metadata
-        has_nullables = any(col.get('nullable', False) for col in (column_metadata or []))
-        null_handling_step = """
-                ,
-                // Handle nulls appropriately
-                HandleNulls = Table.ReplaceValue(
-                    TransformTypes,
-                    null,
-                    "",
-                    Replacer.ReplaceValue,
-                    Table.ColumnNames(TransformTypes)
-                )""" if has_nullables and type_transforms else ""
-                
-        # Determine final step name
-        final_step = "HandleNulls" if has_nullables and type_transforms else \
-                    "TransformTypes" if type_transforms else \
-                    "ValidateResults"
+                    mquery_type = "type text" # Default for string
+                    if powerbi_type.lower() == 'int64':
+                        mquery_type = "Int64.Type"
+                    elif powerbi_type.lower() == 'double':
+                         mquery_type = "type number"
+                    elif powerbi_type.lower() == 'datetime':
+                        mquery_type = "type datetime"
+                    elif powerbi_type.lower() == 'boolean':
+                        mquery_type = "type logical"
+                    
+                    type_transformations.append(f'{{"{col_name}", {mquery_type}}}')
+                    seen_columns.add(col_name)
         
-        # Format template with query and table name
-        m_query = template.format(
-            sql=sql_query.replace('"', '""'),  # Escape quotes for M-query
-            table=table.name,
-            type_transformations=type_transformation_step,
-            null_handling=null_handling_step,
-            final_step=final_step
-        )
-        
-        # Clean up formatting
-        m_query = re.sub(r'\n\s+', '\n', m_query.strip())
-        
-        return m_query
+        if type_transformations:
+            transformations_list = ", ".join(type_transformations)
+            transform_types_section = f""",
 
-    def _build_sql_from_package_metadata(self, table: Table) -> Optional[str]:
-        """
-        Build a SQL query from package metadata files specific to package migrations.
+    // --- 5. APPLY CORRECT DATA TYPES ---
+    TransformTypes = Table.TransformColumnTypes(ValidateResults, {{{transformations_list}}})"""
+            final_step = "TransformTypes"
+
+        m_query_template = f'''
+let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "{sql_query.replace('"', '""')}",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the {table.name} table."
+                      else
+                        ExecuteQuery{transform_types_section}
+in
+    {final_step}
+'''
+        return textwrap.dedent(m_query_template).strip()
+
+
+    def _get_table_metadata(self, table: Table) -> Optional[Dict]:
+        """Get table metadata from table_*.json file"""
+        table_json_path = Path(self.output_path) / "extracted" / f"table_{table.name}.json"
+        if not table_json_path.exists():
+            self.logger.warning(f"Table metadata file not found at {table_json_path}")
+            return None
         
-        Args:
-            table: Table object
-            
-        Returns:
-            SQL query string or None if metadata is not available or invalid.
-        """
-        if not self.output_path:
-            self.logger.warning("Output path not set in PackageMQueryConverter. Cannot find package metadata.")
+        try:
+            with open(table_json_path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            self.logger.error(f"Error reading table metadata file {table_json_path}: {e}")
             return None
-            
-        # Get column metadata
-        column_metadata = self._get_column_metadata(table)
-        if not column_metadata:
-            self.logger.warning(f"No column metadata found for table {table.name}")
-            return None
-            
-        # Build SQL query from metadata
-        select_clauses = []
-        for col in column_metadata:
-            col_name = col.get('name')
-            if col_name:
-                select_clauses.append(f'"{col_name}"')
-                
-        if not select_clauses:
-            self.logger.warning(f"No columns found for table {table.name}")
-            return None
-            
-        # Build the SQL query
-        sql = "SELECT\n    "
-        sql += ",\n    ".join(select_clauses)
-        sql += f"\nFROM\n    {table.name}"
-        
-        return sql

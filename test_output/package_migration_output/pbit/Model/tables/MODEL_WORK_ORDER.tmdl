@@ -337,26 +337,28 @@ table MODEL_WORK_ORDER
     partition 'MODEL_WORK_ORDER' = m
         mode: import
         source = 
-            	let
-					Source = Sql.Database(#"DB Server", #"DB Name"),
-					// Validate connection
-ValidateConnection = try Source otherwise error 
-"Failed to connect to database. Error: " & Text.From([Error][Message]),
-					// Execute query with folding
-ExecuteQuery = Value.NativeQuery(
-ValidateConnection, 
-"Select",
-null,
-[EnableFolding=true]
-),
-					// Validate results
-ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table MODEL_WORK_ORDER" else ExecuteQuery,
-					// Apply data type transformations
-TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$STATION_NUMBER", type string}, {"$MODEL_TYPE", type string}, {"$MODEL_WO_NUMBER", type string}, {"$MARK_NUMBER", type string}, {"$JOB_DESC", type string}, {"$MODEL_MANHOURS_TOTAL", type int64}, {"$MODEL_JOB_DURATION", type int64}, {"$UNKNOWN1", type string}, {"$R_OR_I", type string}, {"$UNKNOWN2", type int64}, {"$STOP", type string}, {"$FREQUENCY_VALUE", type string}, {"$FREQUENCY_UNITS", type string}, {"$DEFER_VALUE", type string}, {"$DEFER_UNITS", type string}, {"$RECENT_DATE_DUE", type datetime}, {"$RECENT_DATE_OVERDUE", type datetime}, {"$NEXT_PRELIM_DATE", type datetime}, {"$NEXT_DATE_DUE", type datetime}, {"$COMMENTS", type string}, {"$MOST_RECENT_WO", type string}, {"$MARK_NUMBER_COMPRESSED", type string}, {"$GROUP_CODE", type string}, {"$CLASS_CODE", type string}, {"$SUBCLASS_CODE", type string}, {"$MOST_RECENT_WO2", type string}, {"$MOST_RECENT_WO3", type string}, {"$OUTAGE_TYPE", type string}, {"$LAST_COMPLETED_WO", type string}, {"$STATION_NUMBER", type string}, {"$MODEL_TYPE", type string}, {"$MODEL_WO_NUMBER", type string}, {"$MARK_NUMBER", type string}, {"$JOB_DESC", type string}, {"$MODEL_MANHOURS_TOTAL", type int64}, {"$MODEL_JOB_DURATION", type int64}, {"$UNKNOWN1", type string}, {"$R_OR_I", type string}, {"$UNKNOWN2", type int64}, {"$STOP", type string}, {"$FREQUENCY_VALUE", type string}, {"$FREQUENCY_UNITS", type string}, {"$DEFER_VALUE", type string}, {"$DEFER_UNITS", type string}, {"$RECENT_DATE_DUE", type datetime}, {"$RECENT_DATE_OVERDUE", type datetime}, {"$NEXT_PRELIM_DATE", type datetime}, {"$NEXT_DATE_DUE", type datetime}, {"$COMMENTS", type string}, {"$MOST_RECENT_WO", type string}, {"$MARK_NUMBER_COMPRESSED", type string}, {"$GROUP_CODE", type string}, {"$CLASS_CODE", type string}, {"$SUBCLASS_CODE", type string}, {"$MOST_RECENT_WO2", type string}, {"$MOST_RECENT_WO3", type string}, {"$OUTAGE_TYPE", type string}, {"$LAST_COMPLETED_WO", type string} } ),
-					// Handle nulls appropriately
-HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
-				in
-					HandleNulls
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM MODEL_WORK_ORDER",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the MODEL_WORK_ORDER table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
         
 
 

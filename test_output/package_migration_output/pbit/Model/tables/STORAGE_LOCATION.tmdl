@@ -247,26 +247,28 @@ table STORAGE_LOCATION
     partition 'STORAGE_LOCATION' = m
         mode: import
         source = 
-            	let
-					Source = Sql.Database(#"DB Server", #"DB Name"),
-					// Validate connection
-ValidateConnection = try Source otherwise error 
-"Failed to connect to database. Error: " & Text.From([Error][Message]),
-					// Execute query with folding
-ExecuteQuery = Value.NativeQuery(
-ValidateConnection, 
-"Select",
-null,
-[EnableFolding=true]
-),
-					// Validate results
-ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table STORAGE_LOCATION" else ExecuteQuery,
-					// Apply data type transformations
-TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$ITEM_NUMBER", type string}, {"$SITE_NUMBER", type string}, {"$SEGMENTS", type int64}, {"$LOCATION1", type string}, {"$LOC_NUMBER_1", type string}, {"$LOCATION2", type string}, {"$LOC_NUMBER_2", type string}, {"$LOCATION3", type string}, {"$LOC_NUMBER_3", type string}, {"$LOCATION4", type string}, {"$LOC_NUMBER_4", type string}, {"$LOCATION5", type string}, {"$LOC_NUMBER_5", type string}, {"$LOCATION6", type string}, {"$LOC_NUMBER_6", type string}, {"$LOCATION7", type string}, {"$LOC_NUMBER_7", type string}, {"$LOCATION8", type string}, {"$LOC_NUMBER_8", type string}, {"$LOCATION9", type string}, {"$LOC_NUMBER_9", type string}, {"$LOCATION10", type string}, {"$LOC_NUMBER_10", type string}, {"$STOP", type string}, {"$ITEM_NUMBER", type string}, {"$SITE_NUMBER", type string}, {"$SEGMENTS", type int64}, {"$LOCATION1", type string}, {"$LOC_NUMBER_1", type string}, {"$LOCATION2", type string}, {"$LOC_NUMBER_2", type string}, {"$LOCATION3", type string}, {"$LOC_NUMBER_3", type string}, {"$LOCATION4", type string}, {"$LOC_NUMBER_4", type string}, {"$LOCATION5", type string}, {"$LOC_NUMBER_5", type string}, {"$LOCATION6", type string}, {"$LOC_NUMBER_6", type string}, {"$LOCATION7", type string}, {"$LOC_NUMBER_7", type string}, {"$LOCATION8", type string}, {"$LOC_NUMBER_8", type string}, {"$LOCATION9", type string}, {"$LOC_NUMBER_9", type string}, {"$LOCATION10", type string}, {"$LOC_NUMBER_10", type string}, {"$STOP", type string} } ),
-					// Handle nulls appropriately
-HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
-				in
-					HandleNulls
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM STORAGE_LOCATION",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the STORAGE_LOCATION table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
         
 
 
