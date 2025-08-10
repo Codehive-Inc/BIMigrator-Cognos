@@ -119,6 +119,24 @@ class ModelFileGenerator:
         # Get extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
         
+        all_data_items = []
+        if extracted_dir:
+            data_items_file = extracted_dir / "report_data_items.json"
+            if data_items_file.exists():
+                try:
+                    with open(data_items_file, 'r', encoding='utf-8') as f:
+                        all_data_items = json.load(f)
+                except Exception as e:
+                    self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
+
+        data_items_by_query = {}
+        for item in all_data_items:
+            query_name = item.get("queryName")
+            if query_name:
+                if query_name not in data_items_by_query:
+                    data_items_by_query[query_name] = []
+                data_items_by_query[query_name].append(item)
+
         if report_name:
             self.logger.info(f"Using report name '{report_name}' for table naming")
 
@@ -130,20 +148,12 @@ class ModelFileGenerator:
                 self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
                 
                 # Try to read data items from report_data_items.json for both JSON and TMDL files
-                data_items = []
-                if extracted_dir:
-                    data_items_file = extracted_dir / "report_data_items.json"
-                    if data_items_file.exists():
-                        try:
-                            with open(data_items_file, 'r', encoding='utf-8') as f:
-                                data_items = json.load(f)
-                            self.logger.info(f"Loaded {len(data_items)} data items for table {table.name} from {data_items_file}")
-                        except Exception as e:
-                            self.logger.warning(f"Error loading data items from {data_items_file}: {e}")
+                original_query_name = table.metadata.get("original_query_name", table.name)
+                table_data_items = data_items_by_query.get(original_query_name, [])
                 
                 # Update table.columns with data_items before generating M-query
-                if data_items:
-                    self.logger.info(f"Updating table {table.name} columns with {len(data_items)} data items before M-query generation")
+                if table_data_items:
+                    self.logger.info(f"Updating table {table.name} columns with {len(table_data_items)} data items before M-query generation")
                     # Create new Column objects from data items
                     from cognos_migrator.models import Column, DataType
                     
@@ -151,7 +161,7 @@ class ModelFileGenerator:
                     unique_items = {}
                     duplicate_items = []
                     
-                    for item in data_items:
+                    for item in table_data_items:
                         column_name = item.get('name', 'Column')
                         column_name_lower = column_name.lower()
                         
@@ -199,7 +209,7 @@ class ModelFileGenerator:
                     self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
                 
                 # Build table context with the data items
-                context = self._build_table_context(table, report_spec, data_items, extracted_dir, m_query, report_name, project_metadata)
+                context = self._build_table_context(table, report_spec, table_data_items, extracted_dir, m_query, report_name, project_metadata)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
@@ -256,12 +266,12 @@ class ModelFileGenerator:
                     }
 
                     # If we have data items, use them as columns
-                    if data_items:
+                    if table_data_items:
                         # First, deduplicate data items by column name (case-insensitive)
                         unique_items = {}
                         duplicate_items = []
                         
-                        for item in data_items:
+                        for item in table_data_items:
                             column_name = item.get('name', 'Column')
                             column_name_lower = column_name.lower()
                             

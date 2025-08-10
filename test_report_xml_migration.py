@@ -17,7 +17,7 @@ def test_report_migration_from_id():
 
     # Cognos connection details
     cognos_url = "http://20.244.32.126:9300/api/v1"
-    session_key = "CAM MTsxMDE6OTllY2Y2NjgtYzIxNC02YTFmLTYzMGUtNzRhYzRkMWI5MGJlOjA4MDI2MjIzOTE7MDszOzA7"
+    session_key = "CAM MTsxMDE6ZDE0Zjc1MDUtZDExNC1hYjM2LTczMzQtYWQ5ZTJjYThhOGM1OjExODA0NTY4Mjg7MDszOzA7"
 
     print(f"Starting migration for report ID: {report_id}")
 
@@ -43,7 +43,7 @@ def test_material_inquiry_detail_report_from_xml():
     report_file = "examples/Report XMLs DE/MaterialInquiryDetail_UC012.xml"
     
     # Directory where the migration output will be saved
-    output_dir = "test_output/report_xml_migration_output"
+    output_dir = "test_output/report_xml_migration_output_new"
     
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -72,6 +72,6 @@ def test_material_inquiry_detail_report_from_xml():
 
 if __name__ == "__main__":
     print("--- Running Test: Report Migration from ID ---")
-    test_report_migration_from_id()
+    #test_report_migration_from_id()
     print("\n--- Running Test: Report Migration from XML File ---")
     test_material_inquiry_detail_report_from_xml() 

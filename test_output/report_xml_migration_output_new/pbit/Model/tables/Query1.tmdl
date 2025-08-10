@@ -1,30 +1,20 @@
-table Report_with_Calculations
+table Query1
 
 
-    column 'ID'
-        dataType: int64
-        summarizeBy: none
-        sourceColumn: ID
-
-        
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'Name'
+    column 'CHARGED_DATE'
         dataType: string
         summarizeBy: none
-        sourceColumn: Name
+        sourceColumn: CHARGED_DATE
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Value'
-        dataType: int64
+    column 'TRANSACTION_TYPE'
+        dataType: string
         summarizeBy: none
-        sourceColumn: Value
+        sourceColumn: TRANSACTION_TYPE
 
         
 
@@ -34,7 +24,7 @@ table Report_with_Calculations
 
 
 
-    partition 'Report_with_Calculations' = m
+    partition 'Query1' = m
         mode: import
         source = 
             	let
@@ -42,7 +32,7 @@ table Report_with_Calculations
 					Sheet1_Sheet = Source{{[Item = "Sheet1",Kind = "Sheet"]}}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars = true]),
 					#"Removed Errors" = Table.RemoveRowsWithErrors(#"Promoted Headers"),
-					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ID", Int64.Type}, {"Name", type text}, {"Value", Int64.Type}})
+					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"CHARGED_DATE", type text}, {"TRANSACTION_TYPE", type text}})
 				in
 					#"Changed Types"
         

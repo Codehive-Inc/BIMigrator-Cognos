@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: Report with Calculations
-- **Migration Date**: 2025-08-09 17:11:46
+- **Migration Date**: 2025-08-10 07:34:08
 
 ## Data Model
 
@@ -15,9 +15,9 @@
 - **Report_with_Calculations**
   - Columns: 3
   - Column details:
-    - Region (string)
-    - No of Unique Orders (string)
-    - Orders Returned (Multiple Returns per Order) (decimal)
+    - ID (int64)
+    - Name (string)
+    - Value (int64)
 
 
 ## Report

@@ -35,6 +35,7 @@ from cognos_migrator.models import (
     Measure, ReportPage
 )
 from cognos_migrator.cpf_extractor import CPFExtractor
+from cognos_migrator.processors.report_model_processor import ReportModelProcessor
 
 
 class CognosModuleMigratorExplicit:
@@ -772,7 +773,7 @@ class CognosModuleMigratorExplicit:
             self._save_extracted_report_data(cognos_report, extracted_dir)
             
             # Step 2: Convert to Power BI structures
-            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report, extracted_dir)
             if not powerbi_project:
                 self.logger.error(f"Failed to convert report: {report_id}")
                 return False
@@ -842,13 +843,13 @@ class CognosModuleMigratorExplicit:
             
             # Save raw Cognos report data to extracted folder
             self._save_extracted_report_data(cognos_report, extracted_dir)
-            
+
             # Step 2: Convert to Power BI structures
-            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report, extracted_dir)
             if not powerbi_project:
                 self.logger.error(f"Failed to convert report: {report_id}")
                 return False
-            
+
             # If CPF metadata is available, enhance the Power BI project with it
             if self.cpf_extractor and self.cpf_metadata_enhancer:
                 self.cpf_metadata_enhancer.enhance_project(powerbi_project)
@@ -919,7 +920,7 @@ class CognosModuleMigratorExplicit:
             self._save_extracted_report_data(cognos_report, extracted_dir)
             
             # Step 2: Convert to Power BI structures
-            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report, extracted_dir)
             if not powerbi_project:
                 self.logger.error(f"Failed to convert report from file: {report_file_path}")
                 return False
@@ -1111,7 +1112,19 @@ class CognosModuleMigratorExplicit:
         except Exception as e:
             self.logger.error(f"Failed to save extracted data: {e}")
     
-    def _convert_cognos_report_to_powerbi(self, cognos_report) -> Optional[PowerBIProject]:
+    def _create_data_model_from_report(self, extracted_dir: Path) -> Optional[DataModel]:
+        """Create a DataModel from the extracted report queries."""
+        try:
+            self.logger.info(f"Creating DataModel from report queries in {extracted_dir}")
+            processor = ReportModelProcessor(extracted_dir)
+            data_model = processor.process()
+            self.logger.info(f"Successfully created DataModel with {len(data_model.tables)} tables.")
+            return data_model
+        except Exception as e:
+            self.logger.error(f"Failed to create DataModel from report: {e}")
+            return None
+
+    def _convert_cognos_report_to_powerbi(self, cognos_report, extracted_dir: Path) -> Optional[PowerBIProject]:
         """Convert Cognos report to Power BI project structure
         
         This is adapted from CognosMigrator._convert_cognos_to_powerbi but
@@ -1139,8 +1152,11 @@ class CognosModuleMigratorExplicit:
             # Convert parsed structure to migration data
             converted_data = self._convert_parsed_structure(parsed_structure, safe_table_name)
             
-            # Create data model
-            data_model = self._create_report_data_model(converted_data, cognos_report.name)
+            # Create data model from report queries
+            data_model = self._create_data_model_from_report(extracted_dir)
+            if not data_model:
+                self.logger.error("Failed to create data model from report, aborting conversion.")
+                return None
             
             # Create report structure
             report = self._create_report_structure_from_cognos(cognos_report, converted_data, data_model)

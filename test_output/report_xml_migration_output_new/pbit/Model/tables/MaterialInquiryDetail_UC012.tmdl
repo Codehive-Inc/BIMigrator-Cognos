@@ -1,4 +1,4 @@
-table Report_with_Calculations
+table MaterialInquiryDetail_UC012
 
 
     column 'ID'
@@ -34,17 +34,17 @@ table Report_with_Calculations
 
 
 
-    partition 'Report_with_Calculations' = m
+    partition 'MaterialInquiryDetail_UC012' = m
         mode: import
         source = 
             	let
 					Source = Excel.Workbook(File.Contents("C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx"), null, true),
 					Sheet1_Sheet = Source{{[Item = "Sheet1",Kind = "Sheet"]}}[Data],
 					#"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars = true]),
-					#"Removed Errors" = Table.RemoveRowsWithErrors(#"Promoted Headers"),
-					#"Changed Types" = Table.TransformColumnTypes(#"Removed Errors", {{"ID", Int64.Type}, {"Name", type text}, {"Value", Int64.Type}})
+					#"Changed Types" = Table.TransformColumnTypes(#"Promoted Headers", {{"ID", Int64.Type}, {"Name", type text}, {"Value", Int64.Type}}),
+					#"Removed Errors" = Table.RemoveRowsWithErrors(#"Changed Types")
 				in
-					#"Changed Types"
+					#"Removed Errors"
         
 
 
