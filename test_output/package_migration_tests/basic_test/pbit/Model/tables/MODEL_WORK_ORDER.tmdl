@@ -1,0 +1,349 @@
+table MODEL_WORK_ORDER
+
+
+    column 'STATION_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATION_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_WO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_WO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_MANHOURS_TOTAL'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MODEL_MANHOURS_TOTAL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_JOB_DURATION'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MODEL_JOB_DURATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNKNOWN1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNKNOWN1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'R_OR_I'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: R_OR_I
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNKNOWN2'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNKNOWN2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FREQUENCY_VALUE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FREQUENCY_VALUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FREQUENCY_UNITS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FREQUENCY_UNITS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DEFER_VALUE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DEFER_VALUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DEFER_UNITS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DEFER_UNITS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECENT_DATE_DUE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RECENT_DATE_DUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECENT_DATE_OVERDUE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: RECENT_DATE_OVERDUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NEXT_PRELIM_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: NEXT_PRELIM_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NEXT_DATE_DUE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: NEXT_DATE_DUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MOST_RECENT_WO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MOST_RECENT_WO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER_COMPRESSED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER_COMPRESSED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'GROUP_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: GROUP_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLASS_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLASS_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUBCLASS_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUBCLASS_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MOST_RECENT_WO2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MOST_RECENT_WO2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MOST_RECENT_WO3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MOST_RECENT_WO3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OUTAGE_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OUTAGE_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_COMPLETED_WO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LAST_COMPLETED_WO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'MODEL_WORK_ORDER - Count by NEXT_DATE_DUE' = ```
+            CALCULATE(
+    COUNTROWS('MODEL_WORK_ORDER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MODEL_WORK_ORDER'[NEXT_DATE_DUE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'MODEL_WORK_ORDER - Count by NEXT_PRELIM_DATE' = ```
+            CALCULATE(
+    COUNTROWS('MODEL_WORK_ORDER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MODEL_WORK_ORDER'[NEXT_PRELIM_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'MODEL_WORK_ORDER - Count by RECENT_DATE_DUE' = ```
+            CALCULATE(
+    COUNTROWS('MODEL_WORK_ORDER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MODEL_WORK_ORDER'[RECENT_DATE_DUE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'MODEL_WORK_ORDER - Count by RECENT_DATE_OVERDUE' = ```
+            CALCULATE(
+    COUNTROWS('MODEL_WORK_ORDER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MODEL_WORK_ORDER'[RECENT_DATE_OVERDUE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'MODEL_WORK_ORDER' = m
+        mode: import
+        source = 
+            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

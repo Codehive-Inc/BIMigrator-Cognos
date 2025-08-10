@@ -1,0 +1,329 @@
+table EQUIP_HISTORY
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUMMARY_SHORT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUMMARY_SHORT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQ_WO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQ_WO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SR_WO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SR_WO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXP_CL_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXP_CL_CD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'GADS_APP_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: GADS_APP_CD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONF_ENT_PERMIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CONF_ENT_PERMIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'X_FILE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: X_FILE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TAG_RPT_NO1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TAG_RPT_NO1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NPRDS_APP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NPRDS_APP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DEV_RPT_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DEV_RPT_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_EQP_OUT_SERV'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_EQP_OUT_SERV
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_EQP_OUT_SERV'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_EQP_OUT_SERV
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_RQST_INITIATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_RQST_INITIATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PLANNER_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PLANNER_CD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REAS_FOR_MAINT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REAS_FOR_MAINT_CD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REAS_FOR_MAINT_DSC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REAS_FOR_MAINT_DSC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUMMARY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUMMARY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUMMARY2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUMMARY2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_COMPLETED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: WORK_COMPLETED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODE_OF_OPERATION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODE_OF_OPERATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'W_O_TYPE_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: W_O_TYPE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER_COMPRESSED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER_COMPRESSED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'EQUIP_HISTORY - Count by DATE_EQP_OUT_SERV' = ```
+            CALCULATE(
+    COUNTROWS('EQUIP_HISTORY'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'EQUIP_HISTORY'[DATE_EQP_OUT_SERV])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'EQUIP_HISTORY - Count by DATE_RQST_INITIATED' = ```
+            CALCULATE(
+    COUNTROWS('EQUIP_HISTORY'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'EQUIP_HISTORY'[DATE_RQST_INITIATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'EQUIP_HISTORY - Count by WORK_COMPLETED' = ```
+            CALCULATE(
+    COUNTROWS('EQUIP_HISTORY'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'EQUIP_HISTORY'[WORK_COMPLETED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'EQUIP_HISTORY' = m
+        mode: import
+        source = 
+            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

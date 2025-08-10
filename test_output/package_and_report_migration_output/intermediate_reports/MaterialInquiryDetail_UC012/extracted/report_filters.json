@@ -1,0 +1,56 @@
+[
+  {
+    "id": "detail_filter_0_0",
+    "type": "detail",
+    "queryName": "MaterialInquiryDetail",
+    "expression": "[SITE_NUMBER]= ?SiteNumber?"
+  },
+  {
+    "id": "detail_filter_0_1",
+    "type": "detail",
+    "queryName": "MaterialInquiryDetail",
+    "expression": "[ITEM_NUMBER]= ?ItemNumber?"
+  },
+  {
+    "id": "detail_filter_0_2",
+    "type": "detail",
+    "queryName": "MaterialInquiryDetail",
+    "expression": "[PO_NUMBER]=?PO_Number?"
+  },
+  {
+    "id": "detail_filter_0_3",
+    "type": "detail",
+    "queryName": "MaterialInquiryDetail",
+    "expression": "[PO_LINE_NUMBER]=?LineNumber?"
+  },
+  {
+    "id": "detail_filter_0_4",
+    "type": "detail",
+    "queryName": "MaterialInquiryDetail",
+    "expression": "[RELEASE_NUMBER]=?ReleaseNumber?"
+  },
+  {
+    "id": "detail_filter_0_5",
+    "type": "detail",
+    "queryName": "MaterialInquiryDetail",
+    "expression": "[STATUS_DATE]=?StatusDate?"
+  },
+  {
+    "id": "summary_filter_1_0",
+    "type": "summary",
+    "queryName": "Query1",
+    "expression": "[SITE_NUMBER]= ?SiteNumber?"
+  },
+  {
+    "id": "summary_filter_1_1",
+    "type": "summary",
+    "queryName": "Query1",
+    "expression": "[ITEM_NUMBER]=?ItemNumber?"
+  },
+  {
+    "id": "summary_filter_1_2",
+    "type": "summary",
+    "queryName": "Query1",
+    "expression": "[TRANSACTION_TYPE] is not null"
+  }
+]

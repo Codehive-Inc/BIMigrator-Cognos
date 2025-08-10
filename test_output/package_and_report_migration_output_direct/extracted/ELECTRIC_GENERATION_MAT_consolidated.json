@@ -1,0 +1,4257 @@
+{
+  "name": "ELECTRIC_GENERATION_MAT",
+  "query_subjects": [
+    {
+      "name": "PURCHASE_ORDER_DESCRIPTIONS",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TOTAL_NUMBER_SEGMENTS",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NUMBER_SEGMENTS_SELECTED",
+          "id": "",
+          "datatype": "int32",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LINE_NUMBER5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DESCRIPTION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "CHANGE_ORDER_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STATUS_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "BU_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "JOB_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_MEASURE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PROMISED_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_REJECTED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_IN_INVENT",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_RECD_SITE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_IN_HOLD",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ORDERED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_RECD_TO_DATE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QA_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_INSPECTOR",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_LEVEL",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REQUISITION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "VENDOR_NAME",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_CLASS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BLANKET_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BLANKET_BEGIN_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BLANKET_END_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ROOT_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ROOT_ORDERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ROOT_STATUS",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DOLLARS_COMMITTED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "MAX_DOLLARS",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LAST_BLANKET_RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_ROOT_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REVISION_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SERVICE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DOLLARS_RECEIVED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "DSR_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DSR_HOLD_STATUS",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PROMISE_DATE_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PRICE_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PROCUREMENT_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_REJECTED_TO_DATE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "REQUESTOR_NAME",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_PURCHASE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CONVERSION_FACTOR",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "CHANGE_ORDER_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STATUS_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "BU_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "JOB_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_MEASURE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PROMISED_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_REJECTED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_IN_INVENT",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_RECD_SITE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_IN_HOLD",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ORDERED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_RECD_TO_DATE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QA_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_INSPECTOR",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_LEVEL",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REQUISITION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "VENDOR_NAME",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_CLASS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BLANKET_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BLANKET_BEGIN_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BLANKET_END_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ROOT_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ROOT_ORDERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ROOT_STATUS",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DOLLARS_COMMITTED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "MAX_DOLLARS",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LAST_BLANKET_RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_ROOT_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REVISION_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SERVICE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DOLLARS_RECEIVED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "DSR_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DSR_HOLD_STATUS",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PROMISE_DATE_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PRICE_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PROCUREMENT_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_REJECTED_TO_DATE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "REQUESTOR_NAME",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_PURCHASE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CONVERSION_FACTOR",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "DESCRIPTION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_MEASURE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_CREATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TAX_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "TYPE_CODE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "FUNCTIONAL_GROUP",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MATERIAL_CLASS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_RANK",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_INVENTORIED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_ORDER",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_HAND",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_AVAILABLE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "MINIMUM",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "MAXIMUM",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "EOQ_QTY",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QA_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_LEVEL",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CYCLE_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SHELF_LIFE_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_RECEIVED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "FERC_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PRIMARY_LOC",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SECONDARY_LOC",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "EXTRA_LOCS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_APPROVED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "APPROVER_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "APPROVER_BADGE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "APPROVAL_SWITCH",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT1",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT2",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT3",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT4",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "VALUE_ON_HAND",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "PREVIOUS_ITEM_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ALLOCATED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "CONSUMABLE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SHELF_LIFE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PREVENT_MAINTENANCE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CORPORATE_SWITCH",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_OWNER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SAFETY_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UTC_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_DEPT",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "IN_PROCESS_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "PIT",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_EXCESS",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NEW_RANK",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SUB_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STRATIFIED_TRANS_COUNT",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "STRATIFIED_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TOLERANCE_AMOUNT",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "TOLERANCE_PERCENTAGE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "SITE_LAST_UPDATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_LAST_UPDATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_PROPERTY_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_PROPERTY_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_ISSUED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_RETURNED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CRITICAL_ITEM",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REVIEW_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SAP_IND",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "DESCRIPTION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_MEASURE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_CREATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TAX_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "TYPE_CODE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "FUNCTIONAL_GROUP",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MATERIAL_CLASS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_RANK",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_INVENTORIED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_ORDER",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_HAND",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_AVAILABLE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "MINIMUM",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "MAXIMUM",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "EOQ_QTY",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QA_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_LEVEL",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CYCLE_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SHELF_LIFE_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_RECEIVED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "FERC_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PRIMARY_LOC",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SECONDARY_LOC",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "EXTRA_LOCS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_APPROVED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "APPROVER_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "APPROVER_BADGE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "APPROVAL_SWITCH",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT1",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT2",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT3",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_CERT4",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "VALUE_ON_HAND",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "PREVIOUS_ITEM_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ALLOCATED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "CONSUMABLE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SHELF_LIFE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PREVENT_MAINTENANCE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CORPORATE_SWITCH",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_OWNER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SAFETY_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UTC_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_DEPT",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "IN_PROCESS_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "PIT",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_EXCESS",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "NEW_RANK",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SUB_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STRATIFIED_TRANS_COUNT",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "STRATIFIED_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TOLERANCE_AMOUNT",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "TOLERANCE_PERCENTAGE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "SITE_LAST_UPDATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_ON_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_LAST_UPDATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_PROPERTY_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_PROPERTY_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_ISSUED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_LAST_RETURNED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CRITICAL_ITEM",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REVIEW_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SAP_IND",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "MANUFACTURER",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "MFG_PART_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "MODEL_PART_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ACTIVITY_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MFG_CODE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "DATE_CREATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MFG_NAME",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "COMPRESSED_PART_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "FOSSIL_OR_NUCLEAR",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "MFG_PART_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "MODEL_PART_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ACTIVITY_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MFG_CODE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "DATE_CREATED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MFG_NAME",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "COMPRESSED_PART_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "FOSSIL_OR_NUCLEAR",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "STORAGE_LOCATION",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "SEGMENTS",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_1",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_2",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_3",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_4",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_5",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION6",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_6",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION7",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_7",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION8",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_8",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION9",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_9",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION10",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_10",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "SEGMENTS",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION1",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_1",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION2",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_2",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION3",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_3",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION4",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_4",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION5",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_5",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION6",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_6",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION7",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_7",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION8",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_8",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION9",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_9",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOCATION10",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "LOC_NUMBER_10",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "MATERIAL_CHARGES",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "CHARGED_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TIME_ENTERED",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "STOREKEEPER_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "EMPLOYEE_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ISSUE_TICKET_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TRANSACTION_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ADJUSTMENT_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QUANTITY",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "TRANSACTION_VALUE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "JOB_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BU_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_INDICATOR",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_STATUS_EFFECTIVE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REFURB_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ISSUE_OVERRIDE_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RECORD_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_MEASURE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ADJUSTMENT_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ADJUSTMENT_DESC",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_TO_RECONCILE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TRANSFER_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MATERIAL_CLASS",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ROOT_DESCRIPTION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITT_KEY_NO",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UTC_NO",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PIT_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UM",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "CHARGED_DATE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "TIME_ENTERED",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": false
+        },
+        {
+          "name": "STOREKEEPER_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "EMPLOYEE_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ISSUE_TICKET_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TRANSACTION_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ADJUSTMENT_TYPE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QUANTITY",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "TRANSACTION_VALUE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "JOB_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "BU_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_INDICATOR",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_STATUS_EFFECTIVE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "REFURB_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ISSUE_OVERRIDE_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RECORD_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_OF_MEASURE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ADJUSTMENT_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ADJUSTMENT_DESC",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_TO_RECONCILE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TRANSFER_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "MATERIAL_CLASS",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ROOT_DESCRIPTION",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITT_KEY_NO",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UTC_NO",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PIT_IND",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UM",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    },
+    {
+      "name": "PURCHASE_ORDER_RECEIPT",
+      "id": "",
+      "type": "",
+      "status": "needsReevaluation",
+      "items": [
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CHANGE_ORDER_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TIME_ENTERED",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_RECEIVED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_REJECTED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QA_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SHELF_LIFE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_INSPECTOR",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOREKEEPER_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RECEIPT_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_RECEIVED_AT_SITE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RECEIPT_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_STATUS_EFFECTIVE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "HOLD_STATUS",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DSR_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_IN_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "RECORD_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITT_KEY_NO",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SITE_NUMBER",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "CHANGE_ORDER_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RELEASE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "PO_LINE_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_ENTERED",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "TIME_ENTERED",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_RECEIVED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QTY_REJECTED",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "QA_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "SHELF_LIFE",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QA_INSPECTOR",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOREKEEPER_ID",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RECEIPT_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "UNIT_PRICE",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "ITEM_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_RECEIVED_AT_SITE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "RECEIPT_CODE",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DATE_STATUS_EFFECTIVE",
+          "id": "",
+          "datatype": "dateTime",
+          "powerbi_datatype": "DateTime",
+          "usage": "identifier",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "HOLD_STATUS",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "DSR_NUMBER",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "QTY_IN_HOLD",
+          "id": "",
+          "datatype": "int64",
+          "powerbi_datatype": "Int64",
+          "usage": "fact",
+          "regularAggregate": "sum",
+          "nullable": true
+        },
+        {
+          "name": "RECORD_STATUS",
+          "id": "",
+          "datatype": "character",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "STOP",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        },
+        {
+          "name": "ITT_KEY_NO",
+          "id": "",
+          "datatype": "characterLength16",
+          "powerbi_datatype": "String",
+          "usage": "attribute",
+          "regularAggregate": "unsupported",
+          "nullable": true
+        }
+      ],
+      "sql_definition": {
+        "sql": "Select",
+        "type": "dbQuery",
+        "tableType": "table",
+        "dataSourceRef": "[].[dataSources].[ELECTRIC_GENERATION_WPTMATT]"
+      }
+    }
+  ],
+  "relationships": [],
+  "calculations": {},
+  "filters": {},
+  "structure": {
+    "name": "ELECTRIC_GENERATION_MAT",
+    "namespaces": [
+      {
+        "name": "ELECTRIC_GENERATION_WPTMATT",
+        "type": "",
+        "id": ""
+      },
+      {
+        "name": "Database_Layer",
+        "type": "",
+        "id": ""
+      }
+    ],
+    "dataSources": [
+      {
+        "id": "",
+        "type": "",
+        "cmDataSource": "ELECTRIC_GENERATION_WPTMATT",
+        "schema": "MATWPT"
+      },
+      {
+        "id": "",
+        "type": "",
+        "cmDataSource": "ELECTRIC_GENERATION_WPTMATT",
+        "schema": "MATWPT"
+      }
+    ]
+  }
+}

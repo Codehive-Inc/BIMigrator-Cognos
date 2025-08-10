@@ -1,0 +1,136 @@
+table EQUIPMENT
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERIAL_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERIAL_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_CRITICALITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_CRITICALITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LAST_ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREFERRED_ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREFERRED_ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIPMENT_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIPMENT_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'EQUIPMENT' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM EQUIPMENT",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the EQUIPMENT table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

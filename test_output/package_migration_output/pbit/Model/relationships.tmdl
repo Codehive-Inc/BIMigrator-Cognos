@@ -1,0 +1,688 @@
+relationship 456089bc-cb5c-4bfa-b6ac-ce9583df86e5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.BLANKET_BEGIN_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 28335fc3-3a25-4b89-b378-46fdba0439f2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.BLANKET_END_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship c7853134-9b6a-4390-8f59-424c4508f980
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_ENTERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship ae8e56c4-bf6e-461f-8764-0256571de83c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_IN_HOLD
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 2a13c885-0225-49ab-950d-425651be2570
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_IN_INVENT
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 39a251b6-98d6-4e61-ae1a-ea9dcb4f0157
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_RECD_SITE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 469e470a-4226-4c95-9a64-9f17bd5f2f7d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_REJECTED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 5ae9812f-8efc-47d8-8a29-f201a8c32bec
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_ENTERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship d31c76d2-ff9c-4b31-b7ee-b2b3902b4f4c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_ORDERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship e64a9fe4-2a25-4335-8e61-0ed7e412ea67
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_STATUS
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 4557608b-73e1-421d-b499-cd1cdcac7300
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.PROMISED_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 0d423c45-ad9f-493f-b14b-79c104a21361
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_LINE.STATUS_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 386bd969-75fc-43f8-b131-069cc0ab62ee
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_NUMBER.AUDIT_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 49bc9545-a91b-42e8-83ec-d1f45a20ac27
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_NUMBER.LAST_ISSUE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 80dc18f8-3292-4427-9b90-6573d3166b49
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship aa8b8dbf-1160-4004-a4ef-d41ba721c2e8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_APPROVED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship d44973ea-fb82-4c3b-8926-1a5a466cb750
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_INVENTORIED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship a6bcc8d6-beea-43ea-9f70-cd3359e56508
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_ISSUED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship bc730762-613a-4329-9cf6-76a0e640dc7d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_RECEIVED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship c40b70a6-700a-4e27-9622-836a17fd8d04
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_RETURNED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 6e917fd0-bb26-41dd-b207-a0bb40806ea7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.ITEM_LAST_UPDATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 0e155e06-9fe0-4cda-aa1d-82febba26e0a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.REVIEW_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 4e22ec49-6a39-49a6-859d-e77aa498f01b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.SHELF_LIFE_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 7efe6dba-987e-4295-938d-269e2228c70e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.SITE_LAST_UPDATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship d7faf875-cd78-4751-85bb-ad3820597ae1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITEM_SITE_EXTRACT.STRATIFIED_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship c4f2159a-9f0a-40cf-9d59-790d3ca06ba4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MANUFACTURER.DATE_CREATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship aedc9f50-cc33-4a7f-a041-84f02026a31c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: INVENTORY_ADJUSTMENTS.DATE_COUNTED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 462e0f4c-f4e5-435c-a482-942bcaf9249f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: INVENTORY_ADJUSTMENTS.DATE_INV_UPDATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship eaf4f1d5-8912-49a8-864b-687cf969f34b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: INVENTORY_ADJUSTMENTS.STATUS_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship d24ef434-169c-408f-bcb5-08ac3fefd141
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MATERIAL_CHARGES.CHARGED_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 00335304-5ef6-4c58-8e44-cfec13d832ba
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MATERIAL_CHARGES.DATE_ENTERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 8ae7e6d9-9d28-4ea9-8be2-5b8c9908c85d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MATERIAL_CHARGES.DATE_STATUS_EFFECTIVE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 511f991d-c6f6-4413-86a2-8887ef102b00
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_ENTERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship eead4cda-99d3-4d2a-8ef2-f01a456a2860
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_RECEIVED_AT_SITE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship dd9e38b6-5f1b-44b8-91a8-0dae98a6daf7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_STATUS_EFFECTIVE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 048d0ac3-164c-4b4e-a14a-716e32784f61
+	joinOnDateBehavior: datePartOnly
+	fromColumn: REQUISITION_EXTRACT.DATE_ENTERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 9dd76518-4cf8-488e-a25f-31dd5e2af622
+	joinOnDateBehavior: datePartOnly
+	fromColumn: REQUISITION_EXTRACT.REQUIRED_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship bb5f4001-fe93-4a72-ab55-becbb4e81116
+	joinOnDateBehavior: datePartOnly
+	fromColumn: REQUISITION_EXTRACT.ROOT_DATE_ENTERED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship a36b1bc3-4442-4c74-8e1a-1e7f584f0b2a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: REQUISITION_EXTRACT.ROOT_DATE_REQUESTED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 52f5790a-0f5f-45c4-ab30-0d4994ebb9dd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: REQUISITION_EXTRACT.ROOT_DATE_STATUS
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 37b0ba8b-e57e-4429-85f1-207d5859b3ae
+	joinOnDateBehavior: datePartOnly
+	fromColumn: REQUISITION_EXTRACT.STATS_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship a1479cf2-b4b9-43a7-ad84-1a081b01ec10
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WORK_ORDERS.DATE_ACTION
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 0f2fcc09-c914-4e9d-a62a-4bc235353f5a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WORK_ORDERS.DATE_PM_DUE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 5828f8f8-5ba3-4ca4-911a-2529c1298ae2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WORK_ORDERS.DATE_WO_APP
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 6478c100-a722-44f3-8a2f-aecae914a340
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WORK_ORDERS.W_O_ISSUE_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 92193940-b23f-4187-b275-8bd0de63a779
+	joinOnDateBehavior: datePartOnly
+	fromColumn: WORK_ORDERS.WORK_COMPLETED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 45deab1d-d6d6-41a6-a760-251666071767
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MODEL_WORK_ORDER.NEXT_DATE_DUE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 6e501b6a-6cd8-41a6-a20a-1a04a23040c5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MODEL_WORK_ORDER.NEXT_PRELIM_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship dd606546-279f-404f-ae9c-dc76f2b20295
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MODEL_WORK_ORDER.RECENT_DATE_DUE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 40508e1c-8d66-4aeb-97bc-79e707d9784a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MODEL_WORK_ORDER.RECENT_DATE_OVERDUE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 4ccf6eb7-5fcc-4f4e-ba81-093dcefb8d92
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITT_MATERIAL.CREATION_DATE
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship 86ff3fdb-76ac-443d-bab7-4912129d02a2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITT_MATERIAL.DATE_IN_TEST
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 9439ba00-68f1-4d73-8ce5-3df7164bd177
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITT_MATERIAL.DATE_LAST_RELEASED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 18c1ade1-7914-4bbe-8bce-80996404dd59
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITT_MATERIAL.DATE_LAST_UPDATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship 3076b7b1-8af9-4ce9-87c5-ee10624a92d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ITT_MATERIAL.DATE_TEST_COMP
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship eec5d008-3059-4781-9485-d91e80b8520e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EQUIP_HISTORY.DATE_EQP_OUT_SERV
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: true
+
+relationship a330154b-c970-48ae-b7a7-4deecae8a238
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EQUIP_HISTORY.DATE_RQST_INITIATED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship f74ddf54-e1a9-4c4c-b193-b3e73741e707
+	joinOnDateBehavior: datePartOnly
+	fromColumn: EQUIP_HISTORY.WORK_COMPLETED
+	toColumn: CentralDateTable.Date
+	crossFilteringBehavior: automatic
+	fromCardinality: many
+	isActive: false
+
+relationship b2290775-1712-441a-9850-60e74c83e06c
+	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.ITEM_NUMBER
+	toColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 4c874352-dc52-42a1-a1de-2d4387a8a260
+	fromColumn: SITES.SITE_NUMBER
+	toColumn: PURCHASE_ORDER_LINE.SITE_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 2c84349e-8692-4506-869c-3e2c4089c439
+	fromColumn: SITES.SITE_NUMBER
+	toColumn: PURCHASE_ORDER_DESCRIPTIONS.SITE_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship e448528d-9890-44ae-b950-58b30f6846d0
+	fromColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
+	toColumn: STORAGE_LOCATION.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 75a09cad-d1e6-4d3d-a431-61abdc8d7f67
+	fromColumn: PURCHASE_ORDER_LINE.UNIT_OF_MEASURE
+	toColumn: ITEM_SITE_EXTRACT.UNIT_OF_MEASURE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 93bdbb30-7f30-416a-9eba-2cebb889fadc
+	fromColumn: SITES.SITE_NUMBER
+	toColumn: ITEM_SITE_EXTRACT.SITE_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 73d9a5ad-2b00-4928-b9fe-7d6b7f3dfaf9
+	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
+	toColumn: MANUFACTURER.DATE_CREATED
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship e9255f99-c6ea-48c7-a998-36fa60de356b
+	fromColumn: SITES.SITE_NUMBER
+	toColumn: MATERIAL_CHARGES.SITE_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 54df23d1-d279-4eb8-88ba-14de5aa78cde
+	fromColumn: SITES.SITE_NUMBER
+	toColumn: PURCHASE_ORDER_RECEIPT.SITE_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship ecd7303c-8e31-4b51-a56b-d896d38727bd
+	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
+	toColumn: PURCHASE_ORDER_RECEIPT.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 96b68801-0006-4780-abb4-019d0d82481c
+	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
+	toColumn: STORAGE_LOCATION.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship ea744f99-e73d-4a39-842b-771c0948bb82
+	fromColumn: MATERIAL_CHARGES.JOB_NUMBER
+	toColumn: WORK_ORDERS.JOB_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 7db7cf64-06a3-4579-ab2f-ff773a2c92c4
+	fromColumn: WORK_ORDERS.MARK_NUMBER
+	toColumn: EQUIPMENT.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 111c39ec-4063-4dc3-a7b6-0e4de7f7a949
+	fromColumn: MATERIAL_CHARGES.ITEM_NUMBER
+	toColumn: ITEM_ROOT_EXTENDED_DESCRIPTION.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship bbc587af-b252-44e5-8ba9-90a009889353
+	fromColumn: MODEL_WORK_ORDER.MODEL_TYPE
+	toColumn: WO_COMMENTS.MODEL_TYPE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship c5054265-3676-4646-a556-165b92facd24
+	fromColumn: MODEL_WORK_ORDER.MODEL_TYPE
+	toColumn: WO_MATERIALS.MODEL_TYPE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 6e715acc-4cf1-4fda-a5b3-d87133bf3410
+	fromColumn: MODEL_WORK_ORDER.MODEL_TYPE
+	toColumn: WO_DOCUMENTS.MODEL_TYPE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 8f9669b1-13a4-4b4d-a4fc-bbc29ee80cff
+	fromColumn: WORK_ORDERS.MARK_NUMBER
+	toColumn: WO_STEPS.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship cfba7301-5b98-48c4-8455-486dd2505436
+	fromColumn: WORK_ORDERS.MARK_NUMBER
+	toColumn: WO_MATERIALS.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship dd779b52-e0d9-44cd-a5c2-f41edf77b652
+	fromColumn: WORK_ORDERS.MARK_NUMBER
+	toColumn: WO_DOCUMENTS.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship cdbc5127-2119-47f6-a4ff-9d0a5fc45c29
+	fromColumn: ITEM_SITE_EXTRACT.UNIT_OF_MEASURE
+	toColumn: MATERIAL_CHARGES.UNIT_OF_MEASURE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship c64ed5cf-d313-476e-b781-ac7dff3dda20
+	fromColumn: MODEL_WORK_ORDER.MARK_NUMBER
+	toColumn: EQUIPMENT.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship ec220a5b-ab39-4749-a570-20dc9f65c958
+	fromColumn: PURCHASE_ORDER_LINE.UNIT_OF_MEASURE
+	toColumn: MATERIAL_CHARGES.UNIT_OF_MEASURE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship f6ed8b7e-1cce-4fa8-9e84-32b585412b84
+	fromColumn: WORK_ORDERS.MARK_NUMBER
+	toColumn: WO_COMMENTS.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship bc8a811f-1ea3-4323-b4f4-825c5dff2f44
+	fromColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
+	toColumn: ITEM_NUM_IND.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 79b6bd63-8956-4652-8e59-b5b1ebf24afb
+	fromColumn: WORK_ORDERS.REAS_FOR_MAINT_DSC
+	toColumn: EQUIP_HISTORY.REAS_FOR_MAINT_DSC
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship a51b3400-0f7a-49c4-98d4-c9b4874f2ad0
+	fromColumn: MODEL_WORK_ORDER.MARK_NUMBER_COMPRESSED
+	toColumn: WORK_ORDERS.MARK_NUMBER_COMPRESSED
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 86e3e6e7-e55a-44ae-9543-f625d4611787
+	fromColumn: SITES.SITE_NUMBER
+	toColumn: ITT_MATERIAL.SITE_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship b9dc557c-f0b5-4e7b-8bc7-d4869e90d611
+	fromColumn: ITEM_NUMBER.ITEM_NUMBER
+	toColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship f4a04922-03d2-4747-b947-cfae7488700b
+	fromColumn: MODEL_WORK_ORDER.MODEL_TYPE
+	toColumn: WO_STEPS.MODEL_TYPE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship bef83bde-5ed2-4d19-9562-62ca8504210c
+	fromColumn: WORK_ORDERS.MARK_NUMBER
+	toColumn: EQUIP_DOCUMENTS.MARK_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship f111af7b-5e40-47aa-8a48-0d66b9d07c26
+	fromColumn: EQUIP_HISTORY.SITE
+	toColumn: EQUIPMENT.SITE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+

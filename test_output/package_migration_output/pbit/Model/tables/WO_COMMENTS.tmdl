@@ -1,0 +1,116 @@
+table WO_COMMENTS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_COMMENTS' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM WO_COMMENTS",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the WO_COMMENTS table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

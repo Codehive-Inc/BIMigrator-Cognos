@@ -1,0 +1,99 @@
+table WO_COMMENTS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMENTS2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMENTS2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_COMMENTS' = m
+        mode: import
+        source = 
+            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -6,22 +6,22 @@ import logging
 import re
 import json
 from typing import Dict, Any, Optional, List
+from pathlib import Path
 
-from ..llm_service import LLMServiceClient
 from ..models import Table
 
 
 class MQueryConverter:
     """Converts data source queries to Power BI M-query format using LLM service"""
     
-    def __init__(self, llm_service_client: LLMServiceClient):
+    def __init__(self, output_path: Optional[str] = None):
         """
         Initialize the M-Query converter with an LLM service client
         
         Args:
-            llm_service_client: LLM service client for M-query generation
+            output_path: The root output path for the migration.
         """
-        self.llm_service_client = llm_service_client
+        self.output_path = output_path
         self.logger = logging.getLogger(__name__)
     
     def convert_to_m_query(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
@@ -41,47 +41,84 @@ class MQueryConverter:
         """
         self.logger.info(f"[MQUERY_TRACKING] Converting source query to M-query for table: {table.name}")
         
-        # Check if table has source_query attribute
-        if not hasattr(table, 'source_query'):
-            error_msg = f"Table {table.name} does not have a source_query attribute"
-            self.logger.error(f"[MQUERY_TRACKING] {error_msg}")
-            raise Exception(error_msg)
-            
-        # Log if source_query is empty
-        if not table.source_query:
-            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} has empty source_query - this will be handled by the LLM service")
-        else:
-            self.logger.info(f"[MQUERY_TRACKING] Table {table.name} source_query: {table.source_query[:200]}...")
+        # Build SQL from report queries if report_spec is available
+        sql_query = self._build_sql_from_report_queries(table)
+        if not sql_query:
+            self.logger.warning(f"Could not build SQL for table {table.name}. Falling back to default M-query.")
+            return self._build_default_m_query(table)
+
+        self.logger.info(f"Built SQL query for table {table.name}: {sql_query}")
         
-        # Prepare enhanced context for LLM service
-        context = self._build_enhanced_context(table, report_spec, data_sample)
-        
-        # Log the context being sent to the LLM service
-        self.logger.info(f"[MQUERY_TRACKING] Enhanced context for table {table.name}:")
-        self.logger.info(f"[MQUERY_TRACKING]   - Table name: {context['table_name']}")
-        self.logger.info(f"[MQUERY_TRACKING]   - Columns: {json.dumps([col['name'] for col in context['columns']], indent=2)}")
-        self.logger.info(f"[MQUERY_TRACKING]   - Source query: {context['source_query'][:200]}..." if context.get('source_query') else "[MQUERY_TRACKING]   - Source query: None")
-        if 'source_info' in context:
-            self.logger.info(f"[MQUERY_TRACKING]   - Source type: {context['source_info']['source_type']}")
-        
-        # Add options for enhanced M-query generation
-        context['options'] = {
-            'query_folding_preference': 'BestEffort',
-            'error_handling_strategy': 'RemoveErrors',
-            'add_buffer': False,
-            'add_documentation_comments': True
-        }
-        
-        # Call LLM service to generate M-query
-        self.logger.info(f"[MQUERY_TRACKING] Sending request to LLM service for enhanced M-query generation for table {table.name}")
-        m_query = self.llm_service_client.generate_m_query(context)
-        self.logger.info(f"[MQUERY_TRACKING] Raw M-query from LLM service for table {table.name}: {m_query[:200]}...")
+        # Generate M-query directly from SQL
+        m_query = self._build_m_query_from_sql(sql_query, table)
         
         # Clean and format the M-query
         cleaned_m_query = self._clean_m_query(m_query)
         self.logger.info(f"[MQUERY_TRACKING] Cleaned M-query for table {table.name}: {cleaned_m_query[:200]}...")
         
         return cleaned_m_query
+
+    def _build_m_query_from_sql(self, sql_query: str, table: Table) -> str:
+        """
+        Builds an M-query from a SQL query.
+        
+        Args:
+            sql_query: The SQL query.
+            table: The table object.
+            
+        Returns:
+            The M-query string.
+        """
+        # A real implementation would require database connection details
+        # For now, we'll create a placeholder M-query.
+        # Replace this with a call to a real database connector in a production scenario.
+        
+        # Escape the SQL query for use in the M-query string
+        escaped_sql = sql_query.replace('"', '""')
+        
+        m_query = f"""
+let
+    Source = Sql.Database("your_server", "your_database"),
+    SQL = Value.NativeQuery(Source, "{escaped_sql}", null, [EnableFolding=true])
+in
+    SQL
+"""
+        return m_query
+
+    def _build_default_m_query(self, table: Table) -> str:
+        """
+        Builds a default M-query that loads data from a sample Excel file.
+        
+        Args:
+            table: The table object.
+            
+        Returns:
+            The default M-query string.
+        """
+        column_types = []
+        for col in table.columns:
+            # A simple mapping, can be improved
+            m_type = "type text"
+            if col.data_type == "integer":
+                m_type = "Int64.Type"
+            elif col.data_type == "decimal":
+                m_type = "type number"
+            elif col.data_type == "datetime":
+                m_type = "type datetime"
+            
+            column_types.append(f'{{\"{col.name}\", {m_type}}}')
+
+        column_types_str = ", ".join(column_types)
+
+        return f"""
+let
+    Source = Excel.Workbook(File.Contents("C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{{[Item="Sheet1",Kind="Sheet"]}}[Data],
+    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{{column_types_str}}})
+in
+    #\"Changed Type\"
+"""
     
     def _build_context(self, table: Table, report_spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> Dict[str, Any]:
         """
@@ -184,6 +221,76 @@ class MQueryConverter:
             } for rel in table.relationships]
         
         return context
+    
+    def _build_sql_from_report_queries(self, table: Table) -> Optional[str]:
+        """
+        Build a SQL query from the report_queries.json file.
+
+        Args:
+            table: Table object
+
+        Returns:
+            SQL query string or None if the file doesn't exist or is invalid.
+        """
+        if not self.output_path:
+            self.logger.warning("Output path not set in MQueryConverter. Cannot find report_queries.json.")
+            return None
+
+        report_queries_path = Path(self.output_path) / "extracted" / "report_queries.json"
+
+        if not report_queries_path.exists():
+            self.logger.warning(f"report_queries.json not found at {report_queries_path}")
+            return None
+
+        try:
+            with open(report_queries_path, 'r') as f:
+                queries = json.load(f)
+        except json.JSONDecodeError:
+            self.logger.error(f"Invalid JSON in {report_queries_path}")
+            return None
+
+        query_spec = next((q for q in queries if q['name'] == table.name), None)
+
+        if not query_spec:
+            self.logger.warning(f"No query specification found for table {table.name} in {report_queries_path}")
+            return None
+
+        select_clauses = []
+        from_clauses = set()
+        where_clauses = []
+
+        for item in query_spec['data_items']:
+            expression = item['expression']
+            # Regex to find all occurrences of [schema].[table].[column]
+            matches = re.findall(r'\[(.*?)\]\.\[(.*?)\]\.\[(.*?)\]', expression)
+            
+            for match in matches:
+                schema, table_name, column = match
+                from_clauses.add(f'"{schema}"."{table_name}"')
+
+            # Replace the Cognos-style references with SQL-style references
+            sql_expression = re.sub(r'\[(.*?)\]\.\[(.*?)\]\.\[(.*?)\]', r'"\2"."\3"', expression)
+            select_clauses.append(f'    {sql_expression} AS "{item["name"]}"')
+        
+        if 'filters' in query_spec:
+            for f in query_spec['filters']:
+                # Also transform expression in filters
+                sql_filter_expression = re.sub(r'\[(.*?)\]\.\[(.*?)\]\.\[(.*?)\]', r'"\2"."\3"', f["expression"])
+                where_clauses.append(f'    {sql_filter_expression}')
+
+        if not select_clauses:
+            return None
+            
+        sql = "SELECT\n"
+        sql += ",\n".join(select_clauses)
+        sql += "\nFROM\n"
+        sql += ", ".join(sorted(list(from_clauses))) # Sort for consistency
+        
+        if where_clauses:
+            sql += "\nWHERE\n"
+            sql += "\n    AND ".join(where_clauses)
+            
+        return sql
     
     def _extract_relevant_report_spec(self, report_spec: str, table_name: str) -> str:
         """

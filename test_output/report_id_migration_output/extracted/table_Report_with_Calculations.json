@@ -1,0 +1,68 @@
+{
+  "source_name": "Report_with_Calculations",
+  "name": "Report_with_Calculations",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "ID",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Name",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Name",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Value",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Value",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Report_with_Calculations",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Excel.Workbook(File.Contents(\"C:\\\\Users\\\\PowerBIUser\\\\Documents\\\\sample_data.xlsx\"), null, true),\n\t\t\t\t\tSheet1_Sheet = Source{{[Item = \"Sheet1\",Kind = \"Sheet\"]}}[Data],\n\t\t\t\t\t#\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars = true]),\n\t\t\t\t\t#\"Removed Errors\" = Table.RemoveRowsWithErrors(#\"Promoted Headers\"),\n\t\t\t\t\t#\"Changed Types\" = Table.TransformColumnTypes(#\"Removed Errors\", {{\"ID\", Int64.Type}, {\"Name\", type text}, {\"Value\", Int64.Type}})\n\t\t\t\tin\n\t\t\t\t\t#\"Changed Types\""
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

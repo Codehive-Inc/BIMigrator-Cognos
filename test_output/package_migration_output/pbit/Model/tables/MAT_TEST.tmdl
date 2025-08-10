@@ -1,0 +1,106 @@
+table MAT_TEST
+
+
+    column 'RECORD_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECORD_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_6'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MAT_TEST' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM MAT_TEST",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the MAT_TEST table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

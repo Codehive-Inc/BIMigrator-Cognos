@@ -1,0 +1,589 @@
+table WORK_ORDERS
+
+
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_ORDER_SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORK_ORDER_SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_ORDER_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORK_ORDER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUPV_BU'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUPV_BU
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_ORDER_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORK_ORDER_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PLANNER_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PLANNER_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LEAD_CRAFT_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LEAD_CRAFT_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LEAD_FOREMAN_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LEAD_FOREMAN_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_COMPLETED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: WORK_COMPLETED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_ORDER_PRIORITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORK_ORDER_PRIORITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'W_O_ISSUE_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: W_O_ISSUE_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'W_O_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: W_O_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WAIT_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WAIT_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'W_O_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: W_O_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'W_O_SUB_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: W_O_SUB_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_WORK_ORDER_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_WORK_ORDER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ESTIMATED_DURATION'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ESTIMATED_DURATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'GROUPING_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: GROUPING_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOTAL_MANHOURS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOTAL_MANHOURS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNKNOWN'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNKNOWN
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OPER_AUTH_BY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OPER_AUTH_BY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ACTION'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ACTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMP_LOC_BLDG_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMP_LOC_BLDG_CD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMP_LOC_ELEV'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: COMP_LOC_ELEV
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMP_LOC_DETAIL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMP_LOC_DETAIL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMP_LOC_GRIDX'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMP_LOC_GRIDX
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODE_OF_OPER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODE_OF_OPER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WO_FIRST_APP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WO_FIRST_APP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_WO_APP'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_WO_APP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TAG_REQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TAG_REQ
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WELD_FLAME_PERMIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WELD_FLAME_PERMIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RAD_WP_REQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RAD_WP_REQ
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ISI_SECT_XI'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ISI_SECT_XI
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DEV_RPT_REQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DEV_RPT_REQ
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'OP_TEST_REQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: OP_TEST_REQ
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLASS_1E'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLASS_1E
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TECH_SPEC_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TECH_SPEC_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LITERAL_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LITERAL_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENG_WORK_REQ_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ENG_WORK_REQ_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REAS_FOR_MAINT_CD'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REAS_FOR_MAINT_CD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORK_REQUEST'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORK_REQUEST
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ENG_WORK_REQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ENG_WORK_REQ
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REAS_FOR_MAINT_DSC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REAS_FOR_MAINT_DSC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROB_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROB_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER_COMPRESSED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER_COMPRESSED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_PM_DUE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_PM_DUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQUIP_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQUIP_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'WORK_ORDERS - Count by DATE_ACTION' = ```
+            CALCULATE(
+    COUNTROWS('WORK_ORDERS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'WORK_ORDERS'[DATE_ACTION])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'WORK_ORDERS - Count by DATE_PM_DUE' = ```
+            CALCULATE(
+    COUNTROWS('WORK_ORDERS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'WORK_ORDERS'[DATE_PM_DUE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'WORK_ORDERS - Count by DATE_WO_APP' = ```
+            CALCULATE(
+    COUNTROWS('WORK_ORDERS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'WORK_ORDERS'[DATE_WO_APP])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'WORK_ORDERS - Count by W_O_ISSUE_DATE' = ```
+            CALCULATE(
+    COUNTROWS('WORK_ORDERS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'WORK_ORDERS'[W_O_ISSUE_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'WORK_ORDERS - Count by WORK_COMPLETED' = ```
+            CALCULATE(
+    COUNTROWS('WORK_ORDERS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'WORK_ORDERS'[WORK_COMPLETED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'WORK_ORDERS' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table WORK_ORDERS: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x102f94560>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

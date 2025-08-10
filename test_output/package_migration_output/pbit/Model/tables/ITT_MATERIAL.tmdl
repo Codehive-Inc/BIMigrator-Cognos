@@ -1,0 +1,376 @@
+table ITT_MATERIAL
+
+
+    column 'ITT_KEY_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITT_KEY_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CREATION_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: CREATION_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RELEASED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RELEASED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EMP_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EMP_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_IPH'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_IPH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_BEING_TESTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_BEING_TESTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ACCEPTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ACCEPTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_REJECTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_REJECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRICE_OF_ITEM_IPH'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: PRICE_OF_ITEM_IPH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITT_LOCATION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITT_LOCATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PTE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PTE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHG_ORDER_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHG_ORDER_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_SUB_LINE_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_SUB_LINE_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ORIGIN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ORIGIN
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PTE_REV_NO'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PTE_REV_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FILLER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FILLER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TEST_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TEST_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TEST_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TEST_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TEST_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TEST_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TEST_RESULT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TEST_RESULT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_IN_TEST'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_IN_TEST
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_TEST_COMP'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_TEST_COMP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'ITT_MATERIAL - Count by CREATION_DATE' = ```
+            CALCULATE(
+    COUNTROWS('ITT_MATERIAL'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITT_MATERIAL'[CREATION_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITT_MATERIAL - Count by DATE_IN_TEST' = ```
+            CALCULATE(
+    COUNTROWS('ITT_MATERIAL'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITT_MATERIAL'[DATE_IN_TEST])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITT_MATERIAL - Count by DATE_LAST_RELEASED' = ```
+            CALCULATE(
+    COUNTROWS('ITT_MATERIAL'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITT_MATERIAL'[DATE_LAST_RELEASED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITT_MATERIAL - Count by DATE_LAST_UPDATED' = ```
+            CALCULATE(
+    COUNTROWS('ITT_MATERIAL'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITT_MATERIAL'[DATE_LAST_UPDATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITT_MATERIAL - Count by DATE_TEST_COMP' = ```
+            CALCULATE(
+    COUNTROWS('ITT_MATERIAL'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITT_MATERIAL'[DATE_TEST_COMP])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'ITT_MATERIAL' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM ITT_MATERIAL",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the ITT_MATERIAL table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

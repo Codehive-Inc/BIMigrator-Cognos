@@ -29,12 +29,14 @@ from .package_filter_extractor import PackageFilterExtractor
 class ConsolidatedPackageExtractor:
     """Coordinates the extraction of data from Cognos Framework Manager packages"""
     
-    def __init__(self, logger=None):
+    def __init__(self, config: Optional[Dict[str, Any]] = None, logger=None):
         """Initialize the consolidated package extractor
         
         Args:
+            config: Configuration settings dictionary
             logger: Optional logger instance
         """
+        self.config = config or {}
         self.logger = logger or logging.getLogger(__name__)
         
         # Initialize specialized extractors
@@ -43,17 +45,18 @@ class ConsolidatedPackageExtractor:
         self.relationship_extractor = PackageRelationshipExtractor(logger)
         self.calculation_extractor = PackageCalculationExtractor(logger)
         self.filter_extractor = PackageFilterExtractor(logger)
-    
-    def extract_package(self, package_file_path: str, output_dir: str = None) -> Dict[str, Any]:
-        """Extract package information from an FM package file
-        
-        Args:
-            package_file_path: Path to the FM package file
-            output_dir: Optional directory to save extracted data as JSON files
-            
-        Returns:
-            Dictionary containing extracted package information
-        """
+
+    def _save_json(self, data: Dict[str, Any], file_path: str):
+        """Saves dictionary data to a JSON file."""
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2)
+            self.logger.info(f"Saved data to {file_path}")
+        except Exception as e:
+            self.logger.error(f"Failed to save data to {file_path}: {e}")
+
+    def extract_package(self, package_file_path: str, output_dir: str, required_tables: Optional[set] = None) -> Dict[str, Any]:
+        """Extracts and consolidates information from a package XML file."""
         try:
             self.logger.info(f"Extracting package from {package_file_path}")
             
@@ -130,6 +133,76 @@ class ConsolidatedPackageExtractor:
                 self.structure_extractor.save_to_json(package_info, output_path, "package_info.json")
             
             self.logger.info(f"Successfully extracted package: {package_info['name']}")
+
+            # Apply filtering if required_tables is provided
+            if required_tables:
+                # Read the filtering mode from settings, default to "discover"
+                filter_mode = self.config.get('table_filtering', {}).get('mode', 'discover')
+                self.logger.info(f"Applying table filtering with mode: {filter_mode}")
+                
+                # Always perform the direct, exact match filtering first
+                normalized_required = {t.lower().replace('_', '') for t in required_tables}
+                direct_match_tables = [
+                    qs for qs in package_info.get('query_subjects', [])
+                    if qs.get('name', '').lower().replace('_', '') in normalized_required
+                ]
+                
+                if filter_mode == 'discover':
+                    # --- DISCOVER MODE ---
+                    self.logger.info("Discovering all related tables based on relationships.")
+                    # Start with direct matches, then find all related tables.
+                    all_query_subjects = package_info.get('query_subjects', [])
+                    all_relationships = package_info.get('relationships', [])
+
+                    # Get the names of all tables in the package for relationship traversal
+                    all_table_names = {qs.get('name') for qs in all_query_subjects}
+                    
+                    # Create a graph-like structure for relationships
+                    relationships_map = {name: [] for name in all_table_names}
+                    for rel in all_relationships:
+                        from_table = rel.get('from_table')
+                        to_table = rel.get('to_table')
+                        if from_table in relationships_map and to_table in relationships_map:
+                            relationships_map[from_table].append(to_table)
+                            relationships_map[to_table].append(from_table)
+                    
+                    # Use a queue for a breadth-first search to find all connected tables
+                    queue = [t.get('name') for t in direct_match_tables]
+                    discovered_tables = set(queue)
+                    
+                    head = 0
+                    while head < len(queue):
+                        current_table = queue[head]
+                        head += 1
+                        
+                        for related_table in relationships_map.get(current_table, []):
+                            if related_table not in discovered_tables:
+                                discovered_tables.add(related_table)
+                                queue.append(related_table)
+                    
+                    # Final list of tables is the full discovered set
+                    package_info['query_subjects'] = [
+                        qs for qs in all_query_subjects
+                        if qs.get('name') in discovered_tables
+                    ]
+                else:
+                    # --- DIRECT MODE ---
+                    self.logger.info("Using direct mode. Only including tables explicitly found in reports.")
+                    # Only include the tables that were directly identified.
+                    package_info['query_subjects'] = direct_match_tables
+
+                # Finally, filter the relationships to only include those between the kept tables
+                kept_table_names = {qs.get('name') for qs in package_info['query_subjects']}
+                
+                # Filter relationships
+                package_info['relationships'] = [
+                    rel for rel in package_info.get('relationships', [])
+                    if rel.get('from_table') in kept_table_names and rel.get('to_table') in kept_table_names
+                ]
+                self.logger.info(f"Filtered to {len(package_info['query_subjects'])} tables and {len(package_info['relationships'])} relationships.")
+
+            self._save_json(package_info, os.path.join(output_dir, f"{package_info['name']}_consolidated.json"))
+            
             return package_info
             
         except Exception as e:

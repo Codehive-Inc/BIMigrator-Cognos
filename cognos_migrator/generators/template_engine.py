@@ -10,7 +10,7 @@ import json
 
 from cognos_migrator.utils.json_encoder import ModelJSONEncoder, model_to_dict
 
-import pybars
+from pybars import Compiler
 from jinja2 import Environment, FileSystemLoader, Template
 
 
@@ -33,7 +33,7 @@ class TemplateEngine:
         # Initialize template cache
         self.templates = {}
         self.template_info = {}
-        self.handlebars_compiler = pybars.Compiler()
+        self.handlebars_compiler = Compiler()
         
         # Initialize Jinja2 environment
         self.jinja_env = Environment(

@@ -1,0 +1,216 @@
+table PURCHASE_ORDER_DESCRIPTIONS
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOTAL_NUMBER_SEGMENTS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOTAL_NUMBER_SEGMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NUMBER_SEGMENTS_SELECTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: NUMBER_SEGMENTS_SELECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'PURCHASE_ORDER_DESCRIPTIONS' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM PURCHASE_ORDER_DESCRIPTIONS",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the PURCHASE_ORDER_DESCRIPTIONS table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

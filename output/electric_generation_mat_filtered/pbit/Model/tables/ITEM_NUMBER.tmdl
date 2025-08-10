@@ -1,0 +1,159 @@
+table ITEM_NUMBER
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_ALT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_ALT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SOURCE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SOURCE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ONBILL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ONBILL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_ISSUE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: LAST_ISSUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'AUDIT_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: AUDIT_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_IN_USE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_IN_USE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNKNOWN'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNKNOWN
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER_COMPRESSED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER_COMPRESSED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'ITEM_NUMBER - Count by AUDIT_DATE' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_NUMBER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_NUMBER'[AUDIT_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'ITEM_NUMBER - Count by LAST_ISSUE' = ```
+            CALCULATE(
+    COUNTROWS('ITEM_NUMBER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'ITEM_NUMBER'[LAST_ISSUE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'ITEM_NUMBER' = m
+        mode: import
+        source = 
+            // ERROR: Error communicating with LLM service for table ITEM_NUMBER: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/m-query (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x103328b90>: Failed to establish a new connection: [Errno 61] Connection refused'))
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

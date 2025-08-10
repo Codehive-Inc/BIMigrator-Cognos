@@ -1,0 +1,203 @@
+table INVENTORY_ADJUSTMENTS
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BUDGET_UNIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BUDGET_UNIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_COUNTED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_COUNTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_INV_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_INV_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOCUMENT_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DOCUMENT_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_COUNTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_COUNTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_RECONCILED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_RECONCILED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BADGE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BADGE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'INVENTORY_ADJUSTMENTS - Count by DATE_COUNTED' = ```
+            CALCULATE(
+    COUNTROWS('INVENTORY_ADJUSTMENTS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'INVENTORY_ADJUSTMENTS'[DATE_COUNTED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'INVENTORY_ADJUSTMENTS - Count by DATE_INV_UPDATED' = ```
+            CALCULATE(
+    COUNTROWS('INVENTORY_ADJUSTMENTS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'INVENTORY_ADJUSTMENTS'[DATE_INV_UPDATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'INVENTORY_ADJUSTMENTS - Count by STATUS_DATE' = ```
+            CALCULATE(
+    COUNTROWS('INVENTORY_ADJUSTMENTS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'INVENTORY_ADJUSTMENTS'[STATUS_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'INVENTORY_ADJUSTMENTS' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ITEM_NUMBER", type text}, {"SITE_NUMBER", type text}, {"BUDGET_UNIT", type text}, {"DATE_COUNTED", type text}, {"DATE_INV_UPDATED", type text}, {"STATUS_DATE", type text}, {"DOCUMENT_NUMBER", type text}, {"JOB_NUMBER", type text}, {"UNIT_PRICE", type text}, {"QTY_COUNTED", type text}, {"QTY_RECONCILED", type text}, {"STATUS", type text}, {"BADGE_NUMBER", type text}, {"UNIT_OF_MEASURE", type text}, {"STOP", type text}, {"ITEM_NUMBER", type text}, {"SITE_NUMBER", type text}, {"BUDGET_UNIT", type text}, {"DATE_COUNTED", type text}, {"DATE_INV_UPDATED", type text}, {"STATUS_DATE", type text}, {"DOCUMENT_NUMBER", type text}, {"JOB_NUMBER", type text}, {"UNIT_PRICE", type text}, {"QTY_COUNTED", type text}, {"QTY_RECONCILED", type text}, {"STATUS", type text}, {"BADGE_NUMBER", type text}, {"UNIT_OF_MEASURE", type text}, {"STOP", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

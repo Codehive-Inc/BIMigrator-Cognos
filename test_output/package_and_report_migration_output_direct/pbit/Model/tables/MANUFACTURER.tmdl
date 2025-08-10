@@ -1,0 +1,141 @@
+table MANUFACTURER
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_PART_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MFG_PART_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_PART_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_PART_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ACTIVITY_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ACTIVITY_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MFG_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_CREATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MFG_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMPRESSED_PART_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMPRESSED_PART_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FOSSIL_OR_NUCLEAR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FOSSIL_OR_NUCLEAR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'MANUFACTURER - Count by DATE_CREATED' = ```
+            CALCULATE(
+    COUNTROWS('MANUFACTURER'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'MANUFACTURER'[DATE_CREATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'MANUFACTURER' = m
+        mode: import
+        source = 
+            
+                let
+                    Source = Sql.Database(#"DB Server", #"DB Name"),
+                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""MFG_PART_NUMBER"", ""MODEL_PART_IND"", ""ACTIVITY_CODE"", ""MFG_CODE"", ""DATE_CREATED"", ""MFG_NAME"", ""COMPRESSED_PART_NUMBER"", ""FOSSIL_OR_NUCLEAR"", ""STOP"", ""SITE"" FROM ""MANUFACTURER""", null, [EnableFolding=true]),
+                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
+                in
+                    #"Removed Errors"
+        
+
+
+
+    annotation PBI_ResultType = Table

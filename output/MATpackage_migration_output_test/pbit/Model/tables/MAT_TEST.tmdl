@@ -1,0 +1,89 @@
+table MAT_TEST
+
+
+    column 'RECORD_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECORD_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_6'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MAT_TEST' = m
+        mode: import
+        source = 
+            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

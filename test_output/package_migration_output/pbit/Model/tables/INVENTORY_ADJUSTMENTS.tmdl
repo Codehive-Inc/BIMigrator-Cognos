@@ -1,0 +1,216 @@
+table INVENTORY_ADJUSTMENTS
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BUDGET_UNIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BUDGET_UNIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_COUNTED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_COUNTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_INV_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_INV_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOCUMENT_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DOCUMENT_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_COUNTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_COUNTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_RECONCILED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_RECONCILED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BADGE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BADGE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'INVENTORY_ADJUSTMENTS - Count by DATE_COUNTED' = ```
+            CALCULATE(
+    COUNTROWS('INVENTORY_ADJUSTMENTS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'INVENTORY_ADJUSTMENTS'[DATE_COUNTED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'INVENTORY_ADJUSTMENTS - Count by DATE_INV_UPDATED' = ```
+            CALCULATE(
+    COUNTROWS('INVENTORY_ADJUSTMENTS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'INVENTORY_ADJUSTMENTS'[DATE_INV_UPDATED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'INVENTORY_ADJUSTMENTS - Count by STATUS_DATE' = ```
+            CALCULATE(
+    COUNTROWS('INVENTORY_ADJUSTMENTS'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'INVENTORY_ADJUSTMENTS'[STATUS_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'INVENTORY_ADJUSTMENTS' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM INVENTORY_ADJUSTMENTS",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the INVENTORY_ADJUSTMENTS table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

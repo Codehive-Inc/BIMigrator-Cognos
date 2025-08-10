@@ -1,0 +1,406 @@
+table REQUISITION_EXTRACT
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQ'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQ
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATS_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STATS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BU_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BU_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRICE_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRICE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_REQUESTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_REQUESTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUIRED_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: REQUIRED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_INSPECTOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_INSPECTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUESTOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUESTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXPEDITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXPEDITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVED_BY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVED_BY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVED_LIMIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVED_LIMIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAX_AMOUNT'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MAX_AMOUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ATTACHMENT_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ATTACHMENT_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DATE_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ROOT_DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DATE_REQUESTED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ROOT_DATE_REQUESTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERVICE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERVICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHIP_TO_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHIP_TO_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUGGESTED_VENDOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUGGESTED_VENDOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DATE_STATUS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ROOT_DATE_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMMODITY_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COMMODITY_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT_REQUIREMENTS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT_REQUIREMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+    measure 'REQUISITION_EXTRACT - Count by DATE_ENTERED' = ```
+            CALCULATE(
+    COUNTROWS('REQUISITION_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'REQUISITION_EXTRACT'[DATE_ENTERED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'REQUISITION_EXTRACT - Count by REQUIRED_DATE' = ```
+            CALCULATE(
+    COUNTROWS('REQUISITION_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'REQUISITION_EXTRACT'[REQUIRED_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'REQUISITION_EXTRACT - Count by ROOT_DATE_ENTERED' = ```
+            CALCULATE(
+    COUNTROWS('REQUISITION_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'REQUISITION_EXTRACT'[ROOT_DATE_ENTERED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'REQUISITION_EXTRACT - Count by ROOT_DATE_REQUESTED' = ```
+            CALCULATE(
+    COUNTROWS('REQUISITION_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'REQUISITION_EXTRACT'[ROOT_DATE_REQUESTED])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'REQUISITION_EXTRACT - Count by ROOT_DATE_STATUS' = ```
+            CALCULATE(
+    COUNTROWS('REQUISITION_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'REQUISITION_EXTRACT'[ROOT_DATE_STATUS])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+    measure 'REQUISITION_EXTRACT - Count by STATS_DATE' = ```
+            CALCULATE(
+    COUNTROWS('REQUISITION_EXTRACT'),
+    USERELATIONSHIP('CentralDateTable'[Date], 'REQUISITION_EXTRACT'[STATS_DATE])
+)
+    ```
+
+
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+        
+
+
+    partition 'REQUISITION_EXTRACT' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM REQUISITION_EXTRACT",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the REQUISITION_EXTRACT table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

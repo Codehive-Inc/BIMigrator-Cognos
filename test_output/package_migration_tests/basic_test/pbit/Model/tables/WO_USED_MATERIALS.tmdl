@@ -1,0 +1,179 @@
+table WO_USED_MATERIALS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERIAL_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERIAL_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_MEAS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_MEAS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QTY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_AMOUNT'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: ITEM_AMOUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUPPL_DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUPPL_DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EQ_ITEM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EQ_ITEM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_USED_MATERIALS' = m
+        mode: import
+        source = 
+            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,93 @@
+table MAT_TEST
+
+
+    column 'RECORD_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RECORD_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COLUMN_6'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COLUMN_6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MAT_TEST' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"RECORD_ID", type text}, {"COLUMN_1", type text}, {"COLUMN_2", type text}, {"COLUMN_3", type text}, {"COLUMN_4", type text}, {"COLUMN_5", type text}, {"COLUMN_6", type text}, {"RECORD_ID", type text}, {"COLUMN_1", type text}, {"COLUMN_2", type text}, {"COLUMN_3", type text}, {"COLUMN_4", type text}, {"COLUMN_5", type text}, {"COLUMN_6", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,89 @@
+table EQUIP_DOCUMENTS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOCUMENT_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DOCUMENT_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'EQUIP_DOCUMENTS' = m
+        mode: import
+        source = 
+            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
+let
+				Source = Table.FromRows({})
+				in
+				Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,93 @@
+table EQUIP_DOCUMENTS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOCUMENT_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DOCUMENT_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'EQUIP_DOCUMENTS' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE", type text}, {"WORKORDER", type text}, {"TYPE", type text}, {"DOCUMENT_NUM", type text}, {"CLASS", type text}, {"LOCATION", type text}, {"MARK_NUMBER", type text}, {"SITE", type text}, {"WORKORDER", type text}, {"TYPE", type text}, {"DOCUMENT_NUM", type text}, {"CLASS", type text}, {"LOCATION", type text}, {"MARK_NUMBER", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

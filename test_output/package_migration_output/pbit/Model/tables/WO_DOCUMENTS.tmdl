@@ -1,0 +1,136 @@
+table WO_DOCUMENTS
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOCUMENT_NUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DOCUMENT_NUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHEET'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHEET
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MODEL_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MARK_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MARK_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_DOCUMENTS' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM WO_DOCUMENTS",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the WO_DOCUMENTS table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

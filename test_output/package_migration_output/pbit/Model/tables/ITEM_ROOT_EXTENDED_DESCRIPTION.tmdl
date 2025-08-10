@@ -1,0 +1,246 @@
+table ITEM_ROOT_EXTENDED_DESCRIPTION
+
+
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ROOT_DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOTAL_NUMBER_SEGMENTS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOTAL_NUMBER_SEGMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NUMBER_SEGMENTS_SELECTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: NUMBER_SEGMENTS_SELECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'ITEM_ROOT_EXTENDED_DESCRIPTION' = m
+        mode: import
+        source = 
+            let
+    // --- 1. DEFINE THE SQL QUERY ---
+    SQL_Statement = "SELECT * FROM ITEM_ROOT_EXTENDED_DESCRIPTION",
+
+    // --- 2. CONNECT TO THE DATABASE ---
+    Source = Sql.Database(#"DB Server", #"DB Name"),
+
+    // --- 3. EXECUTE THE NATIVE SQL QUERY ---
+    ExecuteQuery = Value.NativeQuery(
+        Source,
+        SQL_Statement,
+        null,
+        [EnableFolding=true]
+    ),
+
+    // --- 4. VALIDATE THAT DATA WAS RETURNED ---
+    ValidateResults = if Table.IsEmpty(ExecuteQuery) then
+                        error "No data was returned from the SQL query for the ITEM_ROOT_EXTENDED_DESCRIPTION table."
+                      else
+                        ExecuteQuery
+in
+    ValidateResults
+        
+
+
+
+    annotation PBI_ResultType = Table

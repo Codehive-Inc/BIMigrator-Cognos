@@ -1,0 +1,83 @@
+table WO_SERVICES
+
+
+    column 'SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'WORKORDER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: WORKORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REC_TYP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REC_TYP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_CONTRACT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_CONTRACT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COST'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: COST
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'WO_SERVICES' = m
+        mode: import
+        source = 
+            
+let
+    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
+    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE", type text}, {"WORKORDER", type text}, {"REC_TYP", type text}, {"PO_CONTRACT", type text}, {"COST", type text}, {"DESCRIPTION", type text}, {"SITE", type text}, {"WORKORDER", type text}, {"REC_TYP", type text}, {"PO_CONTRACT", type text}, {"COST", type text}, {"DESCRIPTION", type text}})
+in
+    #"Changed Type"
+
+        
+
+
+
+    annotation PBI_ResultType = Table

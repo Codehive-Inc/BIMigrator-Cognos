@@ -26,7 +26,7 @@ from cognos_migrator.extractors.modules import (
 )
 from cognos_migrator.extractors.modules.module_source_extractor import ModuleSourceExtractor
 from cognos_migrator.enhancers import CPFMetadataEnhancer
-from cognos_migrator.converters import ExpressionConverter
+from cognos_migrator.converters import ExpressionConverter, ReportMQueryConverter, PackageMQueryConverter
 from cognos_migrator.module_parser import CognosModuleParser
 from cognos_migrator.generators import PowerBIProjectGenerator, DocumentationGenerator
 from cognos_migrator.generators.module_generators import ModuleModelFileGenerator
@@ -35,6 +35,7 @@ from cognos_migrator.models import (
     Measure, ReportPage
 )
 from cognos_migrator.cpf_extractor import CPFExtractor
+from cognos_migrator.processors.report_model_processor import ReportModelProcessor
 
 
 class CognosModuleMigratorExplicit:
@@ -52,13 +53,16 @@ class CognosModuleMigratorExplicit:
         # Initialize generators with LLM service enabled
         from cognos_migrator.generators.template_engine import TemplateEngine
         from cognos_migrator.llm_service import LLMServiceClient
-        from cognos_migrator.converters import MQueryConverter
+        from cognos_migrator.converters import ReportMQueryConverter, PackageMQueryConverter
         
         template_engine = TemplateEngine(template_directory=migration_config.template_directory)
         
-        # Initialize LLM service client and M-query converter
+        # Initialize M-query converters for different migration types
+        report_mquery_converter = ReportMQueryConverter()
+        package_mquery_converter = PackageMQueryConverter()
+
+        # Initialize LLM service client
         llm_service_client = None
-        mquery_converter = None
         
         if migration_config.llm_service_enabled and migration_config.llm_service_url:
             try:
@@ -66,23 +70,26 @@ class CognosModuleMigratorExplicit:
                     base_url=migration_config.llm_service_url,
                     api_key=migration_config.llm_service_api_key
                 )
-                mquery_converter = MQueryConverter(llm_service_client)
                 self.logger.info(f"LLM service client initialized with URL: {migration_config.llm_service_url}")
-                self.logger.info("M-query converter initialized with LLM service")
             except Exception as e:
                 self.logger.warning(f"Failed to initialize LLM service: {e}")
-                self.logger.warning("Proceeding without M-query conversion")
         
         # Create project generator
         self.project_generator = PowerBIProjectGenerator(migration_config)
         
-        # Initialize module-specific model file generator with M-query converter
+        # Initialize module-specific model file generator with appropriate M-query converter
         if hasattr(self.project_generator, 'model_file_generator'):
+            # We'll set the appropriate converter when we know the migration type
+            # Default to report converter for backward compatibility
             module_model_file_generator = ModuleModelFileGenerator(
                 template_engine, 
-                mquery_converter=mquery_converter
+                mquery_converter=report_mquery_converter
             )
             self.project_generator.model_file_generator = module_model_file_generator
+            
+            # Store both converters for later use based on migration type
+            self.report_mquery_converter = report_mquery_converter
+            self.package_mquery_converter = package_mquery_converter
             
         self.doc_generator = DocumentationGenerator(migration_config)
         
@@ -772,7 +779,7 @@ class CognosModuleMigratorExplicit:
             self._save_extracted_report_data(cognos_report, extracted_dir)
             
             # Step 2: Convert to Power BI structures
-            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report, extracted_dir)
             if not powerbi_project:
                 self.logger.error(f"Failed to convert report: {report_id}")
                 return False
@@ -840,15 +847,21 @@ class CognosModuleMigratorExplicit:
                 self.logger.error(f"Failed to fetch Cognos report: {report_id}")
                 return False
             
+            # Re-initialize M-query converter with the correct output path using the report-specific converter
+            if self.project_generator.model_file_generator:
+                # Use the report-specific M-query converter for report migrations
+                self.report_mquery_converter = ReportMQueryConverter(output_path=str(output_dir))
+                self.project_generator.model_file_generator.mquery_converter = self.report_mquery_converter
+                
             # Save raw Cognos report data to extracted folder
             self._save_extracted_report_data(cognos_report, extracted_dir)
-            
+
             # Step 2: Convert to Power BI structures
-            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report)
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report, extracted_dir)
             if not powerbi_project:
                 self.logger.error(f"Failed to convert report: {report_id}")
                 return False
-            
+
             # If CPF metadata is available, enhance the Power BI project with it
             if self.cpf_extractor and self.cpf_metadata_enhancer:
                 self.cpf_metadata_enhancer.enhance_project(powerbi_project)
@@ -876,6 +889,77 @@ class CognosModuleMigratorExplicit:
             raise e
         except Exception as e:
             self.logger.error(f"Migration failed for report {report_id}: {e}")
+            return False
+    
+    def migrate_report_from_file(self, report_file_path: str, output_path: str) -> bool:
+        """Migrate a single Cognos report from a local XML file
+        
+        Args:
+            report_file_path: Path to the local report XML file
+            output_path: Path where migration output will be saved
+            
+        Returns:
+            bool: True if migration was successful, False otherwise
+        """
+        try:
+            self.logger.info(f"Starting migration of report from file: {report_file_path}")
+            
+            # Create output directory structure
+            output_dir = Path(output_path)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            
+            extracted_dir = output_dir / "extracted"
+            extracted_dir.mkdir(exist_ok=True)
+            
+            pbit_dir = output_dir / "pbit"
+            pbit_dir.mkdir(exist_ok=True)
+            
+            # Step 1: Read report specification from the local file
+            with open(report_file_path, 'r', encoding='utf-8') as f:
+                report_spec = f.read()
+            
+            # Create a CognosReport object from the file content
+            from cognos_migrator.models import CognosReport
+            report_name = Path(report_file_path).stem
+            cognos_report = CognosReport(
+                id=report_name,
+                name=report_name,
+                specification=report_spec,
+                metadata={'name': report_name}
+            )
+            
+            # Re-initialize M-query converter with the correct output path using the report-specific converter
+            if self.project_generator.model_file_generator:
+                # Use the report-specific M-query converter for report migrations
+                self.report_mquery_converter = ReportMQueryConverter(output_path=str(output_dir))
+                self.project_generator.model_file_generator.mquery_converter = self.report_mquery_converter
+            # Save raw Cognos report data to extracted folder
+            self._save_extracted_report_data(cognos_report, extracted_dir)
+            
+            # Step 2: Convert to Power BI structures
+            powerbi_project = self._convert_cognos_report_to_powerbi(cognos_report, extracted_dir)
+            if not powerbi_project:
+                self.logger.error(f"Failed to convert report from file: {report_file_path}")
+                return False
+            
+            # If CPF metadata is available, enhance the Power BI project with it
+            if self.cpf_extractor and self.cpf_metadata_enhancer:
+                self.cpf_metadata_enhancer.enhance_project(powerbi_project)
+            
+            # Step 3: Generate Power BI project files
+            success = self.project_generator.generate_project(powerbi_project, str(pbit_dir))
+            if not success:
+                self.logger.error(f"Failed to generate Power BI project files")
+                return False
+            
+            # Step 4: Generate documentation
+            self.doc_generator.generate_migration_report(powerbi_project, extracted_dir)
+            
+            self.logger.info(f"Successfully migrated report from file {report_file_path} to {output_path}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Migration failed for report file {report_file_path}: {e}")
             return False
     
     def _save_extracted_report_data(self, cognos_report, extracted_dir):
@@ -1045,7 +1129,19 @@ class CognosModuleMigratorExplicit:
         except Exception as e:
             self.logger.error(f"Failed to save extracted data: {e}")
     
-    def _convert_cognos_report_to_powerbi(self, cognos_report) -> Optional[PowerBIProject]:
+    def _create_data_model_from_report(self, extracted_dir: Path) -> Optional[DataModel]:
+        """Create a DataModel from the extracted report queries."""
+        try:
+            self.logger.info(f"Creating DataModel from report queries in {extracted_dir}")
+            processor = ReportModelProcessor(extracted_dir)
+            data_model = processor.process()
+            self.logger.info(f"Successfully created DataModel with {len(data_model.tables)} tables.")
+            return data_model
+        except Exception as e:
+            self.logger.error(f"Failed to create DataModel from report: {e}")
+            return None
+
+    def _convert_cognos_report_to_powerbi(self, cognos_report, extracted_dir: Path) -> Optional[PowerBIProject]:
         """Convert Cognos report to Power BI project structure
         
         This is adapted from CognosMigrator._convert_cognos_to_powerbi but
@@ -1073,8 +1169,11 @@ class CognosModuleMigratorExplicit:
             # Convert parsed structure to migration data
             converted_data = self._convert_parsed_structure(parsed_structure, safe_table_name)
             
-            # Create data model
-            data_model = self._create_report_data_model(converted_data, cognos_report.name)
+            # Create data model from report queries
+            data_model = self._create_data_model_from_report(extracted_dir)
+            if not data_model:
+                self.logger.error("Failed to create data model from report, aborting conversion.")
+                return None
             
             # Create report structure
             report = self._create_report_structure_from_cognos(cognos_report, converted_data, data_model)
