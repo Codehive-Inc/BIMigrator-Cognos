@@ -347,11 +347,26 @@ table ITT_MATERIAL
     partition 'ITT_MATERIAL' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table ITT_MATERIAL" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$ITT_KEY_NO", type string}, {"$SITE_NUMBER", type string}, {"$ITEM_NUMBER", type string}, {"$CREATION_DATE", type datetime}, {"$DATE_LAST_RELEASED", type datetime}, {"$DATE_LAST_UPDATED", type datetime}, {"$EMP_ID", type string}, {"$QTY_IPH", type int64}, {"$QTY_BEING_TESTED", type int64}, {"$QTY_ACCEPTED", type int64}, {"$QTY_REJECTED", type int64}, {"$PRICE_OF_ITEM_IPH", type int64}, {"$ITT_LOCATION", type string}, {"$PTE_NO", type string}, {"$PO_NO", type string}, {"$CHG_ORDER_NO", type string}, {"$RELEASE_NO", type string}, {"$PO_LINE_NO", type string}, {"$PO_SUB_LINE_NO", type string}, {"$ORIGIN", type string}, {"$PTE_REV_NO", type string}, {"$FILLER", type string}, {"$TEST_TYPE", type string}, {"$TEST_DESC", type string}, {"$TEST_LOC", type string}, {"$LOC_DESC", type string}, {"$TEST_RESULT", type string}, {"$DATE_IN_TEST", type datetime}, {"$DATE_TEST_COMP", type datetime}, {"$ITT_KEY_NO", type string}, {"$SITE_NUMBER", type string}, {"$ITEM_NUMBER", type string}, {"$CREATION_DATE", type datetime}, {"$DATE_LAST_RELEASED", type datetime}, {"$DATE_LAST_UPDATED", type datetime}, {"$EMP_ID", type string}, {"$QTY_IPH", type int64}, {"$QTY_BEING_TESTED", type int64}, {"$QTY_ACCEPTED", type int64}, {"$QTY_REJECTED", type int64}, {"$PRICE_OF_ITEM_IPH", type int64}, {"$ITT_LOCATION", type string}, {"$PTE_NO", type string}, {"$PO_NO", type string}, {"$CHG_ORDER_NO", type string}, {"$RELEASE_NO", type string}, {"$PO_LINE_NO", type string}, {"$PO_SUB_LINE_NO", type string}, {"$ORIGIN", type string}, {"$PTE_REV_NO", type string}, {"$FILLER", type string}, {"$TEST_TYPE", type string}, {"$TEST_DESC", type string}, {"$TEST_LOC", type string}, {"$LOC_DESC", type string}, {"$TEST_RESULT", type string}, {"$DATE_IN_TEST", type datetime}, {"$DATE_TEST_COMP", type datetime} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

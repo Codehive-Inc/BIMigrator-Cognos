@@ -933,5 +933,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "ITT_MATERIAL",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(#\"DB Server\", #\"DB Name\"),\n\t\t\t\t\t// Validate connection\nValidateConnection = try Source otherwise error \n\"Failed to connect to database. Error: \" & Text.From([Error][Message]),\n\t\t\t\t\t// Execute query with folding\nExecuteQuery = Value.NativeQuery(\nValidateConnection, \n\"Select\",\nnull,\n[EnableFolding=true]\n),\n\t\t\t\t\t// Validate results\nValidateResults = if Table.IsEmpty(ExecuteQuery) then error \"No data returned from query for table ITT_MATERIAL\" else ExecuteQuery,\n\t\t\t\t\t// Apply data type transformations\nTransformTypes = Table.TransformColumnTypes( ValidateResults, { {\"$ITT_KEY_NO\", type string}, {\"$SITE_NUMBER\", type string}, {\"$ITEM_NUMBER\", type string}, {\"$CREATION_DATE\", type datetime}, {\"$DATE_LAST_RELEASED\", type datetime}, {\"$DATE_LAST_UPDATED\", type datetime}, {\"$EMP_ID\", type string}, {\"$QTY_IPH\", type int64}, {\"$QTY_BEING_TESTED\", type int64}, {\"$QTY_ACCEPTED\", type int64}, {\"$QTY_REJECTED\", type int64}, {\"$PRICE_OF_ITEM_IPH\", type int64}, {\"$ITT_LOCATION\", type string}, {\"$PTE_NO\", type string}, {\"$PO_NO\", type string}, {\"$CHG_ORDER_NO\", type string}, {\"$RELEASE_NO\", type string}, {\"$PO_LINE_NO\", type string}, {\"$PO_SUB_LINE_NO\", type string}, {\"$ORIGIN\", type string}, {\"$PTE_REV_NO\", type string}, {\"$FILLER\", type string}, {\"$TEST_TYPE\", type string}, {\"$TEST_DESC\", type string}, {\"$TEST_LOC\", type string}, {\"$LOC_DESC\", type string}, {\"$TEST_RESULT\", type string}, {\"$DATE_IN_TEST\", type datetime}, {\"$DATE_TEST_COMP\", type datetime}, {\"$ITT_KEY_NO\", type string}, {\"$SITE_NUMBER\", type string}, {\"$ITEM_NUMBER\", type string}, {\"$CREATION_DATE\", type datetime}, {\"$DATE_LAST_RELEASED\", type datetime}, {\"$DATE_LAST_UPDATED\", type datetime}, {\"$EMP_ID\", type string}, {\"$QTY_IPH\", type int64}, {\"$QTY_BEING_TESTED\", type int64}, {\"$QTY_ACCEPTED\", type int64}, {\"$QTY_REJECTED\", type int64}, {\"$PRICE_OF_ITEM_IPH\", type int64}, {\"$ITT_LOCATION\", type string}, {\"$PTE_NO\", type string}, {\"$PO_NO\", type string}, {\"$CHG_ORDER_NO\", type string}, {\"$RELEASE_NO\", type string}, {\"$PO_LINE_NO\", type string}, {\"$PO_SUB_LINE_NO\", type string}, {\"$ORIGIN\", type string}, {\"$PTE_REV_NO\", type string}, {\"$FILLER\", type string}, {\"$TEST_TYPE\", type string}, {\"$TEST_DESC\", type string}, {\"$TEST_LOC\", type string}, {\"$LOC_DESC\", type string}, {\"$TEST_RESULT\", type string}, {\"$DATE_IN_TEST\", type datetime}, {\"$DATE_TEST_COMP\", type datetime} } ),\n\t\t\t\t\t// Handle nulls appropriately\nHandleNulls = Table.ReplaceValue( TransformTypes, null, \"\", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )\n\t\t\t\tin\n\t\t\t\t\tHandleNulls"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

@@ -77,11 +77,26 @@ table MAT_TEST
     partition 'MAT_TEST' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table MAT_TEST" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$RECORD_ID", type string}, {"$COLUMN_1", type string}, {"$COLUMN_2", type string}, {"$COLUMN_3", type string}, {"$COLUMN_4", type string}, {"$COLUMN_5", type string}, {"$COLUMN_6", type string}, {"$RECORD_ID", type string}, {"$COLUMN_1", type string}, {"$COLUMN_2", type string}, {"$COLUMN_3", type string}, {"$COLUMN_4", type string}, {"$COLUMN_5", type string}, {"$COLUMN_6", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

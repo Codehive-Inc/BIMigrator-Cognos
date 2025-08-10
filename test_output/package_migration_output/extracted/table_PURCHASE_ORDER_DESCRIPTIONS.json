@@ -581,5 +581,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "PURCHASE_ORDER_DESCRIPTIONS",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(#\"DB Server\", #\"DB Name\"),\n\t\t\t\t\t// Validate connection\nValidateConnection = try Source otherwise error \n\"Failed to connect to database. Error: \" & Text.From([Error][Message]),\n\t\t\t\t\t// Execute query with folding\nExecuteQuery = Value.NativeQuery(\nValidateConnection, \n\"Select\",\nnull,\n[EnableFolding=true]\n),\n\t\t\t\t\t// Validate results\nValidateResults = if Table.IsEmpty(ExecuteQuery) then error \"No data returned from query for table PURCHASE_ORDER_DESCRIPTIONS\" else ExecuteQuery,\n\t\t\t\t\t// Apply data type transformations\nTransformTypes = Table.TransformColumnTypes( ValidateResults, { {\"$ITEM_NUMBER\", type string}, {\"$SITE_NUMBER\", type string}, {\"$PO_NUMBER\", type string}, {\"$RELEASE_NUMBER\", type string}, {\"$PO_LINE_NUMBER\", type string}, {\"$TOTAL_NUMBER_SEGMENTS\", type int64}, {\"$NUMBER_SEGMENTS_SELECTED\", type int64}, {\"$LINE_NUMBER1\", type string}, {\"$DESCRIPTION1\", type string}, {\"$LINE_NUMBER2\", type string}, {\"$DESCRIPTION2\", type string}, {\"$LINE_NUMBER3\", type string}, {\"$DESCRIPTION3\", type string}, {\"$LINE_NUMBER4\", type string}, {\"$DESCRIPTION4\", type string}, {\"$LINE_NUMBER5\", type string}, {\"$DESCRIPTION5\", type string}, {\"$STOP\", type string}, {\"$ITEM_NUMBER\", type string}, {\"$SITE_NUMBER\", type string}, {\"$PO_NUMBER\", type string}, {\"$RELEASE_NUMBER\", type string}, {\"$PO_LINE_NUMBER\", type string}, {\"$TOTAL_NUMBER_SEGMENTS\", type int64}, {\"$NUMBER_SEGMENTS_SELECTED\", type int64}, {\"$LINE_NUMBER1\", type string}, {\"$DESCRIPTION1\", type string}, {\"$LINE_NUMBER2\", type string}, {\"$DESCRIPTION2\", type string}, {\"$LINE_NUMBER3\", type string}, {\"$DESCRIPTION3\", type string}, {\"$LINE_NUMBER4\", type string}, {\"$DESCRIPTION4\", type string}, {\"$LINE_NUMBER5\", type string}, {\"$DESCRIPTION5\", type string}, {\"$STOP\", type string} } ),\n\t\t\t\t\t// Handle nulls appropriately\nHandleNulls = Table.ReplaceValue( TransformTypes, null, \"\", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )\n\t\t\t\tin\n\t\t\t\t\tHandleNulls"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

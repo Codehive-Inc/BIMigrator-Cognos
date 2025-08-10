@@ -367,11 +367,26 @@ table MATERIAL_CHARGES
     partition 'MATERIAL_CHARGES' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table MATERIAL_CHARGES" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$SITE_NUMBER", type string}, {"$ITEM_NUMBER", type string}, {"$CHARGED_DATE", type datetime}, {"$TIME_ENTERED", type string}, {"$STOREKEEPER_ID", type string}, {"$EMPLOYEE_ID", type string}, {"$ISSUE_TICKET_NUMBER", type string}, {"$TRANSACTION_TYPE", type string}, {"$ADJUSTMENT_TYPE", type string}, {"$QUANTITY", type int64}, {"$UNIT_PRICE", type int64}, {"$TRANSACTION_VALUE", type int64}, {"$JOB_NUMBER", type string}, {"$BU_NUMBER", type string}, {"$PO_NUMBER", type string}, {"$PO_INDICATOR", type string}, {"$DATE_ENTERED", type datetime}, {"$DATE_STATUS_EFFECTIVE", type datetime}, {"$REFURB_IND", type string}, {"$ISSUE_OVERRIDE_IND", type string}, {"$RECORD_STATUS", type string}, {"$UNIT_OF_MEASURE", type string}, {"$ADJUSTMENT_NUMBER", type string}, {"$ADJUSTMENT_DESC", type string}, {"$QTY_TO_RECONCILE", type int64}, {"$STOP", type string}, {"$TRANSFER_NUMBER", type string}, {"$MATERIAL_CLASS", type string}, {"$ROOT_DESCRIPTION", type string}, {"$ITT_KEY_NO", type string}, {"$UTC_NO", type string}, {"$PIT_IND", type string}, {"$UM", type string}, {"$SITE_NUMBER", type string}, {"$ITEM_NUMBER", type string}, {"$CHARGED_DATE", type datetime}, {"$TIME_ENTERED", type string}, {"$STOREKEEPER_ID", type string}, {"$EMPLOYEE_ID", type string}, {"$ISSUE_TICKET_NUMBER", type string}, {"$TRANSACTION_TYPE", type string}, {"$ADJUSTMENT_TYPE", type string}, {"$QUANTITY", type int64}, {"$UNIT_PRICE", type int64}, {"$TRANSACTION_VALUE", type int64}, {"$JOB_NUMBER", type string}, {"$BU_NUMBER", type string}, {"$PO_NUMBER", type string}, {"$PO_INDICATOR", type string}, {"$DATE_ENTERED", type datetime}, {"$DATE_STATUS_EFFECTIVE", type datetime}, {"$REFURB_IND", type string}, {"$ISSUE_OVERRIDE_IND", type string}, {"$RECORD_STATUS", type string}, {"$UNIT_OF_MEASURE", type string}, {"$ADJUSTMENT_NUMBER", type string}, {"$ADJUSTMENT_DESC", type string}, {"$QTY_TO_RECONCILE", type int64}, {"$STOP", type string}, {"$TRANSFER_NUMBER", type string}, {"$MATERIAL_CLASS", type string}, {"$ROOT_DESCRIPTION", type string}, {"$ITT_KEY_NO", type string}, {"$UTC_NO", type string}, {"$PIT_IND", type string}, {"$UM", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

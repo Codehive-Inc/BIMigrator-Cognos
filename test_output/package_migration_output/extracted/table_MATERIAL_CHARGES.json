@@ -1061,5 +1061,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "MATERIAL_CHARGES",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(#\"DB Server\", #\"DB Name\"),\n\t\t\t\t\t// Validate connection\nValidateConnection = try Source otherwise error \n\"Failed to connect to database. Error: \" & Text.From([Error][Message]),\n\t\t\t\t\t// Execute query with folding\nExecuteQuery = Value.NativeQuery(\nValidateConnection, \n\"Select\",\nnull,\n[EnableFolding=true]\n),\n\t\t\t\t\t// Validate results\nValidateResults = if Table.IsEmpty(ExecuteQuery) then error \"No data returned from query for table MATERIAL_CHARGES\" else ExecuteQuery,\n\t\t\t\t\t// Apply data type transformations\nTransformTypes = Table.TransformColumnTypes( ValidateResults, { {\"$SITE_NUMBER\", type string}, {\"$ITEM_NUMBER\", type string}, {\"$CHARGED_DATE\", type datetime}, {\"$TIME_ENTERED\", type string}, {\"$STOREKEEPER_ID\", type string}, {\"$EMPLOYEE_ID\", type string}, {\"$ISSUE_TICKET_NUMBER\", type string}, {\"$TRANSACTION_TYPE\", type string}, {\"$ADJUSTMENT_TYPE\", type string}, {\"$QUANTITY\", type int64}, {\"$UNIT_PRICE\", type int64}, {\"$TRANSACTION_VALUE\", type int64}, {\"$JOB_NUMBER\", type string}, {\"$BU_NUMBER\", type string}, {\"$PO_NUMBER\", type string}, {\"$PO_INDICATOR\", type string}, {\"$DATE_ENTERED\", type datetime}, {\"$DATE_STATUS_EFFECTIVE\", type datetime}, {\"$REFURB_IND\", type string}, {\"$ISSUE_OVERRIDE_IND\", type string}, {\"$RECORD_STATUS\", type string}, {\"$UNIT_OF_MEASURE\", type string}, {\"$ADJUSTMENT_NUMBER\", type string}, {\"$ADJUSTMENT_DESC\", type string}, {\"$QTY_TO_RECONCILE\", type int64}, {\"$STOP\", type string}, {\"$TRANSFER_NUMBER\", type string}, {\"$MATERIAL_CLASS\", type string}, {\"$ROOT_DESCRIPTION\", type string}, {\"$ITT_KEY_NO\", type string}, {\"$UTC_NO\", type string}, {\"$PIT_IND\", type string}, {\"$UM\", type string}, {\"$SITE_NUMBER\", type string}, {\"$ITEM_NUMBER\", type string}, {\"$CHARGED_DATE\", type datetime}, {\"$TIME_ENTERED\", type string}, {\"$STOREKEEPER_ID\", type string}, {\"$EMPLOYEE_ID\", type string}, {\"$ISSUE_TICKET_NUMBER\", type string}, {\"$TRANSACTION_TYPE\", type string}, {\"$ADJUSTMENT_TYPE\", type string}, {\"$QUANTITY\", type int64}, {\"$UNIT_PRICE\", type int64}, {\"$TRANSACTION_VALUE\", type int64}, {\"$JOB_NUMBER\", type string}, {\"$BU_NUMBER\", type string}, {\"$PO_NUMBER\", type string}, {\"$PO_INDICATOR\", type string}, {\"$DATE_ENTERED\", type datetime}, {\"$DATE_STATUS_EFFECTIVE\", type datetime}, {\"$REFURB_IND\", type string}, {\"$ISSUE_OVERRIDE_IND\", type string}, {\"$RECORD_STATUS\", type string}, {\"$UNIT_OF_MEASURE\", type string}, {\"$ADJUSTMENT_NUMBER\", type string}, {\"$ADJUSTMENT_DESC\", type string}, {\"$QTY_TO_RECONCILE\", type int64}, {\"$STOP\", type string}, {\"$TRANSFER_NUMBER\", type string}, {\"$MATERIAL_CLASS\", type string}, {\"$ROOT_DESCRIPTION\", type string}, {\"$ITT_KEY_NO\", type string}, {\"$UTC_NO\", type string}, {\"$PIT_IND\", type string}, {\"$UM\", type string} } ),\n\t\t\t\t\t// Handle nulls appropriately\nHandleNulls = Table.ReplaceValue( TransformTypes, null, \"\", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )\n\t\t\t\tin\n\t\t\t\t\tHandleNulls"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

@@ -901,5 +901,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "EQUIP_HISTORY",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(#\"DB Server\", #\"DB Name\"),\n\t\t\t\t\t// Validate connection\nValidateConnection = try Source otherwise error \n\"Failed to connect to database. Error: \" & Text.From([Error][Message]),\n\t\t\t\t\t// Execute query with folding\nExecuteQuery = Value.NativeQuery(\nValidateConnection, \n\"Select\",\nnull,\n[EnableFolding=true]\n),\n\t\t\t\t\t// Validate results\nValidateResults = if Table.IsEmpty(ExecuteQuery) then error \"No data returned from query for table EQUIP_HISTORY\" else ExecuteQuery,\n\t\t\t\t\t// Apply data type transformations\nTransformTypes = Table.TransformColumnTypes( ValidateResults, { {\"$SITE\", type string}, {\"$WORKORDER\", type string}, {\"$UNIT\", type string}, {\"$JOB_NUMBER\", type string}, {\"$SUMMARY_SHORT\", type string}, {\"$EQ_WO\", type string}, {\"$SR_WO\", type string}, {\"$EXP_CL_CD\", type string}, {\"$GADS_APP_CD\", type string}, {\"$CONF_ENT_PERMIT\", type string}, {\"$X_FILE\", type string}, {\"$TAG_RPT_NO1\", type string}, {\"$NPRDS_APP\", type string}, {\"$DEV_RPT_NO\", type string}, {\"$DATE_EQP_OUT_SERV\", type datetime}, {\"$TIME_EQP_OUT_SERV\", type string}, {\"$DATE_RQST_INITIATED\", type datetime}, {\"$PLANNER_CD\", type string}, {\"$REAS_FOR_MAINT_CD\", type string}, {\"$REAS_FOR_MAINT_DSC\", type string}, {\"$SUMMARY\", type string}, {\"$SUMMARY2\", type string}, {\"$WORK_COMPLETED\", type datetime}, {\"$MODE_OF_OPERATION\", type string}, {\"$W_O_TYPE_CODE\", type string}, {\"$MARK_NO\", type string}, {\"$JOB_DESC\", type string}, {\"$MARK_NUMBER_COMPRESSED\", type string}, {\"$SITE\", type string}, {\"$WORKORDER\", type string}, {\"$UNIT\", type string}, {\"$JOB_NUMBER\", type string}, {\"$SUMMARY_SHORT\", type string}, {\"$EQ_WO\", type string}, {\"$SR_WO\", type string}, {\"$EXP_CL_CD\", type string}, {\"$GADS_APP_CD\", type string}, {\"$CONF_ENT_PERMIT\", type string}, {\"$X_FILE\", type string}, {\"$TAG_RPT_NO1\", type string}, {\"$NPRDS_APP\", type string}, {\"$DEV_RPT_NO\", type string}, {\"$DATE_EQP_OUT_SERV\", type datetime}, {\"$TIME_EQP_OUT_SERV\", type string}, {\"$DATE_RQST_INITIATED\", type datetime}, {\"$PLANNER_CD\", type string}, {\"$REAS_FOR_MAINT_CD\", type string}, {\"$REAS_FOR_MAINT_DSC\", type string}, {\"$SUMMARY\", type string}, {\"$SUMMARY2\", type string}, {\"$WORK_COMPLETED\", type datetime}, {\"$MODE_OF_OPERATION\", type string}, {\"$W_O_TYPE_CODE\", type string}, {\"$MARK_NO\", type string}, {\"$JOB_DESC\", type string}, {\"$MARK_NUMBER_COMPRESSED\", type string} } ),\n\t\t\t\t\t// Handle nulls appropriately\nHandleNulls = Table.ReplaceValue( TransformTypes, null, \"\", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )\n\t\t\t\tin\n\t\t\t\t\tHandleNulls"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

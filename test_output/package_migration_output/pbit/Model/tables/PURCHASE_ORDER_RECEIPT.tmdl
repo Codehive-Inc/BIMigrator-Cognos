@@ -287,11 +287,26 @@ table PURCHASE_ORDER_RECEIPT
     partition 'PURCHASE_ORDER_RECEIPT' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table PURCHASE_ORDER_RECEIPT" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$SITE_NUMBER", type string}, {"$PO_NUMBER", type string}, {"$CHANGE_ORDER_NUMBER", type string}, {"$RELEASE_NUMBER", type string}, {"$PO_LINE_NUMBER", type string}, {"$DATE_ENTERED", type datetime}, {"$TIME_ENTERED", type string}, {"$QTY_RECEIVED", type int64}, {"$QTY_REJECTED", type int64}, {"$QA_CODE", type string}, {"$SHELF_LIFE", type string}, {"$QA_INSPECTOR", type string}, {"$STOREKEEPER_ID", type string}, {"$RECEIPT_NUMBER", type string}, {"$UNIT_PRICE", type int64}, {"$ITEM_NUMBER", type string}, {"$DATE_RECEIVED_AT_SITE", type datetime}, {"$RECEIPT_CODE", type string}, {"$DATE_STATUS_EFFECTIVE", type datetime}, {"$HOLD_STATUS", type string}, {"$DSR_NUMBER", type string}, {"$QTY_IN_HOLD", type int64}, {"$RECORD_STATUS", type string}, {"$STOP", type string}, {"$ITT_KEY_NO", type string}, {"$SITE_NUMBER", type string}, {"$PO_NUMBER", type string}, {"$CHANGE_ORDER_NUMBER", type string}, {"$RELEASE_NUMBER", type string}, {"$PO_LINE_NUMBER", type string}, {"$DATE_ENTERED", type datetime}, {"$TIME_ENTERED", type string}, {"$QTY_RECEIVED", type int64}, {"$QTY_REJECTED", type int64}, {"$QA_CODE", type string}, {"$SHELF_LIFE", type string}, {"$QA_INSPECTOR", type string}, {"$STOREKEEPER_ID", type string}, {"$RECEIPT_NUMBER", type string}, {"$UNIT_PRICE", type int64}, {"$ITEM_NUMBER", type string}, {"$DATE_RECEIVED_AT_SITE", type datetime}, {"$RECEIPT_CODE", type string}, {"$DATE_STATUS_EFFECTIVE", type datetime}, {"$HOLD_STATUS", type string}, {"$DSR_NUMBER", type string}, {"$QTY_IN_HOLD", type int64}, {"$RECORD_STATUS", type string}, {"$STOP", type string}, {"$ITT_KEY_NO", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

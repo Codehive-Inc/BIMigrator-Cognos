@@ -147,11 +147,26 @@ table ITEM_NUMBER
     partition 'ITEM_NUMBER' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table ITEM_NUMBER" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$SITE", type string}, {"$ITEM_NUMBER", type string}, {"$MARK_NUMBER", type string}, {"$ITEM_ALT", type string}, {"$SOURCE", type string}, {"$ONBILL", type string}, {"$LAST_ISSUE", type datetime}, {"$AUDIT_DATE", type datetime}, {"$QTY_IN_USE", type int64}, {"$UNKNOWN", type string}, {"$STOP", type string}, {"$MARK_NUMBER_COMPRESSED", type string}, {"$SITE", type string}, {"$ITEM_NUMBER", type string}, {"$MARK_NUMBER", type string}, {"$ITEM_ALT", type string}, {"$SOURCE", type string}, {"$ONBILL", type string}, {"$LAST_ISSUE", type datetime}, {"$AUDIT_DATE", type datetime}, {"$QTY_IN_USE", type int64}, {"$UNKNOWN", type string}, {"$STOP", type string}, {"$MARK_NUMBER_COMPRESSED", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

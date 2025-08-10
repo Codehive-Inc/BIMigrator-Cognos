@@ -577,11 +577,26 @@ table WORK_ORDERS
     partition 'WORK_ORDERS' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table WORK_ORDERS" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$MARK_NUMBER", type string}, {"$JOB_NUMBER", type string}, {"$WORK_ORDER_SITE", type string}, {"$WORK_ORDER_NUMBER", type string}, {"$SUPV_BU", type string}, {"$UNIT_NUMBER", type string}, {"$WORK_ORDER_DESC", type string}, {"$PLANNER_CODE", type string}, {"$LEAD_CRAFT_CODE", type string}, {"$LEAD_FOREMAN_CODE", type string}, {"$WORK_COMPLETED", type datetime}, {"$WORK_ORDER_PRIORITY", type string}, {"$W_O_ISSUE_DATE", type datetime}, {"$W_O_STATUS", type string}, {"$WAIT_CODE", type string}, {"$W_O_TYPE", type string}, {"$W_O_SUB_TYPE", type string}, {"$MODEL_WORK_ORDER_NUMBER", type string}, {"$ESTIMATED_DURATION", type int64}, {"$GROUPING_CODE", type string}, {"$TOTAL_MANHOURS", type int64}, {"$UNKNOWN", type int64}, {"$OPER_AUTH_BY", type string}, {"$DATE_ACTION", type datetime}, {"$COMP_LOC_BLDG_CD", type string}, {"$COMP_LOC_ELEV", type int64}, {"$COMP_LOC_DETAIL", type string}, {"$COMP_LOC_GRIDX", type string}, {"$MODE_OF_OPER", type string}, {"$WO_FIRST_APP", type string}, {"$DATE_WO_APP", type datetime}, {"$TAG_REQ", type string}, {"$WELD_FLAME_PERMIT", type string}, {"$RAD_WP_REQ", type string}, {"$ISI_SECT_XI", type string}, {"$DEV_RPT_REQ", type string}, {"$OP_TEST_REQ", type string}, {"$QA_CODE", type string}, {"$CLASS_1E", type string}, {"$TECH_SPEC_NUM", type string}, {"$LITERAL_IND", type string}, {"$ENG_WORK_REQ_IND", type string}, {"$REAS_FOR_MAINT_CD", type string}, {"$WORK_REQUEST", type string}, {"$ENG_WORK_REQ", type string}, {"$STOP", type string}, {"$REAS_FOR_MAINT_DSC", type string}, {"$PROB_DESC", type string}, {"$MARK_NUMBER_COMPRESSED", type string}, {"$DATE_PM_DUE", type datetime}, {"$JOB_DESC", type string}, {"$EQUIP_DESC", type string}, {"$MARK_NUMBER", type string}, {"$JOB_NUMBER", type string}, {"$WORK_ORDER_SITE", type string}, {"$WORK_ORDER_NUMBER", type string}, {"$SUPV_BU", type string}, {"$UNIT_NUMBER", type string}, {"$WORK_ORDER_DESC", type string}, {"$PLANNER_CODE", type string}, {"$LEAD_CRAFT_CODE", type string}, {"$LEAD_FOREMAN_CODE", type string}, {"$WORK_COMPLETED", type datetime}, {"$WORK_ORDER_PRIORITY", type string}, {"$W_O_ISSUE_DATE", type datetime}, {"$W_O_STATUS", type string}, {"$WAIT_CODE", type string}, {"$W_O_TYPE", type string}, {"$W_O_SUB_TYPE", type string}, {"$MODEL_WORK_ORDER_NUMBER", type string}, {"$ESTIMATED_DURATION", type int64}, {"$GROUPING_CODE", type string}, {"$TOTAL_MANHOURS", type int64}, {"$UNKNOWN", type int64}, {"$OPER_AUTH_BY", type string}, {"$DATE_ACTION", type datetime}, {"$COMP_LOC_BLDG_CD", type string}, {"$COMP_LOC_ELEV", type int64}, {"$COMP_LOC_DETAIL", type string}, {"$COMP_LOC_GRIDX", type string}, {"$MODE_OF_OPER", type string}, {"$WO_FIRST_APP", type string}, {"$DATE_WO_APP", type datetime}, {"$TAG_REQ", type string}, {"$WELD_FLAME_PERMIT", type string}, {"$RAD_WP_REQ", type string}, {"$ISI_SECT_XI", type string}, {"$DEV_RPT_REQ", type string}, {"$OP_TEST_REQ", type string}, {"$QA_CODE", type string}, {"$CLASS_1E", type string}, {"$TECH_SPEC_NUM", type string}, {"$LITERAL_IND", type string}, {"$ENG_WORK_REQ_IND", type string}, {"$REAS_FOR_MAINT_CD", type string}, {"$WORK_REQUEST", type string}, {"$ENG_WORK_REQ", type string}, {"$STOP", type string}, {"$REAS_FOR_MAINT_DSC", type string}, {"$PROB_DESC", type string}, {"$MARK_NUMBER_COMPRESSED", type string}, {"$DATE_PM_DUE", type datetime}, {"$JOB_DESC", type string}, {"$EQUIP_DESC", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

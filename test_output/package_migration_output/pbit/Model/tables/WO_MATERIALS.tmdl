@@ -127,11 +127,26 @@ table WO_MATERIALS
     partition 'WO_MATERIALS' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table WO_MATERIALS" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$SITE", type string}, {"$WORKORDER", type string}, {"$REC_TYP", type string}, {"$ITEM_NUM", type string}, {"$PO_NUM", type string}, {"$SERIAL_NUM", type string}, {"$MODEL_NUM", type string}, {"$UNIT_MEAS", type string}, {"$QTY", type string}, {"$DESCRIPTION", type string}, {"$MODEL_TYPE", type string}, {"$MARK_NUMBER", type string}, {"$SITE", type string}, {"$WORKORDER", type string}, {"$REC_TYP", type string}, {"$ITEM_NUM", type string}, {"$PO_NUM", type string}, {"$SERIAL_NUM", type string}, {"$MODEL_NUM", type string}, {"$UNIT_MEAS", type string}, {"$QTY", type string}, {"$DESCRIPTION", type string}, {"$MODEL_TYPE", type string}, {"$MARK_NUMBER", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

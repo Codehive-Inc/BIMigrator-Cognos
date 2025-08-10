@@ -187,11 +187,26 @@ table INVENTORY_ADJUSTMENTS
     partition 'INVENTORY_ADJUSTMENTS' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table INVENTORY_ADJUSTMENTS" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$ITEM_NUMBER", type string}, {"$SITE_NUMBER", type string}, {"$BUDGET_UNIT", type string}, {"$DATE_COUNTED", type datetime}, {"$DATE_INV_UPDATED", type datetime}, {"$STATUS_DATE", type datetime}, {"$DOCUMENT_NUMBER", type string}, {"$JOB_NUMBER", type string}, {"$UNIT_PRICE", type int64}, {"$QTY_COUNTED", type int64}, {"$QTY_RECONCILED", type int64}, {"$STATUS", type string}, {"$BADGE_NUMBER", type string}, {"$UNIT_OF_MEASURE", type string}, {"$STOP", type string}, {"$ITEM_NUMBER", type string}, {"$SITE_NUMBER", type string}, {"$BUDGET_UNIT", type string}, {"$DATE_COUNTED", type datetime}, {"$DATE_INV_UPDATED", type datetime}, {"$STATUS_DATE", type datetime}, {"$DOCUMENT_NUMBER", type string}, {"$JOB_NUMBER", type string}, {"$UNIT_PRICE", type int64}, {"$QTY_COUNTED", type int64}, {"$QTY_RECONCILED", type int64}, {"$STATUS", type string}, {"$BADGE_NUMBER", type string}, {"$UNIT_OF_MEASURE", type string}, {"$STOP", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

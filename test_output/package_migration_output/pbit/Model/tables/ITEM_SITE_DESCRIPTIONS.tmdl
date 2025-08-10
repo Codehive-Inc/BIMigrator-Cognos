@@ -157,11 +157,26 @@ table ITEM_SITE_DESCRIPTIONS
     partition 'ITEM_SITE_DESCRIPTIONS' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table ITEM_SITE_DESCRIPTIONS" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$ITEM_NUMBER", type string}, {"$SITE_NUMBER", type string}, {"$TOTAL_NUMBER_SEGMENTS", type int64}, {"$NUMBER_SEGMENTS_SELECTED", type int64}, {"$LINE_NUMBER1", type string}, {"$DESCRIPTION1", type string}, {"$LINE_NUMBER2", type string}, {"$DESCRIPTION2", type string}, {"$LINE_NUMBER3", type string}, {"$DESCRIPTION3", type string}, {"$LINE_NUMBER4", type string}, {"$DESCRIPTION4", type string}, {"$LINE_NUMBER5", type string}, {"$DESCRIPTION5", type string}, {"$STOP", type string}, {"$ITEM_NUMBER", type string}, {"$SITE_NUMBER", type string}, {"$TOTAL_NUMBER_SEGMENTS", type int64}, {"$NUMBER_SEGMENTS_SELECTED", type int64}, {"$LINE_NUMBER1", type string}, {"$DESCRIPTION1", type string}, {"$LINE_NUMBER2", type string}, {"$DESCRIPTION2", type string}, {"$LINE_NUMBER3", type string}, {"$DESCRIPTION3", type string}, {"$LINE_NUMBER4", type string}, {"$DESCRIPTION4", type string}, {"$LINE_NUMBER5", type string}, {"$DESCRIPTION5", type string}, {"$STOP", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

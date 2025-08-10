@@ -377,11 +377,26 @@ table REQUISITION_EXTRACT
     partition 'REQUISITION_EXTRACT' = m
         mode: import
         source = 
-            // ERROR: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'LLMServiceClient'
-let
-				Source = Table.FromRows({})
+            	let
+					Source = Sql.Database(#"DB Server", #"DB Name"),
+					// Validate connection
+ValidateConnection = try Source otherwise error 
+"Failed to connect to database. Error: " & Text.From([Error][Message]),
+					// Execute query with folding
+ExecuteQuery = Value.NativeQuery(
+ValidateConnection, 
+"Select",
+null,
+[EnableFolding=true]
+),
+					// Validate results
+ValidateResults = if Table.IsEmpty(ExecuteQuery) then error "No data returned from query for table REQUISITION_EXTRACT" else ExecuteQuery,
+					// Apply data type transformations
+TransformTypes = Table.TransformColumnTypes( ValidateResults, { {"$SITE_NUMBER", type string}, {"$REQ", type string}, {"$STATUS", type string}, {"$STATS_DATE", type datetime}, {"$ITEM_NUMBER", type string}, {"$UNIT_PRICE", type int64}, {"$BU_NUMBER", type string}, {"$JOB_NUMBER", type string}, {"$UNIT_OF_MEASURE", type string}, {"$PRICE_CODE", type string}, {"$QTY_REQUESTED", type int64}, {"$REQUIRED_DATE", type datetime}, {"$DATE_ENTERED", type datetime}, {"$QA_CODE", type string}, {"$QA_INSPECTOR", type string}, {"$QA_LEVEL", type string}, {"$REQUESTOR", type string}, {"$EXPEDITE", type string}, {"$APPROVED_BY", type string}, {"$APPROVED_LIMIT", type string}, {"$MAX_AMOUNT", type int64}, {"$ATTACHMENT_IND", type string}, {"$ROOT_DATE_ENTERED", type datetime}, {"$ROOT_DATE_REQUESTED", type datetime}, {"$SERVICE", type string}, {"$SHIP_TO_CODE", type string}, {"$SUGGESTED_VENDOR", type string}, {"$ROOT_DATE_STATUS", type datetime}, {"$COMMODITY_CODE", type string}, {"$QA_CERT_REQUIREMENTS", type string}, {"$STOP", type string}, {"$SITE_NUMBER", type string}, {"$REQ", type string}, {"$STATUS", type string}, {"$STATS_DATE", type datetime}, {"$ITEM_NUMBER", type string}, {"$UNIT_PRICE", type int64}, {"$BU_NUMBER", type string}, {"$JOB_NUMBER", type string}, {"$UNIT_OF_MEASURE", type string}, {"$PRICE_CODE", type string}, {"$QTY_REQUESTED", type int64}, {"$REQUIRED_DATE", type datetime}, {"$DATE_ENTERED", type datetime}, {"$QA_CODE", type string}, {"$QA_INSPECTOR", type string}, {"$QA_LEVEL", type string}, {"$REQUESTOR", type string}, {"$EXPEDITE", type string}, {"$APPROVED_BY", type string}, {"$APPROVED_LIMIT", type string}, {"$MAX_AMOUNT", type int64}, {"$ATTACHMENT_IND", type string}, {"$ROOT_DATE_ENTERED", type datetime}, {"$ROOT_DATE_REQUESTED", type datetime}, {"$SERVICE", type string}, {"$SHIP_TO_CODE", type string}, {"$SUGGESTED_VENDOR", type string}, {"$ROOT_DATE_STATUS", type datetime}, {"$COMMODITY_CODE", type string}, {"$QA_CERT_REQUIREMENTS", type string}, {"$STOP", type string} } ),
+					// Handle nulls appropriately
+HandleNulls = Table.ReplaceValue( TransformTypes, null, "", Replacer.ReplaceValue, Table.ColumnNames(TransformTypes) )
 				in
-				Source
+					HandleNulls
         
 
 

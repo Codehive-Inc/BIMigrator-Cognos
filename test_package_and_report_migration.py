@@ -14,10 +14,16 @@ def test_package_and_report_migration():
 
     print(f"Starting migration for package '{package_file}' and report '{report_file}'")
 
+    # Dummy values for Cognos connection details (required even for file-based migration)
+    cognos_url = "http://dummy-cognos-url"
+    session_key = "dummy-session-key"
+    
     success = migrate_package_with_local_reports(
         package_file_path=package_file,
         output_path=output_dir,
-        report_file_paths=[report_file]
+        report_file_paths=[report_file],
+        cognos_url=cognos_url,
+        session_key=session_key
     )
 
     if success:
