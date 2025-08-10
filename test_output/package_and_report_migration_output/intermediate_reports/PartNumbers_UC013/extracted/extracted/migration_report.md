@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: PartNumbers_UC013
-- **Migration Date**: 2025-08-10 11:51:24
+- **Migration Date**: 2025-08-10 11:54:11
 
 ## Data Model
 
@@ -13,7 +13,7 @@
 ### Tables
 
 - **MANUFACTURER**
-  - Columns: 6
+  - Columns: 7
   - Column details:
     - MFG_CODE (string)
     - MFG_PART_NUMBER (string)
@@ -21,10 +21,17 @@
     - MFG_NAME (string)
     - ACTIVITY_CODE (string)
     - DATE_CREATED (string)
+    - DESCRIPTION (string)
 
 - **ITEM_SITE_EXTRACT**
-  - Columns: 1
+  - Columns: 7
   - Column details:
+    - MFG_CODE (string)
+    - MFG_PART_NUMBER (string)
+    - ITEM_NUMBER (string)
+    - MFG_NAME (string)
+    - ACTIVITY_CODE (string)
+    - DATE_CREATED (string)
     - DESCRIPTION (string)
 
 

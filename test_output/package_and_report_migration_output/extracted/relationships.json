@@ -1,6 +1,6 @@
 [
   {
-    "id": "750642d4-f539-4988-8e62-c0e957204af3",
+    "id": "1c3c58cc-48c8-4e53-84a5-6d5ada4a275b",
     "fromTable": "ITEM_NUMBER",
     "fromColumn": "AUDIT_DATE",
     "toTable": "CentralDateTable",
@@ -11,7 +11,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "a0ae6a74-c15b-4b09-b281-76c6328fa4f7",
+    "id": "efe4d678-ffc1-4e27-94d1-a41e56a5cbcf",
     "fromTable": "ITEM_NUMBER",
     "fromColumn": "LAST_ISSUE",
     "toTable": "CentralDateTable",

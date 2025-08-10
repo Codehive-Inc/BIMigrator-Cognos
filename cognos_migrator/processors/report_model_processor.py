@@ -37,31 +37,29 @@ class ReportModelProcessor:
         tables_dict: Dict[str, Table] = {}
         
         for query in queries:
+            original_query_name = query.get("name")
             for item in query.get("data_items", []):
                 expression = item.get("expression")
                 source_table_name = self._extract_source_table_from_expression(expression)
                 
                 if not source_table_name:
-                    # This item is likely a calculated column or literal, so we can't determine its source table.
-                    # In a future enhancement, we could try to assign it to a primary table from the query.
                     continue
                 
-                # If we haven't seen this source table before, create a new Table object for it.
                 if source_table_name not in tables_dict:
                     tables_dict[source_table_name] = Table(
                         name=source_table_name,
                         columns=[],
-                        description=f"Table created from source: {source_table_name}"
+                        description=f"Table created from source: {source_table_name}",
+                        # Add metadata to link back to the original report query
+                        metadata={"original_query_name": original_query_name}
                     )
                 
-                # Create the column for the data item.
                 column = Column(
                     name=item.get("name"),
-                    data_type="string",  # Using a placeholder; a real implementation would map types.
+                    data_type="string",
                     source_column=expression
                 )
                 
-                # Add the column to the correct table, avoiding duplicates.
                 if not any(c.name == column.name for c in tables_dict[source_table_name].columns):
                     tables_dict[source_table_name].columns.append(column)
 

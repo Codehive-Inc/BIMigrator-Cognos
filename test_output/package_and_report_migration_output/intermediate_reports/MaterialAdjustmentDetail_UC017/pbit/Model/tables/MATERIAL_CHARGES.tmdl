@@ -101,21 +101,60 @@ table MATERIAL_CHARGES
         annotation SummarizationSetBy = Automatic
 
         
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Cost' = ```
+            Cost
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
 
 
 
     partition 'MATERIAL_CHARGES' = m
         mode: import
         source = 
-            
-let
-    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
-    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
-    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"CHARGED_DATE", type text}, {"JOB_NUMBER", type text}, {"QUANTITY", type text}, {"UNIT_PRICE", type text}, {"TRANSACTION_VALUE", type text}, {"ADJUSTMENT_DESC", type text}, {"ADJUSTMENT_TYPE", type text}, {"TIME_ENTERED", type text}})
-in
-    #"Changed Type"
-
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""MATERIAL_CHARGES"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
+    ""MATERIAL_CHARGES"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
+    ""MATERIAL_CHARGES"".""CHARGED_DATE"" AS ""CHARGED_DATE"",
+    ""MATERIAL_CHARGES"".""JOB_NUMBER"" AS ""JOB_NUMBER"",
+    ""MATERIAL_CHARGES"".""QUANTITY"" AS ""QUANTITY"",
+    ""MATERIAL_CHARGES"".""UNIT_PRICE"" AS ""UNIT_PRICE"",
+    ""MATERIAL_CHARGES"".""TRANSACTION_VALUE"" AS ""TRANSACTION_VALUE"",
+    ""MATERIAL_CHARGES"".""ADJUSTMENT_DESC"" AS ""ADJUSTMENT_DESC"",
+    ""MATERIAL_CHARGES"".""ADJUSTMENT_TYPE"" AS ""ADJUSTMENT_TYPE"",
+    ""MATERIAL_CHARGES"".""TIME_ENTERED"" AS ""TIME_ENTERED"",
+    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION"",
+    IF ( [UNIT_PRICE] = 0 ) THEN
+	( [TRANSACTION_VALUE] )
+ELSE
+	( [UNIT_PRICE] ) AS ""Cost""
+FROM
+""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""MATERIAL_CHARGES""
+WHERE
+    [SITE_NUMBER]= ?SiteNumber?
+    AND     [ITEM_NUMBER]=?ItemNumber?
+    AND     [CHARGED_DATE]=?ChargedDate?
+    AND     [TIME_ENTERED]=?TimeEntered?", null, [EnableFolding=true])
+				in
+					SQL
         
 
 

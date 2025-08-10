@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialReceiptDetail_UC016
-- **Migration Date**: 2025-08-10 11:51:20
+- **Migration Date**: 2025-08-10 11:54:07
 
 ## Data Model
 
@@ -13,7 +13,7 @@
 ### Tables
 
 - **PURCHASE_ORDER_RECEIPT**
-  - Columns: 9
+  - Columns: 20
   - Column details:
     - DATE_ENTERED (string)
     - SITE_NUMBER (string)
@@ -23,27 +23,90 @@
     - DATE_RECEIVED_AT_SITE (string)
     - QTY_RECEIVED (string)
     - TIME_ENTERED (string)
-    - UNIT_PRICE (string)
-
-- **PURCHASE_ORDER_LINE**
-  - Columns: 5
-  - Column details:
     - ITEM_NUMBER (string)
     - JOB_NUMBER (string)
     - UNIT_OF_MEASURE (string)
     - REQUESTOR_NAME (string)
     - VENDOR_NAME (string)
-
-- **STORAGE_LOCATION**
-  - Columns: 2
-  - Column details:
     - LOCATION1 (string)
     - LOCATION2 (string)
+    - UNIT_PRICE (string)
+    - DESCRIPTION1 (string)
+    - LOC1 (string)
+    - LOC2 (string)
+    - TotalCost (decimal)
+
+- **PURCHASE_ORDER_LINE**
+  - Columns: 20
+  - Column details:
+    - DATE_ENTERED (string)
+    - SITE_NUMBER (string)
+    - PO_NUMBER (string)
+    - PO_LINE_NUMBER (string)
+    - RELEASE_NUMBER (string)
+    - DATE_RECEIVED_AT_SITE (string)
+    - QTY_RECEIVED (string)
+    - TIME_ENTERED (string)
+    - ITEM_NUMBER (string)
+    - JOB_NUMBER (string)
+    - UNIT_OF_MEASURE (string)
+    - REQUESTOR_NAME (string)
+    - VENDOR_NAME (string)
+    - LOCATION1 (string)
+    - LOCATION2 (string)
+    - UNIT_PRICE (string)
+    - DESCRIPTION1 (string)
+    - LOC1 (string)
+    - LOC2 (string)
+    - TotalCost (decimal)
+
+- **STORAGE_LOCATION**
+  - Columns: 20
+  - Column details:
+    - DATE_ENTERED (string)
+    - SITE_NUMBER (string)
+    - PO_NUMBER (string)
+    - PO_LINE_NUMBER (string)
+    - RELEASE_NUMBER (string)
+    - DATE_RECEIVED_AT_SITE (string)
+    - QTY_RECEIVED (string)
+    - TIME_ENTERED (string)
+    - ITEM_NUMBER (string)
+    - JOB_NUMBER (string)
+    - UNIT_OF_MEASURE (string)
+    - REQUESTOR_NAME (string)
+    - VENDOR_NAME (string)
+    - LOCATION1 (string)
+    - LOCATION2 (string)
+    - UNIT_PRICE (string)
+    - DESCRIPTION1 (string)
+    - LOC1 (string)
+    - LOC2 (string)
+    - TotalCost (decimal)
 
 - **PURCHASE_ORDER_DESCRIPTIONS**
-  - Columns: 1
+  - Columns: 20
   - Column details:
+    - DATE_ENTERED (string)
+    - SITE_NUMBER (string)
+    - PO_NUMBER (string)
+    - PO_LINE_NUMBER (string)
+    - RELEASE_NUMBER (string)
+    - DATE_RECEIVED_AT_SITE (string)
+    - QTY_RECEIVED (string)
+    - TIME_ENTERED (string)
+    - ITEM_NUMBER (string)
+    - JOB_NUMBER (string)
+    - UNIT_OF_MEASURE (string)
+    - REQUESTOR_NAME (string)
+    - VENDOR_NAME (string)
+    - LOCATION1 (string)
+    - LOCATION2 (string)
+    - UNIT_PRICE (string)
     - DESCRIPTION1 (string)
+    - LOC1 (string)
+    - LOC2 (string)
+    - TotalCost (decimal)
 
 
 ## Report

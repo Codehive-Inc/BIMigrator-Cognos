@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialInquiryDetail_UC012
-- **Migration Date**: 2025-08-10 11:51:17
+- **Migration Date**: 2025-08-10 11:54:03
 
 ## Data Model
 
@@ -13,10 +13,13 @@
 ### Tables
 
 - **ITEM_SITE_EXTRACT**
-  - Columns: 25
+  - Columns: 31
   - Column details:
     - SITE_NUMBER (string)
     - ITEM_NUMBER (string)
+    - PO_NUMBER (string)
+    - PO_LINE_NUMBER (string)
+    - RELEASE_NUMBER (string)
     - DESCRIPTION (string)
     - UNIT_OF_MEASURE (string)
     - QTY_ON_HAND (string)
@@ -39,21 +42,49 @@
     - QA_CERT4 (string)
     - PIT (string)
     - PREVENT_MAINTENANCE (string)
+    - STATUS_DATE (string)
     - SAP_IND (string)
+    - LOC_1 (string)
+    - LOC_2 (string)
 
 - **PURCHASE_ORDER_LINE**
-  - Columns: 4
-  - Column details:
-    - PO_NUMBER (string)
-    - PO_LINE_NUMBER (string)
-    - RELEASE_NUMBER (string)
-    - STATUS_DATE (string)
-
-- **MATERIAL_CHARGES**
-  - Columns: 4
+  - Columns: 31
   - Column details:
     - SITE_NUMBER (string)
     - ITEM_NUMBER (string)
+    - PO_NUMBER (string)
+    - PO_LINE_NUMBER (string)
+    - RELEASE_NUMBER (string)
+    - DESCRIPTION (string)
+    - UNIT_OF_MEASURE (string)
+    - QTY_ON_HAND (string)
+    - MINIMUM (string)
+    - CONSUMABLE (string)
+    - SHELF_LIFE (string)
+    - MAXIMUM (string)
+    - DATE_LAST_ISSUED (string)
+    - DATE_LAST_RETURNED (string)
+    - DATE_LAST_RECEIVED (string)
+    - UTC_IND (string)
+    - PRIMARY_LOC (string)
+    - SECONDARY_LOC (string)
+    - STATUS (string)
+    - QA_CODE (string)
+    - QA_LEVEL (string)
+    - QA_CERT1 (string)
+    - QA_CERT2 (string)
+    - QA_CERT3 (string)
+    - QA_CERT4 (string)
+    - PIT (string)
+    - PREVENT_MAINTENANCE (string)
+    - STATUS_DATE (string)
+    - SAP_IND (string)
+    - LOC_1 (string)
+    - LOC_2 (string)
+
+- **MATERIAL_CHARGES**
+  - Columns: 2
+  - Column details:
     - CHARGED_DATE (string)
     - TRANSACTION_TYPE (string)
 

@@ -21,6 +21,36 @@ table ITEM_SITE_EXTRACT
         annotation SummarizationSetBy = Automatic
 
         
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'DESCRIPTION'
         dataType: string
         summarizeBy: none
@@ -241,10 +271,40 @@ table ITEM_SITE_EXTRACT
         annotation SummarizationSetBy = Automatic
 
         
+    column 'STATUS_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
     column 'SAP_IND'
         dataType: string
         summarizeBy: none
         sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_2
 
         
 
@@ -257,15 +317,61 @@ table ITEM_SITE_EXTRACT
     partition 'ITEM_SITE_EXTRACT' = m
         mode: import
         source = 
-            
-let
-    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
-    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
-    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SITE_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"DESCRIPTION", type text}, {"UNIT_OF_MEASURE", type text}, {"QTY_ON_HAND", type text}, {"MINIMUM", type text}, {"CONSUMABLE", type text}, {"SHELF_LIFE", type text}, {"MAXIMUM", type text}, {"DATE_LAST_ISSUED", type text}, {"DATE_LAST_RETURNED", type text}, {"DATE_LAST_RECEIVED", type text}, {"UTC_IND", type text}, {"PRIMARY_LOC", type text}, {"SECONDARY_LOC", type text}, {"STATUS", type text}, {"QA_CODE", type text}, {"QA_LEVEL", type text}, {"QA_CERT1", type text}, {"QA_CERT2", type text}, {"QA_CERT3", type text}, {"QA_CERT4", type text}, {"PIT", type text}, {"PREVENT_MAINTENANCE", type text}, {"SAP_IND", type text}})
-in
-    #"Changed Type"
-
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""ITEM_SITE_EXTRACT"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
+    ""ITEM_SITE_EXTRACT"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
+    ""PURCHASE_ORDER_LINE"".""PO_NUMBER"" AS ""PO_NUMBER"",
+    ""PURCHASE_ORDER_LINE"".""PO_LINE_NUMBER"" AS ""PO_LINE_NUMBER"",
+    ""PURCHASE_ORDER_LINE"".""RELEASE_NUMBER"" AS ""RELEASE_NUMBER"",
+    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION"",
+    ""ITEM_SITE_EXTRACT"".""UNIT_OF_MEASURE"" AS ""UNIT_OF_MEASURE"",
+    ""ITEM_SITE_EXTRACT"".""QTY_ON_HAND"" AS ""QTY_ON_HAND"",
+    ""ITEM_SITE_EXTRACT"".""MINIMUM"" AS ""MINIMUM"",
+    ""ITEM_SITE_EXTRACT"".""CONSUMABLE"" AS ""CONSUMABLE"",
+    ""ITEM_SITE_EXTRACT"".""SHELF_LIFE"" AS ""SHELF_LIFE"",
+    ""ITEM_SITE_EXTRACT"".""MAXIMUM"" AS ""MAXIMUM"",
+    ""ITEM_SITE_EXTRACT"".""DATE_LAST_ISSUED"" AS ""DATE_LAST_ISSUED"",
+    ""ITEM_SITE_EXTRACT"".""DATE_LAST_RETURNED"" AS ""DATE_LAST_RETURNED"",
+    ""ITEM_SITE_EXTRACT"".""DATE_LAST_RECEIVED"" AS ""DATE_LAST_RECEIVED"",
+    ""ITEM_SITE_EXTRACT"".""UTC_IND"" AS ""UTC_IND"",
+    ""ITEM_SITE_EXTRACT"".""PRIMARY_LOC"" AS ""PRIMARY_LOC"",
+    ""ITEM_SITE_EXTRACT"".""SECONDARY_LOC"" AS ""SECONDARY_LOC"",
+    ""ITEM_SITE_EXTRACT"".""STATUS"" AS ""STATUS"",
+    ""ITEM_SITE_EXTRACT"".""QA_CODE"" AS ""QA_CODE"",
+    ""ITEM_SITE_EXTRACT"".""QA_LEVEL"" AS ""QA_LEVEL"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT1"" AS ""QA_CERT1"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT2"" AS ""QA_CERT2"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT3"" AS ""QA_CERT3"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT4"" AS ""QA_CERT4"",
+    ""ITEM_SITE_EXTRACT"".""PIT"" AS ""PIT"",
+    ""ITEM_SITE_EXTRACT"".""PREVENT_MAINTENANCE"" AS ""PREVENT_MAINTENANCE"",
+    ""PURCHASE_ORDER_LINE"".""STATUS_DATE"" AS ""STATUS_DATE"",
+    ""ITEM_SITE_EXTRACT"".""SAP_IND"" AS ""SAP_IND"",
+    substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 11,2) AS ""LOC_1"",
+    substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 11,2) AS ""LOC_2""
+FROM
+""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""PURCHASE_ORDER_LINE""
+WHERE
+    [SITE_NUMBER]= ?SiteNumber?
+    AND     [ITEM_NUMBER]= ?ItemNumber?
+    AND     [PO_NUMBER]=?PO_Number?
+    AND     [PO_LINE_NUMBER]=?LineNumber?
+    AND     [RELEASE_NUMBER]=?ReleaseNumber?
+    AND     [STATUS_DATE]=?StatusDate?", null, [EnableFolding=true])
+				in
+					SQL
         
 
 

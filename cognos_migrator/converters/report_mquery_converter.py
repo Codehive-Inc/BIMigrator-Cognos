@@ -74,10 +74,12 @@ class ReportMQueryConverter(BaseMQueryConverter):
             self.logger.error(f"Invalid JSON in {report_queries_path}")
             return None
 
-        query_spec = next((q for q in queries if q['name'] == table.name), None)
+        # Use the metadata to find the original query name
+        query_name_to_find = table.metadata.get("original_query_name", table.name)
+        query_spec = next((q for q in queries if q['name'] == query_name_to_find), None)
 
         if not query_spec:
-            self.logger.warning(f"No query specification found for table {table.name} in {report_queries_path}")
+            self.logger.warning(f"No query specification found for '{query_name_to_find}' in {report_queries_path}")
             return None
 
         select_clauses = []

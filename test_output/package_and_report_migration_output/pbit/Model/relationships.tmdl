@@ -1,4 +1,4 @@
-relationship 750642d4-f539-4988-8e62-c0e957204af3
+relationship 1c3c58cc-48c8-4e53-84a5-6d5ada4a275b
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_NUMBER.AUDIT_DATE
 	toColumn: CentralDateTable.Date
@@ -6,7 +6,7 @@ relationship 750642d4-f539-4988-8e62-c0e957204af3
 	fromCardinality: many
 	isActive: true
 
-relationship a0ae6a74-c15b-4b09-b281-76c6328fa4f7
+relationship efe4d678-ffc1-4e27-94d1-a41e56a5cbcf
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_NUMBER.LAST_ISSUE
 	toColumn: CentralDateTable.Date

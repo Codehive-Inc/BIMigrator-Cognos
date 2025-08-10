@@ -10,7 +10,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "[Database_Layer].[MANUFACTURER].[MFG_CODE]",
+      "source_column": "MFG_CODE",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -26,7 +26,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "[Database_Layer].[MANUFACTURER].[MFG_PART_NUMBER]",
+      "source_column": "MFG_PART_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -42,7 +42,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "[Database_Layer].[MANUFACTURER].[ITEM_NUMBER]",
+      "source_column": "ITEM_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -58,7 +58,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "[Database_Layer].[MANUFACTURER].[MFG_NAME]",
+      "source_column": "MFG_NAME",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -74,7 +74,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "[Database_Layer].[MANUFACTURER].[ACTIVITY_CODE]",
+      "source_column": "ACTIVITY_CODE",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -90,7 +90,23 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "[Database_Layer].[MANUFACTURER].[DATE_CREATED]",
+      "source_column": "DATE_CREATED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DESCRIPTION",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DESCRIPTION",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -107,7 +123,7 @@
     {
       "name": "MANUFACTURER",
       "source_type": "m",
-      "expression": "\nlet\n    Source = Excel.Workbook(File.Contents(\"C:\\Users\\PowerBIUser\\Documents\\sample_data.xlsx\"), null, true),\n    Sheet1_Sheet = Source{[Item=\"Sheet1\",Kind=\"Sheet\"]}[Data],\n    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),\n    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"MFG_CODE\", type text}, {\"MFG_PART_NUMBER\", type text}, {\"ITEM_NUMBER\", type text}, {\"MFG_NAME\", type text}, {\"ACTIVITY_CODE\", type text}, {\"DATE_CREATED\", type text}})\nin\n    #\"Changed Type\"\n"
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"MANUFACTURER\"\".\"\"MFG_CODE\"\" AS \"\"MFG_CODE\"\",\n    \"\"MANUFACTURER\"\".\"\"MFG_PART_NUMBER\"\" AS \"\"MFG_PART_NUMBER\"\",\n    \"\"MANUFACTURER\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"MANUFACTURER\"\".\"\"MFG_NAME\"\" AS \"\"MFG_NAME\"\",\n    \"\"MANUFACTURER\"\".\"\"ACTIVITY_CODE\"\" AS \"\"ACTIVITY_CODE\"\",\n    \"\"MANUFACTURER\"\".\"\"DATE_CREATED\"\" AS \"\"DATE_CREATED\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DESCRIPTION\"\" AS \"\"DESCRIPTION\"\"\nFROM\n\"\"Database_Layer\"\".\"\"ITEM_SITE_EXTRACT\"\", \"\"Database_Layer\"\".\"\"MANUFACTURER\"\"\nWHERE\n    \"\"MANUFACTURER\"\".\"\"ITEM_NUMBER\"\"= ?ItemNumber?\n    AND     [ITEM_NUMBER]= ?ItemNumber?\n    AND     [ACTIVITY_CODE] is not null\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
     }
   ],
   "has_widget_serialization": false,

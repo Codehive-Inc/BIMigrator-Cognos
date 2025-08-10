@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialAdjustmentDetail_UC017
-- **Migration Date**: 2025-08-10 11:51:13
+- **Migration Date**: 2025-08-10 11:53:59
 
 ## Data Model
 
@@ -13,7 +13,7 @@
 ### Tables
 
 - **MATERIAL_CHARGES**
-  - Columns: 10
+  - Columns: 12
   - Column details:
     - SITE_NUMBER (string)
     - ITEM_NUMBER (string)
@@ -25,11 +25,24 @@
     - ADJUSTMENT_DESC (string)
     - ADJUSTMENT_TYPE (string)
     - TIME_ENTERED (string)
+    - DESCRIPTION (string)
+    - Cost (decimal)
 
 - **ITEM_SITE_EXTRACT**
-  - Columns: 1
+  - Columns: 12
   - Column details:
+    - SITE_NUMBER (string)
+    - ITEM_NUMBER (string)
+    - CHARGED_DATE (string)
+    - JOB_NUMBER (string)
+    - QUANTITY (string)
+    - UNIT_PRICE (string)
+    - TRANSACTION_VALUE (string)
+    - ADJUSTMENT_DESC (string)
+    - ADJUSTMENT_TYPE (string)
+    - TIME_ENTERED (string)
     - DESCRIPTION (string)
+    - Cost (decimal)
 
 
 ## Report

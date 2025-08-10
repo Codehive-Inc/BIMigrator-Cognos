@@ -61,21 +61,40 @@ table MANUFACTURER
         annotation SummarizationSetBy = Automatic
 
         
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
     partition 'MANUFACTURER' = m
         mode: import
         source = 
-            
-let
-    Source = Excel.Workbook(File.Contents("C:\Users\PowerBIUser\Documents\sample_data.xlsx"), null, true),
-    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
-    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"MFG_CODE", type text}, {"MFG_PART_NUMBER", type text}, {"ITEM_NUMBER", type text}, {"MFG_NAME", type text}, {"ACTIVITY_CODE", type text}, {"DATE_CREATED", type text}})
-in
-    #"Changed Type"
-
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""MANUFACTURER"".""MFG_CODE"" AS ""MFG_CODE"",
+    ""MANUFACTURER"".""MFG_PART_NUMBER"" AS ""MFG_PART_NUMBER"",
+    ""MANUFACTURER"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
+    ""MANUFACTURER"".""MFG_NAME"" AS ""MFG_NAME"",
+    ""MANUFACTURER"".""ACTIVITY_CODE"" AS ""ACTIVITY_CODE"",
+    ""MANUFACTURER"".""DATE_CREATED"" AS ""DATE_CREATED"",
+    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION""
+FROM
+""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""MANUFACTURER""
+WHERE
+    ""MANUFACTURER"".""ITEM_NUMBER""= ?ItemNumber?
+    AND     [ITEM_NUMBER]= ?ItemNumber?
+    AND     [ACTIVITY_CODE] is not null", null, [EnableFolding=true])
+				in
+					SQL
         
 
 
