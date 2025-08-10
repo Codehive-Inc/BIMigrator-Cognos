@@ -496,10 +496,20 @@ class ModelFileGenerator:
                 is_calculation = item.get('type') == 'calculation'
                 source_column = column_name
                 
+                # Check if this is a complex expression that should be sourced from M-query
+                expression = item.get('expression', '')
+                has_complex_expression = expression and ('substring' in expression.lower() or 'rpad' in expression.lower() or '+' in expression)
+                
                 # For calculated columns, use FormulaDax from calculations.json if available
                 if is_calculation and column_name in calculations_map:
                     source_column = calculations_map[column_name]
                     self.logger.info(f"Using FormulaDax as source_column for calculated column {column_name}: {source_column[:50]}...")
+                
+                # If it has a complex expression, treat it as sourced from M-query, not as a DAX calculation
+                if has_complex_expression:
+                    is_calculation = False
+                    source_column = column_name
+                    self.logger.info(f"Column {column_name} has complex expression, treating as sourced from M-query")
                 
                 column = {
                     'name': column_name,

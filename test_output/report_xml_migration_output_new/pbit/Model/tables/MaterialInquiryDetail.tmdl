@@ -291,22 +291,20 @@ table MaterialInquiryDetail
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC_1' = ```
-            LOC_1
-    ```
+    column 'LOC_1'
         dataType: string
         summarizeBy: none
+        sourceColumn: LOC_1
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC_2' = ```
-            LOC_2
-    ```
+    column 'LOC_2'
         dataType: string
         summarizeBy: none
+        sourceColumn: LOC_2
 
         
 
