@@ -29,21 +29,18 @@ class ConsolidatedMQueryConverter(BaseMQueryConverter):
         """
         Builds a targeted SQL SELECT statement from the table's consolidated columns.
         """
-        # The `table.columns` list is already the consolidated superset of columns
-        # required by all reports.
-        required_columns = [col.name for col in table.columns]
-        if not required_columns:
+        # De-duplicate column names while preserving order
+        unique_columns = list(dict.fromkeys([col.name for col in table.columns]))
+
+        if not unique_columns:
             self.logger.warning(f"No columns to select for table '{table.name}'.")
             return f"-- No columns found for table {table.name}"
 
-        # The table name in a consolidated model should directly map to a source table.
-        # We assume the FROM clause is simply the table name.
-        # A more robust solution might get the full FROM clause from package metadata.
-        from_clause = f'"{table.name}"' # Basic assumption
+        from_clause = f'"{table.name}"'
+        select_columns_str = ", ".join([f'"{col}"' for col in unique_columns])
 
-        select_columns = [f'    "{col}"' for col in required_columns]
-        sql_query = f"SELECT\n{',\\n'.join(select_columns)}\nFROM\n    {from_clause}"
-
+        # Construct a clean, single-line SQL string
+        sql_query = f"SELECT {select_columns_str} FROM {from_clause}"
         return sql_query
 
     def _build_consolidated_m_query(self, sql_query: str, table: Table, table_metadata: Optional[Dict]) -> str:
@@ -53,6 +50,9 @@ class ConsolidatedMQueryConverter(BaseMQueryConverter):
         final_step = "ExecuteQuery"
         transform_types_section = ""
         type_transformations = []
+
+        # Escape the SQL query for embedding in an M query string literal
+        escaped_sql_query = sql_query.replace('"', '""')
 
         required_columns = {col.name for col in table.columns}
 
@@ -74,12 +74,12 @@ class ConsolidatedMQueryConverter(BaseMQueryConverter):
         if type_transformations:
             transformations_list = ", ".join(type_transformations)
             transform_types_section = f""",
-    #"Changed Type" = Table.TransformColumnTypes(ExecuteQuery, {{{transformations_list}}})"""
+        #"Changed Type" = Table.TransformColumnTypes(ExecuteQuery, {{{transformations_list}}})"""
             final_step = "#\"Changed Type\""
 
         m_query_template = f'''let
     Source = Sql.Database(#"DB Server", #"DB Name"),
-    ExecuteQuery = Value.NativeQuery(Source, "{sql_query.replace('"', '""')}", null, [EnableFolding=true]){transform_types_section}
+    ExecuteQuery = Value.NativeQuery(Source, "{escaped_sql_query}", null, [EnableFolding=true]){transform_types_section}
 in
     {final_step}'''
         return textwrap.dedent(m_query_template).strip()

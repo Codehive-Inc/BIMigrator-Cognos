@@ -47,7 +47,7 @@ class PackageMQueryConverter(BaseMQueryConverter):
         if not hasattr(self, 'package_name') or not self.package_name:
             if table_metadata and 'package_name' in table_metadata:
                 self.package_name = table_metadata['package_name']
-            else:
+        else:
                 self.logger.warning("Package name not found, cannot locate package XML.")
                 return f"SELECT * FROM {table.name}"
 
@@ -166,7 +166,7 @@ in
         if not table_json_path.exists():
             self.logger.warning(f"Table metadata file not found at {table_json_path}")
             return None
-        
+
         try:
             with open(table_json_path, 'r') as f:
                 return json.load(f)

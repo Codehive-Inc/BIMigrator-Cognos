@@ -139,7 +139,7 @@ class ConsolidatedPackageExtractor:
                 # Read the filtering mode from settings, default to "discover"
                 filter_mode = self.config.get('table_filtering', {}).get('mode', 'discover')
                 self.logger.info(f"Applying table filtering with mode: {filter_mode}")
-
+                
                 # Always perform the direct, exact match filtering first
                 normalized_required = {t.lower().replace('_', '') for t in required_tables}
                 direct_match_tables = [
@@ -193,7 +193,7 @@ class ConsolidatedPackageExtractor:
 
                 # Finally, filter the relationships to only include those between the kept tables
                 kept_table_names = {qs.get('name') for qs in package_info['query_subjects']}
-
+                
                 # Filter relationships
                 package_info['relationships'] = [
                     rel for rel in package_info.get('relationships', [])

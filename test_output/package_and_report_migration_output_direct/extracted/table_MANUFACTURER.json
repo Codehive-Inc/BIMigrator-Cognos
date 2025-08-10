@@ -363,7 +363,7 @@
     {
       "name": "MANUFACTURER",
       "source_type": "m",
-      "expression": "let\n    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n    ExecuteQuery = Value.NativeQuery(Source, \"SELECT\n    \"\"ITEM_NUMBER\"\",\\n    \"\"MFG_PART_NUMBER\"\",\\n    \"\"MODEL_PART_IND\"\",\\n    \"\"ACTIVITY_CODE\"\",\\n    \"\"MFG_CODE\"\",\\n    \"\"DATE_CREATED\"\",\\n    \"\"MFG_NAME\"\",\\n    \"\"COMPRESSED_PART_NUMBER\"\",\\n    \"\"FOSSIL_OR_NUCLEAR\"\",\\n    \"\"STOP\"\",\\n    \"\"SITE\"\",\\n    \"\"ITEM_NUMBER\"\",\\n    \"\"MFG_PART_NUMBER\"\",\\n    \"\"MODEL_PART_IND\"\",\\n    \"\"ACTIVITY_CODE\"\",\\n    \"\"MFG_CODE\"\",\\n    \"\"DATE_CREATED\"\",\\n    \"\"MFG_NAME\"\",\\n    \"\"COMPRESSED_PART_NUMBER\"\",\\n    \"\"FOSSIL_OR_NUCLEAR\"\",\\n    \"\"STOP\"\",\\n    \"\"SITE\"\"\nFROM\n    \"\"MANUFACTURER\"\"\", null, [EnableFolding=true])\nin\n    ExecuteQuery"
+      "expression": "let\n    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true])\nin\n    ExecuteQuery"
     }
   ],
   "has_widget_serialization": false,
