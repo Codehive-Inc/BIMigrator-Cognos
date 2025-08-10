@@ -18,7 +18,7 @@ from cognos_migrator.common.logging import configure_logging, log_info, log_warn
 from cognos_migrator.client import CognosClient, CognosAPIError
 from cognos_migrator.common.websocket_client import logging_helper, set_task_info
 from cognos_migrator.extractors.packages import PackageExtractor, ConsolidatedPackageExtractor
-from ..models import PowerBIProject, DataModel, Report
+from ..models import PowerBIProject, DataModel, Report, ReportPage
 from ..generators import PowerBIProjectGenerator
 from ..extractors.packages import ConsolidatedPackageExtractor
 from .report import migrate_single_report_with_explicit_session

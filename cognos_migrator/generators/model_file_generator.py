@@ -57,6 +57,8 @@ class ModelFileGenerator:
         self._generate_database_file(data_model, model_dir, report_name)
         
         # Generate table files
+        if not self.mquery_converter:
+            self.mquery_converter = MQueryConverter(output_path=str(output_dir.parent))
         self._generate_table_files(data_model.tables, model_dir, report_spec, report_name, project_metadata)
         
         # Generate date table files if they exist
