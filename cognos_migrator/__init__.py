@@ -48,10 +48,10 @@ from .migrations import (
     migrate_module_with_explicit_session,
     migrate_module_with_reports_explicit_session,
     migrate_single_report_with_explicit_session,
+    migrate_package_with_local_reports,
     migrate_package_with_explicit_session,
-    migrate_package_with_reports_explicit_session,
-    migrate_package_with_local_reports
-)
+    migrate_package_with_reports_explicit_session
+    )
 
 # Import key exception classes for error handling
 from .client import CognosAPIError
