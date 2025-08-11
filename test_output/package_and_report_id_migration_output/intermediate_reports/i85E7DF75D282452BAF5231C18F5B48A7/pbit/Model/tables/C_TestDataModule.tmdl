@@ -1,0 +1,56 @@
+table C_TestDataModule
+
+
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'No of Unique Orders' = ```
+            No of Unique Orders
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Orders Returned (Multiple Returns per Order)' = ```
+            Orders Returned (Multiple Returns per Order)
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+
+
+
+    partition 'C_TestDataModule' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""C_TestDataModule"".""People"".[Region] AS ""Region"",
+    count(Distinct ""C_TestDataModule"".""Orders"".[Order_ID]) AS ""No of Unique Orders"",
+    case when ""C_TestDataModule"".""Returns_"".[Returned] = 'Yes' then 1 else 0 end AS ""Orders Returned (Multiple Returns per Order)""
+FROM
+""C"".""C_TestDataModule""", null, [EnableFolding=true])
+				in
+					SQL
+        
+
+
+
+    annotation PBI_ResultType = Table

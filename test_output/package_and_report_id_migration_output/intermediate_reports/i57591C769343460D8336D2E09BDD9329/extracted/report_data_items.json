@@ -1,0 +1,98 @@
+[
+  {
+    "name": "CustomerID",
+    "id": "CustomerID",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerID]",
+    "type": "source_column",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "CustomerName",
+    "id": "CustomerName",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[CustomerName]",
+    "type": "source_column",
+    "dataType": "3",
+    "dataUsage": "0",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Region",
+    "id": "Region",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[Region]",
+    "type": "source_column",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "EnergyUsage_kWh",
+    "id": "EnergyUsage_kWh",
+    "aggregate": "total",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[EnergyUsage_kWh]",
+    "type": "source_column",
+    "dataType": "1",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "TariffPer_kWh",
+    "id": "TariffPer_kWh",
+    "aggregate": "total",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TariffPer_kWh]",
+    "type": "source_column",
+    "dataType": "2",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "TotalBill",
+    "id": "TotalBill",
+    "aggregate": "total",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[TotalBill]",
+    "type": "source_column",
+    "dataType": "2",
+    "dataUsage": "2",
+    "queryName": "Query1"
+  },
+  {
+    "name": "PaymentStatus",
+    "id": "PaymentStatus",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[PaymentStatus]",
+    "type": "source_column",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "ServiceType",
+    "id": "ServiceType",
+    "aggregate": "none",
+    "expression": "[C].[C_Data_Module_Energy_usage_data].[Sheet1].[ServiceType]",
+    "type": "source_column",
+    "dataType": "3",
+    "dataUsage": "1",
+    "queryName": "Query1"
+  },
+  {
+    "name": "Total count",
+    "id": "Total_count",
+    "aggregate": "none",
+    "expression": "count([PaymentStatus])",
+    "type": "calculation",
+    "queryName": "Query1"
+  },
+  {
+    "name": "High Consumption Flag",
+    "id": "High_Consumption_Flag",
+    "aggregate": "none",
+    "expression": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
+    "type": "calculation",
+    "queryName": "Query1"
+  }
+]

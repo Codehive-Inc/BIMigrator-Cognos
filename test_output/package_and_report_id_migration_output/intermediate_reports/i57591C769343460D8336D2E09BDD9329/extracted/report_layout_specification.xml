@@ -1,0 +1,466 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" useStyleVersion="11.6" expressionLocale="en-us">
+  <drillBehavior/>
+  <layouts>
+    <layout>
+      <reportPages>
+        <page name="Page1">
+          <style>
+            <defaultStyles>
+              <defaultStyle refStyle="pg"/>
+            </defaultStyles>
+          </style>
+          <pageBody>
+            <style>
+              <defaultStyles>
+                <defaultStyle refStyle="pb"/>
+              </defaultStyles>
+            </style>
+            <contents>
+              <table>
+                <style>
+                  <defaultStyles>
+                    <defaultStyle refStyle="tb"/>
+                  </defaultStyles>
+                  <CSS value="border-collapse:collapse;width:100%"/>
+                </style>
+                <tableRows>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents>
+                          <list horizontalPagination="true" refQuery="Query1" name="List1">
+                            <noDataHandler>
+                              <contents>
+                                <block>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>No Data Available</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding:16px;"/>
+                                  </style>
+                                </block>
+                              </contents>
+                            </noDataHandler>
+                            <style>
+                              <CSS value="border-collapse:collapse"/>
+                              <defaultStyles>
+                                <defaultStyle refStyle="ls"/>
+                              </defaultStyles>
+                            </style>
+                            <listColumns>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="CustomerID"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="CustomerID"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="CustomerName"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="CustomerName"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Region"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Region"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="EnergyUsage_kWh"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lm"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="EnergyUsage_kWh"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="TariffPer_kWh"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lm"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="TariffPer_kWh"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="TotalBill"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lm"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="TotalBill"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="ServiceType"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="ServiceType"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <listColumnRowSpan refDataItem="ServiceType"/>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="Total count"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lm"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Total count"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="High Consumption Flag"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lm"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="High Consumption Flag"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                              <listColumn>
+                                <listColumnTitle>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lt"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemLabel refDataItem="PaymentStatus"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnTitle>
+                                <listColumnBody>
+                                  <style>
+                                    <defaultStyles>
+                                      <defaultStyle refStyle="lc"/>
+                                    </defaultStyles>
+                                  </style>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="PaymentStatus"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                </listColumnBody>
+                              </listColumn>
+                            </listColumns>
+                            <listGroups>
+                              <listGroup refDataItem="ServiceType"/>
+                            </listGroups>
+                          </list>
+                        </contents>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                  <tableRow>
+                    <tableCells>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                      <tableCell>
+                        <contents/>
+                      </tableCell>
+                    </tableCells>
+                  </tableRow>
+                </tableRows>
+              </table>
+            </contents>
+          </pageBody>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
+          </XMLAttributes>
+        </page>
+      </reportPages>
+    </layout>
+  </layouts>
+</report>

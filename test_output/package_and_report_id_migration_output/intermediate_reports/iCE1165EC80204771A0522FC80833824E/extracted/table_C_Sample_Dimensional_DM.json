@@ -1,0 +1,148 @@
+{
+  "source_name": "C_Sample_Dimensional_DM",
+  "name": "C_Sample_Dimensional_DM",
+  "lineage_tag": null,
+  "description": "Table created from source: C_Sample_Dimensional_DM",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "Year",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Year",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Quarter",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Quarter",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Month",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Month",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ProductName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ProductName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Country",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Country",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "State",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "State",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SalesAmount",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SalesAmount",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Quantity",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Quantity",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "C_Sample_Dimensional_DM",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Time_Dimension\"\".[Year_] AS \"\"Year\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Time_Dimension\"\".[Quarter] AS \"\"Quarter\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Time_Dimension\"\".[Month_] AS \"\"Month\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Product_Dimension\"\".[ProductName] AS \"\"ProductName\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Location_Dimension\"\".[Country] AS \"\"Country\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Location_Dimension\"\".[State_] AS \"\"State\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio\"\".[SalesAmount] AS \"\"SalesAmount\"\",\n    \"\"C_Sample_Dimensional_DM\"\".\"\"FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio\"\".[Quantity] AS \"\"Quantity\"\"\nFROM\n\"\"C\"\".\"\"C_Sample_Dimensional_DM\"\"\nWHERE\n    \"\"C_Sample_Dimensional_DM\"\".\"\"Product_Dimension\"\".[ProductID]\n\t\t\t\tin\n\t\t\t\t\t?Parameter1?\", null, [EnableFolding=true])\nin\n    SQL"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

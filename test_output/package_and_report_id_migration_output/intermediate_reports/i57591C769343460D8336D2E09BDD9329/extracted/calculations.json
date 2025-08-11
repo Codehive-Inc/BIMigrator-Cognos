@@ -1,0 +1,24 @@
+{
+  "calculations": [
+    {
+      "TableName": "test_report",
+      "FormulaCaptionCognos": "Total count",
+      "CognosName": "Total count",
+      "FormulaCognos": "count([PaymentStatus])",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "Total count",
+      "FormulaDax": "count([PaymentStatus])",
+      "Status": "needs_review"
+    },
+    {
+      "TableName": "test_report",
+      "FormulaCaptionCognos": "High Consumption Flag",
+      "CognosName": "High Consumption Flag",
+      "FormulaCognos": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "High Consumption Flag",
+      "FormulaDax": "if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal')",
+      "Status": "needs_review"
+    }
+  ]
+}

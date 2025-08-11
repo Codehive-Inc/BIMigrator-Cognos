@@ -1,0 +1,24 @@
+{
+  "calculations": [
+    {
+      "TableName": "Report_with_Calculations",
+      "FormulaCaptionCognos": "No of Unique Orders",
+      "CognosName": "No of Unique Orders",
+      "FormulaCognos": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "No of Unique Orders",
+      "FormulaDax": "count(Distinct [C].[C_TestDataModule].[Orders].[Order_ID])",
+      "Status": "needs_review"
+    },
+    {
+      "TableName": "Report_with_Calculations",
+      "FormulaCaptionCognos": "Orders Returned (Multiple Returns per Order)",
+      "CognosName": "Orders Returned (Multiple Returns per Order)",
+      "FormulaCognos": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "Orders Returned (Multiple Returns per Order)",
+      "FormulaDax": "case when [C].[C_TestDataModule].[Returns_].[Returned] = 'Yes' then 1 else 0 end",
+      "Status": "needs_review"
+    }
+  ]
+}
