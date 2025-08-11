@@ -49,7 +49,8 @@ from .migrations import (
     migrate_module_with_reports_explicit_session,
     migrate_single_report_with_explicit_session,
     migrate_package_with_explicit_session,
-    migrate_package_with_reports_explicit_session
+    migrate_package_with_reports_explicit_session,
+    migrate_package_with_local_reports
 )
 
 # Import key exception classes for error handling
@@ -70,6 +71,7 @@ __all__ = [
     # Package migration functions
     'migrate_package_with_explicit_session',
     'migrate_package_with_reports_explicit_session',
+    'migrate_package_with_local_reports',
     
     # Exception handling
     'CognosAPIError'
