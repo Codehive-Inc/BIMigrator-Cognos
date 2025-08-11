@@ -1,0 +1,180 @@
+{
+  "source_name": "C_Data_Module_Energy_usage_data",
+  "name": "C_Data_Module_Energy_usage_data",
+  "lineage_tag": null,
+  "description": "Table created from source: C_Data_Module_Energy_usage_data",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "CustomerID",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CustomerID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CustomerName",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CustomerName",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Region",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Region",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EnergyUsage_kWh",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EnergyUsage_kWh",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TariffPer_kWh",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TariffPer_kWh",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalBill",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TotalBill",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PaymentStatus",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PaymentStatus",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ServiceType",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ServiceType",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "Total count",
+      "datatype": "int64",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "Total count",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "High Consumption Flag",
+      "datatype": "boolean",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "High Consumption Flag",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "C_Data_Module_Energy_usage_data",
+      "source_type": "m",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[CustomerID] AS \"\"CustomerID\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[CustomerName] AS \"\"CustomerName\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[Region] AS \"\"Region\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[EnergyUsage_kWh] AS \"\"EnergyUsage_kWh\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[TariffPer_kWh] AS \"\"TariffPer_kWh\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[TotalBill] AS \"\"TotalBill\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[PaymentStatus] AS \"\"PaymentStatus\"\",\n    \"\"C_Data_Module_Energy_usage_data\"\".\"\"Sheet1\"\".[ServiceType] AS \"\"ServiceType\"\",\n    count([PaymentStatus]) AS \"\"Total count\"\",\n    if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal') AS \"\"High Consumption Flag\"\"\nFROM\n\"\"C\"\".\"\"C_Data_Module_Energy_usage_data\"\"\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

@@ -450,12 +450,13 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
 
 def _migrate_shared_model(
     package_file: str,
-    report_files: List[str],
+    reports: List[str],
     output_path: str,
     cognos_url: str,
     session_key: str,
+    reports_are_ids: bool = False,
     llm_service: Optional[Dict[str, Any]] = None,
-    config: Optional[Dict[str, Any]] = None
+    config: Optional[Dict[str, Any]] = None,
 ) -> bool:
     """Helper function to orchestrate the shared model migration."""
     # --- Step 1: Intermediate migration for each report ---
@@ -464,16 +465,27 @@ def _migrate_shared_model(
     intermediate_dir.mkdir(parents=True, exist_ok=True)
 
     successful_migrations_paths = []
-    for report_file in report_files:
-        report_name = Path(report_file).stem
-        report_output_path = intermediate_dir / report_name
+    for report_item in reports:
+        if reports_are_ids:
+            # Sanitize report ID for use as a directory name
+            report_name = re.sub(r'[\\/*?:"<>|]', "_", report_item)
+        else:
+            report_name = Path(report_item).stem
         
-        success = migrate_single_report(
-            output_path=str(report_output_path),
-            cognos_url=cognos_url,
-            session_key=session_key,
-            report_file_path=report_file
-        )
+        report_output_path = intermediate_dir / report_name
+
+        migration_args = {
+            "output_path": str(report_output_path),
+            "cognos_url": cognos_url,
+            "session_key": session_key,
+        }
+        if reports_are_ids:
+            migration_args["report_id"] = report_item
+        else:
+            migration_args["report_file_path"] = report_item
+            
+        success = migrate_single_report(**migration_args)
+        
         if success:
             successful_migrations_paths.append(report_output_path)
     
@@ -615,11 +627,12 @@ def migrate_package_with_local_reports(package_file_path: str,
     logging.info(f"FILTERING DEBUG: In migrate_package_with_local_reports, loaded table filtering settings: {config}")
     return _migrate_shared_model(
         package_file=package_file_path,
-        report_files=report_file_paths,
+        reports=report_file_paths,
         output_path=output_path,
         cognos_url=cognos_url,
         session_key=session_key,
-        config=config
+        config=config,
+        reports_are_ids=False,
     )
 
 def migrate_package_with_reports_explicit_session(package_file_path: str,
@@ -631,10 +644,14 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                        auth_key: str = "IBM-BA-Authorization",
                                        dry_run: bool = False) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
+    config = load_table_filtering_settings()
+    logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded table filtering settings: {config}")
     return _migrate_shared_model(
         package_file=package_file_path,
-        report_files=report_ids,
+        reports=report_ids,
         output_path=output_path,
         cognos_url=cognos_url,
-        session_key=session_key
+        session_key=session_key,
+        config=config,
+        reports_are_ids=True,
     )

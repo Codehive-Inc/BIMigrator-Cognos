@@ -1,0 +1,113 @@
+table C_Sample_Dimensional_DM
+
+
+    column 'Year'
+        dataType: decimal
+        summarizeBy: none
+        sourceColumn: Year
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Quarter'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Quarter
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Month'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Month
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ProductName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ProductName
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Country'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Country
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'State'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: State
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SalesAmount'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: SalesAmount
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'Quantity'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: Quantity
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+
+
+
+    partition 'C_Sample_Dimensional_DM' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""C_Sample_Dimensional_DM"".""Time_Dimension"".[Year_] AS ""Year"",
+    ""C_Sample_Dimensional_DM"".""Time_Dimension"".[Quarter] AS ""Quarter"",
+    ""C_Sample_Dimensional_DM"".""Time_Dimension"".[Month_] AS ""Month"",
+    ""C_Sample_Dimensional_DM"".""Product_Dimension"".[ProductName] AS ""ProductName"",
+    ""C_Sample_Dimensional_DM"".""Location_Dimension"".[Country] AS ""Country"",
+    ""C_Sample_Dimensional_DM"".""Location_Dimension"".[State_] AS ""State"",
+    ""C_Sample_Dimensional_DM"".""FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio"".[SalesAmount] AS ""SalesAmount"",
+    ""C_Sample_Dimensional_DM"".""FactID_x0009_TimeID_x0009_ProductID_x0009_Locatio"".[Quantity] AS ""Quantity""
+FROM
+""C"".""C_Sample_Dimensional_DM""
+WHERE
+    ""C_Sample_Dimensional_DM"".""Product_Dimension"".[ProductID]
+				in
+					?Parameter1?", null, [EnableFolding=true])
+in
+    SQL
+        
+
+
+
+    annotation PBI_ResultType = Table

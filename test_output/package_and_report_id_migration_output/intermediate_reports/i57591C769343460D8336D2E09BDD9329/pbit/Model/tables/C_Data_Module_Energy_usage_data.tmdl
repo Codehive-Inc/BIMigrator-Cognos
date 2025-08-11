@@ -1,0 +1,133 @@
+table C_Data_Module_Energy_usage_data
+
+
+    column 'CustomerID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CustomerID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CustomerName'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CustomerName
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Region'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Region
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EnergyUsage_kWh'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: EnergyUsage_kWh
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'TariffPer_kWh'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: TariffPer_kWh
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'TotalBill'
+        dataType: decimal
+        summarizeBy: sum
+        sourceColumn: TotalBill
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'PaymentStatus'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PaymentStatus
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ServiceType'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ServiceType
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Total count' = ```
+            Total count
+    ```
+        dataType: int64
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = User
+
+        
+    column 'High Consumption Flag' = ```
+            High Consumption Flag
+    ```
+        dataType: boolean
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'C_Data_Module_Energy_usage_data' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[CustomerID] AS ""CustomerID"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[CustomerName] AS ""CustomerName"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[Region] AS ""Region"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[EnergyUsage_kWh] AS ""EnergyUsage_kWh"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[TariffPer_kWh] AS ""TariffPer_kWh"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[TotalBill] AS ""TotalBill"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[PaymentStatus] AS ""PaymentStatus"",
+    ""C_Data_Module_Energy_usage_data"".""Sheet1"".[ServiceType] AS ""ServiceType"",
+    count([PaymentStatus]) AS ""Total count"",
+    if ([EnergyUsage_kWh] > 1500) then ('High') else ('Normal') AS ""High Consumption Flag""
+FROM
+""C"".""C_Data_Module_Energy_usage_data""", null, [EnableFolding=true])
+				in
+					SQL
+        
+
+
+
+    annotation PBI_ResultType = Table
