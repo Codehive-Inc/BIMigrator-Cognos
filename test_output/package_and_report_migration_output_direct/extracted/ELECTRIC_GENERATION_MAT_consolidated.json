@@ -4222,7 +4222,368 @@
       }
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "zero",
+        "maxcard": "many"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MANUFACTURER]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+        "mincard": "zero",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "zero",
+        "maxcard": "many"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MANUFACTURER]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+        "mincard": "zero",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "zero",
+        "maxcard": "many"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MANUFACTURER]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "many"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+        "mincard": "zero",
+        "maxcard": "many"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    },
+    {
+      "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+      "id": "",
+      "left": {
+        "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+        "mincard": "one",
+        "maxcard": "one"
+      },
+      "right": {
+        "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+        "mincard": "zero",
+        "maxcard": "one"
+      },
+      "join_expression": ""
+    }
+  ],
   "calculations": {},
   "filters": {},
   "structure": {

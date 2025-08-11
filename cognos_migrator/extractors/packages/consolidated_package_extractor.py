@@ -194,11 +194,28 @@ class ConsolidatedPackageExtractor:
                 # Finally, filter the relationships to only include those between the kept tables
                 kept_table_names = {qs.get('name') for qs in package_info['query_subjects']}
                 
+                # Extract simple table names from qualified names in relationships
+                def get_simple_table_name(qualified_name: Optional[str]) -> Optional[str]:
+                    """Extracts the simple table name from a possibly qualified name like '[DB].[Table]'."""
+                    if not qualified_name:
+                        return None
+                    return qualified_name.split('.')[-1].strip('[]')
+                
                 # Filter relationships
-                package_info['relationships'] = [
-                    rel for rel in package_info.get('relationships', [])
-                    if rel.get('from_table') in kept_table_names and rel.get('to_table') in kept_table_names
-                ]
+                filtered_relationships = []
+                for rel in package_info.get('relationships', []):
+                    # Get table names from left and right query subjects
+                    left_qs = rel.get('left', {}).get('query_subject')
+                    right_qs = rel.get('right', {}).get('query_subject')
+                    
+                    if left_qs and right_qs:
+                        left_table = get_simple_table_name(left_qs)
+                        right_table = get_simple_table_name(right_qs)
+                        
+                        if left_table in kept_table_names and right_table in kept_table_names:
+                            filtered_relationships.append(rel)
+                
+                package_info['relationships'] = filtered_relationships
                 self.logger.info(f"Filtered to {len(package_info['query_subjects'])} tables and {len(package_info['relationships'])} relationships.")
 
             self._save_json(package_info, os.path.join(output_dir, f"{package_info['name']}_consolidated.json"))

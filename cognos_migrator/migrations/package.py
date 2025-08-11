@@ -578,6 +578,7 @@ def _migrate_shared_model(
 
     # --- Step 6: Final Generation ---
     from cognos_migrator.config import MigrationConfig
+    from ..processors.tmdl_post_processor import TMDLPostProcessor
     migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
     generator = PowerBIProjectGenerator(migration_config)
 
@@ -592,6 +593,14 @@ def _migrate_shared_model(
     pbit_dir = Path(output_path) / "pbit"
     pbit_dir.mkdir(parents=True, exist_ok=True)
     generator.generate_project(final_pbi_project, str(pbit_dir))
+    
+    # --- Step 7: Post-process the generated TMDL to fix relationships ---
+    tmdl_relationships_file = pbit_dir / "Model" / "relationships.tmdl"
+    if tmdl_relationships_file.exists():
+        post_processor = TMDLPostProcessor(logger=logging.getLogger(__name__))
+        post_processor.fix_relationships(str(tmdl_relationships_file))
+    else:
+        logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")
 
     return True, str(output_path)
 
