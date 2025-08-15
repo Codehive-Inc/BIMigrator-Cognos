@@ -237,6 +237,7 @@ class ReportFileGenerator:
                 # Enhance section name with report name if available
                 if report_name and report_name != "Unknown Report":
                     section_name = f"{report_name} - {base_section_name}"
+                    section_display_name = f"{report_name} - {base_section_name}"
                 else:
                     section_name = base_section_name
                 
