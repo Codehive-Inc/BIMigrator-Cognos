@@ -1,0 +1,521 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" expressionLocale="en-us" interactivePageBreakByFrame="true" useStyleVersion="1">
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/11.0/" to "http://developer.cognos.com/schemas/report/16.2/" at 2025-8-9. 0:59:50-->
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/6.0/" to "http://developer.cognos.com/schemas/report/11.0/" at 2014-6-25. 17:48:38-->
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/3.0/" to "http://developer.cognos.com/schemas/report/6.0/" at 2013-5-2. 11:39:43-->
+  <!--RSU-SPC-0093 Report specification upgraded from "http://developer.cognos.com/schemas/report/1/" to "http://developer.cognos.com/schemas/report/3.0/" at 2010-7-22 9:5:48-->
+  <drillBehavior modelBasedDrillThru="false"/>
+  <layouts>
+    <layout>
+      <reportPages>
+        <page name="Page1" refQuery="MaterialAdjustmentDetail">
+          <pageBody>
+            <contents>
+              <list name="List1" refQuery="MaterialAdjustmentDetail" showColumnTitles="hide">
+                <style>
+                  <CSS value="border-collapse:collapse"/>
+                  <defaultStyles>
+                    <defaultStyle refStyle="ls"/>
+                  </defaultStyles>
+                </style>
+                <XMLAttributes>
+                  <XMLAttribute name="RS_ListGroupInfo" value=""/>
+                </XMLAttributes>
+                <listColumns>
+                  <listColumn>
+                    <listColumnTitle>
+                      <contents>
+                        <textItem>
+                          <dataSource>
+                            <staticValue>Table</staticValue>
+                          </dataSource>
+                        </textItem>
+                      </contents>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lt"/>
+                        </defaultStyles>
+                      </style>
+                    </listColumnTitle>
+                    <listColumnBody>
+                      <contents>
+                        <table>
+                          <tableRows>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="width:40%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Site Number :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="SITE_NUMBER"/>
+                                      </dataSource>
+                                      <style>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Charge Date :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="CHARGED_DATE"/>
+                                      </dataSource>
+                                      <style>
+                                        <dataFormat>
+                                          <dateFormat dateStyle="short" showDays="2-digits" showMonths="2-digits" showYears="showCentury"/>
+                                        </dataFormat>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Item Number :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="ITEM_NUMBER"/>
+                                      </dataSource>
+                                      <style>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Description :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%;vertical-align:top"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="DESCRIPTION"/>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="background-color:#CCFFFF;padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Job Number :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="JOB_NUMBER"/>
+                                      </dataSource>
+                                      <style>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Quantity :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="QUANTITY"/>
+                                      </dataSource>
+                                      <style>
+                                        <dataFormat>
+                                          <numberFormat decimalSize="0"/>
+                                        </dataFormat>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Adjustment Cost :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="Cost"/>
+                                      </dataSource>
+                                      <style>
+                                        <dataFormat>
+                                          <numberFormat decimalDelimiter="." decimalSize="4" useGrouping="true"/>
+                                        </dataFormat>
+                                        <CSS value="font-family:Arial;font-size:10pt;font-weight:normal"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Adjustment Description :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="ADJUSTMENT_DESC"/>
+                                      </dataSource>
+                                      <style>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px;background-color:#CCFFFF"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>To Accounting Y/N :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold;width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <reportExpression>IF ( ( ( [ADJUSTMENT_TYPE]  = 'A') OR ( [ADJUSTMENT_TYPE]  = 'I') ) ) THEN ( 'Y' )  ELSE  ( 'N') </reportExpression>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="background-color:#FFFFFF;padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <staticValue>Adjustment Type :</staticValue>
+                                      </dataSource>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="text-align:right;font-family:Arial;font-size:9pt;font-weight:bold"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents>
+                                    <textItem>
+                                      <dataSource>
+                                        <dataItemValue refDataItem="ADJUSTMENT_TYPE"/>
+                                      </dataSource>
+                                      <style>
+                                        <CSS value="font-family:Arial;font-size:10pt"/>
+                                      </style>
+                                    </textItem>
+                                  </contents>
+                                  <style>
+                                    <CSS value="padding-left:5px"/>
+                                  </style>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                  <style>
+                                    <CSS value="width:20%"/>
+                                  </style>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                            <tableRow>
+                              <tableCells>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                                <tableCell>
+                                  <contents/>
+                                </tableCell>
+                              </tableCells>
+                            </tableRow>
+                          </tableRows>
+                          <style>
+                            <CSS value="border-collapse:collapse;width:100%"/>
+                            <defaultStyles>
+                              <defaultStyle refStyle="tb"/>
+                            </defaultStyles>
+                          </style>
+                        </table>
+                      </contents>
+                      <style>
+                        <defaultStyles>
+                          <defaultStyle refStyle="lc"/>
+                        </defaultStyles>
+                      </style>
+                    </listColumnBody>
+                  </listColumn>
+                </listColumns>
+                <propertyList>
+                  <propertyItem refDataItem="TIME_ENTERED"/>
+                  <propertyItem refDataItem="TRANSACTION_VALUE"/>
+                  <propertyItem refDataItem="UNIT_PRICE"/>
+                </propertyList>
+              </list>
+            </contents>
+            <style>
+              <defaultStyles>
+                <defaultStyle refStyle="pb"/>
+              </defaultStyles>
+            </style>
+          </pageBody>
+          <pageHeader>
+            <contents>
+              <textItem>
+                <dataSource>
+                  <staticValue>Inquiry on Material Adjustment</staticValue>
+                </dataSource>
+              </textItem>
+            </contents>
+            <style>
+              <CSS value="font-family:Arial;font-size:14pt;font-weight:bold;text-decoration:underline;text-align:center"/>
+              <defaultStyles>
+                <defaultStyle refStyle="ph"/>
+              </defaultStyles>
+            </style>
+          </pageHeader>
+          <propertyList>
+            <propertyItem refDataItem="ADJUSTMENT_DESC"/>
+            <propertyItem refDataItem="ADJUSTMENT_TYPE"/>
+            <propertyItem refDataItem="CHARGED_DATE"/>
+            <propertyItem refDataItem="Cost"/>
+            <propertyItem refDataItem="DESCRIPTION"/>
+            <propertyItem refDataItem="ITEM_NUMBER"/>
+            <propertyItem refDataItem="JOB_NUMBER"/>
+            <propertyItem refDataItem="QUANTITY"/>
+            <propertyItem refDataItem="SITE_NUMBER"/>
+            <propertyItem refDataItem="TIME_ENTERED"/>
+            <propertyItem refDataItem="TRANSACTION_VALUE"/>
+            <propertyItem refDataItem="UNIT_PRICE"/>
+          </propertyList>
+          <style>
+            <defaultStyles>
+              <defaultStyle refStyle="pg"/>
+            </defaultStyles>
+          </style>
+          <XMLAttributes>
+            <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
+          </XMLAttributes>
+        </page>
+      </reportPages>
+      <defaultDataFormats/>
+    </layout>
+  </layouts>
+</report>

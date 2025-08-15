@@ -1,0 +1,66 @@
+[
+  {
+    "name": "a3bd96b6469d472d8042",
+    "expression": {
+      "Column": {
+        "Expression": {
+          "SourceRef": {
+            "Entity": "MaterialAdjustmentDetail"
+          }
+        },
+        "Property": "SITE_NUMBER"
+      }
+    },
+    "type": "Categorical",
+    "howCreated": 1,
+    "ordinal": 0
+  },
+  {
+    "name": "ea0d557bde0840dc8141",
+    "expression": {
+      "Column": {
+        "Expression": {
+          "SourceRef": {
+            "Entity": "MaterialAdjustmentDetail"
+          }
+        },
+        "Property": "ITEM_NUMBER"
+      }
+    },
+    "type": "Categorical",
+    "howCreated": 1,
+    "ordinal": 1
+  },
+  {
+    "name": "39fc5b7c2d98409fa5bf",
+    "expression": {
+      "Column": {
+        "Expression": {
+          "SourceRef": {
+            "Entity": "MaterialAdjustmentDetail"
+          }
+        },
+        "Property": "CHARGED_DATE"
+      }
+    },
+    "type": "Categorical",
+    "howCreated": 1,
+    "ordinal": 2
+  },
+  {
+    "name": "5705254593604961a0c8",
+    "expression": {
+      "Column": {
+        "Expression": {
+          "SourceRef": {
+            "Entity": "MaterialAdjustmentDetail"
+          }
+        },
+        "Property": "TIME_ENTERED"
+      }
+    },
+    "type": "Categorical",
+    "howCreated": 1,
+    "ordinal": 3
+  }
+]

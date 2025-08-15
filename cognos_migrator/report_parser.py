@@ -219,21 +219,21 @@ class CognosReportSpecificationParser:
         else:
             # Fallback: look for layout elements
             layouts = root.findall('.//layout') + root.findall('.//page')
+        
+        for i, layout in enumerate(layouts):
+            page_name = layout.get("name", f"Page{i+1}")
+            display_name = f"{report_name} - {page_name}" if report_name else page_name
             
-            for i, layout in enumerate(layouts):
-                page_name = layout.get('name', f'Page{i+1}')
-                display_name = f"{report_name} - {page_name}" if report_name else page_name
-                
-                page = ReportPage(
-                    name=page_name,
-                    display_name=display_name
-                )
-                
-                # Extract visuals from this layout
-                visuals = self._extract_visuals_from_xml_layout(layout)
-                page.visuals = visuals
-                
-                pages.append(page)
+            page = ReportPage(
+                name=page_name,
+                display_name=display_name
+            )
+            
+            # Extract visuals from this layout
+            visuals = self._extract_visuals_from_xml_layout(layout)
+            page.visuals = visuals
+            
+            pages.append(page)
         
         # If no layouts found, create a default page
         if not pages:
