@@ -62,6 +62,7 @@ class ReportPage:
     height: float = 720
     visuals: List[CognosVisual] = field(default_factory=list)
     filters: List[Dict] = field(default_factory=list)
+    header: Optional[str] = None
 
 
 @dataclass
@@ -183,26 +184,65 @@ class CognosReportSpecificationParser:
         """Extract pages from XML specification"""
         pages = []
         
-        # Look for layout elements
-        layouts = root.findall('.//layout') + root.findall('.//page')
+        # Get report name for page naming
+        report_name = self._extract_report_name(root)
         
-        for i, layout in enumerate(layouts):
-            page_name = layout.get('name', f'Page{i+1}')
+        # Look for page elements within reportPages
+        report_pages = root.findall('.//reportPages/page')
+        
+        if report_pages:
+            for i, page_elem in enumerate(report_pages):
+                page_name = page_elem.get('name', f'Page{i+1}')
+                
+                # Create display name using report name + page name convention
+                display_name = f"{report_name} - {page_name}" if report_name else page_name
+                
+                page = ReportPage(
+                    name=page_name,
+                    display_name=display_name
+                )
+                
+                # Extract page header if present
+                page_header = self._extract_page_header(page_elem)
+                if page_header:
+                    page.header = page_header
+                
+                # Extract filters for this page
+                page_filters = self._extract_page_filters(root, page_elem)
+                page.filters = page_filters
+                
+                # Extract visuals from this page
+                visuals = self._extract_visuals_from_xml_layout(page_elem)
+                page.visuals = visuals
+                
+                pages.append(page)
+        else:
+            # Fallback: look for layout elements
+            layouts = root.findall('.//layout') + root.findall('.//page')
             
-            page = ReportPage(
-                name=page_name,
-                display_name=page_name
-            )
-            
-            # Extract visuals from this layout
-            visuals = self._extract_visuals_from_xml_layout(layout)
-            page.visuals = visuals
-            
-            pages.append(page)
+            for i, layout in enumerate(layouts):
+                page_name = layout.get('name', f'Page{i+1}')
+                display_name = f"{report_name} - {page_name}" if report_name else page_name
+                
+                page = ReportPage(
+                    name=page_name,
+                    display_name=display_name
+                )
+                
+                # Extract visuals from this layout
+                visuals = self._extract_visuals_from_xml_layout(layout)
+                page.visuals = visuals
+                
+                pages.append(page)
         
         # If no layouts found, create a default page
         if not pages:
-            default_page = ReportPage(name="Page1", display_name="Report Page")
+            display_name = f"{report_name} - Page1" if report_name else "Report Page"
+            default_page = ReportPage(name="Page1", display_name=display_name)
+            
+            # Extract filters from root
+            page_filters = self._extract_page_filters(root)
+            default_page.filters = page_filters
             
             # Extract all visuals into default page
             all_visuals = self._extract_visuals_from_xml_layout(root)
@@ -211,6 +251,95 @@ class CognosReportSpecificationParser:
             pages.append(default_page)
         
         return pages
+    
+    def _extract_report_name(self, root: ET.Element) -> str:
+        """Extract report name from XML"""
+        # Try to find reportName element
+        report_name_elem = root.find('.//reportName')
+        if report_name_elem is not None and report_name_elem.text:
+            return report_name_elem.text.strip()
+        
+        # Fallback: look for name attribute on root
+        if root.get('name'):
+            return root.get('name')
+            
+        return "Report"
+    
+    def _extract_page_header(self, page_elem: ET.Element) -> Optional[str]:
+        """Extract page header text"""
+        page_header = page_elem.find('.//pageHeader')
+        if page_header is not None:
+            # Look for text content in pageHeader
+            text_items = page_header.findall('.//textItem')
+            for text_item in text_items:
+                static_value = text_item.find('.//staticValue')
+                if static_value is not None and static_value.text:
+                    return static_value.text.strip()
+        return None
+    
+    def _extract_page_filters(self, root: ET.Element, page_elem: ET.Element = None) -> List[Dict]:
+        """Extract filters from detailFilters in queries section"""
+        filters = []
+        
+        # Find detailFilters in queries
+        detail_filters = root.findall('.//detailFilters/detailFilter')
+        
+        for filter_elem in detail_filters:
+            filter_expr_elem = filter_elem.find('filterExpression')
+            if filter_expr_elem is not None and filter_expr_elem.text:
+                filter_expression = filter_expr_elem.text.strip()
+                
+                # Parse filter expression to extract field and operator
+                filter_info = self._parse_filter_expression(filter_expression)
+                if filter_info:
+                    filters.append(filter_info)
+        
+        return filters
+    
+    def _parse_filter_expression(self, expression: str) -> Optional[Dict]:
+        """Parse Cognos filter expression into Power BI filter format"""
+        import re
+        
+        # Pattern to match expressions like [SITE_NUMBER]= ?SiteNumber?
+        pattern = r'\[([^\]]+)\]\s*([=<>!]+)\s*\?([^?]+)\?'
+        match = re.match(pattern, expression)
+        
+        if match:
+            field_name, operator, parameter_name = match.groups()
+            
+            # Convert Cognos operator to Power BI filter format
+            pbi_operator = self._convert_operator_to_powerbi(operator)
+            
+            filter_info = {
+                "target": {
+                    "table": None,  # Will be determined later
+                    "column": field_name
+                },
+                "operator": pbi_operator,
+                "values": [],  # Empty for parameter-based filters
+                "displayName": f"{field_name} filter",
+                "type": "ColumnFilter",
+                "isParameter": True,
+                "parameterName": parameter_name
+            }
+            
+            return filter_info
+        
+        return None
+    
+    def _convert_operator_to_powerbi(self, cognos_operator: str) -> str:
+        """Convert Cognos filter operators to Power BI equivalents"""
+        operator_map = {
+            '=': 'In',
+            '==': 'In', 
+            '!=': 'NotIn',
+            '<>': 'NotIn',
+            '>': 'GreaterThan',
+            '>=': 'GreaterThanOrEqual',
+            '<': 'LessThan',
+            '<=': 'LessThanOrEqual'
+        }
+        return operator_map.get(cognos_operator.strip(), 'In')
     
     def _extract_visuals_from_xml_layout(self, layout: ET.Element) -> List[CognosVisual]:
         """Extract visual elements from XML layout"""

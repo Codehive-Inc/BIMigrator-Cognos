@@ -5,7 +5,7 @@ import logging
 import json
 import re
 from pathlib import Path
-from typing import Dict, Any, Optional, Union
+from typing import Dict, Any, Optional, Union, List
 
 from cognos_migrator.common.websocket_client import logging_helper
 
@@ -204,10 +204,23 @@ class ReportFileGenerator:
         if hasattr(report, 'sections') and report.sections:
             for i, section in enumerate(report.sections):
                 # Handle both dictionary and ReportPage object formats
+                # Try to get report name from extracted data for better naming
+                report_name = None
+                extracted_dir = get_extracted_dir(report_dir)
+                if extracted_dir:
+                    report_details_file = extracted_dir / "report_details.json"
+                    if report_details_file.exists():
+                        try:
+                            with open(report_details_file, 'r', encoding='utf-8') as f:
+                                report_details = json.load(f)
+                                report_name = report_details.get('name')
+                        except Exception as e:
+                            self.logger.warning(f"Could not load report name from report_details.json: {e}")
+                
                 if isinstance(section, dict):
                     # Dictionary format
                     section_id = section.get('id', f'section{i}')
-                    section_name = section.get('name', f'Section {i}')
+                    base_section_name = section.get('name', f'Section {i}')
                     section_display_name = section.get('display_name', f'Section {i}')
                     visuals = section.get('visuals', [])
                     width = section.get('width', 1280)
@@ -215,11 +228,17 @@ class ReportFileGenerator:
                 else:
                     # ReportPage object format
                     section_id = getattr(section, 'id', f'section{i}')
-                    section_name = section.name
+                    base_section_name = section.name
                     section_display_name = section.display_name
                     visuals = section.visuals
                     width = getattr(section, 'width', 1280)
                     height = getattr(section, 'height', 720)
+                
+                # Enhance section name with report name if available
+                if report_name and report_name != "Unknown Report":
+                    section_name = f"{report_name} - {base_section_name}"
+                else:
+                    section_name = base_section_name
                 
                 # Generate unique ID for section name (similar to Power BI's format)
                 import uuid
@@ -266,10 +285,33 @@ class ReportFileGenerator:
                 with open(config_file, 'w', encoding='utf-8') as f:
                     f.write("{}")
                 
-                # Create empty filters.json in the section directory as an empty array
+                # Create filters.json with actual filter data from Cognos
                 filters_file = section_dir / "filters.json"
+                section_filters = []
+                
+                # First try to get filters from extracted data
+                extracted_dir = get_extracted_dir(report_dir)
+                if extracted_dir:
+                    extracted_filters_file = extracted_dir / "report_filters.json"
+                    if extracted_filters_file.exists():
+                        try:
+                            with open(extracted_filters_file, 'r', encoding='utf-8') as f:
+                                extracted_filters = json.load(f)
+                                # Convert extracted filters to Power BI format
+                                section_filters = self._convert_cognos_filters_to_powerbi(extracted_filters)
+                                self.logger.info(f"Loaded {len(section_filters)} filters from extracted data")
+                        except Exception as e:
+                            self.logger.warning(f"Could not load extracted filters: {e}")
+                
+                # Fallback: Get filters from section if available
+                if not section_filters:
+                    if hasattr(section, 'filters') and section.filters:
+                        section_filters = section.filters
+                    elif isinstance(section, dict) and section.get('filters'):
+                        section_filters = section.get('filters', [])
+                
                 with open(filters_file, 'w', encoding='utf-8') as f:
-                    f.write("[]")
+                    json.dump(section_filters, f, indent=2)
                 
                 # Save to extracted directory if applicable
                 extracted_dir = get_extracted_dir(report_dir)
@@ -385,6 +427,51 @@ class ReportFileGenerator:
             self.logger.info(f"Generated diagram layout file: {layout_file}")
         except Exception as e:
             self.logger.error(f"Error generating diagram layout: {e}")
+    
+    def _convert_cognos_filters_to_powerbi(self, cognos_filters: List[Dict]) -> List[Dict]:
+        """Convert Cognos filters to Power BI format"""
+        powerbi_filters = []
+        
+        for cognos_filter in cognos_filters:
+            # Extract relevant information from Cognos filter
+            filter_expression = cognos_filter.get('expression', '')
+            filter_type = cognos_filter.get('type', 'detail')
+            query_name = cognos_filter.get('queryName', '')
+            
+            # Parse the filter expression to extract field and parameter
+            # Example: "[SITE_NUMBER]= ?SiteNumber?" -> field: SITE_NUMBER, parameter: SiteNumber
+            import re
+            match = re.match(r'\[([^\]]+)\]\s*=\s*\?([^?]+)\?', filter_expression)
+            
+            if match:
+                field_name = match.group(1)
+                parameter_name = match.group(2)
+                
+                # Create Power BI filter structure
+                powerbi_filter = {
+                    "name": f"Filter_{parameter_name}",
+                    "displayName": parameter_name.replace('_', ' ').title(),
+                    "field": field_name,
+                    "parameter": parameter_name,
+                    "type": "parameter",
+                    "expression": filter_expression,
+                    "queryName": query_name,
+                    "filterType": filter_type
+                }
+                powerbi_filters.append(powerbi_filter)
+            else:
+                # If we can't parse it, include the raw expression
+                powerbi_filter = {
+                    "name": f"Filter_{len(powerbi_filters) + 1}",
+                    "displayName": f"Filter {len(powerbi_filters) + 1}",
+                    "expression": filter_expression,
+                    "type": "custom",
+                    "queryName": query_name,
+                    "filterType": filter_type
+                }
+                powerbi_filters.append(powerbi_filter)
+        
+        return powerbi_filters
 
     def _sanitize_filename(self, filename: str) -> str:
         """Sanitize a filename to be safe for file system use
