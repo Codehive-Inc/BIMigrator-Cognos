@@ -606,6 +606,10 @@ def _migrate_shared_model(
     pbit_dir.mkdir(parents=True, exist_ok=True)
     generator.generate_project(final_pbi_project, str(pbit_dir))
     
+    # --- Step 6.5: Consolidate intermediate report pages and slicers into final report ---
+    logging.info("Consolidating intermediate report pages and slicers into final unified report")
+    _consolidate_intermediate_reports_into_final(output_path, successful_migrations_paths)
+    
     # --- Step 7: Post-process the generated TMDL to fix relationships ---
     tmdl_relationships_file = pbit_dir / "Model" / "relationships.tmdl"
     if tmdl_relationships_file.exists():
@@ -655,3 +659,63 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         config=config,
         reports_are_ids=True,
     )
+
+def _consolidate_intermediate_reports_into_final(
+    output_path: str,
+    successful_migrations_paths: List[Path]
+) -> None:
+    """
+    Consolidate intermediate report pages and slicers into the final unified report.
+    This preserves all the enhanced slicer generation from individual reports.
+    """
+    import json
+    import shutil
+    from pathlib import Path
+    
+    logger = logging.getLogger(__name__)
+    final_pbit_path = Path(output_path) / "pbit"
+    final_sections_path = final_pbit_path / "Report" / "sections"
+    
+    # Clear the default basic section
+    if final_sections_path.exists():
+        shutil.rmtree(final_sections_path)
+    final_sections_path.mkdir(parents=True, exist_ok=True)
+    
+    section_ordinal = 0
+    
+    for report_path in successful_migrations_paths:
+        intermediate_sections_path = report_path / "pbit" / "Report" / "sections"
+        
+        if not intermediate_sections_path.exists():
+            logger.warning(f"No sections found in intermediate report: {report_path.name}")
+            continue
+            
+        # Copy each section from intermediate report to final report
+        for section_dir in intermediate_sections_path.iterdir():
+            if section_dir.is_dir():
+                # Create new section name with ordinal to ensure uniqueness
+                new_section_name = f"{section_ordinal:03d}_{section_dir.name.split('_', 1)[-1] if '_' in section_dir.name else section_dir.name}"
+                new_section_path = final_sections_path / new_section_name
+                
+                # Copy the entire section directory
+                shutil.copytree(section_dir, new_section_path)
+                
+                # Update section.json with new ordinal
+                section_json_path = new_section_path / "section.json"
+                if section_json_path.exists():
+                    try:
+                        with open(section_json_path, 'r', encoding='utf-8') as f:
+                            section_data = json.load(f)
+                        
+                        section_data['ordinal'] = section_ordinal
+                        
+                        with open(section_json_path, 'w', encoding='utf-8') as f:
+                            json.dump(section_data, f, indent=2)
+                            
+                        logger.info(f"Consolidated section from {report_path.name}: {new_section_name}")
+                    except Exception as e:
+                        logger.warning(f"Could not update section.json for {new_section_name}: {e}")
+                
+                section_ordinal += 1
+    
+    logger.info(f"Successfully consolidated {section_ordinal} report sections with slicers into final report")
