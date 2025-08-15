@@ -1,4 +1,5 @@
 # Guide: Translating SQL Joins to Power BI Data Models
+Audience: Data modelers, BI developers, and Cognos report authors familiar with SQL.
 
 This document provides a comprehensive guide for converting Cognos reports based on SQL queries into modern Power BI semantic models. The core principle is to shift from the query-based, monolithic approach of traditional reporting to a flexible, high-performance data model using a **Star Schema**.
 
@@ -120,6 +121,8 @@ relationship 'Products to Sales'
     toTable: Sales
     toColumn: ProductKey
     cardinality: oneToMany
+    crossFilteringBehavior: oneDirection // Explicitly state the filter direction
+    isActive: true // Explicitly state the relationship is active
 ```
 
 **Resulting Behavior:**
@@ -163,7 +166,7 @@ let
 in
     FilteredRows
 ```
-*Note: You would then merge this key list back against your original `Products` table to bring in `ProductName` and other attributes.*
+*Note: This query creates the master list of all unique keys. To make it a useful dimension, you would merge this result with your original Products table (which contains ProductName, Category, etc.) on ProductKey to bring in the descriptive attributes.*
 
 #### Table TMDL (`/tables/Dim_Products.tmdl`)
 ```tmdl
@@ -213,6 +216,15 @@ relationship 'Dim_Products to Products'
     isActive: false
 ```
 
+#### Why is the Second Relationship Inactive?
+In the TMDL, the relationship from `Dim_Products` to the original `Products` table is set to `isActive: false`. This is a crucial best practice to prevent ambiguity in the model. If both relationships were active, and you had measures in both `Sales` and `Products` (e.g., `SUM(Sales[SaleAmount])` and `COUNT(Products[Status])`), the engine wouldn't know which path to take when filtering.
+
+By making one inactive, you use the active path for most calculations (`Dim_Products` -> `Sales`) and can activate the other path explicitly in DAX measures using the `USERELATIONSHIP` function when needed.
+
+**Alternative (Generally Discouraged): Bi-Directional Filtering**
+
+An alternative way to achieve a `FULL OUTER JOIN` effect is to create a single relationship and set its cross-filter direction to "Both". This is simpler to set up but is often discouraged in complex models because it can create ambiguity, circular dependencies, and degrade performance. The shared dimension approach is more scalable and maintainable.
+
 ---
 ### 5. CROSS JOIN
 
@@ -234,18 +246,17 @@ Load `Products` and `Dim_Date` as independent tables.
 // NO RELATIONSHIP is created between Products and Dim_Date for a CROSS JOIN scenario.
 ```
 
-#### DAX Measure
-Use DAX to create the Cartesian product logic inside a measure.
+#### DAX Calculated Table
+The most common use case is to create a new Calculated Table in the model that contains every combination of entities, such as showing every store for every day, even if there were no sales.
 ```dax
-Sales All Combinations =
-CALCULATE(
-    [Total Sales],
-    CROSSJOIN(
-        ALL( 'Products'[ProductName] ),
-        ALL( 'Dim_Date'[CalendarYear] )
-    )
+// DAX expression for a new Calculated Table
+Store Daily Template =
+CROSSJOIN(
+    VALUES( 'Stores'[Store Name] ),
+    VALUES( 'Dim_Date'[Date] )
 )
 ```
+You can then create relationships to this template table and write measures that return 0 instead of blank for the combinations with no sales.
 
 ---
 ## Part 2: Handling Complex Join Patterns
@@ -291,106 +302,9 @@ LEFT JOIN MATERIAL_CHARGES mc
         FilteredRows
     ```
 
+*Note on Enriching the Dimension:* The query above creates a dimension with only the key. To make it useful for reporting, you should merge it with your source tables (e.g., `PURCHASE_ORDER_LINE`) to bring in the descriptive attributes associated with the key, such as `ITEM_NAME`, `SITE_LOCATION`, etc. This creates a rich, usable dimension for slicing and dicing.
+
 #### Table TMDL
 You would have TMDL files for `PURCHASE_ORDER_LINE` and `MATERIAL_CHARGES` (both now including the `SiteItemKey` column), and a new file for `Dim_Site_Items`.
 
-```tmdl
-// tables/Dim_Site_Items.tmdl
-table Dim_Site_Items
-    lineageTag: ...
-
-    column SiteItemKey
-        dataType: string
-        isKey
-        sourceColumn: SiteItemKey
-        lineageTag: ...
-
-    partition Dim_Site_Items = m
-        mode: import
-        source = #"M-Query for new 'Dim_Site_Items' table"
 ```
-
-#### Relationships TMDL (`relationships.tmdl`)
-```tmdl
-relationship 'Dim_Site_Items to PURCHASE_ORDER_LINE'
-    fromTable: Dim_Site_Items
-    fromColumn: SiteItemKey
-    toTable: PURCHASE_ORDER_LINE
-    toColumn: SiteItemKey
-    cardinality: oneToMany
-
-relationship 'Dim_Site_Items to MATERIAL_CHARGES'
-    fromTable: Dim_Site_Items
-    fromColumn: SiteItemKey
-    toTable: MATERIAL_CHARGES
-    toColumn: SiteItemKey
-    cardinality: oneToMany
-```
-
----
-### 2. Multiple Joins (Chained Joins)
-
-This is a classic star schema scenario. Create multiple shared dimensions.
-
-**SQL Example:**
-```sql
-SELECT ...
-FROM PURCHASE_ORDER_LINE pol
-LEFT JOIN MATERIAL_CHARGES mc ON pol.ItemKey = mc.ItemKey
-LEFT JOIN INVOICES inv ON pol.PO_Number = inv.PO_Number
-LEFT JOIN SUPPLIERS sup ON pol.SupplierID = sup.SupplierID
-```
-
-**Power BI Model:**
-
-#### M-Query
-You would create two new dimension tables using the same pattern as the composite key example:
-*   **`Dim_Items`**: Unique list of `ItemKey` from `PURCHASE_ORDER_LINE` and `MATERIAL_CHARGES`.
-*   **`Dim_POs`**: Unique list of `PO_Number` from `PURCHASE_ORDER_LINE` and `INVOICES`.
-Your `SUPPLIERS` table already acts as a dimension (`Dim_Suppliers`).
-
-#### Table TMDL
-You will have TMDL files for your three fact tables (`PURCHASE_ORDER_LINE`, `MATERIAL_CHARGES`, `INVOICES`) and your three dimension tables (`Dim_Items`, `Dim_POs`, `Dim_Suppliers`).
-
-#### Relationships TMDL (`relationships.tmdl`)
-This defines the full star schema.
-```tmdl
-// --- Item Relationships ---
-relationship 'Dim_Items to PURCHASE_ORDER_LINE'
-    fromTable: Dim_Items
-    fromColumn: ItemKey
-    toTable: PURCHASE_ORDER_LINE
-    toColumn: ItemKey
-    cardinality: oneToMany
-
-relationship 'Dim_Items to MATERIAL_CHARGES'
-    fromTable: Dim_Items
-    fromColumn: ItemKey
-    toTable: MATERIAL_CHARGES
-    toColumn: ItemKey
-    cardinality: oneToMany
-
-// --- Purchase Order Relationships ---
-relationship 'Dim_POs to PURCHASE_ORDER_LINE'
-    fromTable: Dim_POs
-    fromColumn: PO_Number
-    toTable: PURCHASE_ORDER_LINE
-    toColumn: PO_Number
-    cardinality: oneToMany
-
-relationship 'Dim_POs to INVOICES'
-    fromTable: Dim_POs
-    fromColumn: PO_Number
-    toTable: INVOICES
-    toColumn: PO_Number
-    cardinality: oneToMany
-
-// --- Supplier Relationship ---
-relationship 'Dim_Suppliers to PURCHASE_ORDER_LINE'
-    fromTable: Dim_Suppliers
-    fromColumn: SupplierID
-    toTable: PURCHASE_ORDER_LINE
-    toColumn: SupplierID
-    cardinality: oneToMany
-```
-This model is vastly superior to a single merged table. It allows you to analyze invoice data by supplier, even though they are not directly joined in the SQL query. The relationships flow through the shared dimensions. 
