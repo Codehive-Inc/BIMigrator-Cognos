@@ -6,7 +6,7 @@ def test_report_migration_from_id():
     Tests the migration of a single report from a live Cognos server using a report ID.
     """
     # The ID of the report to be migrated
-    report_id = "i85E7DF75D282452BAF5231C18F5B48A7"
+    report_id = "iFEE26FFBB98643308E6FEFC235B2D2CF"
     
     # Directory where the migration output will be saved
     output_dir = "test_output/report_id_migration_output"

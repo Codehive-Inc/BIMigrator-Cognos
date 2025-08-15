@@ -2,6 +2,13 @@
 #output
 .venv
 venv
+
+output
+output/*
+test_output
+test_output/*
+
+
 #extracted
 __pycache__
 
