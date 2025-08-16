@@ -34,37 +34,50 @@ class ExpressionExtractor(BaseExtractor):
         if not expression:
             return False
             
-        # First check for calculation indicators - if found, it's definitely a calculation
-        calculation_indicators = [
-            '(', ')',  # Function calls or grouping
-            '+', '-', '*', '/', '>', '<', '=', '!=', '<=', '>=',  # Common operators
-            ' if ', ' then ', ' else ',  # Conditional logic
-            ' and ', ' or ', ' not ',  # Logical operators
-            ' in ', ' case ', ' when ',  # Other keywords
-            'substring', 'rpad', 'lpad', 'trim',  # Common functions
-            'sum', 'count', 'avg', 'max', 'min'  # Aggregate functions
-        ]
-        
-        # Convert to lowercase for case-insensitive checking
-        expr_lower = expression.lower()
-        
-        # If any calculation indicators are found, it's a calculation
-        for indicator in calculation_indicators:
-            if indicator.lower() in expr_lower:
-                self.logger.debug(f"Expression '{expression}' contains '{indicator}', classified as calculation")
-                return False
-        
         # Check if the expression matches the pattern of bracketed segments separated by dots
         # This is typical for direct source column references: [Namespace].[Folder].[Item]
         source_column_pattern = r'^\[.*?\](?:\.\[.*?\])+$'
         if re.match(source_column_pattern, expression):
-            # If no calculation indicators found and matches pattern, it's likely a source column
-            self.logger.debug(f"Expression '{expression}' classified as source column")
+            # If matches pattern, it's likely a source column
+            self.logger.debug(f"Expression '{expression}' classified as source column (pattern match)")
             return True
-        else:
-            # If it doesn't match the source column pattern, it's a calculation
-            self.logger.debug(f"Expression '{expression}' doesn't match source column pattern, classified as calculation")
+            
+        # Check for calculation indicators - if found, it's definitely a calculation
+        # Operators and special characters
+        if any(op in expression for op in ['+', '-', '*', '/', '>', '<', '=', '!=', '<=', '>=', '(', ')']):
+            self.logger.debug(f"Expression '{expression}' contains operators/parentheses, classified as calculation")
             return False
+            
+        # Convert to lowercase for case-insensitive keyword checking
+        expr_lower = expression.lower()
+        
+        # Check for keywords with word boundaries to avoid false positives
+        keywords = [
+            r'\bif\b', r'\bthen\b', r'\belse\b',  # Conditional logic
+            r'\band\b', r'\bor\b', r'\bnot\b',    # Logical operators
+            r'\bin\b', r'\bcase\b', r'\bwhen\b'   # Other keywords
+        ]
+        
+        for keyword in keywords:
+            if re.search(keyword, expr_lower):
+                self.logger.debug(f"Expression '{expression}' contains keyword matching '{keyword}', classified as calculation")
+                return False
+                
+        # Check for functions with word boundaries to avoid false positives
+        functions = [
+            r'\bsubstring\b', r'\brpad\b', r'\blpad\b', r'\btrim\b',  # String functions
+            r'\bsum\b', r'\bcount\b', r'\bavg\b', r'\bmax\b', r'\bmin\b'  # Aggregate functions
+        ]
+        
+        for func in functions:
+            if re.search(func, expr_lower):
+                self.logger.debug(f"Expression '{expression}' contains function matching '{func}', classified as calculation")
+                return False
+        
+        # If we get here, it's likely a simple reference or a calculation we couldn't detect
+        # Default to treating it as a calculation if it doesn't match the source column pattern
+        self.logger.debug(f"Expression '{expression}' doesn't match source column pattern, classified as calculation")
+        return False
     
     def extract_expressions(self, root, ns=None):
         """Extract expressions from report specification XML, including those within query dataItem elements"""

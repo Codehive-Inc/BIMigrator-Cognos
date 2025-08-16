@@ -135,15 +135,15 @@
     },
     {
       "source_name": "MINIMUM",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "'ITEM_SITE_EXTRACT'[MINIMUM]",
+      "source_column": "MINIMUM",
       "description": null,
       "is_hidden": false,
-      "summarize_by": "sum",
+      "summarize_by": "none",
       "data_category": null,
-      "is_calculated": true,
+      "is_calculated": false,
       "is_data_type_inferred": true,
       "annotations": {
         "SummarizationSetBy": "Automatic"
@@ -151,15 +151,15 @@
     },
     {
       "source_name": "CONSUMABLE",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "'ITEM_SITE_EXTRACT'[CONSUMABLE]",
+      "source_column": "CONSUMABLE",
       "description": null,
       "is_hidden": false,
-      "summarize_by": "sum",
+      "summarize_by": "none",
       "data_category": null,
-      "is_calculated": true,
+      "is_calculated": false,
       "is_data_type_inferred": true,
       "annotations": {
         "SummarizationSetBy": "Automatic"
@@ -183,15 +183,15 @@
     },
     {
       "source_name": "MAXIMUM",
-      "datatype": "decimal",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "MAX('ITEM_SITE_EXTRACT'[MAXIMUM])",
+      "source_column": "MAXIMUM",
       "description": null,
       "is_hidden": false,
-      "summarize_by": "sum",
+      "summarize_by": "none",
       "data_category": null,
-      "is_calculated": true,
+      "is_calculated": false,
       "is_data_type_inferred": true,
       "annotations": {
         "SummarizationSetBy": "Automatic"

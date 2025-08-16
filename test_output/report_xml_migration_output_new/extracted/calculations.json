@@ -2,39 +2,6 @@
   "calculations": [
     {
       "TableName": "ITEM_SITE_EXTRACT",
-      "FormulaCaptionCognos": "MINIMUM",
-      "CognosName": "MINIMUM",
-      "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]",
-      "FormulaTypeCognos": "dataItem",
-      "PowerBIName": "MINIMUM",
-      "FormulaDax": "'ITEM_SITE_EXTRACT'[MINIMUM]",
-      "Status": "converted",
-      "Notes": null
-    },
-    {
-      "TableName": "ITEM_SITE_EXTRACT",
-      "FormulaCaptionCognos": "CONSUMABLE",
-      "CognosName": "CONSUMABLE",
-      "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]",
-      "FormulaTypeCognos": "dataItem",
-      "PowerBIName": "CONSUMABLE",
-      "FormulaDax": "'ITEM_SITE_EXTRACT'[CONSUMABLE]",
-      "Status": "converted",
-      "Notes": null
-    },
-    {
-      "TableName": "ITEM_SITE_EXTRACT",
-      "FormulaCaptionCognos": "MAXIMUM",
-      "CognosName": "MAXIMUM",
-      "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]",
-      "FormulaTypeCognos": "dataItem",
-      "PowerBIName": "MAXIMUM",
-      "FormulaDax": "MAX('ITEM_SITE_EXTRACT'[MAXIMUM])",
-      "Status": "converted",
-      "Notes": null
-    },
-    {
-      "TableName": "ITEM_SITE_EXTRACT",
       "FormulaCaptionCognos": "LOC_1",
       "CognosName": "LOC_1",
       "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
