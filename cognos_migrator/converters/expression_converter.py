@@ -104,7 +104,7 @@ class ExpressionConverter:
                 
             # Prepare the request payload
             payload = {
-                "cognos_formula": cognos_formula,
+                "cognos_expression": cognos_formula,
                 "table_name": table_name or "",
                 "column_mappings": column_mappings or {}
             }
@@ -114,7 +114,7 @@ class ExpressionConverter:
             
             headers = {'Content-Type': 'application/json'}
             response = requests.post(
-                f'{self.llm_service_client.base_url}/convert',
+                f'{self.llm_service_client.base_url}/api/dax/convert',
                 headers=headers,
                 json=payload,
                 timeout=30  # 30 second timeout

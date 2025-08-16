@@ -7,9 +7,8 @@
       "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "MINIMUM",
-      "FormulaDax": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]",
-      "Status": "needs_review",
-      "Notes": "LLM service conversion failed: No valid result returned"
+      "FormulaDax": "MIN('Database_Layer'[MINIMUM])",
+      "Status": "converted"
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -18,9 +17,8 @@
       "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "CONSUMABLE",
-      "FormulaDax": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]",
-      "Status": "needs_review",
-      "Notes": "LLM service conversion failed: No valid result returned"
+      "FormulaDax": "'Database_Layer'[CONSUMABLE]",
+      "Status": "converted"
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -29,9 +27,8 @@
       "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "MAXIMUM",
-      "FormulaDax": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]",
-      "Status": "needs_review",
-      "Notes": "LLM service conversion failed: No valid result returned"
+      "FormulaDax": "MAX('Database_Layer'[MAXIMUM])",
+      "Status": "converted"
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -40,9 +37,8 @@
       "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_1",
-      "FormulaDax": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
-      "Status": "needs_review",
-      "Notes": "LLM service conversion failed: No valid result returned"
+      "FormulaDax": "LEFT(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 11, 2)",
+      "Status": "converted"
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -51,9 +47,8 @@
       "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_2",
-      "FormulaDax": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
-      "Status": "needs_review",
-      "Notes": "LLM service conversion failed: No valid result returned"
+      "FormulaDax": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
+      "Status": "converted"
     }
   ]
 }
