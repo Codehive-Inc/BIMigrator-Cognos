@@ -8,7 +8,8 @@
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "MINIMUM",
       "FormulaDax": "MIN('Database_Layer'[MINIMUM])",
-      "Status": "converted"
+      "Status": "converted",
+      "Notes": null
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -18,7 +19,8 @@
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "CONSUMABLE",
       "FormulaDax": "'Database_Layer'[CONSUMABLE]",
-      "Status": "converted"
+      "Status": "converted",
+      "Notes": null
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -28,7 +30,8 @@
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "MAXIMUM",
       "FormulaDax": "MAX('Database_Layer'[MAXIMUM])",
-      "Status": "converted"
+      "Status": "converted",
+      "Notes": null
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -37,8 +40,9 @@
       "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_1",
-      "FormulaDax": "LEFT(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 11, 2)",
-      "Status": "converted"
+      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 11, 2)",
+      "Status": "converted",
+      "Notes": null
     },
     {
       "TableName": "MaterialInquiryDetail_UC012",
@@ -48,7 +52,8 @@
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_2",
       "FormulaDax": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
-      "Status": "converted"
+      "Status": "converted",
+      "Notes": null
     }
   ]
 }

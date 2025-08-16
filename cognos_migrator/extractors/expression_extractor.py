@@ -153,13 +153,14 @@ class ExpressionExtractor(BaseExtractor):
             
         return expressions
     
-    def convert_to_dax(self, expressions, table_mappings=None):
+    def convert_to_dax(self, expressions, table_mappings=None, query_data=None):
         """
         Convert Cognos expressions to DAX using the expression converter
         
         Args:
             expressions: List of expression dictionaries from extract_expressions
             table_mappings: Optional mapping of Cognos table names to Power BI table names
+            query_data: Optional query data from report_queries.json for context extraction
             
         Returns:
             Dictionary with calculations array in the desired format
@@ -168,24 +169,22 @@ class ExpressionExtractor(BaseExtractor):
             self.logger.warning("No expression converter provided, skipping DAX conversion")
             return {"calculations": []}
             
-        calculations = []
-        
+        # Prepare calculations for batch processing
+        calc_dict = {}
         for expr in expressions:
-            cognos_expr = expr.get("expression", "")
-            context = expr.get("context", "unknown")
-            name = expr.get("name", "")
-            query_name = expr.get("query_name", "")
+            name = expr.get('name')
+            cognos_expr = expr.get('expression')
+            query_name = expr.get('query_name')
             
-            # Determine table name from context if possible
-            table_name = "Data"  # Default table name
+            # Skip empty expressions
+            if not cognos_expr or cognos_expr.strip() == "":
+                self.logger.info(f"Skipping empty expression: {name}")
+                continue
             
-            # Enhanced table name mapping logic
-            if query_name:
-                # Use query name as table name if available
-                table_name = query_name
-                self.logger.info(f"Using query name as table: {table_name}")
-            elif table_mappings and name in table_mappings:
-                # First check if we have a direct mapping for this expression name
+            # Determine table name for the expression
+            table_name = query_name
+            if table_mappings and name in table_mappings:
+                # Check if we have a direct mapping for this field name
                 table_name = table_mappings[name]
                 self.logger.info(f"Using direct mapping for '{name}': {table_name}")
             elif table_mappings and query_name in table_mappings:
@@ -197,14 +196,89 @@ class ExpressionExtractor(BaseExtractor):
                 table_name = table_mappings['Data']
                 self.logger.info(f"Using mapped table name for 'Data': {table_name}")
             
-            # Convert the expression to DAX
+            # Add to calculation dictionary for batch processing
+            calc_dict[name] = {
+                "cognos_expression": cognos_expr,
+                "table_name": table_name,
+                "column_name": name,
+                "type": expr.get('type', 'dataItem')
+            }
+        
+        # Extract column mappings from query data if available
+        column_mappings = {}
+        if query_data:
+            for query in query_data:
+                for item in query.get('data_items', []):
+                    item_name = item.get('name')
+                    item_expr = item.get('expression')
+                    if item_expr and '[' in item_expr and '].[' in item_expr:
+                        # Extract table name from fully qualified references
+                        parts = item_expr.split('].[')  
+                        if len(parts) >= 3:
+                            table_name = parts[1].strip('[')  # Extract middle part as table name
+                            column_mappings[f'[{item_name}]'] = f"'{table_name}'[{item_name}]"
+        
+        # Try batch conversion with dependency resolution first
+        calculations = []
+        if self.expression_converter and len(calc_dict) > 1:  # Only use batch if we have multiple calculations
+            self.logger.info(f"Attempting batch conversion with dependency resolution for {len(calc_dict)} expressions")
             try:
-                self.logger.info(f"Converting expression '{name}': {cognos_expr}")
+                batch_result = self.expression_converter.resolve_dependencies(
+                    calculations=calc_dict,
+                    table_mappings=table_mappings,
+                    global_column_mappings=column_mappings
+                )
+                
+                if batch_result and 'results' in batch_result:
+                    self.logger.info(f"Batch conversion successful for {len(batch_result['results'])} expressions")
+                    
+                    # Process batch results
+                    for name, result in batch_result['results'].items():
+                        if name in calc_dict:
+                            calc_data = calc_dict[name]
+                            dax_expression = result.get('dax_expression', calc_data['cognos_expression'])
+                            status = "converted" if result.get('status') == "converted" else "needs_review"
+                            notes = result.get('notes', "")
+                            
+                            calculations.append({
+                                "TableName": calc_data['table_name'],
+                                "FormulaCaptionCognos": name,
+                                "CognosName": name,
+                                "FormulaCognos": calc_data['cognos_expression'],
+                                "FormulaTypeCognos": calc_data['type'],
+                                "PowerBIName": name,
+                                "FormulaDax": dax_expression,
+                                "Status": status,
+                                "Notes": notes,
+                                "Dependencies": result.get('dependencies', [])
+                            })
+                    
+                    # Return early if all calculations were processed
+                    if len(calculations) == len(calc_dict):
+                        return {"calculations": calculations}
+                    
+                    # Otherwise, remove processed calculations from calc_dict
+                    for name in batch_result['results'].keys():
+                        if name in calc_dict:
+                            del calc_dict[name]
+            except Exception as e:
+                self.logger.error(f"Error in batch conversion: {str(e)}")
+                # Continue with individual conversion for remaining calculations
+        
+        # Process remaining expressions individually
+        for name, calc_data in calc_dict.items():
+            cognos_expr = calc_data['cognos_expression']
+            table_name = calc_data['table_name']
+            
+            try:
+                self.logger.info(f"Converting expression '{name}' individually: {cognos_expr}")
                 
                 # Convert the expression
                 conversion_result = self.expression_converter.convert_expression(
                     cognos_formula=cognos_expr,
-                    table_name=table_name
+                    table_name=table_name,
+                    column_mappings=column_mappings,
+                    query_data=query_data
                 )
                 
                 if conversion_result is None:
@@ -220,46 +294,38 @@ class ExpressionExtractor(BaseExtractor):
                     notes = conversion_result.get("notes", "")
                     
                     # Determine status based on confidence
-                    status = "converted" if confidence > 0.5 else "needs_review"
-                    
-                    self.logger.info(f"Conversion result for '{name}': confidence={confidence}, status={status}")
-                
-                # Create calculation entry in the Cognos format
-                calculation = {
+                    if confidence >= 0.8:
+                        status = "converted"
+                    else:
+                        status = "needs_review"
+                        
+                # Add to calculations list
+                calculations.append({
                     "TableName": table_name,
                     "FormulaCaptionCognos": name,
                     "CognosName": name,
                     "FormulaCognos": cognos_expr,
-                    "FormulaTypeCognos": context if context != "unknown" else "calculated_column",
+                    "FormulaTypeCognos": calc_data['type'],
                     "PowerBIName": name,
                     "FormulaDax": dax_expression,
-                    "Status": status
-                }
-                
-                if notes:
-                    calculation["Notes"] = notes
-                
-                calculations.append(calculation)
+                    "Status": status,
+                    "Notes": notes
+                })
                 
             except Exception as e:
-                self.logger.error(f"Error converting expression '{name}' to DAX: {e}")
-                import traceback
-                self.logger.debug(f"Full traceback: {traceback.format_exc()}")
-                
-                # Create calculation entry with error information in Cognos format
-                calculation = {
+                self.logger.error(f"Error converting expression '{name}': {str(e)}")
+                # Add to calculations list with error
+                calculations.append({
                     "TableName": table_name,
                     "FormulaCaptionCognos": name,
                     "CognosName": name,
                     "FormulaCognos": cognos_expr,
-                    "FormulaTypeCognos": context if context != "unknown" else "calculated_column",
+                    "FormulaTypeCognos": calc_data['type'],
                     "PowerBIName": name,
-                    "FormulaDax": cognos_expr,  # Use original as fallback
-                    "Status": "error",
-                    "Error": str(e)
-                }
-                
-                calculations.append(calculation)
+                    "FormulaDax": cognos_expr,
+                    "Status": "needs_review",
+                    "Notes": f"Error during conversion: {str(e)}"
+                })
         
         self.logger.info(f"Converted {len(calculations)} expressions, found {len([c for c in calculations if c['Status'] == 'converted'])} successful conversions")
         return {"calculations": calculations}
