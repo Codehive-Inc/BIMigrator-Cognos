@@ -1,19 +1,31 @@
 import json
+import logging
 from pathlib import Path
 from typing import List, Dict, Any
 import re
 
 from cognos_migrator.models import DataModel, Table, Column
+from cognos_migrator.utils.date_table_utils import create_central_date_table, create_date_relationships
 
 class ReportModelProcessor:
-    def __init__(self, extracted_dir: Path):
+    def __init__(self, extracted_dir: Path, logger=None):
         self.extracted_dir = extracted_dir
         self.report_queries_path = self.extracted_dir / "report_queries.json"
+        self.logger = logger or logging.getLogger(__name__)
 
     def process(self) -> DataModel:
         queries = self._load_report_queries()
         tables = self._create_tables_from_source_tables(queries)
-        return DataModel(name="ReportDataModel", tables=tables)
+        data_model = DataModel(name="ReportDataModel", tables=tables)
+        
+        # Create a central date table for the report data model
+        create_central_date_table(data_model, self.logger)
+        
+        # Create relationships between datetime columns and the central date table
+        for table in tables:
+            create_date_relationships(table, data_model, self.logger)
+            
+        return data_model
 
     def _load_report_queries(self) -> List[Dict[str, Any]]:
         if not self.report_queries_path.exists():
