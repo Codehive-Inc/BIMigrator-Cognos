@@ -5,6 +5,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -13,6 +14,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -21,6 +23,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[CHARGED_DATE]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -29,6 +32,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -37,6 +41,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[QUANTITY]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -45,6 +50,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[UNIT_PRICE]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -53,6 +59,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[TRANSACTION_VALUE]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -61,6 +68,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[ADJUSTMENT_DESC]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -69,6 +77,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[ADJUSTMENT_TYPE]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -77,6 +86,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[MATERIAL_CHARGES].[TIME_ENTERED]",
     "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -85,6 +95,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]",
     "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
     "queryName": "MaterialAdjustmentDetail"
   },
   {
@@ -93,6 +104,7 @@
     "aggregate": "notApplicable",
     "expression": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
     "type": "calculation",
+    "table_name": "MATERIAL_CHARGES",
     "queryName": "MaterialAdjustmentDetail"
   }
 ]

@@ -171,20 +171,22 @@ table PURCHASE_ORDER_RECEIPT
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC1'
+    column 'LOC1' = ```
+            LOC1
+    ```
         dataType: string
         summarizeBy: none
-        sourceColumn: LOC1
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC2'
+    column 'LOC2' = ```
+            LOC2
+    ```
         dataType: string
         summarizeBy: none
-        sourceColumn: LOC2
 
         
 
@@ -192,7 +194,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'TotalCost' = ```
-            TotalCost
+            'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]
     ```
         dataType: decimal
         summarizeBy: sum

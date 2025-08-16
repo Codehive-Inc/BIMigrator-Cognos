@@ -5,6 +5,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[DATE_ENTERED]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -13,6 +14,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -21,6 +23,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -29,6 +32,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -37,6 +41,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -45,6 +50,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[DATE_RECEIVED_AT_SITE]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -53,6 +59,7 @@
     "aggregate": "total",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[QTY_RECEIVED]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -61,6 +68,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[TIME_ENTERED]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -69,6 +77,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -77,6 +86,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[JOB_NUMBER]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -85,6 +95,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[UNIT_OF_MEASURE]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -93,6 +104,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[REQUESTOR_NAME]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -101,6 +113,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[VENDOR_NAME]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -109,6 +122,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[STORAGE_LOCATION].[LOCATION1]",
     "type": "source_column",
+    "table_name": "STORAGE_LOCATION",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -117,6 +131,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[STORAGE_LOCATION].[LOCATION2]",
     "type": "source_column",
+    "table_name": "STORAGE_LOCATION",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -125,6 +140,7 @@
     "aggregate": "total",
     "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[UNIT_PRICE]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -133,6 +149,7 @@
     "aggregate": "none",
     "expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[DESCRIPTION1]",
     "type": "source_column",
+    "table_name": "PURCHASE_ORDER_DESCRIPTIONS",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -141,6 +158,7 @@
     "aggregate": "notApplicable",
     "expression": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
     "type": "calculation",
+    "table_name": "STORAGE_LOCATION",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -149,6 +167,7 @@
     "aggregate": "notApplicable",
     "expression": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
     "type": "calculation",
+    "table_name": "STORAGE_LOCATION",
     "queryName": "MaterialReceiptDetail"
   },
   {
@@ -157,6 +176,7 @@
     "aggregate": "notApplicable",
     "expression": "[UNIT_PRICE] * [QTY_RECEIVED]",
     "type": "calculation",
+    "table_name": "PURCHASE_ORDER_RECEIPT",
     "queryName": "MaterialReceiptDetail"
   }
 ]

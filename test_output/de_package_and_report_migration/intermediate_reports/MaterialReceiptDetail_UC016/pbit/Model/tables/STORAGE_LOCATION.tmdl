@@ -171,20 +171,22 @@ table STORAGE_LOCATION
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC1'
+    column 'LOC1' = ```
+            LEFT(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 3, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 5, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 7, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 9, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 11, 2)
+    ```
         dataType: string
         summarizeBy: none
-        sourceColumn: LOC1
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC2'
+    column 'LOC2' = ```
+            LEFT(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 2) & " " & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 3, 2) & " " & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 5, 2) & " " & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 7, 2) & " " & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 9, 2) & " " & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 11, 2)
+    ```
         dataType: string
         summarizeBy: none
-        sourceColumn: LOC2
 
         
 

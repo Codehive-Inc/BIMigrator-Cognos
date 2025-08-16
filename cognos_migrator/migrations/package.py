@@ -7,10 +7,12 @@ This module contains functions for migrating Cognos Framework Manager packages t
 import json
 import logging
 import os
-import uuid
 import re
+import shutil
+import uuid
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Set
+from typing import Dict, List, Optional, Any, Set, Tuple
+from collections import defaultdict
 from datetime import datetime
 import shutil
 
@@ -542,6 +544,21 @@ def _migrate_shared_model(
 
     logging.info(f"Consolidated a final list of {len(required_tables)} required tables: {required_tables}")
     
+    # --- Step 2.5: Merge calculations from intermediate reports ---
+    logging.info("Merging calculations from intermediate reports")
+    # Get the paths to the intermediate reports directory
+    intermediate_reports_dir = Path(output_path) / "intermediate_reports"
+    if intermediate_reports_dir.exists() and intermediate_reports_dir.is_dir():
+        # Get all subdirectories in the intermediate_reports directory
+        intermediate_report_paths = [p for p in intermediate_reports_dir.iterdir() if p.is_dir()]
+        logging.info(f"Found {len(intermediate_report_paths)} intermediate report directories")
+        _merge_calculations_from_intermediate_reports(intermediate_report_paths, Path(output_path))
+    else:
+        logging.warning(f"Intermediate reports directory not found at {intermediate_reports_dir}")
+        # Fall back to using successful_migrations_paths
+        logging.info(f"Falling back to using successful_migrations_paths with {len(successful_migrations_paths)} paths")
+        _merge_calculations_from_intermediate_reports(successful_migrations_paths, Path(output_path))
+    
     # --- Step 3: Package Extraction based on REQUIRED tables ---
     package_extractor = ConsolidatedPackageExtractor(
         config=config,
@@ -659,6 +676,143 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         config=config,
         reports_are_ids=True,
     )
+
+def _merge_calculations_from_intermediate_reports(
+    intermediate_report_paths: List[Path],
+    output_path: Path
+) -> None:
+    """
+    Merge calculations from all intermediate report migrations into the consolidated calculations.json file.
+    
+    Args:
+        intermediate_report_paths: List of paths to intermediate report migrations
+        output_path: Path to the output directory for the consolidated migration
+    """
+    logger = logging.getLogger(__name__)
+    consolidated_calculations = {"calculations": []}
+    
+    # Ensure the extracted directory exists in the output path
+    extracted_dir = output_path / "extracted"
+    extracted_dir.mkdir(parents=True, exist_ok=True)
+    
+    consolidated_path = extracted_dir / "calculations.json"
+    
+    # Load existing consolidated calculations if they exist
+    if consolidated_path.exists():
+        try:
+            with open(consolidated_path, 'r', encoding='utf-8') as f:
+                consolidated_calculations = json.load(f)
+                logger.info(f"Loaded existing consolidated calculations with {len(consolidated_calculations.get('calculations', []))} entries")
+        except Exception as e:
+            logger.error(f"Error loading existing consolidated calculations: {e}")
+            consolidated_calculations = {"calculations": []}
+    
+    # Track calculations by table name and column name, with DAX comparison
+    # Key format: f"{table_name}|{column_name}"
+    calculation_map = {}
+    
+    # First, add any existing calculations to the map
+    for calc in consolidated_calculations.get("calculations", []):
+        table_name = calc.get("TableName")
+        column_name = calc.get("CognosName")
+        dax_expression = calc.get("DAXExpression", "")
+        
+        if table_name and column_name:
+            key = f"{table_name}|{column_name}"
+            if key not in calculation_map:
+                calculation_map[key] = []
+            
+            # Check if this exact DAX expression already exists
+            dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression 
+                            for existing_calc in calculation_map[key])
+            
+            if not dax_exists:
+                calculation_map[key].append(calc)
+    
+    # Log the paths we're checking
+    logger.info(f"Looking for calculations in {len(intermediate_report_paths)} intermediate report paths")
+    for i, path in enumerate(intermediate_report_paths):
+        logger.info(f"Intermediate report path {i+1}: {path}")
+    
+    # Process each intermediate report
+    for report_path in intermediate_report_paths:
+        # Check if this is a directory path to an intermediate report
+        if not report_path.is_dir():
+            logger.warning(f"Path is not a directory, skipping: {report_path}")
+            continue
+            
+        # Look for the extracted directory within the intermediate report path
+        intermediate_extracted = report_path / "extracted"
+        if not intermediate_extracted.exists():
+            logger.warning(f"No extracted directory found in {report_path}, skipping")
+            continue
+            
+        # Look for calculations.json in the extracted directory
+        calc_file = intermediate_extracted / "calculations.json"
+        if not calc_file.exists():
+            logger.warning(f"No calculations.json found in {intermediate_extracted}, skipping")
+            continue
+            
+        try:
+            with open(calc_file, 'r', encoding='utf-8') as f:
+                report_calcs = json.load(f)
+                
+            if not report_calcs or "calculations" not in report_calcs:
+                logger.warning(f"No calculations found in {calc_file}, skipping")
+                continue
+                
+            logger.info(f"Found {len(report_calcs.get('calculations', []))} calculations in {report_path.name}")
+            
+            # Process each calculation
+            for calc in report_calcs.get("calculations", []):
+                table_name = calc.get("TableName")
+                column_name = calc.get("CognosName")
+                dax_expression = calc.get("DAXExpression", "")
+                
+                if not table_name or not column_name:
+                    logger.warning(f"Skipping calculation with missing table or column name: {calc}")
+                    continue
+                
+                key = f"{table_name}|{column_name}"
+                if key not in calculation_map:
+                    calculation_map[key] = []
+                    calculation_map[key].append(calc)
+                    logger.info(f"Added new calculation for {table_name}.{column_name}")
+                else:
+                    # Check if this exact DAX expression already exists
+                    dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression 
+                                    for existing_calc in calculation_map[key])
+                    
+                    if not dax_exists:
+                        calculation_map[key].append(calc)
+                        logger.info(f"Added variant calculation for {table_name}.{column_name} with different DAX")
+                    else:
+                        logger.info(f"Skipped duplicate calculation for {table_name}.{column_name} with same DAX")
+                
+        except Exception as e:
+            logger.error(f"Error processing calculations from {calc_file}: {e}")
+    
+    # Convert the map back to a list
+    all_calculations = []
+    for calc_list in calculation_map.values():
+        all_calculations.extend(calc_list)
+    
+    consolidated_calculations["calculations"] = all_calculations
+    
+    # Save the consolidated calculations
+    try:
+        with open(consolidated_path, 'w', encoding='utf-8') as f:
+            json.dump(consolidated_calculations, f, indent=2)
+        logger.info(f"Saved {len(consolidated_calculations['calculations'])} consolidated calculations to {consolidated_path}")
+    except Exception as e:
+        logger.error(f"Error saving consolidated calculations to {consolidated_path}: {e}")
+        
+    # Verify the file was created
+    if consolidated_path.exists():
+        logger.info(f"Verified consolidated calculations file exists at {consolidated_path}")
+    else:
+        logger.error(f"Failed to create consolidated calculations file at {consolidated_path}")
+
 
 def _consolidate_intermediate_reports_into_final(
     output_path: str,

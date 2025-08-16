@@ -171,20 +171,22 @@ table PURCHASE_ORDER_DESCRIPTIONS
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC1'
+    column 'LOC1' = ```
+            LOC1
+    ```
         dataType: string
         summarizeBy: none
-        sourceColumn: LOC1
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC2'
+    column 'LOC2' = ```
+            LOC2
+    ```
         dataType: string
         summarizeBy: none
-        sourceColumn: LOC2
 
         
 

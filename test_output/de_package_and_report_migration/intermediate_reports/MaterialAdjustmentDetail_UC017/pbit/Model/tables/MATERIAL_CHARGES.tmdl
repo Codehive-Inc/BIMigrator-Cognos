@@ -112,7 +112,7 @@ table MATERIAL_CHARGES
 
         
     column 'Cost' = ```
-            Cost
+            IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])
     ```
         dataType: decimal
         summarizeBy: sum
