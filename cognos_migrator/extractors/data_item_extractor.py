@@ -16,7 +16,45 @@ class DataItemExtractor(BaseExtractor):
     def __init__(self, logger=None):
         """Initialize the data item extractor with optional logger."""
         super().__init__(logger)
+        self.column_table_mapping = {}  # Store column to table mapping
         
+    def extract_table_name(self, expression: str) -> str:
+        """
+        Extract table name from a source column expression.
+        Example: "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]" -> "MATERIAL_CHARGES"
+        
+        Args:
+            expression: The source column expression
+            
+        Returns:
+            str: Extracted table name or empty string if not found
+        """
+        if not expression:
+            return ""
+            
+        # Match pattern [Schema].[Table].[Column]
+        match = re.match(r'\[.*?\]\.\[(.*?)\]\.\[.*?\]', expression)
+        if match:
+            return match.group(1)
+        return ""
+        
+    def extract_referenced_columns(self, expression: str) -> list:
+        """
+        Extract column names referenced in a calculation expression.
+        Example: "substring(rpad([PRIMARY_LOC], 12, ' ')" -> ["PRIMARY_LOC"]
+        
+        Args:
+            expression: The calculation expression
+            
+        Returns:
+            list: List of referenced column names
+        """
+        if not expression:
+            return []
+            
+        # Find all column references in square brackets that aren't part of a qualified reference
+        return re.findall(r'\[([^\]]+)\](?!\.[^\]]+\])', expression)
+    
     def is_source_column(self, expression: str) -> bool:
         """
         Determine if an expression refers to a source column or a calculation.
@@ -63,7 +101,7 @@ class DataItemExtractor(BaseExtractor):
             return False
     
     def extract_data_items(self, root, ns=None):
-        """Extract data items from report specification XML"""
+        """Extract data items from report specification XML using two passes"""
         data_items = []
         try:
             # Register namespace if present
@@ -71,24 +109,40 @@ class DataItemExtractor(BaseExtractor):
             
             # Find all data items in the report
             data_item_elements = self.findall_elements(root, "dataItem", ns)
+            
+            # First pass: Process source columns and build column-table mapping
+            for item_elem in data_item_elements:
+                # Get basic item info
+                name = item_elem.get("name", "")
                 
+                # Extract expression
+                expr_elem = self.find_element(item_elem, "expression", ns)
+                expression = self.get_element_text(expr_elem) if expr_elem is not None else ""
+                
+                # Extract table name and build mapping
+                table_name = self.extract_table_name(expression)
+                if table_name and name:
+                    self.column_table_mapping[name] = table_name
+                    self.logger.debug(f"Mapped column '{name}' to table '{table_name}'")
+            
+            # Second pass: Process all items with table name resolution
             for item_elem in data_item_elements:
                 # Get the ID from the XML or extract it from the expression
                 item_id = item_elem.get("id", "")
+                name = item_elem.get("name", "")
+                
                 if not item_id:
                     # Try to extract the column name from the expression
                     expression_elem = item_elem.find("expression", ns)
                     if expression_elem is not None and expression_elem.text:
-                        # Extract the last part of the path (e.g., As_Of_Date from [C].[C_Time_Perspective_data_module].[Sheet1].[As_Of_Date])
+                        # Extract the last part of the path
                         expression_text = expression_elem.text
-                        # Find the last bracketed segment
                         match = re.search(r'\[([^\]]+)\]$', expression_text)
                         if match:
-                            item_id = match.group(1)  # Use the actual column name as is
+                            item_id = match.group(1)
                     
                     # If we couldn't extract from expression, fall back to name-based ID
                     if not item_id:
-                        name = item_elem.get("name", "")
                         if name:
                             item_id = name.replace(" ", "_")
                         else:
@@ -96,7 +150,7 @@ class DataItemExtractor(BaseExtractor):
                             item_id = f"col_{str(uuid.uuid4())[:8]}"
                 
                 data_item = {
-                    "name": item_elem.get("name", ""),
+                    "name": name,
                     "id": item_id,
                     "aggregate": item_elem.get("aggregate", "none"),
                 }
@@ -111,6 +165,23 @@ class DataItemExtractor(BaseExtractor):
                 # Determine if this is a source column or calculation
                 is_source = self.is_source_column(expression)
                 data_item["type"] = "source_column" if is_source else "calculation"
+                
+                # Extract table name
+                table_name = ""
+                if expression:
+                    # First try to extract directly from expression
+                    table_name = self.extract_table_name(expression)
+                    if not table_name:
+                        # If no direct table name, try to find from referenced columns
+                        referenced_cols = self.extract_referenced_columns(expression)
+                        for col in referenced_cols:
+                            if col in self.column_table_mapping:
+                                table_name = self.column_table_mapping[col]
+                                self.logger.debug(f"Found table name '{table_name}' for calculation '{name}' from referenced column '{col}'")
+                                break
+                
+                if table_name:
+                    data_item["table_name"] = table_name
                 
                 # Extract XML attributes for data type and usage
                 xml_attrs = self.find_element(item_elem, "XMLAttributes", ns)
@@ -128,8 +199,6 @@ class DataItemExtractor(BaseExtractor):
                         data_item["formatProperties"] = format_attr.get("value", "")
                 
                 # Try to determine the source query by looking at the context
-                # Since ElementTree doesn't have parent navigation, we'll use a different approach
-                # Look for data items within query selections
                 query_elements = self.findall_elements(root, "query", ns)
                     
                 for query_elem in query_elements:
@@ -150,7 +219,7 @@ class DataItemExtractor(BaseExtractor):
                             break
                 
                 # Log the classification for debugging
-                self.logger.debug(f"Classified data item '{data_item['name']}' as {data_item['type']}")
+                self.logger.debug(f"Classified data item '{data_item['name']}' as {data_item['type']} in table '{table_name}'")
                 
                 data_items.append(data_item)
                 

@@ -82,7 +82,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'MINIMUM' = ```
-            MINIMUM
+            'ITEM_SITE_EXTRACT'[MINIMUM]
     ```
         dataType: decimal
         summarizeBy: sum
@@ -93,7 +93,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'CONSUMABLE' = ```
-            CONSUMABLE
+            'ITEM_SITE_EXTRACT'[CONSUMABLE]
     ```
         dataType: decimal
         summarizeBy: sum
@@ -114,7 +114,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'MAXIMUM' = ```
-            MAXIMUM
+            MAX('ITEM_SITE_EXTRACT'[MAXIMUM])
     ```
         dataType: decimal
         summarizeBy: sum

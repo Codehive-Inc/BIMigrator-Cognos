@@ -1,57 +1,57 @@
 {
   "calculations": [
     {
-      "TableName": "MaterialInquiryDetail_UC012",
+      "TableName": "ITEM_SITE_EXTRACT",
       "FormulaCaptionCognos": "MINIMUM",
       "CognosName": "MINIMUM",
       "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "MINIMUM",
-      "FormulaDax": "MIN('Database_Layer'[MINIMUM])",
+      "FormulaDax": "'ITEM_SITE_EXTRACT'[MINIMUM]",
       "Status": "converted",
       "Notes": null
     },
     {
-      "TableName": "MaterialInquiryDetail_UC012",
+      "TableName": "ITEM_SITE_EXTRACT",
       "FormulaCaptionCognos": "CONSUMABLE",
       "CognosName": "CONSUMABLE",
       "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "CONSUMABLE",
-      "FormulaDax": "'Database_Layer'[CONSUMABLE]",
+      "FormulaDax": "'ITEM_SITE_EXTRACT'[CONSUMABLE]",
       "Status": "converted",
       "Notes": null
     },
     {
-      "TableName": "MaterialInquiryDetail_UC012",
+      "TableName": "ITEM_SITE_EXTRACT",
       "FormulaCaptionCognos": "MAXIMUM",
       "CognosName": "MAXIMUM",
       "FormulaCognos": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "MAXIMUM",
-      "FormulaDax": "MAX('Database_Layer'[MAXIMUM])",
+      "FormulaDax": "MAX('ITEM_SITE_EXTRACT'[MAXIMUM])",
       "Status": "converted",
       "Notes": null
     },
     {
-      "TableName": "MaterialInquiryDetail_UC012",
+      "TableName": "ITEM_SITE_EXTRACT",
       "FormulaCaptionCognos": "LOC_1",
       "CognosName": "LOC_1",
       "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_1",
-      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'MaterialInquiryDetail_UC012'[PRIMARY_LOC], 12), 11, 2)",
+      "FormulaDax": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
       "Status": "converted",
       "Notes": null
     },
     {
-      "TableName": "MaterialInquiryDetail_UC012",
+      "TableName": "ITEM_SITE_EXTRACT",
       "FormulaCaptionCognos": "LOC_2",
       "CognosName": "LOC_2",
       "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_2",
-      "FormulaDax": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('MaterialInquiryDetail_UC012'[SECONDARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
+      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 11, 2)",
       "Status": "converted",
       "Notes": null
     }

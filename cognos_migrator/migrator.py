@@ -1080,8 +1080,17 @@ class CognosModuleMigratorExplicit:
                 # Convert expressions to DAX if expression converter is available
                 if self.expression_converter:
                     self.logger.info("Converting Cognos expressions to DAX")
-                    # Create table mappings from queries for context
-                    table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    
+                    # Create table mappings from data items for context
+                    table_mappings = {}
+                    for item in data_items:
+                        name = item.get('name')
+                        table_name = item.get('table_name')
+                        query_name = item.get('queryName')
+                        if name and table_name:
+                            table_mappings[name] = table_name
+                        if query_name and table_name:
+                            table_mappings[query_name] = table_name
                     
                     # Add a mapping for the default 'Data' table to use the report name
                     if cognos_report.name:
