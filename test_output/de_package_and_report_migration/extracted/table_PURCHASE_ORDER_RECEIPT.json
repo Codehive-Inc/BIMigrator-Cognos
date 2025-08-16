@@ -804,6 +804,12 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
+    },
+    {
+      "name": "TotalCost",
+      "dataType": "string",
+      "isCalculated": true,
+      "sourceColumn": "'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]"
     }
   ],
   "hierarchies": [],

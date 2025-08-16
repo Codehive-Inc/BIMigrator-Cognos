@@ -772,6 +772,18 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
+    },
+    {
+      "name": "LOC1",
+      "dataType": "string",
+      "isCalculated": true,
+      "sourceColumn": "LEFT(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 11, 2)"
+    },
+    {
+      "name": "LOC2",
+      "dataType": "string",
+      "isCalculated": true,
+      "sourceColumn": "LEFT(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 3, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 5, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 7, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 9, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 11, 2)"
     }
   ],
   "hierarchies": [],

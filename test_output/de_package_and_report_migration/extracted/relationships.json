@@ -1,6 +1,6 @@
 [
   {
-    "id": "ed628f59-3bbd-4ad5-b448-1c3db2a33710",
+    "id": "ef3afa24-4e88-4190-91e9-a84bf656498f",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "BLANKET_BEGIN_DATE",
     "toTable": "CentralDateTable",
@@ -11,7 +11,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "baa626bb-9383-4e16-bdfb-7bf93cbe3d27",
+    "id": "590ec644-3e55-4d1d-8b77-26365ca0b94a",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "BLANKET_END_DATE",
     "toTable": "CentralDateTable",
@@ -22,7 +22,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "3948e04d-5fa2-431e-b086-5f4c3d6ecfde",
+    "id": "a70e254c-4133-40c7-b622-ec1f4af009cb",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_ENTERED",
     "toTable": "CentralDateTable",
@@ -33,7 +33,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "0d6ad40b-b9e1-4879-8954-b3fccfa6c6dc",
+    "id": "9fca9031-463f-479f-83a9-0dbf2dd1d046",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_LAST_IN_HOLD",
     "toTable": "CentralDateTable",
@@ -44,7 +44,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "fe6fea71-b400-404a-8660-f689709873ce",
+    "id": "98675200-d823-4292-8bc6-9601adfddd06",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_LAST_IN_INVENT",
     "toTable": "CentralDateTable",
@@ -55,7 +55,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "b62f8cff-fff3-4248-9e9b-b066635d189d",
+    "id": "cd9e055c-d546-49b5-b58c-05a24ad8af43",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_LAST_RECD_SITE",
     "toTable": "CentralDateTable",
@@ -66,7 +66,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "e7feb0ca-7ae2-4e24-b673-8c67013ff8ca",
+    "id": "a4b7af01-67b1-4b2f-8fc9-9dcb4245235f",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_LAST_REJECTED",
     "toTable": "CentralDateTable",
@@ -77,7 +77,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "4036e9cf-9110-4e76-a175-49ac79017f39",
+    "id": "ac954605-0a4b-43f3-bbcf-795e931aaa06",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_ROOT_ENTERED",
     "toTable": "CentralDateTable",
@@ -88,7 +88,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "2135352a-5689-4fe6-86d5-d43eb370a6b4",
+    "id": "a6e4f121-544c-40d7-82c1-7554f1828995",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_ROOT_ORDERED",
     "toTable": "CentralDateTable",
@@ -99,7 +99,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "4ee41f30-2e70-48b0-a062-70c393b7e267",
+    "id": "fcd428fc-9ea5-4872-b7df-acf582cde44e",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "DATE_ROOT_STATUS",
     "toTable": "CentralDateTable",
@@ -110,7 +110,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "adb421e9-c806-4e5e-8f69-2feffd1b171b",
+    "id": "63b8645e-41aa-4e0c-830f-2cb71d604f1d",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "PROMISED_DATE",
     "toTable": "CentralDateTable",
@@ -121,7 +121,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "711d9b4a-10a0-4930-9e01-d81c1e3a3c6c",
+    "id": "7f3fd389-32db-4ea8-82d1-12509afb212d",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "STATUS_DATE",
     "toTable": "CentralDateTable",
@@ -132,7 +132,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "51432364-10e5-49f1-b529-167a6a144a82",
+    "id": "ed04d843-9a2a-4313-acd0-c22469f1fe6c",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "DATE_CREATED",
     "toTable": "CentralDateTable",
@@ -143,7 +143,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "fa7888c6-f4b3-4dad-81a2-c08830a0e972",
+    "id": "4145cc0a-c303-406e-b423-c3a69b0b5ed5",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "DATE_LAST_APPROVED",
     "toTable": "CentralDateTable",
@@ -154,7 +154,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "787e20e5-ac8e-4e10-a016-51f14ff183c5",
+    "id": "bbcfcb7a-bef7-4452-8b9c-ad52ce7a98c2",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "DATE_LAST_INVENTORIED",
     "toTable": "CentralDateTable",
@@ -165,7 +165,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "af4251c6-5b3d-4f01-8c84-4e2cc2dcad1d",
+    "id": "2834f5d0-4496-4cf0-a3a1-8e9d795e3085",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "DATE_LAST_ISSUED",
     "toTable": "CentralDateTable",
@@ -176,7 +176,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "a6fa6a04-92de-49b5-90ba-3266bf44da1f",
+    "id": "738b798e-278d-4ed8-9c4d-4e9697209f8f",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "DATE_LAST_RECEIVED",
     "toTable": "CentralDateTable",
@@ -187,7 +187,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "26252e18-acdb-4431-bc02-a2f97b96358b",
+    "id": "ec9d23ad-00c7-4c80-9cf0-595ce93912dc",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "DATE_LAST_RETURNED",
     "toTable": "CentralDateTable",
@@ -198,7 +198,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "909f62da-264e-451f-bb23-365c38955e4f",
+    "id": "7d1588a2-a13c-4031-aebc-4980f2b1bc86",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "ITEM_LAST_UPDATED",
     "toTable": "CentralDateTable",
@@ -209,7 +209,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "f85ba130-01d4-443d-9703-0150b88ea4f7",
+    "id": "aaefec0b-c50a-4eae-b910-974bd4e8e9d9",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "REVIEW_DATE",
     "toTable": "CentralDateTable",
@@ -220,7 +220,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "c8fa0e24-eb39-43ea-a89d-7cd3f4194595",
+    "id": "c93f2ede-435e-428e-8f95-d23ab665a0a5",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "SHELF_LIFE_DATE",
     "toTable": "CentralDateTable",
@@ -231,7 +231,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "cf90f115-24df-46b0-ab02-2c8c72206a4b",
+    "id": "6f9d31f8-c120-429c-bca4-5579445bbe3d",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "SITE_LAST_UPDATED",
     "toTable": "CentralDateTable",
@@ -242,7 +242,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "337a0285-34af-4cbe-b35c-a963957270cb",
+    "id": "7b094654-5473-455a-b299-7e8206d5e72a",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "STRATIFIED_DATE",
     "toTable": "CentralDateTable",
@@ -253,7 +253,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "d15ccffb-7485-45df-952b-12801068412e",
+    "id": "ec6cdb55-792b-487c-8910-20b205c51967",
     "fromTable": "MANUFACTURER",
     "fromColumn": "DATE_CREATED",
     "toTable": "CentralDateTable",
@@ -264,7 +264,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "aca82c63-0711-460e-9882-733dd921b326",
+    "id": "d19ed998-e3b6-49da-8bce-a05b016e3dc1",
     "fromTable": "MATERIAL_CHARGES",
     "fromColumn": "CHARGED_DATE",
     "toTable": "CentralDateTable",
@@ -275,7 +275,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "ca75c408-f482-4758-a87e-7e21b3ae6abd",
+    "id": "b0e87fc7-b2f6-4d34-8f9c-5cd497715191",
     "fromTable": "MATERIAL_CHARGES",
     "fromColumn": "DATE_ENTERED",
     "toTable": "CentralDateTable",
@@ -286,7 +286,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "552aa37e-95ab-48ec-843e-3332a0cbe2a7",
+    "id": "362f9266-afba-4050-842b-9ab919833523",
     "fromTable": "MATERIAL_CHARGES",
     "fromColumn": "DATE_STATUS_EFFECTIVE",
     "toTable": "CentralDateTable",
@@ -297,7 +297,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "9bc9fcdf-d811-4da2-99c9-330df28fee47",
+    "id": "e9663eec-19fb-43df-86ac-437242dfcdcd",
     "fromTable": "PURCHASE_ORDER_RECEIPT",
     "fromColumn": "DATE_ENTERED",
     "toTable": "CentralDateTable",
@@ -308,7 +308,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "fa242f24-2b78-428c-abdd-d45760cac658",
+    "id": "fe10b814-6ee7-41d4-83d8-71d49a04834b",
     "fromTable": "PURCHASE_ORDER_RECEIPT",
     "fromColumn": "DATE_RECEIVED_AT_SITE",
     "toTable": "CentralDateTable",
@@ -319,7 +319,7 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "cf61d3d4-df7b-45bb-9731-0973f89a27fd",
+    "id": "e3b45872-4f98-47d7-b3d4-3c8cf9d8dc15",
     "fromTable": "PURCHASE_ORDER_RECEIPT",
     "fromColumn": "DATE_STATUS_EFFECTIVE",
     "toTable": "CentralDateTable",
@@ -330,17 +330,17 @@
     "joinOnDateBehavior": "datePartOnly"
   },
   {
-    "id": "7bf7b7bb-5b68-4e71-8342-e6cf53918d71",
+    "id": "89bfd191-28da-47a2-a0a1-c26eee631190",
     "fromTable": "PURCHASE_ORDER_DESCRIPTIONS",
-    "fromColumn": "PO_NUMBER",
+    "fromColumn": "RELEASE_NUMBER",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "PO_NUMBER",
+    "toColumn": "RELEASE_NUMBER",
     "isActive": true,
     "fromCardinality": "many",
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "6e2bc9c2-9c97-4a32-8f70-3d7364411fbf",
+    "id": "1de58c05-f647-4514-83cf-67cfc9e8e42d",
     "fromTable": "ITEM_SITE_EXTRACT",
     "fromColumn": "STOP",
     "toTable": "STORAGE_LOCATION",
@@ -350,37 +350,37 @@
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "83d36dc1-f72c-4f74-abd0-7749e4d08f2e",
+    "id": "240a2a34-ee79-4307-8cd3-9881e1379288",
     "fromTable": "PURCHASE_ORDER_LINE",
-    "fromColumn": "STOP",
+    "fromColumn": "QA_LEVEL",
     "toTable": "ITEM_SITE_EXTRACT",
+    "toColumn": "QA_LEVEL",
+    "isActive": true,
+    "fromCardinality": "many",
+    "crossFilteringBehavior": "BothDirections"
+  },
+  {
+    "id": "9817065f-63f4-4b38-98c7-d0492800cb1b",
+    "fromTable": "ITEM_SITE_EXTRACT",
+    "fromColumn": "STOP",
+    "toTable": "MANUFACTURER",
     "toColumn": "STOP",
     "isActive": true,
     "fromCardinality": "many",
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "f02fbc8b-928b-412e-8886-64a74df652e4",
-    "fromTable": "ITEM_SITE_EXTRACT",
-    "fromColumn": "DATE_CREATED",
-    "toTable": "MANUFACTURER",
-    "toColumn": "DATE_CREATED",
-    "isActive": true,
-    "fromCardinality": "many",
-    "crossFilteringBehavior": "BothDirections"
-  },
-  {
-    "id": "db3d601b-d575-411d-8770-8bc4a02e6a8d",
+    "id": "f074d4e0-390e-416c-badf-9c4b3f69da72",
     "fromTable": "PURCHASE_ORDER_LINE",
-    "fromColumn": "PO_NUMBER",
+    "fromColumn": "RELEASE_NUMBER",
     "toTable": "PURCHASE_ORDER_RECEIPT",
-    "toColumn": "PO_NUMBER",
+    "toColumn": "RELEASE_NUMBER",
     "isActive": true,
     "fromCardinality": "many",
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "2ddeab25-eedb-44e4-a81d-fa09b43de1b0",
+    "id": "2e3368fc-d2e6-4672-8d2e-b6af19ee15fe",
     "fromTable": "PURCHASE_ORDER_LINE",
     "fromColumn": "STOP",
     "toTable": "STORAGE_LOCATION",
@@ -390,21 +390,21 @@
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "737304ea-062f-4690-84bc-ddd121535c5d",
+    "id": "78604798-eac4-4749-8f31-2af5af92d858",
     "fromTable": "ITEM_SITE_EXTRACT",
-    "fromColumn": "STOP",
+    "fromColumn": "UNIT_PRICE",
     "toTable": "MATERIAL_CHARGES",
-    "toColumn": "STOP",
+    "toColumn": "UNIT_PRICE",
     "isActive": true,
     "fromCardinality": "many",
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "ce10497c-e187-46bd-af5f-0f9fedf9b6d6",
+    "id": "18e533f1-31bf-4774-876c-59aa71c7f2ed",
     "fromTable": "PURCHASE_ORDER_LINE",
-    "fromColumn": "PO_NUMBER",
+    "fromColumn": "BU_NUMBER",
     "toTable": "MATERIAL_CHARGES",
-    "toColumn": "PO_NUMBER",
+    "toColumn": "BU_NUMBER",
     "isActive": true,
     "fromCardinality": "many",
     "crossFilteringBehavior": "BothDirections"

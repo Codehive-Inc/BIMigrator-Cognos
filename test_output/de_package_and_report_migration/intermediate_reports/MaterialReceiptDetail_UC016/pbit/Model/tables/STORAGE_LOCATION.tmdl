@@ -172,7 +172,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC1' = ```
-            LEFT(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 3, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 5, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 7, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 9, 2) & " " & MID(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 11, 2)
+            LEFT(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & " " & MID(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 3, 2) & " " & MID(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 5, 2) & " " & MID(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 7, 2) & " " & MID(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 9, 2) & " " & MID(RIGHT(REPT(" ", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 11, 2)
     ```
         dataType: string
         summarizeBy: none

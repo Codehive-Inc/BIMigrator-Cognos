@@ -623,6 +623,10 @@ def _migrate_shared_model(
     pbit_dir.mkdir(parents=True, exist_ok=True)
     generator.generate_project(final_pbi_project, str(pbit_dir))
     
+    # --- Step 5.5: Merge calculations into table JSON files ---
+    logging.info("Merging calculations into table JSON files")
+    _merge_calculations_into_table_json(Path(output_path))
+    
     # --- Step 6.5: Consolidate intermediate report pages and slicers into final report ---
     logging.info("Consolidating intermediate report pages and slicers into final unified report")
     _consolidate_intermediate_reports_into_final(output_path, successful_migrations_paths)
@@ -812,6 +816,124 @@ def _merge_calculations_from_intermediate_reports(
         logger.info(f"Verified consolidated calculations file exists at {consolidated_path}")
     else:
         logger.error(f"Failed to create consolidated calculations file at {consolidated_path}")
+
+
+def _merge_calculations_into_table_json(
+    output_path: Path
+) -> None:
+    """
+    Merge calculations from calculations.json into table JSON files.
+    
+    This function ensures that all calculations in calculations.json are properly
+    added as calculated columns in their respective table JSON files.
+    
+    Args:
+        output_path: Path to the output directory for the migration
+    """
+    import json
+    import glob
+    import os
+    from pathlib import Path
+    
+    logger = logging.getLogger(__name__)
+    extracted_dir = output_path / "extracted"
+    calculations_file = extracted_dir / "calculations.json"
+    
+    # Check if calculations.json exists
+    if not calculations_file.exists():
+        logger.warning(f"Calculations file not found at {calculations_file}, skipping calculation merge")
+        return
+    
+    # Load calculations from calculations.json
+    try:
+        with open(calculations_file, 'r', encoding='utf-8') as f:
+            calculations_data = json.load(f)
+        
+        # Group calculations by table name
+        table_calculations = {}
+        for calc in calculations_data.get('calculations', []):
+            table_name = calc.get('TableName')
+            if table_name:
+                if table_name not in table_calculations:
+                    table_calculations[table_name] = []
+                table_calculations[table_name].append(calc)
+        
+        logger.info(f"Loaded {len(calculations_data.get('calculations', []))} calculations for {len(table_calculations)} tables")
+    except Exception as e:
+        logger.error(f"Error loading calculations from {calculations_file}: {e}")
+        return
+    
+    # Find all table JSON files
+    table_files = list(extracted_dir.glob("table_*.json"))
+    logger.info(f"Found {len(table_files)} table JSON files")
+    
+    # Process each table file
+    for table_file in table_files:
+        # Extract table name from filename (remove 'table_' prefix and '.json' suffix)
+        table_name = table_file.stem.replace('table_', '')
+        
+        # Check if we have calculations for this table
+        if table_name not in table_calculations:
+            logger.info(f"No calculations found for table {table_name}, skipping")
+            continue
+        
+        # Load table JSON
+        try:
+            with open(table_file, 'r', encoding='utf-8') as f:
+                table_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Error loading table data from {table_file}: {e}")
+            continue
+        
+        # Get calculations for this table
+        table_calcs = table_calculations[table_name]
+        logger.info(f"Processing {len(table_calcs)} calculations for table {table_name}")
+        
+        # Ensure columns list exists
+        if 'columns' not in table_data:
+            table_data['columns'] = []
+        
+        # Get existing column names to avoid duplicates
+        existing_columns = {col.get('name') for col in table_data['columns']}
+        
+        # Add calculations as columns
+        added_count = 0
+        for calc in table_calcs:
+            column_name = calc.get('CognosName')
+            dax_formula = calc.get('FormulaDax')
+            
+            if not column_name or not dax_formula:
+                logger.warning(f"Skipping calculation with missing name or formula: {calc}")
+                continue
+            
+            # Check if column already exists
+            if column_name in existing_columns:
+                # Update existing column to ensure it's marked as calculated
+                for col in table_data['columns']:
+                    if col.get('name') == column_name:
+                        col['isCalculated'] = True
+                        col['sourceColumn'] = dax_formula
+                        logger.info(f"Updated existing column {column_name} as calculated column")
+                        break
+            else:
+                # Add new calculated column
+                new_column = {
+                    'name': column_name,
+                    'dataType': 'string',  # Default to string, could be improved
+                    'isCalculated': True,
+                    'sourceColumn': dax_formula
+                }
+                table_data['columns'].append(new_column)
+                existing_columns.add(column_name)
+                added_count += 1
+        
+        # Save updated table JSON
+        try:
+            with open(table_file, 'w', encoding='utf-8') as f:
+                json.dump(table_data, f, indent=2)
+            logger.info(f"Added {added_count} calculated columns to {table_file}")
+        except Exception as e:
+            logger.error(f"Error saving updated table data to {table_file}: {e}")
 
 
 def _consolidate_intermediate_reports_into_final(

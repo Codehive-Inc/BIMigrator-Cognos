@@ -1060,6 +1060,12 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
+    },
+    {
+      "name": "Cost",
+      "dataType": "string",
+      "isCalculated": true,
+      "sourceColumn": "IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])"
     }
   ],
   "hierarchies": [],

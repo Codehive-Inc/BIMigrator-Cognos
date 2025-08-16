@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialInquiryDetail_UC012
-- **Migration Date**: 2025-08-16 18:29:11
+- **Migration Date**: 2025-08-16 19:47:58
 
 ## Data Model
 

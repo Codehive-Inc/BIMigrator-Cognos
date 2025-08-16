@@ -18,7 +18,7 @@
       "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_2",
-      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 11, 2)",
+      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 11, 2)",
       "Status": "converted",
       "Notes": null
     },
@@ -29,7 +29,7 @@
       "FormulaCognos": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC1",
-      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 11, 2)",
+      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 11, 2)",
       "Status": "converted",
       "Notes": null
     },
