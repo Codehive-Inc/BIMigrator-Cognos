@@ -1,39 +1,46 @@
-relationship 43667866-b390-4949-8c13-aa7b91ed5db7
-	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.ITEM_NUMBER
-	toColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
+relationship d72801de-0188-47c1-b9a4-dd165015c8e4
+	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.SITE_NUMBER
+	toColumn: PURCHASE_ORDER_LINE.SITE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 0ea1aa17-b413-4dcf-8d8a-06e7ac55e273
-	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
-	toColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
+relationship e547889e-6df4-4f6d-8c93-eef5d175d48e
+	fromColumn: PURCHASE_ORDER_LINE.CHANGE_ORDER_NUMBER
+	toColumn: PURCHASE_ORDER_RECEIPT.CHANGE_ORDER_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 6fdcf4e5-8168-4ffb-be39-66d7a6729e8b
-	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
-	toColumn: PURCHASE_ORDER_RECEIPT.ITEM_NUMBER
+relationship 1f5ed9ae-df72-4b4e-bec2-6888b8f71ca6
+	fromColumn: PURCHASE_ORDER_LINE.BU_NUMBER
+	toColumn: MATERIAL_CHARGES.BU_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 76a86772-2408-4338-9bfc-a72bd36c1f5b
-	fromColumn: PURCHASE_ORDER_LINE.SITE_NUMBER
-	toColumn: STORAGE_LOCATION.SITE_NUMBER
+relationship 8ad252c2-2d50-487f-aa59-46d6c5e3965d
+	fromColumn: ITEM_SITE_EXTRACT.SITE_NUMBER
+	toColumn: MATERIAL_CHARGES.SITE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship b37167e8-4a37-47a2-a0c1-e16e56ae20f1
-	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
-	toColumn: MATERIAL_CHARGES.ITEM_NUMBER
+relationship 2b9cb144-0903-41eb-aae0-3d1de6bb98b0
+	fromColumn: PURCHASE_ORDER_LINE.STOP
+	toColumn: STORAGE_LOCATION.STOP
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship ea1a2304-f25b-494c-a5f8-52bb26c364dc
+relationship 69b5cacb-551e-447f-a2ae-aafc9fb62270
+	fromColumn: ITEM_SITE_EXTRACT.STOP
+	toColumn: MANUFACTURER.STOP
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 28dfbe71-2509-4737-8dea-b3f2f73f7924
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.BLANKET_BEGIN_DATE
 	toColumn: CentralDateTable.Date
@@ -41,7 +48,7 @@ relationship ea1a2304-f25b-494c-a5f8-52bb26c364dc
 	fromCardinality: many
 	isActive: true
 
-relationship 67ea3693-8d33-45eb-9b02-4a2ff13cce51
+relationship bd703784-5354-4b38-b640-9aa9a19d2a24
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.BLANKET_END_DATE
 	toColumn: CentralDateTable.Date
@@ -49,7 +56,7 @@ relationship 67ea3693-8d33-45eb-9b02-4a2ff13cce51
 	fromCardinality: many
 	isActive: false
 
-relationship ae891cb6-39a2-4bcd-ad2a-a3f029dd1584
+relationship 4eb2c51f-cf23-405d-8f71-35ac45bc3852
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_ENTERED
 	toColumn: CentralDateTable.Date
@@ -57,7 +64,7 @@ relationship ae891cb6-39a2-4bcd-ad2a-a3f029dd1584
 	fromCardinality: many
 	isActive: false
 
-relationship 2fd46cee-234e-42e3-84fe-45a926a33238
+relationship c7ce41e1-b8bf-4bf1-8c04-1b63683651cd
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_IN_HOLD
 	toColumn: CentralDateTable.Date
@@ -65,7 +72,7 @@ relationship 2fd46cee-234e-42e3-84fe-45a926a33238
 	fromCardinality: many
 	isActive: false
 
-relationship 1321dc3c-b393-4590-b7e1-4c7150b77bf5
+relationship f9de8687-a516-470a-a2ca-c285cc3f62e7
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_IN_INVENT
 	toColumn: CentralDateTable.Date
@@ -73,7 +80,7 @@ relationship 1321dc3c-b393-4590-b7e1-4c7150b77bf5
 	fromCardinality: many
 	isActive: false
 
-relationship 3e3777c4-a6fd-4cda-8fb1-ff236ca4f664
+relationship 1a6e4329-8092-40cf-a22a-5cbfc1d239aa
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_RECD_SITE
 	toColumn: CentralDateTable.Date
@@ -81,7 +88,7 @@ relationship 3e3777c4-a6fd-4cda-8fb1-ff236ca4f664
 	fromCardinality: many
 	isActive: false
 
-relationship 75eaa85b-bb88-47f1-a76d-4f95d9530e3f
+relationship 8a484b68-3da2-41c9-a482-79ab6406d9e8
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_REJECTED
 	toColumn: CentralDateTable.Date
@@ -89,7 +96,7 @@ relationship 75eaa85b-bb88-47f1-a76d-4f95d9530e3f
 	fromCardinality: many
 	isActive: false
 
-relationship c7ce9377-40ce-4cfa-b7ff-1c377be88746
+relationship a73aa688-893d-4ea9-bc96-056f236057af
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_ENTERED
 	toColumn: CentralDateTable.Date
@@ -97,7 +104,7 @@ relationship c7ce9377-40ce-4cfa-b7ff-1c377be88746
 	fromCardinality: many
 	isActive: false
 
-relationship 8184de96-8722-412e-9366-d18fbb45e709
+relationship 5275b2e9-7200-4b3f-8647-d9da0177dfd0
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_ORDERED
 	toColumn: CentralDateTable.Date
@@ -105,7 +112,7 @@ relationship 8184de96-8722-412e-9366-d18fbb45e709
 	fromCardinality: many
 	isActive: false
 
-relationship 2f092ea3-6b00-40e2-8440-fc7ea99f5706
+relationship 260901e4-6f64-4931-b649-9b01742f1e53
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_STATUS
 	toColumn: CentralDateTable.Date
@@ -113,7 +120,7 @@ relationship 2f092ea3-6b00-40e2-8440-fc7ea99f5706
 	fromCardinality: many
 	isActive: false
 
-relationship c048217b-7375-460d-a593-df2943e8d8f0
+relationship 05faa601-9916-4fcf-aefc-e1c92f2aef3d
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.PROMISED_DATE
 	toColumn: CentralDateTable.Date
@@ -121,7 +128,7 @@ relationship c048217b-7375-460d-a593-df2943e8d8f0
 	fromCardinality: many
 	isActive: false
 
-relationship 19ab0fc9-ad52-4838-840d-5a0ff9d3e30a
+relationship d41167b6-80ab-4c55-a562-7712eed2fdbe
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_LINE.STATUS_DATE
 	toColumn: CentralDateTable.Date
@@ -129,7 +136,7 @@ relationship 19ab0fc9-ad52-4838-840d-5a0ff9d3e30a
 	fromCardinality: many
 	isActive: false
 
-relationship ba7e23ac-06d5-4d6d-a93c-a6e5eb911e40
+relationship 084cdbc8-6aff-4043-a1ab-bcf2c5d92fc9
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
 	toColumn: CentralDateTable.Date
@@ -137,7 +144,7 @@ relationship ba7e23ac-06d5-4d6d-a93c-a6e5eb911e40
 	fromCardinality: many
 	isActive: true
 
-relationship de485751-4894-46f6-a80f-159a45bd9175
+relationship 6530104c-752f-4630-af9b-e59918c45520
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_APPROVED
 	toColumn: CentralDateTable.Date
@@ -145,7 +152,7 @@ relationship de485751-4894-46f6-a80f-159a45bd9175
 	fromCardinality: many
 	isActive: false
 
-relationship 1fbe89b5-3edb-45da-98fd-30dc74c03306
+relationship d9e92b0b-5515-4385-83de-8c87bf1b38da
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_INVENTORIED
 	toColumn: CentralDateTable.Date
@@ -153,7 +160,7 @@ relationship 1fbe89b5-3edb-45da-98fd-30dc74c03306
 	fromCardinality: many
 	isActive: false
 
-relationship bfba91e8-3d8c-488c-8cc4-b8570c1d0e62
+relationship 10c222e2-eead-481d-a21f-b9cec93b280c
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_ISSUED
 	toColumn: CentralDateTable.Date
@@ -161,7 +168,7 @@ relationship bfba91e8-3d8c-488c-8cc4-b8570c1d0e62
 	fromCardinality: many
 	isActive: false
 
-relationship 9566f0a1-0ec1-4a92-9ff6-39ec9887f44e
+relationship 74a993da-9e99-4730-baf8-196e6a9500c6
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_RECEIVED
 	toColumn: CentralDateTable.Date
@@ -169,7 +176,7 @@ relationship 9566f0a1-0ec1-4a92-9ff6-39ec9887f44e
 	fromCardinality: many
 	isActive: false
 
-relationship ae02175f-8697-4ac2-8a77-3b0fa4e7c8c6
+relationship 8336ad4c-9d62-40af-b561-8fc2cd1b6578
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_RETURNED
 	toColumn: CentralDateTable.Date
@@ -177,7 +184,7 @@ relationship ae02175f-8697-4ac2-8a77-3b0fa4e7c8c6
 	fromCardinality: many
 	isActive: false
 
-relationship 02a1b18e-9b64-497a-8eab-f4b8423371f8
+relationship 13247169-1d81-413c-a0e8-bba3382de684
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.ITEM_LAST_UPDATED
 	toColumn: CentralDateTable.Date
@@ -185,7 +192,7 @@ relationship 02a1b18e-9b64-497a-8eab-f4b8423371f8
 	fromCardinality: many
 	isActive: false
 
-relationship 09c8091c-1f08-4e4f-9aff-3f59898255f9
+relationship f7671e7a-dc62-4101-981b-11d80dd378d2
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.REVIEW_DATE
 	toColumn: CentralDateTable.Date
@@ -193,7 +200,7 @@ relationship 09c8091c-1f08-4e4f-9aff-3f59898255f9
 	fromCardinality: many
 	isActive: false
 
-relationship 6e651af1-7812-457e-be54-410ccf009baf
+relationship 6d969acd-fe7a-43f7-b2c6-2f1e6adf8aae
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.SHELF_LIFE_DATE
 	toColumn: CentralDateTable.Date
@@ -201,7 +208,7 @@ relationship 6e651af1-7812-457e-be54-410ccf009baf
 	fromCardinality: many
 	isActive: false
 
-relationship f6acef5b-ccb9-4900-8667-979ddb73857e
+relationship 6161f811-a7f2-4719-8c57-1c97fa78ad15
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.SITE_LAST_UPDATED
 	toColumn: CentralDateTable.Date
@@ -209,7 +216,7 @@ relationship f6acef5b-ccb9-4900-8667-979ddb73857e
 	fromCardinality: many
 	isActive: false
 
-relationship c3a5f8a5-fe2d-4b24-a9f0-e1db0e6f9718
+relationship 41a45715-9f64-4bea-b8f8-26d501febe6b
 	joinOnDateBehavior: datePartOnly
 	fromColumn: ITEM_SITE_EXTRACT.STRATIFIED_DATE
 	toColumn: CentralDateTable.Date
@@ -217,7 +224,7 @@ relationship c3a5f8a5-fe2d-4b24-a9f0-e1db0e6f9718
 	fromCardinality: many
 	isActive: false
 
-relationship 158b592f-6d2f-493d-b35e-59eca6301537
+relationship 5e8a7ba3-2235-4062-93df-fd96a3d92cee
 	joinOnDateBehavior: datePartOnly
 	fromColumn: MANUFACTURER.DATE_CREATED
 	toColumn: CentralDateTable.Date
@@ -225,7 +232,7 @@ relationship 158b592f-6d2f-493d-b35e-59eca6301537
 	fromCardinality: many
 	isActive: true
 
-relationship e7e6f8cc-397f-4b32-aa06-f655a0ab4793
+relationship 4aaa1dfb-fbcf-4642-9744-d772fdb5b483
 	joinOnDateBehavior: datePartOnly
 	fromColumn: MATERIAL_CHARGES.CHARGED_DATE
 	toColumn: CentralDateTable.Date
@@ -233,7 +240,7 @@ relationship e7e6f8cc-397f-4b32-aa06-f655a0ab4793
 	fromCardinality: many
 	isActive: true
 
-relationship 7b89e7b0-1c22-4b2c-9620-95eda11886fa
+relationship 0aaf7378-4e5c-4ccd-9940-550689bdc241
 	joinOnDateBehavior: datePartOnly
 	fromColumn: MATERIAL_CHARGES.DATE_ENTERED
 	toColumn: CentralDateTable.Date
@@ -241,7 +248,7 @@ relationship 7b89e7b0-1c22-4b2c-9620-95eda11886fa
 	fromCardinality: many
 	isActive: false
 
-relationship 5d1339c3-02da-4579-8359-41ce402f1a2e
+relationship 6eb0b91e-f5f7-470e-b834-2609b7860aa8
 	joinOnDateBehavior: datePartOnly
 	fromColumn: MATERIAL_CHARGES.DATE_STATUS_EFFECTIVE
 	toColumn: CentralDateTable.Date
@@ -249,7 +256,7 @@ relationship 5d1339c3-02da-4579-8359-41ce402f1a2e
 	fromCardinality: many
 	isActive: false
 
-relationship 0776974d-45b6-49bf-b535-32d0661a365e
+relationship 57648c82-6fe2-4aff-9175-360005734a26
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_ENTERED
 	toColumn: CentralDateTable.Date
@@ -257,7 +264,7 @@ relationship 0776974d-45b6-49bf-b535-32d0661a365e
 	fromCardinality: many
 	isActive: true
 
-relationship 392ed424-1e9e-47d8-b6fd-558cc3b90b61
+relationship 63304a68-f12e-4375-93b9-d640f5dd268f
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_RECEIVED_AT_SITE
 	toColumn: CentralDateTable.Date
@@ -265,18 +272,11 @@ relationship 392ed424-1e9e-47d8-b6fd-558cc3b90b61
 	fromCardinality: many
 	isActive: false
 
-relationship 44295529-78ff-4c79-bf46-570a6880383a
+relationship 9f1c0f9f-4034-42d4-9a50-8616aa471c9c
 	joinOnDateBehavior: datePartOnly
 	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_STATUS_EFFECTIVE
 	toColumn: CentralDateTable.Date
 	crossFilteringBehavior: automatic
 	fromCardinality: many
 	isActive: false
-
-relationship cb976ac6-5102-4923-a4a1-65b120272eef
-	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
-	toColumn: MANUFACTURER.DATE_CREATED
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
-	isActive: true
 

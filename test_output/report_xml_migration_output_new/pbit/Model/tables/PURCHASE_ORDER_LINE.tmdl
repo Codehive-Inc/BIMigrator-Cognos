@@ -81,24 +81,26 @@ table PURCHASE_ORDER_LINE
         annotation SummarizationSetBy = Automatic
 
         
-    column 'MINIMUM'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: MINIMUM
+    column 'MINIMUM' = ```
+            MINIMUM
+    ```
+        dataType: decimal
+        summarizeBy: sum
 
         
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
         
-    column 'CONSUMABLE'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: CONSUMABLE
+    column 'CONSUMABLE' = ```
+            CONSUMABLE
+    ```
+        dataType: decimal
+        summarizeBy: sum
 
         
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
         
     column 'SHELF_LIFE'
@@ -111,14 +113,15 @@ table PURCHASE_ORDER_LINE
         annotation SummarizationSetBy = Automatic
 
         
-    column 'MAXIMUM'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: MAXIMUM
+    column 'MAXIMUM' = ```
+            MAXIMUM
+    ```
+        dataType: decimal
+        summarizeBy: sum
 
         
 
-        annotation SummarizationSetBy = Automatic
+        annotation SummarizationSetBy = User
 
         
     column 'DATE_LAST_ISSUED'

@@ -30,29 +30,37 @@ class DataItemExtractor(BaseExtractor):
         if not expression:
             return False
             
-        # Check for calculation indicators
+        # First check for calculation indicators - if found, it's definitely a calculation
         calculation_indicators = [
-            # Parentheses (function calls)
-            '(', ')',
-            # Common operators
-            '+', '-', '*', '/', '>', '<', '=', '!=', '<=', '>=',
-            # Keywords (with spaces to avoid matching within names)
-            ' if ', ' then ', ' else ', ' case ', ' when ', ' and ', ' or ', ' not '
+            '(', ')',  # Function calls or grouping
+            '+', '-', '*', '/', '>', '<', '=', '!=', '<=', '>=',  # Common operators
+            ' if ', ' then ', ' else ',  # Conditional logic
+            ' and ', ' or ', ' not ',  # Logical operators
+            ' in ', ' case ', ' when ',  # Other keywords
+            'substring', 'rpad', 'lpad', 'trim',  # Common functions
+            'sum', 'count', 'avg', 'max', 'min'  # Aggregate functions
         ]
         
-        # Check if any calculation indicators are present
+        # Convert to lowercase for case-insensitive checking
+        expr_lower = expression.lower()
+        
+        # If any calculation indicators are found, it's a calculation
         for indicator in calculation_indicators:
-            if indicator in expression:
+            if indicator.lower() in expr_lower:
+                self.logger.debug(f"Expression '{expression}' contains '{indicator}', classified as calculation")
                 return False
         
-        # Check if it follows the source column pattern: [Namespace].[Folder].[Item]
-        # Pattern: starts with [, ends with ], contains dots, and consists only of bracketed segments
-        pattern = r'^\[.*?\](?:\.\[.*?\])+$'
-        if re.match(pattern, expression):
+        # Check if the expression matches the pattern of bracketed segments separated by dots
+        # This is typical for direct source column references: [Namespace].[Folder].[Item]
+        source_column_pattern = r'^\[.*?\](?:\.\[.*?\])+$'
+        if re.match(source_column_pattern, expression):
+            # If no calculation indicators found and matches pattern, it's likely a source column
+            self.logger.debug(f"Expression '{expression}' classified as source column")
             return True
-        
-        # If it doesn't match either pattern clearly, default to treating it as a calculation
-        return False
+        else:
+            # If it doesn't match the source column pattern, it's a calculation
+            self.logger.debug(f"Expression '{expression}' doesn't match source column pattern, classified as calculation")
+            return False
     
     def extract_data_items(self, root, ns=None):
         """Extract data items from report specification XML"""

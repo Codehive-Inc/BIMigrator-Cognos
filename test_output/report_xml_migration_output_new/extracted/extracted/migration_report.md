@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialInquiryDetail_UC012
-- **Migration Date**: 2025-08-16 07:35:02
+- **Migration Date**: 2025-08-16 10:04:11
 
 ## Data Model
 
@@ -23,10 +23,10 @@
     - DESCRIPTION (string)
     - UNIT_OF_MEASURE (string)
     - QTY_ON_HAND (string)
-    - MINIMUM (string)
-    - CONSUMABLE (string)
+    - MINIMUM (decimal)
+    - CONSUMABLE (decimal)
     - SHELF_LIFE (string)
-    - MAXIMUM (string)
+    - MAXIMUM (decimal)
     - DATE_LAST_ISSUED (string)
     - DATE_LAST_RETURNED (string)
     - DATE_LAST_RECEIVED (string)
@@ -58,10 +58,10 @@
     - DESCRIPTION (string)
     - UNIT_OF_MEASURE (string)
     - QTY_ON_HAND (string)
-    - MINIMUM (string)
-    - CONSUMABLE (string)
+    - MINIMUM (decimal)
+    - CONSUMABLE (decimal)
     - SHELF_LIFE (string)
-    - MAXIMUM (string)
+    - MAXIMUM (decimal)
     - DATE_LAST_ISSUED (string)
     - DATE_LAST_RETURNED (string)
     - DATE_LAST_RECEIVED (string)

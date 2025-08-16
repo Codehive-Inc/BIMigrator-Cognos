@@ -1,0 +1,67 @@
+{
+  "name": "7e125a48a3bc41b2b0f8",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 610,
+        "y": 10,
+        "z": 0,
+        "width": 288.41,
+        "height": 86.52,
+        "tabOrder": 3
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "slicer",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "m",
+          "Entity": "PURCHASE_ORDER_RECEIPT",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "m"
+              }
+            },
+            "Property": "RELEASE_NUMBER"
+          },
+          "Name": "PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER",
+          "NativeReferenceName": "RELEASE_NUMBER"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+} 

@@ -68,7 +68,7 @@
     "id": "MINIMUM",
     "aggregate": "none",
     "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]",
-    "type": "source_column",
+    "type": "calculation",
     "queryName": "MaterialInquiryDetail"
   },
   {
@@ -76,7 +76,7 @@
     "id": "CONSUMABLE",
     "aggregate": "none",
     "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]",
-    "type": "source_column",
+    "type": "calculation",
     "queryName": "MaterialInquiryDetail"
   },
   {
@@ -92,7 +92,7 @@
     "id": "MAXIMUM",
     "aggregate": "none",
     "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]",
-    "type": "source_column",
+    "type": "calculation",
     "queryName": "MaterialInquiryDetail"
   },
   {

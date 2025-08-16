@@ -1,0 +1,67 @@
+{
+  "name": "b648b80f2c234cd7b3d1",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 210,
+        "y": 10,
+        "z": 0,
+        "width": 288.41,
+        "height": 86.52,
+        "tabOrder": 1
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "slicer",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "PURCHASE_ORDER_RECEIPT.PO_NUMBER",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "m",
+          "Entity": "PURCHASE_ORDER_RECEIPT",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "m"
+              }
+            },
+            "Property": "PO_NUMBER"
+          },
+          "Name": "PURCHASE_ORDER_RECEIPT.PO_NUMBER",
+          "NativeReferenceName": "PO_NUMBER"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+} 

@@ -3,7 +3,9 @@
 .venv
 venv
 
-
+# Submodule to ignore
+Bi-Migrator-Cognos-DAX-API/
+Bi-Migrator-Cognos-DAX-API/*
 
 #extracted
 __pycache__
