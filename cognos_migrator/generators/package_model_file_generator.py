@@ -217,8 +217,28 @@ class PackageModelFileGenerator:
             "columns": []
         }
 
-        # Use table columns (from package schema) instead of report data items
+        # Use table columns (from package schema) with deduplication
+        # First, deduplicate table columns by column name (case-insensitive)
+        unique_columns = {}
+        duplicate_columns = []
+        
         for col in table.columns:
+            column_name = col.name
+            column_name_lower = column_name.lower()
+            
+            if column_name_lower not in unique_columns:
+                unique_columns[column_name_lower] = col
+            else:
+                duplicate_columns.append(column_name)
+        
+        # Log information about duplicates
+        if duplicate_columns:
+            self.logger.info(f"Found {len(duplicate_columns)} duplicate column names in table {table.name}")
+            self.logger.info(f"Duplicate column names: {duplicate_columns}")
+            self.logger.info(f"Using only unique column names for package JSON generation")
+        
+        # Process deduplicated columns
+        for col in unique_columns.values():
             is_calculated = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
             
             # Use DAX formula for calculated columns if available
