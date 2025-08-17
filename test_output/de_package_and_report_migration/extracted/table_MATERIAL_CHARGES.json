@@ -1062,10 +1062,20 @@
       }
     },
     {
-      "name": "Cost",
-      "dataType": "string",
-      "isCalculated": true,
-      "sourceColumn": "IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])"
+      "source_name": "Cost",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
   "hierarchies": [],

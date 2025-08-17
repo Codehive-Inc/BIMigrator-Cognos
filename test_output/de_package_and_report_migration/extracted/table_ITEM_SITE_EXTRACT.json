@@ -2150,16 +2150,36 @@
       }
     },
     {
-      "name": "LOC_1",
-      "dataType": "string",
-      "isCalculated": true,
-      "sourceColumn": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 11, 2))"
+      "source_name": "LOC_1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "LOC_2",
-      "dataType": "string",
-      "isCalculated": true,
-      "sourceColumn": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 11, 2)"
+      "source_name": "LOC_2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 11, 2)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
   "hierarchies": [],

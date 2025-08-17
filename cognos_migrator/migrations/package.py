@@ -638,6 +638,10 @@ def _migrate_shared_model(
         post_processor.fix_relationships(str(tmdl_relationships_file))
     else:
         logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")
+        
+    # --- Step 7.5: Ensure calculations are propagated to table.tmdl files ---
+    logging.info("Ensuring calculations are propagated to table.tmdl files")
+    _ensure_calculations_in_tmdl_files(pbit_dir / "Model", extracted_dir)
 
     return True, str(output_path)
 
@@ -833,6 +837,7 @@ def _merge_calculations_into_table_json(
     import json
     import glob
     import os
+    import re
     from pathlib import Path
     
     logger = logging.getLogger(__name__)
@@ -894,7 +899,7 @@ def _merge_calculations_into_table_json(
             table_data['columns'] = []
         
         # Get existing column names to avoid duplicates
-        existing_columns = {col.get('name') for col in table_data['columns']}
+        existing_columns = {col.get('source_name', col.get('name')).lower() for col in table_data['columns'] if col.get('source_name') or col.get('name')}
         
         # Add calculations as columns
         added_count = 0
@@ -907,24 +912,43 @@ def _merge_calculations_into_table_json(
                 continue
             
             # Check if column already exists
-            if column_name in existing_columns:
+            if column_name.lower() in existing_columns:
                 # Update existing column to ensure it's marked as calculated
                 for col in table_data['columns']:
-                    if col.get('name') == column_name:
-                        col['isCalculated'] = True
-                        col['sourceColumn'] = dax_formula
+                    if col.get('source_name', col.get('name', '')).lower() == column_name.lower():
+                        # Update with full report migration format
+                        col['source_name'] = column_name
+                        col['datatype'] = 'string'  # Default to string, could be improved based on formula
+                        col['format_string'] = None
+                        col['lineage_tag'] = None
+                        col['source_column'] = dax_formula
+                        col['description'] = None
+                        col['is_hidden'] = False
+                        col['summarize_by'] = 'none'
+                        col['data_category'] = None
+                        col['is_calculated'] = True
+                        col['is_data_type_inferred'] = True
+                        col['annotations'] = {'SummarizationSetBy': 'Automatic'}
                         logger.info(f"Updated existing column {column_name} as calculated column")
                         break
             else:
-                # Add new calculated column
+                # Add new calculated column with full report migration format
                 new_column = {
-                    'name': column_name,
-                    'dataType': 'string',  # Default to string, could be improved
-                    'isCalculated': True,
-                    'sourceColumn': dax_formula
+                    'source_name': column_name,
+                    'datatype': 'string',  # Default to string, could be improved based on formula
+                    'format_string': None,
+                    'lineage_tag': None,
+                    'source_column': dax_formula,
+                    'description': None,
+                    'is_hidden': False,
+                    'summarize_by': 'none',
+                    'data_category': None,
+                    'is_calculated': True,
+                    'is_data_type_inferred': True,
+                    'annotations': {'SummarizationSetBy': 'Automatic'}
                 }
                 table_data['columns'].append(new_column)
-                existing_columns.add(column_name)
+                existing_columns.add(column_name.lower())
                 added_count += 1
         
         # Save updated table JSON

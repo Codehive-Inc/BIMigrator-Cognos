@@ -806,10 +806,20 @@
       }
     },
     {
-      "name": "TotalCost",
-      "dataType": "string",
-      "isCalculated": true,
-      "sourceColumn": "'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]"
+      "source_name": "TotalCost",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
   "hierarchies": [],
