@@ -1,10 +1,10 @@
 table stg_MATERIAL_CHARGES_PURCHASE_ORDER_LINE
 
 
-    column 'PO_NUMBER'
+    column 'UNIT_OF_MEASURE'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER
+        sourceColumn: UNIT_OF_MEASURE
 
         
 

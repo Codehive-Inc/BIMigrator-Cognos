@@ -1,10 +1,10 @@
 table stg_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE
 
 
-    column 'PO_NUMBER'
+    column 'ITEM_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER
+        sourceColumn: ITEM_NUMBER
 
         
 

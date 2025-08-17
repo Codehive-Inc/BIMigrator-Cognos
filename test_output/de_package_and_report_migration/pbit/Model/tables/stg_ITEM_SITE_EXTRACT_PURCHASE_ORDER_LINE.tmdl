@@ -1,10 +1,10 @@
 table stg_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
 
 
-    column 'QA_CODE'
+    column 'QTY_ON_HOLD'
         dataType: string
         summarizeBy: none
-        sourceColumn: QA_CODE
+        sourceColumn: QTY_ON_HOLD
 
         
 

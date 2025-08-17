@@ -1,10 +1,10 @@
 table stg_ITEM_SITE_EXTRACT_MANUFACTURER
 
 
-    column 'DATE_CREATED'
+    column 'STOP'
         dataType: string
         summarizeBy: none
-        sourceColumn: DATE_CREATED
+        sourceColumn: STOP
 
         
 

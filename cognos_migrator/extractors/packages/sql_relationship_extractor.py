@@ -18,14 +18,16 @@ from .package_relationship_extractor import PackageRelationshipExtractor
 class SQLRelationshipExtractor:
     """Extractor for generating SQL based on relationships in Cognos Framework Manager packages"""
     
-    def __init__(self, logger=None):
+    def __init__(self, logger=None, model_tables=None):
         """Initialize the SQL relationship extractor
         
         Args:
             logger: Optional logger instance
+            model_tables: Optional list of table names in the current semantic model
         """
         self.logger = logger or logging.getLogger(__name__)
         self.relationship_extractor = PackageRelationshipExtractor(logger)
+        self.model_tables = model_tables or []
     
     def extract_and_save(self, package_file_path: str, output_dir: str) -> Dict[str, Any]:
         """Extract relationships, generate SQL, and save to output files
@@ -52,7 +54,7 @@ class SQLRelationshipExtractor:
             processed_relationships = self._process_relationships(relationships)
             
             # Save to CSV file
-            csv_path = os.path.join(output_dir, "relationship_joins.csv")
+            csv_path = os.path.join(output_dir, "sql_relationship_joins.csv")
             self._save_to_csv(processed_relationships, csv_path)
             
             # Save to JSON file
@@ -62,6 +64,15 @@ class SQLRelationshipExtractor:
                 output_dir, 
                 "sql_relationships.json"
             )
+            
+            # Save filtered version with only relationships used for staging tables
+            filtered_relationships = self._filter_staging_table_relationships(processed_relationships)
+            self.relationship_extractor.save_to_json(
+                {"sql_relationships": filtered_relationships}, 
+                output_dir, 
+                "sql_filtered_relationships.json"
+            )
+            self.logger.info(f"Saved filtered relationships for staging tables: {len(filtered_relationships)} relationships")
             
             self.logger.info(f"Extracted and processed {len(processed_relationships)} relationships")
             return {"sql_relationships": processed_relationships}
@@ -391,23 +402,95 @@ class SQLRelationshipExtractor:
         
         return sql
     
+    def _filter_staging_table_relationships(self, relationships: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Filter relationships to only include those used for staging table creation.
+        
+        This method exactly matches the logic in StagingTableHandler._identify_complex_relationships.
+        A relationship is considered for staging table creation if:
+        1. It has composite keys (multiple columns in join keys)
+        2. There are multiple relationships between the same tables
+        3. Both tables in the relationship are present in the current semantic model
+        
+        Args:
+            relationships: List of processed relationships
+            
+        Returns:
+            Filtered list of relationships used for staging tables
+        """
+        # First, filter relationships to only include those where both tables are in the model
+        model_relationships = []
+        for rel in relationships:
+            table_a = rel['table_a_one_side']
+            table_b = rel['table_b_many_side']
+            
+            # Skip relationships where either table is not in the model
+            if self.model_tables and (table_a not in self.model_tables or table_b not in self.model_tables):
+                self.logger.info(f"Skipping relationship between {table_a} and {table_b} - tables not in current model")
+                continue
+            
+            model_relationships.append(rel)
+        
+        if self.model_tables:
+            self.logger.info(f"Filtered to {len(model_relationships)} relationships with tables in the current model")
+        
+        filtered_relationships = []
+        table_pair_counts = {}
+        
+        # First pass: Count relationships between each pair of tables
+        for rel in model_relationships:
+            table_a = rel['table_a_one_side']
+            table_b = rel['table_b_many_side']
+            
+            # Create a consistent key for the table pair (same as StagingTableHandler)
+            pair_key = f"{table_a}:{table_b}"
+            
+            if pair_key not in table_pair_counts:
+                table_pair_counts[pair_key] = 0
+            table_pair_counts[pair_key] += 1
+            
+            # Check for composite keys (multiple columns in join)
+            if len(rel['keys_a']) > 1 or len(rel['keys_b']) > 1:
+                rel['staging_table_reason'] = 'composite_keys'
+                filtered_relationships.append(rel)
+                self.logger.info(f"Identified complex relationship with composite key: "
+                               f"{table_a}.{', '.join(rel['keys_a'])} -> {table_b}.{', '.join(rel['keys_b'])}")
+        
+        # Second pass: Add relationships where tables have multiple relationships between them
+        for rel in model_relationships:
+            table_a = rel['table_a_one_side']
+            table_b = rel['table_b_many_side']
+            pair_key = f"{table_a}:{table_b}"
+            
+            if table_pair_counts[pair_key] > 1 and 'staging_table_reason' not in rel:
+                rel['staging_table_reason'] = 'multiple_relationships'
+                filtered_relationships.append(rel)
+                self.logger.info(f"Identified complex relationship: {table_a} has multiple relationships with {table_b}")
+        
+        self.logger.info(f"Filtered {len(filtered_relationships)} relationships for staging tables")
+        return filtered_relationships
+    
     def _save_to_csv(self, relationships: List[Dict[str, Any]], csv_path: str) -> None:
         """Save relationships to CSV file
         
         Args:
-            relationships: List of processed relationships
+            relationships: List of relationships to save
             csv_path: Path to save CSV file
         """
         try:
-            # Define CSV headers based on the required output format
+            # Create directory if it doesn't exist
+            os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+            
+            # Define CSV headers
             headers = [
                 'Relationship Name', 
                 'Table A (One Side)', 
                 'Key(s) A', 
                 'Table B (Many Side)', 
-                'Key(s) B', 
+                'Key(s) B',
                 'Cognos Cardinality', 
-                'Implied Join Type & Power BI Config'
+                'Implied Join Type',
+                'SQL Join'
             ]
             
             with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
@@ -434,16 +517,17 @@ class SQLRelationshipExtractor:
             self.logger.error(f"Failed to save relationships to CSV: {e}")
 
 
-def extract_sql_relationships(package_file_path: str, output_dir: str, logger=None) -> Dict[str, Any]:
+def extract_sql_relationships(package_file_path: str, output_dir: str, logger=None, model_tables=None) -> Dict[str, Any]:
     """Extract SQL relationships from a package file
     
     Args:
         package_file_path: Path to the FM package file
         output_dir: Directory to save extracted data
         logger: Optional logger instance
+        model_tables: Optional list of table names in the current semantic model
         
     Returns:
         Dictionary with extracted relationships and SQL
     """
-    extractor = SQLRelationshipExtractor(logger)
+    extractor = SQLRelationshipExtractor(logger, model_tables)
     return extractor.extract_and_save(package_file_path, output_dir)

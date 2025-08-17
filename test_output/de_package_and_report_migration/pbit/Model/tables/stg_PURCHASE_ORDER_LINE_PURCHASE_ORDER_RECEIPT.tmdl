@@ -1,10 +1,10 @@
 table stg_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
 
 
-    column 'PO_NUMBER'
+    column 'DATE_ENTERED'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER
+        sourceColumn: DATE_ENTERED
 
         
 

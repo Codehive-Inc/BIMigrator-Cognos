@@ -6,11 +6,11 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "QA_CODE",
+      "source_name": "QTY_ON_HOLD",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QA_CODE",
+      "source_column": "QTY_ON_HOLD",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",

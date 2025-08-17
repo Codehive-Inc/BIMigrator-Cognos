@@ -251,17 +251,6 @@ table PURCHASE_ORDER_RECEIPT
         annotation SummarizationSetBy = Automatic
 
         
-    column 'TotalCost' = ```
-            'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]
-    ```
-        dataType: string
-        summarizeBy: none
-
-        
-
-        annotation SummarizationSetBy = Automatic
-
-        
 
 
 

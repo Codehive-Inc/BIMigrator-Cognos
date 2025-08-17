@@ -1,10 +1,10 @@
 table stg_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
 
 
-    column 'STOP'
+    column 'UNIT_OF_MEASURE'
         dataType: string
         summarizeBy: none
-        sourceColumn: STOP
+        sourceColumn: UNIT_OF_MEASURE
 
         
 

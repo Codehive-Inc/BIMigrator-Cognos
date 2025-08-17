@@ -1,10 +1,10 @@
 table stg_ITEM_SITE_EXTRACT_STORAGE_LOCATION
 
 
-    column 'SITE_NUMBER'
+    column 'STOP'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: STOP
 
         
 

@@ -6,11 +6,11 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "PO_NUMBER",
+      "source_name": "DATE_ENTERED",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "PO_NUMBER",
+      "source_column": "DATE_ENTERED",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
