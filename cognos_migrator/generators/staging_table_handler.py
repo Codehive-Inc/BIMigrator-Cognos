@@ -142,7 +142,8 @@ class StagingTableHandler:
         Process data model using the 'star_schema' approach.
         
         In this approach, staging tables are created as separate entities in a star schema design,
-        with relationships established between the staging tables and the original tables.
+        with columns based on join keys in relationships. Each staging table will have its own
+        M-query that combines data from related tables.
         
         Args:
             data_model: The data model to process
@@ -152,60 +153,103 @@ class StagingTableHandler:
         """
         self.logger.info("Processing data model with 'star_schema' approach")
         
-        # Identify tables involved in complex relationships
-        complex_tables = self._identify_complex_relationship_tables(data_model.relationships)
-        self.logger.info(f"Identified {len(complex_tables)} tables involved in complex relationships")
+        # Identify relationships that need staging tables
+        complex_relationships = self._identify_complex_relationships(data_model.relationships)
+        self.logger.info(f"Identified {len(complex_relationships)} complex relationships that need staging tables")
         
-        # Create staging tables for complex tables
+        if not complex_relationships:
+            self.logger.info("No complex relationships found, returning original model")
+            return data_model
+        
+        # Group relationships by tables they connect
+        relationship_groups = self._group_relationships_by_tables(complex_relationships)
+        self.logger.info(f"Grouped complex relationships into {len(relationship_groups)} groups")
+        
+        # Create staging tables for each relationship group
         new_tables = list(data_model.tables)  # Start with all original tables
-        staging_tables = {}
+        staging_tables = []
+        staging_table_map = {}  # Maps original table pairs to staging tables
         
-        for table_name in complex_tables:
-            # Find the original table
-            original_table = next((t for t in data_model.tables if t.name == table_name), None)
-            if original_table:
-                # Create a staging table
-                staging_table = self._create_staging_table(original_table)
-                new_tables.append(staging_table)
-                staging_tables[table_name] = staging_table.name
-                self.logger.info(f"Created staging table {staging_table.name} for {table_name}")
-        
-        # Create new relationships between staging tables and original tables
-        new_relationships = list(data_model.relationships)  # Start with all original relationships
-        
-        # Add relationships between staging tables and original tables
-        for original_name, staging_name in staging_tables.items():
-            # Find the original table and staging table
-            original_table = next((t for t in data_model.tables if t.name == original_name), None)
-            staging_table = next((t for t in new_tables if t.name == staging_name), None)
-            
-            if original_table and staging_table:
-                # Create a relationship between the staging table and original table
-                # Use the primary key of the original table
-                primary_key = self._identify_primary_key(original_table, data_model.relationships)
+        for group_key, relationships in relationship_groups.items():
+            # Extract table names from the group key
+            table_names = group_key.split(':')
+            if len(table_names) != 2:
+                continue
                 
-                if primary_key:
-                    relationship = Relationship(
-                        id=f"Staging_{original_name}_{staging_name}",
-                        from_table=staging_name,
-                        from_column=primary_key,
-                        to_table=original_name,
-                        to_column=primary_key,
-                        from_cardinality="many",
-                        cross_filtering_behavior="BothDirections",
-                        is_active=True
-                    )
-                    new_relationships.append(relationship)
-                    self.logger.info(f"Created relationship between {staging_name} and {original_name} "
-                                     f"on column {primary_key}")
+            from_table_name, to_table_name = table_names
+            
+            # Find the original tables
+            from_table = next((t for t in data_model.tables if t.name == from_table_name), None)
+            to_table = next((t for t in data_model.tables if t.name == to_table_name), None)
+            
+            if not from_table or not to_table:
+                continue
+                
+            # Create a staging table for this relationship group
+            staging_table_name = f"{self.naming_prefix}{from_table_name}_{to_table_name}"
+            
+            # Get all columns needed for the relationships in this group
+            columns = self._extract_columns_for_staging_table(relationships, from_table, to_table)
+            
+            # Create the staging table
+            staging_table = self._create_staging_table_with_columns(staging_table_name, columns, relationships)
+            new_tables.append(staging_table)
+            staging_tables.append(staging_table)
+            staging_table_map[group_key] = staging_table_name
+            
+            self.logger.info(f"Created staging table {staging_table_name} with {len(columns)} columns")
         
-        # Update complex relationships to use staging tables
-        updated_relationships = self._update_relationships_for_star_schema(
-            data_model.relationships, staging_tables)
+        # Create new relationships using staging tables
+        new_relationships = []
         
-        # Replace original relationships with updated ones
-        new_relationships = [r for r in new_relationships if not self._is_complex_relationship(r, complex_tables)]
-        new_relationships.extend(updated_relationships)
+        # Keep non-complex relationships
+        for rel in data_model.relationships:
+            if not self._is_relationship_in_list(rel, complex_relationships):
+                new_relationships.append(rel)
+        
+        # Create new relationships using staging tables
+        for group_key, relationships in relationship_groups.items():
+            if group_key not in staging_table_map:
+                continue
+                
+            staging_table_name = staging_table_map[group_key]
+            table_names = group_key.split(':')
+            if len(table_names) != 2:
+                continue
+                
+            from_table_name, to_table_name = table_names
+            
+            # Create relationships between staging table and original tables
+            for rel in relationships:
+                # Create relationship from staging table to from_table
+                from_rel = Relationship(
+                    id=f"Staging_{rel.id}_From",
+                    from_table=staging_table_name,
+                    from_column=rel.from_column,
+                    to_table=from_table_name,
+                    to_column=rel.from_column,
+                    from_cardinality="many",
+                    to_cardinality="one",
+                    cross_filtering_behavior="BothDirections",
+                    is_active=True
+                )
+                new_relationships.append(from_rel)
+                
+                # Create relationship from staging table to to_table
+                to_rel = Relationship(
+                    id=f"Staging_{rel.id}_To",
+                    from_table=staging_table_name,
+                    from_column=rel.to_column,
+                    to_table=to_table_name,
+                    to_column=rel.to_column,
+                    from_cardinality="many",
+                    to_cardinality="one",
+                    cross_filtering_behavior="BothDirections",
+                    is_active=True
+                )
+                new_relationships.append(to_rel)
+                
+                self.logger.info(f"Created staging relationships for {rel.id} using {staging_table_name}")
         
         # Create new data model with updated tables and relationships
         new_data_model = DataModel(
@@ -224,9 +268,9 @@ class StagingTableHandler:
                          f"{len(new_tables)} tables, {len(new_relationships)} relationships")
         return new_data_model
     
-    def _identify_complex_relationship_tables(self, relationships: List[Relationship]) -> Set[str]:
+    def _identify_complex_relationships(self, relationships: List[Relationship]) -> List[Relationship]:
         """
-        Identify tables involved in complex relationships.
+        Identify relationships that are complex and require staging tables.
         
         A complex relationship is one where:
         1. A table has multiple relationships with the same table
@@ -236,9 +280,9 @@ class StagingTableHandler:
             relationships: List of relationships to analyze
             
         Returns:
-            Set of table names involved in complex relationships
+            List of relationships that are considered complex
         """
-        complex_tables = set()
+        complex_relationships = []
         relationship_counts = {}
         
         # Count relationships between each pair of tables
@@ -250,20 +294,201 @@ class StagingTableHandler:
             
             # Check for composite keys (indicated by multiple columns)
             if ',' in (rel.from_column or '') or ',' in (rel.to_column or ''):
-                complex_tables.add(rel.from_table)
-                complex_tables.add(rel.to_table)
+                complex_relationships.append(rel)
                 self.logger.info(f"Identified complex relationship with composite key: "
                                  f"{rel.from_table}.{rel.from_column} -> {rel.to_table}.{rel.to_column}")
         
-        # Identify tables with multiple relationships to the same table
-        for pair_key, count in relationship_counts.items():
-            if count > 1:
-                from_table, to_table = pair_key.split(':')
-                complex_tables.add(from_table)
-                complex_tables.add(to_table)
-                self.logger.info(f"Identified complex relationship: {from_table} has {count} relationships with {to_table}")
+        # Add relationships where tables have multiple relationships between them
+        for rel in relationships:
+            pair_key = f"{rel.from_table}:{rel.to_table}"
+            if relationship_counts[pair_key] > 1 and rel not in complex_relationships:
+                complex_relationships.append(rel)
+                self.logger.info(f"Identified complex relationship: {rel.from_table} has multiple relationships with {rel.to_table}")
         
-        return complex_tables
+        return complex_relationships
+        
+    def _group_relationships_by_tables(self, relationships: List[Relationship]) -> Dict[str, List[Relationship]]:
+        """
+        Group relationships by the tables they connect.
+        
+        Args:
+            relationships: List of relationships to group
+            
+        Returns:
+            Dictionary mapping table pairs to lists of relationships
+        """
+        groups = {}
+        
+        for rel in relationships:
+            # Create a consistent key for the table pair
+            if rel.from_table < rel.to_table:
+                key = f"{rel.from_table}:{rel.to_table}"
+            else:
+                key = f"{rel.to_table}:{rel.from_table}"
+                
+            if key not in groups:
+                groups[key] = []
+                
+            groups[key].append(rel)
+            
+        return groups
+        
+    def _extract_columns_for_staging_table(self, relationships: List[Relationship], 
+                                           from_table: Table, to_table: Table) -> List[Dict[str, str]]:
+        """
+        Extract columns needed for a staging table based on relationships.
+        
+        Args:
+            relationships: List of relationships that will use this staging table
+            from_table: The 'from' table in the relationships
+            to_table: The 'to' table in the relationships
+            
+        Returns:
+            List of column definitions for the staging table
+        """
+        columns = []
+        column_names = set()
+        
+        # Extract columns from relationships
+        for rel in relationships:
+            # Add from_column if not already added
+            if rel.from_column and rel.from_column not in column_names:
+                column_names.add(rel.from_column)
+                columns.append({
+                    'name': rel.from_column,
+                    'dataType': 'string',  # Default to string, can be refined later
+                    'summarizeBy': 'none',
+                    'sourceColumn': rel.from_column
+                })
+                
+            # Add to_column if not already added
+            if rel.to_column and rel.to_column not in column_names:
+                column_names.add(rel.to_column)
+                columns.append({
+                    'name': rel.to_column,
+                    'dataType': 'string',  # Default to string, can be refined later
+                    'summarizeBy': 'none',
+                    'sourceColumn': rel.to_column
+                })
+        
+        return columns
+        
+    def _create_staging_table_with_columns(self, table_name: str, columns: List[Dict[str, str]], 
+                                          relationships: List[Relationship]) -> Table:
+        """
+        Create a staging table with specific columns and M-query.
+        
+        Args:
+            table_name: Name for the staging table
+            columns: List of column definitions
+            relationships: List of relationships that will use this staging table
+            
+        Returns:
+            A new Table object representing the staging table
+        """
+        # Create Column objects from column definitions
+        column_objects = []
+        for col_def in columns:
+            col = Column(
+                name=col_def['name'],
+                data_type=col_def['dataType'],
+                source_column=col_def['sourceColumn']
+            )
+            # Add additional properties
+            col.summarize_by = col_def['summarizeBy']
+            column_objects.append(col)
+            
+        # Extract table names from relationships for M-query generation
+        source_tables = set()
+        for rel in relationships:
+            source_tables.add(rel.from_table)
+            source_tables.add(rel.to_table)
+            
+        # Generate M-query for the staging table
+        m_query = self._generate_staging_table_m_query(table_name, column_objects, list(source_tables))
+        
+        # Create metadata
+        metadata = {
+            'is_staging_table': True,
+            'source_tables': list(source_tables),
+            'is_source_table': False
+        }
+        
+        # Create the staging table
+        staging_table = Table(
+            name=table_name,
+            columns=column_objects,
+            source_query=m_query,
+            metadata=metadata
+        )
+        
+        return staging_table
+        
+    def _generate_staging_table_m_query(self, table_name: str, columns: List[Column], 
+                                       source_tables: List[str]) -> str:
+        """
+        Generate an M-query for a staging table.
+        
+        Args:
+            table_name: Name of the staging table
+            columns: List of columns in the staging table
+            source_tables: List of source tables to extract data from
+            
+        Returns:
+            M-query string for the staging table
+        """
+        # Extract column names for the query
+        column_names = [col.name for col in columns]
+        column_list = '", "'.join(column_names)
+        
+        # Build the M-query
+        m_query_parts = ["let"]
+        
+        # Add steps for each source table
+        for i, source_table in enumerate(source_tables):
+            step_name = f"Data_From_{source_table.replace(' ', '_')}"
+            m_query_parts.append(f"    // Get data from {source_table}")
+            m_query_parts.append(f"    {step_name} = Table.SelectColumns({source_table},{{\"{ column_list }\"}}),")
+            m_query_parts.append(f"    Distinct_{i} = Table.Distinct({step_name}),")
+            
+        # Combine data from all source tables
+        if len(source_tables) > 1:
+            combine_tables = [f"Distinct_{i}" for i in range(len(source_tables))]
+            combine_list = ", ".join(combine_tables)
+            m_query_parts.append(f"    // Combine data from all source tables")
+            m_query_parts.append(f"    CombinedData = Table.Combine({{{combine_list}}}),")
+            m_query_parts.append(f"    UniqueRows = Table.Distinct(CombinedData),")
+            final_step = "UniqueRows"
+        else:
+            final_step = "Distinct_0"
+        
+        # Remove the trailing comma from the last step
+        m_query_parts[-1] = m_query_parts[-1].rstrip(",")
+        
+        # Add the final in clause
+        m_query_parts.append(f"in")
+        m_query_parts.append(f"    {final_step}")
+        
+        # Join all parts with newlines
+        m_query = "\n".join(m_query_parts)
+        
+        return m_query
+        
+    def _is_relationship_in_list(self, rel: Relationship, rel_list: List[Relationship]) -> bool:
+        """
+        Check if a relationship is in a list of relationships.
+        
+        Args:
+            rel: The relationship to check
+            rel_list: The list of relationships to check against
+            
+        Returns:
+            True if the relationship is in the list, False otherwise
+        """
+        for r in rel_list:
+            if r.id == rel.id:
+                return True
+        return False
     
     def _create_merged_table(self, original_table: Table, data_model: DataModel) -> Table:
         """

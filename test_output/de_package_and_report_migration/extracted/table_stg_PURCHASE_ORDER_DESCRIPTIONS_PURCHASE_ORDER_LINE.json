@@ -1,0 +1,25 @@
+{
+  "source_name": "stg_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
+  "name": "stg_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "PO_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ]
+}

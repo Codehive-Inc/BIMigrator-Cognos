@@ -1,0 +1,19 @@
+table stg_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
+
+
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

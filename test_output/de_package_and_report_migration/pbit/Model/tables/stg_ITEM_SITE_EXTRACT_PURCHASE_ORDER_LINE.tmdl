@@ -1,0 +1,19 @@
+table stg_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
+
+
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

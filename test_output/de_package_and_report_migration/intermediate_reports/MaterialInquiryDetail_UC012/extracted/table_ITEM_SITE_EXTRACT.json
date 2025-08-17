@@ -490,7 +490,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 11, 2)",
+      "source_column": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 11, 2)",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",

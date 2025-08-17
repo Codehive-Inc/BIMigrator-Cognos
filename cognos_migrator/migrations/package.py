@@ -321,11 +321,11 @@ def extract_tables_from_expression(expression: str) -> Set[str]:
     return tables
 
 
-def load_table_filtering_settings() -> Dict[str, Any]:
-    """Load table filtering settings from settings.json
+def load_settings() -> Dict[str, Any]:
+    """Load all settings from settings.json
     
     Returns:
-        Dictionary containing table filtering settings
+        Dictionary containing all settings
     """
     settings = {}
     try:
@@ -339,10 +339,15 @@ def load_table_filtering_settings() -> Dict[str, Any]:
     filtering_mode = table_filtering.get('mode', 'include-all')  # Default to include all tables
     always_include = table_filtering.get('always_include', [])
     
-    return {
-        'mode': filtering_mode,
-        'always_include': always_include
-    }
+    # Add table filtering settings to the main settings if they don't exist
+    if 'table_filtering' not in settings:
+        settings['table_filtering'] = {
+            'mode': filtering_mode,
+            'always_include': always_include
+        }
+    
+    logging.info(f"Loaded settings: {settings}")
+    return settings
 
 
 def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) -> DataModel:
@@ -624,7 +629,8 @@ def _migrate_shared_model(
     if hasattr(generator, 'model_file_generator'):
         package_model_file_generator = PackageModelFileGenerator(
             template_engine, 
-            mquery_converter=package_mquery_converter
+            mquery_converter=package_mquery_converter,
+            settings=config  # Pass the full settings dictionary
         )
         generator.model_file_generator = package_model_file_generator
 
@@ -668,15 +674,15 @@ def migrate_package_with_local_reports(package_file_path: str,
                                        session_key: str,
                                        task_id: Optional[str] = None) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
-    config = load_table_filtering_settings()
-    logging.info(f"FILTERING DEBUG: In migrate_package_with_local_reports, loaded table filtering settings: {config}")
+    settings = load_settings()
+    logging.info(f"In migrate_package_with_local_reports, loaded settings: {settings}")
     return _migrate_shared_model(
         package_file=package_file_path,
         reports=report_file_paths,
         output_path=output_path,
         cognos_url=cognos_url,
         session_key=session_key,
-        config=config,
+        config=settings,
         reports_are_ids=False,
     )
 

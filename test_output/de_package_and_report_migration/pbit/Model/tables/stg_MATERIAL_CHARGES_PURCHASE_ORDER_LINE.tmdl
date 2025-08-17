@@ -1,0 +1,19 @@
+table stg_MATERIAL_CHARGES_PURCHASE_ORDER_LINE
+
+
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

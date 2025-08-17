@@ -1,0 +1,19 @@
+table stg_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
+
+
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

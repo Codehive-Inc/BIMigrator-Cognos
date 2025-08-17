@@ -1,0 +1,19 @@
+table stg_ITEM_SITE_EXTRACT_MANUFACTURER
+
+
+    column 'DATE_CREATED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

@@ -20,20 +20,30 @@ from .staging_table_handler import StagingTableHandler
 class ModelFileGenerator:
     """Generator for Power BI model files (database.tmdl, tables/*.tmdl, etc.)"""
     
-    def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None):
+    def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None, settings: Optional[Dict[str, Any]] = None):
         """
         Initialize the model file generator
         
         Args:
             template_engine: Template engine for rendering templates
             mquery_converter: Optional MQueryConverter for generating M-queries
+            settings: Optional settings dictionary
         """
         self.template_engine = template_engine
         self.mquery_converter = mquery_converter
         self.logger = logging.getLogger(__name__)
+        self.staging_table_handler = StagingTableHandler(settings)
     
     def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Path:
         """Generate model files for Power BI template"""
+        self.logger.info(f"Generating model files for {data_model.name}")
+        
+        # Process data model through staging table handler if enabled
+        if self.staging_table_handler.enabled:
+            self.logger.info("Processing data model through staging table handler")
+            data_model = self.staging_table_handler.process_data_model(data_model)
+            self.logger.info(f"Data model processed: {len(data_model.tables)} tables, {len(data_model.relationships)} relationships")
+        
         model_dir = output_dir / 'Model'
         model_dir.mkdir(exist_ok=True)
         

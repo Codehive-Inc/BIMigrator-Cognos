@@ -24,16 +24,18 @@ from .template_engine import TemplateEngine
 class PackageModelFileGenerator:
     """Generator for Power BI model files from Cognos Framework Manager packages"""
     
-    def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None):
+    def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None, settings: Optional[Dict[str, Any]] = None):
         """
         Initialize the package model file generator
         
         Args:
             template_engine: Template engine for rendering templates
             mquery_converter: Optional MQueryConverter for generating M-queries (should be PackageMQueryConverter)
+            settings: Optional settings dictionary from settings.json
         """
         self.template_engine = template_engine
         self.mquery_converter = mquery_converter
+        self.settings = settings or {}
         self.logger = logging.getLogger(__name__)
     
     def generate_model_files(self, data_model: DataModel, output_dir: Path, package_spec: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Path:
@@ -52,6 +54,17 @@ class PackageModelFileGenerator:
         table_names = [table.name for table in data_model.tables]
         self.logger.info(f"PACKAGE DEBUG: PackageModelFileGenerator received data_model with {len(data_model.tables)} tables")
         self.logger.info(f"PACKAGE DEBUG: Table names at start of generation: {table_names}")
+        
+        # Process staging tables if enabled in settings
+        if self.settings and self.settings.get('staging_tables', {}).get('enabled', False):
+            from .staging_table_handler import StagingTableHandler
+            self.logger.info(f"Initializing StagingTableHandler with settings: {self.settings}")
+            staging_handler = StagingTableHandler(self.settings)
+            data_model = staging_handler.process_data_model(data_model)
+            self.logger.info(f"After staging table processing, data model has {len(data_model.tables)} tables")
+            self.logger.info(f"Tables after staging: {[t.name for t in data_model.tables]}")
+        else:
+            self.logger.info("Staging tables not enabled in settings, skipping staging table processing")
         
         # Get extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
