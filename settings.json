@@ -5,5 +5,10 @@
     "always_include": [
       "CentralDateTable"
     ]
+  },
+  "staging_tables": {
+    "enabled": false,
+    "naming_prefix": "stg_",
+    "model_handling": "none"
   }
 }

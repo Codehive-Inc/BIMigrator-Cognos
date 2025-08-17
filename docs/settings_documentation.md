@@ -4,11 +4,12 @@ The `settings.json` file is a crucial configuration file that controls key aspec
 
 ## How These Settings Enable Power BI Best Practices
 
-Properly configuring this file is essential for a successful migration, as it directly influences the structure and efficiency of the final Power BI data model. Here’s how each setting helps you align with best practices:
+Properly configuring this file is essential for a successful migration, as it directly influences the structure and efficiency of the final Power BI data model. Here's how each setting helps you align with best practices:
 
 -   **Enforces a Star Schema:** By using the `table_filtering` options, you can create a lean, report-specific data model that avoids the complexity of a monolithic, "one-size-fits-all" model. This encourages a **star schema** design, which is the gold standard for Power BI, as it improves performance, simplifies DAX calculations, and makes the model more intuitive for end-users.
 -   **Promotes a Centralized Date Table:** The `date_table_mode` and `always_include` settings work together to ensure that your model includes a single, authoritative date dimension. This is a cornerstone of Power BI development that enables powerful time-intelligence calculations and consistent date-based filtering across all of your reports.
 -   **Reduces Model Size and Complexity:** By filtering out unused tables, you significantly reduce the size of your Power BI model. This leads to faster data refreshes, quicker report rendering, and a more manageable dataset for developers and analysts.
+-   **Optimizes Complex Relationships:** The `staging_tables` settings allow you to handle complex relationships through staging tables, enabling better performance and more flexible data modeling approaches for complex join scenarios.
 
 ## File Structure
 
@@ -22,6 +23,11 @@ The `settings.json` file has the following structure:
     "always_include": [
       "CentralDateTable"
     ]
+  },
+  "staging_tables": {
+    "enabled": false,
+    "naming_prefix": "stg_",
+    "model_handling": "none"
   }
 }
 ```
@@ -46,3 +52,20 @@ This section governs how the migration tool filters tables from the Cognos Frame
     -   **`"CentralDateTable"`:** As shown in the example, it is a best practice to always include the `CentralDateTable` to ensure that your data model has a consistent and authoritative time dimension.
 
 By properly configuring the `settings.json` file, you can ensure that your migrations are efficient, consistent, and produce well-structured Power BI data models that follow industry best practices. 
+
+### `staging_tables`
+
+This section controls how the migration tool handles complex relationships through staging tables. Staging tables can be used to simplify complex join scenarios, improve performance, and enable more flexible data modeling approaches.
+
+-   **`"enabled"`:** This setting determines whether staging tables are used in the migration.
+    -   **`false` (Default):** When set to `false`, no staging tables are created, and the `model_handling` is effectively set to `"none"`.
+    -   **`true`:** When set to `true`, staging tables are created according to the specified configuration.
+
+-   **`"naming_prefix"`:** This setting defines the prefix used for naming staging tables.
+    -   **`"stg_"` (Default):** By default, staging tables are named with the prefix "stg_" followed by the original table name.
+    -   You can customize this prefix to match your naming conventions.
+
+-   **`"model_handling"`:** This setting determines how staging tables are integrated into the data model.
+    -   **`"none"` (Default):** No staging tables are created, regardless of the `enabled` setting.
+    -   **`"merged_tables"`:** Staging tables are created and merged with the original tables, preserving the original table structure while adding the necessary columns for complex joins.
+    -   **`"star_schema"`:** Staging tables are created as separate entities in a star schema design, with relationships established between the staging tables and the original tables.

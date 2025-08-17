@@ -14,6 +14,7 @@ from ..models import DataModel, Table, Relationship
 from ..converters import MQueryConverter
 from ..utils.datatype_mapper import map_cognos_to_powerbi_datatype
 from .template_engine import TemplateEngine
+from .staging_table_handler import StagingTableHandler
 
 
 class ModelFileGenerator:
