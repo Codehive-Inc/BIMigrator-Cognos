@@ -610,6 +610,23 @@ def _migrate_shared_model(
     from ..processors.tmdl_post_processor import TMDLPostProcessor
     migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
     generator = PowerBIProjectGenerator(migration_config)
+    
+    # Use the package-specific M-query converter and generator for shared model migrations
+    from cognos_migrator.converters import PackageMQueryConverter
+    from cognos_migrator.generators.package_model_file_generator import PackageModelFileGenerator
+    from cognos_migrator.generators.template_engine import TemplateEngine
+    
+    # Initialize template engine and package M-query converter for shared models
+    template_engine = TemplateEngine(template_directory=migration_config.template_directory)
+    package_mquery_converter = PackageMQueryConverter(output_path=str(Path(output_path)))
+    
+    # Set up the package-specific model file generator for shared models
+    if hasattr(generator, 'model_file_generator'):
+        package_model_file_generator = PackageModelFileGenerator(
+            template_engine, 
+            mquery_converter=package_mquery_converter
+        )
+        generator.model_file_generator = package_model_file_generator
 
     # Force creation of a new PBI project with the filtered data model
     final_pbi_project = PowerBIProject(
