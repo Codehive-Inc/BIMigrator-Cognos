@@ -2,7 +2,7 @@ table MATERIAL_CHARGES
 
 
     column 'SITE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -12,7 +12,7 @@ table MATERIAL_CHARGES
 
         
     column 'ITEM_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -22,7 +22,7 @@ table MATERIAL_CHARGES
 
         
     column 'CHARGED_DATE'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: CHARGED_DATE
 
@@ -32,7 +32,7 @@ table MATERIAL_CHARGES
 
         
     column 'TIME_ENTERED'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: TIME_ENTERED
 
@@ -42,7 +42,7 @@ table MATERIAL_CHARGES
 
         
     column 'STOREKEEPER_ID'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STOREKEEPER_ID
 
@@ -52,7 +52,7 @@ table MATERIAL_CHARGES
 
         
     column 'EMPLOYEE_ID'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: EMPLOYEE_ID
 
@@ -62,7 +62,7 @@ table MATERIAL_CHARGES
 
         
     column 'ISSUE_TICKET_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ISSUE_TICKET_NUMBER
 
@@ -72,7 +72,7 @@ table MATERIAL_CHARGES
 
         
     column 'TRANSACTION_TYPE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: TRANSACTION_TYPE
 
@@ -82,7 +82,7 @@ table MATERIAL_CHARGES
 
         
     column 'ADJUSTMENT_TYPE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ADJUSTMENT_TYPE
 
@@ -92,7 +92,7 @@ table MATERIAL_CHARGES
 
         
     column 'QUANTITY'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QUANTITY
 
@@ -102,7 +102,7 @@ table MATERIAL_CHARGES
 
         
     column 'UNIT_PRICE'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: UNIT_PRICE
 
@@ -112,7 +112,7 @@ table MATERIAL_CHARGES
 
         
     column 'TRANSACTION_VALUE'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: TRANSACTION_VALUE
 
@@ -122,7 +122,7 @@ table MATERIAL_CHARGES
 
         
     column 'JOB_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: JOB_NUMBER
 
@@ -132,7 +132,7 @@ table MATERIAL_CHARGES
 
         
     column 'BU_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: BU_NUMBER
 
@@ -142,7 +142,7 @@ table MATERIAL_CHARGES
 
         
     column 'PO_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PO_NUMBER
 
@@ -152,7 +152,7 @@ table MATERIAL_CHARGES
 
         
     column 'PO_INDICATOR'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PO_INDICATOR
 
@@ -162,7 +162,7 @@ table MATERIAL_CHARGES
 
         
     column 'DATE_ENTERED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_ENTERED
 
@@ -172,7 +172,7 @@ table MATERIAL_CHARGES
 
         
     column 'DATE_STATUS_EFFECTIVE'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_STATUS_EFFECTIVE
 
@@ -182,7 +182,7 @@ table MATERIAL_CHARGES
 
         
     column 'REFURB_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: REFURB_IND
 
@@ -192,7 +192,7 @@ table MATERIAL_CHARGES
 
         
     column 'ISSUE_OVERRIDE_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ISSUE_OVERRIDE_IND
 
@@ -202,7 +202,7 @@ table MATERIAL_CHARGES
 
         
     column 'RECORD_STATUS'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: RECORD_STATUS
 
@@ -212,7 +212,7 @@ table MATERIAL_CHARGES
 
         
     column 'UNIT_OF_MEASURE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UNIT_OF_MEASURE
 
@@ -222,7 +222,7 @@ table MATERIAL_CHARGES
 
         
     column 'ADJUSTMENT_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ADJUSTMENT_NUMBER
 
@@ -232,7 +232,7 @@ table MATERIAL_CHARGES
 
         
     column 'ADJUSTMENT_DESC'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ADJUSTMENT_DESC
 
@@ -242,7 +242,7 @@ table MATERIAL_CHARGES
 
         
     column 'QTY_TO_RECONCILE'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_TO_RECONCILE
 
@@ -252,7 +252,7 @@ table MATERIAL_CHARGES
 
         
     column 'STOP'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STOP
 
@@ -262,7 +262,7 @@ table MATERIAL_CHARGES
 
         
     column 'TRANSFER_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: TRANSFER_NUMBER
 
@@ -272,7 +272,7 @@ table MATERIAL_CHARGES
 
         
     column 'MATERIAL_CLASS'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: MATERIAL_CLASS
 
@@ -282,7 +282,7 @@ table MATERIAL_CHARGES
 
         
     column 'ROOT_DESCRIPTION'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ROOT_DESCRIPTION
 
@@ -292,7 +292,7 @@ table MATERIAL_CHARGES
 
         
     column 'ITT_KEY_NO'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITT_KEY_NO
 
@@ -302,7 +302,7 @@ table MATERIAL_CHARGES
 
         
     column 'UTC_NO'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UTC_NO
 
@@ -312,7 +312,7 @@ table MATERIAL_CHARGES
 
         
     column 'PIT_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PIT_IND
 
@@ -322,7 +322,7 @@ table MATERIAL_CHARGES
 
         
     column 'UM'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UM
 
@@ -331,15 +331,353 @@ table MATERIAL_CHARGES
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Cost' = ```
-            IF ( [UNIT_PRICE] = 0 ) THEN
-	( [TRANSACTION_VALUE] )
-ELSE
-	( [UNIT_PRICE] )
-    ```
+    column 'SITE_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHARGED_DATE'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: CHARGED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_ENTERED'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: TIME_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOREKEEPER_ID'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STOREKEEPER_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EMPLOYEE_ID'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: EMPLOYEE_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ISSUE_TICKET_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ISSUE_TICKET_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_TYPE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: TRANSACTION_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_TYPE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QUANTITY'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QUANTITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_VALUE'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: TRANSACTION_VALUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BU_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: BU_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_INDICATOR'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PO_INDICATOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ENTERED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_STATUS_EFFECTIVE'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_STATUS_EFFECTIVE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REFURB_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: REFURB_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ISSUE_OVERRIDE_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ISSUE_OVERRIDE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RECORD_STATUS'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: RECORD_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_DESC'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_TO_RECONCILE'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_TO_RECONCILE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSFER_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: TRANSFER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MATERIAL_CLASS'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: MATERIAL_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ROOT_DESCRIPTION'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ROOT_DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITT_KEY_NO'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITT_KEY_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_NO'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UTC_NO
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PIT_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UM'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER_ITEM_NUMBER_Key'
         dataType: string
         summarizeBy: none
+        sourceColumn: SITE_NUMBER_ITEM_NUMBER_Key
 
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER_ITEM_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER_ITEM_NUMBER_Key
+
+        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -351,13 +689,13 @@ ELSE
     partition 'MATERIAL_CHARGES' = m
         mode: import
         source = 
-            
-                let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
-                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""ITEM_NUMBER"", ""CHARGED_DATE"", ""TIME_ENTERED"", ""STOREKEEPER_ID"", ""EMPLOYEE_ID"", ""ISSUE_TICKET_NUMBER"", ""TRANSACTION_TYPE"", ""ADJUSTMENT_TYPE"", ""QUANTITY"", ""UNIT_PRICE"", ""TRANSACTION_VALUE"", ""JOB_NUMBER"", ""BU_NUMBER"", ""PO_NUMBER"", ""PO_INDICATOR"", ""DATE_ENTERED"", ""DATE_STATUS_EFFECTIVE"", ""REFURB_IND"", ""ISSUE_OVERRIDE_IND"", ""RECORD_STATUS"", ""UNIT_OF_MEASURE"", ""ADJUSTMENT_NUMBER"", ""ADJUSTMENT_DESC"", ""QTY_TO_RECONCILE"", ""STOP"", ""TRANSFER_NUMBER"", ""MATERIAL_CLASS"", ""ROOT_DESCRIPTION"", ""ITT_KEY_NO"", ""UTC_NO"", ""PIT_IND"", ""UM"" FROM ""MATERIAL_CHARGES""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-                in
-                    #"Removed Errors"
+            Select
+    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
+    AddCompositeKey_1 = Table.AddColumn(Source, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
+    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
+    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text)
+in
+    AddCompositeKey_2
         
 
 

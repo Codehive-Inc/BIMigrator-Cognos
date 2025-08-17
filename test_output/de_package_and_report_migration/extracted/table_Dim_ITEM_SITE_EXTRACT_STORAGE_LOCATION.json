@@ -53,5 +53,16 @@
         "SummarizationSetBy": "Automatic"
       }
     }
-  ]
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION",
+      "source_type": "m",
+      "expression": "let\n    // Get data from STORAGE_LOCATION\n    Data_From_STORAGE_LOCATION = Table.SelectColumns(STORAGE_LOCATION, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n    // Get data from ITEM_SITE_EXTRACT\n    Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n    // Combine data from all source tables\n    CombinedData = Table.Combine({Data_From_STORAGE_LOCATION, Data_From_ITEM_SITE_EXTRACT}),\n    // Get unique combinations of dimension keys\n    UniqueRows = Table.Distinct(CombinedData, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n    // Create composite key for relationships\n    AddCompositeKey = Table.AddColumn(UniqueRows, \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n    // Filter out rows with null or empty composite keys\n    FilteredRows = Table.SelectRows(AddCompositeKey, each [ITEM_NUMBER_SITE_NUMBER_Key] <> null and [ITEM_NUMBER_SITE_NUMBER_Key] <> \"\")\nin\n    FilteredRows"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
 }

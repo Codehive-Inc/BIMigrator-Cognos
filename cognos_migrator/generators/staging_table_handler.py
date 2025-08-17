@@ -234,22 +234,9 @@ class StagingTableHandler:
             
             self.logger.info(f"Created dimension table {dimension_table_name} with {len(columns)} columns plus composite key")
         
-        # Create new relationships using dimension tables
+        # Create new relationships using dimension tables with single composite key
         new_relationships = []
         
-        # Keep non-complex relationships (from basic data model)
-        if self.sql_relationships:
-            # When using SQL relationships, keep all original data model relationships
-            # since we're working with a different set of relationships (SQL vs basic)
-            for rel in data_model.relationships:
-                new_relationships.append(rel)
-        else:
-            # When using basic relationships, filter out complex ones
-            for rel in data_model.relationships:
-                if not self._is_relationship_in_list(rel, complex_relationships):
-                    new_relationships.append(rel)
-        
-        # Create new relationships using dimension tables with single composite key
         for group_key, relationships in relationship_groups.items():
             if group_key not in dimension_table_map:
                 continue
@@ -300,16 +287,23 @@ class StagingTableHandler:
                     
                     self.logger.info(f"Created dimension relationships for {rel.id} using {dimension_table_name}")
         
+        # Remove old relationships that are now handled by dimension tables
+        final_relationships = self._filter_replaced_relationships(new_relationships, relationship_groups)
+        
         # Create new data model with updated tables and relationships
         new_data_model = DataModel(
             name=data_model.name,
             tables=new_tables,
-            relationships=new_relationships,
+            relationships=final_relationships,
             compatibility_level=data_model.compatibility_level
         )
         
         # Add composite keys to fact tables
         new_data_model = self._add_composite_keys_to_fact_tables(new_data_model, relationship_groups)
+        
+        # Save dimension and updated fact tables as JSON files
+        if self.extracted_dir:
+            self._save_updated_tables_as_json(new_data_model, dimension_tables, relationship_groups)
         
         # Copy any additional attributes from the original data model
         for attr, value in vars(data_model).items():
@@ -320,6 +314,102 @@ class StagingTableHandler:
                          f"{len(new_data_model.tables)} tables, {len(new_relationships)} relationships")
         return new_data_model
     
+    def _save_updated_tables_as_json(self, data_model: DataModel, dimension_tables: List[Table], relationship_groups: Dict[str, List]) -> None:
+        """
+        Save dimension tables and updated fact tables as JSON files for TMDL generation.
+        
+        Args:
+            data_model: The updated data model
+            dimension_tables: List of dimension tables to save
+            relationship_groups: Relationship groups used to identify fact tables
+        """
+        import json
+        from datetime import datetime
+        
+        self.logger.info("Saving dimension and updated fact tables as JSON files")
+        
+        # Get list of fact table names that were updated with composite keys
+        fact_table_names = set()
+        for group_key, relationships in relationship_groups.items():
+            table_names = group_key.split(':')
+            if len(table_names) == 2:
+                fact_table_names.update(table_names)
+        
+        # Save dimension tables
+        for dim_table in dimension_tables:
+            self._save_table_as_json(dim_table, self.extracted_dir)
+            self.logger.info(f"Saved dimension table JSON: {dim_table.name}")
+        
+        # Save updated fact tables
+        for table in data_model.tables:
+            if table.name in fact_table_names and not table.name.startswith('Dim_'):
+                self._save_table_as_json(table, self.extracted_dir)
+                self.logger.info(f"Saved updated fact table JSON: {table.name}")
+    
+    def _save_table_as_json(self, table: Table, extracted_dir: Path) -> None:
+        """
+        Save a single table as JSON file.
+        
+        Args:
+            table: Table object to save
+            extracted_dir: Directory to save the JSON file
+        """
+        import json
+        
+        # Build table JSON structure
+        table_json = {
+            "source_name": table.name,
+            "name": table.name,
+            "lineage_tag": None,
+            "description": None,
+            "is_hidden": False,
+            "columns": []
+        }
+        
+        # Add columns
+        for col in table.columns:
+            column_json = {
+                "source_name": col.name,
+                "datatype": str(col.data_type) if hasattr(col, 'data_type') and col.data_type else "string",
+                "format_string": None,
+                "lineage_tag": None,
+                "source_column": col.source_column if hasattr(col, 'source_column') else col.name,
+                "description": None,
+                "is_hidden": getattr(col, 'is_hidden', False),
+                "summarize_by": getattr(col, 'summarize_by', 'none'),
+                "data_category": None,
+                "is_calculated": False,
+                "is_data_type_inferred": True,
+                "annotations": {
+                    "SummarizationSetBy": "Automatic"
+                }
+            }
+            table_json["columns"].append(column_json)
+        
+        # Add hierarchies (empty for now)
+        table_json["hierarchies"] = []
+        
+        # Add partitions with M-query
+        partitions = []
+        if hasattr(table, 'source_query') and table.source_query:
+            partitions.append({
+                "name": table.name,
+                "source_type": "m",
+                "expression": table.source_query
+            })
+        
+        table_json["partitions"] = partitions
+        table_json["has_widget_serialization"] = False
+        table_json["visual_type"] = None
+        table_json["column_settings"] = None
+        
+        # Save to file
+        json_file = extracted_dir / f"table_{table.name}.json"
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(table_json, f, indent=2, ensure_ascii=False)
+        
+        self.logger.info(f"Saved table JSON file: {json_file}")
+        
     def _identify_complex_relationships(self, relationships: List[Relationship]) -> List[Relationship]:
         """
         Identify relationships that are complex and require staging tables.
@@ -1243,3 +1333,31 @@ class StagingTableHandler:
         new_lines.append(f"    {final_step}")
         
         return '\n'.join(new_lines)
+
+    def _filter_replaced_relationships(self, new_relationships: List[Relationship], relationship_groups: Dict[str, List]) -> List[Relationship]:
+        """
+        Filter out relationships that are now handled by dimension tables.
+        Keep only dimension relationships and other relationships not involved in composite keys.
+        
+        Args:
+            new_relationships: List of relationships to filter (should only contain dimension relationships)
+            relationship_groups: Dictionary of relationship groups used to create dimension tables
+            
+        Returns:
+            List of filtered relationships (dimension relationships only)
+        """
+        # For star schema with dimension tables, we only keep the dimension relationships
+        # All the old complex relationships are replaced by the dimension relationships
+        
+        # Filter to keep only dimension relationships (those starting with 'Dim_')
+        dimension_relationships = [
+            rel for rel in new_relationships 
+            if rel.id.startswith('Dim_')
+        ]
+        
+        # Log what we're keeping
+        self.logger.info(f"Keeping {len(dimension_relationships)} dimension relationships")
+        for rel in dimension_relationships:
+            self.logger.info(f"Keeping dimension relationship: {rel.from_table}[{rel.from_column}] -> {rel.to_table}[{rel.to_column}]")
+        
+        return dimension_relationships

@@ -2,7 +2,7 @@ table ITEM_SITE_EXTRACT
 
 
     column 'SITE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -12,7 +12,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'ITEM_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -22,7 +22,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DESCRIPTION'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: DESCRIPTION
 
@@ -32,7 +32,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'UNIT_OF_MEASURE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UNIT_OF_MEASURE
 
@@ -42,7 +42,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DATE_CREATED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_CREATED
 
@@ -52,7 +52,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'TAX_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: TAX_IND
 
@@ -62,7 +62,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'UNIT_PRICE'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: UNIT_PRICE
 
@@ -72,7 +72,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'TYPE_CODE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: TYPE_CODE
 
@@ -82,7 +82,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'FUNCTIONAL_GROUP'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: FUNCTIONAL_GROUP
 
@@ -92,7 +92,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'MATERIAL_CLASS'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: MATERIAL_CLASS
 
@@ -102,7 +102,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'STATUS'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STATUS
 
@@ -112,7 +112,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SITE_RANK'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SITE_RANK
 
@@ -122,7 +122,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DATE_LAST_INVENTORIED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_LAST_INVENTORIED
 
@@ -132,7 +132,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QTY_ON_ORDER'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_ON_ORDER
 
@@ -142,7 +142,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QTY_ON_HAND'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_ON_HAND
 
@@ -152,7 +152,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QTY_AVAILABLE'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_AVAILABLE
 
@@ -162,7 +162,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'MINIMUM'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: MINIMUM
 
@@ -172,7 +172,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'MAXIMUM'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: MAXIMUM
 
@@ -182,7 +182,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'EOQ_QTY'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: EOQ_QTY
 
@@ -192,7 +192,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QA_CODE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: QA_CODE
 
@@ -202,7 +202,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QA_LEVEL'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: QA_LEVEL
 
@@ -212,7 +212,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'CYCLE_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: CYCLE_IND
 
@@ -222,7 +222,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SHELF_LIFE_DATE'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: SHELF_LIFE_DATE
 
@@ -232,7 +232,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DATE_LAST_RECEIVED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_LAST_RECEIVED
 
@@ -242,7 +242,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'FERC_CODE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: FERC_CODE
 
@@ -252,7 +252,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'PRIMARY_LOC'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PRIMARY_LOC
 
@@ -262,7 +262,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SECONDARY_LOC'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SECONDARY_LOC
 
@@ -272,7 +272,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'EXTRA_LOCS'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: EXTRA_LOCS
 
@@ -282,7 +282,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DATE_LAST_APPROVED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_LAST_APPROVED
 
@@ -292,7 +292,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'APPROVER_ID'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: APPROVER_ID
 
@@ -302,7 +302,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'APPROVER_BADGE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: APPROVER_BADGE_NUMBER
 
@@ -312,7 +312,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'APPROVAL_SWITCH'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: APPROVAL_SWITCH
 
@@ -322,7 +322,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QA_CERT1'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: QA_CERT1
 
@@ -332,7 +332,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QA_CERT2'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: QA_CERT2
 
@@ -342,7 +342,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QA_CERT3'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: QA_CERT3
 
@@ -352,7 +352,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QA_CERT4'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: QA_CERT4
 
@@ -362,7 +362,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'VALUE_ON_HAND'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: VALUE_ON_HAND
 
@@ -372,7 +372,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'PREVIOUS_ITEM_ID'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PREVIOUS_ITEM_ID
 
@@ -382,7 +382,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QTY_ALLOCATED'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_ALLOCATED
 
@@ -392,7 +392,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'CONSUMABLE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: CONSUMABLE
 
@@ -402,7 +402,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SHELF_LIFE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SHELF_LIFE
 
@@ -412,7 +412,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'PREVENT_MAINTENANCE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PREVENT_MAINTENANCE
 
@@ -422,7 +422,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'CORPORATE_SWITCH'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: CORPORATE_SWITCH
 
@@ -432,7 +432,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'ITEM_OWNER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_OWNER
 
@@ -442,7 +442,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SAFETY_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SAFETY_IND
 
@@ -452,7 +452,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'UTC_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UTC_IND
 
@@ -462,7 +462,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'ITEM_DEPT'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_DEPT
 
@@ -472,7 +472,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'IN_PROCESS_HOLD'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: IN_PROCESS_HOLD
 
@@ -482,7 +482,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'PIT'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PIT
 
@@ -492,7 +492,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QTY_EXCESS'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_EXCESS
 
@@ -502,7 +502,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'NEW_RANK'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: NEW_RANK
 
@@ -512,7 +512,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SUB_STATUS'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SUB_STATUS
 
@@ -522,7 +522,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'STRATIFIED_TRANS_COUNT'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: STRATIFIED_TRANS_COUNT
 
@@ -532,7 +532,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'STRATIFIED_DATE'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: STRATIFIED_DATE
 
@@ -542,7 +542,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'TOLERANCE_AMOUNT'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: TOLERANCE_AMOUNT
 
@@ -552,7 +552,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'TOLERANCE_PERCENTAGE'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: TOLERANCE_PERCENTAGE
 
@@ -562,7 +562,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SITE_LAST_UPDATED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: SITE_LAST_UPDATED
 
@@ -572,7 +572,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'QTY_ON_HOLD'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: QTY_ON_HOLD
 
@@ -582,7 +582,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'ITEM_LAST_UPDATED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: ITEM_LAST_UPDATED
 
@@ -592,7 +592,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'UNIT_OF_PROPERTY_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UNIT_OF_PROPERTY_NUMBER
 
@@ -602,7 +602,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'UNIT_OF_PROPERTY_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: UNIT_OF_PROPERTY_IND
 
@@ -612,7 +612,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DATE_LAST_ISSUED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_LAST_ISSUED
 
@@ -622,7 +622,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'DATE_LAST_RETURNED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_LAST_RETURNED
 
@@ -632,7 +632,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'CRITICAL_ITEM'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: CRITICAL_ITEM
 
@@ -642,7 +642,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'REVIEW_DATE'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: REVIEW_DATE
 
@@ -652,7 +652,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'STOP'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STOP
 
@@ -662,7 +662,7 @@ table ITEM_SITE_EXTRACT
 
         
     column 'SAP_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SAP_IND
 
@@ -671,33 +671,715 @@ table ITEM_SITE_EXTRACT
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC_1' = ```
-            substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 11,2)
-    ```
-        dataType: string
+    column 'SITE_NUMBER'
+        dataType: DataType.STRING
         summarizeBy: none
+        sourceColumn: SITE_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC_2' = ```
-            substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 11,2)
-    ```
+    column 'ITEM_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_CREATED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TAX_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: TAX_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_CODE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: TYPE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FUNCTIONAL_GROUP'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: FUNCTIONAL_GROUP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MATERIAL_CLASS'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: MATERIAL_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_RANK'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SITE_RANK
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_INVENTORIED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_LAST_INVENTORIED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_ORDER'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_ON_ORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HAND'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_AVAILABLE'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_AVAILABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MINIMUM'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: MINIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAXIMUM'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: MAXIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EOQ_QTY'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: EOQ_QTY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CYCLE_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: CYCLE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE_DATE'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECEIVED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FERC_CODE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: FERC_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRIMARY_LOC'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PRIMARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SECONDARY_LOC'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SECONDARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXTRA_LOCS'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: EXTRA_LOCS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_APPROVED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_LAST_APPROVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVER_ID'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: APPROVER_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVER_BADGE_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: APPROVER_BADGE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVAL_SWITCH'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: APPROVAL_SWITCH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT1'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: QA_CERT1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT2'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: QA_CERT2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT3'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: QA_CERT3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT4'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: QA_CERT4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VALUE_ON_HAND'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: VALUE_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVIOUS_ITEM_ID'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PREVIOUS_ITEM_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ALLOCATED'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_ALLOCATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONSUMABLE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: CONSUMABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVENT_MAINTENANCE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PREVENT_MAINTENANCE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CORPORATE_SWITCH'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: CORPORATE_SWITCH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_OWNER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITEM_OWNER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAFETY_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SAFETY_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UTC_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_DEPT'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITEM_DEPT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IN_PROCESS_HOLD'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: IN_PROCESS_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_EXCESS'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_EXCESS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NEW_RANK'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: NEW_RANK
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUB_STATUS'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SUB_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STRATIFIED_TRANS_COUNT'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: STRATIFIED_TRANS_COUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STRATIFIED_DATE'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: STRATIFIED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOLERANCE_AMOUNT'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: TOLERANCE_AMOUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOLERANCE_PERCENTAGE'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: TOLERANCE_PERCENTAGE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_LAST_UPDATED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: SITE_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HOLD'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: QTY_ON_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_LAST_UPDATED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: ITEM_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PROPERTY_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PROPERTY_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PROPERTY_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PROPERTY_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_ISSUED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_LAST_ISSUED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RETURNED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RETURNED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRITICAL_ITEM'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: CRITICAL_ITEM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REVIEW_DATE'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: REVIEW_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAP_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER_SITE_NUMBER_Key'
         dataType: string
         summarizeBy: none
+        sourceColumn: ITEM_NUMBER_SITE_NUMBER_Key
 
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER_ITEM_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER_ITEM_NUMBER_Key
+
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER_ITEM_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER_ITEM_NUMBER_Key
+
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER_Key
+
+        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -709,13 +1391,17 @@ substring(rpad([SECONDARY_LOC], 12, ' '), 11,2)
     partition 'ITEM_SITE_EXTRACT' = m
         mode: import
         source = 
-            
-                let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
-                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""ITEM_NUMBER"", ""DESCRIPTION"", ""UNIT_OF_MEASURE"", ""DATE_CREATED"", ""TAX_IND"", ""UNIT_PRICE"", ""TYPE_CODE"", ""FUNCTIONAL_GROUP"", ""MATERIAL_CLASS"", ""STATUS"", ""SITE_RANK"", ""DATE_LAST_INVENTORIED"", ""QTY_ON_ORDER"", ""QTY_ON_HAND"", ""QTY_AVAILABLE"", ""MINIMUM"", ""MAXIMUM"", ""EOQ_QTY"", ""QA_CODE"", ""QA_LEVEL"", ""CYCLE_IND"", ""SHELF_LIFE_DATE"", ""DATE_LAST_RECEIVED"", ""FERC_CODE"", ""PRIMARY_LOC"", ""SECONDARY_LOC"", ""EXTRA_LOCS"", ""DATE_LAST_APPROVED"", ""APPROVER_ID"", ""APPROVER_BADGE_NUMBER"", ""APPROVAL_SWITCH"", ""QA_CERT1"", ""QA_CERT2"", ""QA_CERT3"", ""QA_CERT4"", ""VALUE_ON_HAND"", ""PREVIOUS_ITEM_ID"", ""QTY_ALLOCATED"", ""CONSUMABLE"", ""SHELF_LIFE"", ""PREVENT_MAINTENANCE"", ""CORPORATE_SWITCH"", ""ITEM_OWNER"", ""SAFETY_IND"", ""UTC_IND"", ""ITEM_DEPT"", ""IN_PROCESS_HOLD"", ""PIT"", ""QTY_EXCESS"", ""NEW_RANK"", ""SUB_STATUS"", ""STRATIFIED_TRANS_COUNT"", ""STRATIFIED_DATE"", ""TOLERANCE_AMOUNT"", ""TOLERANCE_PERCENTAGE"", ""SITE_LAST_UPDATED"", ""QTY_ON_HOLD"", ""ITEM_LAST_UPDATED"", ""UNIT_OF_PROPERTY_NUMBER"", ""UNIT_OF_PROPERTY_IND"", ""DATE_LAST_ISSUED"", ""DATE_LAST_RETURNED"", ""CRITICAL_ITEM"", ""REVIEW_DATE"", ""STOP"", ""SAP_IND"" FROM ""ITEM_SITE_EXTRACT""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-                in
-                    #"Removed Errors"
+            Select
+    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+    AddCompositeKey_1 = Table.AddColumn(Source, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
+    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
+    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
+    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
+    AddCompositeKey_3 = Table.AddColumn(AddCompositeKey_2, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
+    // Add composite key: ITEM_NUMBER_Key
+    AddCompositeKey_4 = Table.AddColumn(AddCompositeKey_3, "ITEM_NUMBER_Key", each [ITEM_NUMBER], type text)
+in
+    AddCompositeKey_4
         
 
 

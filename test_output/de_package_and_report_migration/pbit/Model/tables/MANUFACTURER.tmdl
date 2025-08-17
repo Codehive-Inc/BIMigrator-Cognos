@@ -2,7 +2,7 @@ table MANUFACTURER
 
 
     column 'ITEM_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -12,7 +12,7 @@ table MANUFACTURER
 
         
     column 'MFG_PART_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: MFG_PART_NUMBER
 
@@ -22,7 +22,7 @@ table MANUFACTURER
 
         
     column 'MODEL_PART_IND'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: MODEL_PART_IND
 
@@ -32,7 +32,7 @@ table MANUFACTURER
 
         
     column 'ACTIVITY_CODE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ACTIVITY_CODE
 
@@ -42,7 +42,7 @@ table MANUFACTURER
 
         
     column 'MFG_CODE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: MFG_CODE
 
@@ -52,7 +52,7 @@ table MANUFACTURER
 
         
     column 'DATE_CREATED'
-        dataType: dateTime
+        dataType: DataType.DATE
         summarizeBy: none
         sourceColumn: DATE_CREATED
 
@@ -62,7 +62,7 @@ table MANUFACTURER
 
         
     column 'MFG_NAME'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: MFG_NAME
 
@@ -72,7 +72,7 @@ table MANUFACTURER
 
         
     column 'COMPRESSED_PART_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: COMPRESSED_PART_NUMBER
 
@@ -82,7 +82,7 @@ table MANUFACTURER
 
         
     column 'FOSSIL_OR_NUCLEAR'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: FOSSIL_OR_NUCLEAR
 
@@ -92,7 +92,7 @@ table MANUFACTURER
 
         
     column 'STOP'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STOP
 
@@ -102,10 +102,131 @@ table MANUFACTURER
 
         
     column 'SITE'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SITE
 
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_PART_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: MFG_PART_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MODEL_PART_IND'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: MODEL_PART_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ACTIVITY_CODE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ACTIVITY_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_CODE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: MFG_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_CREATED'
+        dataType: DataType.DATE
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MFG_NAME'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: MFG_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'COMPRESSED_PART_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: COMPRESSED_PART_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FOSSIL_OR_NUCLEAR'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: FOSSIL_OR_NUCLEAR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER_Key
+
+        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -117,13 +238,11 @@ table MANUFACTURER
     partition 'MANUFACTURER' = m
         mode: import
         source = 
-            
-                let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
-                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""MFG_PART_NUMBER"", ""MODEL_PART_IND"", ""ACTIVITY_CODE"", ""MFG_CODE"", ""DATE_CREATED"", ""MFG_NAME"", ""COMPRESSED_PART_NUMBER"", ""FOSSIL_OR_NUCLEAR"", ""STOP"", ""SITE"" FROM ""MANUFACTURER""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-                in
-                    #"Removed Errors"
+            Select
+    // Add composite key: ITEM_NUMBER_Key
+    AddCompositeKey_1 = Table.AddColumn(Source, "ITEM_NUMBER_Key", each [ITEM_NUMBER], type text)
+in
+    AddCompositeKey_1
         
 
 

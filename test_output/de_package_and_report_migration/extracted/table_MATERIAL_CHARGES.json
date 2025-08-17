@@ -7,7 +7,7 @@
   "columns": [
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -23,7 +23,7 @@
     },
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -39,7 +39,7 @@
     },
     {
       "source_name": "CHARGED_DATE",
-      "datatype": "dateTime",
+      "datatype": "DataType.DATE",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CHARGED_DATE",
@@ -55,7 +55,7 @@
     },
     {
       "source_name": "TIME_ENTERED",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_ENTERED",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "STOREKEEPER_ID",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOREKEEPER_ID",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "EMPLOYEE_ID",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "EMPLOYEE_ID",
@@ -103,7 +103,7 @@
     },
     {
       "source_name": "ISSUE_TICKET_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ISSUE_TICKET_NUMBER",
@@ -119,7 +119,7 @@
     },
     {
       "source_name": "TRANSACTION_TYPE",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TRANSACTION_TYPE",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "ADJUSTMENT_TYPE",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ADJUSTMENT_TYPE",
@@ -151,7 +151,7 @@
     },
     {
       "source_name": "QUANTITY",
-      "datatype": "int64",
+      "datatype": "DataType.INTEGER",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QUANTITY",
@@ -167,7 +167,7 @@
     },
     {
       "source_name": "UNIT_PRICE",
-      "datatype": "int64",
+      "datatype": "DataType.INTEGER",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UNIT_PRICE",
@@ -183,7 +183,7 @@
     },
     {
       "source_name": "TRANSACTION_VALUE",
-      "datatype": "int64",
+      "datatype": "DataType.INTEGER",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TRANSACTION_VALUE",
@@ -199,7 +199,7 @@
     },
     {
       "source_name": "JOB_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "JOB_NUMBER",
@@ -215,7 +215,7 @@
     },
     {
       "source_name": "BU_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "BU_NUMBER",
@@ -231,7 +231,7 @@
     },
     {
       "source_name": "PO_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_NUMBER",
@@ -247,7 +247,7 @@
     },
     {
       "source_name": "PO_INDICATOR",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_INDICATOR",
@@ -263,7 +263,7 @@
     },
     {
       "source_name": "DATE_ENTERED",
-      "datatype": "dateTime",
+      "datatype": "DataType.DATE",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_ENTERED",
@@ -279,7 +279,7 @@
     },
     {
       "source_name": "DATE_STATUS_EFFECTIVE",
-      "datatype": "dateTime",
+      "datatype": "DataType.DATE",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_STATUS_EFFECTIVE",
@@ -295,7 +295,7 @@
     },
     {
       "source_name": "REFURB_IND",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "REFURB_IND",
@@ -311,7 +311,7 @@
     },
     {
       "source_name": "ISSUE_OVERRIDE_IND",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ISSUE_OVERRIDE_IND",
@@ -327,7 +327,7 @@
     },
     {
       "source_name": "RECORD_STATUS",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECORD_STATUS",
@@ -343,7 +343,7 @@
     },
     {
       "source_name": "UNIT_OF_MEASURE",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UNIT_OF_MEASURE",
@@ -359,7 +359,7 @@
     },
     {
       "source_name": "ADJUSTMENT_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ADJUSTMENT_NUMBER",
@@ -375,7 +375,7 @@
     },
     {
       "source_name": "ADJUSTMENT_DESC",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ADJUSTMENT_DESC",
@@ -391,7 +391,7 @@
     },
     {
       "source_name": "QTY_TO_RECONCILE",
-      "datatype": "int64",
+      "datatype": "DataType.INTEGER",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_TO_RECONCILE",
@@ -407,7 +407,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -423,7 +423,7 @@
     },
     {
       "source_name": "TRANSFER_NUMBER",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TRANSFER_NUMBER",
@@ -439,7 +439,7 @@
     },
     {
       "source_name": "MATERIAL_CLASS",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MATERIAL_CLASS",
@@ -455,7 +455,7 @@
     },
     {
       "source_name": "ROOT_DESCRIPTION",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ROOT_DESCRIPTION",
@@ -471,7 +471,7 @@
     },
     {
       "source_name": "ITT_KEY_NO",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITT_KEY_NO",
@@ -487,7 +487,7 @@
     },
     {
       "source_name": "UTC_NO",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UTC_NO",
@@ -503,7 +503,7 @@
     },
     {
       "source_name": "PIT_IND",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PIT_IND",
@@ -519,12 +519,572 @@
     },
     {
       "source_name": "UM",
-      "datatype": "string",
+      "datatype": "DataType.STRING",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UM",
       "description": null,
       "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CHARGED_DATE",
+      "datatype": "DataType.DATE",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CHARGED_DATE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TIME_ENTERED",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TIME_ENTERED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOREKEEPER_ID",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOREKEEPER_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "EMPLOYEE_ID",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "EMPLOYEE_ID",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ISSUE_TICKET_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ISSUE_TICKET_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TRANSACTION_TYPE",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TRANSACTION_TYPE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ADJUSTMENT_TYPE",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ADJUSTMENT_TYPE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QUANTITY",
+      "datatype": "DataType.INTEGER",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QUANTITY",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_PRICE",
+      "datatype": "DataType.INTEGER",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UNIT_PRICE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TRANSACTION_VALUE",
+      "datatype": "DataType.INTEGER",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TRANSACTION_VALUE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "JOB_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "JOB_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "BU_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "BU_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_INDICATOR",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_INDICATOR",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_ENTERED",
+      "datatype": "DataType.DATE",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_ENTERED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_STATUS_EFFECTIVE",
+      "datatype": "DataType.DATE",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_STATUS_EFFECTIVE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "REFURB_IND",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "REFURB_IND",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ISSUE_OVERRIDE_IND",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ISSUE_OVERRIDE_IND",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RECORD_STATUS",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RECORD_STATUS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_OF_MEASURE",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UNIT_OF_MEASURE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ADJUSTMENT_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ADJUSTMENT_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ADJUSTMENT_DESC",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ADJUSTMENT_DESC",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QTY_TO_RECONCILE",
+      "datatype": "DataType.INTEGER",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QTY_TO_RECONCILE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STOP",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STOP",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TRANSFER_NUMBER",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TRANSFER_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MATERIAL_CLASS",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MATERIAL_CLASS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ROOT_DESCRIPTION",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ROOT_DESCRIPTION",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ITT_KEY_NO",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITT_KEY_NO",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UTC_NO",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UTC_NO",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PIT_IND",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PIT_IND",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UM",
+      "datatype": "DataType.STRING",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER_ITEM_NUMBER_Key",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER_ITEM_NUMBER_Key",
+      "description": null,
+      "is_hidden": true,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER_ITEM_NUMBER_Key",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER_ITEM_NUMBER_Key",
+      "description": null,
+      "is_hidden": true,
       "summarize_by": "none",
       "data_category": null,
       "is_calculated": false,
@@ -555,7 +1115,7 @@
     {
       "name": "MATERIAL_CHARGES",
       "source_type": "m",
-      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"ITEM_NUMBER\"\", \"\"CHARGED_DATE\"\", \"\"TIME_ENTERED\"\", \"\"STOREKEEPER_ID\"\", \"\"EMPLOYEE_ID\"\", \"\"ISSUE_TICKET_NUMBER\"\", \"\"TRANSACTION_TYPE\"\", \"\"ADJUSTMENT_TYPE\"\", \"\"QUANTITY\"\", \"\"UNIT_PRICE\"\", \"\"TRANSACTION_VALUE\"\", \"\"JOB_NUMBER\"\", \"\"BU_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"PO_INDICATOR\"\", \"\"DATE_ENTERED\"\", \"\"DATE_STATUS_EFFECTIVE\"\", \"\"REFURB_IND\"\", \"\"ISSUE_OVERRIDE_IND\"\", \"\"RECORD_STATUS\"\", \"\"UNIT_OF_MEASURE\"\", \"\"ADJUSTMENT_NUMBER\"\", \"\"ADJUSTMENT_DESC\"\", \"\"QTY_TO_RECONCILE\"\", \"\"STOP\"\", \"\"TRANSFER_NUMBER\"\", \"\"MATERIAL_CLASS\"\", \"\"ROOT_DESCRIPTION\"\", \"\"ITT_KEY_NO\"\", \"\"UTC_NO\"\", \"\"PIT_IND\"\", \"\"UM\"\" FROM \"\"MATERIAL_CHARGES\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
+      "expression": "Select\n    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key\n    AddCompositeKey_1 = Table.AddColumn(Source, \"SITE_NUMBER_ITEM_NUMBER_Key\", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, \"|\"), type text),\n    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key\n    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, \"SITE_NUMBER_ITEM_NUMBER_Key\", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, \"|\"), type text)\nin\n    AddCompositeKey_2"
     }
   ],
   "has_widget_serialization": false,

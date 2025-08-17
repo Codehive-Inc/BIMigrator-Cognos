@@ -2,7 +2,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
 
     column 'ITEM_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -12,7 +12,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'SITE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -22,7 +22,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'PO_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PO_NUMBER
 
@@ -32,7 +32,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'RELEASE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: RELEASE_NUMBER
 
@@ -42,7 +42,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'PO_LINE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: PO_LINE_NUMBER
 
@@ -52,7 +52,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'TOTAL_NUMBER_SEGMENTS'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: TOTAL_NUMBER_SEGMENTS
 
@@ -62,7 +62,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'NUMBER_SEGMENTS_SELECTED'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: NUMBER_SEGMENTS_SELECTED
 
@@ -72,7 +72,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'LINE_NUMBER1'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LINE_NUMBER1
 
@@ -82,7 +82,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'DESCRIPTION1'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: DESCRIPTION1
 
@@ -92,7 +92,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'LINE_NUMBER2'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LINE_NUMBER2
 
@@ -102,7 +102,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'DESCRIPTION2'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: DESCRIPTION2
 
@@ -112,7 +112,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'LINE_NUMBER3'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LINE_NUMBER3
 
@@ -122,7 +122,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'DESCRIPTION3'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: DESCRIPTION3
 
@@ -132,7 +132,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'LINE_NUMBER4'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LINE_NUMBER4
 
@@ -142,7 +142,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'DESCRIPTION4'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: DESCRIPTION4
 
@@ -152,7 +152,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'LINE_NUMBER5'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LINE_NUMBER5
 
@@ -162,7 +162,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'DESCRIPTION5'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: DESCRIPTION5
 
@@ -172,10 +172,201 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
         
     column 'STOP'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STOP
 
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOTAL_NUMBER_SEGMENTS'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: TOTAL_NUMBER_SEGMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NUMBER_SEGMENTS_SELECTED'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: NUMBER_SEGMENTS_SELECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER1'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION1'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: DESCRIPTION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER2'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION2'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: DESCRIPTION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER3'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION3'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: DESCRIPTION3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER4'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION4'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: DESCRIPTION4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LINE_NUMBER5'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LINE_NUMBER5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION5'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: DESCRIPTION5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+
+        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -187,13 +378,11 @@ table PURCHASE_ORDER_DESCRIPTIONS
     partition 'PURCHASE_ORDER_DESCRIPTIONS' = m
         mode: import
         source = 
-            
-                let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
-                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""SITE_NUMBER"", ""PO_NUMBER"", ""RELEASE_NUMBER"", ""PO_LINE_NUMBER"", ""TOTAL_NUMBER_SEGMENTS"", ""NUMBER_SEGMENTS_SELECTED"", ""LINE_NUMBER1"", ""DESCRIPTION1"", ""LINE_NUMBER2"", ""DESCRIPTION2"", ""LINE_NUMBER3"", ""DESCRIPTION3"", ""LINE_NUMBER4"", ""DESCRIPTION4"", ""LINE_NUMBER5"", ""DESCRIPTION5"", ""STOP"" FROM ""PURCHASE_ORDER_DESCRIPTIONS""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-                in
-                    #"Removed Errors"
+            Select
+    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+    AddCompositeKey_1 = Table.AddColumn(Source, "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text)
+in
+    AddCompositeKey_1
         
 
 

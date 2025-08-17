@@ -2,7 +2,7 @@ table STORAGE_LOCATION
 
 
     column 'ITEM_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -12,7 +12,7 @@ table STORAGE_LOCATION
 
         
     column 'SITE_NUMBER'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -22,7 +22,7 @@ table STORAGE_LOCATION
 
         
     column 'SEGMENTS'
-        dataType: int64
+        dataType: DataType.INTEGER
         summarizeBy: none
         sourceColumn: SEGMENTS
 
@@ -32,7 +32,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION1'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION1
 
@@ -42,7 +42,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_1'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_1
 
@@ -52,7 +52,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION2'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION2
 
@@ -62,7 +62,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_2'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_2
 
@@ -72,7 +72,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION3'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION3
 
@@ -82,7 +82,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_3'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_3
 
@@ -92,7 +92,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION4'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION4
 
@@ -102,7 +102,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_4'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_4
 
@@ -112,7 +112,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION5'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION5
 
@@ -122,7 +122,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_5'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_5
 
@@ -132,7 +132,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION6'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION6
 
@@ -142,7 +142,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_6'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_6
 
@@ -152,7 +152,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION7'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION7
 
@@ -162,7 +162,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_7'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_7
 
@@ -172,7 +172,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION8'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION8
 
@@ -182,7 +182,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_8'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_8
 
@@ -192,7 +192,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION9'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION9
 
@@ -202,7 +202,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_9'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_9
 
@@ -212,7 +212,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION10'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOCATION10
 
@@ -222,7 +222,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_10'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: LOC_NUMBER_10
 
@@ -232,7 +232,7 @@ table STORAGE_LOCATION
 
         
     column 'STOP'
-        dataType: string
+        dataType: DataType.STRING
         summarizeBy: none
         sourceColumn: STOP
 
@@ -241,33 +241,263 @@ table STORAGE_LOCATION
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC1' = ```
-            substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +
-substring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +
-substring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +
-substring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +
-substring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +
-substring(rpad([LOCATION1], 12, ' '), 11,2)
-    ```
-        dataType: string
+    column 'ITEM_NUMBER'
+        dataType: DataType.STRING
         summarizeBy: none
+        sourceColumn: ITEM_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'LOC2' = ```
-            substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +
-substring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +
-substring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +
-substring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +
-substring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +
-substring(rpad([LOCATION2], 12, ' '), 11,2)
-    ```
+    column 'SITE_NUMBER'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SEGMENTS'
+        dataType: DataType.INTEGER
+        summarizeBy: none
+        sourceColumn: SEGMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION1'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_1'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION2'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_2'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION3'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_3'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION4'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_4'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION5'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_5'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION6'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_6'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION7'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION7
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_7'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_7
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION8'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION8
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_8'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_8
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION9'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION9
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_9'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_9
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION10'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOCATION10
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_10'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_10
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: DataType.STRING
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER_SITE_NUMBER_Key'
         dataType: string
         summarizeBy: none
+        sourceColumn: ITEM_NUMBER_SITE_NUMBER_Key
 
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER_SITE_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER_SITE_NUMBER_Key
+
+        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -279,13 +509,13 @@ substring(rpad([LOCATION2], 12, ' '), 11,2)
     partition 'STORAGE_LOCATION' = m
         mode: import
         source = 
-            
-                let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
-                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""SITE_NUMBER"", ""SEGMENTS"", ""LOCATION1"", ""LOC_NUMBER_1"", ""LOCATION2"", ""LOC_NUMBER_2"", ""LOCATION3"", ""LOC_NUMBER_3"", ""LOCATION4"", ""LOC_NUMBER_4"", ""LOCATION5"", ""LOC_NUMBER_5"", ""LOCATION6"", ""LOC_NUMBER_6"", ""LOCATION7"", ""LOC_NUMBER_7"", ""LOCATION8"", ""LOC_NUMBER_8"", ""LOCATION9"", ""LOC_NUMBER_9"", ""LOCATION10"", ""LOC_NUMBER_10"", ""STOP"" FROM ""STORAGE_LOCATION""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-                in
-                    #"Removed Errors"
+            Select
+    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+    AddCompositeKey_1 = Table.AddColumn(Source, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
+    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text)
+in
+    AddCompositeKey_2
         
 
 
