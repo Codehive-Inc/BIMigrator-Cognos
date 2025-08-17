@@ -639,9 +639,8 @@ def _migrate_shared_model(
     else:
         logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")
         
-    # --- Step 7.5: Ensure calculations are propagated to table.tmdl files ---
-    logging.info("Ensuring calculations are propagated to table.tmdl files")
-    _ensure_calculations_in_tmdl_files(pbit_dir / "Model", extracted_dir)
+    # --- Step 7.5: Calculations are handled through the table JSON files ---
+    logging.info("Calculations are handled through the table JSON files")
 
     return True, str(output_path)
 

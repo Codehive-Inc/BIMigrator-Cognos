@@ -3,7 +3,7 @@
 ## Summary
 
 - **Report Name**: MaterialReceiptDetail_UC016
-- **Migration Date**: 2025-08-16 20:10:19
+- **Migration Date**: 2025-08-16 20:25:47
 
 ## Data Model
 
