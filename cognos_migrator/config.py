@@ -35,3 +35,8 @@ class MigrationConfig:
     llm_service_url: Optional[str] = None
     llm_service_api_key: Optional[str] = None
     llm_service_enabled: bool = False
+    # Staging table configuration
+    staging_tables_enabled: bool = True
+    staging_table_prefix: str = "Staging_"
+    auto_create_shared_keys: bool = True
+    staging_table_mode: str = "auto"  # "auto", "manual", "off"

@@ -5,5 +5,16 @@
     "always_include": [
       "CentralDateTable"
     ]
+  },
+  "staging_tables": {
+    "enabled": true,
+    "mode": "auto",
+    "prefix": "Staging_",
+    "auto_create_shared_keys": true,
+    "join_analysis": {
+      "use_llm": true,
+      "min_join_confidence": 0.8,
+      "composite_key_handling": "create_surrogate"
+    }
   }
 }

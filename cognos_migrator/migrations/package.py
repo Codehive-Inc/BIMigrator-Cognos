@@ -1035,3 +1035,79 @@ def _consolidate_intermediate_reports_into_final(
                 section_ordinal += 1
     
     logger.info(f"Successfully consolidated {section_ordinal} report sections with slicers into final report")
+
+# Add staging table integration at the end of the existing package.py file
+
+def integrate_staging_tables_with_package_migration(package_file_path: str, 
+                                                   output_path: str,
+                                                   settings: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Integrate staging table functionality with package migration
+    
+    Args:
+        package_file_path: Path to the Cognos package file
+        output_path: Output directory path
+        settings: Optional staging table settings
+        
+    Returns:
+        Dictionary containing staging integration results
+    """
+    import logging
+    from pathlib import Path
+    from ..staging_orchestrator import StagingTableOrchestrator
+    from ..extractors.packages.consolidated_package_extractor import ConsolidatedPackageExtractor
+    from ..llm_service import LLMServiceClient
+    
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Load settings
+        if not settings:
+            settings = load_table_filtering_settings()
+        
+        staging_settings = settings.get('staging_tables', {})
+        if not staging_settings.get('enabled', False):
+            logger.info("Staging tables disabled, skipping staging integration")
+            return {'staging_enabled': False}
+        
+        logger.info("Integrating staging tables with package migration")
+        
+        # Extract package information
+        package_extractor = ConsolidatedPackageExtractor()
+        package_info = package_extractor.extract_package(package_file_path, output_path)
+        
+        # Convert to data model
+        data_model = package_extractor.convert_to_data_model(package_info)
+        
+        # Initialize LLM service if enabled
+        llm_service_client = None
+        if staging_settings.get('join_analysis', {}).get('use_llm', False):
+            # This would initialize the LLM service from settings
+            # For now, we'll proceed without it
+            pass
+        
+        # Initialize staging orchestrator
+        staging_orchestrator = StagingTableOrchestrator(llm_service_client, logger)
+        
+        # No report queries for package-only migration, use empty list
+        report_queries = []
+        
+        # Implement staging tables
+        output_dir = Path(output_path)
+        staging_results = staging_orchestrator.implement_staging_tables(
+            package_info,
+            report_queries,
+            data_model,
+            output_dir,
+            settings
+        )
+        
+        logger.info(f"Staging table integration complete: {staging_results.get('staging_tables_created', 0)} tables created")
+        return staging_results
+        
+    except Exception as e:
+        logger.error(f"Error integrating staging tables: {e}")
+        return {
+            'staging_enabled': True,
+            'error': str(e),
+            'staging_tables_created': 0
+        }
