@@ -197,10 +197,10 @@ class StagingTableHandler:
         
         self.logger.info(f"Grouped complex relationships into {len(relationship_groups)} groups")
         
-        # Create staging tables for each relationship group
+        # Create dimension tables from relationship groups
         new_tables = list(data_model.tables)  # Start with all original tables
-        staging_tables = []
-        staging_table_map = {}  # Maps original table pairs to staging tables
+        dimension_tables = []
+        dimension_table_map = {}  # Maps original table pairs to dimension tables
         
         for group_key, relationships in relationship_groups.items():
             # Extract table names from the group key
@@ -217,8 +217,8 @@ class StagingTableHandler:
             if not from_table or not to_table:
                 continue
                 
-            # Create a staging table for this relationship group
-            staging_table_name = f"{self.naming_prefix}{from_table_name}_{to_table_name}"
+            # Create a dimension table for this relationship group
+            dimension_table_name = f"Dim_{from_table_name}_{to_table_name}"
             
             # Get all columns needed for the relationships in this group
             if self.sql_relationships:
@@ -226,15 +226,15 @@ class StagingTableHandler:
             else:
                 columns = self._extract_columns_for_staging_table(relationships, from_table, to_table)
             
-            # Create the staging table
-            staging_table = self._create_staging_table_with_columns(staging_table_name, columns, relationships)
-            new_tables.append(staging_table)
-            staging_tables.append(staging_table)
-            staging_table_map[group_key] = staging_table_name
+            # Create the dimension table with composite key
+            dimension_table = self._create_dimension_table_with_composite_key(dimension_table_name, columns, relationships, from_table, to_table)
+            new_tables.append(dimension_table)
+            dimension_tables.append(dimension_table)
+            dimension_table_map[group_key] = dimension_table_name
             
-            self.logger.info(f"Created staging table {staging_table_name} with {len(columns)} columns")
+            self.logger.info(f"Created dimension table {dimension_table_name} with {len(columns)} columns plus composite key")
         
-        # Create new relationships using staging tables
+        # Create new relationships using dimension tables
         new_relationships = []
         
         # Keep non-complex relationships (from basic data model)
@@ -249,55 +249,56 @@ class StagingTableHandler:
                 if not self._is_relationship_in_list(rel, complex_relationships):
                     new_relationships.append(rel)
         
-        # Create new relationships using staging tables
+        # Create new relationships using dimension tables with single composite key
         for group_key, relationships in relationship_groups.items():
-            if group_key not in staging_table_map:
+            if group_key not in dimension_table_map:
                 continue
                 
-            staging_table_name = staging_table_map[group_key]
+            dimension_table_name = dimension_table_map[group_key]
             table_names = group_key.split(':')
             if len(table_names) != 2:
                 continue
                 
             from_table_name, to_table_name = table_names
             
-            # Create relationships between staging table and original tables
+            # Create relationships between dimension table and original tables using composite key
             if self.sql_relationships:
-                # For SQL relationships, we need to create relationships for all key columns
-                self._create_staging_relationships_from_sql(relationships, staging_table_name, 
+                # For SQL relationships, create relationships using composite key
+                self._create_dimension_relationships_from_sql(relationships, dimension_table_name, 
                                                           from_table_name, to_table_name, new_relationships)
             else:
-                # Use the original logic for basic relationships
+                # Use the original logic for basic relationships with composite key
+                composite_key_name = self._get_composite_key_name(relationships)
                 for rel in relationships:
-                    # Create relationship from staging table to from_table
+                    # Create relationship from dimension table to from_table
                     from_rel = Relationship(
-                        id=f"Staging_{rel.id}_From",
-                        from_table=staging_table_name,
-                        from_column=rel.from_column,
+                        id=f"Dim_{rel.id}_From",
+                        from_table=dimension_table_name,
+                        from_column=composite_key_name,
                         to_table=from_table_name,
-                        to_column=rel.from_column,
-                        from_cardinality="many",
-                        to_cardinality="one",
-                        cross_filtering_behavior="BothDirections",
+                        to_column=composite_key_name,
+                        from_cardinality="one",
+                        to_cardinality="many",
+                        cross_filtering_behavior="OneDirection",
                         is_active=True
                     )
                     new_relationships.append(from_rel)
                     
-                    # Create relationship from staging table to to_table
+                    # Create relationship from dimension table to to_table
                     to_rel = Relationship(
-                        id=f"Staging_{rel.id}_To",
-                        from_table=staging_table_name,
-                        from_column=rel.to_column,
+                        id=f"Dim_{rel.id}_To",
+                        from_table=dimension_table_name,
+                        from_column=composite_key_name,
                         to_table=to_table_name,
-                        to_column=rel.to_column,
-                        from_cardinality="many",
-                        to_cardinality="one",
-                        cross_filtering_behavior="BothDirections",
+                        to_column=composite_key_name,
+                        from_cardinality="one",
+                        to_cardinality="many",
+                        cross_filtering_behavior="OneDirection",
                         is_active=True
                     )
                     new_relationships.append(to_rel)
                     
-                    self.logger.info(f"Created staging relationships for {rel.id} using {staging_table_name}")
+                    self.logger.info(f"Created dimension relationships for {rel.id} using {dimension_table_name}")
         
         # Create new data model with updated tables and relationships
         new_data_model = DataModel(
@@ -307,13 +308,16 @@ class StagingTableHandler:
             compatibility_level=data_model.compatibility_level
         )
         
+        # Add composite keys to fact tables
+        new_data_model = self._add_composite_keys_to_fact_tables(new_data_model, relationship_groups)
+        
         # Copy any additional attributes from the original data model
         for attr, value in vars(data_model).items():
             if attr not in ['name', 'tables', 'relationships', 'compatibility_level']:
                 setattr(new_data_model, attr, value)
         
         self.logger.info(f"Processed data model with 'star_schema' approach: "
-                         f"{len(new_tables)} tables, {len(new_relationships)} relationships")
+                         f"{len(new_data_model.tables)} tables, {len(new_relationships)} relationships")
         return new_data_model
     
     def _identify_complex_relationships(self, relationships: List[Relationship]) -> List[Relationship]:
@@ -846,57 +850,396 @@ class StagingTableHandler:
         self.logger.info(f"Extracted {len(columns)} columns from SQL relationships: {[col['name'] for col in columns]}")
         return columns
     
-    def _create_staging_relationships_from_sql(self, sql_relationships: List[Dict[str, Any]], 
-                                              staging_table_name: str, from_table_name: str, 
+    def _create_dimension_table_with_composite_key(self, table_name: str, columns: List[Dict[str, str]], 
+                                                    relationships: List[Relationship], from_table: Table, to_table: Table) -> Table:
+        """
+        Create a dimension table with a composite key based on relationships.
+        
+        Args:
+            table_name: Name for the dimension table
+            columns: List of column definitions (excluding composite key)
+            relationships: List of relationships that will use this dimension table
+            from_table: The 'from' table in the relationships
+            to_table: The 'to' table in the relationships
+            
+        Returns:
+            A new Table object representing the dimension table with composite key
+        """
+        # Create Column objects from column definitions
+        column_objects = []
+        for col_def in columns:
+            col = Column(
+                name=col_def['name'],
+                data_type=col_def['dataType'],
+                source_column=col_def['sourceColumn']
+            )
+            # Add additional properties
+            col.summarize_by = col_def['summarizeBy']
+            column_objects.append(col)
+            
+        # Extract table names from relationships for M-query generation
+        source_tables = set()
+        for rel in relationships:
+            if isinstance(rel, dict):
+                # SQL relationship dictionary
+                source_tables.add(rel.get('table_a_one_side', ''))
+                source_tables.add(rel.get('table_b_many_side', ''))
+            else:
+                # Relationship object
+                source_tables.add(rel.from_table)
+                source_tables.add(rel.to_table)
+        
+        # Remove empty strings
+        source_tables.discard('')
+        
+        # Generate M-query for the dimension table
+        m_query = self._generate_dimension_table_m_query(table_name, column_objects, list(source_tables), relationships)
+        
+        # Create metadata
+        metadata = {
+            'is_staging_table': False, # Dimension tables are not staging tables
+            'source_tables': list(source_tables),
+            'is_source_table': False
+        }
+        
+        # Create the dimension table with composite key
+        dimension_table = Table(
+            name=table_name,
+            columns=column_objects,
+            source_query=m_query,
+            metadata=metadata
+        )
+        
+        # Add composite key columns
+        composite_key_name = self._get_composite_key_name(relationships)
+        composite_key_column = Column(
+            name=composite_key_name,
+            data_type='string',
+            source_column=composite_key_name
+        )
+        dimension_table.columns.append(composite_key_column)
+        
+        return dimension_table
+    
+    def _get_composite_key_name(self, relationships: List[Relationship]) -> str:
+        """
+        Generate a composite key name for a dimension table.
+        
+        Args:
+            relationships: List of relationships that will use this dimension table
+            
+        Returns:
+            A string representing the composite key name
+        """
+        if self.sql_relationships and isinstance(relationships[0], dict):
+            # For SQL relationships, use the actual key columns to create a meaningful name
+            first_rel = relationships[0]
+            keys_a = first_rel.get('keys_a', [])
+            keys_b = first_rel.get('keys_b', [])
+            all_keys = keys_a + keys_b
+            unique_keys = list(dict.fromkeys(all_keys))  # Remove duplicates while preserving order
+            if unique_keys:
+                return f"{'_'.join(unique_keys)}_Key"
+        
+        # Fallback for basic relationships
+        return "CompositeKey"
+    
+    def _generate_dimension_table_m_query(self, table_name: str, columns: List[Column], 
+                                        source_tables: List[str], relationships: List[Relationship]) -> str:
+        """
+        Generate an M-query for a dimension table with composite key.
+        
+        Args:
+            table_name: Name of the dimension table
+            columns: List of columns in the dimension table (excluding composite key)
+            source_tables: List of source tables to extract data from
+            relationships: List of relationships to determine composite key logic
+            
+        Returns:
+            M-query string for the dimension table
+        """
+        # Extract column names for the query (excluding the composite key)
+        column_names = [col.name for col in columns]
+        column_list = ', '.join([f'"{name}"' for name in column_names])
+        
+        # Get composite key name and logic
+        composite_key_name = self._get_composite_key_name(relationships)
+        composite_key_logic = self._generate_composite_key_logic(relationships)
+        
+        # Build the M-query
+        m_query_parts = ["let"]
+        
+        # Add steps for each source table
+        for i, source_table in enumerate(source_tables):
+            step_name = f"Data_From_{source_table.replace(' ', '_')}"
+            m_query_parts.append(f"    // Get data from {source_table}")
+            m_query_parts.append(f"    {step_name} = Table.SelectColumns({source_table}, {{{column_list}}}),")
+            
+        # Combine data from all source tables
+        if len(source_tables) > 1:
+            combine_tables = [f"Data_From_{table.replace(' ', '_')}" for table in source_tables]
+            combine_list = ", ".join(combine_tables)
+            m_query_parts.append(f"    // Combine data from all source tables")
+            m_query_parts.append(f"    CombinedData = Table.Combine({{{combine_list}}}),")
+            m_query_parts.append(f"    // Get unique combinations of dimension keys")
+            m_query_parts.append(f"    UniqueRows = Table.Distinct(CombinedData, {{{column_list}}}),")
+            final_step_before_key = "UniqueRows"
+        else:
+            source_table_clean = source_tables[0].replace(' ', '_')
+            m_query_parts.append(f"    // Get unique combinations of dimension keys")
+            m_query_parts.append(f"    UniqueRows = Table.Distinct(Data_From_{source_table_clean}, {{{column_list}}}),")
+            final_step_before_key = "UniqueRows"
+        
+        # Add composite key generation
+        m_query_parts.append(f"    // Create composite key for relationships")
+        m_query_parts.append(f"    AddCompositeKey = Table.AddColumn({final_step_before_key}, \"{composite_key_name}\", {composite_key_logic}, type text),")
+        
+        # Filter out null/empty keys
+        m_query_parts.append(f"    // Filter out rows with null or empty composite keys")
+        m_query_parts.append(f"    FilteredRows = Table.SelectRows(AddCompositeKey, each [{composite_key_name}] <> null and [{composite_key_name}] <> \"\"),")
+        
+        # Remove the trailing comma from the last step
+        m_query_parts[-1] = m_query_parts[-1].rstrip(",")
+        
+        # Add the final in clause
+        m_query_parts.append(f"in")
+        m_query_parts.append(f"    FilteredRows")
+        
+        # Join all parts with newlines
+        m_query = "\n".join(m_query_parts)
+        
+        return m_query
+    
+    def _generate_composite_key_logic(self, relationships: List[Relationship]) -> str:
+        """
+        Generate the M-query logic for creating a composite key.
+        
+        Args:
+            relationships: List of relationships to determine composite key logic
+            
+        Returns:
+            M-query expression for creating the composite key
+        """
+        if self.sql_relationships and isinstance(relationships[0], dict):
+            # For SQL relationships, use the actual key columns
+            first_rel = relationships[0]
+            keys_a = first_rel.get('keys_a', [])
+            keys_b = first_rel.get('keys_b', [])
+            all_keys = keys_a + keys_b
+            unique_keys = list(dict.fromkeys(all_keys))  # Remove duplicates while preserving order
+            
+            if len(unique_keys) == 1:
+                return f"each [{unique_keys[0]}]"
+            elif len(unique_keys) > 1:
+                # Create composite key by concatenating with "|" separator
+                key_parts = [f"[{key}]" for key in unique_keys]
+                return f"each Text.Combine({{{', '.join(key_parts)}}}, \"|\")"
+        
+        # Fallback for basic relationships
+        return 'each "CompositeKey"'
+    
+    def _create_dimension_relationships_from_sql(self, sql_relationships: List[Dict[str, Any]], 
+                                              dimension_table_name: str, from_table_name: str, 
                                               to_table_name: str, new_relationships: List[Relationship]) -> None:
         """
-        Create staging relationships from SQL relationship data.
+        Create dimension relationships from SQL relationship data using composite keys.
         
         Args:
             sql_relationships: List of SQL relationships
-            staging_table_name: Name of the staging table
+            dimension_table_name: Name of the dimension table
             from_table_name: Name of the 'from' table
             to_table_name: Name of the 'to' table
             new_relationships: List to append new relationships to
         """
+        # Get the composite key name for this dimension table
+        composite_key_name = self._get_composite_key_name(sql_relationships)
+        
+        # Create one relationship per fact table, not per key column
+        related_tables = set()
         for rel in sql_relationships:
             table_a = rel.get('table_a_one_side', '')
             table_b = rel.get('table_b_many_side', '')
-            keys_a = rel.get('keys_a', [])
-            keys_b = rel.get('keys_b', [])
             
-            # Create relationships for each key pair
-            for i, (key_a, key_b) in enumerate(zip(keys_a, keys_b)):
-                rel_id_base = rel.get('relationship_name', '').replace(' ', '_').replace('<->', '_')
+            if table_a in [from_table_name, to_table_name]:
+                related_tables.add(table_a)
+            if table_b in [from_table_name, to_table_name]:
+                related_tables.add(table_b)
+        
+        # Create one relationship per related table using the composite key
+        for i, table_name in enumerate(related_tables):
+            rel_id_base = f"{dimension_table_name}_to_{table_name}".replace(' ', '_')
+            
+            # Create relationship from dimension table to fact table
+            dim_rel = Relationship(
+                id=f"Dim_{rel_id_base}",
+                from_table=dimension_table_name,
+                from_column=composite_key_name,
+                to_table=table_name,
+                to_column=composite_key_name,  # Fact table should also have this composite key
+                from_cardinality="one",
+                to_cardinality="many",
+                cross_filtering_behavior="OneDirection",
+                is_active=True
+            )
+            new_relationships.append(dim_rel)
+            
+            self.logger.info(f"Created dimension relationship: {dimension_table_name}[{composite_key_name}] -> {table_name}[{composite_key_name}]")
+
+    def _add_composite_keys_to_fact_tables(self, data_model: DataModel, relationship_groups: Dict[str, List]) -> DataModel:
+        """
+        Add composite key columns to fact tables based on their relationships with dimension tables.
+        
+        Args:
+            data_model: The data model to enhance
+            relationship_groups: Dictionary of relationship groups used to create dimension tables
+            
+        Returns:
+            Enhanced data model with composite keys added to fact tables
+        """
+        self.logger.info("Adding composite keys to fact tables")
+        
+        # Track which fact tables need which composite keys
+        fact_table_keys = {}  # {table_name: [(composite_key_name, composite_key_logic, relationships)]}
+        
+        for group_key, relationships in relationship_groups.items():
+            table_names = group_key.split(':')
+            if len(table_names) != 2:
+                continue
                 
-                # Create relationship from staging table to table A
-                if table_a in [from_table_name, to_table_name]:
-                    from_rel = Relationship(
-                        id=f"Staging_{rel_id_base}_{i}_A",
-                        from_table=staging_table_name,
-                        from_column=key_a,
-                        to_table=table_a,
-                        to_column=key_a,
-                        from_cardinality="many",
-                        to_cardinality="one",
-                        cross_filtering_behavior="BothDirections",
-                        is_active=True
-                    )
-                    new_relationships.append(from_rel)
-                
-                # Create relationship from staging table to table B
-                if table_b in [from_table_name, to_table_name]:
-                    to_rel = Relationship(
-                        id=f"Staging_{rel_id_base}_{i}_B",
-                        from_table=staging_table_name,
-                        from_column=key_b,
-                        to_table=table_b,
-                        to_column=key_b,
-                        from_cardinality="many",
-                        to_cardinality="one",
-                        cross_filtering_behavior="BothDirections",
-                        is_active=True
-                    )
-                    new_relationships.append(to_rel)
-                
-                self.logger.info(f"Created staging relationships for {rel['relationship_name']} key pair: {key_a} - {key_b}")
+            from_table_name, to_table_name = table_names
+            composite_key_name = self._get_composite_key_name(relationships)
+            composite_key_logic = self._generate_composite_key_logic(relationships)
+            
+            # Add this composite key to both fact tables
+            for table_name in [from_table_name, to_table_name]:
+                if table_name not in fact_table_keys:
+                    fact_table_keys[table_name] = []
+                fact_table_keys[table_name].append((composite_key_name, composite_key_logic, relationships))
+        
+        # Update fact table queries to include composite keys
+        updated_tables = []
+        for table in data_model.tables:
+            if table.name in fact_table_keys:
+                # This is a fact table that needs composite keys
+                updated_table = self._add_composite_keys_to_table(table, fact_table_keys[table.name])
+                updated_tables.append(updated_table)
+                self.logger.info(f"Added {len(fact_table_keys[table.name])} composite keys to fact table {table.name}")
+            else:
+                # Keep table as is
+                updated_tables.append(table)
+        
+        # Create new data model with updated tables
+        new_data_model = DataModel(
+            name=data_model.name,
+            tables=updated_tables,
+            relationships=data_model.relationships,
+            compatibility_level=data_model.compatibility_level
+        )
+        
+        return new_data_model
+    
+    def _add_composite_keys_to_table(self, table: Table, composite_keys: List[Tuple[str, str, List]]) -> Table:
+        """
+        Add composite key columns to a fact table.
+        
+        Args:
+            table: The original table
+            composite_keys: List of (composite_key_name, composite_key_logic, relationships) tuples
+            
+        Returns:
+            Updated table with composite key columns and modified M-query
+        """
+        # Create new columns including composite keys
+        new_columns = list(table.columns)
+        
+        for composite_key_name, composite_key_logic, relationships in composite_keys:
+            # Add composite key column
+            composite_key_column = Column(
+                name=composite_key_name,
+                data_type='string',
+                source_column=composite_key_name
+            )
+            composite_key_column.summarize_by = 'none'
+            composite_key_column.is_hidden = True  # Hide composite keys as they're for relationships only
+            new_columns.append(composite_key_column)
+        
+        # Update M-query to include composite key generation
+        updated_m_query = self._update_fact_table_m_query(table.source_query, composite_keys)
+        
+        # Create updated table
+        updated_table = Table(
+            name=table.name,
+            columns=new_columns,
+            source_query=updated_m_query,
+            metadata=table.metadata
+        )
+        
+        # Copy any additional attributes
+        for attr, value in vars(table).items():
+            if attr not in ['name', 'columns', 'source_query', 'metadata']:
+                setattr(updated_table, attr, value)
+        
+        return updated_table
+    
+    def _update_fact_table_m_query(self, original_m_query: str, composite_keys: List[Tuple[str, str, List]]) -> str:
+        """
+        Update a fact table's M-query to include composite key generation.
+        
+        Args:
+            original_m_query: The original M-query
+            composite_keys: List of (composite_key_name, composite_key_logic, relationships) tuples
+            
+        Returns:
+            Updated M-query with composite key generation
+        """
+        if not composite_keys:
+            return original_m_query
+        
+        # Parse the original query to find the final step
+        lines = original_m_query.strip().split('\n')
+        if not lines:
+            return original_m_query
+        
+        # Find the 'in' clause and the step before it
+        in_line_index = -1
+        final_step = "Source"  # Default fallback
+        
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            if stripped == "in":
+                in_line_index = i
+                # The line after 'in' should contain the final step
+                if i + 1 < len(lines):
+                    final_step = lines[i + 1].strip()
+                break
+        
+        if in_line_index == -1:
+            # No 'in' clause found, append to the end
+            new_lines = lines[:]
+        else:
+            # Insert before the 'in' clause
+            new_lines = lines[:in_line_index]
+        
+        # Add composite key generation steps
+        for i, (composite_key_name, composite_key_logic, relationships) in enumerate(composite_keys):
+            step_name = f"AddCompositeKey_{i + 1}"
+            if i == 0:
+                previous_step = final_step
+            else:
+                previous_step = f"AddCompositeKey_{i}"
+            
+            new_lines.append(f"    // Add composite key: {composite_key_name}")
+            new_lines.append(f"    {step_name} = Table.AddColumn({previous_step}, \"{composite_key_name}\", {composite_key_logic}, type text),")
+        
+        # Update the final step name
+        if composite_keys:
+            final_step = f"AddCompositeKey_{len(composite_keys)}"
+            # Remove trailing comma from last step
+            if new_lines and new_lines[-1].endswith(','):
+                new_lines[-1] = new_lines[-1][:-1]
+        
+        # Add the 'in' clause back
+        new_lines.append("in")
+        new_lines.append(f"    {final_step}")
+        
+        return '\n'.join(new_lines)

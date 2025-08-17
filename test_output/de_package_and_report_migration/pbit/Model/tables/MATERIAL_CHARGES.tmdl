@@ -331,6 +331,20 @@ table MATERIAL_CHARGES
         annotation SummarizationSetBy = Automatic
 
         
+    column 'Cost' = ```
+            IF ( [UNIT_PRICE] = 0 ) THEN
+	( [TRANSACTION_VALUE] )
+ELSE
+	( [UNIT_PRICE] )
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 

@@ -1,0 +1,39 @@
+table Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER_ITEM_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER_ITEM_NUMBER_Key
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+
+
+    annotation PBI_ResultType = Table

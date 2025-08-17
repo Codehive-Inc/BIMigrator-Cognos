@@ -671,6 +671,38 @@ table ITEM_SITE_EXTRACT
         annotation SummarizationSetBy = Automatic
 
         
+    column 'LOC_1' = ```
+            substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 11,2)
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_2' = ```
+            substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 11,2)
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 

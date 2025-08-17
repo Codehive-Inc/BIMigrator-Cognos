@@ -241,6 +241,38 @@ table STORAGE_LOCATION
         annotation SummarizationSetBy = Automatic
 
         
+    column 'LOC1' = ```
+            substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +
+substring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +
+substring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +
+substring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +
+substring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +
+substring(rpad([LOCATION1], 12, ' '), 11,2)
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC2' = ```
+            substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +
+substring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +
+substring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +
+substring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +
+substring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +
+substring(rpad([LOCATION2], 12, ' '), 11,2)
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
