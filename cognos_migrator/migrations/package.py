@@ -182,22 +182,22 @@ def migrate_package_with_explicit_session(package_file_path: str,
         )
         generator = PowerBIProjectGenerator(config=config)
         
-        # Use the package-specific M-query converter for package migrations
+        # Use the package-specific M-query converter and generator for package migrations
         from cognos_migrator.converters import PackageMQueryConverter
-        from cognos_migrator.generators.module_generators import ModuleModelFileGenerator
+        from cognos_migrator.generators.package_model_file_generator import PackageModelFileGenerator
         from cognos_migrator.generators.template_engine import TemplateEngine
         
         # Initialize template engine and package M-query converter
         template_engine = TemplateEngine(template_directory=config.template_directory)
         package_mquery_converter = PackageMQueryConverter(output_path=str(output_dir))
         
-        # Set up the model file generator with the package-specific converter
+        # Set up the package-specific model file generator
         if hasattr(generator, 'model_file_generator'):
-            module_model_file_generator = ModuleModelFileGenerator(
+            package_model_file_generator = PackageModelFileGenerator(
                 template_engine, 
                 mquery_converter=package_mquery_converter
             )
-            generator.model_file_generator = module_model_file_generator
+            generator.model_file_generator = package_model_file_generator
         
         # Generate Power BI project files
         success = generator.generate_project(pbi_project, pbit_dir)
