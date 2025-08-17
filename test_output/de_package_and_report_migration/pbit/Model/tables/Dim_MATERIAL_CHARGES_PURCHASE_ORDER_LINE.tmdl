@@ -38,12 +38,12 @@ table Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE
         mode: import
         source = 
             let
-                // Get data from MATERIAL_CHARGES
-                Data_From_MATERIAL_CHARGES = Table.SelectColumns(MATERIAL_CHARGES, {"SITE_NUMBER", "ITEM_NUMBER"}),
                 // Get data from PURCHASE_ORDER_LINE
                 Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {"SITE_NUMBER", "ITEM_NUMBER"}),
+                // Get data from MATERIAL_CHARGES
+                Data_From_MATERIAL_CHARGES = Table.SelectColumns(MATERIAL_CHARGES, {"SITE_NUMBER", "ITEM_NUMBER"}),
                 // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_MATERIAL_CHARGES, Data_From_PURCHASE_ORDER_LINE}),
+                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_LINE, Data_From_MATERIAL_CHARGES}),
                 // Get unique combinations of dimension keys
                 UniqueRows = Table.Distinct(CombinedData, {"SITE_NUMBER", "ITEM_NUMBER"}),
                 // Create composite key for relationships

@@ -251,6 +251,17 @@ table PURCHASE_ORDER_RECEIPT
         annotation SummarizationSetBy = Automatic
 
         
+    column 'PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 

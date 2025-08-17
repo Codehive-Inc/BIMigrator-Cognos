@@ -86,6 +86,18 @@ class PackageModelFileGenerator:
             
             # Regenerate table files with staging table modifications
             self.logger.info("Regenerating table files with staging table modifications")
+            
+            # Force regeneration of fact table JSON files to include composite keys
+            extracted_dir = get_extracted_dir(model_dir)
+            if extracted_dir:
+                # Remove existing fact table JSON files to force regeneration
+                for table in data_model.tables:
+                    if not table.name.startswith('Dim_'):  # Only remove fact tables
+                        json_file = extracted_dir / f"table_{table.name}.json"
+                        if json_file.exists():
+                            json_file.unlink()
+                            self.logger.info(f"Removed existing JSON file to force regeneration: {json_file}")
+            
             self._generate_package_table_files(data_model.tables, model_dir, package_info)
         else:
             self.logger.info("Staging tables not enabled in settings, skipping staging table processing")
