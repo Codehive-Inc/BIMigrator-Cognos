@@ -1,0 +1,67 @@
+{
+  "name": "2f980691b14e407e9bff",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 810,
+        "y": 10,
+        "z": 0,
+        "width": 288.41,
+        "height": 86.52,
+        "tabOrder": 4
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "slicer",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "PURCHASE_ORDER_LINE.RELEASE_NUMBER",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "m",
+          "Entity": "PURCHASE_ORDER_LINE",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "m"
+              }
+            },
+            "Property": "RELEASE_NUMBER"
+          },
+          "Name": "PURCHASE_ORDER_LINE.RELEASE_NUMBER",
+          "NativeReferenceName": "RELEASE_NUMBER"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+} 

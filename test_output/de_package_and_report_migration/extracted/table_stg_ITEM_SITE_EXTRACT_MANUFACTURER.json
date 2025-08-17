@@ -6,11 +6,11 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "STOP",
+      "source_name": "ITEM_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "STOP",
+      "source_column": "ITEM_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",

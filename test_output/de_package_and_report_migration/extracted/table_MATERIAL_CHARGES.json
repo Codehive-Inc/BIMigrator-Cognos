@@ -538,7 +538,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])",
+      "source_column": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",

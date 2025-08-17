@@ -1,10 +1,20 @@
 table stg_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
 
 
-    column 'UNIT_OF_MEASURE'
+    column 'SITE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: UNIT_OF_MEASURE
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
 
         
 

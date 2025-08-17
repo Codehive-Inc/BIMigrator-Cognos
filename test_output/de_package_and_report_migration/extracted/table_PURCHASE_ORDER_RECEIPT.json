@@ -410,7 +410,7 @@
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]",
+      "source_column": "[UNIT_PRICE] * [QTY_RECEIVED]",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",

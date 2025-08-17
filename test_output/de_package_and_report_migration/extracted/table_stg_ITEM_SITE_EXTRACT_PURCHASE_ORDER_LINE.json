@@ -6,11 +6,27 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "QTY_ON_HOLD",
+      "source_name": "SITE_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "QTY_ON_HOLD",
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",

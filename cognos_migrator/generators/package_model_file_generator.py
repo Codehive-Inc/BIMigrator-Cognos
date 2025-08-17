@@ -59,7 +59,11 @@ class PackageModelFileGenerator:
         if self.settings and self.settings.get('staging_tables', {}).get('enabled', False):
             from .staging_table_handler import StagingTableHandler
             self.logger.info(f"Initializing StagingTableHandler with settings: {self.settings}")
-            staging_handler = StagingTableHandler(self.settings)
+            
+            # Get extracted directory if applicable
+            extracted_dir = get_extracted_dir(model_dir)
+            
+            staging_handler = StagingTableHandler(self.settings, extracted_dir)
             data_model = staging_handler.process_data_model(data_model)
             self.logger.info(f"After staging table processing, data model has {len(data_model.tables)} tables")
             self.logger.info(f"Tables after staging: {[t.name for t in data_model.tables]}")

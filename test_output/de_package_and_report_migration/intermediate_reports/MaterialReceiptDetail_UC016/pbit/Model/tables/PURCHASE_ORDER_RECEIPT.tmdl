@@ -194,7 +194,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'TotalCost' = ```
-            'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]
+            [UNIT_PRICE] * [QTY_RECEIVED]
     ```
         dataType: decimal
         summarizeBy: sum

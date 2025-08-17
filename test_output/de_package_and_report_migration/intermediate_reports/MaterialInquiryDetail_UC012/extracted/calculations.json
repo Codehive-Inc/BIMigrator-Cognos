@@ -7,9 +7,9 @@
       "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_1",
-      "FormulaDax": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
-      "Status": "converted",
-      "Notes": null
+      "FormulaDax": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
     },
     {
       "TableName": "ITEM_SITE_EXTRACT",
@@ -18,9 +18,9 @@
       "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC_2",
-      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 11, 2)",
-      "Status": "converted",
-      "Notes": null
+      "FormulaDax": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
     }
   ]
 }

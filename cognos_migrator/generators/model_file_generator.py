@@ -21,27 +21,29 @@ class ModelFileGenerator:
     """Generator for Power BI model files (database.tmdl, tables/*.tmdl, etc.)"""
     
     def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None, settings: Optional[Dict[str, Any]] = None):
-        """
-        Initialize the model file generator
-        
-        Args:
-            template_engine: Template engine for rendering templates
-            mquery_converter: Optional MQueryConverter for generating M-queries
-            settings: Optional settings dictionary
-        """
+        """Initialize the model file generator"""
         self.template_engine = template_engine
         self.mquery_converter = mquery_converter
         self.logger = logging.getLogger(__name__)
-        self.staging_table_handler = StagingTableHandler(settings)
-    
+        self.settings = settings
+        
+        # Store settings for later use in staging table handler
+        self.staging_settings = settings
+
     def generate_model_files(self, data_model: DataModel, output_dir: Path, report_spec: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Path:
         """Generate model files for Power BI template"""
         self.logger.info(f"Generating model files for {data_model.name}")
         
         # Process data model through staging table handler if enabled
-        if self.staging_table_handler.enabled:
+        if self.staging_settings and self.staging_settings.get('staging_tables', {}).get('enabled', False):
+            from .staging_table_handler import StagingTableHandler
             self.logger.info("Processing data model through staging table handler")
-            data_model = self.staging_table_handler.process_data_model(data_model)
+            
+            # Get extracted directory if applicable
+            extracted_dir = get_extracted_dir(output_dir / 'Model')
+            
+            staging_table_handler = StagingTableHandler(self.staging_settings, extracted_dir)
+            data_model = staging_table_handler.process_data_model(data_model)
             self.logger.info(f"Data model processed: {len(data_model.tables)} tables, {len(data_model.relationships)} relationships")
         
         model_dir = output_dir / 'Model'

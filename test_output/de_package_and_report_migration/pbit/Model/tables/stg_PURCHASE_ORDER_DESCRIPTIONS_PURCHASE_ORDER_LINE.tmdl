@@ -1,10 +1,40 @@
 table stg_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE
 
 
-    column 'ITEM_NUMBER'
+    column 'PO_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: ITEM_NUMBER
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
 
         
 
