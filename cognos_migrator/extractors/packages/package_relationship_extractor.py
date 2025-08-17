@@ -217,13 +217,52 @@ class PackageRelationshipExtractor(BasePackageExtractor):
             # Find expression element
             for expr_prefix in ['bmt', 'ns']:
                 expr_elem = rel_elem.find(f'.//{expr_prefix}:expression', self.namespaces)
-                if expr_elem is not None and expr_elem.text:
-                    return expr_elem.text.strip()
+                if expr_elem is not None:
+                    # Check if it has child elements (structured expression)
+                    if len(list(expr_elem)) > 0:
+                        # Process structured expression with refobj elements and operators
+                        return self._process_structured_expression(expr_elem)
+                    # Fall back to text content if available
+                    elif expr_elem.text and expr_elem.text.strip():
+                        return expr_elem.text.strip()
             
             return ""
             
         except Exception as e:
             self.logger.warning(f"Failed to extract join expression: {e}")
+            return ""
+    
+    def _process_structured_expression(self, expr_elem: ET.Element) -> str:
+        """Process a structured expression element with refobj and operators
+        
+        Args:
+            expr_elem: Expression XML element
+            
+        Returns:
+            Reconstructed join expression string
+        """
+        try:
+            # Get all direct children of the expression element and their text/tail content
+            expression = ""
+            
+            # First, check if the expression element has text content before any child elements
+            if expr_elem.text and expr_elem.text.strip():
+                expression += expr_elem.text.strip() + " "
+            
+            # Process all direct children in order
+            for child in expr_elem:
+                # Add the child element's text (e.g., the refobj content)
+                if child.text and child.text.strip():
+                    expression += child.text.strip() + " "
+                
+                # Add any text that follows this child element (operators like =, AND)
+                if child.tail and child.tail.strip():
+                    expression += child.tail.strip() + " "
+            
+            return expression.strip()
+            
+        except Exception as e:
+            self.logger.warning(f"Failed to process structured expression: {e}")
             return ""
     
     def _extract_determinants(self, rel_elem: ET.Element) -> List[Dict[str, Any]]:
