@@ -32,6 +32,21 @@ class StagingMQueryConverter(BaseMQueryConverter):
         self.llm_service_client = llm_service_client
         self.logger = logger or logging.getLogger(__name__)
 
+    def convert_to_m_query(self, table: Table, spec: Optional[str] = None, data_sample: Optional[Dict] = None) -> str:
+        """Implementation of abstract method from BaseMQueryConverter
+        
+        Args:
+            table: Table object
+            spec: Optional specification
+            data_sample: Optional data sample
+            
+        Returns:
+            M-query string
+        """
+        # This method is implemented for compatibility with the base class
+        # The main staging functionality is in convert_staging_table_to_m_query
+        return self._build_default_m_query(table)
+
     def convert_staging_table_to_m_query(self, staging_definition: StagingTableDefinition,
                                        shared_keys: List[SharedKeyDefinition],
                                        connection_info: Dict[str, Any],
@@ -186,21 +201,80 @@ class StagingMQueryConverter(BaseMQueryConverter):
     def _call_llm_staging_service(self, context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Call LLM service for staging table M-query generation"""
         try:
-            # Prepare the request payload
-            payload = {
-                "context": context,
-                "model_type": "staging_mquery_generation",
-                "response_format": {
-                    "m_query": "string",
-                    "explanation": "string",
-                    "recommendations": "array",
-                    "performance_notes": "array"
+            if not self.llm_service_client:
+                return None
+                
+            # Prepare the request payload according to API specification
+            if context.get("task") == "generate_staging_table_m_query":
+                staging_table = context.get("staging_table", {})
+                
+                # Format for /api/mquery/staging endpoint
+                api_payload = {
+                    "table_name": staging_table.get("name", ""),
+                    "source_info": {
+                        "source_type": "sqlserver",  # or get from context
+                        "server": context.get("connection_info", {}).get("server", "server"),
+                        "database": context.get("connection_info", {}).get("database", "database"),
+                        "source_tables": staging_table.get("source_tables", [])
+                    },
+                    "join_patterns": staging_table.get("join_patterns", []),
+                    "shared_keys": context.get("shared_keys", []),
+                    "etl_options": {
+                        "add_shared_keys": True,
+                        "optimize_for_powerbi": True,
+                        "handle_composite_keys": True
+                    },
+                    "powerbi_requirements": context.get("requirements", []),
+                    "best_practices": context.get("powerbi_best_practices", [])
                 }
-            }
+                
+                # Call the staging M-query endpoint
+                response = self.llm_service_client.call_api_endpoint(
+                    endpoint="/api/mquery/staging",
+                    method="POST",
+                    payload=api_payload
+                )
+                
+                if response and response.get("m_query"):
+                    return {
+                        "m_query": response["m_query"],
+                        "etl_patterns_applied": response.get("etl_patterns_applied", []),
+                        "processing_time": response.get("processing_time", 0),
+                        "metadata": response.get("metadata", {}),
+                        "recommendations": response.get("recommendations", [])
+                    }
+                    
+            elif context.get("task") == "add_shared_keys_to_fact_table":
+                # Format for /api/mquery/generate endpoint
+                api_payload = {
+                    "context": {
+                        "table_name": context.get("fact_table", ""),
+                        "existing_m_query": context.get("original_m_query", ""),
+                        "shared_keys": context.get("shared_keys", []),
+                        "source_info": context.get("connection_info", {}),
+                        "modification_type": "add_shared_keys"
+                    },
+                    "options": {
+                        "preserve_existing_logic": True,
+                        "optimize_for_performance": True,
+                        "add_comments": True
+                    }
+                }
+                
+                response = self.llm_service_client.call_api_endpoint(
+                    endpoint="/api/mquery/generate",
+                    method="POST", 
+                    payload=api_payload
+                )
+                
+                if response and response.get("m_query"):
+                    return {
+                        "m_query": response["m_query"],
+                        "performance_notes": response.get("performance_notes", ""),
+                        "confidence": response.get("confidence", 0.8),
+                        "processing_time": response.get("processing_time", 0)
+                    }
             
-            # Call the LLM service (this would be implemented with actual API calls)
-            # For now, return None to fall back to template generation
-            self.logger.info("LLM service call for staging M-query generation")
             return None
             
         except Exception as e:

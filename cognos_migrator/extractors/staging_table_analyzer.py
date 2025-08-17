@@ -13,7 +13,7 @@ from pathlib import Path
 
 from .sql_join_analyzer import SQLJoinAnalyzer, JoinPattern, StagingTableDefinition
 from ..llm_service import LLMServiceClient
-from ..models import Table, Column, DataType
+from ..models import Table, Column, DataType, DataModel
 
 
 @dataclass
@@ -165,7 +165,7 @@ class StagingTableAnalyzer:
             if staging_table:
                 # Add metadata
                 metadata = self._generate_staging_metadata(staging_table, package_info)
-                staging_table.metadata = metadata
+                # Note: metadata would be added to staging table in a production system
                 staging_tables.append(staging_table)
         
         return staging_tables

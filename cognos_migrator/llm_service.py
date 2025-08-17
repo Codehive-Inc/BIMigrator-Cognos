@@ -310,37 +310,42 @@ class LLMServiceClient:
             self.logger.error(error_msg)
             raise Exception(error_msg)
     
-    # Removed fallback method as we now raise exceptions instead of falling back
-    # def _fallback_m_query(self, context: Dict[str, Any]) -> str:
-    #     """Generate a fallback M-query when the LLM service fails"""
-    #     table_name = context.get('table_name', 'Unknown')
-    #     self.logger.warning(f"Using fallback M-query generation for table: {table_name}")
-    #     
-    #     if context.get('source_query'):
-            # For SQL queries, wrap in appropriate M function with comments
-            return f'''// Fallback M-query for {table_name} (LLM service unavailable)
-let
-    Source = Sql.Database("server", "database", [Query="{context['source_query']}"])
-    // Apply type transformations based on column definitions
-    #"Changed Type" = Source
-in
-    #"Changed Type"'''
-        else:
-            # For tables without a source query, create a more informative empty table
-            columns_str = ", ".join([f'"{col["name"]}"' for col in context.get('columns', [])])
-            if columns_str:
-                return f'''// Fallback M-query for {table_name} (LLM service unavailable)
-let
-    Source = Table.FromRows({{}}, type table [{columns_str}]),
-    // This is an empty table with the correct schema
-    #"Changed Type" = Source
-in
-    #"Changed Type"'''
+    def call_api_endpoint(self, endpoint: str, method: str = "POST", payload: Dict[str, Any] = None) -> Optional[Dict[str, Any]]:
+        """Call a specific API endpoint with proper formatting
+        
+        Args:
+            endpoint: API endpoint path (e.g., "/api/mquery/staging")
+            method: HTTP method (GET, POST)
+            payload: Request payload
+            
+        Returns:
+            API response or None if failed
+        """
+        try:
+            headers = {'Content-Type': 'application/json'}
+            if self.api_key:
+                headers['Authorization'] = f'Bearer {self.api_key}'
+            
+            url = f"{self.base_url.rstrip('/')}{endpoint}"
+            
+            self.logger.info(f"Calling API endpoint: {method} {url}")
+            
+            if method.upper() == "GET":
+                response = requests.get(url, headers=headers, timeout=30)
+            elif method.upper() == "POST":
+                response = requests.post(url, headers=headers, json=payload, timeout=120)
             else:
-                return f'''// Fallback M-query for {table_name} (LLM service unavailable)
-let
-    Source = Table.FromRows({{}}),
-    // Empty table with no schema information
-    #"Changed Type" = Source
-in
-    #"Changed Type"'''
+                raise ValueError(f"Unsupported HTTP method: {method}")
+            
+            response.raise_for_status()
+            result = response.json()
+            
+            self.logger.info(f"API call successful: {endpoint}")
+            return result
+            
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"API call failed for {endpoint}: {e}")
+            return None
+        except Exception as e:
+            self.logger.error(f"Unexpected error calling {endpoint}: {e}")
+            return None

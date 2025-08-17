@@ -463,15 +463,43 @@ class SQLJoinAnalyzer:
             return None
         
         try:
-            # Prepare context for LLM
-            context = {
+            # Format for /api/sql/analyze-report endpoint
+            api_payload = {
                 "sql_query": sql,
-                "join_type": join_type,
-                "task": "extract_join_pattern"
+                "analysis_type": "join_extraction",
+                "analysis_options": {
+                    "extract_join_patterns": True,
+                    "identify_table_relationships": True,
+                    "detect_composite_keys": True,
+                    "classify_join_types": True
+                },
+                "context": {
+                    "expected_join_type": join_type,
+                    "target_platform": "powerbi"
+                }
             }
             
-            # This would call a specialized LLM endpoint for SQL analysis
-            # For now, return None and fall back to regex
+            response = self.llm_service_client.call_api_endpoint(
+                endpoint="/api/sql/analyze-report", 
+                method="POST",
+                payload=api_payload
+            )
+            
+            if response and response.get("join_patterns"):
+                join_data = response["join_patterns"][0]  # Get first pattern
+                
+                return JoinPattern(
+                    left_table=join_data.get("left_table", ""),
+                    right_table=join_data.get("right_table", ""),
+                    left_columns=join_data.get("left_columns", []),
+                    right_columns=join_data.get("right_columns", []),
+                    join_type=join_data.get("join_type", "INNER"),
+                    join_expression=join_data.get("join_expression", ""),
+                    confidence=response.get("confidence", 0.8),
+                    source="llm_sql_analysis",
+                    composite_key=len(join_data.get("left_columns", [])) > 1
+                )
+            
             return None
             
         except Exception as e:

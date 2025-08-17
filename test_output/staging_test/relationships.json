@@ -1,0 +1,92 @@
+[
+  {
+    "name": "CU01TB01 <--> CU04TB70",
+    "id": "",
+    "left": {
+      "query_subject": "[Data Layer].[CU01TB01]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Data Layer].[CU04TB70]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "CU04TB70 <--> CU04TB22",
+    "id": "",
+    "left": {
+      "query_subject": "[Data Layer].[CU04TB70]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Data Layer].[CU04TB22]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "CU01TB01 <--> CU04TB70",
+    "id": "",
+    "left": {
+      "query_subject": "[Data Layer].[CU01TB01]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Data Layer].[CU04TB70]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "CU04TB70 <--> CU04TB22",
+    "id": "",
+    "left": {
+      "query_subject": "[Data Layer].[CU04TB70]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Data Layer].[CU04TB22]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "CU01TB01 <--> CU04TB70",
+    "id": "",
+    "left": {
+      "query_subject": "[Data Layer].[CU01TB01]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Data Layer].[CU04TB70]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  },
+  {
+    "name": "CU04TB70 <--> CU04TB22",
+    "id": "",
+    "left": {
+      "query_subject": "[Data Layer].[CU04TB70]",
+      "mincard": "one",
+      "maxcard": "one"
+    },
+    "right": {
+      "query_subject": "[Data Layer].[CU04TB22]",
+      "mincard": "one",
+      "maxcard": "many"
+    },
+    "join_expression": ""
+  }
+]
