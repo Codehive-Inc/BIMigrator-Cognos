@@ -7,7 +7,7 @@
   "columns": [
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -23,7 +23,7 @@
     },
     {
       "source_name": "PO_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_NUMBER",
@@ -39,7 +39,7 @@
     },
     {
       "source_name": "CHANGE_ORDER_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CHANGE_ORDER_NUMBER",
@@ -55,7 +55,7 @@
     },
     {
       "source_name": "RELEASE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RELEASE_NUMBER",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "PO_LINE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_LINE_NUMBER",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "DATE_ENTERED",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_ENTERED",
@@ -103,7 +103,7 @@
     },
     {
       "source_name": "TIME_ENTERED",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_ENTERED",
@@ -119,7 +119,7 @@
     },
     {
       "source_name": "QTY_RECEIVED",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_RECEIVED",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "QTY_REJECTED",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_REJECTED",
@@ -151,7 +151,7 @@
     },
     {
       "source_name": "QA_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QA_CODE",
@@ -167,7 +167,7 @@
     },
     {
       "source_name": "SHELF_LIFE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SHELF_LIFE",
@@ -183,7 +183,7 @@
     },
     {
       "source_name": "QA_INSPECTOR",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QA_INSPECTOR",
@@ -199,7 +199,7 @@
     },
     {
       "source_name": "STOREKEEPER_ID",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOREKEEPER_ID",
@@ -215,7 +215,7 @@
     },
     {
       "source_name": "RECEIPT_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECEIPT_NUMBER",
@@ -231,7 +231,7 @@
     },
     {
       "source_name": "UNIT_PRICE",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UNIT_PRICE",
@@ -247,7 +247,7 @@
     },
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -263,7 +263,7 @@
     },
     {
       "source_name": "DATE_RECEIVED_AT_SITE",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_RECEIVED_AT_SITE",
@@ -279,7 +279,7 @@
     },
     {
       "source_name": "RECEIPT_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECEIPT_CODE",
@@ -295,7 +295,7 @@
     },
     {
       "source_name": "DATE_STATUS_EFFECTIVE",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_STATUS_EFFECTIVE",
@@ -311,7 +311,7 @@
     },
     {
       "source_name": "HOLD_STATUS",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "HOLD_STATUS",
@@ -327,7 +327,7 @@
     },
     {
       "source_name": "DSR_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DSR_NUMBER",
@@ -343,7 +343,7 @@
     },
     {
       "source_name": "QTY_IN_HOLD",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_IN_HOLD",
@@ -359,7 +359,7 @@
     },
     {
       "source_name": "RECORD_STATUS",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECORD_STATUS",
@@ -375,7 +375,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -391,7 +391,7 @@
     },
     {
       "source_name": "ITT_KEY_NO",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITT_KEY_NO",
@@ -407,7 +407,7 @@
     },
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -423,7 +423,7 @@
     },
     {
       "source_name": "PO_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_NUMBER",
@@ -439,7 +439,7 @@
     },
     {
       "source_name": "CHANGE_ORDER_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "CHANGE_ORDER_NUMBER",
@@ -455,7 +455,7 @@
     },
     {
       "source_name": "RELEASE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RELEASE_NUMBER",
@@ -471,7 +471,7 @@
     },
     {
       "source_name": "PO_LINE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_LINE_NUMBER",
@@ -487,7 +487,7 @@
     },
     {
       "source_name": "DATE_ENTERED",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_ENTERED",
@@ -503,7 +503,7 @@
     },
     {
       "source_name": "TIME_ENTERED",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TIME_ENTERED",
@@ -519,7 +519,7 @@
     },
     {
       "source_name": "QTY_RECEIVED",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_RECEIVED",
@@ -535,7 +535,7 @@
     },
     {
       "source_name": "QTY_REJECTED",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_REJECTED",
@@ -551,7 +551,7 @@
     },
     {
       "source_name": "QA_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QA_CODE",
@@ -567,7 +567,7 @@
     },
     {
       "source_name": "SHELF_LIFE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SHELF_LIFE",
@@ -583,7 +583,7 @@
     },
     {
       "source_name": "QA_INSPECTOR",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QA_INSPECTOR",
@@ -599,7 +599,7 @@
     },
     {
       "source_name": "STOREKEEPER_ID",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOREKEEPER_ID",
@@ -615,7 +615,7 @@
     },
     {
       "source_name": "RECEIPT_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECEIPT_NUMBER",
@@ -631,7 +631,7 @@
     },
     {
       "source_name": "UNIT_PRICE",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "UNIT_PRICE",
@@ -647,7 +647,7 @@
     },
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -663,7 +663,7 @@
     },
     {
       "source_name": "DATE_RECEIVED_AT_SITE",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_RECEIVED_AT_SITE",
@@ -679,7 +679,7 @@
     },
     {
       "source_name": "RECEIPT_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECEIPT_CODE",
@@ -695,7 +695,7 @@
     },
     {
       "source_name": "DATE_STATUS_EFFECTIVE",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_STATUS_EFFECTIVE",
@@ -711,7 +711,7 @@
     },
     {
       "source_name": "HOLD_STATUS",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "HOLD_STATUS",
@@ -727,7 +727,7 @@
     },
     {
       "source_name": "DSR_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DSR_NUMBER",
@@ -743,7 +743,7 @@
     },
     {
       "source_name": "QTY_IN_HOLD",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "QTY_IN_HOLD",
@@ -759,7 +759,7 @@
     },
     {
       "source_name": "RECORD_STATUS",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RECORD_STATUS",
@@ -775,7 +775,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -791,7 +791,7 @@
     },
     {
       "source_name": "ITT_KEY_NO",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITT_KEY_NO",
@@ -843,7 +843,7 @@
     {
       "name": "PURCHASE_ORDER_RECEIPT",
       "source_type": "m",
-      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"CHANGE_ORDER_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"DATE_ENTERED\"\", \"\"TIME_ENTERED\"\", \"\"QTY_RECEIVED\"\", \"\"QTY_REJECTED\"\", \"\"QA_CODE\"\", \"\"SHELF_LIFE\"\", \"\"QA_INSPECTOR\"\", \"\"STOREKEEPER_ID\"\", \"\"RECEIPT_NUMBER\"\", \"\"UNIT_PRICE\"\", \"\"ITEM_NUMBER\"\", \"\"DATE_RECEIVED_AT_SITE\"\", \"\"RECEIPT_CODE\"\", \"\"DATE_STATUS_EFFECTIVE\"\", \"\"HOLD_STATUS\"\", \"\"DSR_NUMBER\"\", \"\"QTY_IN_HOLD\"\", \"\"RECORD_STATUS\"\", \"\"STOP\"\", \"\"ITT_KEY_NO\"\" FROM \"\"PURCHASE_ORDER_RECEIPT\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\n    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\nin\n    AddCompositeKey_1"
+      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"CHANGE_ORDER_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"DATE_ENTERED\"\", \"\"TIME_ENTERED\"\", \"\"QTY_RECEIVED\"\", \"\"QTY_REJECTED\"\", \"\"QA_CODE\"\", \"\"SHELF_LIFE\"\", \"\"QA_INSPECTOR\"\", \"\"STOREKEEPER_ID\"\", \"\"RECEIPT_NUMBER\"\", \"\"UNIT_PRICE\"\", \"\"ITEM_NUMBER\"\", \"\"DATE_RECEIVED_AT_SITE\"\", \"\"RECEIPT_CODE\"\", \"\"DATE_STATUS_EFFECTIVE\"\", \"\"HOLD_STATUS\"\", \"\"DSR_NUMBER\"\", \"\"QTY_IN_HOLD\"\", \"\"RECORD_STATUS\"\", \"\"STOP\"\", \"\"ITT_KEY_NO\"\" FROM \"\"PURCHASE_ORDER_RECEIPT\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\n                in\n                    AddCompositeKey_1"
     }
   ],
   "has_widget_serialization": false,

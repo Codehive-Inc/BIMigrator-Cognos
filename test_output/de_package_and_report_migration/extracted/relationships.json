@@ -1,19 +1,19 @@
 [
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
+    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
     "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_LINE",
+    "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
     "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
+    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
     "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
+    "toTable": "PURCHASE_ORDER_LINE",
     "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
@@ -40,16 +40,6 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
-    "fromTable": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
-    "isActive": true,
-    "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
-  },
-  {
     "id": "Dim_Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_ITEM_SITE_EXTRACT",
     "fromTable": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE",
     "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
@@ -60,11 +50,11 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_LINE",
-    "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
-    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "id": "Dim_Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
+    "fromTable": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE",
+    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "OneDirection"
@@ -80,11 +70,11 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_PURCHASE_ORDER_LINE",
-    "fromTable": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
-    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "id": "Dim_Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_LINE",
+    "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
+    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "OneDirection"
@@ -100,11 +90,11 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_MATERIAL_CHARGES",
-    "fromTable": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
-    "toTable": "MATERIAL_CHARGES",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "id": "Dim_Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_PURCHASE_ORDER_LINE",
+    "fromTable": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "toTable": "PURCHASE_ORDER_LINE",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "OneDirection"
@@ -120,10 +110,10 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
-    "fromTable": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE",
+    "id": "Dim_Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_MATERIAL_CHARGES",
+    "fromTable": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES",
     "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_LINE",
+    "toTable": "MATERIAL_CHARGES",
     "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
@@ -134,6 +124,16 @@
     "fromTable": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE",
     "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
     "toTable": "MATERIAL_CHARGES",
+    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "isActive": true,
+    "toCardinality": "many",
+    "crossFilteringBehavior": "OneDirection"
+  },
+  {
+    "id": "Dim_Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
+    "fromTable": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE",
+    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "toTable": "PURCHASE_ORDER_LINE",
     "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",

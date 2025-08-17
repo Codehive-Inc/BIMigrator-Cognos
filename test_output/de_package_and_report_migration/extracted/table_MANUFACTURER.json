@@ -7,7 +7,7 @@
   "columns": [
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -23,7 +23,7 @@
     },
     {
       "source_name": "MFG_PART_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MFG_PART_NUMBER",
@@ -39,7 +39,7 @@
     },
     {
       "source_name": "MODEL_PART_IND",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MODEL_PART_IND",
@@ -55,7 +55,7 @@
     },
     {
       "source_name": "ACTIVITY_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_CODE",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "MFG_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MFG_CODE",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "DATE_CREATED",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_CREATED",
@@ -103,7 +103,7 @@
     },
     {
       "source_name": "MFG_NAME",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MFG_NAME",
@@ -119,7 +119,7 @@
     },
     {
       "source_name": "COMPRESSED_PART_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "COMPRESSED_PART_NUMBER",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "FOSSIL_OR_NUCLEAR",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "FOSSIL_OR_NUCLEAR",
@@ -151,7 +151,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -167,7 +167,7 @@
     },
     {
       "source_name": "SITE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE",
@@ -183,7 +183,7 @@
     },
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -199,7 +199,7 @@
     },
     {
       "source_name": "MFG_PART_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MFG_PART_NUMBER",
@@ -215,7 +215,7 @@
     },
     {
       "source_name": "MODEL_PART_IND",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MODEL_PART_IND",
@@ -231,7 +231,7 @@
     },
     {
       "source_name": "ACTIVITY_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ACTIVITY_CODE",
@@ -247,7 +247,7 @@
     },
     {
       "source_name": "MFG_CODE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MFG_CODE",
@@ -263,7 +263,7 @@
     },
     {
       "source_name": "DATE_CREATED",
-      "datatype": "DataType.DATE",
+      "datatype": "dateTime",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DATE_CREATED",
@@ -279,7 +279,7 @@
     },
     {
       "source_name": "MFG_NAME",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "MFG_NAME",
@@ -295,7 +295,7 @@
     },
     {
       "source_name": "COMPRESSED_PART_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "COMPRESSED_PART_NUMBER",
@@ -311,7 +311,7 @@
     },
     {
       "source_name": "FOSSIL_OR_NUCLEAR",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "FOSSIL_OR_NUCLEAR",
@@ -327,7 +327,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -343,7 +343,7 @@
     },
     {
       "source_name": "SITE",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE",
@@ -379,7 +379,7 @@
     {
       "name": "MANUFACTURER",
       "source_type": "m",
-      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n    // Add composite key: ITEM_NUMBER_Key\n    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"ITEM_NUMBER_Key\", each [ITEM_NUMBER], type text)\nin\n    AddCompositeKey_1"
+      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                    // Add composite key: ITEM_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"ITEM_NUMBER_Key\", each [ITEM_NUMBER], type text)\n                in\n                    AddCompositeKey_1"
     }
   ],
   "has_widget_serialization": false,

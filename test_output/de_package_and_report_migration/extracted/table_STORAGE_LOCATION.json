@@ -7,7 +7,7 @@
   "columns": [
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -23,7 +23,7 @@
     },
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -39,7 +39,7 @@
     },
     {
       "source_name": "SEGMENTS",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SEGMENTS",
@@ -55,7 +55,7 @@
     },
     {
       "source_name": "LOCATION1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION1",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "LOC_NUMBER_1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_1",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "LOCATION2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION2",
@@ -103,7 +103,7 @@
     },
     {
       "source_name": "LOC_NUMBER_2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_2",
@@ -119,7 +119,7 @@
     },
     {
       "source_name": "LOCATION3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION3",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "LOC_NUMBER_3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_3",
@@ -151,7 +151,7 @@
     },
     {
       "source_name": "LOCATION4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION4",
@@ -167,7 +167,7 @@
     },
     {
       "source_name": "LOC_NUMBER_4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_4",
@@ -183,7 +183,7 @@
     },
     {
       "source_name": "LOCATION5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION5",
@@ -199,7 +199,7 @@
     },
     {
       "source_name": "LOC_NUMBER_5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_5",
@@ -215,7 +215,7 @@
     },
     {
       "source_name": "LOCATION6",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION6",
@@ -231,7 +231,7 @@
     },
     {
       "source_name": "LOC_NUMBER_6",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_6",
@@ -247,7 +247,7 @@
     },
     {
       "source_name": "LOCATION7",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION7",
@@ -263,7 +263,7 @@
     },
     {
       "source_name": "LOC_NUMBER_7",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_7",
@@ -279,7 +279,7 @@
     },
     {
       "source_name": "LOCATION8",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION8",
@@ -295,7 +295,7 @@
     },
     {
       "source_name": "LOC_NUMBER_8",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_8",
@@ -311,7 +311,7 @@
     },
     {
       "source_name": "LOCATION9",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION9",
@@ -327,7 +327,7 @@
     },
     {
       "source_name": "LOC_NUMBER_9",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_9",
@@ -343,7 +343,7 @@
     },
     {
       "source_name": "LOCATION10",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION10",
@@ -359,7 +359,7 @@
     },
     {
       "source_name": "LOC_NUMBER_10",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_10",
@@ -375,7 +375,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -391,7 +391,7 @@
     },
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -407,7 +407,7 @@
     },
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -423,7 +423,7 @@
     },
     {
       "source_name": "SEGMENTS",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SEGMENTS",
@@ -439,7 +439,7 @@
     },
     {
       "source_name": "LOCATION1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION1",
@@ -455,7 +455,7 @@
     },
     {
       "source_name": "LOC_NUMBER_1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_1",
@@ -471,7 +471,7 @@
     },
     {
       "source_name": "LOCATION2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION2",
@@ -487,7 +487,7 @@
     },
     {
       "source_name": "LOC_NUMBER_2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_2",
@@ -503,7 +503,7 @@
     },
     {
       "source_name": "LOCATION3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION3",
@@ -519,7 +519,7 @@
     },
     {
       "source_name": "LOC_NUMBER_3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_3",
@@ -535,7 +535,7 @@
     },
     {
       "source_name": "LOCATION4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION4",
@@ -551,7 +551,7 @@
     },
     {
       "source_name": "LOC_NUMBER_4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_4",
@@ -567,7 +567,7 @@
     },
     {
       "source_name": "LOCATION5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION5",
@@ -583,7 +583,7 @@
     },
     {
       "source_name": "LOC_NUMBER_5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_5",
@@ -599,7 +599,7 @@
     },
     {
       "source_name": "LOCATION6",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION6",
@@ -615,7 +615,7 @@
     },
     {
       "source_name": "LOC_NUMBER_6",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_6",
@@ -631,7 +631,7 @@
     },
     {
       "source_name": "LOCATION7",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION7",
@@ -647,7 +647,7 @@
     },
     {
       "source_name": "LOC_NUMBER_7",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_7",
@@ -663,7 +663,7 @@
     },
     {
       "source_name": "LOCATION8",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION8",
@@ -679,7 +679,7 @@
     },
     {
       "source_name": "LOC_NUMBER_8",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_8",
@@ -695,7 +695,7 @@
     },
     {
       "source_name": "LOCATION9",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION9",
@@ -711,7 +711,7 @@
     },
     {
       "source_name": "LOC_NUMBER_9",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_9",
@@ -727,7 +727,7 @@
     },
     {
       "source_name": "LOCATION10",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOCATION10",
@@ -743,7 +743,7 @@
     },
     {
       "source_name": "LOC_NUMBER_10",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LOC_NUMBER_10",
@@ -759,7 +759,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -843,7 +843,7 @@
     {
       "name": "STORAGE_LOCATION",
       "source_type": "m",
-      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"SEGMENTS\"\", \"\"LOCATION1\"\", \"\"LOC_NUMBER_1\"\", \"\"LOCATION2\"\", \"\"LOC_NUMBER_2\"\", \"\"LOCATION3\"\", \"\"LOC_NUMBER_3\"\", \"\"LOCATION4\"\", \"\"LOC_NUMBER_4\"\", \"\"LOCATION5\"\", \"\"LOC_NUMBER_5\"\", \"\"LOCATION6\"\", \"\"LOC_NUMBER_6\"\", \"\"LOCATION7\"\", \"\"LOC_NUMBER_7\"\", \"\"LOCATION8\"\", \"\"LOC_NUMBER_8\"\", \"\"LOCATION9\"\", \"\"LOC_NUMBER_9\"\", \"\"LOCATION10\"\", \"\"LOC_NUMBER_10\"\", \"\"STOP\"\" FROM \"\"STORAGE_LOCATION\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key\n    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key\n    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\nin\n    AddCompositeKey_2"
+      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"SEGMENTS\"\", \"\"LOCATION1\"\", \"\"LOC_NUMBER_1\"\", \"\"LOCATION2\"\", \"\"LOC_NUMBER_2\"\", \"\"LOCATION3\"\", \"\"LOC_NUMBER_3\"\", \"\"LOCATION4\"\", \"\"LOC_NUMBER_4\"\", \"\"LOCATION5\"\", \"\"LOC_NUMBER_5\"\", \"\"LOCATION6\"\", \"\"LOC_NUMBER_6\"\", \"\"LOCATION7\"\", \"\"LOC_NUMBER_7\"\", \"\"LOCATION8\"\", \"\"LOC_NUMBER_8\"\", \"\"LOCATION9\"\", \"\"LOC_NUMBER_9\"\", \"\"LOCATION10\"\", \"\"LOC_NUMBER_10\"\", \"\"STOP\"\" FROM \"\"STORAGE_LOCATION\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\n                in\n                    AddCompositeKey_2"
     }
   ],
   "has_widget_serialization": false,

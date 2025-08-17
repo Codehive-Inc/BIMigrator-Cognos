@@ -7,7 +7,7 @@
   "columns": [
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -23,7 +23,7 @@
     },
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -39,7 +39,7 @@
     },
     {
       "source_name": "PO_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_NUMBER",
@@ -55,7 +55,7 @@
     },
     {
       "source_name": "RELEASE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RELEASE_NUMBER",
@@ -71,7 +71,7 @@
     },
     {
       "source_name": "PO_LINE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_LINE_NUMBER",
@@ -87,7 +87,7 @@
     },
     {
       "source_name": "TOTAL_NUMBER_SEGMENTS",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TOTAL_NUMBER_SEGMENTS",
@@ -103,7 +103,7 @@
     },
     {
       "source_name": "NUMBER_SEGMENTS_SELECTED",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "NUMBER_SEGMENTS_SELECTED",
@@ -119,7 +119,7 @@
     },
     {
       "source_name": "LINE_NUMBER1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER1",
@@ -135,7 +135,7 @@
     },
     {
       "source_name": "DESCRIPTION1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION1",
@@ -151,7 +151,7 @@
     },
     {
       "source_name": "LINE_NUMBER2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER2",
@@ -167,7 +167,7 @@
     },
     {
       "source_name": "DESCRIPTION2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION2",
@@ -183,7 +183,7 @@
     },
     {
       "source_name": "LINE_NUMBER3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER3",
@@ -199,7 +199,7 @@
     },
     {
       "source_name": "DESCRIPTION3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION3",
@@ -215,7 +215,7 @@
     },
     {
       "source_name": "LINE_NUMBER4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER4",
@@ -231,7 +231,7 @@
     },
     {
       "source_name": "DESCRIPTION4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION4",
@@ -247,7 +247,7 @@
     },
     {
       "source_name": "LINE_NUMBER5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER5",
@@ -263,7 +263,7 @@
     },
     {
       "source_name": "DESCRIPTION5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION5",
@@ -279,7 +279,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -295,7 +295,7 @@
     },
     {
       "source_name": "ITEM_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "ITEM_NUMBER",
@@ -311,7 +311,7 @@
     },
     {
       "source_name": "SITE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
@@ -327,7 +327,7 @@
     },
     {
       "source_name": "PO_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_NUMBER",
@@ -343,7 +343,7 @@
     },
     {
       "source_name": "RELEASE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "RELEASE_NUMBER",
@@ -359,7 +359,7 @@
     },
     {
       "source_name": "PO_LINE_NUMBER",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "PO_LINE_NUMBER",
@@ -375,7 +375,7 @@
     },
     {
       "source_name": "TOTAL_NUMBER_SEGMENTS",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "TOTAL_NUMBER_SEGMENTS",
@@ -391,7 +391,7 @@
     },
     {
       "source_name": "NUMBER_SEGMENTS_SELECTED",
-      "datatype": "DataType.INTEGER",
+      "datatype": "int64",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "NUMBER_SEGMENTS_SELECTED",
@@ -407,7 +407,7 @@
     },
     {
       "source_name": "LINE_NUMBER1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER1",
@@ -423,7 +423,7 @@
     },
     {
       "source_name": "DESCRIPTION1",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION1",
@@ -439,7 +439,7 @@
     },
     {
       "source_name": "LINE_NUMBER2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER2",
@@ -455,7 +455,7 @@
     },
     {
       "source_name": "DESCRIPTION2",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION2",
@@ -471,7 +471,7 @@
     },
     {
       "source_name": "LINE_NUMBER3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER3",
@@ -487,7 +487,7 @@
     },
     {
       "source_name": "DESCRIPTION3",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION3",
@@ -503,7 +503,7 @@
     },
     {
       "source_name": "LINE_NUMBER4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER4",
@@ -519,7 +519,7 @@
     },
     {
       "source_name": "DESCRIPTION4",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION4",
@@ -535,7 +535,7 @@
     },
     {
       "source_name": "LINE_NUMBER5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "LINE_NUMBER5",
@@ -551,7 +551,7 @@
     },
     {
       "source_name": "DESCRIPTION5",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "DESCRIPTION5",
@@ -567,7 +567,7 @@
     },
     {
       "source_name": "STOP",
-      "datatype": "DataType.STRING",
+      "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
       "source_column": "STOP",
@@ -603,7 +603,7 @@
     {
       "name": "PURCHASE_ORDER_DESCRIPTIONS",
       "source_type": "m",
-      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"TOTAL_NUMBER_SEGMENTS\"\", \"\"NUMBER_SEGMENTS_SELECTED\"\", \"\"LINE_NUMBER1\"\", \"\"DESCRIPTION1\"\", \"\"LINE_NUMBER2\"\", \"\"DESCRIPTION2\"\", \"\"LINE_NUMBER3\"\", \"\"DESCRIPTION3\"\", \"\"LINE_NUMBER4\"\", \"\"DESCRIPTION4\"\", \"\"LINE_NUMBER5\"\", \"\"DESCRIPTION5\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_DESCRIPTIONS\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\n    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\nin\n    AddCompositeKey_1"
+      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"TOTAL_NUMBER_SEGMENTS\"\", \"\"NUMBER_SEGMENTS_SELECTED\"\", \"\"LINE_NUMBER1\"\", \"\"DESCRIPTION1\"\", \"\"LINE_NUMBER2\"\", \"\"DESCRIPTION2\"\", \"\"LINE_NUMBER3\"\", \"\"DESCRIPTION3\"\", \"\"LINE_NUMBER4\"\", \"\"DESCRIPTION4\"\", \"\"LINE_NUMBER5\"\", \"\"DESCRIPTION5\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_DESCRIPTIONS\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\n                in\n                    AddCompositeKey_1"
     }
   ],
   "has_widget_serialization": false,

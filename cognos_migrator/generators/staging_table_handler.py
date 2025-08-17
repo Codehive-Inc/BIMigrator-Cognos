@@ -372,7 +372,7 @@ class StagingTableHandler:
         for col in table.columns:
             column_json = {
                 "source_name": col.name,
-                "datatype": str(col.data_type) if hasattr(col, 'data_type') and col.data_type else "string",
+                "datatype": col.data_type.value if hasattr(col, 'data_type') and hasattr(col.data_type, 'value') and col.data_type else "string",
                 "format_string": None,
                 "lineage_tag": None,
                 "source_column": col.source_column if hasattr(col, 'source_column') else col.name,
@@ -1519,8 +1519,8 @@ class StagingTableHandler:
             else:
                 previous_step = f"AddCompositeKey_{i}"
             
-            new_lines.append(f"    // Add composite key: {composite_key_name}")
-            new_lines.append(f"    {step_name} = Table.AddColumn({previous_step}, \"{composite_key_name}\", {composite_key_logic}, type text),")
+            new_lines.append(f"                    // Add composite key: {composite_key_name}")
+            new_lines.append(f"                    {step_name} = Table.AddColumn({previous_step}, \"{composite_key_name}\", {composite_key_logic}, type text),")
         
         # Update the final step name
         if composite_keys:
@@ -1530,8 +1530,8 @@ class StagingTableHandler:
                 new_lines[-1] = new_lines[-1][:-1]
         
         # Add the 'in' clause back
-        new_lines.append("in")
-        new_lines.append(f"    {final_step}")
+        new_lines.append("                in")
+        new_lines.append(f"                    {final_step}")
         
         return '\n'.join(new_lines)
 

@@ -2,7 +2,7 @@ table PURCHASE_ORDER_LINE
 
 
     column 'SITE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -12,7 +12,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_NUMBER
 
@@ -22,7 +22,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'CHANGE_ORDER_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: CHANGE_ORDER_NUMBER
 
@@ -32,7 +32,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'RELEASE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RELEASE_NUMBER
 
@@ -42,7 +42,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_LINE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_LINE_NUMBER
 
@@ -52,7 +52,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STATUS
 
@@ -62,7 +62,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'STATUS_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: STATUS_DATE
 
@@ -72,7 +72,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'ITEM_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -82,7 +82,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'UNIT_PRICE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: UNIT_PRICE
 
@@ -92,7 +92,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BU_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: BU_NUMBER
 
@@ -102,7 +102,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'JOB_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: JOB_NUMBER
 
@@ -112,7 +112,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'UNIT_OF_MEASURE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: UNIT_OF_MEASURE
 
@@ -122,7 +122,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PROMISED_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: PROMISED_DATE
 
@@ -132,7 +132,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_REJECTED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_REJECTED
 
@@ -142,7 +142,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_IN_INVENT'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_IN_INVENT
 
@@ -152,7 +152,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_RECD_SITE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_RECD_SITE
 
@@ -162,7 +162,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_IN_HOLD'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_IN_HOLD
 
@@ -172,7 +172,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ENTERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ENTERED
 
@@ -182,7 +182,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_ORDERED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_ORDERED
 
@@ -192,7 +192,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_RECD_TO_DATE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_RECD_TO_DATE
 
@@ -202,7 +202,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_ON_HOLD'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_ON_HOLD
 
@@ -212,7 +212,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QA_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_CODE
 
@@ -222,7 +222,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QA_INSPECTOR'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_INSPECTOR
 
@@ -232,7 +232,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QA_LEVEL'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_LEVEL
 
@@ -242,7 +242,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'REQUISITION'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: REQUISITION
 
@@ -252,7 +252,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'VENDOR_NAME'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: VENDOR_NAME
 
@@ -262,7 +262,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_TYPE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_TYPE
 
@@ -272,7 +272,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_CLASS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_CLASS
 
@@ -282,7 +282,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BLANKET_TYPE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: BLANKET_TYPE
 
@@ -292,7 +292,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BLANKET_BEGIN_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: BLANKET_BEGIN_DATE
 
@@ -302,7 +302,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BLANKET_END_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: BLANKET_END_DATE
 
@@ -312,7 +312,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ROOT_ENTERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ROOT_ENTERED
 
@@ -322,7 +322,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ROOT_ORDERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ROOT_ORDERED
 
@@ -332,7 +332,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ROOT_STATUS'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ROOT_STATUS
 
@@ -342,7 +342,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DOLLARS_COMMITTED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: DOLLARS_COMMITTED
 
@@ -352,7 +352,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'MAX_DOLLARS'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: MAX_DOLLARS
 
@@ -362,7 +362,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'LAST_BLANKET_RELEASE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LAST_BLANKET_RELEASE_NUMBER
 
@@ -372,7 +372,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_ROOT_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_ROOT_STATUS
 
@@ -382,7 +382,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'REVISION_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: REVISION_NUMBER
 
@@ -392,7 +392,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'SERVICE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SERVICE
 
@@ -402,7 +402,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DOLLARS_RECEIVED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: DOLLARS_RECEIVED
 
@@ -412,7 +412,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DSR_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: DSR_NUMBER
 
@@ -422,7 +422,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DSR_HOLD_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: DSR_HOLD_STATUS
 
@@ -432,7 +432,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PROMISE_DATE_IND'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PROMISE_DATE_IND
 
@@ -442,7 +442,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PRICE_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PRICE_CODE
 
@@ -452,7 +452,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PROCUREMENT_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PROCUREMENT_CODE
 
@@ -462,7 +462,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_REJECTED_TO_DATE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_REJECTED_TO_DATE
 
@@ -472,7 +472,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'REQUESTOR_NAME'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: REQUESTOR_NAME
 
@@ -482,7 +482,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'UNIT_OF_PURCHASE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: UNIT_OF_PURCHASE
 
@@ -492,7 +492,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'CONVERSION_FACTOR'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: CONVERSION_FACTOR
 
@@ -502,7 +502,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'STOP'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOP
 
@@ -512,7 +512,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'SITE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -522,7 +522,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_NUMBER
 
@@ -532,7 +532,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'CHANGE_ORDER_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: CHANGE_ORDER_NUMBER
 
@@ -542,7 +542,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'RELEASE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RELEASE_NUMBER
 
@@ -552,7 +552,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_LINE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_LINE_NUMBER
 
@@ -562,7 +562,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STATUS
 
@@ -572,7 +572,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'STATUS_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: STATUS_DATE
 
@@ -582,7 +582,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'ITEM_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -592,7 +592,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'UNIT_PRICE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: UNIT_PRICE
 
@@ -602,7 +602,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BU_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: BU_NUMBER
 
@@ -612,7 +612,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'JOB_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: JOB_NUMBER
 
@@ -622,7 +622,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'UNIT_OF_MEASURE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: UNIT_OF_MEASURE
 
@@ -632,7 +632,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PROMISED_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: PROMISED_DATE
 
@@ -642,7 +642,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_REJECTED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_REJECTED
 
@@ -652,7 +652,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_IN_INVENT'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_IN_INVENT
 
@@ -662,7 +662,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_RECD_SITE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_RECD_SITE
 
@@ -672,7 +672,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_LAST_IN_HOLD'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_LAST_IN_HOLD
 
@@ -682,7 +682,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ENTERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ENTERED
 
@@ -692,7 +692,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_ORDERED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_ORDERED
 
@@ -702,7 +702,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_RECD_TO_DATE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_RECD_TO_DATE
 
@@ -712,7 +712,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_ON_HOLD'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_ON_HOLD
 
@@ -722,7 +722,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QA_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_CODE
 
@@ -732,7 +732,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QA_INSPECTOR'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_INSPECTOR
 
@@ -742,7 +742,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QA_LEVEL'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_LEVEL
 
@@ -752,7 +752,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'REQUISITION'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: REQUISITION
 
@@ -762,7 +762,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'VENDOR_NAME'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: VENDOR_NAME
 
@@ -772,7 +772,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_TYPE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_TYPE
 
@@ -782,7 +782,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_CLASS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_CLASS
 
@@ -792,7 +792,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BLANKET_TYPE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: BLANKET_TYPE
 
@@ -802,7 +802,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BLANKET_BEGIN_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: BLANKET_BEGIN_DATE
 
@@ -812,7 +812,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'BLANKET_END_DATE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: BLANKET_END_DATE
 
@@ -822,7 +822,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ROOT_ENTERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ROOT_ENTERED
 
@@ -832,7 +832,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ROOT_ORDERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ROOT_ORDERED
 
@@ -842,7 +842,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DATE_ROOT_STATUS'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ROOT_STATUS
 
@@ -852,7 +852,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DOLLARS_COMMITTED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: DOLLARS_COMMITTED
 
@@ -862,7 +862,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'MAX_DOLLARS'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: MAX_DOLLARS
 
@@ -872,7 +872,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'LAST_BLANKET_RELEASE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LAST_BLANKET_RELEASE_NUMBER
 
@@ -882,7 +882,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PO_ROOT_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_ROOT_STATUS
 
@@ -892,7 +892,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'REVISION_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: REVISION_NUMBER
 
@@ -902,7 +902,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'SERVICE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SERVICE
 
@@ -912,7 +912,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DOLLARS_RECEIVED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: DOLLARS_RECEIVED
 
@@ -922,7 +922,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DSR_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: DSR_NUMBER
 
@@ -932,7 +932,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'DSR_HOLD_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: DSR_HOLD_STATUS
 
@@ -942,7 +942,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PROMISE_DATE_IND'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PROMISE_DATE_IND
 
@@ -952,7 +952,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PRICE_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PRICE_CODE
 
@@ -962,7 +962,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'PROCUREMENT_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PROCUREMENT_CODE
 
@@ -972,7 +972,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'QTY_REJECTED_TO_DATE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_REJECTED_TO_DATE
 
@@ -982,7 +982,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'REQUESTOR_NAME'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: REQUESTOR_NAME
 
@@ -992,7 +992,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'UNIT_OF_PURCHASE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: UNIT_OF_PURCHASE
 
@@ -1002,7 +1002,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'CONVERSION_FACTOR'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: CONVERSION_FACTOR
 
@@ -1012,7 +1012,7 @@ table PURCHASE_ORDER_LINE
 
         
     column 'STOP'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOP
 
@@ -1086,18 +1086,18 @@ table PURCHASE_ORDER_LINE
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""PO_NUMBER"", ""CHANGE_ORDER_NUMBER"", ""RELEASE_NUMBER"", ""PO_LINE_NUMBER"", ""STATUS"", ""STATUS_DATE"", ""ITEM_NUMBER"", ""UNIT_PRICE"", ""BU_NUMBER"", ""JOB_NUMBER"", ""UNIT_OF_MEASURE"", ""PROMISED_DATE"", ""DATE_LAST_REJECTED"", ""DATE_LAST_IN_INVENT"", ""DATE_LAST_RECD_SITE"", ""DATE_LAST_IN_HOLD"", ""DATE_ENTERED"", ""QTY_ORDERED"", ""QTY_RECD_TO_DATE"", ""QTY_ON_HOLD"", ""QA_CODE"", ""QA_INSPECTOR"", ""QA_LEVEL"", ""REQUISITION"", ""VENDOR_NAME"", ""PO_TYPE"", ""PO_CLASS"", ""BLANKET_TYPE"", ""BLANKET_BEGIN_DATE"", ""BLANKET_END_DATE"", ""DATE_ROOT_ENTERED"", ""DATE_ROOT_ORDERED"", ""DATE_ROOT_STATUS"", ""DOLLARS_COMMITTED"", ""MAX_DOLLARS"", ""LAST_BLANKET_RELEASE_NUMBER"", ""PO_ROOT_STATUS"", ""REVISION_NUMBER"", ""SERVICE"", ""DOLLARS_RECEIVED"", ""DSR_NUMBER"", ""DSR_HOLD_STATUS"", ""PROMISE_DATE_IND"", ""PRICE_CODE"", ""PROCUREMENT_CODE"", ""QTY_REJECTED_TO_DATE"", ""REQUESTOR_NAME"", ""UNIT_OF_PURCHASE"", ""CONVERSION_FACTOR"", ""STOP"" FROM ""PURCHASE_ORDER_LINE""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text),
-    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
-    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
-    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_3 = Table.AddColumn(AddCompositeKey_2, "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text),
-    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_4 = Table.AddColumn(AddCompositeKey_3, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
-    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
-    AddCompositeKey_5 = Table.AddColumn(AddCompositeKey_4, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text)
-in
-    AddCompositeKey_5
+                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text),
+                    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
+                    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
+                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_3 = Table.AddColumn(AddCompositeKey_2, "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text),
+                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_4 = Table.AddColumn(AddCompositeKey_3, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
+                    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
+                    AddCompositeKey_5 = Table.AddColumn(AddCompositeKey_4, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text)
+                in
+                    AddCompositeKey_5
         
 
 

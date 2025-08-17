@@ -2,7 +2,7 @@ table STORAGE_LOCATION
 
 
     column 'ITEM_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -12,7 +12,7 @@ table STORAGE_LOCATION
 
         
     column 'SITE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -22,7 +22,7 @@ table STORAGE_LOCATION
 
         
     column 'SEGMENTS'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: SEGMENTS
 
@@ -32,7 +32,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION1'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION1
 
@@ -42,7 +42,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_1'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_1
 
@@ -52,7 +52,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION2'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION2
 
@@ -62,7 +62,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_2'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_2
 
@@ -72,7 +72,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION3'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION3
 
@@ -82,7 +82,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_3'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_3
 
@@ -92,7 +92,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION4'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION4
 
@@ -102,7 +102,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_4'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_4
 
@@ -112,7 +112,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION5'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION5
 
@@ -122,7 +122,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_5'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_5
 
@@ -132,7 +132,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION6'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION6
 
@@ -142,7 +142,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_6'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_6
 
@@ -152,7 +152,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION7'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION7
 
@@ -162,7 +162,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_7'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_7
 
@@ -172,7 +172,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION8'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION8
 
@@ -182,7 +182,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_8'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_8
 
@@ -192,7 +192,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION9'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION9
 
@@ -202,7 +202,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_9'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_9
 
@@ -212,7 +212,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION10'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION10
 
@@ -222,7 +222,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_10'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_10
 
@@ -232,7 +232,7 @@ table STORAGE_LOCATION
 
         
     column 'STOP'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOP
 
@@ -242,7 +242,7 @@ table STORAGE_LOCATION
 
         
     column 'ITEM_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -252,7 +252,7 @@ table STORAGE_LOCATION
 
         
     column 'SITE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -262,7 +262,7 @@ table STORAGE_LOCATION
 
         
     column 'SEGMENTS'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: SEGMENTS
 
@@ -272,7 +272,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION1'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION1
 
@@ -282,7 +282,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_1'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_1
 
@@ -292,7 +292,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION2'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION2
 
@@ -302,7 +302,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_2'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_2
 
@@ -312,7 +312,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION3'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION3
 
@@ -322,7 +322,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_3'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_3
 
@@ -332,7 +332,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION4'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION4
 
@@ -342,7 +342,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_4'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_4
 
@@ -352,7 +352,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION5'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION5
 
@@ -362,7 +362,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_5'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_5
 
@@ -372,7 +372,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION6'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION6
 
@@ -382,7 +382,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_6'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_6
 
@@ -392,7 +392,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION7'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION7
 
@@ -402,7 +402,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_7'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_7
 
@@ -412,7 +412,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION8'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION8
 
@@ -422,7 +422,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_8'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_8
 
@@ -432,7 +432,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION9'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION9
 
@@ -442,7 +442,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_9'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_9
 
@@ -452,7 +452,7 @@ table STORAGE_LOCATION
 
         
     column 'LOCATION10'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOCATION10
 
@@ -462,7 +462,7 @@ table STORAGE_LOCATION
 
         
     column 'LOC_NUMBER_10'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: LOC_NUMBER_10
 
@@ -472,7 +472,7 @@ table STORAGE_LOCATION
 
         
     column 'STOP'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOP
 
@@ -513,12 +513,12 @@ table STORAGE_LOCATION
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""SITE_NUMBER"", ""SEGMENTS"", ""LOCATION1"", ""LOC_NUMBER_1"", ""LOCATION2"", ""LOC_NUMBER_2"", ""LOCATION3"", ""LOC_NUMBER_3"", ""LOCATION4"", ""LOC_NUMBER_4"", ""LOCATION5"", ""LOC_NUMBER_5"", ""LOCATION6"", ""LOC_NUMBER_6"", ""LOCATION7"", ""LOC_NUMBER_7"", ""LOCATION8"", ""LOC_NUMBER_8"", ""LOCATION9"", ""LOC_NUMBER_9"", ""LOCATION10"", ""LOC_NUMBER_10"", ""STOP"" FROM ""STORAGE_LOCATION""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
-    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text)
-in
-    AddCompositeKey_2
+                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
+                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text)
+                in
+                    AddCompositeKey_2
         
 
 

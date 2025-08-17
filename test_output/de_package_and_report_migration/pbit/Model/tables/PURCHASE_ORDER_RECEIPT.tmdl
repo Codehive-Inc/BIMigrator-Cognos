@@ -2,7 +2,7 @@ table PURCHASE_ORDER_RECEIPT
 
 
     column 'SITE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -12,7 +12,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'PO_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_NUMBER
 
@@ -22,7 +22,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'CHANGE_ORDER_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: CHANGE_ORDER_NUMBER
 
@@ -32,7 +32,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RELEASE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RELEASE_NUMBER
 
@@ -42,7 +42,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'PO_LINE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_LINE_NUMBER
 
@@ -52,7 +52,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DATE_ENTERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ENTERED
 
@@ -62,7 +62,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'TIME_ENTERED'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: TIME_ENTERED
 
@@ -72,7 +72,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QTY_RECEIVED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_RECEIVED
 
@@ -82,7 +82,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QTY_REJECTED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_REJECTED
 
@@ -92,7 +92,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QA_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_CODE
 
@@ -102,7 +102,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'SHELF_LIFE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SHELF_LIFE
 
@@ -112,7 +112,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QA_INSPECTOR'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_INSPECTOR
 
@@ -122,7 +122,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'STOREKEEPER_ID'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOREKEEPER_ID
 
@@ -132,7 +132,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RECEIPT_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RECEIPT_NUMBER
 
@@ -142,7 +142,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'UNIT_PRICE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: UNIT_PRICE
 
@@ -152,7 +152,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'ITEM_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -162,7 +162,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DATE_RECEIVED_AT_SITE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_RECEIVED_AT_SITE
 
@@ -172,7 +172,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RECEIPT_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RECEIPT_CODE
 
@@ -182,7 +182,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DATE_STATUS_EFFECTIVE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_STATUS_EFFECTIVE
 
@@ -192,7 +192,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'HOLD_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: HOLD_STATUS
 
@@ -202,7 +202,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DSR_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: DSR_NUMBER
 
@@ -212,7 +212,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QTY_IN_HOLD'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_IN_HOLD
 
@@ -222,7 +222,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RECORD_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RECORD_STATUS
 
@@ -232,7 +232,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'STOP'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOP
 
@@ -242,7 +242,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'ITT_KEY_NO'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITT_KEY_NO
 
@@ -252,7 +252,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'SITE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SITE_NUMBER
 
@@ -262,7 +262,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'PO_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_NUMBER
 
@@ -272,7 +272,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'CHANGE_ORDER_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: CHANGE_ORDER_NUMBER
 
@@ -282,7 +282,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RELEASE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RELEASE_NUMBER
 
@@ -292,7 +292,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'PO_LINE_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: PO_LINE_NUMBER
 
@@ -302,7 +302,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DATE_ENTERED'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_ENTERED
 
@@ -312,7 +312,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'TIME_ENTERED'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: TIME_ENTERED
 
@@ -322,7 +322,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QTY_RECEIVED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_RECEIVED
 
@@ -332,7 +332,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QTY_REJECTED'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_REJECTED
 
@@ -342,7 +342,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QA_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_CODE
 
@@ -352,7 +352,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'SHELF_LIFE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: SHELF_LIFE
 
@@ -362,7 +362,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QA_INSPECTOR'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: QA_INSPECTOR
 
@@ -372,7 +372,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'STOREKEEPER_ID'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOREKEEPER_ID
 
@@ -382,7 +382,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RECEIPT_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RECEIPT_NUMBER
 
@@ -392,7 +392,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'UNIT_PRICE'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: UNIT_PRICE
 
@@ -402,7 +402,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'ITEM_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITEM_NUMBER
 
@@ -412,7 +412,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DATE_RECEIVED_AT_SITE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_RECEIVED_AT_SITE
 
@@ -422,7 +422,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RECEIPT_CODE'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RECEIPT_CODE
 
@@ -432,7 +432,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DATE_STATUS_EFFECTIVE'
-        dataType: DataType.DATE
+        dataType: dateTime
         summarizeBy: none
         sourceColumn: DATE_STATUS_EFFECTIVE
 
@@ -442,7 +442,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'HOLD_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: HOLD_STATUS
 
@@ -452,7 +452,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'DSR_NUMBER'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: DSR_NUMBER
 
@@ -462,7 +462,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'QTY_IN_HOLD'
-        dataType: DataType.INTEGER
+        dataType: int64
         summarizeBy: none
         sourceColumn: QTY_IN_HOLD
 
@@ -472,7 +472,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'RECORD_STATUS'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: RECORD_STATUS
 
@@ -482,7 +482,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'STOP'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: STOP
 
@@ -492,7 +492,7 @@ table PURCHASE_ORDER_RECEIPT
 
         
     column 'ITT_KEY_NO'
-        dataType: DataType.STRING
+        dataType: string
         summarizeBy: none
         sourceColumn: ITT_KEY_NO
 
@@ -522,10 +522,10 @@ table PURCHASE_ORDER_RECEIPT
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""PO_NUMBER"", ""CHANGE_ORDER_NUMBER"", ""RELEASE_NUMBER"", ""PO_LINE_NUMBER"", ""DATE_ENTERED"", ""TIME_ENTERED"", ""QTY_RECEIVED"", ""QTY_REJECTED"", ""QA_CODE"", ""SHELF_LIFE"", ""QA_INSPECTOR"", ""STOREKEEPER_ID"", ""RECEIPT_NUMBER"", ""UNIT_PRICE"", ""ITEM_NUMBER"", ""DATE_RECEIVED_AT_SITE"", ""RECEIPT_CODE"", ""DATE_STATUS_EFFECTIVE"", ""HOLD_STATUS"", ""DSR_NUMBER"", ""QTY_IN_HOLD"", ""RECORD_STATUS"", ""STOP"", ""ITT_KEY_NO"" FROM ""PURCHASE_ORDER_RECEIPT""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
-    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text)
-in
-    AddCompositeKey_1
+                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text)
+                in
+                    AddCompositeKey_1
         
 
 
