@@ -342,11 +342,9 @@ class StagingTableHandler:
             self._save_table_as_json(dim_table, self.extracted_dir)
             self.logger.info(f"Saved dimension table JSON: {dim_table.name}")
         
-        # Save updated fact tables
-        for table in data_model.tables:
-            if table.name in fact_table_names and not table.name.startswith('Dim_'):
-                self._save_table_as_json(table, self.extracted_dir)
-                self.logger.info(f"Saved updated fact table JSON: {table.name}")
+        # Don't save fact tables - let package migration handle them
+        # The staging table handler only saves dimension tables
+        # Fact tables will be processed by the package migration with composite keys added to the data model
     
     def _save_table_as_json(self, table: Table, extracted_dir: Path) -> None:
         """
@@ -1171,7 +1169,7 @@ class StagingTableHandler:
             
             # Create relationship from dimension table to fact table
             dim_rel = Relationship(
-                id=f"Dim_{rel_id_base}",
+                id=rel_id_base,  # Remove the Dim_ prefix since dimension_table_name already has it
                 from_table=dimension_table_name,
                 from_column=composite_key_name,
                 to_table=table_name,

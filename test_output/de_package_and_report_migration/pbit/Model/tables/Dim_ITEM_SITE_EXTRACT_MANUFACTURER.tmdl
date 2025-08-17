@@ -28,12 +28,12 @@ table Dim_ITEM_SITE_EXTRACT_MANUFACTURER
         mode: import
         source = 
             let
-                // Get data from ITEM_SITE_EXTRACT
-                Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {"ITEM_NUMBER"}),
                 // Get data from MANUFACTURER
                 Data_From_MANUFACTURER = Table.SelectColumns(MANUFACTURER, {"ITEM_NUMBER"}),
+                // Get data from ITEM_SITE_EXTRACT
+                Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {"ITEM_NUMBER"}),
                 // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_ITEM_SITE_EXTRACT, Data_From_MANUFACTURER}),
+                CombinedData = Table.Combine({Data_From_MANUFACTURER, Data_From_ITEM_SITE_EXTRACT}),
                 // Get unique combinations of dimension keys
                 UniqueRows = Table.Distinct(CombinedData, {"ITEM_NUMBER"}),
                 // Create composite key for relationships
