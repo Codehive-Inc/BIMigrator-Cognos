@@ -391,8 +391,13 @@ class StagingTableHandler:
         # Add hierarchies (empty for now)
         table_json["hierarchies"] = []
         
-        # Generate M-query with composite keys using proper mquery_converter
-        m_query = self._generate_proper_m_query_with_composite_keys(table)
+        # Generate M-query - use separate functions for dimension vs fact tables
+        if table.name.startswith('Dim_'):
+            # For dimension tables, use the M-query that was already generated
+            m_query = getattr(table, 'source_query', None)
+        else:
+            # For fact tables, generate M-query with composite keys
+            m_query = self._generate_proper_m_query_with_composite_keys(table)
         
         # Add partitions with M-query
         partitions = []
@@ -1067,38 +1072,38 @@ class StagingTableHandler:
         # Add steps for each source table
         for i, source_table in enumerate(source_tables):
             step_name = f"Data_From_{source_table.replace(' ', '_')}"
-            m_query_parts.append(f"    // Get data from {source_table}")
-            m_query_parts.append(f"    {step_name} = Table.SelectColumns({source_table}, {{{column_list}}}),")
+            m_query_parts.append(f"                // Get data from {source_table}")
+            m_query_parts.append(f"                {step_name} = Table.SelectColumns({source_table}, {{{column_list}}}),")
             
         # Combine data from all source tables
         if len(source_tables) > 1:
             combine_tables = [f"Data_From_{table.replace(' ', '_')}" for table in source_tables]
             combine_list = ", ".join(combine_tables)
-            m_query_parts.append(f"    // Combine data from all source tables")
-            m_query_parts.append(f"    CombinedData = Table.Combine({{{combine_list}}}),")
-            m_query_parts.append(f"    // Get unique combinations of dimension keys")
-            m_query_parts.append(f"    UniqueRows = Table.Distinct(CombinedData, {{{column_list}}}),")
+            m_query_parts.append(f"                // Combine data from all source tables")
+            m_query_parts.append(f"                CombinedData = Table.Combine({{{combine_list}}}),")
+            m_query_parts.append(f"                // Get unique combinations of dimension keys")
+            m_query_parts.append(f"                UniqueRows = Table.Distinct(CombinedData, {{{column_list}}}),")
             final_step_before_key = "UniqueRows"
         else:
             source_table_clean = source_tables[0].replace(' ', '_')
-            m_query_parts.append(f"    // Get unique combinations of dimension keys")
-            m_query_parts.append(f"    UniqueRows = Table.Distinct(Data_From_{source_table_clean}, {{{column_list}}}),")
+            m_query_parts.append(f"                // Get unique combinations of dimension keys")
+            m_query_parts.append(f"                UniqueRows = Table.Distinct(Data_From_{source_table_clean}, {{{column_list}}}),")
             final_step_before_key = "UniqueRows"
         
         # Add composite key generation
-        m_query_parts.append(f"    // Create composite key for relationships")
-        m_query_parts.append(f"    AddCompositeKey = Table.AddColumn({final_step_before_key}, \"{composite_key_name}\", {composite_key_logic}, type text),")
+        m_query_parts.append(f"                // Create composite key for relationships")
+        m_query_parts.append(f"                AddCompositeKey = Table.AddColumn({final_step_before_key}, \"{composite_key_name}\", {composite_key_logic}, type text),")
         
         # Filter out null/empty keys
-        m_query_parts.append(f"    // Filter out rows with null or empty composite keys")
-        m_query_parts.append(f"    FilteredRows = Table.SelectRows(AddCompositeKey, each [{composite_key_name}] <> null and [{composite_key_name}] <> \"\"),")
+        m_query_parts.append(f"                // Filter out rows with null or empty composite keys")
+        m_query_parts.append(f"                FilteredRows = Table.SelectRows(AddCompositeKey, each [{composite_key_name}] <> null and [{composite_key_name}] <> \"\"),")
         
         # Remove the trailing comma from the last step
         m_query_parts[-1] = m_query_parts[-1].rstrip(",")
         
         # Add the final in clause
-        m_query_parts.append(f"in")
-        m_query_parts.append(f"    FilteredRows")
+        m_query_parts.append(f"            in")
+        m_query_parts.append(f"                FilteredRows")
         
         # Join all parts with newlines
         m_query = "\n".join(m_query_parts)
