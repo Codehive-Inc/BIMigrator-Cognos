@@ -55,21 +55,6 @@ class PackageModelFileGenerator:
         self.logger.info(f"PACKAGE DEBUG: PackageModelFileGenerator received data_model with {len(data_model.tables)} tables")
         self.logger.info(f"PACKAGE DEBUG: Table names at start of generation: {table_names}")
         
-        # Process staging tables if enabled in settings
-        if self.settings and self.settings.get('staging_tables', {}).get('enabled', False):
-            from .staging_table_handler import StagingTableHandler
-            self.logger.info(f"Initializing StagingTableHandler with settings: {self.settings}")
-            
-            # Get extracted directory if applicable
-            extracted_dir = get_extracted_dir(model_dir)
-            
-            staging_handler = StagingTableHandler(self.settings, extracted_dir)
-            data_model = staging_handler.process_data_model(data_model)
-            self.logger.info(f"After staging table processing, data model has {len(data_model.tables)} tables")
-            self.logger.info(f"Tables after staging: {[t.name for t in data_model.tables]}")
-        else:
-            self.logger.info("Staging tables not enabled in settings, skipping staging table processing")
-        
         # Get extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
         
@@ -87,6 +72,23 @@ class PackageModelFileGenerator:
             from ..converters import PackageMQueryConverter
             self.mquery_converter = PackageMQueryConverter(output_path=str(output_dir.parent))
         self._generate_package_table_files(data_model.tables, model_dir, package_info)
+        
+        # Process staging tables AFTER normal table files are generated
+        # This allows the staging table handler to read the original M-queries from JSON files
+        if self.settings and self.settings.get('staging_tables', {}).get('enabled', False):
+            from .staging_table_handler import StagingTableHandler
+            self.logger.info(f"Processing staging tables after JSON generation with settings: {self.settings}")
+            
+            staging_handler = StagingTableHandler(self.settings, extracted_dir, self.mquery_converter)
+            data_model = staging_handler.process_data_model(data_model)
+            self.logger.info(f"After staging table processing, data model has {len(data_model.tables)} tables")
+            self.logger.info(f"Tables after staging: {[t.name for t in data_model.tables]}")
+            
+            # Regenerate table files with staging table modifications
+            self.logger.info("Regenerating table files with staging table modifications")
+            self._generate_package_table_files(data_model.tables, model_dir, package_info)
+        else:
+            self.logger.info("Staging tables not enabled in settings, skipping staging table processing")
         
         # Generate date table files if they exist
         if hasattr(data_model, 'date_tables') and data_model.date_tables:

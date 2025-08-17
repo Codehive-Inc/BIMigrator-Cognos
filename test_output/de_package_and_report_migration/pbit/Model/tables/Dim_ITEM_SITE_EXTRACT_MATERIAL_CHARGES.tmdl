@@ -34,26 +34,6 @@ table Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
 
 
 
-    partition 'Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES' = m
-        mode: import
-        source = 
-            let
-    // Get data from MATERIAL_CHARGES
-    Data_From_MATERIAL_CHARGES = Table.SelectColumns(MATERIAL_CHARGES, {"SITE_NUMBER", "ITEM_NUMBER"}),
-    // Get data from ITEM_SITE_EXTRACT
-    Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {"SITE_NUMBER", "ITEM_NUMBER"}),
-    // Combine data from all source tables
-    CombinedData = Table.Combine({Data_From_MATERIAL_CHARGES, Data_From_ITEM_SITE_EXTRACT}),
-    // Get unique combinations of dimension keys
-    UniqueRows = Table.Distinct(CombinedData, {"SITE_NUMBER", "ITEM_NUMBER"}),
-    // Create composite key for relationships
-    AddCompositeKey = Table.AddColumn(UniqueRows, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
-    // Filter out rows with null or empty composite keys
-    FilteredRows = Table.SelectRows(AddCompositeKey, each [SITE_NUMBER_ITEM_NUMBER_Key] <> null and [SITE_NUMBER_ITEM_NUMBER_Key] <> "")
-in
-    FilteredRows
-        
-
 
 
     annotation PBI_ResultType = Table

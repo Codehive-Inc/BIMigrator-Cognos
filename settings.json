@@ -8,7 +8,7 @@
   },
   "staging_tables": {
     "enabled": true,
-    "naming_prefix": "stg_",
+    "naming_prefix": "Dim_",
     "model_handling": "star_schema"
   }
 }

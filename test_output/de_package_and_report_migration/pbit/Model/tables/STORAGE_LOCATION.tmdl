@@ -509,9 +509,12 @@ table STORAGE_LOCATION
     partition 'STORAGE_LOCATION' = m
         mode: import
         source = 
-            Select
+            let
+                    Source = Sql.Database(#"DB Server", #"DB Name"),
+                    ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""SITE_NUMBER"", ""SEGMENTS"", ""LOCATION1"", ""LOC_NUMBER_1"", ""LOCATION2"", ""LOC_NUMBER_2"", ""LOCATION3"", ""LOC_NUMBER_3"", ""LOCATION4"", ""LOC_NUMBER_4"", ""LOCATION5"", ""LOC_NUMBER_5"", ""LOCATION6"", ""LOC_NUMBER_6"", ""LOCATION7"", ""LOC_NUMBER_7"", ""LOCATION8"", ""LOC_NUMBER_8"", ""LOCATION9"", ""LOC_NUMBER_9"", ""LOCATION10"", ""LOC_NUMBER_10"", ""STOP"" FROM ""STORAGE_LOCATION""", null, [EnableFolding=true]),
+                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
     // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
-    AddCompositeKey_1 = Table.AddColumn(Source, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
+    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
     // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
     AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text)
 in
