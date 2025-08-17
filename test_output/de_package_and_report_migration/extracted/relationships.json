@@ -1,19 +1,19 @@
 [
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
+    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
     "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_LINE",
+    "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
     "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
+    "id": "Dim_Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
     "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
+    "toTable": "PURCHASE_ORDER_LINE",
     "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
@@ -60,16 +60,6 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_RECEIPT",
-    "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
-    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_RECEIPT",
-    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
-    "isActive": true,
-    "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
-  },
-  {
     "id": "Dim_Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
     "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
@@ -80,11 +70,11 @@
     "crossFilteringBehavior": "OneDirection"
   },
   {
-    "id": "Dim_Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_STORAGE_LOCATION",
-    "fromTable": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
-    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
-    "toTable": "STORAGE_LOCATION",
-    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "id": "Dim_Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_RECEIPT",
+    "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
+    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "toTable": "PURCHASE_ORDER_RECEIPT",
+    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "OneDirection"
@@ -94,6 +84,16 @@
     "fromTable": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
     "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "isActive": true,
+    "toCardinality": "many",
+    "crossFilteringBehavior": "OneDirection"
+  },
+  {
+    "id": "Dim_Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_STORAGE_LOCATION",
+    "fromTable": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "toTable": "STORAGE_LOCATION",
     "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
