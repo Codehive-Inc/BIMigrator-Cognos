@@ -1,0 +1,381 @@
+table PURCHASE_ORDER_LINE
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HAND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QTY_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MINIMUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MINIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONSUMABLE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CONSUMABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAXIMUM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MAXIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_ISSUED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_LAST_ISSUED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RETURNED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RETURNED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECEIVED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UTC_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRIMARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRIMARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SECONDARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SECONDARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVENT_MAINTENANCE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREVENT_MAINTENANCE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAP_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_1' = ```
+            LOC_1
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_2' = ```
+            LOC_2
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'PURCHASE_ORDER_LINE' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""ITEM_SITE_EXTRACT"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
+    ""ITEM_SITE_EXTRACT"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
+    ""PURCHASE_ORDER_LINE"".""PO_NUMBER"" AS ""PO_NUMBER"",
+    ""PURCHASE_ORDER_LINE"".""PO_LINE_NUMBER"" AS ""PO_LINE_NUMBER"",
+    ""PURCHASE_ORDER_LINE"".""RELEASE_NUMBER"" AS ""RELEASE_NUMBER"",
+    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION"",
+    ""ITEM_SITE_EXTRACT"".""UNIT_OF_MEASURE"" AS ""UNIT_OF_MEASURE"",
+    ""ITEM_SITE_EXTRACT"".""QTY_ON_HAND"" AS ""QTY_ON_HAND"",
+    ""ITEM_SITE_EXTRACT"".""MINIMUM"" AS ""MINIMUM"",
+    ""ITEM_SITE_EXTRACT"".""CONSUMABLE"" AS ""CONSUMABLE"",
+    ""ITEM_SITE_EXTRACT"".""SHELF_LIFE"" AS ""SHELF_LIFE"",
+    ""ITEM_SITE_EXTRACT"".""MAXIMUM"" AS ""MAXIMUM"",
+    ""ITEM_SITE_EXTRACT"".""DATE_LAST_ISSUED"" AS ""DATE_LAST_ISSUED"",
+    ""ITEM_SITE_EXTRACT"".""DATE_LAST_RETURNED"" AS ""DATE_LAST_RETURNED"",
+    ""ITEM_SITE_EXTRACT"".""DATE_LAST_RECEIVED"" AS ""DATE_LAST_RECEIVED"",
+    ""ITEM_SITE_EXTRACT"".""UTC_IND"" AS ""UTC_IND"",
+    ""ITEM_SITE_EXTRACT"".""PRIMARY_LOC"" AS ""PRIMARY_LOC"",
+    ""ITEM_SITE_EXTRACT"".""SECONDARY_LOC"" AS ""SECONDARY_LOC"",
+    ""ITEM_SITE_EXTRACT"".""STATUS"" AS ""STATUS"",
+    ""ITEM_SITE_EXTRACT"".""QA_CODE"" AS ""QA_CODE"",
+    ""ITEM_SITE_EXTRACT"".""QA_LEVEL"" AS ""QA_LEVEL"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT1"" AS ""QA_CERT1"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT2"" AS ""QA_CERT2"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT3"" AS ""QA_CERT3"",
+    ""ITEM_SITE_EXTRACT"".""QA_CERT4"" AS ""QA_CERT4"",
+    ""ITEM_SITE_EXTRACT"".""PIT"" AS ""PIT"",
+    ""ITEM_SITE_EXTRACT"".""PREVENT_MAINTENANCE"" AS ""PREVENT_MAINTENANCE"",
+    ""PURCHASE_ORDER_LINE"".""STATUS_DATE"" AS ""STATUS_DATE"",
+    ""ITEM_SITE_EXTRACT"".""SAP_IND"" AS ""SAP_IND"",
+    substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 11,2) AS ""LOC_1"",
+    substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 11,2) AS ""LOC_2""
+FROM
+""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""PURCHASE_ORDER_LINE""
+WHERE
+    [SITE_NUMBER]= ?SiteNumber?
+    AND     [ITEM_NUMBER]= ?ItemNumber?
+    AND     [PO_NUMBER]=?PO_Number?
+    AND     [PO_LINE_NUMBER]=?LineNumber?
+    AND     [RELEASE_NUMBER]=?ReleaseNumber?
+    AND     [STATUS_DATE]=?StatusDate?", null, [EnableFolding=true])
+				in
+					SQL
+        
+
+
+
+    annotation PBI_ResultType = Table

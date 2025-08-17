@@ -43,7 +43,7 @@ def test_material_inquiry_detail_report_from_xml():
     report_file = "examples/Report XMLs DE/MaterialInquiryDetail_UC012.xml"
     
     # Directory where the migration output will be saved
-    output_dir = "test_output/report_xml_migration_output_new"
+    output_dir = "test_output/2_report_xml_migration_output_new"
     
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)

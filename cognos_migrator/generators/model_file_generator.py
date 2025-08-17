@@ -123,12 +123,26 @@ class ModelFileGenerator:
         self.logger.info(f"Generated database file: {database_file}")
     
     def _generate_table_files(self, tables: List[Table], model_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None):
-        """Generate table/*.tmdl files"""
+        """Generate table/*.tmdl files using JSON-first approach"""
         tables_dir = model_dir / 'tables'
         tables_dir.mkdir(exist_ok=True)
         
         # Get extracted directory if applicable
         extracted_dir = get_extracted_dir(model_dir)
+        
+        # Phase 1: Generate table JSON files first (if not already generated)
+        self._generate_report_table_json_files_if_needed(tables, extracted_dir, report_spec, report_name, project_metadata)
+        
+        # Phase 2: Generate TMDL files from finalized JSON files
+        self._generate_report_tmdl_from_json(tables, tables_dir, extracted_dir, report_name)
+    
+    def _generate_report_table_json_files_if_needed(self, tables: List[Table], extracted_dir: Path, report_spec: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None):
+        """Generate table JSON files for reports if they don't already exist"""
+        if not extracted_dir:
+            self.logger.warning("No extracted directory available, skipping JSON generation")
+            return
+            
+        self.logger.info("Phase 1: Generating/verifying report table JSON files")
         
         all_data_items = []
         if extracted_dir:
@@ -151,20 +165,32 @@ class ModelFileGenerator:
         if report_name:
             self.logger.info(f"Using report name '{report_name}' for table naming")
 
-        # In a consolidated model, all tables are treated as source tables.
+        # Generate JSON files for each table if they don't exist
         for table in tables:
+            # Use report name for table naming if available and if table name is 'Data'
             table_name = table.name
+            if report_name and table.name == "Data":
+                # Replace spaces with underscores and remove special characters
+                safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
+                table_name = safe_report_name
+                self.logger.info(f"Using report name '{report_name}' for table naming instead of '{table.name}'")
+            
+            # Check if JSON file already exists
+            table_json_file = extracted_dir / f"table_{table_name}.json"
+            if table_json_file.exists():
+                self.logger.info(f"Report table JSON file already exists, skipping generation: {table_json_file}")
+                continue
             
             try:
-                self.logger.warning(f"Using report_spec for table {table.name}: {report_spec is not None}")
+                self.logger.info(f"Generating JSON file for report table {table.name}")
                 
-                # Try to read data items from report_data_items.json for both JSON and TMDL files
+                # Try to read data items from report_data_items.json
                 original_query_name = table.metadata.get("original_query_name", table.name)
                 table_data_items = data_items_by_query.get(original_query_name, [])
                 
-                # Update table.columns with data_items before generating M-query
+                # Update table.columns with data_items
                 if table_data_items:
-                    self.logger.info(f"Updating table {table.name} columns with {len(table_data_items)} data items before M-query generation")
+                    self.logger.info(f"Updating table {table.name} columns with {len(table_data_items)} data items")
                     # Create new Column objects from data items
                     from cognos_migrator.models import Column, DataType
                     
@@ -185,7 +211,7 @@ class ModelFileGenerator:
                     if duplicate_items:
                         self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for table {table.name}")
                         self.logger.info(f"Duplicate column names: {duplicate_items}")
-                        self.logger.info(f"Using only unique column names for M-query generation")
+                        self.logger.info(f"Using only unique column names for JSON generation")
                     
                     # Create columns from deduplicated items
                     updated_columns = []
@@ -205,225 +231,286 @@ class ModelFileGenerator:
                     
                     # Update the table's columns
                     table.columns = updated_columns
-                    self.logger.info(f"Updated table {table.name} columns after deduplication: {', '.join([col.name for col in table.columns])}")
-                    self.logger.info(f"Table {table.name} now has {len(table.columns)} unique columns")
+                    self.logger.info(f"Updated table {table.name} columns: {', '.join([col.name for col in table.columns])}")
                 else:
-                    self.logger.warning(f"No data items found for table {table.name}, using default columns for M-query generation")
+                    self.logger.warning(f"No data items found for table {table.name}, using default columns")
                 
-                # Generate M-query once for both table TMDL and JSON
+                # Generate M-query for the table
                 m_query = None
                 if table.m_query:
                     self.logger.info(f"Using pre-generated M-query for table {table.name}")
                     m_query = table.m_query
                 else:
                     try:
-                        self.logger.info(f"Generating M-query for table {table.name} once to reuse")
+                        self.logger.info(f"Generating M-query for table {table.name}")
                         m_query = self._build_m_expression(table, report_spec)
                         self.logger.info(f"Successfully generated M-query for table {table.name}")
                     except Exception as e:
                         self.logger.warning(f"Failed to generate M-query for table {table.name}: {e}")
                 
-                # Build table context with the data items
-                context = self._build_table_context(table, report_spec, table_data_items, extracted_dir, m_query, report_name, project_metadata)
+                # Generate table JSON using existing logic
+                self._generate_single_report_table_json(table, table_name, table_data_items, extracted_dir, m_query, project_metadata)
+                
+            except Exception as e:
+                self.logger.error(f"Error generating JSON file for report table {table.name}: {e}")
+    
+    def _generate_single_report_table_json(self, table: Table, table_name: str, table_data_items: List[Dict], extracted_dir: Path, m_query: Optional[str], project_metadata: Optional[Dict[str, Any]] = None):
+        """Generate JSON file for a single report table"""
+        # Load calculations if available to update source_column for calculated fields
+        calculations_map = {}
+        calculations_file = extracted_dir / "calculations.json"
+        if calculations_file.exists():
+            try:
+                with open(calculations_file, 'r', encoding='utf-8') as f:
+                    calculations_data = json.load(f)
+                    for calc in calculations_data.get('calculations', []):
+                        if calc.get('TableName') == table.name and calc.get('FormulaDax'):
+                            calculations_map[calc.get('CognosName')] = calc.get('FormulaDax')
+                self.logger.info(f"Loaded {len(calculations_map)} calculations for table {table.name} from {calculations_file}")
+            except Exception as e:
+                self.logger.warning(f"Failed to load calculations from {calculations_file}: {e}")
+
+        # Create a JSON representation of the table
+        table_json = {
+            "source_name": table.name,
+            "name": table_name,
+            "lineage_tag": getattr(table, 'lineage_tag', None),
+            "description": getattr(table, 'description', f"Table from federated relation: {table.name}"),
+            "is_hidden": getattr(table, 'is_hidden', False),
+            "columns": []
+        }
+
+        # If we have data items, use them as columns
+        if table_data_items:
+            # First, deduplicate data items by column name (case-insensitive)
+            unique_items = {}
+            duplicate_items = []
+            
+            for item in table_data_items:
+                column_name = item.get('name', 'Column')
+                column_name_lower = column_name.lower()
+                
+                if column_name_lower not in unique_items:
+                    unique_items[column_name_lower] = item
+                else:
+                    duplicate_items.append(column_name)
+            
+            # Log information about duplicates
+            if duplicate_items:
+                self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for table JSON generation")
+                self.logger.info(f"Duplicate column names: {duplicate_items}")
+                self.logger.info(f"Using only unique column names for table JSON generation")
+            
+            # Use deduplicated items
+            for item in unique_items.values():
+                # Use the comprehensive mapping function to get both data type and summarize_by
+                data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
+                
+                # Log the data type mapping for debugging
+                self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
+                
+                column_name = item.get('name', 'Column')
+                is_calculation = item.get('type') == 'calculation'
+                
+                # Use DAX formula for calculated columns if available
+                source_column = column_name
+                if is_calculation and column_name in calculations_map:
+                    source_column = calculations_map[column_name]
+                    self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
+                
+                column_json = {
+                    "source_name": column_name,
+                    "datatype": data_type,
+                    "format_string": None,
+                    "lineage_tag": None,
+                    "source_column": source_column,
+                    "description": None,
+                    "is_hidden": False,
+                    "summarize_by": summarize_by,
+                    "data_category": None,
+                    "is_calculated": is_calculation,
+                    "is_data_type_inferred": True,
+                    "annotations": {
+                        "SummarizationSetBy": "Automatic"
+                    }
+                }
+                table_json["columns"].append(column_json)
+        else:
+            # If no data items, use the table columns
+            for col in table.columns:
+                is_calculated = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
+                
+                # Use DAX formula for calculated columns if available
+                source_column = getattr(col, 'source_column', col.name)
+                if is_calculated and col.name in calculations_map:
+                    source_column = calculations_map[col.name]
+                    self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
+                
+                column_json = {
+                    "source_name": col.name,
+                    "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
+                    "format_string": getattr(col, 'format_string', None),
+                    "lineage_tag": getattr(col, 'lineage_tag', None),
+                    "source_column": source_column,
+                    "description": getattr(col, 'description', None),
+                    "is_hidden": getattr(col, 'is_hidden', False),
+                    "summarize_by": getattr(col, 'summarize_by', 'none'),
+                    "data_category": getattr(col, 'data_category', None),
+                    "is_calculated": is_calculated,
+                    "is_data_type_inferred": True,
+                    "annotations": {
+                        "SummarizationSetBy": "Automatic"
+                    }
+                }
+                table_json["columns"].append(column_json)
+        
+        # Add partition information to the table JSON using the already generated M-query
+        if m_query:
+            # Add hierarchies and partitions fields if they don't exist
+            if "hierarchies" not in table_json:
+                table_json["hierarchies"] = []
+            
+            # Add partition information
+            table_json["partitions"] = [
+                {
+                    "name": table.name,
+                    "source_type": "m",
+                    "expression": m_query
+                }
+            ]
+            
+            # Add other required fields
+            table_json["has_widget_serialization"] = False
+            table_json["visual_type"] = None
+            table_json["column_settings"] = None
+            
+            self.logger.info(f"Added M-query partition information to table {table.name} JSON")
+        
+        # Save as table_[TableName].json using the renamed table name
+        save_json_to_extracted_dir(extracted_dir, f"table_{table_name}.json", table_json)
+        self.logger.info(f"Generated report table JSON file: table_{table_name}.json")
+    
+    def _generate_report_tmdl_from_json(self, tables: List[Table], tables_dir: Path, extracted_dir: Path, report_name: Optional[str] = None):
+        """Generate TMDL files from finalized JSON files for report tables"""
+        if not extracted_dir:
+            self.logger.warning("No extracted directory available, cannot generate TMDL from JSON")
+            return
+            
+        self.logger.info("Phase 2: Generating report TMDL files from JSON")
+        
+        for table in tables:
+            # Use report name for table naming if available and if table name is 'Data'
+            table_name = table.name
+            if report_name and table.name == "Data":
+                # Replace spaces with underscores and remove special characters
+                safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
+                table_name = safe_report_name
+                self.logger.info(f"Using report name '{report_name}' for table naming instead of '{table.name}'")
+            
+            try:
+                # Read finalized table JSON
+                table_json_file = extracted_dir / f"table_{table_name}.json"
+                if not table_json_file.exists():
+                    self.logger.warning(f"Report table JSON file not found: {table_json_file}, skipping TMDL generation")
+                    continue
+                
+                with open(table_json_file, 'r', encoding='utf-8') as f:
+                    table_json = json.load(f)
+                
+                # Build context from JSON data
+                context = self._build_report_table_context_from_json(table_json, table_name)
                 
                 # Render table template
                 content = self.template_engine.render('table', context)
 
                 # Log the M-query being written to the TMDL file
-                if 'm_expression' in context:
-                    self.logger.info(f"[MQUERY_TRACKING] M-query being written to TMDL for table {table.name}: {context['m_expression'][:200]}...")
-                
-                # Use report name for table file if available, otherwise use original table name
-                table_name = table.name
-                if report_name and table.name == "Data":
-                    # Replace spaces with underscores and remove special characters for filename
-                    safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-                    table_name = safe_report_name
-                    self.logger.info(f"Renaming table file from '{table.name}' to '{table_name}'")
+                if 'm_expression' in context and context['m_expression']:
+                    self.logger.info(f"[MQUERY_TRACKING] M-query being written to TMDL for table {table_name}: {context['m_expression'][:200]}...")
                 
                 # Write table file
                 table_file = tables_dir / f"{table_name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(content)
                 
-                # Save table information as JSON in extracted directory
-                if extracted_dir:
-
-                    # Load calculations if available to update source_column for calculated fields
-                    calculations_map = {}
-                    calculations_file = extracted_dir / "calculations.json"
-                    if calculations_file.exists():
-                        try:
-                            with open(calculations_file, 'r', encoding='utf-8') as f:
-                                calculations_data = json.load(f)
-                                for calc in calculations_data.get('calculations', []):
-                                    if calc.get('TableName') == table.name and calc.get('FormulaDax'):
-                                        calculations_map[calc.get('CognosName')] = calc.get('FormulaDax')
-                            self.logger.info(f"Loaded {len(calculations_map)} calculations for table {table.name} from {calculations_file}")
-                        except Exception as e:
-                            self.logger.warning(f"Failed to load calculations from {calculations_file}: {e}")
-
-                    # Create a JSON representation of the table similar to table_Sheet1.json
-                    # Use report name for table name in JSON if available
-                    table_name = table.name
-                    if report_name and table.name == "Data":
-                        # Replace spaces with underscores and remove special characters
-                        safe_report_name = re.sub(r'[^\w\s]', '', report_name).replace(' ', '_')
-                        table_name = safe_report_name
-                    
-                    table_json = {
-                        "source_name": table.name,
-                        "name": table_name,
-                        "lineage_tag": getattr(table, 'lineage_tag', None),
-                        "description": getattr(table, 'description', f"Table from federated relation: {table.name}"),
-                        "is_hidden": getattr(table, 'is_hidden', False),
-                        "columns": []
-                    }
-
-                    # If we have data items, use them as columns
-                    if table_data_items:
-                        # First, deduplicate data items by column name (case-insensitive)
-                        unique_items = {}
-                        duplicate_items = []
-                        
-                        for item in table_data_items:
-                            column_name = item.get('name', 'Column')
-                            column_name_lower = column_name.lower()
-                            
-                            if column_name_lower not in unique_items:
-                                unique_items[column_name_lower] = item
-                            else:
-                                duplicate_items.append(column_name)
-                        
-                        # Log information about duplicates
-                        if duplicate_items:
-                            self.logger.info(f"Found {len(duplicate_items)} duplicate column names in data items for table JSON generation")
-                            self.logger.info(f"Duplicate column names: {duplicate_items}")
-                            self.logger.info(f"Using only unique column names for table JSON generation")
-                        
-                        # Use deduplicated items
-                        for item in unique_items.values():
-                            # Use the comprehensive mapping function to get both data type and summarize_by
-                            data_type, summarize_by = map_cognos_to_powerbi_datatype(item, self.logger)
-
-                            
-                            # Log the data type mapping for debugging
-                            self.logger.debug(f"JSON: Mapped to Power BI dataType={data_type}, summarize_by={summarize_by} for {item.get('name')}")
-                            
-                            
-                            column_name = item.get('name', 'Column')
-                            is_calculation = item.get('type') == 'calculation'
-                            
-                            # Use DAX formula for calculated columns if available
-                            source_column = column_name
-                            if is_calculation and column_name in calculations_map:
-                                source_column = calculations_map[column_name]
-                                self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {column_name}: {source_column[:30]}...")
-                            
-                            column_json = {
-                                "source_name": column_name,
-                                "datatype": data_type,
-                                "format_string": None,
-                                "lineage_tag": None,
-                                "source_column": source_column,
-                                "description": None,
-                                "is_hidden": False,
-                                "summarize_by": summarize_by,
-                                "data_category": None,
-                                "is_calculated": is_calculation,
-                                "is_data_type_inferred": True,
-                                "annotations": {
-                                    "SummarizationSetBy": "Automatic"
-                                }
-                            }
-                            table_json["columns"].append(column_json)
-                    else:
-                        # If no data items, use the table columns
-                        for col in table.columns:
-                            is_calculated = hasattr(col, 'expression') and bool(getattr(col, 'expression', None))
-                            
-                            # Use DAX formula for calculated columns if available
-                            source_column = getattr(col, 'source_column', col.name)
-                            if is_calculated and col.name in calculations_map:
-                                source_column = calculations_map[col.name]
-                                self.logger.info(f"JSON: Using FormulaDax as source_column for calculated column {col.name}: {source_column[:30]}...")
-                            
-                            column_json = {
-                                "source_name": col.name,
-                                "datatype": col.data_type.value if hasattr(col.data_type, 'value') else str(col.data_type).lower(),
-                                "format_string": getattr(col, 'format_string', None),
-                                "lineage_tag": getattr(col, 'lineage_tag', None),
-                                "source_column": source_column,
-                                "description": getattr(col, 'description', None),
-                                "is_hidden": getattr(col, 'is_hidden', False),
-                                "summarize_by": getattr(col, 'summarize_by', 'none'),
-                                "data_category": getattr(col, 'data_category', None),
-                                "is_calculated": is_calculated,
-                                "is_data_type_inferred": True,
-                                "annotations": {
-                                    "SummarizationSetBy": "Automatic"
-                                }
-                            }
-                            table_json["columns"].append(column_json)
-                    
-                    # Add partition information to the table JSON using the already generated M-query
-                    if m_query:
-                        # Add hierarchies and partitions fields if they don't exist
-                        if "hierarchies" not in table_json:
-                            table_json["hierarchies"] = []
-                        
-                        # Add partition information
-                        table_json["partitions"] = [
-                            {
-                                "name": table.name,
-                                "source_type": "m",
-                                "expression": m_query
-                            }
-                        ]
-                        
-                        # Add other required fields
-                        table_json["has_widget_serialization"] = False
-                        table_json["visual_type"] = None
-                        table_json["column_settings"] = None
-                        
-                        self.logger.info(f"Added M-query partition information to table {table.name} JSON")
-                    
-                    # Save as table_[TableName].json using the renamed table name
-                    save_json_to_extracted_dir(extracted_dir, f"table_{table_name}.json", table_json)
-                
-                self.logger.info(f"Generated table file: {table_file}")
+                self.logger.info(f"Generated report TMDL file from JSON: {table_file}")
                 
             except Exception as e:
-                self.logger.error(f"Error generating table file for {table.name}: {e}")
+                self.logger.error(f"Error generating TMDL file for report table {table_name}: {e}")
                 
-                # Create a minimal table file with error information
-                error_content = f"table '{table.name}'\n\n"
-                
-                # Add columns if available
-                if hasattr(table, 'columns') and table.columns:
-                    for column in table.columns:
-                        error_content += f"\n    column '{column.name}'\n"
-                        error_content += f"        dataType: {column.data_type.value if hasattr(column.data_type, 'value') else 'string'}\n"
-                        error_content += f"        summarizeBy: none\n"
-                        error_content += f"        sourceColumn: {column.name}\n\n"
-                        error_content += f"        annotation SummarizationSetBy = User\n\n"
-                
-                # Add partition with error information
-                error_content += f"\n\n\n    partition '{table.name}-partition' = m\n"
+                # Create a minimal error table file
+                error_content = f"table '{table_name}'\n\n"
+                error_content += f"    column 'Error'\n"
+                error_content += f"        dataType: string\n"
+                error_content += f"        summarizeBy: none\n"
+                error_content += f"        sourceColumn: Error\n\n"
+                error_content += f"        annotation SummarizationSetBy = User\n\n"
+                error_content += f"\n\n\n    partition '{table_name}-partition' = m\n"
                 error_content += f"        mode: import\n"
                 error_content += f"        source = \n"
-                error_content += f"            // ERROR: Failed to generate M-query for {table.name}\n"
-                error_content += f"// {str(e)}\n"
-                error_content += f"let\n\t\t\t\tSource = Table.FromRows({{}})\n\t\t\tin\n\t\t\t\tSource\n"
+                error_content += f"            // ERROR: Failed to generate TMDL from JSON for report table {table_name}\n"
+                error_content += f"            // {str(e)}\n"
+                error_content += f"            let\n\t\t\t\t\tSource = Table.FromRows({{}})\n\t\t\t\tin\n\t\t\t\t\tSource\n"
                 error_content += f"        \n\n\n\n"
                 error_content += f"    annotation PBI_ResultType = Table\n"
                 
                 # Write error table file
-                table_file = tables_dir / f"{table.name}.tmdl"
+                table_file = tables_dir / f"{table_name}.tmdl"
                 with open(table_file, 'w', encoding='utf-8') as f:
                     f.write(error_content)
                     
-                self.logger.warning(f"Generated error table file for {table.name}: {table_file}")
+                self.logger.warning(f"Generated error TMDL file for report table {table_name}: {table_file}")
+    
+    def _build_report_table_context_from_json(self, table_json: Dict[str, Any], table_name: str) -> Dict[str, Any]:
+        """Build context for table template from finalized JSON data (report version)"""
+        self.logger.info(f"Building report table context from JSON for table: {table_name}")
+        
+        # Extract columns from JSON
+        columns = []
+        for col_json in table_json.get('columns', []):
+            column = {
+                'name': col_json.get('source_name', 'Column'),
+                'source_name': col_json.get('source_name', 'Column'),
+                'datatype': col_json.get('datatype', 'string'),
+                'source_column': col_json.get('source_column', col_json.get('source_name', 'Column')),
+                'is_calculated': col_json.get('is_calculated', False),
+                'summarize_by': col_json.get('summarize_by', 'none'),
+                'is_hidden': col_json.get('is_hidden', False),
+                'annotations': col_json.get('annotations', {'SummarizationSetBy': 'Automatic'})
+            }
+            columns.append(column)
+        
+        # Extract partition information from JSON
+        partitions = []
+        for partition_json in table_json.get('partitions', []):
+            partition = {
+                'name': partition_json.get('name', table_name),
+                'source_type': partition_json.get('source_type', 'm'),
+                'expression': partition_json.get('expression', '')
+            }
+            partitions.append(partition)
+        
+        # Extract M-expression from first partition if available
+        m_expression = ''
+        if partitions:
+            m_expression = partitions[0].get('expression', '')
+        
+        # Check if table name has spaces or special characters
+        has_spaces_or_special_chars = ' ' in table_name or re.search(r'[^a-zA-Z0-9_]', table_name) is not None
+        
+        context = {
+            'name': table_name,
+            'table_name': table_name,
+            'source_name': table_json.get('source_name', table_name),
+            'columns': columns,
+            'measures': table_json.get('measures', []),
+            'partitions': partitions,
+            'partition_name': f"{table_name}-partition",
+            'm_expression': m_expression,
+            'has_spaces_or_special_chars': has_spaces_or_special_chars
+        }
+        
+        self.logger.info(f"Built context from JSON for report table {table_name}: {len(columns)} columns, {len(partitions)} partitions")
+        return context
     
     def _build_table_context(self, table: Table, report_spec: Optional[str] = None, data_items: Optional[List[Dict]] = None, extracted_dir: Optional[Path] = None, m_query: Optional[str] = None, report_name: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Build context for table template"""
