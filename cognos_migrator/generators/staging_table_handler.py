@@ -56,11 +56,13 @@ class StagingTableHandler:
         self.staging_settings = settings.get('staging_tables', {})
         self.enabled = self.staging_settings.get('enabled', False)
         self.naming_prefix = self.staging_settings.get('naming_prefix', 'stg_')
+        self.data_load_mode = self.staging_settings.get('data_load_mode', 'import')
         self.model_handling = self.staging_settings.get('model_handling', 'none')
         
         # Log settings
         self.logger.info(f"Staging table settings: enabled={self.enabled}, "
                          f"naming_prefix={self.naming_prefix}, "
+                         f"data_load_mode={self.data_load_mode}, "
                          f"model_handling={self.model_handling}")
         
         # Load SQL relationships if extracted directory is provided
@@ -98,31 +100,45 @@ class StagingTableHandler:
             self.logger.info("Staging tables are disabled or set to 'none', returning original model")
             return data_model
         
-        self.logger.info(f"Processing data model for staging tables with model_handling={self.model_handling}")
+        self.logger.info(f"Processing data model for staging tables with model_handling={self.model_handling}, "
+                         f"data_load_mode={self.data_load_mode}")
         
-        # Create staging tables based on model_handling approach
+        # Create staging tables based on model_handling and data_load_mode combination
         if self.model_handling == 'merged_tables':
-            return self._process_merged_tables(data_model)
+            if self.data_load_mode == 'import':
+                return self._process_merged_tables_import(data_model)
+            elif self.data_load_mode == 'direct_query':
+                return self._process_merged_tables_direct_query(data_model)
+            else:
+                self.logger.warning(f"Unknown data_load_mode value: {self.data_load_mode}, using import mode")
+                return self._process_merged_tables_import(data_model)
         elif self.model_handling == 'star_schema':
-            return self._process_star_schema(data_model)
+            if self.data_load_mode == 'import':
+                return self._process_star_schema_import(data_model)
+            elif self.data_load_mode == 'direct_query':
+                return self._process_star_schema_direct_query(data_model)
+            else:
+                self.logger.warning(f"Unknown data_load_mode value: {self.data_load_mode}, using import mode")
+                return self._process_star_schema_import(data_model)
         else:
             self.logger.warning(f"Unknown model_handling value: {self.model_handling}, returning original model")
             return data_model
     
-    def _process_merged_tables(self, data_model: DataModel) -> DataModel:
+    def _process_merged_tables_import(self, data_model: DataModel) -> DataModel:
         """
-        Process data model using the 'merged_tables' approach.
+        Process data model using the 'merged_tables' approach with 'import' data load mode.
         
         In this approach, staging tables are created and merged with the original tables,
         preserving the original table structure while adding the necessary columns for complex joins.
+        M-queries use standard Power Query operations optimized for import mode.
         
         Args:
             data_model: The data model to process
             
         Returns:
-            The processed data model with merged staging tables
+            The processed data model with merged staging tables for import mode
         """
-        self.logger.info("Processing data model with 'merged_tables' approach")
+        self.logger.info("Processing data model with 'merged_tables' + 'import' approach")
         
         # Identify tables involved in complex relationships
         complex_tables = self._identify_complex_relationship_tables(data_model.relationships)
@@ -161,21 +177,22 @@ class StagingTableHandler:
                          f"{len(new_tables)} tables, {len(new_relationships)} relationships")
         return new_data_model
     
-    def _process_star_schema(self, data_model: DataModel) -> DataModel:
+    def _process_star_schema_import(self, data_model: DataModel) -> DataModel:
         """
-        Process data model using the 'star_schema' approach.
+        Process data model using the 'star_schema' approach with 'import' data load mode.
         
         In this approach, staging tables are created as separate entities in a star schema design,
         with columns based on join keys in relationships. Each staging table will have its own
-        M-query that combines data from related tables.
+        M-query that combines data from related tables using standard Power Query operations
+        optimized for import mode.
         
         Args:
             data_model: The data model to process
             
         Returns:
-            The processed data model with star schema staging tables
+            The processed data model with star schema staging tables for import mode
         """
-        self.logger.info("Processing data model with 'star_schema' approach")
+        self.logger.info("Processing data model with 'star_schema' + 'import' approach")
         
         # Use SQL relationships if available, otherwise fall back to basic relationships
         if self.sql_relationships:
@@ -1592,3 +1609,55 @@ class StagingTableHandler:
             self.logger.info(f"Keeping dimension relationship: {rel.from_table}[{rel.from_column}] -> {rel.to_table}[{rel.to_column}]")
         
         return dimension_relationships
+    
+    def _process_merged_tables_direct_query(self, data_model: DataModel) -> DataModel:
+        """
+        Process data model using the 'merged_tables' approach with 'direct_query' data load mode.
+        
+        In this approach, staging tables are created and merged with the original tables,
+        preserving the original table structure while adding the necessary columns for complex joins.
+        M-queries are optimized for DirectQuery mode with query folding and minimal transformations.
+        
+        Args:
+            data_model: The data model to process
+            
+        Returns:
+            The processed data model with merged staging tables for DirectQuery mode
+        """
+        self.logger.info("Processing data model with 'merged_tables' + 'direct_query' approach")
+        
+        # TODO: Implement merged tables with DirectQuery optimizations
+        # Key differences from import mode:
+        # - M-queries should be optimized for query folding
+        # - Minimize complex transformations that can't be pushed to the database
+        # - Use native SQL operations where possible
+        # - Avoid operations that break query folding (like Table.AddColumn with complex logic)
+        
+        self.logger.warning("merged_tables + direct_query mode is not yet implemented, using import mode")
+        return self._process_merged_tables_import(data_model)
+    
+    def _process_star_schema_direct_query(self, data_model: DataModel) -> DataModel:
+        """
+        Process data model using the 'star_schema' approach with 'direct_query' data load mode.
+        
+        In this approach, staging tables are created as separate entities in a star schema design,
+        with columns based on join keys in relationships. Each staging table will have its own
+        M-query optimized for DirectQuery mode with query folding and native SQL operations.
+        
+        Args:
+            data_model: The data model to process
+            
+        Returns:
+            The processed data model with star schema staging tables for DirectQuery mode
+        """
+        self.logger.info("Processing data model with 'star_schema' + 'direct_query' approach")
+        
+        # TODO: Implement star schema with DirectQuery optimizations
+        # Key differences from import mode:
+        # - Dimension table M-queries should use native SQL JOINs where possible
+        # - Composite key creation should be done in SQL (CONCAT or ||)
+        # - Table.Combine operations should be replaced with UNION ALL SQL
+        # - Minimize Power Query transformations to maintain query folding
+        
+        self.logger.warning("star_schema + direct_query mode is not yet implemented, using import mode")
+        return self._process_star_schema_import(data_model)

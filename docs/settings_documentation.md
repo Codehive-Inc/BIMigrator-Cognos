@@ -27,6 +27,7 @@ The `settings.json` file has the following structure:
   "staging_tables": {
     "enabled": false,
     "naming_prefix": "stg_",
+    "data_load_mode": "import",
     "model_handling": "none"
   }
 }
@@ -64,6 +65,10 @@ This section controls how the migration tool handles complex relationships throu
 -   **`"naming_prefix"`:** This setting defines the prefix used for naming staging tables.
     -   **`"stg_"` (Default):** By default, staging tables are named with the prefix "stg_" followed by the original table name.
     -   You can customize this prefix to match your naming conventions.
+
+-   **`"data_load_mode"`:** This setting determines how data is loaded into Power BI tables.
+    -   **`"import"` (Default):** Data is imported into Power BI using Import mode, which loads data into memory for fast query performance. M-queries will use standard Power Query operations.
+    -   **`"direct_query"`:** Data is queried directly from the source using DirectQuery mode, which keeps data at the source and sends queries in real-time. M-queries will be optimized for query folding and direct database access.
 
 -   **`"model_handling"`:** This setting determines how staging tables are integrated into the data model.
     -   **`"none"` (Default):** No staging tables are created, regardless of the `enabled` setting.
