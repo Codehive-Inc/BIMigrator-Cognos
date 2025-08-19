@@ -58,12 +58,12 @@ table Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE
         mode: import
         source = 
             let
-                // Get data from PURCHASE_ORDER_DESCRIPTIONS
-                Data_From_PURCHASE_ORDER_DESCRIPTIONS = Table.SelectColumns(PURCHASE_ORDER_DESCRIPTIONS, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
                 // Get data from PURCHASE_ORDER_LINE
                 Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
+                // Get data from PURCHASE_ORDER_DESCRIPTIONS
+                Data_From_PURCHASE_ORDER_DESCRIPTIONS = Table.SelectColumns(PURCHASE_ORDER_DESCRIPTIONS, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
                 // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_DESCRIPTIONS, Data_From_PURCHASE_ORDER_LINE}),
+                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_LINE, Data_From_PURCHASE_ORDER_DESCRIPTIONS}),
                 // Get unique combinations of dimension keys
                 UniqueRows = Table.Distinct(CombinedData, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
                 // Create composite key for relationships

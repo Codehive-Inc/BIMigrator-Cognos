@@ -1533,6 +1533,11 @@ class StagingTableHandler:
         else:
             # Insert before the 'in' clause
             new_lines = lines[:in_line_index]
+            
+            # Ensure the last step before 'in' has a comma (since it won't be the final step anymore)
+            if new_lines and not new_lines[-1].strip().endswith(',') and '=' in new_lines[-1]:
+                # Add comma to the last step that will no longer be final
+                new_lines[-1] = new_lines[-1] + ','
         
 
         

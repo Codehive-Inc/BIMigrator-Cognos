@@ -131,7 +131,7 @@ table MANUFACTURER
             let
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""MFG_PART_NUMBER"", ""MODEL_PART_IND"", ""ACTIVITY_CODE"", ""MFG_CODE"", ""DATE_CREATED"", ""MFG_NAME"", ""COMPRESSED_PART_NUMBER"", ""FOSSIL_OR_NUCLEAR"", ""STOP"", ""SITE"" FROM ""MANUFACTURER""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
+                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery),
                     // Add composite key: ITEM_NUMBER_Key
                     AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "ITEM_NUMBER_Key", each [ITEM_NUMBER], type text)
                 in
