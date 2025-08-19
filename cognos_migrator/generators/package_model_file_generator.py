@@ -98,6 +98,11 @@ class PackageModelFileGenerator:
                             json_file.unlink()
                             self.logger.info(f"Removed existing JSON file to force regeneration: {json_file}")
             
+            # Debug: Check if the data model tables have updated M-queries
+            manufacturer_table = next((t for t in data_model.tables if t.name == 'MANUFACTURER'), None)
+            if manufacturer_table and manufacturer_table.m_query:
+                self.logger.info(f"[DEBUG] MANUFACTURER table m_query preview: {manufacturer_table.m_query[:800]}...")
+            
             self._generate_package_table_files(data_model.tables, model_dir, package_info)
         else:
             self.logger.info("Staging tables not enabled in settings, skipping staging table processing")
@@ -207,6 +212,7 @@ class PackageModelFileGenerator:
                 m_query = None
                 if table.m_query:
                     self.logger.info(f"Using pre-generated M-query for package table {table.name}")
+                    self.logger.info(f"M-query preview: {table.m_query[:200]}...")
                     m_query = table.m_query
                 else:
                     try:

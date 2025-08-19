@@ -1458,19 +1458,32 @@ class StagingTableHandler:
             new_columns.append(composite_key_column)
         
         # Update M-query to include composite key generation
-        updated_m_query = self._update_fact_table_m_query(table.source_query, composite_keys)
+        # Get the baseline M-query from the JSON file (most reliable source)
+        baseline_m_query = self._get_original_m_query_from_json(table.name)
+        if not baseline_m_query:
+            # Fallback to table.source_query or table.m_query
+            baseline_m_query = table.source_query or table.m_query or ""
+        
+        updated_m_query = self._update_fact_table_m_query(baseline_m_query, composite_keys)
+        
+        # Debug logging
+        if updated_m_query != baseline_m_query:
+            self.logger.info(f"Successfully updated M-query for {table.name} with {len(composite_keys)} composite keys")
+        else:
+            self.logger.warning(f"M-query for {table.name} was not updated (returned same as baseline)")
         
         # Create updated table
         updated_table = Table(
             name=table.name,
             columns=new_columns,
             source_query=updated_m_query,
+            m_query=updated_m_query,  # Also set m_query so package migration uses it
             metadata=table.metadata
         )
         
         # Copy any additional attributes
         for attr, value in vars(table).items():
-            if attr not in ['name', 'columns', 'source_query', 'metadata']:
+            if attr not in ['name', 'columns', 'source_query', 'm_query', 'metadata']:
                 setattr(updated_table, attr, value)
         
         return updated_table
@@ -1502,9 +1515,16 @@ class StagingTableHandler:
             stripped = line.strip()
             if stripped == "in":
                 in_line_index = i
-                # The line after 'in' should contain the final step
-                if i + 1 < len(lines):
-                    final_step = lines[i + 1].strip()
+                # Find the final step name from the line before 'in'
+                if i > 0:
+                    prev_line = lines[i - 1].strip()
+                    # Extract step name from a line like: #"Step Name" = Table.Something(...)
+                    if '=' in prev_line:
+                        final_step = prev_line.split('=')[0].strip()
+                    else:
+                        # Fallback: use the line after 'in' (the result reference)
+                        if i + 1 < len(lines):
+                            final_step = lines[i + 1].strip()
                 break
         
         if in_line_index == -1:
@@ -1513,6 +1533,8 @@ class StagingTableHandler:
         else:
             # Insert before the 'in' clause
             new_lines = lines[:in_line_index]
+        
+
         
         # Add composite key generation steps
         for i, (composite_key_name, composite_key_logic, relationships) in enumerate(composite_keys):
