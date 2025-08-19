@@ -38,12 +38,12 @@ table Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
         mode: import
         source = 
             let
-                // Get data from PURCHASE_ORDER_LINE
-                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {"SITE_NUMBER", "ITEM_NUMBER"}),
                 // Get data from ITEM_SITE_EXTRACT
                 Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {"SITE_NUMBER", "ITEM_NUMBER"}),
+                // Get data from PURCHASE_ORDER_LINE
+                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {"SITE_NUMBER", "ITEM_NUMBER"}),
                 // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_LINE, Data_From_ITEM_SITE_EXTRACT}),
+                CombinedData = Table.Combine({Data_From_ITEM_SITE_EXTRACT, Data_From_PURCHASE_ORDER_LINE}),
                 // Get unique combinations of dimension keys
                 UniqueRows = Table.Distinct(CombinedData, {"SITE_NUMBER", "ITEM_NUMBER"}),
                 // Create composite key for relationships

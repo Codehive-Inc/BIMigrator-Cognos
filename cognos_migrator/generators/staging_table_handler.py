@@ -1472,19 +1472,19 @@ class StagingTableHandler:
         else:
             self.logger.warning(f"M-query for {table.name} was not updated (returned same as baseline)")
         
-        # Create updated table
+        # Create updated table with explicit attribute copying
+        # This approach is more maintainable than using exclusion lists
         updated_table = Table(
             name=table.name,
             columns=new_columns,
-            source_query=updated_m_query,
+            measures=table.measures,
+            source_query=updated_m_query,  # Keep source_query for compatibility
             m_query=updated_m_query,  # Also set m_query so package migration uses it
+            partition_mode=table.partition_mode,
+            description=table.description,
+            annotations=table.annotations,
             metadata=table.metadata
         )
-        
-        # Copy any additional attributes
-        for attr, value in vars(table).items():
-            if attr not in ['name', 'columns', 'source_query', 'm_query', 'metadata']:
-                setattr(updated_table, attr, value)
         
         return updated_table
     
