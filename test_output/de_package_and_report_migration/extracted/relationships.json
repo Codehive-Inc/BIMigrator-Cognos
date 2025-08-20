@@ -2,32 +2,22 @@
   {
     "id": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
-    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "fromColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "toColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
-    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "fromColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
-    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "toColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
-  },
-  {
-    "id": "Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION_to_STORAGE_LOCATION",
-    "fromTable": "Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION",
-    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
-    "toTable": "STORAGE_LOCATION",
-    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
-    "isActive": true,
-    "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION_to_ITEM_SITE_EXTRACT",
@@ -37,47 +27,57 @@
     "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
+  },
+  {
+    "id": "Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION_to_STORAGE_LOCATION",
+    "fromTable": "Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "toTable": "STORAGE_LOCATION",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "isActive": true,
+    "toCardinality": "many",
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_ITEM_SITE_EXTRACT",
     "fromTable": "Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "toTable": "ITEM_SITE_EXTRACT",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
-    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "fromColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "toColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_RECEIPT",
     "fromTable": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
-    "fromColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "fromColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_RECEIPT",
-    "toColumn": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+    "toColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_PURCHASE_ORDER_LINE",
@@ -87,7 +87,7 @@
     "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_STORAGE_LOCATION",
@@ -97,57 +97,47 @@
     "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
-  },
-  {
-    "id": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_MATERIAL_CHARGES",
-    "fromTable": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
-    "toTable": "MATERIAL_CHARGES",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
-    "isActive": true,
-    "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_ITEM_SITE_EXTRACT",
     "fromTable": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "toTable": "ITEM_SITE_EXTRACT",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE_to_MATERIAL_CHARGES",
-    "fromTable": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "id": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_MATERIAL_CHARGES",
+    "fromTable": "Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "toTable": "MATERIAL_CHARGES",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
-    "fromTable": "Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE",
-    "fromColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "id": "Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES_to_PURCHASE_ORDER_LINE",
+    "fromTable": "Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "toTable": "PURCHASE_ORDER_LINE",
-    "toColumn": "SITE_NUMBER_ITEM_NUMBER_Key",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_MANUFACTURER",
-    "fromTable": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER",
-    "fromColumn": "ITEM_NUMBER_Key",
-    "toTable": "MANUFACTURER",
-    "toColumn": "ITEM_NUMBER_Key",
+    "id": "Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES_to_MATERIAL_CHARGES",
+    "fromTable": "Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES",
+    "fromColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+    "toTable": "MATERIAL_CHARGES",
+    "toColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
   },
   {
     "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_ITEM_SITE_EXTRACT",
@@ -157,6 +147,16 @@
     "toColumn": "ITEM_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
-    "crossFilteringBehavior": "OneDirection"
+    "crossFilteringBehavior": "BothDirections"
+  },
+  {
+    "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_MANUFACTURER",
+    "fromTable": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER",
+    "fromColumn": "ITEM_NUMBER_Key",
+    "toTable": "MANUFACTURER",
+    "toColumn": "ITEM_NUMBER_Key",
+    "isActive": true,
+    "toCardinality": "many",
+    "crossFilteringBehavior": "BothDirections"
   }
 ]

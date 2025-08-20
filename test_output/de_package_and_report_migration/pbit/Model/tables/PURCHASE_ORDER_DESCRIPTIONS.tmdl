@@ -181,12 +181,11 @@ table PURCHASE_ORDER_DESCRIPTIONS
         annotation SummarizationSetBy = Automatic
 
         
-    column 'PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key'
+    column 'PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+        sourceColumn: PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key
 
-        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -198,12 +197,13 @@ table PURCHASE_ORDER_DESCRIPTIONS
     partition 'PURCHASE_ORDER_DESCRIPTIONS' = m
         mode: import
         source = 
-            let
+            
+                let
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""SITE_NUMBER"", ""PO_NUMBER"", ""RELEASE_NUMBER"", ""PO_LINE_NUMBER"", ""TOTAL_NUMBER_SEGMENTS"", ""NUMBER_SEGMENTS_SELECTED"", ""LINE_NUMBER1"", ""DESCRIPTION1"", ""LINE_NUMBER2"", ""DESCRIPTION2"", ""LINE_NUMBER3"", ""DESCRIPTION3"", ""LINE_NUMBER4"", ""DESCRIPTION4"", ""LINE_NUMBER5"", ""DESCRIPTION5"", ""STOP"" FROM ""PURCHASE_ORDER_DESCRIPTIONS""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery),
-                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
-                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text)
+                    // Add composite key: PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_LINE_NUMBER], [PO_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER]}, "|"), type text)
                 in
                     AddCompositeKey_1
         

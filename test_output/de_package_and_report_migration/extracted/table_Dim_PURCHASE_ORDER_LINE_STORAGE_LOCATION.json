@@ -1,60 +1,31 @@
 {
-  "source_name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
   "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
-  "lineage_tag": null,
-  "description": null,
-  "is_hidden": false,
   "columns": [
     {
-      "source_name": "ITEM_NUMBER",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ITEM_NUMBER",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
+      "name": "ITEM_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "ITEM_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
     },
     {
-      "source_name": "SITE_NUMBER",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "SITE_NUMBER",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
+      "name": "SITE_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "SITE_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
     },
     {
-      "source_name": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
+      "name": "ITEM_NUMBER_SITE_NUMBER_Key",
+      "dataType": "string",
+      "sourceColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+      "summarizeBy": "none",
+      "isKey": true,
+      "isNullable": true
     }
   ],
-  "hierarchies": [],
   "partitions": [
     {
       "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",

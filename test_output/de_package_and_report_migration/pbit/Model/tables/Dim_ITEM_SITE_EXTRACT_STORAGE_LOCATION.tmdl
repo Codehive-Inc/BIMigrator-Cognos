@@ -1,30 +1,30 @@
 table Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION
 
 
-    column 'ITEM_NUMBER'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: ITEM_NUMBER
+        sourceColumn: Column
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'SITE_NUMBER'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: Column
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ITEM_NUMBER_SITE_NUMBER_Key'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: ITEM_NUMBER_SITE_NUMBER_Key
+        sourceColumn: Column
 
         
 
@@ -38,12 +38,12 @@ table Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION
         mode: import
         source = 
             let
-                // Get data from STORAGE_LOCATION
-                Data_From_STORAGE_LOCATION = Table.SelectColumns(STORAGE_LOCATION, {"ITEM_NUMBER", "SITE_NUMBER"}),
                 // Get data from ITEM_SITE_EXTRACT
                 Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {"ITEM_NUMBER", "SITE_NUMBER"}),
+                // Get data from STORAGE_LOCATION
+                Data_From_STORAGE_LOCATION = Table.SelectColumns(STORAGE_LOCATION, {"ITEM_NUMBER", "SITE_NUMBER"}),
                 // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_STORAGE_LOCATION, Data_From_ITEM_SITE_EXTRACT}),
+                CombinedData = Table.Combine({Data_From_ITEM_SITE_EXTRACT, Data_From_STORAGE_LOCATION}),
                 // Get unique combinations of dimension keys
                 UniqueRows = Table.Distinct(CombinedData, {"ITEM_NUMBER", "SITE_NUMBER"}),
                 // Create composite key for relationships

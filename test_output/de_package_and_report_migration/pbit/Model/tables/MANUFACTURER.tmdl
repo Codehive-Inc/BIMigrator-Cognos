@@ -116,7 +116,6 @@ table MANUFACTURER
         summarizeBy: none
         sourceColumn: ITEM_NUMBER_Key
 
-        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -128,7 +127,8 @@ table MANUFACTURER
     partition 'MANUFACTURER' = m
         mode: import
         source = 
-            let
+            
+                let
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""MFG_PART_NUMBER"", ""MODEL_PART_IND"", ""ACTIVITY_CODE"", ""MFG_CODE"", ""DATE_CREATED"", ""MFG_NAME"", ""COMPRESSED_PART_NUMBER"", ""FOSSIL_OR_NUCLEAR"", ""STOP"", ""SITE"" FROM ""MANUFACTURER""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery),

@@ -331,12 +331,11 @@ table MATERIAL_CHARGES
         annotation SummarizationSetBy = Automatic
 
         
-    column 'SITE_NUMBER_ITEM_NUMBER_Key'
+    column 'ITEM_NUMBER_SITE_NUMBER_Key'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER_ITEM_NUMBER_Key
+        sourceColumn: ITEM_NUMBER_SITE_NUMBER_Key
 
-        isHidden
         
 
         annotation SummarizationSetBy = Automatic
@@ -348,16 +347,15 @@ table MATERIAL_CHARGES
     partition 'MATERIAL_CHARGES' = m
         mode: import
         source = 
-            let
+            
+                let
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""ITEM_NUMBER"", ""CHARGED_DATE"", ""TIME_ENTERED"", ""STOREKEEPER_ID"", ""EMPLOYEE_ID"", ""ISSUE_TICKET_NUMBER"", ""TRANSACTION_TYPE"", ""ADJUSTMENT_TYPE"", ""QUANTITY"", ""UNIT_PRICE"", ""TRANSACTION_VALUE"", ""JOB_NUMBER"", ""BU_NUMBER"", ""PO_NUMBER"", ""PO_INDICATOR"", ""DATE_ENTERED"", ""DATE_STATUS_EFFECTIVE"", ""REFURB_IND"", ""ISSUE_OVERRIDE_IND"", ""RECORD_STATUS"", ""UNIT_OF_MEASURE"", ""ADJUSTMENT_NUMBER"", ""ADJUSTMENT_DESC"", ""QTY_TO_RECONCILE"", ""STOP"", ""TRANSFER_NUMBER"", ""MATERIAL_CLASS"", ""ROOT_DESCRIPTION"", ""ITT_KEY_NO"", ""UTC_NO"", ""PIT_IND"", ""UM"" FROM ""MATERIAL_CHARGES""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery),
-                    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
-                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text),
-                    // Add composite key: SITE_NUMBER_ITEM_NUMBER_Key
-                    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, "SITE_NUMBER_ITEM_NUMBER_Key", each Text.Combine({[SITE_NUMBER], [ITEM_NUMBER]}, "|"), type text)
+                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text)
                 in
-                    AddCompositeKey_2
+                    AddCompositeKey_1
         
 
 

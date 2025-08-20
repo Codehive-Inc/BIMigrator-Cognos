@@ -1,50 +1,50 @@
 table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
 
 
-    column 'PO_NUMBER'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER
+        sourceColumn: Column
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'RELEASE_NUMBER'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: RELEASE_NUMBER
+        sourceColumn: Column
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'PO_LINE_NUMBER'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_LINE_NUMBER
+        sourceColumn: Column
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'SITE_NUMBER'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: Column
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key'
+    column 'Column'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+        sourceColumn: Column
 
         
 
@@ -67,9 +67,9 @@ table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
                 // Get unique combinations of dimension keys
                 UniqueRows = Table.Distinct(CombinedData, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
                 // Create composite key for relationships
-                AddCompositeKey = Table.AddColumn(UniqueRows, "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text),
+                AddCompositeKey = Table.AddColumn(UniqueRows, "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_LINE_NUMBER], [PO_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER]}, "|"), type text),
                 // Filter out rows with null or empty composite keys
-                FilteredRows = Table.SelectRows(AddCompositeKey, each [PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key] <> null and [PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key] <> "")
+                FilteredRows = Table.SelectRows(AddCompositeKey, each [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> null and [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> "")
             in
                 FilteredRows
         
