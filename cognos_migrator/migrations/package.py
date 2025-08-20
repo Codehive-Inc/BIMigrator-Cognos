@@ -38,7 +38,8 @@ def migrate_package_with_explicit_session(package_file_path: str,
                                        folder_id: str = None,
                                        cpf_file_path: str = None,
                                        task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+                                       auth_key: str = "IBM-BA-Authorization",
+                                       settings: Optional[Dict[str, Any]] = None) -> bool:
     """Migrate a Cognos Framework Manager package file to Power BI with explicit session credentials
     
     This function does not use environment variables and will raise an exception
@@ -196,7 +197,8 @@ def migrate_package_with_explicit_session(package_file_path: str,
         if hasattr(generator, 'model_file_generator'):
             package_model_file_generator = PackageModelFileGenerator(
                 template_engine, 
-                mquery_converter=package_mquery_converter
+                mquery_converter=package_mquery_converter,
+                settings=settings  # Pass frontend settings
             )
             generator.model_file_generator = package_model_file_generator
         

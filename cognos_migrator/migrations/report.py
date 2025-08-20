@@ -25,7 +25,8 @@ def migrate_single_report(
     report_id: Optional[str] = None,
     report_file_path: Optional[str] = None,
     task_id: Optional[str] = None,
-    auth_key: str = "IBM-BA-Authorization"
+    auth_key: str = "IBM-BA-Authorization",
+    settings: Optional[Dict[str, Any]] = None
 ) -> bool:
     """Orchestrates the migration of a single Cognos report, supporting both report ID and local file.
     
@@ -87,7 +88,8 @@ def migrate_single_report(
         cognos_config=cognos_config,
         cognos_url=cognos_url,
         session_key=session_key,
-        logger=logging.getLogger(__name__)
+        logger=logging.getLogger(__name__),
+        settings=settings
     )
     
     log_info("Migrator initialized successfully")
