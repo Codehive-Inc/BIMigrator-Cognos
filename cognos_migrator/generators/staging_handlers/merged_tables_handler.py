@@ -16,35 +16,61 @@ class MergedTablesHandler(BaseHandler):
         """
         Process data model using merged tables approach with import mode.
         
+        This approach creates combination tables (C_tables) that join multiple source tables
+        together using nested joins rather than creating separate dimension tables.
+        
         Args:
             data_model: The data model to process
             
         Returns:
-            The processed data model with merged staging tables for import mode
+            The processed data model with combination tables (C_tables) for import mode
         """
-        self.logger.info("Processing data model with 'merged_tables' + 'import' approach")
+        self.logger.info("Processing data model with 'merged_tables' + 'import' approach for C_tables")
         
-        # Identify tables involved in complex relationships
-        complex_tables = self._identify_complex_relationship_tables(data_model.relationships)
-        self.logger.info(f"Identified {len(complex_tables)} tables involved in complex relationships")
+        # Identify complex relationships that need combination tables
+        complex_relationships = self._identify_complex_relationships(data_model.relationships)
+        self.logger.info(f"Identified {len(complex_relationships)} complex relationships")
         
-        # Create merged tables for complex tables
-        new_tables = []
-        for table in data_model.tables:
-            if table.name in complex_tables:
-                # Create a merged table with staging prefix
-                merged_table = self._create_merged_table(table, data_model)
-                new_tables.append(merged_table)
-                self.logger.info(f"Created merged table {merged_table.name} for {table.name}")
-            else:
-                # Keep original table
-                new_tables.append(table)
+        if not complex_relationships:
+            self.logger.info("No complex relationships found, returning original model")
+            return data_model
         
-        # Update relationships to use merged tables
-        new_relationships = self._update_relationships_for_merged_tables(
-            data_model.relationships, complex_tables)
+        # Group relationships by table pairs to create combination tables
+        relationship_groups = self._group_relationships_by_tables(complex_relationships)
+        self.logger.info(f"Grouped complex relationships into {len(relationship_groups)} combination table groups")
         
-        # Create new data model with updated tables and relationships
+        # Start with all original tables
+        new_tables = list(data_model.tables)
+        combination_tables = []
+        
+        # Create combination tables (C_tables) for each relationship group
+        for group_key, relationships in relationship_groups.items():
+            table_names = group_key.split(':')
+            if len(table_names) != 2:
+                continue
+                
+            from_table_name, to_table_name = table_names
+            
+            # Find the actual table objects
+            from_table = next((t for t in data_model.tables if t.name == from_table_name), None)
+            to_table = next((t for t in data_model.tables if t.name == to_table_name), None)
+            
+            if not from_table or not to_table:
+                self.logger.warning(f"Could not find tables for relationship group: {group_key}")
+                continue
+            
+            # Create combination table with C_ prefix
+            combination_table = self._create_combination_table(
+                from_table, to_table, relationships)
+            
+            combination_tables.append(combination_table)
+            new_tables.append(combination_table)
+            self.logger.info(f"Created combination table {combination_table.name} for {from_table_name} + {to_table_name}")
+        
+        # Keep original relationships as-is (combination tables don't replace them)
+        new_relationships = list(data_model.relationships)
+        
+        # Create new data model with combination tables added
         new_data_model = DataModel(
             name=data_model.name,
             tables=new_tables,
@@ -57,8 +83,9 @@ class MergedTablesHandler(BaseHandler):
             if attr not in ['name', 'tables', 'relationships', 'compatibility_level']:
                 setattr(new_data_model, attr, value)
         
-        self.logger.info(f"Processed data model with 'merged_tables' approach: "
-                         f"{len(new_tables)} tables, {len(new_relationships)} relationships")
+        self.logger.info(f"Processed data model with 'merged_tables' C_table approach: "
+                         f"{len(new_tables)} tables ({len(combination_tables)} combination tables), "
+                         f"{len(new_relationships)} relationships")
         return new_data_model
     
     def process_direct_query_mode(self, data_model: DataModel) -> DataModel:
@@ -205,3 +232,131 @@ class MergedTablesHandler(BaseHandler):
             updated_relationships.append(updated_rel)
         
         return updated_relationships
+    
+    def _group_relationships_by_tables(self, relationships: List[Relationship]) -> Dict[str, List[Relationship]]:
+        """
+        Group relationships by the table pairs they connect.
+        
+        Args:
+            relationships: List of relationships to group
+            
+        Returns:
+            Dictionary mapping table pair keys to lists of relationships
+        """
+        relationship_groups = {}
+        
+        for rel in relationships:
+            # Create a standardized key for the table pair (alphabetically sorted)
+            table_pair = [rel.from_table, rel.to_table]
+            table_pair.sort()
+            group_key = f"{table_pair[0]}:{table_pair[1]}"
+            
+            if group_key not in relationship_groups:
+                relationship_groups[group_key] = []
+            relationship_groups[group_key].append(rel)
+        
+        return relationship_groups
+    
+    def _create_combination_table(self, from_table: Table, to_table: Table, 
+                                 relationships: List[Relationship]) -> Table:
+        """
+        Create a combination table (C_table) that joins two source tables using nested joins.
+        
+        Args:
+            from_table: First source table
+            to_table: Second source table
+            relationships: List of relationships between the tables
+            
+        Returns:
+            A new combination table with nested join M-query
+        """
+        # Create combination table name with C_ prefix
+        table_names = [from_table.name, to_table.name]
+        table_names.sort()  # Ensure consistent naming
+        combination_table_name = f"C_{table_names[0]}_{table_names[1]}"
+        
+        # Combine columns from both tables, avoiding duplicates
+        combined_columns = []
+        existing_column_names = set()
+        
+        # Add columns from first table
+        for col in from_table.columns:
+            combined_columns.append(col)
+            existing_column_names.add(col.name)
+        
+        # Add only unique columns from second table (skip duplicates completely)
+        for col in to_table.columns:
+            if col.name not in existing_column_names:
+                combined_columns.append(col)
+                existing_column_names.add(col.name)
+        
+        # Generate nested join M-query
+        m_query = self._generate_nested_join_query(from_table, to_table, relationships)
+        
+        # Create combination table
+        combination_table = Table(
+            name=combination_table_name,
+            columns=combined_columns,
+            measures=[],  # Combination tables typically don't have measures
+            source_query="",  # M-query provides the source
+            m_query=m_query,
+            partition_mode="import",
+            description=f"Combination table joining {from_table.name} and {to_table.name}",
+            annotations={},
+            metadata={}
+        )
+        
+        return combination_table
+    
+    def _generate_nested_join_query(self, from_table: Table, to_table: Table, 
+                                   relationships: List[Relationship]) -> str:
+        """
+        Generate M-query with nested join logic for combination table.
+        
+        Args:
+            from_table: First source table
+            to_table: Second source table
+            relationships: List of relationships between the tables
+            
+        Returns:
+            M-query string with nested join logic
+        """
+        # Extract join columns from relationships
+        join_columns = []
+        for rel in relationships:
+            if rel.from_column and rel.to_column:
+                # Handle comma-separated columns for composite keys
+                from_cols = [col.strip() for col in rel.from_column.split(',')]
+                to_cols = [col.strip() for col in rel.to_column.split(',')]
+                
+                for from_col, to_col in zip(from_cols, to_cols):
+                    join_columns.append((from_col, to_col))
+        
+        if not join_columns:
+            self.logger.warning(f"No join columns found for {from_table.name} and {to_table.name}")
+            return f"// No join columns found\n{from_table.name}"
+        
+        # Build join key arrays for M-query
+        from_table_keys = ', '.join([f'"{col[0]}"' for col in join_columns])
+        to_table_keys = ', '.join([f'"{col[1]}"' for col in join_columns])
+        
+        # Get column names from first table to identify duplicates
+        from_table_column_names = {col.name for col in from_table.columns}
+        
+        # Get only unique column names from second table for expansion (skip duplicates)
+        unique_to_table_columns = []
+        for col in to_table.columns:
+            if col.name not in from_table_column_names:
+                unique_to_table_columns.append(col.name)
+        
+        to_table_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
+        expanded_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
+        
+        # Generate the nested join M-query with proper indentation
+        m_query = f'''let
+                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}", JoinKind.Inner),
+                #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}", {{{to_table_columns_str}}}, {{{expanded_columns_str}}})
+            in
+                #"Expanded {to_table.name}"'''
+        
+        return m_query

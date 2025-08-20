@@ -820,38 +820,6 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
-    },
-    {
-      "source_name": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
     }
   ],
   "hierarchies": [],
@@ -859,7 +827,7 @@
     {
       "name": "PURCHASE_ORDER_LINE",
       "source_type": "m",
-      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"CHANGE_ORDER_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"STATUS\"\", \"\"STATUS_DATE\"\", \"\"ITEM_NUMBER\"\", \"\"UNIT_PRICE\"\", \"\"BU_NUMBER\"\", \"\"JOB_NUMBER\"\", \"\"UNIT_OF_MEASURE\"\", \"\"PROMISED_DATE\"\", \"\"DATE_LAST_REJECTED\"\", \"\"DATE_LAST_IN_INVENT\"\", \"\"DATE_LAST_RECD_SITE\"\", \"\"DATE_LAST_IN_HOLD\"\", \"\"DATE_ENTERED\"\", \"\"QTY_ORDERED\"\", \"\"QTY_RECD_TO_DATE\"\", \"\"QTY_ON_HOLD\"\", \"\"QA_CODE\"\", \"\"QA_INSPECTOR\"\", \"\"QA_LEVEL\"\", \"\"REQUISITION\"\", \"\"VENDOR_NAME\"\", \"\"PO_TYPE\"\", \"\"PO_CLASS\"\", \"\"BLANKET_TYPE\"\", \"\"BLANKET_BEGIN_DATE\"\", \"\"BLANKET_END_DATE\"\", \"\"DATE_ROOT_ENTERED\"\", \"\"DATE_ROOT_ORDERED\"\", \"\"DATE_ROOT_STATUS\"\", \"\"DOLLARS_COMMITTED\"\", \"\"MAX_DOLLARS\"\", \"\"LAST_BLANKET_RELEASE_NUMBER\"\", \"\"PO_ROOT_STATUS\"\", \"\"REVISION_NUMBER\"\", \"\"SERVICE\"\", \"\"DOLLARS_RECEIVED\"\", \"\"DSR_NUMBER\"\", \"\"DSR_HOLD_STATUS\"\", \"\"PROMISE_DATE_IND\"\", \"\"PRICE_CODE\"\", \"\"PROCUREMENT_CODE\"\", \"\"QTY_REJECTED_TO_DATE\"\", \"\"REQUESTOR_NAME\"\", \"\"UNIT_OF_PURCHASE\"\", \"\"CONVERSION_FACTOR\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_LINE\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery),\n                    // Add composite key: PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_LINE_NUMBER], [PO_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_2 = Table.AddColumn(AddCompositeKey_1, \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\n                in\n                    AddCompositeKey_2"
+      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"CHANGE_ORDER_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"STATUS\"\", \"\"STATUS_DATE\"\", \"\"ITEM_NUMBER\"\", \"\"UNIT_PRICE\"\", \"\"BU_NUMBER\"\", \"\"JOB_NUMBER\"\", \"\"UNIT_OF_MEASURE\"\", \"\"PROMISED_DATE\"\", \"\"DATE_LAST_REJECTED\"\", \"\"DATE_LAST_IN_INVENT\"\", \"\"DATE_LAST_RECD_SITE\"\", \"\"DATE_LAST_IN_HOLD\"\", \"\"DATE_ENTERED\"\", \"\"QTY_ORDERED\"\", \"\"QTY_RECD_TO_DATE\"\", \"\"QTY_ON_HOLD\"\", \"\"QA_CODE\"\", \"\"QA_INSPECTOR\"\", \"\"QA_LEVEL\"\", \"\"REQUISITION\"\", \"\"VENDOR_NAME\"\", \"\"PO_TYPE\"\", \"\"PO_CLASS\"\", \"\"BLANKET_TYPE\"\", \"\"BLANKET_BEGIN_DATE\"\", \"\"BLANKET_END_DATE\"\", \"\"DATE_ROOT_ENTERED\"\", \"\"DATE_ROOT_ORDERED\"\", \"\"DATE_ROOT_STATUS\"\", \"\"DOLLARS_COMMITTED\"\", \"\"MAX_DOLLARS\"\", \"\"LAST_BLANKET_RELEASE_NUMBER\"\", \"\"PO_ROOT_STATUS\"\", \"\"REVISION_NUMBER\"\", \"\"SERVICE\"\", \"\"DOLLARS_RECEIVED\"\", \"\"DSR_NUMBER\"\", \"\"DSR_HOLD_STATUS\"\", \"\"PROMISE_DATE_IND\"\", \"\"PRICE_CODE\"\", \"\"PROCUREMENT_CODE\"\", \"\"QTY_REJECTED_TO_DATE\"\", \"\"REQUESTOR_NAME\"\", \"\"UNIT_OF_PURCHASE\"\", \"\"CONVERSION_FACTOR\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_LINE\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
     }
   ],
   "has_widget_serialization": false,
