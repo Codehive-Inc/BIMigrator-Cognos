@@ -1,0 +1,70 @@
+{
+  "calculations": [
+    {
+      "TableName": "ITEM_SITE_EXTRACT",
+      "FormulaCaptionCognos": "LOC_1",
+      "CognosName": "LOC_1",
+      "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "LOC_1",
+      "FormulaDax": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
+    },
+    {
+      "TableName": "ITEM_SITE_EXTRACT",
+      "FormulaCaptionCognos": "LOC_2",
+      "CognosName": "LOC_2",
+      "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "LOC_2",
+      "FormulaDax": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
+    },
+    {
+      "TableName": "STORAGE_LOCATION",
+      "FormulaCaptionCognos": "LOC1",
+      "CognosName": "LOC1",
+      "FormulaCognos": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "LOC1",
+      "FormulaDax": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
+    },
+    {
+      "TableName": "STORAGE_LOCATION",
+      "FormulaCaptionCognos": "LOC2",
+      "CognosName": "LOC2",
+      "FormulaCognos": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "LOC2",
+      "FormulaDax": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
+    },
+    {
+      "TableName": "PURCHASE_ORDER_RECEIPT",
+      "FormulaCaptionCognos": "TotalCost",
+      "CognosName": "TotalCost",
+      "FormulaCognos": "[UNIT_PRICE] * [QTY_RECEIVED]",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "TotalCost",
+      "FormulaDax": "[UNIT_PRICE] * [QTY_RECEIVED]",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
+    },
+    {
+      "TableName": "MATERIAL_CHARGES",
+      "FormulaCaptionCognos": "Cost",
+      "CognosName": "Cost",
+      "FormulaCognos": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
+      "FormulaTypeCognos": "dataItem",
+      "PowerBIName": "Cost",
+      "FormulaDax": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
+    }
+  ]
+}

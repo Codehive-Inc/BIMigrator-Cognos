@@ -1,0 +1,65 @@
+[
+  {
+    "name": "MFG_CODE",
+    "id": "MFG_CODE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MANUFACTURER].[MFG_CODE]",
+    "type": "source_column",
+    "table_name": "MANUFACTURER",
+    "queryName": "PartNumbers"
+  },
+  {
+    "name": "MFG_PART_NUMBER",
+    "id": "MFG_PART_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MANUFACTURER].[MFG_PART_NUMBER]",
+    "type": "source_column",
+    "table_name": "MANUFACTURER",
+    "queryName": "PartNumbers"
+  },
+  {
+    "name": "ITEM_NUMBER",
+    "id": "ITEM_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MANUFACTURER].[ITEM_NUMBER]",
+    "type": "source_column",
+    "table_name": "MANUFACTURER",
+    "queryName": "PartNumbers"
+  },
+  {
+    "name": "MFG_NAME",
+    "id": "MFG_NAME",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MANUFACTURER].[MFG_NAME]",
+    "type": "source_column",
+    "table_name": "MANUFACTURER",
+    "queryName": "PartNumbers"
+  },
+  {
+    "name": "ACTIVITY_CODE",
+    "id": "ACTIVITY_CODE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MANUFACTURER].[ACTIVITY_CODE]",
+    "type": "source_column",
+    "table_name": "MANUFACTURER",
+    "queryName": "PartNumbers"
+  },
+  {
+    "name": "DATE_CREATED",
+    "id": "DATE_CREATED",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MANUFACTURER].[DATE_CREATED]",
+    "type": "source_column",
+    "table_name": "MANUFACTURER",
+    "queryName": "PartNumbers"
+  },
+  {
+    "name": "DESCRIPTION",
+    "id": "DESCRIPTION",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "PartNumbers"
+  }
+]
