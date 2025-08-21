@@ -42,9 +42,11 @@ class CognosModuleMigratorExplicit:
     """Migration orchestrator that works with explicit credentials without .env dependencies"""
     
     def __init__(self, migration_config: MigrationConfig, cognos_config: CognosConfig,
-                 cognos_url: str, session_key: str, logger=None, cpf_file_path: str = None):
+                 cognos_url: str, session_key: str, logger=None, cpf_file_path: str = None,
+                 settings: Optional[Dict[str, Any]] = None):
         self.config = migration_config
         self.logger = logger or logging.getLogger(__name__)
+        self.settings = settings  # Store frontend settings
         
         # Initialize client with explicit credentials
         self.cognos_client = CognosClient(cognos_config, base_url=cognos_url, session_key=session_key)

@@ -26,7 +26,8 @@ def migrate_module_with_explicit_session(module_id: str,
                                        folder_id: str = None,
                                        cpf_file_path: str = None,
                                        task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+                                       auth_key: str = "IBM-BA-Authorization",
+                                       settings: Optional[Dict[str, Any]] = None) -> bool:
     """Migrate a Cognos module with explicit session credentials
     
     This function does not use environment variables and will raise an exception
@@ -41,6 +42,7 @@ def migrate_module_with_explicit_session(module_id: str,
         cpf_file_path: Optional path to CPF file for enhanced metadata
         task_id: Optional task ID for tracking (default: auto-generated)
         auth_key: The authentication header key (default: IBM-BA-Authorization)
+        settings: Optional settings dictionary to override default settings.json
         
     Returns:
         bool: True if migration was successful, False otherwise
@@ -108,7 +110,8 @@ def migrate_module_with_explicit_session(module_id: str,
         cognos_url=cognos_url,
         session_key=session_key,
         logger=logger,
-        cpf_file_path=cpf_file_path
+        cpf_file_path=cpf_file_path,
+        settings=settings
     )
     
     log_info("Migrator initialized successfully")
@@ -151,7 +154,8 @@ def migrate_module_with_reports_explicit_session(module_id: str,
                                        report_ids: List[str] = None,
                                        cpf_file_path: str = None,
                                        task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization") -> bool:
+                                       auth_key: str = "IBM-BA-Authorization",
+                                       settings: Optional[Dict[str, Any]] = None) -> bool:
     """Migrate a Cognos module with explicit session credentials and specific reports
     
     This function allows migrating a module with specific reports instead of requiring a folder.
@@ -230,7 +234,8 @@ def migrate_module_with_reports_explicit_session(module_id: str,
         cognos_url=cognos_url,
         session_key=session_key,
         logger=logger,
-        cpf_file_path=cpf_file_path
+        cpf_file_path=cpf_file_path,
+        settings=settings
     )
     
     log_info("Migrator initialized successfully")
