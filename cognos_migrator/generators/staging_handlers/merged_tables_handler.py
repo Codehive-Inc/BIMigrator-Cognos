@@ -27,16 +27,25 @@ class MergedTablesHandler(BaseHandler):
         """
         self.logger.info("Processing data model with 'merged_tables' + 'import' approach for C_tables")
         
-        # Identify complex relationships that need combination tables
-        complex_relationships = self._identify_complex_relationships(data_model.relationships)
+        # Use SQL relationships if available, otherwise fall back to basic relationships
+        if self.sql_relationships:
+            self.logger.info(f"Using {len(self.sql_relationships)} SQL relationships for C_tables")
+            complex_relationships = self._identify_complex_sql_relationships(self.sql_relationships)
+        else:
+            self.logger.info("Using basic data model relationships for C_tables")
+            complex_relationships = self._identify_complex_relationships(data_model.relationships)
+        
         self.logger.info(f"Identified {len(complex_relationships)} complex relationships")
         
         if not complex_relationships:
             self.logger.info("No complex relationships found, returning original model")
             return data_model
         
-        # Group relationships by table pairs to create combination tables
-        relationship_groups = self._group_relationships_by_tables(complex_relationships)
+        # Group relationships by table pairs to create combination tables  
+        if self.sql_relationships:
+            relationship_groups = self._group_sql_relationships_by_tables(complex_relationships)
+        else:
+            relationship_groups = self._group_relationships_by_tables(complex_relationships)
         self.logger.info(f"Grouped complex relationships into {len(relationship_groups)} combination table groups")
         
         # Start with all original tables
@@ -60,8 +69,12 @@ class MergedTablesHandler(BaseHandler):
                 continue
             
             # Create combination table with C_ prefix
-            combination_table = self._create_combination_table(
-                from_table, to_table, relationships)
+            if self.sql_relationships:
+                combination_table = self._create_combination_table_from_sql(
+                    from_table, to_table, relationships)
+            else:
+                combination_table = self._create_combination_table(
+                    from_table, to_table, relationships)
             
             combination_tables.append(combination_table)
             new_tables.append(combination_table)
@@ -233,6 +246,128 @@ class MergedTablesHandler(BaseHandler):
         
         return updated_relationships
     
+    def _create_combination_table_from_sql(self, from_table: Table, to_table: Table, 
+                                         sql_relationships: List[Dict[str, Any]]) -> Table:
+        """
+        Create a combination table from SQL relationship data with correct join keys.
+        
+        Args:
+            from_table: First source table
+            to_table: Second source table  
+            sql_relationships: List of SQL relationship dictionaries
+            
+        Returns:
+            A combination table with all columns and correct M-query join keys
+        """
+        # Generate combination table name
+        combination_table_name = f"C_{from_table.name}_{to_table.name}"
+        
+        # Combine columns from both tables (excluding duplicates)
+        combined_columns = []
+        existing_column_names = set()
+        
+        # Add columns from first table
+        for col in from_table.columns:
+            combined_columns.append(col)
+            existing_column_names.add(col.name)
+        
+        # Add columns from second table, only if not already present
+        for col in to_table.columns:
+            if col.name not in existing_column_names:
+                combined_columns.append(col)
+                existing_column_names.add(col.name)
+        
+        # Generate M-query with correct join keys from SQL relationships
+        m_query = self._generate_nested_join_query_from_sql(from_table, to_table, sql_relationships)
+        
+        # Create combination table
+        combination_table = Table(
+            name=combination_table_name,
+            columns=combined_columns,
+            measures=[],  # Combination tables typically don't have measures
+            source_query="",  # M-query provides the source
+            m_query=m_query,
+            partition_mode="import",
+            description=f"Combination table joining {from_table.name} and {to_table.name}",
+            annotations={},
+            metadata={}
+        )
+        
+        return combination_table
+    
+    def _generate_nested_join_query_from_sql(self, from_table: Table, to_table: Table, 
+                                           sql_relationships: List[Dict[str, Any]]) -> str:
+        """
+        Generate M-query with nested join logic using SQL relationship data.
+        
+        Args:
+            from_table: First source table
+            to_table: Second source table
+            sql_relationships: List of SQL relationship dictionaries
+            
+        Returns:
+            M-query string with nested join logic using correct join keys
+        """
+        if not sql_relationships:
+            self.logger.warning(f"No SQL relationships found for {from_table.name} and {to_table.name}")
+            return f"// No SQL relationships found\n{from_table.name}"
+        
+        # Extract join keys from the first SQL relationship (they should all be the same for a table pair)
+        sql_rel = sql_relationships[0]
+        
+        # Get join keys from SQL relationship
+        keys_a = sql_rel.get('keys_a', [])
+        keys_b = sql_rel.get('keys_b', [])
+        
+        if not keys_a or not keys_b:
+            self.logger.warning(f"No join keys found in SQL relationship for {from_table.name} and {to_table.name}")
+            return f"// No join keys found\n{from_table.name}"
+        
+        # Build join key arrays for M-query
+        from_table_keys = ', '.join([f'"{key}"' for key in keys_a])
+        to_table_keys = ', '.join([f'"{key}"' for key in keys_b])
+        
+        # Get column names from first table to identify duplicates
+        from_table_column_names = {col.name for col in from_table.columns}
+        
+        # Get only unique column names from second table for expansion (skip duplicates)
+        unique_to_table_columns = []
+        for col in to_table.columns:
+            if col.name not in from_table_column_names:
+                unique_to_table_columns.append(col.name)
+        
+        if not unique_to_table_columns:
+            self.logger.warning(f"No unique columns to expand from {to_table.name}")
+            # Still create the join even if no columns to expand
+            unique_to_table_columns = ["*"]  # Fallback to all columns
+        
+        to_table_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
+        expanded_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
+        
+        # Determine the join type from SQL relationships
+        join_kind = "JoinKind.Inner"  # Default fallback
+        for sql_rel in sql_relationships:
+            join_type = sql_rel.get('join_type', 'INNER JOIN').upper()
+            if 'LEFT' in join_type:
+                join_kind = "JoinKind.LeftOuter"
+            elif 'RIGHT' in join_type:
+                join_kind = "JoinKind.RightOuter"
+            elif 'FULL' in join_type:
+                join_kind = "JoinKind.FullOuter"
+            elif 'INNER' in join_type:
+                join_kind = "JoinKind.Inner"
+            break  # Use the first relationship's join type for this table pair
+        
+        # Generate the nested join M-query with proper indentation and correct join keys
+        m_query = f'''let
+                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}", {join_kind}),
+                #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}", {{{to_table_columns_str}}}, {{{expanded_columns_str}}})
+            in
+                #"Expanded {to_table.name}"'''
+        
+        self.logger.info(f"Generated M-query for {from_table.name} + {to_table.name} with join keys: {keys_a} = {keys_b}")
+        return m_query
+    
     def _group_relationships_by_tables(self, relationships: List[Relationship]) -> Dict[str, List[Relationship]]:
         """
         Group relationships by the table pairs they connect.
@@ -253,6 +388,24 @@ class MergedTablesHandler(BaseHandler):
             
             if group_key not in relationship_groups:
                 relationship_groups[group_key] = []
+            relationship_groups[group_key].append(rel)
+        
+        return relationship_groups
+    
+    def _group_sql_relationships_by_tables(self, sql_relationships: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+        """Group SQL relationships by the tables they connect."""
+        relationship_groups = {}
+        
+        for rel in sql_relationships:
+            table_a = rel.get('table_a_one_side', '')
+            table_b = rel.get('table_b_many_side', '')
+            
+            # Create a consistent key for the table pair
+            group_key = f"{table_a}:{table_b}"
+            
+            if group_key not in relationship_groups:
+                relationship_groups[group_key] = []
+            
             relationship_groups[group_key].append(rel)
         
         return relationship_groups
@@ -352,9 +505,12 @@ class MergedTablesHandler(BaseHandler):
         to_table_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
         expanded_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
         
+        # For basic relationships, use Inner join as default (since we don't have join type info)
+        join_kind = "JoinKind.Inner"
+        
         # Generate the nested join M-query with proper indentation
         m_query = f'''let
-                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}", JoinKind.Inner),
+                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}", {join_kind}),
                 #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}", {{{to_table_columns_str}}}, {{{expanded_columns_str}}})
             in
                 #"Expanded {to_table.name}"'''

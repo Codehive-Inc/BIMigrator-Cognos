@@ -170,3 +170,4 @@ class StagingTableHandler:
         else:
             self.logger.warning(f"Unknown data_load_mode value: {self.data_load_mode}, using import mode")
             return self.merged_tables_handler.process_import_mode(data_model)
+
