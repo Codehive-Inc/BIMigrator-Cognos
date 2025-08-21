@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Filter_SiteNumber",
+    "displayName": "Sitenumber",
+    "field": "SITE_NUMBER",
+    "parameter": "SiteNumber",
+    "type": "parameter",
+    "expression": "[SITE_NUMBER]= ?SiteNumber?",
+    "queryName": "MaterialAdjustmentDetail",
+    "filterType": "detail"
+  },
+  {
+    "name": "Filter_ItemNumber",
+    "displayName": "Itemnumber",
+    "field": "ITEM_NUMBER",
+    "parameter": "ItemNumber",
+    "type": "parameter",
+    "expression": "[ITEM_NUMBER]=?ItemNumber?",
+    "queryName": "MaterialAdjustmentDetail",
+    "filterType": "detail"
+  },
+  {
+    "name": "Filter_ChargedDate",
+    "displayName": "Chargeddate",
+    "field": "CHARGED_DATE",
+    "parameter": "ChargedDate",
+    "type": "parameter",
+    "expression": "[CHARGED_DATE]=?ChargedDate?",
+    "queryName": "MaterialAdjustmentDetail",
+    "filterType": "detail"
+  },
+  {
+    "name": "Filter_TimeEntered",
+    "displayName": "Timeentered",
+    "field": "TIME_ENTERED",
+    "parameter": "TimeEntered",
+    "type": "parameter",
+    "expression": "[TIME_ENTERED]=?TimeEntered?",
+    "queryName": "MaterialAdjustmentDetail",
+    "filterType": "detail"
+  }
+]

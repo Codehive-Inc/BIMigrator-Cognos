@@ -7,10 +7,12 @@ This module contains functions for migrating Cognos Framework Manager packages t
 import json
 import logging
 import os
-import uuid
 import re
+import shutil
+import uuid
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Set
+from typing import Dict, List, Optional, Any, Set, Tuple
+from collections import defaultdict
 from datetime import datetime
 import shutil
 
@@ -180,22 +182,22 @@ def migrate_package_with_explicit_session(package_file_path: str,
         )
         generator = PowerBIProjectGenerator(config=config)
         
-        # Use the package-specific M-query converter for package migrations
+        # Use the package-specific M-query converter and generator for package migrations
         from cognos_migrator.converters import PackageMQueryConverter
-        from cognos_migrator.generators.module_generators import ModuleModelFileGenerator
+        from cognos_migrator.generators.package_model_file_generator import PackageModelFileGenerator
         from cognos_migrator.generators.template_engine import TemplateEngine
         
         # Initialize template engine and package M-query converter
         template_engine = TemplateEngine(template_directory=config.template_directory)
         package_mquery_converter = PackageMQueryConverter(output_path=str(output_dir))
         
-        # Set up the model file generator with the package-specific converter
+        # Set up the package-specific model file generator
         if hasattr(generator, 'model_file_generator'):
-            module_model_file_generator = ModuleModelFileGenerator(
+            package_model_file_generator = PackageModelFileGenerator(
                 template_engine, 
                 mquery_converter=package_mquery_converter
             )
-            generator.model_file_generator = module_model_file_generator
+            generator.model_file_generator = package_model_file_generator
         
         # Generate Power BI project files
         success = generator.generate_project(pbi_project, pbit_dir)
@@ -542,6 +544,21 @@ def _migrate_shared_model(
 
     logging.info(f"Consolidated a final list of {len(required_tables)} required tables: {required_tables}")
     
+    # --- Step 2.5: Merge calculations from intermediate reports ---
+    logging.info("Merging calculations from intermediate reports")
+    # Get the paths to the intermediate reports directory
+    intermediate_reports_dir = Path(output_path) / "intermediate_reports"
+    if intermediate_reports_dir.exists() and intermediate_reports_dir.is_dir():
+        # Get all subdirectories in the intermediate_reports directory
+        intermediate_report_paths = [p for p in intermediate_reports_dir.iterdir() if p.is_dir()]
+        logging.info(f"Found {len(intermediate_report_paths)} intermediate report directories")
+        _merge_calculations_from_intermediate_reports(intermediate_report_paths, Path(output_path))
+    else:
+        logging.warning(f"Intermediate reports directory not found at {intermediate_reports_dir}")
+        # Fall back to using successful_migrations_paths
+        logging.info(f"Falling back to using successful_migrations_paths with {len(successful_migrations_paths)} paths")
+        _merge_calculations_from_intermediate_reports(successful_migrations_paths, Path(output_path))
+    
     # --- Step 3: Package Extraction based on REQUIRED tables ---
     package_extractor = ConsolidatedPackageExtractor(
         config=config,
@@ -593,6 +610,23 @@ def _migrate_shared_model(
     from ..processors.tmdl_post_processor import TMDLPostProcessor
     migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
     generator = PowerBIProjectGenerator(migration_config)
+    
+    # Use the package-specific M-query converter and generator for shared model migrations
+    from cognos_migrator.converters import PackageMQueryConverter
+    from cognos_migrator.generators.package_model_file_generator import PackageModelFileGenerator
+    from cognos_migrator.generators.template_engine import TemplateEngine
+    
+    # Initialize template engine and package M-query converter for shared models
+    template_engine = TemplateEngine(template_directory=migration_config.template_directory)
+    package_mquery_converter = PackageMQueryConverter(output_path=str(Path(output_path)))
+    
+    # Set up the package-specific model file generator for shared models
+    if hasattr(generator, 'model_file_generator'):
+        package_model_file_generator = PackageModelFileGenerator(
+            template_engine, 
+            mquery_converter=package_mquery_converter
+        )
+        generator.model_file_generator = package_model_file_generator
 
     # Force creation of a new PBI project with the filtered data model
     final_pbi_project = PowerBIProject(
@@ -606,6 +640,14 @@ def _migrate_shared_model(
     pbit_dir.mkdir(parents=True, exist_ok=True)
     generator.generate_project(final_pbi_project, str(pbit_dir))
     
+    # --- Step 5.5: Merge calculations into table JSON files ---
+    logging.info("Merging calculations into table JSON files")
+    _merge_calculations_into_table_json(Path(output_path))
+    
+    # --- Step 6.5: Consolidate intermediate report pages and slicers into final report ---
+    logging.info("Consolidating intermediate report pages and slicers into final unified report")
+    _consolidate_intermediate_reports_into_final(output_path, successful_migrations_paths)
+    
     # --- Step 7: Post-process the generated TMDL to fix relationships ---
     tmdl_relationships_file = pbit_dir / "Model" / "relationships.tmdl"
     if tmdl_relationships_file.exists():
@@ -613,6 +655,9 @@ def _migrate_shared_model(
         post_processor.fix_relationships(str(tmdl_relationships_file))
     else:
         logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")
+        
+    # --- Step 7.5: Calculations are handled through the table JSON files ---
+    logging.info("Calculations are handled through the table JSON files")
 
     return True, str(output_path)
 
@@ -655,3 +700,338 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         config=config,
         reports_are_ids=True,
     )
+
+def _merge_calculations_from_intermediate_reports(
+    intermediate_report_paths: List[Path],
+    output_path: Path
+) -> None:
+    """
+    Merge calculations from all intermediate report migrations into the consolidated calculations.json file.
+    
+    Args:
+        intermediate_report_paths: List of paths to intermediate report migrations
+        output_path: Path to the output directory for the consolidated migration
+    """
+    logger = logging.getLogger(__name__)
+    consolidated_calculations = {"calculations": []}
+    
+    # Ensure the extracted directory exists in the output path
+    extracted_dir = output_path / "extracted"
+    extracted_dir.mkdir(parents=True, exist_ok=True)
+    
+    consolidated_path = extracted_dir / "calculations.json"
+    
+    # Load existing consolidated calculations if they exist
+    if consolidated_path.exists():
+        try:
+            with open(consolidated_path, 'r', encoding='utf-8') as f:
+                consolidated_calculations = json.load(f)
+                logger.info(f"Loaded existing consolidated calculations with {len(consolidated_calculations.get('calculations', []))} entries")
+        except Exception as e:
+            logger.error(f"Error loading existing consolidated calculations: {e}")
+            consolidated_calculations = {"calculations": []}
+    
+    # Track calculations by table name and column name, with DAX comparison
+    # Key format: f"{table_name}|{column_name}"
+    calculation_map = {}
+    
+    # First, add any existing calculations to the map
+    for calc in consolidated_calculations.get("calculations", []):
+        table_name = calc.get("TableName")
+        column_name = calc.get("CognosName")
+        dax_expression = calc.get("DAXExpression", "")
+        
+        if table_name and column_name:
+            key = f"{table_name}|{column_name}"
+            if key not in calculation_map:
+                calculation_map[key] = []
+            
+            # Check if this exact DAX expression already exists
+            dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression 
+                            for existing_calc in calculation_map[key])
+            
+            if not dax_exists:
+                calculation_map[key].append(calc)
+    
+    # Log the paths we're checking
+    logger.info(f"Looking for calculations in {len(intermediate_report_paths)} intermediate report paths")
+    for i, path in enumerate(intermediate_report_paths):
+        logger.info(f"Intermediate report path {i+1}: {path}")
+    
+    # Process each intermediate report
+    for report_path in intermediate_report_paths:
+        # Check if this is a directory path to an intermediate report
+        if not report_path.is_dir():
+            logger.warning(f"Path is not a directory, skipping: {report_path}")
+            continue
+            
+        # Look for the extracted directory within the intermediate report path
+        intermediate_extracted = report_path / "extracted"
+        if not intermediate_extracted.exists():
+            logger.warning(f"No extracted directory found in {report_path}, skipping")
+            continue
+            
+        # Look for calculations.json in the extracted directory
+        calc_file = intermediate_extracted / "calculations.json"
+        if not calc_file.exists():
+            logger.warning(f"No calculations.json found in {intermediate_extracted}, skipping")
+            continue
+            
+        try:
+            with open(calc_file, 'r', encoding='utf-8') as f:
+                report_calcs = json.load(f)
+                
+            if not report_calcs or "calculations" not in report_calcs:
+                logger.warning(f"No calculations found in {calc_file}, skipping")
+                continue
+                
+            logger.info(f"Found {len(report_calcs.get('calculations', []))} calculations in {report_path.name}")
+            
+            # Process each calculation
+            for calc in report_calcs.get("calculations", []):
+                table_name = calc.get("TableName")
+                column_name = calc.get("CognosName")
+                dax_expression = calc.get("DAXExpression", "")
+                
+                if not table_name or not column_name:
+                    logger.warning(f"Skipping calculation with missing table or column name: {calc}")
+                    continue
+                
+                key = f"{table_name}|{column_name}"
+                if key not in calculation_map:
+                    calculation_map[key] = []
+                    calculation_map[key].append(calc)
+                    logger.info(f"Added new calculation for {table_name}.{column_name}")
+                else:
+                    # Check if this exact DAX expression already exists
+                    dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression 
+                                    for existing_calc in calculation_map[key])
+                    
+                    if not dax_exists:
+                        calculation_map[key].append(calc)
+                        logger.info(f"Added variant calculation for {table_name}.{column_name} with different DAX")
+                    else:
+                        logger.info(f"Skipped duplicate calculation for {table_name}.{column_name} with same DAX")
+                
+        except Exception as e:
+            logger.error(f"Error processing calculations from {calc_file}: {e}")
+    
+    # Convert the map back to a list
+    all_calculations = []
+    for calc_list in calculation_map.values():
+        all_calculations.extend(calc_list)
+    
+    consolidated_calculations["calculations"] = all_calculations
+    
+    # Save the consolidated calculations
+    try:
+        with open(consolidated_path, 'w', encoding='utf-8') as f:
+            json.dump(consolidated_calculations, f, indent=2)
+        logger.info(f"Saved {len(consolidated_calculations['calculations'])} consolidated calculations to {consolidated_path}")
+    except Exception as e:
+        logger.error(f"Error saving consolidated calculations to {consolidated_path}: {e}")
+        
+    # Verify the file was created
+    if consolidated_path.exists():
+        logger.info(f"Verified consolidated calculations file exists at {consolidated_path}")
+    else:
+        logger.error(f"Failed to create consolidated calculations file at {consolidated_path}")
+
+
+def _merge_calculations_into_table_json(
+    output_path: Path
+) -> None:
+    """
+    Merge calculations from calculations.json into table JSON files.
+    
+    This function ensures that all calculations in calculations.json are properly
+    added as calculated columns in their respective table JSON files.
+    
+    Args:
+        output_path: Path to the output directory for the migration
+    """
+    import json
+    import glob
+    import os
+    import re
+    from pathlib import Path
+    
+    logger = logging.getLogger(__name__)
+    extracted_dir = output_path / "extracted"
+    calculations_file = extracted_dir / "calculations.json"
+    
+    # Check if calculations.json exists
+    if not calculations_file.exists():
+        logger.warning(f"Calculations file not found at {calculations_file}, skipping calculation merge")
+        return
+    
+    # Load calculations from calculations.json
+    try:
+        with open(calculations_file, 'r', encoding='utf-8') as f:
+            calculations_data = json.load(f)
+        
+        # Group calculations by table name
+        table_calculations = {}
+        for calc in calculations_data.get('calculations', []):
+            table_name = calc.get('TableName')
+            if table_name:
+                if table_name not in table_calculations:
+                    table_calculations[table_name] = []
+                table_calculations[table_name].append(calc)
+        
+        logger.info(f"Loaded {len(calculations_data.get('calculations', []))} calculations for {len(table_calculations)} tables")
+    except Exception as e:
+        logger.error(f"Error loading calculations from {calculations_file}: {e}")
+        return
+    
+    # Find all table JSON files
+    table_files = list(extracted_dir.glob("table_*.json"))
+    logger.info(f"Found {len(table_files)} table JSON files")
+    
+    # Process each table file
+    for table_file in table_files:
+        # Extract table name from filename (remove 'table_' prefix and '.json' suffix)
+        table_name = table_file.stem.replace('table_', '')
+        
+        # Check if we have calculations for this table
+        if table_name not in table_calculations:
+            logger.info(f"No calculations found for table {table_name}, skipping")
+            continue
+        
+        # Load table JSON
+        try:
+            with open(table_file, 'r', encoding='utf-8') as f:
+                table_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Error loading table data from {table_file}: {e}")
+            continue
+        
+        # Get calculations for this table
+        table_calcs = table_calculations[table_name]
+        logger.info(f"Processing {len(table_calcs)} calculations for table {table_name}")
+        
+        # Ensure columns list exists
+        if 'columns' not in table_data:
+            table_data['columns'] = []
+        
+        # Get existing column names to avoid duplicates
+        existing_columns = {col.get('source_name', col.get('name')).lower() for col in table_data['columns'] if col.get('source_name') or col.get('name')}
+        
+        # Add calculations as columns
+        added_count = 0
+        for calc in table_calcs:
+            column_name = calc.get('CognosName')
+            dax_formula = calc.get('FormulaDax')
+            
+            if not column_name or not dax_formula:
+                logger.warning(f"Skipping calculation with missing name or formula: {calc}")
+                continue
+            
+            # Check if column already exists
+            if column_name.lower() in existing_columns:
+                # Update existing column to ensure it's marked as calculated
+                for col in table_data['columns']:
+                    if col.get('source_name', col.get('name', '')).lower() == column_name.lower():
+                        # Update with full report migration format
+                        col['source_name'] = column_name
+                        col['datatype'] = 'string'  # Default to string, could be improved based on formula
+                        col['format_string'] = None
+                        col['lineage_tag'] = None
+                        col['source_column'] = dax_formula
+                        col['description'] = None
+                        col['is_hidden'] = False
+                        col['summarize_by'] = 'none'
+                        col['data_category'] = None
+                        col['is_calculated'] = True
+                        col['is_data_type_inferred'] = True
+                        col['annotations'] = {'SummarizationSetBy': 'Automatic'}
+                        logger.info(f"Updated existing column {column_name} as calculated column")
+                        break
+            else:
+                # Add new calculated column with full report migration format
+                new_column = {
+                    'source_name': column_name,
+                    'datatype': 'string',  # Default to string, could be improved based on formula
+                    'format_string': None,
+                    'lineage_tag': None,
+                    'source_column': dax_formula,
+                    'description': None,
+                    'is_hidden': False,
+                    'summarize_by': 'none',
+                    'data_category': None,
+                    'is_calculated': True,
+                    'is_data_type_inferred': True,
+                    'annotations': {'SummarizationSetBy': 'Automatic'}
+                }
+                table_data['columns'].append(new_column)
+                existing_columns.add(column_name.lower())
+                added_count += 1
+        
+        # Save updated table JSON
+        try:
+            with open(table_file, 'w', encoding='utf-8') as f:
+                json.dump(table_data, f, indent=2)
+            logger.info(f"Added {added_count} calculated columns to {table_file}")
+        except Exception as e:
+            logger.error(f"Error saving updated table data to {table_file}: {e}")
+
+
+def _consolidate_intermediate_reports_into_final(
+    output_path: str,
+    successful_migrations_paths: List[Path]
+) -> None:
+    """
+    Consolidate intermediate report pages and slicers into the final unified report.
+    This preserves all the enhanced slicer generation from individual reports.
+    """
+    import json
+    import shutil
+    from pathlib import Path
+    
+    logger = logging.getLogger(__name__)
+    final_pbit_path = Path(output_path) / "pbit"
+    final_sections_path = final_pbit_path / "Report" / "sections"
+    
+    # Clear the default basic section
+    if final_sections_path.exists():
+        shutil.rmtree(final_sections_path)
+    final_sections_path.mkdir(parents=True, exist_ok=True)
+    
+    section_ordinal = 0
+    
+    for report_path in successful_migrations_paths:
+        intermediate_sections_path = report_path / "pbit" / "Report" / "sections"
+        
+        if not intermediate_sections_path.exists():
+            logger.warning(f"No sections found in intermediate report: {report_path.name}")
+            continue
+            
+        # Copy each section from intermediate report to final report
+        for section_dir in intermediate_sections_path.iterdir():
+            if section_dir.is_dir():
+                # Create new section name with ordinal to ensure uniqueness
+                new_section_name = f"{section_ordinal:03d}_{section_dir.name.split('_', 1)[-1] if '_' in section_dir.name else section_dir.name}"
+                new_section_path = final_sections_path / new_section_name
+                
+                # Copy the entire section directory
+                shutil.copytree(section_dir, new_section_path)
+                
+                # Update section.json with new ordinal
+                section_json_path = new_section_path / "section.json"
+                if section_json_path.exists():
+                    try:
+                        with open(section_json_path, 'r', encoding='utf-8') as f:
+                            section_data = json.load(f)
+                        
+                        section_data['ordinal'] = section_ordinal
+                        
+                        with open(section_json_path, 'w', encoding='utf-8') as f:
+                            json.dump(section_data, f, indent=2)
+                            
+                        logger.info(f"Consolidated section from {report_path.name}: {new_section_name}")
+                    except Exception as e:
+                        logger.warning(f"Could not update section.json for {new_section_name}: {e}")
+                
+                section_ordinal += 1
+    
+    logger.info(f"Successfully consolidated {section_ordinal} report sections with slicers into final report")

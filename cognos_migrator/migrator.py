@@ -1080,8 +1080,17 @@ class CognosModuleMigratorExplicit:
                 # Convert expressions to DAX if expression converter is available
                 if self.expression_converter:
                     self.logger.info("Converting Cognos expressions to DAX")
-                    # Create table mappings from queries for context
-                    table_mappings = {query.get('name', ''): query.get('name', '') for query in queries}
+                    
+                    # Create table mappings from data items for context
+                    table_mappings = {}
+                    for item in data_items:
+                        name = item.get('name')
+                        table_name = item.get('table_name')
+                        query_name = item.get('queryName')
+                        if name and table_name:
+                            table_mappings[name] = table_name
+                        if query_name and table_name:
+                            table_mappings[query_name] = table_name
                     
                     # Add a mapping for the default 'Data' table to use the report name
                     if cognos_report.name:
@@ -1304,6 +1313,9 @@ class CognosModuleMigratorExplicit:
                     'source_type': 'Cognos'
                 })
             
+            # Add the parsed structure so it can be used by _create_report_structure_from_cognos
+            converted_data['parsed_structure'] = parsed_structure
+            
             return converted_data
             
         except Exception as e:
@@ -1416,34 +1428,54 @@ class CognosModuleMigratorExplicit:
     def _create_report_structure_from_cognos(self, cognos_report, converted_data: Dict[str, Any], data_model: DataModel) -> Report:
         """Create Power BI report structure
         
-        Adapted from CognosMigrator._create_report_structure
+        Adapted from CognosMigrator._create_report_structure but enhanced to use parsed report structure
         """
-        # Create basic report page
-        page = ReportPage(
-            name="Page1",
-            display_name="Report Page",
-            width=1280,
-            height=720,
-            visuals=[],  # Would be populated with actual visuals
-            filters=converted_data.get('filters', []),
-            config={}
-        )
+        # Get parsed report structure if available
+        parsed_structure = converted_data.get('parsed_structure')
+        pages_list = []
         
-        # Convert ReportPage to dictionary to make it JSON serializable
-        page_dict = {
-            'name': page.name,
-            'display_name': page.display_name,
-            'width': page.width,
-            'height': page.height,
-            'visuals': page.visuals,
-            'filters': page.filters,
-            'config': page.config
-        }
+        if parsed_structure and hasattr(parsed_structure, 'pages') and parsed_structure.pages:
+            # Use parsed pages from enhanced parser
+            for page in parsed_structure.pages:
+                page_dict = {
+                    'name': page.name,
+                    'display_name': page.display_name,
+                    'width': page.width,
+                    'height': page.height,
+                    'visuals': page.visuals or [],
+                    'filters': page.filters or [],
+                    'config': getattr(page, 'config', {}),
+                    'header': getattr(page, 'header', None)
+                }
+                pages_list.append(page_dict)
+        else:
+            # Fallback: Create basic report page
+            page = ReportPage(
+                name="Page1",
+                display_name=f"{cognos_report.name} - Page1",
+                width=1280,
+                height=720,
+                visuals=[],  # Would be populated with actual visuals
+                filters=converted_data.get('filters', []),
+                config={}
+            )
+            
+            # Convert ReportPage to dictionary to make it JSON serializable
+            page_dict = {
+                'name': page.name,
+                'display_name': page.display_name,
+                'width': page.width,
+                'height': page.height,
+                'visuals': page.visuals,
+                'filters': page.filters,
+                'config': page.config
+            }
+            pages_list.append(page_dict)
         
         report = Report(
             id=getattr(cognos_report, 'id', f"report_{cognos_report.name.lower().replace(' ', '_')}"),
             name=cognos_report.name,
-            sections=[page_dict],
+            sections=pages_list,
             data_model=data_model,
             config={
                 "theme": "CorporateTheme",

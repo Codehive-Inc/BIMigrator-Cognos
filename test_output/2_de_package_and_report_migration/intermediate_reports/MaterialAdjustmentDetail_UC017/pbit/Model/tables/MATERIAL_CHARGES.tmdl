@@ -1,0 +1,162 @@
+table MATERIAL_CHARGES
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHARGED_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHARGED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QUANTITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QUANTITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_VALUE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRANSACTION_VALUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_ENTERED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Cost' = ```
+            IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MATERIAL_CHARGES' = m
+        mode: import
+        source = 
+            	let
+					Source = Sql.Database("your_server", "your_database"),
+					SQL = Value.NativeQuery(Source, "SELECT
+    ""MATERIAL_CHARGES"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
+    ""MATERIAL_CHARGES"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
+    ""MATERIAL_CHARGES"".""CHARGED_DATE"" AS ""CHARGED_DATE"",
+    ""MATERIAL_CHARGES"".""JOB_NUMBER"" AS ""JOB_NUMBER"",
+    ""MATERIAL_CHARGES"".""QUANTITY"" AS ""QUANTITY"",
+    ""MATERIAL_CHARGES"".""UNIT_PRICE"" AS ""UNIT_PRICE"",
+    ""MATERIAL_CHARGES"".""TRANSACTION_VALUE"" AS ""TRANSACTION_VALUE"",
+    ""MATERIAL_CHARGES"".""ADJUSTMENT_DESC"" AS ""ADJUSTMENT_DESC"",
+    ""MATERIAL_CHARGES"".""ADJUSTMENT_TYPE"" AS ""ADJUSTMENT_TYPE"",
+    ""MATERIAL_CHARGES"".""TIME_ENTERED"" AS ""TIME_ENTERED"",
+    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION"",
+    IF ( [UNIT_PRICE] = 0 ) THEN
+	( [TRANSACTION_VALUE] )
+ELSE
+	( [UNIT_PRICE] ) AS ""Cost""
+FROM
+""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""MATERIAL_CHARGES""
+WHERE
+    [SITE_NUMBER]= ?SiteNumber?
+    AND     [ITEM_NUMBER]=?ItemNumber?
+    AND     [CHARGED_DATE]=?ChargedDate?
+    AND     [TIME_ENTERED]=?TimeEntered?", null, [EnableFolding=true])
+				in
+					SQL
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "detail_filter_0_0",
+    "type": "detail",
+    "queryName": "MaterialAdjustmentDetail",
+    "expression": "[SITE_NUMBER]= ?SiteNumber?"
+  },
+  {
+    "id": "detail_filter_0_1",
+    "type": "detail",
+    "queryName": "MaterialAdjustmentDetail",
+    "expression": "[ITEM_NUMBER]=?ItemNumber?"
+  },
+  {
+    "id": "detail_filter_0_2",
+    "type": "detail",
+    "queryName": "MaterialAdjustmentDetail",
+    "expression": "[CHARGED_DATE]=?ChargedDate?"
+  },
+  {
+    "id": "detail_filter_0_3",
+    "type": "detail",
+    "queryName": "MaterialAdjustmentDetail",
+    "expression": "[TIME_ENTERED]=?TimeEntered?"
+  }
+]

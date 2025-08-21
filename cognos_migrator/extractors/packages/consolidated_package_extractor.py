@@ -106,10 +106,22 @@ class ConsolidatedPackageExtractor:
             
             # Extract calculations
             if output_path:
-                calculations_result = self.calculation_extractor.extract_and_save(package_file_path, output_path)
-                calculations = calculations_result.get("calculations", {})
+                # Check if calculations.json already exists (might have been merged from intermediate reports)
+                calculations_file = Path(output_path) / "calculations.json"
+                if calculations_file.exists():
+                    self.logger.info(f"Calculations file already exists at {calculations_file}, skipping extraction to avoid overwriting merged calculations")
+                    try:
+                        with open(calculations_file, 'r', encoding='utf-8') as f:
+                            calculations_data = json.load(f)
+                            calculations = calculations_data
+                    except Exception as e:
+                        self.logger.error(f"Error loading existing calculations: {e}")
+                        calculations = {"calculations": {}}
+                else:
+                    calculations_result = self.calculation_extractor.extract_and_save(package_file_path, output_path)
+                    calculations = {"calculations": calculations_result.get("calculations", {})}
             else:
-                calculations = self.calculation_extractor.extract_calculations(root)
+                calculations = {"calculations": self.calculation_extractor.extract_calculations(root)}
                 
             # Extract filters
             if output_path:

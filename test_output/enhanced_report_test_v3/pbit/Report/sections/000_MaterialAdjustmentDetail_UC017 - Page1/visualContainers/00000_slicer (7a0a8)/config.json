@@ -1,0 +1,67 @@
+{
+  "name": "7a0a8570091a721973a2",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 892.7038626609442,
+        "y": 87.8969957081545,
+        "z": 0,
+        "width": 288.412017167382,
+        "height": 86.523605150214593,
+        "tabOrder": 0
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "slicer",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "MATERIAL_CHARGES.SITE_NUMBER",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "m",
+          "Entity": "MATERIAL_CHARGES",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "m"
+              }
+            },
+            "Property": "SITE_NUMBER"
+          },
+          "Name": "MATERIAL_CHARGES.SITE_NUMBER",
+          "NativeReferenceName": "SITE_NUMBER"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

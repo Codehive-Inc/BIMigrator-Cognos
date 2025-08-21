@@ -76,6 +76,13 @@ class TemplateEngine:
             'report_metadata': {'filename': 'report.metadata.json', 'path': '', 'target_filename': 'ReportMetadata.json'},
             'report_settings': {'filename': 'report.settings.json', 'path': '', 'target_filename': 'ReportSettings.json'},
             'report_section': {'filename': 'report.section.json', 'path': 'Report/sections', 'target_filename': '{section_id}.json'},
+            
+            # Slicer visual templates
+            'slicer_visual_container': {'filename': 'slicer.visualContainer.json', 'path': 'Report/sections', 'target_filename': 'visualContainer.json'},
+            'slicer_config': {'filename': 'slicer.config.json', 'path': 'Report/sections', 'target_filename': 'config.json'},
+            'slicer_query': {'filename': 'slicer.query.json', 'path': 'Report/sections', 'target_filename': 'query.json'},
+            'slicer_data_transforms': {'filename': 'slicer.dataTransforms.json', 'path': 'Report/sections', 'target_filename': 'dataTransforms.json'},
+            
             'diagram_layout': {'filename': 'diagram.layout.json', 'path': '', 'target_filename': 'DiagramLayout.json'},
             
             # Metadata templates
