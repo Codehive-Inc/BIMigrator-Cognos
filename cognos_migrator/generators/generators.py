@@ -379,7 +379,7 @@ class PowerBIProjectOrchestrator:
                 content = self.template_engine.render('report_section', context)
                 
                 # Create a directory for each section with numeric prefix for Power BI compatibility
-                section_id = self._sanitize_filename(page.name) if hasattr(page, 'name') else f"section{i+1}"
+                section_id = self._sanitize_filename(page.name)[:30] if hasattr(page, 'name') else f"section{i+1}"
                 section_dir_name = f"{i:03d}_{section_id}"
                 section_dir = sections_dir / section_dir_name
                 section_dir.mkdir(exist_ok=True)
@@ -490,19 +490,34 @@ class PowerBIProjectOrchestrator:
         Returns:
             Sanitized filename
         """
+        import re
+        
+        # Split by spaces and rejoin with underscores to handle spaces properly
+        parts = filename.split()
+        sanitized = '_'.join(parts)
+        
         # Replace invalid characters with underscore
         invalid_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
         for char in invalid_chars:
-            filename = filename.replace(char, '_')
+            sanitized = sanitized.replace(char, '_')
             
-        # Remove leading/trailing spaces and dots
-        filename = filename.strip('. ')
+        # Remove leading/trailing dots, dashes, and underscores
+        sanitized = sanitized.strip('.-_')
+        
+        # Replace multiple consecutive underscores with single underscore
+        sanitized = re.sub(r'_+', '_', sanitized)
+        
+        # Remove any remaining trailing dashes
+        sanitized = re.sub(r'-+$', '', sanitized)
+        
+        # Final cleanup - remove trailing underscores
+        sanitized = sanitized.rstrip('_')
         
         # Ensure filename is not empty
-        if not filename:
-            filename = 'unnamed'
+        if not sanitized:
+            sanitized = 'unnamed'
             
-        return filename
+        return sanitized
 
 
 # Export the orchestrator as PowerBIProjectGenerator for backward compatibility

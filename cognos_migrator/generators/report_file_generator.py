@@ -268,8 +268,8 @@ class ReportFileGenerator:
                     'height': height
                 }
                 
-                # Create a sanitized name for the section directory
-                sanitized_name = self._sanitize_filename(section_name)
+                # Create a sanitized name for the section directory with length limits
+                sanitized_name = self._sanitize_filename(section_name[:30])  # Limit to 30 chars, then sanitize
                 section_dir_name = f"{i:03d}_{sanitized_name}"
                 section_dir = sections_dir / section_dir_name
                 section_dir.mkdir(exist_ok=True)
@@ -514,8 +514,8 @@ class ReportFileGenerator:
         visual_containers_dir.mkdir(exist_ok=True)
         
         for i, slicer in enumerate(slicer_visuals):
-            # Create visual container directory with proper naming
-            container_name = f"{i:05d}_{slicer['name']} ({slicer['id'][:5]})"
+            # Create visual container directory with shortened naming to avoid filesystem limits
+            container_name = f"{i:05d}_{slicer['name'][:20]}_{slicer['id'][:5]}"
             container_dir = visual_containers_dir / container_name
             container_dir.mkdir(exist_ok=True)
             
@@ -580,12 +580,25 @@ class ReportFileGenerator:
         Returns:
             Sanitized filename
         """
+        # Split by spaces and rejoin with underscores to handle spaces properly
+        parts = filename.split()
+        sanitized = '_'.join(parts)
+        
         # Replace invalid characters with underscores
         invalid_chars = r'[<>:"/\\|?*]'
-        sanitized = re.sub(invalid_chars, '_', filename)
+        sanitized = re.sub(invalid_chars, '_', sanitized)
         
-        # Remove leading/trailing spaces and dots
-        sanitized = sanitized.strip('. ')
+        # Remove leading/trailing dots, dashes, and underscores
+        sanitized = sanitized.strip('.-_')
+        
+        # Replace multiple consecutive underscores with single underscore
+        sanitized = re.sub(r'_+', '_', sanitized)
+        
+        # Remove any remaining trailing dashes
+        sanitized = re.sub(r'-+$', '', sanitized)
+        
+        # Final cleanup - remove trailing underscores
+        sanitized = sanitized.rstrip('_')
         
         # Ensure the filename is not empty
         if not sanitized:
