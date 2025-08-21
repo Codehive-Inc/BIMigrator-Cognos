@@ -7,9 +7,9 @@
       "FormulaCognos": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC1",
-      "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 11, 2)",
-      "Status": "converted",
-      "Notes": null
+      "FormulaDax": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
     },
     {
       "TableName": "STORAGE_LOCATION",
@@ -18,9 +18,9 @@
       "FormulaCognos": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "LOC2",
-      "FormulaDax": "LEFT(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 3, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 5, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 7, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 9, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 11, 2)",
-      "Status": "converted",
-      "Notes": null
+      "FormulaDax": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
     },
     {
       "TableName": "PURCHASE_ORDER_RECEIPT",
@@ -29,9 +29,9 @@
       "FormulaCognos": "[UNIT_PRICE] * [QTY_RECEIVED]",
       "FormulaTypeCognos": "dataItem",
       "PowerBIName": "TotalCost",
-      "FormulaDax": "'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]",
-      "Status": "converted",
-      "Notes": null
+      "FormulaDax": "[UNIT_PRICE] * [QTY_RECEIVED]",
+      "Status": "needs_review",
+      "Notes": "LLM service conversion failed: No valid result returned"
     }
   ]
 }

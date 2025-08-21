@@ -21,6 +21,7 @@ from cognos_migrator.common.logging import configure_logging, log_info, log_warn
 from cognos_migrator.client import CognosClient, CognosAPIError
 from cognos_migrator.common.websocket_client import logging_helper, set_task_info
 from cognos_migrator.extractors.packages import PackageExtractor, ConsolidatedPackageExtractor
+from cognos_migrator.extractors.packages.sql_relationship_extractor import SQLRelationshipExtractor
 from ..models import PowerBIProject, DataModel, Report, ReportPage
 from ..generators import PowerBIProjectGenerator
 from ..extractors.packages import ConsolidatedPackageExtractor
@@ -321,11 +322,11 @@ def extract_tables_from_expression(expression: str) -> Set[str]:
     return tables
 
 
-def load_table_filtering_settings() -> Dict[str, Any]:
-    """Load table filtering settings from settings.json
+def load_settings() -> Dict[str, Any]:
+    """Load all settings from settings.json
     
     Returns:
-        Dictionary containing table filtering settings
+        Dictionary containing all settings
     """
     settings = {}
     try:
@@ -339,10 +340,15 @@ def load_table_filtering_settings() -> Dict[str, Any]:
     filtering_mode = table_filtering.get('mode', 'include-all')  # Default to include all tables
     always_include = table_filtering.get('always_include', [])
     
-    return {
-        'mode': filtering_mode,
-        'always_include': always_include
-    }
+    # Add table filtering settings to the main settings if they don't exist
+    if 'table_filtering' not in settings:
+        settings['table_filtering'] = {
+            'mode': filtering_mode,
+            'always_include': always_include
+        }
+    
+    logging.info(f"Loaded settings: {settings}")
+    return settings
 
 
 def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) -> DataModel:
@@ -570,13 +576,25 @@ def _migrate_shared_model(
         required_tables=required_tables
     )
     
+    # --- Step 3.5: Extract SQL relationships and save to extracted folder ---
+    extracted_dir = os.path.join(output_path, "extracted")
+    
+    # Step 4: Data Model Conversion from FILTERED package info
+    data_model = package_extractor.convert_to_data_model(package_info)
+    
+    # Get table names from the data model for filtering SQL relationships
+    model_table_names = [table.name for table in data_model.tables]
+    logging.info(f"Using {len(model_table_names)} tables from data model for SQL relationship filtering")
+    
+    # Extract SQL relationships with model table names for filtering
+    sql_relationship_extractor = SQLRelationshipExtractor(logger=logging.getLogger(__name__), model_tables=model_table_names)
+    sql_relationship_extractor.extract_and_save(package_file, extracted_dir)
+    logging.info(f"Extracted SQL relationships and saved to {extracted_dir}")
+    
     # Log the query subjects that were returned after filtering
     query_subject_names = [qs.get('name', 'Unknown') for qs in package_info.get('query_subjects', [])]
     logging.info(f"FILTERING DEBUG: Extractor returned package_info with {len(package_info.get('query_subjects', []))} tables.")
     logging.info(f"FILTERING DEBUG: Filtered query subject names: {query_subject_names}")
-
-    # Step 4: Data Model Conversion from FILTERED package info
-    data_model = package_extractor.convert_to_data_model(package_info)
     
     # Log the table names in the data model after conversion
     table_names = [table.name for table in data_model.tables]
@@ -624,7 +642,8 @@ def _migrate_shared_model(
     if hasattr(generator, 'model_file_generator'):
         package_model_file_generator = PackageModelFileGenerator(
             template_engine, 
-            mquery_converter=package_mquery_converter
+            mquery_converter=package_mquery_converter,
+            settings=config  # Pass the full settings dictionary
         )
         generator.model_file_generator = package_model_file_generator
 
@@ -668,15 +687,15 @@ def migrate_package_with_local_reports(package_file_path: str,
                                        session_key: str,
                                        task_id: Optional[str] = None) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
-    config = load_table_filtering_settings()
-    logging.info(f"FILTERING DEBUG: In migrate_package_with_local_reports, loaded table filtering settings: {config}")
+    settings = load_settings()
+    logging.info(f"In migrate_package_with_local_reports, loaded settings: {settings}")
     return _migrate_shared_model(
         package_file=package_file_path,
         reports=report_file_paths,
         output_path=output_path,
         cognos_url=cognos_url,
         session_key=session_key,
-        config=config,
+        config=settings,
         reports_are_ids=False,
     )
 

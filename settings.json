@@ -5,5 +5,10 @@
     "always_include": [
       "CentralDateTable"
     ]
+  },
+  "staging_tables": {
+    "enabled": true,
+    "naming_prefix": "Dim_",
+    "model_handling": "star_schema"
   }
 }

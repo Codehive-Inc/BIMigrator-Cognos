@@ -292,6 +292,22 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
+    },
+    {
+      "source_name": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key",
+      "description": null,
+      "is_hidden": true,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
   "hierarchies": [],
@@ -299,7 +315,7 @@
     {
       "name": "PURCHASE_ORDER_DESCRIPTIONS",
       "source_type": "m",
-      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"TOTAL_NUMBER_SEGMENTS\"\", \"\"NUMBER_SEGMENTS_SELECTED\"\", \"\"LINE_NUMBER1\"\", \"\"DESCRIPTION1\"\", \"\"LINE_NUMBER2\"\", \"\"DESCRIPTION2\"\", \"\"LINE_NUMBER3\"\", \"\"DESCRIPTION3\"\", \"\"LINE_NUMBER4\"\", \"\"DESCRIPTION4\"\", \"\"LINE_NUMBER5\"\", \"\"DESCRIPTION5\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_DESCRIPTIONS\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
+      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"TOTAL_NUMBER_SEGMENTS\"\", \"\"NUMBER_SEGMENTS_SELECTED\"\", \"\"LINE_NUMBER1\"\", \"\"DESCRIPTION1\"\", \"\"LINE_NUMBER2\"\", \"\"DESCRIPTION2\"\", \"\"LINE_NUMBER3\"\", \"\"DESCRIPTION3\"\", \"\"LINE_NUMBER4\"\", \"\"DESCRIPTION4\"\", \"\"LINE_NUMBER5\"\", \"\"DESCRIPTION5\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_DESCRIPTIONS\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery),\n                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\n                in\n                    AddCompositeKey_1"
     }
   ],
   "has_widget_serialization": false,

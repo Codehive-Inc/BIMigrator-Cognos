@@ -10804,7 +10804,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
@@ -10819,7 +10819,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
@@ -10834,7 +10834,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[ITEM_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
@@ -10849,7 +10849,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
@@ -10864,7 +10864,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
@@ -10879,7 +10879,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
@@ -10894,7 +10894,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MANUFACTURER].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
@@ -10909,7 +10909,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
@@ -10924,7 +10924,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
@@ -10939,7 +10939,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
@@ -10954,7 +10954,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
     },
     {
       "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
@@ -10969,7 +10969,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER] = [Database_Layer].[WORK_ORDERS].[JOB_NUMBER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIPMENT",
@@ -10984,7 +10984,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
     },
     {
       "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
@@ -10999,7 +10999,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER] = [Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> SITES",
@@ -11014,7 +11014,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[SITES].[SITE_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
@@ -11029,7 +11029,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
@@ -11044,7 +11044,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
@@ -11059,7 +11059,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_STEPS",
@@ -11074,7 +11074,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_MATERIALS",
@@ -11089,7 +11089,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_DOCUMENTS",
@@ -11104,7 +11104,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_SERVICES",
@@ -11119,7 +11119,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_SERVICES].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_SERVICES].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
@@ -11134,7 +11134,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_TEST_EQUIP].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_TEST_EQUIP].[WORKORDER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
@@ -11149,7 +11149,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
@@ -11164,7 +11164,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER] AND [Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[EQUIPMENT].[SITE]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
@@ -11179,7 +11179,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> WORK_ORDERS",
@@ -11194,7 +11194,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE]"
     },
     {
       "name": "WORK_ORDERS <-> WO_COMMENTS",
@@ -11209,7 +11209,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
@@ -11224,7 +11224,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[ITEM_NUM_IND].[ITEM_NUMBER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIP_HISTORY",
@@ -11239,7 +11239,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_HISTORY].[WORKORDER] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_HISTORY].[SITE]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
@@ -11254,7 +11254,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MOST_RECENT_WO] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> ITT_MATERIAL",
@@ -11269,7 +11269,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITT_MATERIAL].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
@@ -11284,7 +11284,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_NUMBER].[SITE] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[ITEM_NUMBER].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_STEPS",
@@ -11299,7 +11299,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
@@ -11314,7 +11314,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "EQUIP_HISTORY <-> EQUIPMENT",
@@ -11329,7 +11329,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[EQUIP_HISTORY].[SITE] = [Database_Layer].[EQUIPMENT].[SITE] AND [Database_Layer].[EQUIP_HISTORY].[MARK_NO] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
@@ -11344,7 +11344,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
@@ -11359,7 +11359,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
@@ -11374,7 +11374,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[ITEM_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
@@ -11389,7 +11389,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
@@ -11404,7 +11404,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
@@ -11419,7 +11419,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
@@ -11434,7 +11434,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MANUFACTURER].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
@@ -11449,7 +11449,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
@@ -11464,7 +11464,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
@@ -11479,7 +11479,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
@@ -11494,7 +11494,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
     },
     {
       "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
@@ -11509,7 +11509,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER] = [Database_Layer].[WORK_ORDERS].[JOB_NUMBER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIPMENT",
@@ -11524,7 +11524,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
     },
     {
       "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
@@ -11539,7 +11539,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER] = [Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> SITES",
@@ -11554,7 +11554,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[SITES].[SITE_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
@@ -11569,7 +11569,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
@@ -11584,7 +11584,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
@@ -11599,7 +11599,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_STEPS",
@@ -11614,7 +11614,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_MATERIALS",
@@ -11629,7 +11629,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_DOCUMENTS",
@@ -11644,7 +11644,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_SERVICES",
@@ -11659,7 +11659,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_SERVICES].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_SERVICES].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
@@ -11674,7 +11674,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_TEST_EQUIP].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_TEST_EQUIP].[WORKORDER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
@@ -11689,7 +11689,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
@@ -11704,7 +11704,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER] AND [Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[EQUIPMENT].[SITE]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
@@ -11719,7 +11719,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> WORK_ORDERS",
@@ -11734,7 +11734,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE]"
     },
     {
       "name": "WORK_ORDERS <-> WO_COMMENTS",
@@ -11749,7 +11749,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
@@ -11764,7 +11764,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[ITEM_NUM_IND].[ITEM_NUMBER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIP_HISTORY",
@@ -11779,7 +11779,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_HISTORY].[WORKORDER] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_HISTORY].[SITE]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
@@ -11794,7 +11794,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MOST_RECENT_WO] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> ITT_MATERIAL",
@@ -11809,7 +11809,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITT_MATERIAL].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
@@ -11824,7 +11824,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_NUMBER].[SITE] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[ITEM_NUMBER].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_STEPS",
@@ -11839,7 +11839,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
@@ -11854,7 +11854,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "EQUIP_HISTORY <-> EQUIPMENT",
@@ -11869,7 +11869,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[EQUIP_HISTORY].[SITE] = [Database_Layer].[EQUIPMENT].[SITE] AND [Database_Layer].[EQUIP_HISTORY].[MARK_NO] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
@@ -11884,7 +11884,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
@@ -11899,7 +11899,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
@@ -11914,7 +11914,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[ITEM_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
@@ -11929,7 +11929,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
@@ -11944,7 +11944,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
@@ -11959,7 +11959,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
@@ -11974,7 +11974,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MANUFACTURER].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
@@ -11989,7 +11989,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
@@ -12004,7 +12004,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
@@ -12019,7 +12019,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
@@ -12034,7 +12034,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
     },
     {
       "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
@@ -12049,7 +12049,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER] = [Database_Layer].[WORK_ORDERS].[JOB_NUMBER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIPMENT",
@@ -12064,7 +12064,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
     },
     {
       "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
@@ -12079,7 +12079,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER] = [Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> SITES",
@@ -12094,7 +12094,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[SITES].[SITE_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
@@ -12109,7 +12109,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
@@ -12124,7 +12124,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
@@ -12139,7 +12139,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_STEPS",
@@ -12154,7 +12154,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_MATERIALS",
@@ -12169,7 +12169,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_DOCUMENTS",
@@ -12184,7 +12184,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_SERVICES",
@@ -12199,7 +12199,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_SERVICES].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_SERVICES].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
@@ -12214,7 +12214,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_TEST_EQUIP].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_TEST_EQUIP].[WORKORDER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
@@ -12229,7 +12229,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
@@ -12244,7 +12244,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER] AND [Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[EQUIPMENT].[SITE]"
     },
     {
       "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
@@ -12259,7 +12259,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> WORK_ORDERS",
@@ -12274,7 +12274,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE]"
     },
     {
       "name": "WORK_ORDERS <-> WO_COMMENTS",
@@ -12289,7 +12289,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
     },
     {
       "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
@@ -12304,7 +12304,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[ITEM_NUM_IND].[ITEM_NUMBER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIP_HISTORY",
@@ -12319,7 +12319,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_HISTORY].[WORKORDER] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_HISTORY].[SITE]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
@@ -12334,7 +12334,7 @@
         "mincard": "zero",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MOST_RECENT_WO] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER]"
     },
     {
       "name": "SITE_NUMBER <-> ITT_MATERIAL",
@@ -12349,7 +12349,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITT_MATERIAL].[SITE_NUMBER]"
     },
     {
       "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
@@ -12364,7 +12364,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[ITEM_NUMBER].[SITE] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[ITEM_NUMBER].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
     },
     {
       "name": "MODEL_WORK_ORDER <-> WO_STEPS",
@@ -12379,7 +12379,7 @@
         "mincard": "zero",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
     },
     {
       "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
@@ -12394,7 +12394,7 @@
         "mincard": "one",
         "maxcard": "many"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_DOCUMENTS].[WORKORDER]"
     },
     {
       "name": "EQUIP_HISTORY <-> EQUIPMENT",
@@ -12409,7 +12409,7 @@
         "mincard": "one",
         "maxcard": "one"
       },
-      "join_expression": ""
+      "join_expression": "[Database_Layer].[EQUIP_HISTORY].[SITE] = [Database_Layer].[EQUIPMENT].[SITE] AND [Database_Layer].[EQUIP_HISTORY].[MARK_NO] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
     }
   ],
   "calculations": {
@@ -12421,9 +12421,9 @@
         "FormulaCognos": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
         "FormulaTypeCognos": "dataItem",
         "PowerBIName": "LOC_1",
-        "FormulaDax": "CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(CONCATENATE(MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 1, 2) & \" \", MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 3, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 5, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 7, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 9, 2) & \" \"), MID(RIGHT('ITEM_SITE_EXTRACT'[PRIMARY_LOC] & REPT(\" \", 12), 12), 11, 2))",
-        "Status": "converted",
-        "Notes": null
+        "FormulaDax": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+        "Status": "needs_review",
+        "Notes": "LLM service conversion failed: No valid result returned"
       },
       {
         "TableName": "ITEM_SITE_EXTRACT",
@@ -12432,9 +12432,9 @@
         "FormulaCognos": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
         "FormulaTypeCognos": "dataItem",
         "PowerBIName": "LOC_2",
-        "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 3, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 5, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 7, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 9, 2) & \" \" & MID(RIGHT(REPT(\" \", 12) & 'ITEM_SITE_EXTRACT'[SECONDARY_LOC], 12), 11, 2)",
-        "Status": "converted",
-        "Notes": null
+        "FormulaDax": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+        "Status": "needs_review",
+        "Notes": "LLM service conversion failed: No valid result returned"
       },
       {
         "TableName": "STORAGE_LOCATION",
@@ -12443,9 +12443,9 @@
         "FormulaCognos": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
         "FormulaTypeCognos": "dataItem",
         "PowerBIName": "LOC1",
-        "FormulaDax": "LEFT(RIGHT(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 12), 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 3, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 5, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 7, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 9, 2) & \" \" & MID(REPT(\" \", 12) & 'STORAGE_LOCATION'[LOCATION1], 11, 2)",
-        "Status": "converted",
-        "Notes": null
+        "FormulaDax": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
+        "Status": "needs_review",
+        "Notes": "LLM service conversion failed: No valid result returned"
       },
       {
         "TableName": "STORAGE_LOCATION",
@@ -12454,9 +12454,9 @@
         "FormulaCognos": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
         "FormulaTypeCognos": "dataItem",
         "PowerBIName": "LOC2",
-        "FormulaDax": "LEFT(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 3, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 5, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 7, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 9, 2) & \" \" & MID(RIGHT(REPT(' ', 12) & 'STORAGE_LOCATION'[LOCATION2], 12), 11, 2)",
-        "Status": "converted",
-        "Notes": null
+        "FormulaDax": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
+        "Status": "needs_review",
+        "Notes": "LLM service conversion failed: No valid result returned"
       },
       {
         "TableName": "PURCHASE_ORDER_RECEIPT",
@@ -12465,9 +12465,9 @@
         "FormulaCognos": "[UNIT_PRICE] * [QTY_RECEIVED]",
         "FormulaTypeCognos": "dataItem",
         "PowerBIName": "TotalCost",
-        "FormulaDax": "'PURCHASE_ORDER_RECEIPT'[UNIT_PRICE] * 'PURCHASE_ORDER_RECEIPT'[QTY_RECEIVED]",
-        "Status": "converted",
-        "Notes": null
+        "FormulaDax": "[UNIT_PRICE] * [QTY_RECEIVED]",
+        "Status": "needs_review",
+        "Notes": "LLM service conversion failed: No valid result returned"
       },
       {
         "TableName": "MATERIAL_CHARGES",
@@ -12476,9 +12476,9 @@
         "FormulaCognos": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
         "FormulaTypeCognos": "dataItem",
         "PowerBIName": "Cost",
-        "FormulaDax": "IF('MATERIAL_CHARGES'[UNIT_PRICE] = 0, 'MATERIAL_CHARGES'[TRANSACTION_VALUE], 'MATERIAL_CHARGES'[UNIT_PRICE])",
-        "Status": "converted",
-        "Notes": null
+        "FormulaDax": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )",
+        "Status": "needs_review",
+        "Notes": "LLM service conversion failed: No valid result returned"
       }
     ]
   },

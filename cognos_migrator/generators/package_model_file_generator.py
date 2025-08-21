@@ -24,16 +24,18 @@ from .template_engine import TemplateEngine
 class PackageModelFileGenerator:
     """Generator for Power BI model files from Cognos Framework Manager packages"""
     
-    def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None):
+    def __init__(self, template_engine: TemplateEngine, mquery_converter: Optional[MQueryConverter] = None, settings: Optional[Dict[str, Any]] = None):
         """
         Initialize the package model file generator
         
         Args:
             template_engine: Template engine for rendering templates
             mquery_converter: Optional MQueryConverter for generating M-queries (should be PackageMQueryConverter)
+            settings: Optional settings dictionary from settings.json
         """
         self.template_engine = template_engine
         self.mquery_converter = mquery_converter
+        self.settings = settings or {}
         self.logger = logging.getLogger(__name__)
     
     def generate_model_files(self, data_model: DataModel, output_dir: Path, package_spec: Optional[str] = None, project_metadata: Optional[Dict[str, Any]] = None) -> Path:
@@ -70,6 +72,36 @@ class PackageModelFileGenerator:
             from ..converters import PackageMQueryConverter
             self.mquery_converter = PackageMQueryConverter(output_path=str(output_dir.parent))
         self._generate_package_table_files(data_model.tables, model_dir, package_info)
+        
+        # Process staging tables AFTER normal table files are generated
+        # This allows the staging table handler to read the original M-queries from JSON files
+        if self.settings and self.settings.get('staging_tables', {}).get('enabled', False):
+            from .staging_table_handler import StagingTableHandler
+            self.logger.info(f"Processing staging tables after JSON generation with settings: {self.settings}")
+            
+            staging_handler = StagingTableHandler(self.settings, extracted_dir, self.mquery_converter)
+            data_model = staging_handler.process_data_model(data_model)
+            self.logger.info(f"After staging table processing, data model has {len(data_model.tables)} tables")
+            self.logger.info(f"Tables after staging: {[t.name for t in data_model.tables]}")
+            
+            # Regenerate table files with staging table modifications
+            self.logger.info("Regenerating table files with staging table modifications")
+            
+            # Force regeneration of fact table JSON files to include composite keys
+            extracted_dir = get_extracted_dir(model_dir)
+            if extracted_dir:
+                # Remove existing fact table JSON files to force regeneration
+                for table in data_model.tables:
+                    if not table.name.startswith('Dim_'):  # Only remove fact tables
+                        json_file = extracted_dir / f"table_{table.name}.json"
+                        if json_file.exists():
+                            json_file.unlink()
+                            self.logger.info(f"Removed existing JSON file to force regeneration: {json_file}")
+            
+
+            self._generate_package_table_files(data_model.tables, model_dir, package_info)
+        else:
+            self.logger.info("Staging tables not enabled in settings, skipping staging table processing")
         
         # Generate date table files if they exist
         if hasattr(data_model, 'date_tables') and data_model.date_tables:

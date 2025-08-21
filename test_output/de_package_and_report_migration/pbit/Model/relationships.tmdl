@@ -1,282 +1,98 @@
-relationship 825534d3-ef56-4c3d-9884-6412655af5d2
-	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.PO_LINE_NUMBER
-	toColumn: PURCHASE_ORDER_LINE.PO_LINE_NUMBER
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
+relationship Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE
+	fromColumn: Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	toColumn: PURCHASE_ORDER_LINE.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship 65fa7049-f9b2-4b99-bbde-7effe02f10e9
-	fromColumn: PURCHASE_ORDER_LINE.PO_LINE_NUMBER
-	toColumn: PURCHASE_ORDER_RECEIPT.PO_LINE_NUMBER
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
+relationship Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE
+	fromColumn: Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE.SITE_NUMBER_ITEM_NUMBER_Key
+	toColumn: PURCHASE_ORDER_LINE.SITE_NUMBER_ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship 68a2af72-e773-42f0-90e9-704fb61018b3
-	fromColumn: PURCHASE_ORDER_LINE.UNIT_OF_MEASURE
-	toColumn: ITEM_SITE_EXTRACT.UNIT_OF_MEASURE
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
+relationship Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_LINE
+	fromColumn: Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	toColumn: PURCHASE_ORDER_LINE.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship c789c60b-e8bb-432a-b2e1-7aca8627459f
-	fromColumn: PURCHASE_ORDER_LINE.STOP
-	toColumn: STORAGE_LOCATION.STOP
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
+relationship Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION_to_PURCHASE_ORDER_LINE
+	fromColumn: Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION.ITEM_NUMBER_SITE_NUMBER_Key
+	toColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship d19712c1-7a9f-4cdb-8534-7f234b8f8c76
-	fromColumn: PURCHASE_ORDER_LINE.UNIT_OF_MEASURE
-	toColumn: MATERIAL_CHARGES.UNIT_OF_MEASURE
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
+relationship Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE
+	fromColumn: Dim_MATERIAL_CHARGES_PURCHASE_ORDER_LINE.SITE_NUMBER_ITEM_NUMBER_Key
+	toColumn: PURCHASE_ORDER_LINE.SITE_NUMBER_ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship 2ce0ae85-65ea-46ed-bbd1-5a6b1a945881
-	fromColumn: ITEM_SITE_EXTRACT.STOP
-	toColumn: MANUFACTURER.STOP
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
+relationship Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION_to_ITEM_SITE_EXTRACT
+	fromColumn: Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION.ITEM_NUMBER_SITE_NUMBER_Key
+	toColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship cfcc97db-502c-499c-a8ba-4871586425c5
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.BLANKET_BEGIN_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
+relationship Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE_to_ITEM_SITE_EXTRACT
+	fromColumn: Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE.SITE_NUMBER_ITEM_NUMBER_Key
+	toColumn: ITEM_SITE_EXTRACT.SITE_NUMBER_ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship 5ee46c57-cce3-41bf-8d94-ed6ec06d88ba
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.BLANKET_END_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 0d2f623e-7a94-46e5-a309-8a22f30433e4
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_ENTERED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 89274219-310e-4e5e-a2db-adce20ce11ea
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_IN_HOLD
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 3b9bc70c-e40a-409c-a949-b99d9a4e8958
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_IN_INVENT
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship aa64e3be-310e-4c0a-8276-81a71fd165a2
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_RECD_SITE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 6c05e151-05fd-4ac0-ad52-7b2aed0d047a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_LAST_REJECTED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 0efaa30e-85d5-4290-a755-04c124c05bfd
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_ENTERED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 2c4da469-2c68-4a30-bb23-a4e0d405240f
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_ORDERED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 786f6ca2-0e1a-4ad0-b137-94e40c56fe69
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.DATE_ROOT_STATUS
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 015556f4-d8dc-4c52-a184-e039ec5ddf73
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.PROMISED_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship c3de569b-611f-4015-bc13-ea194af65ee2
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_LINE.STATUS_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 1ad44f10-ab79-4578-bc37-e1be8b67dca0
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
+relationship Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_ITEM_SITE_EXTRACT
+	fromColumn: Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES.SITE_NUMBER_ITEM_NUMBER_Key
+	toColumn: ITEM_SITE_EXTRACT.SITE_NUMBER_ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship b372c380-51d5-4733-b5ba-a5046b512742
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_APPROVED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship a22ac16e-2109-49fa-92b7-fda1e017e806
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_INVENTORIED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 88800d88-9f8c-4ac5-bc66-e33fa5ff0fc6
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_ISSUED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 0aac3f3c-c5a6-47f2-afdc-0cdb02d04a24
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_RECEIVED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship bc94fca7-20bd-4ed9-8a5f-90340dc68c4e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.DATE_LAST_RETURNED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship e814eca4-f7c7-48ff-9749-23387453b21d
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.ITEM_LAST_UPDATED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 74ee81aa-d220-4803-ac21-c98f32e1d1ce
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.REVIEW_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 36abbe5a-dc33-4c81-b50e-3a0c548e3363
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.SHELF_LIFE_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship f5e10a82-5794-42c1-85b0-bdae7675b01e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.SITE_LAST_UPDATED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 9f2693fd-1cba-446f-bd80-fa4b09fd9ce8
-	joinOnDateBehavior: datePartOnly
-	fromColumn: ITEM_SITE_EXTRACT.STRATIFIED_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 6de18a28-9c6e-4380-abaa-31dc7e3320f1
-	joinOnDateBehavior: datePartOnly
-	fromColumn: MANUFACTURER.DATE_CREATED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
+relationship Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_ITEM_SITE_EXTRACT
+	fromColumn: Dim_ITEM_SITE_EXTRACT_MANUFACTURER.ITEM_NUMBER_Key
+	toColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship d22419d4-c32a-4fa0-bcee-671959de72c9
-	joinOnDateBehavior: datePartOnly
-	fromColumn: MATERIAL_CHARGES.CHARGED_DATE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
+relationship Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS
+	fromColumn: Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	toColumn: PURCHASE_ORDER_DESCRIPTIONS.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship 82e8a920-cfce-4486-9806-ecb703d147c1
-	joinOnDateBehavior: datePartOnly
-	fromColumn: MATERIAL_CHARGES.DATE_ENTERED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship 6500d6cf-ddd8-4ff2-b911-e9d75a024b0a
-	joinOnDateBehavior: datePartOnly
-	fromColumn: MATERIAL_CHARGES.DATE_STATUS_EFFECTIVE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
-
-relationship c4c5cfd0-efa5-419a-b9cc-85860d28477e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_ENTERED
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
+relationship Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION_to_STORAGE_LOCATION
+	fromColumn: Dim_ITEM_SITE_EXTRACT_STORAGE_LOCATION.ITEM_NUMBER_SITE_NUMBER_Key
+	toColumn: STORAGE_LOCATION.ITEM_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
 	isActive: true
 
-relationship e69a173b-7642-4bea-a1a8-03cb7d097ccf
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_RECEIVED_AT_SITE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
+relationship Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT_to_PURCHASE_ORDER_RECEIPT
+	fromColumn: Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	toColumn: PURCHASE_ORDER_RECEIPT.PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
+	isActive: true
 
-relationship cde7c6db-1857-4e3a-a8cb-2254ee4471ff
-	joinOnDateBehavior: datePartOnly
-	fromColumn: PURCHASE_ORDER_RECEIPT.DATE_STATUS_EFFECTIVE
-	toColumn: CentralDateTable.Date
-	crossFilteringBehavior: automatic
-	fromCardinality: many
-	isActive: false
+relationship Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES_to_MATERIAL_CHARGES
+	fromColumn: Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES.SITE_NUMBER_ITEM_NUMBER_Key
+	toColumn: MATERIAL_CHARGES.SITE_NUMBER_ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
+	isActive: true
+
+relationship Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_MANUFACTURER
+	fromColumn: Dim_ITEM_SITE_EXTRACT_MANUFACTURER.ITEM_NUMBER_Key
+	toColumn: MANUFACTURER.ITEM_NUMBER_Key
+	crossFilteringBehavior: OneDirection
+	toCardinality: many
+	isActive: true
 

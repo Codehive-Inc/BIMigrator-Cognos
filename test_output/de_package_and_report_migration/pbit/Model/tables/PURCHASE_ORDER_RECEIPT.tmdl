@@ -251,19 +251,31 @@ table PURCHASE_ORDER_RECEIPT
         annotation SummarizationSetBy = Automatic
 
         
+    column 'PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+
+        isHidden
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
 
 
 
     partition 'PURCHASE_ORDER_RECEIPT' = m
         mode: import
         source = 
-            
-                let
+            let
                     Source = Sql.Database(#"DB Server", #"DB Name"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""PO_NUMBER"", ""CHANGE_ORDER_NUMBER"", ""RELEASE_NUMBER"", ""PO_LINE_NUMBER"", ""DATE_ENTERED"", ""TIME_ENTERED"", ""QTY_RECEIVED"", ""QTY_REJECTED"", ""QA_CODE"", ""SHELF_LIFE"", ""QA_INSPECTOR"", ""STOREKEEPER_ID"", ""RECEIPT_NUMBER"", ""UNIT_PRICE"", ""ITEM_NUMBER"", ""DATE_RECEIVED_AT_SITE"", ""RECEIPT_CODE"", ""DATE_STATUS_EFFECTIVE"", ""HOLD_STATUS"", ""DSR_NUMBER"", ""QTY_IN_HOLD"", ""RECORD_STATUS"", ""STOP"", ""ITT_KEY_NO"" FROM ""PURCHASE_ORDER_RECEIPT""", null, [EnableFolding=true]),
-                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
+                    #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery),
+                    // Add composite key: PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key
+                    AddCompositeKey_1 = Table.AddColumn(#"Removed Errors", "PO_NUMBER_RELEASE_NUMBER_PO_LINE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], [SITE_NUMBER]}, "|"), type text)
                 in
-                    #"Removed Errors"
+                    AddCompositeKey_1
         
 
 
