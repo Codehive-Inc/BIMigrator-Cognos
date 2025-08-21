@@ -180,22 +180,6 @@
       "annotations": {
         "SummarizationSetBy": "Automatic"
       }
-    },
-    {
-      "source_name": "ITEM_NUMBER_Key",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ITEM_NUMBER_Key",
-      "description": null,
-      "is_hidden": true,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
     }
   ],
   "hierarchies": [],
@@ -203,7 +187,7 @@
     {
       "name": "MANUFACTURER",
       "source_type": "m",
-      "expression": "let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery),\n                    // Add composite key: ITEM_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"ITEM_NUMBER_Key\", each [ITEM_NUMBER], type text)\n                in\n                    AddCompositeKey_1"
+      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
     }
   ],
   "has_widget_serialization": false,
