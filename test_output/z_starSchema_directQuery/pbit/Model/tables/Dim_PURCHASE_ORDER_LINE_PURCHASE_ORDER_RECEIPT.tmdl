@@ -1,20 +1,20 @@
 table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
 
 
-    column 'PO_NUMBER'
+    column 'RELEASE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER
+        sourceColumn: RELEASE_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'RELEASE_NUMBER'
+    column 'SITE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: RELEASE_NUMBER
+        sourceColumn: SITE_NUMBER
 
         
 
@@ -31,10 +31,10 @@ table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
         annotation SummarizationSetBy = Automatic
 
         
-    column 'SITE_NUMBER'
+    column 'PO_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: PO_NUMBER
 
         
 
@@ -58,20 +58,22 @@ table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
         mode: directQuery
         source = 
             let
-                // Get data from PURCHASE_ORDER_LINE
-                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
-                // Get data from PURCHASE_ORDER_RECEIPT
-                Data_From_PURCHASE_ORDER_RECEIPT = Table.SelectColumns(PURCHASE_ORDER_RECEIPT, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
-                // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_LINE, Data_From_PURCHASE_ORDER_RECEIPT}),
-                // Get unique combinations of dimension keys
-                UniqueRows = Table.Distinct(CombinedData, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
-                // Create composite key for relationships
-                AddCompositeKey = Table.AddColumn(UniqueRows, "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_LINE_NUMBER], [PO_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER]}, "|"), type text),
-                // Filter out rows with null or empty composite keys
-                FilteredRows = Table.SelectRows(AddCompositeKey, each [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> null and [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> "")
-            in
-                FilteredRows
+            Source = Value.NativeQuery(
+                #"SQL Database",
+                "SELECT DISTINCT
+            [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER],
+            ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]
+        FROM (
+            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_LINE]
+            UNION ALL
+            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_RECEIPT]
+        ) AS CombinedKeys
+        WHERE ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') <> '''''",
+                null, 
+                [EnableFolding = true]
+            )
+        in
+            Source
         
 
 

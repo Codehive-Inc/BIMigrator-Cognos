@@ -1,37 +1,66 @@
 {
+  "source_name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
   "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
   "columns": [
     {
-      "name": "ITEM_NUMBER",
-      "dataType": "string",
-      "sourceColumn": "ITEM_NUMBER",
-      "summarizeBy": "none",
-      "isKey": false,
-      "isNullable": true
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "SITE_NUMBER",
-      "dataType": "string",
-      "sourceColumn": "SITE_NUMBER",
-      "summarizeBy": "none",
-      "isKey": false,
-      "isNullable": true
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "dataType": "string",
-      "sourceColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "summarizeBy": "none",
-      "isKey": true,
-      "isNullable": true
+      "source_name": "ITEM_NUMBER_SITE_NUMBER_Key",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER_SITE_NUMBER_Key",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
+  "hierarchies": [],
   "partitions": [
     {
       "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "let\n                // Get data from PURCHASE_ORDER_LINE\n                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n                // Get data from STORAGE_LOCATION\n                Data_From_STORAGE_LOCATION = Table.SelectColumns(STORAGE_LOCATION, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n                // Combine data from all source tables\n                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_LINE, Data_From_STORAGE_LOCATION}),\n                // Get unique combinations of dimension keys\n                UniqueRows = Table.Distinct(CombinedData, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n                // Create composite key for relationships\n                AddCompositeKey = Table.AddColumn(UniqueRows, \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n                // Filter out rows with null or empty composite keys\n                FilteredRows = Table.SelectRows(AddCompositeKey, each [ITEM_NUMBER_SITE_NUMBER_Key] <> null and [ITEM_NUMBER_SITE_NUMBER_Key] <> \"\")\n            in\n                FilteredRows"
+      "expression": "let\n            Source = Value.NativeQuery(\n                #\"SQL Database\",\n                \"SELECT DISTINCT\n            [SITE_NUMBER], [ITEM_NUMBER],\n            ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key]\n        FROM (\n            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [PURCHASE_ORDER_LINE]\n            UNION ALL\n            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [STORAGE_LOCATION]\n        ) AS CombinedKeys\n        WHERE ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') <> '''''\",\n                null, \n                [EnableFolding = true]\n            )\n        in\n            Source"
     }
   ],
   "has_widget_serialization": false,

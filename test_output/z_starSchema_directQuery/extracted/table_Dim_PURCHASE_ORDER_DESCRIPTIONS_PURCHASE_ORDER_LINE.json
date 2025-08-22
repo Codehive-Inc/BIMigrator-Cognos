@@ -1,53 +1,98 @@
 {
+  "source_name": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
   "name": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
+  "lineage_tag": null,
+  "description": null,
+  "is_hidden": false,
   "columns": [
     {
-      "name": "PO_NUMBER",
-      "dataType": "string",
-      "sourceColumn": "PO_NUMBER",
-      "summarizeBy": "none",
-      "isKey": false,
-      "isNullable": true
+      "source_name": "RELEASE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RELEASE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "RELEASE_NUMBER",
-      "dataType": "string",
-      "sourceColumn": "RELEASE_NUMBER",
-      "summarizeBy": "none",
-      "isKey": false,
-      "isNullable": true
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "PO_LINE_NUMBER",
-      "dataType": "string",
-      "sourceColumn": "PO_LINE_NUMBER",
-      "summarizeBy": "none",
-      "isKey": false,
-      "isNullable": true
+      "source_name": "PO_LINE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_LINE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "SITE_NUMBER",
-      "dataType": "string",
-      "sourceColumn": "SITE_NUMBER",
-      "summarizeBy": "none",
-      "isKey": false,
-      "isNullable": true
+      "source_name": "PO_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     },
     {
-      "name": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
-      "dataType": "string",
-      "sourceColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
-      "summarizeBy": "none",
-      "isKey": true,
-      "isNullable": true
+      "source_name": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
     }
   ],
+  "hierarchies": [],
   "partitions": [
     {
       "name": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "let\n                // Get data from PURCHASE_ORDER_DESCRIPTIONS\n                Data_From_PURCHASE_ORDER_DESCRIPTIONS = Table.SelectColumns(PURCHASE_ORDER_DESCRIPTIONS, {\"PO_NUMBER\", \"RELEASE_NUMBER\", \"PO_LINE_NUMBER\", \"SITE_NUMBER\"}),\n                // Get data from PURCHASE_ORDER_LINE\n                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {\"PO_NUMBER\", \"RELEASE_NUMBER\", \"PO_LINE_NUMBER\", \"SITE_NUMBER\"}),\n                // Combine data from all source tables\n                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_DESCRIPTIONS, Data_From_PURCHASE_ORDER_LINE}),\n                // Get unique combinations of dimension keys\n                UniqueRows = Table.Distinct(CombinedData, {\"PO_NUMBER\", \"RELEASE_NUMBER\", \"PO_LINE_NUMBER\", \"SITE_NUMBER\"}),\n                // Create composite key for relationships\n                AddCompositeKey = Table.AddColumn(UniqueRows, \"PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[PO_LINE_NUMBER], [PO_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n                // Filter out rows with null or empty composite keys\n                FilteredRows = Table.SelectRows(AddCompositeKey, each [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> null and [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> \"\")\n            in\n                FilteredRows"
+      "expression": "let\n            Source = Value.NativeQuery(\n                #\"SQL Database\",\n                \"SELECT DISTINCT\n            [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER],\n            ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]\n        FROM (\n            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_DESCRIPTIONS]\n            UNION ALL\n            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_LINE]\n        ) AS CombinedKeys\n        WHERE ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') <> '''''\",\n                null, \n                [EnableFolding = true]\n            )\n        in\n            Source"
     }
   ],
   "has_widget_serialization": false,

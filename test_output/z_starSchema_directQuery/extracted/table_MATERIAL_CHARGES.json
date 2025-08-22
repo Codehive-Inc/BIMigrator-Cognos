@@ -534,22 +534,6 @@
       }
     },
     {
-      "source_name": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "ITEM_NUMBER_SITE_NUMBER_Key",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
       "source_name": "Cost",
       "datatype": "string",
       "format_string": null,
@@ -572,7 +556,7 @@
       "name": "MATERIAL_CHARGES",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"ITEM_NUMBER\"\", \"\"CHARGED_DATE\"\", \"\"TIME_ENTERED\"\", \"\"STOREKEEPER_ID\"\", \"\"EMPLOYEE_ID\"\", \"\"ISSUE_TICKET_NUMBER\"\", \"\"TRANSACTION_TYPE\"\", \"\"ADJUSTMENT_TYPE\"\", \"\"QUANTITY\"\", \"\"UNIT_PRICE\"\", \"\"TRANSACTION_VALUE\"\", \"\"JOB_NUMBER\"\", \"\"BU_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"PO_INDICATOR\"\", \"\"DATE_ENTERED\"\", \"\"DATE_STATUS_EFFECTIVE\"\", \"\"REFURB_IND\"\", \"\"ISSUE_OVERRIDE_IND\"\", \"\"RECORD_STATUS\"\", \"\"UNIT_OF_MEASURE\"\", \"\"ADJUSTMENT_NUMBER\"\", \"\"ADJUSTMENT_DESC\"\", \"\"QTY_TO_RECONCILE\"\", \"\"STOP\"\", \"\"TRANSFER_NUMBER\"\", \"\"MATERIAL_CLASS\"\", \"\"ROOT_DESCRIPTION\"\", \"\"ITT_KEY_NO\"\", \"\"UTC_NO\"\", \"\"PIT_IND\"\", \"\"UM\"\" FROM \"\"MATERIAL_CHARGES\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery),\n                    // Add composite key: ITEM_NUMBER_SITE_NUMBER_Key\n                    AddCompositeKey_1 = Table.AddColumn(#\"Removed Errors\", \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text)\n                in\n                    AddCompositeKey_1"
+      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"SITE_NUMBER\"\", \"\"ITEM_NUMBER\"\", \"\"CHARGED_DATE\"\", \"\"TIME_ENTERED\"\", \"\"STOREKEEPER_ID\"\", \"\"EMPLOYEE_ID\"\", \"\"ISSUE_TICKET_NUMBER\"\", \"\"TRANSACTION_TYPE\"\", \"\"ADJUSTMENT_TYPE\"\", \"\"QUANTITY\"\", \"\"UNIT_PRICE\"\", \"\"TRANSACTION_VALUE\"\", \"\"JOB_NUMBER\"\", \"\"BU_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"PO_INDICATOR\"\", \"\"DATE_ENTERED\"\", \"\"DATE_STATUS_EFFECTIVE\"\", \"\"REFURB_IND\"\", \"\"ISSUE_OVERRIDE_IND\"\", \"\"RECORD_STATUS\"\", \"\"UNIT_OF_MEASURE\"\", \"\"ADJUSTMENT_NUMBER\"\", \"\"ADJUSTMENT_DESC\"\", \"\"QTY_TO_RECONCILE\"\", \"\"STOP\"\", \"\"TRANSFER_NUMBER\"\", \"\"MATERIAL_CLASS\"\", \"\"ROOT_DESCRIPTION\"\", \"\"ITT_KEY_NO\"\", \"\"UTC_NO\"\", \"\"PIT_IND\"\", \"\"UM\"\" FROM \"\"MATERIAL_CHARGES\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
     }
   ],
   "has_widget_serialization": false,

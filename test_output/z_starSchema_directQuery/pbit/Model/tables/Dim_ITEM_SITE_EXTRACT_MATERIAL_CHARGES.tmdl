@@ -38,20 +38,22 @@ table Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
         mode: directQuery
         source = 
             let
-                // Get data from ITEM_SITE_EXTRACT
-                Data_From_ITEM_SITE_EXTRACT = Table.SelectColumns(ITEM_SITE_EXTRACT, {"SITE_NUMBER", "ITEM_NUMBER"}),
-                // Get data from MATERIAL_CHARGES
-                Data_From_MATERIAL_CHARGES = Table.SelectColumns(MATERIAL_CHARGES, {"SITE_NUMBER", "ITEM_NUMBER"}),
-                // Combine data from all source tables
-                CombinedData = Table.Combine({Data_From_ITEM_SITE_EXTRACT, Data_From_MATERIAL_CHARGES}),
-                // Get unique combinations of dimension keys
-                UniqueRows = Table.Distinct(CombinedData, {"SITE_NUMBER", "ITEM_NUMBER"}),
-                // Create composite key for relationships
-                AddCompositeKey = Table.AddColumn(UniqueRows, "ITEM_NUMBER_SITE_NUMBER_Key", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, "|"), type text),
-                // Filter out rows with null or empty composite keys
-                FilteredRows = Table.SelectRows(AddCompositeKey, each [ITEM_NUMBER_SITE_NUMBER_Key] <> null and [ITEM_NUMBER_SITE_NUMBER_Key] <> "")
-            in
-                FilteredRows
+            Source = Value.NativeQuery(
+                #"SQL Database",
+                "SELECT DISTINCT
+            [SITE_NUMBER], [ITEM_NUMBER],
+            ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key]
+        FROM (
+            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT]
+            UNION ALL
+            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [MATERIAL_CHARGES]
+        ) AS CombinedKeys
+        WHERE ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') <> '''''",
+                null, 
+                [EnableFolding = true]
+            )
+        in
+            Source
         
 
 

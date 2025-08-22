@@ -10,6 +10,6 @@
     "enabled": true,
     "naming_prefix": "Dim_",
     "data_load_mode": "direct_query",
-    "model_handling": "merged_tables"
+    "model_handling": "star_schema"
   }
 }
