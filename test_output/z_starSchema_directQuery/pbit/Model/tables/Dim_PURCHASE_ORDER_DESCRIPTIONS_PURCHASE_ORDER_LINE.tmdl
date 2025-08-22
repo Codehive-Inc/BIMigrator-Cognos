@@ -1,0 +1,79 @@
+table Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE
+
+
+    column 'Column'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Column
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Column'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Column
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Column'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Column
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Column'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Column
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Column'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: Column
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE' = m
+        mode: directQuery
+        source = 
+            let
+                // Get data from PURCHASE_ORDER_DESCRIPTIONS
+                Data_From_PURCHASE_ORDER_DESCRIPTIONS = Table.SelectColumns(PURCHASE_ORDER_DESCRIPTIONS, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
+                // Get data from PURCHASE_ORDER_LINE
+                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
+                // Combine data from all source tables
+                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_DESCRIPTIONS, Data_From_PURCHASE_ORDER_LINE}),
+                // Get unique combinations of dimension keys
+                UniqueRows = Table.Distinct(CombinedData, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}),
+                // Create composite key for relationships
+                AddCompositeKey = Table.AddColumn(UniqueRows, "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key", each Text.Combine({[PO_LINE_NUMBER], [PO_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER]}, "|"), type text),
+                // Filter out rows with null or empty composite keys
+                FilteredRows = Table.SelectRows(AddCompositeKey, each [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> null and [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] <> "")
+            in
+                FilteredRows
+        
+
+
+
+    annotation PBI_ResultType = Table

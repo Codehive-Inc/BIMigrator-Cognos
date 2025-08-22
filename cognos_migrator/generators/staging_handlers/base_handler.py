@@ -254,6 +254,5 @@ class BaseHandler:
     
     def _get_partition_mode(self) -> str:
         """Get partition mode from staging table settings."""
-        settings = self._get_settings()
-        data_load_mode = settings.get('data_load_mode', 'import')
+        data_load_mode = self.settings.get('data_load_mode', 'import')
         return 'directQuery' if data_load_mode == 'direct_query' else 'import'

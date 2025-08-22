@@ -1,0 +1,73 @@
+{
+  "objects": {
+    "data": [
+      {
+        "properties": {
+          "mode": {
+            "expr": {
+              "Literal": {
+                "Value": "'Basic'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "projectionOrdering": {
+    "Values": [
+      0
+    ]
+  },
+  "projectionActiveItems": {
+    "Values": [
+      {
+        "queryRef": "PURCHASE_ORDER_RECEIPT.TIME_ENTERED",
+        "suppressConcat": false
+      }
+    ]
+  },
+  "queryMetadata": {
+    "Select": [
+      {
+        "Restatement": "TIME_ENTERED",
+        "Name": "PURCHASE_ORDER_RECEIPT.TIME_ENTERED",
+        "Type": 2048
+      }
+    ]
+  },
+  "visualElements": [
+    {
+      "DataRoles": [
+        {
+          "Name": "Values",
+          "Projection": 0,
+          "isActive": true
+        }
+      ]
+    }
+  ],
+  "selects": [
+    {
+      "displayName": "TIME_ENTERED",
+      "queryName": "PURCHASE_ORDER_RECEIPT.TIME_ENTERED",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 1
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "PURCHASE_ORDER_RECEIPT"
+            }
+          },
+          "Property": "TIME_ENTERED"
+        }
+      }
+    }
+  ]
+} 

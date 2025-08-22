@@ -1,0 +1,53 @@
+{
+  "source_name": "MATERIAL_CHARGES",
+  "name": "MATERIAL_CHARGES",
+  "lineage_tag": null,
+  "description": "Table created from source: MATERIAL_CHARGES",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "CHARGED_DATE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CHARGED_DATE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TRANSACTION_TYPE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TRANSACTION_TYPE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "MATERIAL_CHARGES",
+      "source_type": "m",
+      "mode": "import",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"MATERIAL_CHARGES\"\".\"\"SITE_NUMBER\"\" AS \"\"SITE_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"CHARGED_DATE\"\" AS \"\"CHARGED_DATE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"TRANSACTION_TYPE\"\" AS \"\"TRANSACTION_TYPE\"\"\nFROM\n\"\"Database_Layer\"\".\"\"MATERIAL_CHARGES\"\"\nWHERE\n    [SITE_NUMBER]= ?SiteNumber?\n    AND     [ITEM_NUMBER]=?ItemNumber?\n    AND     [TRANSACTION_TYPE] is not null\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

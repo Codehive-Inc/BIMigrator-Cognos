@@ -1,0 +1,40 @@
+{
+  "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+  "columns": [
+    {
+      "name": "ITEM_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "ITEM_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "SITE_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "SITE_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "ITEM_NUMBER_SITE_NUMBER_Key",
+      "dataType": "string",
+      "sourceColumn": "ITEM_NUMBER_SITE_NUMBER_Key",
+      "summarizeBy": "none",
+      "isKey": true,
+      "isNullable": true
+    }
+  ],
+  "partitions": [
+    {
+      "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+      "source_type": "m",
+      "mode": "directQuery",
+      "expression": "let\n                // Get data from PURCHASE_ORDER_LINE\n                Data_From_PURCHASE_ORDER_LINE = Table.SelectColumns(PURCHASE_ORDER_LINE, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n                // Get data from STORAGE_LOCATION\n                Data_From_STORAGE_LOCATION = Table.SelectColumns(STORAGE_LOCATION, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n                // Combine data from all source tables\n                CombinedData = Table.Combine({Data_From_PURCHASE_ORDER_LINE, Data_From_STORAGE_LOCATION}),\n                // Get unique combinations of dimension keys\n                UniqueRows = Table.Distinct(CombinedData, {\"ITEM_NUMBER\", \"SITE_NUMBER\"}),\n                // Create composite key for relationships\n                AddCompositeKey = Table.AddColumn(UniqueRows, \"ITEM_NUMBER_SITE_NUMBER_Key\", each Text.Combine({[ITEM_NUMBER], [SITE_NUMBER]}, \"|\"), type text),\n                // Filter out rows with null or empty composite keys\n                FilteredRows = Table.SelectRows(AddCompositeKey, each [ITEM_NUMBER_SITE_NUMBER_Key] <> null and [ITEM_NUMBER_SITE_NUMBER_Key] <> \"\")\n            in\n                FilteredRows"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

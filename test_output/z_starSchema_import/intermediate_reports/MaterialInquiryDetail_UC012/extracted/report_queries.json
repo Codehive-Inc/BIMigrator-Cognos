@@ -1,0 +1,231 @@
+[
+  {
+    "id": "query_0",
+    "name": "MaterialInquiryDetail",
+    "source": "model",
+    "data_items": [
+      {
+        "name": "SITE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
+      },
+      {
+        "name": "ITEM_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      },
+      {
+        "name": "PO_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER]"
+      },
+      {
+        "name": "PO_LINE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER]"
+      },
+      {
+        "name": "RELEASE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER]"
+      },
+      {
+        "name": "DESCRIPTION",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]"
+      },
+      {
+        "name": "UNIT_OF_MEASURE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[UNIT_OF_MEASURE]"
+      },
+      {
+        "name": "QTY_ON_HAND",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QTY_ON_HAND]"
+      },
+      {
+        "name": "MINIMUM",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]"
+      },
+      {
+        "name": "CONSUMABLE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]"
+      },
+      {
+        "name": "SHELF_LIFE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SHELF_LIFE]"
+      },
+      {
+        "name": "MAXIMUM",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]"
+      },
+      {
+        "name": "DATE_LAST_ISSUED",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_ISSUED]"
+      },
+      {
+        "name": "DATE_LAST_RETURNED",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_RETURNED]"
+      },
+      {
+        "name": "DATE_LAST_RECEIVED",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_RECEIVED]"
+      },
+      {
+        "name": "UTC_IND",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[UTC_IND]"
+      },
+      {
+        "name": "PRIMARY_LOC",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[PRIMARY_LOC]"
+      },
+      {
+        "name": "SECONDARY_LOC",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SECONDARY_LOC]"
+      },
+      {
+        "name": "STATUS",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[STATUS]"
+      },
+      {
+        "name": "QA_CODE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CODE]"
+      },
+      {
+        "name": "QA_LEVEL",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_LEVEL]"
+      },
+      {
+        "name": "QA_CERT1",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT1]"
+      },
+      {
+        "name": "QA_CERT2",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT2]"
+      },
+      {
+        "name": "QA_CERT3",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT3]"
+      },
+      {
+        "name": "QA_CERT4",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT4]"
+      },
+      {
+        "name": "PIT",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[PIT]"
+      },
+      {
+        "name": "PREVENT_MAINTENANCE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[PREVENT_MAINTENANCE]"
+      },
+      {
+        "name": "STATUS_DATE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[STATUS_DATE]"
+      },
+      {
+        "name": "SAP_IND",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SAP_IND]"
+      },
+      {
+        "name": "LOC_1",
+        "aggregate": "notApplicable",
+        "expression": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)"
+      },
+      {
+        "name": "LOC_2",
+        "aggregate": "notApplicable",
+        "expression": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)"
+      }
+    ],
+    "filters": [
+      {
+        "type": "detail",
+        "expression": "[SITE_NUMBER]= ?SiteNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[ITEM_NUMBER]= ?ItemNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[PO_NUMBER]=?PO_Number?"
+      },
+      {
+        "type": "detail",
+        "expression": "[PO_LINE_NUMBER]=?LineNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[RELEASE_NUMBER]=?ReleaseNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[STATUS_DATE]=?StatusDate?"
+      }
+    ]
+  },
+  {
+    "id": "query_1",
+    "name": "Query1",
+    "source": "model",
+    "data_items": [
+      {
+        "name": "SITE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
+      },
+      {
+        "name": "ITEM_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      },
+      {
+        "name": "CHARGED_DATE",
+        "aggregate": "maximum",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[CHARGED_DATE]"
+      },
+      {
+        "name": "TRANSACTION_TYPE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[TRANSACTION_TYPE]"
+      }
+    ],
+    "filters": [
+      {
+        "type": "summary",
+        "expression": "[SITE_NUMBER]= ?SiteNumber?"
+      },
+      {
+        "type": "summary",
+        "expression": "[ITEM_NUMBER]=?ItemNumber?"
+      },
+      {
+        "type": "summary",
+        "expression": "[TRANSACTION_TYPE] is not null"
+      }
+    ]
+  }
+]
