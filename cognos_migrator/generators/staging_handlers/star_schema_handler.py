@@ -465,28 +465,19 @@ class StarSchemaHandler(BaseHandler):
             concat_parts = ' + \'|\' + '.join([f"ISNULL(CAST([{col}] AS NVARCHAR(50)), \'\')" for col in key_columns])
             composite_key_sql = concat_parts
         
-        # Build the native SQL query using UNION ALL approach
-        native_sql = f'''SELECT DISTINCT
-            {key_columns_str},
-            {composite_key_sql} as [{composite_key_name}]
-        FROM (
-            SELECT {key_columns_str} FROM [{from_table_name}]
-            UNION ALL
-            SELECT {key_columns_str} FROM [{to_table_name}]
-        ) AS CombinedKeys
-        WHERE {composite_key_sql} IS NOT NULL AND {composite_key_sql} <> \'\'\'\'\'
-        '''
+        # Build the native SQL query using UNION ALL approach (single line for TMDL compatibility)
+        native_sql = f"SELECT DISTINCT {key_columns_str}, {composite_key_sql} as [{composite_key_name}] FROM (SELECT {key_columns_str} FROM [{from_table_name}] UNION ALL SELECT {key_columns_str} FROM [{to_table_name}]) AS CombinedKeys WHERE {composite_key_sql} IS NOT NULL AND {composite_key_sql} <> ''''''"
         
-        # Generate the M-query with native SQL
+        # Generate the M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-            Source = Value.NativeQuery(
-                #"SQL Database",
-                "{native_sql.strip()}",
-                null, 
-                [EnableFolding = true]
-            )
-        in
-            Source'''
+                Source = Value.NativeQuery(
+                    #"SQL Database",
+                    "{native_sql}",
+                    null, 
+                    [EnableFolding = true]
+                )
+                in
+                Source'''
         
         self.logger.info(f"Generated native SQL dimension query for {from_table_name} + {to_table_name} with {len(key_columns)} key columns")
         return m_query

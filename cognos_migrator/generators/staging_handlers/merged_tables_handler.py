@@ -523,20 +523,17 @@ class MergedTablesHandler(BaseHandler):
         elif 'FULL' in join_type:
             sql_join_type = "FULL OUTER JOIN"
         
-        # Generate the native SQL M-query
-        native_sql = f"""SELECT
-        {select_clause}
-    FROM [{from_table.name}] a
-    {sql_join_type} [{to_table.name}] b ON {join_condition}"""
+        # Generate the native SQL M-query (single line for TMDL compatibility)
+        native_sql = f"SELECT {select_clause.replace(',\\n        ', ', ')} FROM [{from_table.name}] a {sql_join_type} [{to_table.name}] b ON {join_condition}"
         
-        # Create M-query with native SQL
+        # Create M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-    Source = Value.NativeQuery(
-        #"SQL Database",
-        "{native_sql}"
-    )
-in
-    Source'''
+                Source = Value.NativeQuery(
+                    #"SQL Database",
+                    "{native_sql}"
+                )
+                in
+                Source'''
         
         self.logger.info(f"Generated native SQL for {from_table.name} + {to_table.name}: {len(all_columns)} columns, {sql_join_type}")
         return m_query

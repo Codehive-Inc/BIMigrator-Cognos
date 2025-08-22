@@ -28,22 +28,14 @@ table Dim_ITEM_SITE_EXTRACT_MANUFACTURER
         mode: directQuery
         source = 
             let
-            Source = Value.NativeQuery(
-                #"SQL Database",
-                "SELECT DISTINCT
-            [ITEM_NUMBER],
-            [ITEM_NUMBER] as [ITEM_NUMBER_Key]
-        FROM (
-            SELECT [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT]
-            UNION ALL
-            SELECT [ITEM_NUMBER] FROM [MANUFACTURER]
-        ) AS CombinedKeys
-        WHERE [ITEM_NUMBER] IS NOT NULL AND [ITEM_NUMBER] <> '''''",
-                null, 
-                [EnableFolding = true]
-            )
-        in
-            Source
+                Source = Value.NativeQuery(
+                    #"SQL Database",
+                    "SELECT DISTINCT [ITEM_NUMBER], [ITEM_NUMBER] as [ITEM_NUMBER_Key] FROM (SELECT [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [ITEM_NUMBER] FROM [MANUFACTURER]) AS CombinedKeys WHERE [ITEM_NUMBER] IS NOT NULL AND [ITEM_NUMBER] <> ''''''",
+                    null, 
+                    [EnableFolding = true]
+                )
+                in
+                Source
         
 
 

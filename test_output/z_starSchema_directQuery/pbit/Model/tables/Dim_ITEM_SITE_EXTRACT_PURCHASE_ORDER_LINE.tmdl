@@ -38,22 +38,14 @@ table Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
         mode: directQuery
         source = 
             let
-            Source = Value.NativeQuery(
-                #"SQL Database",
-                "SELECT DISTINCT
-            [ITEM_NUMBER], [SITE_NUMBER],
-            ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key]
-        FROM (
-            SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [ITEM_SITE_EXTRACT]
-            UNION ALL
-            SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_LINE]
-        ) AS CombinedKeys
-        WHERE ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') <> '''''",
-                null, 
-                [EnableFolding = true]
-            )
-        in
-            Source
+                Source = Value.NativeQuery(
+                    #"SQL Database",
+                    "SELECT DISTINCT [ITEM_NUMBER], [SITE_NUMBER], ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key] FROM (SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_LINE]) AS CombinedKeys WHERE ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') <> ''''''",
+                    null, 
+                    [EnableFolding = true]
+                )
+                in
+                Source
         
 
 
