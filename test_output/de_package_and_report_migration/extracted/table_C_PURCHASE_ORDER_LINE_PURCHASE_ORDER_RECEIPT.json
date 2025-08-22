@@ -1035,6 +1035,7 @@
     {
       "name": "C_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
       "source_type": "m",
+      "mode": "directQuery",
       "expression": "let\n                Source = Table.NestedJoin(PURCHASE_ORDER_LINE, {\"PO_NUMBER\", \"RELEASE_NUMBER\", \"PO_LINE_NUMBER\", \"SITE_NUMBER\"}, PURCHASE_ORDER_RECEIPT, {\"PO_NUMBER\", \"RELEASE_NUMBER\", \"PO_LINE_NUMBER\", \"SITE_NUMBER\"}, \"PURCHASE_ORDER_RECEIPT_Nested\", JoinKind.Inner),\n                #\"Expanded PURCHASE_ORDER_RECEIPT\" = Table.ExpandTableColumn(Source, \"PURCHASE_ORDER_RECEIPT_Nested\", {\"TIME_ENTERED\", \"QTY_RECEIVED\", \"QTY_REJECTED\", \"SHELF_LIFE\", \"STOREKEEPER_ID\", \"RECEIPT_NUMBER\", \"DATE_RECEIVED_AT_SITE\", \"RECEIPT_CODE\", \"DATE_STATUS_EFFECTIVE\", \"HOLD_STATUS\", \"QTY_IN_HOLD\", \"RECORD_STATUS\", \"ITT_KEY_NO\"})\n            in\n                #\"Expanded PURCHASE_ORDER_RECEIPT\""
     }
   ],

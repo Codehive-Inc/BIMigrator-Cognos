@@ -317,63 +317,12 @@ table PURCHASE_ORDER_LINE
 
 
     partition 'PURCHASE_ORDER_LINE' = m
-        mode: import
+        mode: directQuery
         source = 
-            	let
-					Source = Sql.Database("your_server", "your_database"),
-					SQL = Value.NativeQuery(Source, "SELECT
-    ""ITEM_SITE_EXTRACT"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
-    ""ITEM_SITE_EXTRACT"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
-    ""PURCHASE_ORDER_LINE"".""PO_NUMBER"" AS ""PO_NUMBER"",
-    ""PURCHASE_ORDER_LINE"".""PO_LINE_NUMBER"" AS ""PO_LINE_NUMBER"",
-    ""PURCHASE_ORDER_LINE"".""RELEASE_NUMBER"" AS ""RELEASE_NUMBER"",
-    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION"",
-    ""ITEM_SITE_EXTRACT"".""UNIT_OF_MEASURE"" AS ""UNIT_OF_MEASURE"",
-    ""ITEM_SITE_EXTRACT"".""QTY_ON_HAND"" AS ""QTY_ON_HAND"",
-    ""ITEM_SITE_EXTRACT"".""MINIMUM"" AS ""MINIMUM"",
-    ""ITEM_SITE_EXTRACT"".""CONSUMABLE"" AS ""CONSUMABLE"",
-    ""ITEM_SITE_EXTRACT"".""SHELF_LIFE"" AS ""SHELF_LIFE"",
-    ""ITEM_SITE_EXTRACT"".""MAXIMUM"" AS ""MAXIMUM"",
-    ""ITEM_SITE_EXTRACT"".""DATE_LAST_ISSUED"" AS ""DATE_LAST_ISSUED"",
-    ""ITEM_SITE_EXTRACT"".""DATE_LAST_RETURNED"" AS ""DATE_LAST_RETURNED"",
-    ""ITEM_SITE_EXTRACT"".""DATE_LAST_RECEIVED"" AS ""DATE_LAST_RECEIVED"",
-    ""ITEM_SITE_EXTRACT"".""UTC_IND"" AS ""UTC_IND"",
-    ""ITEM_SITE_EXTRACT"".""PRIMARY_LOC"" AS ""PRIMARY_LOC"",
-    ""ITEM_SITE_EXTRACT"".""SECONDARY_LOC"" AS ""SECONDARY_LOC"",
-    ""ITEM_SITE_EXTRACT"".""STATUS"" AS ""STATUS"",
-    ""ITEM_SITE_EXTRACT"".""QA_CODE"" AS ""QA_CODE"",
-    ""ITEM_SITE_EXTRACT"".""QA_LEVEL"" AS ""QA_LEVEL"",
-    ""ITEM_SITE_EXTRACT"".""QA_CERT1"" AS ""QA_CERT1"",
-    ""ITEM_SITE_EXTRACT"".""QA_CERT2"" AS ""QA_CERT2"",
-    ""ITEM_SITE_EXTRACT"".""QA_CERT3"" AS ""QA_CERT3"",
-    ""ITEM_SITE_EXTRACT"".""QA_CERT4"" AS ""QA_CERT4"",
-    ""ITEM_SITE_EXTRACT"".""PIT"" AS ""PIT"",
-    ""ITEM_SITE_EXTRACT"".""PREVENT_MAINTENANCE"" AS ""PREVENT_MAINTENANCE"",
-    ""PURCHASE_ORDER_LINE"".""STATUS_DATE"" AS ""STATUS_DATE"",
-    ""ITEM_SITE_EXTRACT"".""SAP_IND"" AS ""SAP_IND"",
-    substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
-substring(rpad([PRIMARY_LOC], 12, ' '), 11,2) AS ""LOC_1"",
-    substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
-substring(rpad([SECONDARY_LOC], 12, ' '), 11,2) AS ""LOC_2""
-FROM
-""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""PURCHASE_ORDER_LINE""
-WHERE
-    [SITE_NUMBER]= ?SiteNumber?
-    AND     [ITEM_NUMBER]= ?ItemNumber?
-    AND     [PO_NUMBER]=?PO_Number?
-    AND     [PO_LINE_NUMBER]=?LineNumber?
-    AND     [RELEASE_NUMBER]=?ReleaseNumber?
-    AND     [STATUS_DATE]=?StatusDate?", null, [EnableFolding=true])
-				in
-					SQL
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM PURCHASE_ORDER_LINE"])
+in
+    Source
         
 
 

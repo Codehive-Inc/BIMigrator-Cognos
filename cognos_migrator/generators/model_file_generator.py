@@ -388,6 +388,7 @@ class ModelFileGenerator:
                 {
                     "name": table.name,
                     "source_type": "m",
+                    "mode": self._get_partition_mode(),
                     "expression": m_query
                 }
             ]
@@ -498,6 +499,7 @@ class ModelFileGenerator:
             partition = {
                 'name': partition_json.get('name', table_name),
                 'source_type': partition_json.get('source_type', 'm'),
+                'mode': partition_json.get('mode', self._get_partition_mode()),
                 'expression': partition_json.get('expression', '')
             }
             partitions.append(partition)
@@ -705,6 +707,7 @@ class ModelFileGenerator:
             partitions.append({
                 'name': table_name,
                 'source_type': 'm',
+                'mode': self._get_partition_mode(),
                 'expression': m_expression
             })
         
@@ -729,6 +732,46 @@ class ModelFileGenerator:
         """Build M expression for table partition using MQueryConverter"""
         self.logger.info(f"[MQUERY_TRACKING] Building M-expression for table: {table.name}")
         
+        # Check data load mode from settings
+        data_load_mode = self._get_data_load_mode()
+        self.logger.info(f"[MQUERY_TRACKING] Using data load mode: {data_load_mode}")
+        
+        if data_load_mode == 'direct_query':
+            return self._build_direct_query_expression(table, report_spec)
+        else:
+            return self._build_import_mode_expression(table, report_spec)
+    
+    def _get_data_load_mode(self) -> str:
+        """Get data load mode from staging table settings."""
+        try:
+            with open('settings.json', 'r') as f:
+                settings = json.load(f)
+            staging_settings = settings.get('staging_tables', {})
+            return staging_settings.get('data_load_mode', 'import')
+        except (FileNotFoundError, json.JSONDecodeError):
+            return 'import'
+    
+    def _build_direct_query_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
+        """Build M expression for DirectQuery mode - simplified for direct database access"""
+        self.logger.info(f"[MQUERY_TRACKING] Building DirectQuery M-expression for table: {table.name}")
+        
+        # For DirectQuery, we create a simple SQL-based M expression
+        # This will be optimized later with proper SQL generation
+        table_name = table.name
+        
+        # Simple DirectQuery M expression template
+        m_expression = f'''let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM {table_name}"])
+in
+    Source'''
+        
+        self.logger.info(f"[MQUERY_TRACKING] Generated DirectQuery M-expression for table {table.name}")
+        return m_expression
+    
+    def _build_import_mode_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
+        """Build M expression for Import mode using MQueryConverter"""
+        self.logger.info(f"[MQUERY_TRACKING] Building Import mode M-expression for table: {table.name}")
+        
         # Check if table has source_query
         if hasattr(table, 'source_query'):
             self.logger.info(f"[MQUERY_TRACKING] Table {table.name} has source query: {table.source_query[:100] if table.source_query else 'None'}...")
@@ -745,6 +788,11 @@ class ModelFileGenerator:
         m_query = self.mquery_converter.convert_to_m_query(table, report_spec)
         self.logger.info(f"[MQUERY_TRACKING] Generated M-query for table {table.name}: {m_query[:200]}...")
         return m_query
+    
+    def _get_partition_mode(self) -> str:
+        """Get partition mode from staging table settings."""
+        data_load_mode = self._get_data_load_mode()
+        return 'directQuery' if data_load_mode == 'direct_query' else 'import'
     
     def _generate_relationships_file(self, data_model: DataModel, model_dir: Path):
         """Generate relationships file for the data model"""

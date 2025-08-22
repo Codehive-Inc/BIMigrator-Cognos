@@ -755,7 +755,7 @@ table C_ITEM_SITE_EXTRACT_MANUFACTURER
 
 
     partition 'C_ITEM_SITE_EXTRACT_MANUFACTURER' = m
-        mode: import
+        mode: directQuery
         source = 
             let
                 Source = Table.NestedJoin(ITEM_SITE_EXTRACT, {"ITEM_NUMBER"}, MANUFACTURER, {"ITEM_NUMBER"}, "MANUFACTURER_Nested", JoinKind.RightOuter),

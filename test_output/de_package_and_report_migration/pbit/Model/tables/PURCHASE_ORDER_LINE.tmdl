@@ -515,7 +515,7 @@ table PURCHASE_ORDER_LINE
 
 
     partition 'PURCHASE_ORDER_LINE' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let

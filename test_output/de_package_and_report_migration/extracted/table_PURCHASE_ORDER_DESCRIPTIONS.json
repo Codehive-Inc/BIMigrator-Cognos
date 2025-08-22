@@ -299,6 +299,7 @@
     {
       "name": "PURCHASE_ORDER_DESCRIPTIONS",
       "source_type": "m",
+      "mode": "directQuery",
       "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"PO_NUMBER\"\", \"\"RELEASE_NUMBER\"\", \"\"PO_LINE_NUMBER\"\", \"\"TOTAL_NUMBER_SEGMENTS\"\", \"\"NUMBER_SEGMENTS_SELECTED\"\", \"\"LINE_NUMBER1\"\", \"\"DESCRIPTION1\"\", \"\"LINE_NUMBER2\"\", \"\"DESCRIPTION2\"\", \"\"LINE_NUMBER3\"\", \"\"DESCRIPTION3\"\", \"\"LINE_NUMBER4\"\", \"\"DESCRIPTION4\"\", \"\"LINE_NUMBER5\"\", \"\"DESCRIPTION5\"\", \"\"STOP\"\" FROM \"\"PURCHASE_ORDER_DESCRIPTIONS\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
     }
   ],

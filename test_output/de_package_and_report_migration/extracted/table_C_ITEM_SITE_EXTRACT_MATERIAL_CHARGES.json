@@ -1515,6 +1515,7 @@
     {
       "name": "C_ITEM_SITE_EXTRACT_MATERIAL_CHARGES",
       "source_type": "m",
+      "mode": "directQuery",
       "expression": "let\n                Source = Table.NestedJoin(ITEM_SITE_EXTRACT, {\"SITE_NUMBER\", \"ITEM_NUMBER\"}, MATERIAL_CHARGES, {\"SITE_NUMBER\", \"ITEM_NUMBER\"}, \"MATERIAL_CHARGES_Nested\", JoinKind.Inner),\n                #\"Expanded MATERIAL_CHARGES\" = Table.ExpandTableColumn(Source, \"MATERIAL_CHARGES_Nested\", {\"CHARGED_DATE\", \"TIME_ENTERED\", \"STOREKEEPER_ID\", \"EMPLOYEE_ID\", \"ISSUE_TICKET_NUMBER\", \"TRANSACTION_TYPE\", \"ADJUSTMENT_TYPE\", \"QUANTITY\", \"TRANSACTION_VALUE\", \"JOB_NUMBER\", \"BU_NUMBER\", \"PO_NUMBER\", \"PO_INDICATOR\", \"DATE_ENTERED\", \"DATE_STATUS_EFFECTIVE\", \"REFURB_IND\", \"ISSUE_OVERRIDE_IND\", \"RECORD_STATUS\", \"ADJUSTMENT_NUMBER\", \"ADJUSTMENT_DESC\", \"QTY_TO_RECONCILE\", \"TRANSFER_NUMBER\", \"ROOT_DESCRIPTION\", \"ITT_KEY_NO\", \"UTC_NO\", \"PIT_IND\", \"UM\"})\n            in\n                #\"Expanded MATERIAL_CHARGES\""
     }
   ],

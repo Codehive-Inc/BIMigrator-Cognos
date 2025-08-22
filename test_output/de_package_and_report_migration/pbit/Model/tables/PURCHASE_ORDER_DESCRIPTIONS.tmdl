@@ -185,7 +185,7 @@ table PURCHASE_ORDER_DESCRIPTIONS
 
 
     partition 'PURCHASE_ORDER_DESCRIPTIONS' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let

@@ -635,7 +635,7 @@ table C_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE
 
 
     partition 'C_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE' = m
-        mode: import
+        mode: directQuery
         source = 
             let
                 Source = Table.NestedJoin(PURCHASE_ORDER_DESCRIPTIONS, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}, PURCHASE_ORDER_LINE, {"PO_NUMBER", "RELEASE_NUMBER", "PO_LINE_NUMBER", "SITE_NUMBER"}, "PURCHASE_ORDER_LINE_Nested", JoinKind.RightOuter),

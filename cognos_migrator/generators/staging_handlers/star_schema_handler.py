@@ -162,15 +162,24 @@ class StarSchemaHandler(BaseHandler):
         """
         self.logger.info("Processing data model with 'star_schema' + 'direct_query' approach")
         
-        # TODO: Implement star schema with DirectQuery optimizations
-        # Key differences from import mode:
+        # TODO: Future M-query optimizations for DirectQuery mode:
         # - Dimension table M-queries should use native SQL JOINs where possible
         # - Composite key creation should be done in SQL (CONCAT or ||)
         # - Table.Combine operations should be replaced with UNION ALL SQL
         # - Minimize Power Query transformations to maintain query folding
+        # - Consider using SQL CTEs for complex dimension table logic
+        # - Optimize relationship handling for better query performance
         
-        self.logger.warning("star_schema + direct_query mode is not yet implemented, using import mode")
-        return self.process_import_mode(data_model)
+        # Use the same logic as import mode but with directQuery partition mode
+        processed_model = self.process_import_mode(data_model)
+        
+        # Update all generated dimension tables to use directQuery partition mode
+        for table in processed_model.tables:
+            if table.name.startswith(self.naming_prefix):
+                table.partition_mode = "directQuery"
+                self.logger.info(f"Set dimension table {table.name} to directQuery mode")
+        
+        return processed_model
     
     def _group_sql_relationships_by_tables(self, sql_relationships: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
         """Group SQL relationships by the tables they connect."""

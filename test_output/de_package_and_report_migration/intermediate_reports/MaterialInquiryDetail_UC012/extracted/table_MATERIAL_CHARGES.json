@@ -43,7 +43,8 @@
     {
       "name": "MATERIAL_CHARGES",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"MATERIAL_CHARGES\"\".\"\"SITE_NUMBER\"\" AS \"\"SITE_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"CHARGED_DATE\"\" AS \"\"CHARGED_DATE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"TRANSACTION_TYPE\"\" AS \"\"TRANSACTION_TYPE\"\"\nFROM\n\"\"Database_Layer\"\".\"\"MATERIAL_CHARGES\"\"\nWHERE\n    [SITE_NUMBER]= ?SiteNumber?\n    AND     [ITEM_NUMBER]=?ItemNumber?\n    AND     [TRANSACTION_TYPE] is not null\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+      "mode": "directQuery",
+      "expression": "let\n    Source = Sql.Database(\"localhost\", \"database_name\", [Query=\"SELECT * FROM MATERIAL_CHARGES\"])\nin\n    Source"
     }
   ],
   "has_widget_serialization": false,

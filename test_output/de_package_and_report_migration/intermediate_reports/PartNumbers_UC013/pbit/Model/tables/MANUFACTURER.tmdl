@@ -75,26 +75,12 @@ table MANUFACTURER
 
 
     partition 'MANUFACTURER' = m
-        mode: import
+        mode: directQuery
         source = 
-            	let
-					Source = Sql.Database("your_server", "your_database"),
-					SQL = Value.NativeQuery(Source, "SELECT
-    ""MANUFACTURER"".""MFG_CODE"" AS ""MFG_CODE"",
-    ""MANUFACTURER"".""MFG_PART_NUMBER"" AS ""MFG_PART_NUMBER"",
-    ""MANUFACTURER"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
-    ""MANUFACTURER"".""MFG_NAME"" AS ""MFG_NAME"",
-    ""MANUFACTURER"".""ACTIVITY_CODE"" AS ""ACTIVITY_CODE"",
-    ""MANUFACTURER"".""DATE_CREATED"" AS ""DATE_CREATED"",
-    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION""
-FROM
-""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""MANUFACTURER""
-WHERE
-    ""MANUFACTURER"".""ITEM_NUMBER""= ?ItemNumber?
-    AND     [ITEM_NUMBER]= ?ItemNumber?
-    AND     [ACTIVITY_CODE] is not null", null, [EnableFolding=true])
-				in
-					SQL
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM MANUFACTURER"])
+in
+    Source
         
 
 

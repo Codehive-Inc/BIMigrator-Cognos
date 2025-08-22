@@ -245,7 +245,7 @@ table STORAGE_LOCATION
 
 
     partition 'STORAGE_LOCATION' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let

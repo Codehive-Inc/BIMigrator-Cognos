@@ -885,7 +885,7 @@ table C_ITEM_SITE_EXTRACT_STORAGE_LOCATION
 
 
     partition 'C_ITEM_SITE_EXTRACT_STORAGE_LOCATION' = m
-        mode: import
+        mode: directQuery
         source = 
             let
                 Source = Table.NestedJoin(ITEM_SITE_EXTRACT, {"ITEM_NUMBER", "SITE_NUMBER"}, STORAGE_LOCATION, {"ITEM_NUMBER", "SITE_NUMBER"}, "STORAGE_LOCATION_Nested", JoinKind.Inner),

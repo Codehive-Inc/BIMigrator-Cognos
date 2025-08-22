@@ -25,23 +25,12 @@ table MATERIAL_CHARGES
 
 
     partition 'MATERIAL_CHARGES' = m
-        mode: import
+        mode: directQuery
         source = 
-            	let
-					Source = Sql.Database("your_server", "your_database"),
-					SQL = Value.NativeQuery(Source, "SELECT
-    ""MATERIAL_CHARGES"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
-    ""MATERIAL_CHARGES"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
-    ""MATERIAL_CHARGES"".""CHARGED_DATE"" AS ""CHARGED_DATE"",
-    ""MATERIAL_CHARGES"".""TRANSACTION_TYPE"" AS ""TRANSACTION_TYPE""
-FROM
-""Database_Layer"".""MATERIAL_CHARGES""
-WHERE
-    [SITE_NUMBER]= ?SiteNumber?
-    AND     [ITEM_NUMBER]=?ItemNumber?
-    AND     [TRANSACTION_TYPE] is not null", null, [EnableFolding=true])
-				in
-					SQL
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM MATERIAL_CHARGES"])
+in
+    Source
         
 
 

@@ -123,7 +123,8 @@
     {
       "name": "ITEM_SITE_EXTRACT",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"MANUFACTURER\"\".\"\"MFG_CODE\"\" AS \"\"MFG_CODE\"\",\n    \"\"MANUFACTURER\"\".\"\"MFG_PART_NUMBER\"\" AS \"\"MFG_PART_NUMBER\"\",\n    \"\"MANUFACTURER\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"MANUFACTURER\"\".\"\"MFG_NAME\"\" AS \"\"MFG_NAME\"\",\n    \"\"MANUFACTURER\"\".\"\"ACTIVITY_CODE\"\" AS \"\"ACTIVITY_CODE\"\",\n    \"\"MANUFACTURER\"\".\"\"DATE_CREATED\"\" AS \"\"DATE_CREATED\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DESCRIPTION\"\" AS \"\"DESCRIPTION\"\"\nFROM\n\"\"Database_Layer\"\".\"\"ITEM_SITE_EXTRACT\"\", \"\"Database_Layer\"\".\"\"MANUFACTURER\"\"\nWHERE\n    \"\"MANUFACTURER\"\".\"\"ITEM_NUMBER\"\"= ?ItemNumber?\n    AND     [ITEM_NUMBER]= ?ItemNumber?\n    AND     [ACTIVITY_CODE] is not null\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+      "mode": "directQuery",
+      "expression": "let\n    Source = Sql.Database(\"localhost\", \"database_name\", [Query=\"SELECT * FROM ITEM_SITE_EXTRACT\"])\nin\n    Source"
     }
   ],
   "has_widget_serialization": false,

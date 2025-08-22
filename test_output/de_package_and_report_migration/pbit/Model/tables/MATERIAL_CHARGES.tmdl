@@ -335,7 +335,7 @@ table MATERIAL_CHARGES
 
 
     partition 'MATERIAL_CHARGES' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let

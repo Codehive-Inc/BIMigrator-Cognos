@@ -203,7 +203,8 @@
     {
       "name": "MATERIAL_CHARGES",
       "source_type": "m",
-      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"MATERIAL_CHARGES\"\".\"\"SITE_NUMBER\"\" AS \"\"SITE_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"CHARGED_DATE\"\" AS \"\"CHARGED_DATE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"JOB_NUMBER\"\" AS \"\"JOB_NUMBER\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"QUANTITY\"\" AS \"\"QUANTITY\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"UNIT_PRICE\"\" AS \"\"UNIT_PRICE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"TRANSACTION_VALUE\"\" AS \"\"TRANSACTION_VALUE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"ADJUSTMENT_DESC\"\" AS \"\"ADJUSTMENT_DESC\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"ADJUSTMENT_TYPE\"\" AS \"\"ADJUSTMENT_TYPE\"\",\n    \"\"MATERIAL_CHARGES\"\".\"\"TIME_ENTERED\"\" AS \"\"TIME_ENTERED\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DESCRIPTION\"\" AS \"\"DESCRIPTION\"\",\n    IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] ) AS \"\"Cost\"\"\nFROM\n\"\"Database_Layer\"\".\"\"ITEM_SITE_EXTRACT\"\", \"\"Database_Layer\"\".\"\"MATERIAL_CHARGES\"\"\nWHERE\n    [SITE_NUMBER]= ?SiteNumber?\n    AND     [ITEM_NUMBER]=?ItemNumber?\n    AND     [CHARGED_DATE]=?ChargedDate?\n    AND     [TIME_ENTERED]=?TimeEntered?\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+      "mode": "directQuery",
+      "expression": "let\n    Source = Sql.Database(\"localhost\", \"database_name\", [Query=\"SELECT * FROM MATERIAL_CHARGES\"])\nin\n    Source"
     }
   ],
   "has_widget_serialization": false,

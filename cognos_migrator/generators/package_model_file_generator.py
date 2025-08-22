@@ -304,6 +304,7 @@ class PackageModelFileGenerator:
                 {
                     "name": table.name,
                     "source_type": "m",
+                    "mode": self._get_partition_mode(),
                     "expression": m_query
                 }
             ]
@@ -406,6 +407,7 @@ class PackageModelFileGenerator:
             partition = {
                 'name': partition_json.get('name', table_name),
                 'source_type': partition_json.get('source_type', 'm'),
+                'mode': partition_json.get('mode', self._get_partition_mode()),
                 'expression': partition_json.get('expression', '')
             }
             partitions.append(partition)
@@ -432,6 +434,17 @@ class PackageModelFileGenerator:
         
         self.logger.info(f"Built context from JSON for package table {table_name}: {len(columns)} columns, {len(partitions)} partitions")
         return context
+    
+    def _get_partition_mode(self) -> str:
+        """Get partition mode from staging table settings."""
+        try:
+            with open('settings.json', 'r') as f:
+                settings = json.load(f)
+            staging_settings = settings.get('staging_tables', {})
+            data_load_mode = staging_settings.get('data_load_mode', 'import')
+            return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+        except (FileNotFoundError, json.JSONDecodeError):
+            return 'import'
     
     def _build_package_m_expression(self, table: Table) -> str:
         """Build M expression for package table partition"""

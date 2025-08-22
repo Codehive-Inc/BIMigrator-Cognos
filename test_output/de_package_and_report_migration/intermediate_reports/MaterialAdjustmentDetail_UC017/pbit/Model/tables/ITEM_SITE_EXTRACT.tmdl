@@ -126,35 +126,12 @@ table ITEM_SITE_EXTRACT
 
 
     partition 'ITEM_SITE_EXTRACT' = m
-        mode: import
+        mode: directQuery
         source = 
-            	let
-					Source = Sql.Database("your_server", "your_database"),
-					SQL = Value.NativeQuery(Source, "SELECT
-    ""MATERIAL_CHARGES"".""SITE_NUMBER"" AS ""SITE_NUMBER"",
-    ""MATERIAL_CHARGES"".""ITEM_NUMBER"" AS ""ITEM_NUMBER"",
-    ""MATERIAL_CHARGES"".""CHARGED_DATE"" AS ""CHARGED_DATE"",
-    ""MATERIAL_CHARGES"".""JOB_NUMBER"" AS ""JOB_NUMBER"",
-    ""MATERIAL_CHARGES"".""QUANTITY"" AS ""QUANTITY"",
-    ""MATERIAL_CHARGES"".""UNIT_PRICE"" AS ""UNIT_PRICE"",
-    ""MATERIAL_CHARGES"".""TRANSACTION_VALUE"" AS ""TRANSACTION_VALUE"",
-    ""MATERIAL_CHARGES"".""ADJUSTMENT_DESC"" AS ""ADJUSTMENT_DESC"",
-    ""MATERIAL_CHARGES"".""ADJUSTMENT_TYPE"" AS ""ADJUSTMENT_TYPE"",
-    ""MATERIAL_CHARGES"".""TIME_ENTERED"" AS ""TIME_ENTERED"",
-    ""ITEM_SITE_EXTRACT"".""DESCRIPTION"" AS ""DESCRIPTION"",
-    IF ( [UNIT_PRICE] = 0 ) THEN
-	( [TRANSACTION_VALUE] )
-ELSE
-	( [UNIT_PRICE] ) AS ""Cost""
-FROM
-""Database_Layer"".""ITEM_SITE_EXTRACT"", ""Database_Layer"".""MATERIAL_CHARGES""
-WHERE
-    [SITE_NUMBER]= ?SiteNumber?
-    AND     [ITEM_NUMBER]=?ItemNumber?
-    AND     [CHARGED_DATE]=?ChargedDate?
-    AND     [TIME_ENTERED]=?TimeEntered?", null, [EnableFolding=true])
-				in
-					SQL
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM ITEM_SITE_EXTRACT"])
+in
+    Source
         
 
 

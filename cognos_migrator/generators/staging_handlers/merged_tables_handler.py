@@ -111,17 +111,28 @@ class MergedTablesHandler(BaseHandler):
         Returns:
             The processed data model with merged staging tables for DirectQuery mode
         """
+
+        
         self.logger.info("Processing data model with 'merged_tables' + 'direct_query' approach")
         
-        # TODO: Implement merged tables with DirectQuery optimizations
-        # Key differences from import mode:
+        # TODO: Future M-query optimizations for DirectQuery mode:
         # - M-queries should be optimized for query folding
         # - Minimize complex transformations that can't be pushed to the database
         # - Use native SQL operations where possible
         # - Avoid operations that break query folding (like Table.AddColumn with complex logic)
+        # - Consider replacing nested joins with SQL JOIN syntax for better performance
+        # - Optimize Table.ExpandTableColumn operations for query folding
         
-        self.logger.warning("merged_tables + direct_query mode is not yet implemented, using import mode")
-        return self.process_import_mode(data_model)
+        # Use the same logic as import mode but with directQuery partition mode
+        processed_model = self.process_import_mode(data_model)
+        
+        # Update all generated tables to use directQuery partition mode
+        for table in processed_model.tables:
+            if table.name.startswith('C_') or table.name.startswith(self.naming_prefix):
+                table.partition_mode = "directQuery"
+                self.logger.info(f"Set table {table.name} to directQuery mode")
+        
+        return processed_model
     
     def _identify_complex_relationship_tables(self, relationships: List[Relationship]) -> Set[str]:
         """
@@ -287,7 +298,7 @@ class MergedTablesHandler(BaseHandler):
             measures=[],  # Combination tables typically don't have measures
             source_query="",  # M-query provides the source
             m_query=m_query,
-            partition_mode="import",
+            partition_mode="directQuery" if self.data_load_mode == "direct_query" else "import",
             description=f"Combination table joining {from_table.name} and {to_table.name}",
             annotations={},
             metadata={}
@@ -459,7 +470,7 @@ class MergedTablesHandler(BaseHandler):
             measures=[],  # Combination tables typically don't have measures
             source_query="",  # M-query provides the source
             m_query=None,  # FORCE REGENERATION: Clear cached M-query to use new deduplication logic
-            partition_mode="import",
+            partition_mode="directQuery" if self.data_load_mode == "direct_query" else "import",
             description=f"Combination table joining {from_table.name} and {to_table.name}",
             annotations={},
             metadata={}
