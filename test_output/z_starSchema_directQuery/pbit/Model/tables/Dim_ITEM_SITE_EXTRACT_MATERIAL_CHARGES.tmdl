@@ -1,20 +1,20 @@
 table Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
 
 
-    column 'ITEM_NUMBER'
+    column 'SITE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: ITEM_NUMBER
+        sourceColumn: SITE_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'SITE_NUMBER'
+    column 'ITEM_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: ITEM_NUMBER
 
         
 
@@ -40,7 +40,7 @@ table Dim_ITEM_SITE_EXTRACT_MATERIAL_CHARGES
             let
                 Source = Value.NativeQuery(
                     #"SQL Database",
-                    "SELECT DISTINCT [ITEM_NUMBER], [SITE_NUMBER], ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key] FROM (SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [MATERIAL_CHARGES]) AS CombinedKeys WHERE ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') <> ''''''",
+                    "SELECT DISTINCT [SITE_NUMBER], [ITEM_NUMBER], ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key] FROM (SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [MATERIAL_CHARGES]) AS CombinedKeys WHERE ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') <> ''''''",
                     null, 
                     [EnableFolding = true]
                 )

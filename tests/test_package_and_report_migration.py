@@ -28,7 +28,8 @@ def test_package_and_report_migration():
         output_path=output_dir,
         report_file_paths=report_files,
         cognos_url=cognos_url,
-        session_key=session_key
+        session_key=session_key,
+        task_id="test_migration_12345"
     )
 
     if success:

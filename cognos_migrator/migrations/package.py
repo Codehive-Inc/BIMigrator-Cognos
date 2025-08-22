@@ -449,10 +449,33 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     filtered_table_names = {table.name for table in filtered_tables}
     filtered_relationships = []
     
+    # Check DirectQuery mode and date table compatibility
+    settings = load_settings()
+    is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
+    has_central_date_table = "CentralDateTable" in filtered_table_names
+    always_include = settings.get("table_filtering", {}).get("always_include", [])
+    
+    # Log DirectQuery mode handling for date tables
+    if is_directquery and "CentralDateTable" in always_include and not has_central_date_table:
+        logging.warning("DirectQuery mode detected with CentralDateTable in always_include, but CentralDateTable is incompatible with DirectQuery mode (calculated tables require Import mode)")
+        logging.info("CentralDateTable relationships will be automatically excluded to prevent model validation errors")
+    
+    skipped_relationships = 0
     for rel in filtered_model.relationships:
+        # Skip CentralDateTable relationships in DirectQuery mode if CentralDateTable doesn't exist
+        if (is_directquery and not has_central_date_table and 
+            (rel.from_table == "CentralDateTable" or rel.to_table == "CentralDateTable")):
+            logging.info(f"Skipping CentralDateTable relationship in DirectQuery mode: {rel.from_table}.{rel.from_column} -> {rel.to_table}.{rel.to_column}")
+            skipped_relationships += 1
+            continue
+            
         if (rel.from_table in filtered_table_names and 
             rel.to_table in filtered_table_names):
             filtered_relationships.append(rel)
+    
+    # Log summary of skipped relationships
+    if skipped_relationships > 0:
+        logging.warning(f"Skipped {skipped_relationships} CentralDateTable relationships due to DirectQuery mode incompatibility")
     
     filtered_model.relationships = filtered_relationships
     
@@ -565,9 +588,27 @@ def _migrate_shared_model(
     # Add any "always_include" tables from the configuration
     if config:
         always_include = config.get("table_filtering", {}).get("always_include", [])
+        staging_config = config.get("staging_tables", {})
+        is_directquery = staging_config.get("data_load_mode", "import") == "direct_query"
+        
         if always_include:
-            required_tables.update(always_include)
-            logging.info(f"Adding {len(always_include)} 'always_include' tables: {always_include}")
+            # Filter out incompatible tables in DirectQuery mode
+            filtered_always_include = []
+            for table_name in always_include:
+                if table_name == "CentralDateTable" and is_directquery:
+                    logging.warning(f"Excluding '{table_name}' from always_include: calculated date tables are incompatible with DirectQuery mode")
+                    logging.info("To include date functionality in DirectQuery mode, consider creating a physical date table in your database")
+                else:
+                    filtered_always_include.append(table_name)
+            
+            if filtered_always_include:
+                required_tables.update(filtered_always_include)
+                logging.info(f"Adding {len(filtered_always_include)} compatible 'always_include' tables: {filtered_always_include}")
+            
+            # Log what was excluded for tracking
+            excluded_tables = set(always_include) - set(filtered_always_include)
+            if excluded_tables:
+                logging.warning(f"Excluded {len(excluded_tables)} incompatible tables from always_include due to DirectQuery mode: {list(excluded_tables)}")
 
     # Safety check for direct mode
     if not required_tables and config and config.get("table_filtering", {}).get("mode") == "direct":
