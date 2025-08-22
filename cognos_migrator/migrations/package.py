@@ -474,7 +474,7 @@ def _migrate_shared_model(
     
     # Generate task ID if not provided
     if task_id is None:
-        task_id = f"shared_model_migration_{uuid.uuid4().hex}"
+        task_id = str(uuid.uuid4())
     
     # Set task info for WebSocket updates
     set_task_info(task_id, total_steps=10)
