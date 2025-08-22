@@ -28,7 +28,7 @@ table Dim_ITEM_SITE_EXTRACT_MANUFACTURER
         mode: directQuery
         source = 
             let
-                Source = Sql.Database(#"DB Server", #"DB Name"),
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
                 Query = Value.NativeQuery(
                     Source,
                     "SELECT DISTINCT [ITEM_NUMBER], [ITEM_NUMBER] as [ITEM_NUMBER_Key] FROM (SELECT [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [ITEM_NUMBER] FROM [MANUFACTURER]) AS CombinedKeys WHERE [ITEM_NUMBER] IS NOT NULL AND [ITEM_NUMBER] <> ''''''",

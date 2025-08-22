@@ -52,7 +52,7 @@ class ConsolidatedMQueryConverter(BaseMQueryConverter):
 
         # Base steps for the M-query
         steps = [
-            f'Source = Sql.Database(#"DB Server", #"DB Name")',
+            f'Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE")',
             f'ExecuteQuery = Value.NativeQuery(Source, "{escaped_sql_query}", null, [EnableFolding=true])',
             f'#"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)'
         ]

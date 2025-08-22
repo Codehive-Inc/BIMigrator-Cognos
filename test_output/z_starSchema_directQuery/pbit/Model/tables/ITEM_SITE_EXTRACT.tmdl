@@ -679,7 +679,7 @@ table ITEM_SITE_EXTRACT
         source = 
             
                 let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
+                    Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""SITE_NUMBER"", ""ITEM_NUMBER"", ""DESCRIPTION"", ""UNIT_OF_MEASURE"", ""DATE_CREATED"", ""TAX_IND"", ""UNIT_PRICE"", ""TYPE_CODE"", ""FUNCTIONAL_GROUP"", ""MATERIAL_CLASS"", ""STATUS"", ""SITE_RANK"", ""DATE_LAST_INVENTORIED"", ""QTY_ON_ORDER"", ""QTY_ON_HAND"", ""QTY_AVAILABLE"", ""MINIMUM"", ""MAXIMUM"", ""EOQ_QTY"", ""QA_CODE"", ""QA_LEVEL"", ""CYCLE_IND"", ""SHELF_LIFE_DATE"", ""DATE_LAST_RECEIVED"", ""FERC_CODE"", ""PRIMARY_LOC"", ""SECONDARY_LOC"", ""EXTRA_LOCS"", ""DATE_LAST_APPROVED"", ""APPROVER_ID"", ""APPROVER_BADGE_NUMBER"", ""APPROVAL_SWITCH"", ""QA_CERT1"", ""QA_CERT2"", ""QA_CERT3"", ""QA_CERT4"", ""VALUE_ON_HAND"", ""PREVIOUS_ITEM_ID"", ""QTY_ALLOCATED"", ""CONSUMABLE"", ""SHELF_LIFE"", ""PREVENT_MAINTENANCE"", ""CORPORATE_SWITCH"", ""ITEM_OWNER"", ""SAFETY_IND"", ""UTC_IND"", ""ITEM_DEPT"", ""IN_PROCESS_HOLD"", ""PIT"", ""QTY_EXCESS"", ""NEW_RANK"", ""SUB_STATUS"", ""STRATIFIED_TRANS_COUNT"", ""STRATIFIED_DATE"", ""TOLERANCE_AMOUNT"", ""TOLERANCE_PERCENTAGE"", ""SITE_LAST_UPDATED"", ""QTY_ON_HOLD"", ""ITEM_LAST_UPDATED"", ""UNIT_OF_PROPERTY_NUMBER"", ""UNIT_OF_PROPERTY_IND"", ""DATE_LAST_ISSUED"", ""DATE_LAST_RETURNED"", ""CRITICAL_ITEM"", ""REVIEW_DATE"", ""STOP"", ""SAP_IND"" FROM ""ITEM_SITE_EXTRACT""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
                 in

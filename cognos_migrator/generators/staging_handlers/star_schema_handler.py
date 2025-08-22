@@ -470,7 +470,7 @@ class StarSchemaHandler(BaseHandler):
         
         # Generate the M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-                Source = Sql.Database(#"DB Server", #"DB Name"),
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
                 Query = Value.NativeQuery(
                     Source,
                     "{native_sql}",
@@ -481,6 +481,7 @@ class StarSchemaHandler(BaseHandler):
                 Query'''
         
         self.logger.info(f"Generated native SQL dimension query for {from_table_name} + {to_table_name} with {len(key_columns)} key columns")
+        self.logger.info("NOTE: M-queries contain placeholder connection strings. Replace 'REPLACE_WITH_YOUR_SERVER' and 'REPLACE_WITH_YOUR_DATABASE' with actual values before opening in Power BI.")
         return m_query
     
     def _get_composite_key_logic(self, relationships: List[Any]) -> str:

@@ -78,7 +78,7 @@ class MQueryConverter:
         
         m_query = f"""
 let
-    Source = Sql.Database("your_server", "your_database"),
+    Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
     SQL = Value.NativeQuery(Source, "{escaped_sql}", null, [EnableFolding=true])
 in
     SQL

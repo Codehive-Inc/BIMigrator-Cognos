@@ -6,22 +6,6 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "RELEASE_NUMBER",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "RELEASE_NUMBER",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
       "source_name": "PO_NUMBER",
       "datatype": "string",
       "format_string": null,
@@ -43,6 +27,22 @@
       "format_string": null,
       "lineage_tag": null,
       "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RELEASE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RELEASE_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -92,7 +92,7 @@
       "name": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "let\n                Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                Query = Value.NativeQuery(\n                    Source,\n                    \"SELECT DISTINCT [RELEASE_NUMBER], [PO_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] FROM (SELECT [RELEASE_NUMBER], [PO_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER] FROM [PURCHASE_ORDER_DESCRIPTIONS] UNION ALL SELECT [RELEASE_NUMBER], [PO_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER] FROM [PURCHASE_ORDER_LINE]) AS CombinedKeys WHERE ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') <> ''''''\",\n                    null, \n                    [EnableFolding = true]\n                )\n                in\n                Query"
+      "expression": "let\n                Source = Sql.Database(\"REPLACE_WITH_YOUR_SERVER\", \"REPLACE_WITH_YOUR_DATABASE\"),\n                Query = Value.NativeQuery(\n                    Source,\n                    \"SELECT DISTINCT [PO_NUMBER], [SITE_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] FROM (SELECT [PO_NUMBER], [SITE_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER] FROM [PURCHASE_ORDER_DESCRIPTIONS] UNION ALL SELECT [PO_NUMBER], [SITE_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER] FROM [PURCHASE_ORDER_LINE]) AS CombinedKeys WHERE ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') <> ''''''\",\n                    null, \n                    [EnableFolding = true]\n                )\n                in\n                Query"
     }
   ],
   "has_widget_serialization": false,

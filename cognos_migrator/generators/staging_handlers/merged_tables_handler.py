@@ -528,7 +528,7 @@ class MergedTablesHandler(BaseHandler):
         
         # Create M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-                Source = Sql.Database(#"DB Server", #"DB Name"),
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
                 Query = Value.NativeQuery(
                     Source,
                     "{native_sql}"

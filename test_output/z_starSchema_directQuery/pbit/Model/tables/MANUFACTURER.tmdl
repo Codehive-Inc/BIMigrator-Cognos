@@ -119,7 +119,7 @@ table MANUFACTURER
         source = 
             
                 let
-                    Source = Sql.Database(#"DB Server", #"DB Name"),
+                    Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
                     ExecuteQuery = Value.NativeQuery(Source, "SELECT ""ITEM_NUMBER"", ""MFG_PART_NUMBER"", ""MODEL_PART_IND"", ""ACTIVITY_CODE"", ""MFG_CODE"", ""DATE_CREATED"", ""MFG_NAME"", ""COMPRESSED_PART_NUMBER"", ""FOSSIL_OR_NUCLEAR"", ""STOP"", ""SITE"" FROM ""MANUFACTURER""", null, [EnableFolding=true]),
                     #"Removed Errors" = Table.RemoveRowsWithErrors(ExecuteQuery)
                 in

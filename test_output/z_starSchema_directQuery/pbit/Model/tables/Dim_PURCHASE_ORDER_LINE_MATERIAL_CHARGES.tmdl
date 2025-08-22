@@ -38,7 +38,7 @@ table Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES
         mode: directQuery
         source = 
             let
-                Source = Sql.Database(#"DB Server", #"DB Name"),
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
                 Query = Value.NativeQuery(
                     Source,
                     "SELECT DISTINCT [SITE_NUMBER], [ITEM_NUMBER], ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key] FROM (SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [PURCHASE_ORDER_LINE] UNION ALL SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [MATERIAL_CHARGES]) AS CombinedKeys WHERE ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') <> ''''''",
