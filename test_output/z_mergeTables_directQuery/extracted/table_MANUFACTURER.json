@@ -188,7 +188,7 @@
       "name": "MANUFACTURER",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "\n                let\n                    Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
+      "expression": "\n                let\n                    Source = Sql.Database(\"REPLACE_WITH_YOUR_SERVER\", \"REPLACE_WITH_YOUR_DATABASE\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"MFG_PART_NUMBER\"\", \"\"MODEL_PART_IND\"\", \"\"ACTIVITY_CODE\"\", \"\"MFG_CODE\"\", \"\"DATE_CREATED\"\", \"\"MFG_NAME\"\", \"\"COMPRESSED_PART_NUMBER\"\", \"\"FOSSIL_OR_NUCLEAR\"\", \"\"STOP\"\", \"\"SITE\"\" FROM \"\"MANUFACTURER\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
     }
   ],
   "has_widget_serialization": false,
