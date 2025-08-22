@@ -6,27 +6,11 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "RELEASE_NUMBER",
+      "source_name": "PO_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "RELEASE_NUMBER",
-      "description": null,
-      "is_hidden": false,
-      "summarize_by": "none",
-      "data_category": null,
-      "is_calculated": false,
-      "is_data_type_inferred": true,
-      "annotations": {
-        "SummarizationSetBy": "Automatic"
-      }
-    },
-    {
-      "source_name": "SITE_NUMBER",
-      "datatype": "string",
-      "format_string": null,
-      "lineage_tag": null,
-      "source_column": "SITE_NUMBER",
+      "source_column": "PO_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -54,11 +38,27 @@
       }
     },
     {
-      "source_name": "PO_NUMBER",
+      "source_name": "RELEASE_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "PO_NUMBER",
+      "source_column": "RELEASE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -92,7 +92,7 @@
       "name": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "let\n            Source = Value.NativeQuery(\n                #\"SQL Database\",\n                \"SELECT DISTINCT\n            [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER],\n            ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]\n        FROM (\n            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_DESCRIPTIONS]\n            UNION ALL\n            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_LINE]\n        ) AS CombinedKeys\n        WHERE ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') <> '''''\",\n                null, \n                [EnableFolding = true]\n            )\n        in\n            Source"
+      "expression": "let\n            Source = Value.NativeQuery(\n                #\"SQL Database\",\n                \"SELECT DISTINCT\n            [PO_NUMBER], [PO_LINE_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER],\n            ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]\n        FROM (\n            SELECT [PO_NUMBER], [PO_LINE_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_DESCRIPTIONS]\n            UNION ALL\n            SELECT [PO_NUMBER], [PO_LINE_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_LINE]\n        ) AS CombinedKeys\n        WHERE ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') <> '''''\",\n                null, \n                [EnableFolding = true]\n            )\n        in\n            Source"
     }
   ],
   "has_widget_serialization": false,

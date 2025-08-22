@@ -1,20 +1,20 @@
 table Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES
 
 
-    column 'SITE_NUMBER'
+    column 'ITEM_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: ITEM_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'ITEM_NUMBER'
+    column 'SITE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: ITEM_NUMBER
+        sourceColumn: SITE_NUMBER
 
         
 
@@ -41,14 +41,14 @@ table Dim_PURCHASE_ORDER_LINE_MATERIAL_CHARGES
             Source = Value.NativeQuery(
                 #"SQL Database",
                 "SELECT DISTINCT
-            [SITE_NUMBER], [ITEM_NUMBER],
-            ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key]
+            [ITEM_NUMBER], [SITE_NUMBER],
+            ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key]
         FROM (
-            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [PURCHASE_ORDER_LINE]
+            SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_LINE]
             UNION ALL
-            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [MATERIAL_CHARGES]
+            SELECT [ITEM_NUMBER], [SITE_NUMBER] FROM [MATERIAL_CHARGES]
         ) AS CombinedKeys
-        WHERE ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') <> '''''",
+        WHERE ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') <> '''''",
                 null, 
                 [EnableFolding = true]
             )

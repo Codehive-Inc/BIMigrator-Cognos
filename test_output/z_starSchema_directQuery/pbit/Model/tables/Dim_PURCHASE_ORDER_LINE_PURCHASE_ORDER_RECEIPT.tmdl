@@ -1,20 +1,10 @@
 table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
 
 
-    column 'RELEASE_NUMBER'
+    column 'PO_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: RELEASE_NUMBER
-
-        
-
-        annotation SummarizationSetBy = Automatic
-
-        
-    column 'SITE_NUMBER'
-        dataType: string
-        summarizeBy: none
-        sourceColumn: SITE_NUMBER
+        sourceColumn: PO_NUMBER
 
         
 
@@ -31,10 +21,20 @@ table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
         annotation SummarizationSetBy = Automatic
 
         
-    column 'PO_NUMBER'
+    column 'RELEASE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: PO_NUMBER
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
 
         
 
@@ -61,14 +61,14 @@ table Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT
             Source = Value.NativeQuery(
                 #"SQL Database",
                 "SELECT DISTINCT
-            [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER],
-            ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]
+            [PO_NUMBER], [PO_LINE_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER],
+            ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]
         FROM (
-            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_LINE]
+            SELECT [PO_NUMBER], [PO_LINE_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_LINE]
             UNION ALL
-            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_RECEIPT]
+            SELECT [PO_NUMBER], [PO_LINE_NUMBER], [RELEASE_NUMBER], [SITE_NUMBER] FROM [PURCHASE_ORDER_RECEIPT]
         ) AS CombinedKeys
-        WHERE ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') <> '''''",
+        WHERE ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') <> '''''",
                 null, 
                 [EnableFolding = true]
             )
