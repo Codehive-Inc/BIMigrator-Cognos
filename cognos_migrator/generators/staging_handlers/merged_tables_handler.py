@@ -277,7 +277,7 @@ class MergedTablesHandler(BaseHandler):
                 combined_columns.append(col)
                 existing_column_names.add(col.name)
         
-        # Generate M-query with correct join keys from SQL relationships
+        # Generate M-query with corrected duplicate column logic
         m_query = self._generate_nested_join_query_from_sql(from_table, to_table, sql_relationships)
         
         # Create combination table
@@ -336,6 +336,12 @@ class MergedTablesHandler(BaseHandler):
             if col.name not in from_table_column_names:
                 unique_to_table_columns.append(col.name)
         
+        # CRITICAL FIX: Remove duplicates from unique_to_table_columns itself
+        # The issue is that to_table.columns might have duplicate column names
+        unique_to_table_columns = list(dict.fromkeys(unique_to_table_columns))  # Preserves order, removes duplicates
+        
+        self.logger.info(f"DEBUG: Unique columns for {to_table.name}: {unique_to_table_columns}")
+        
         if not unique_to_table_columns:
             self.logger.warning(f"No unique columns to expand from {to_table.name}")
             # Still create the join even if no columns to expand
@@ -360,8 +366,8 @@ class MergedTablesHandler(BaseHandler):
         
         # Generate the nested join M-query with proper indentation and correct join keys
         m_query = f'''let
-                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}", {join_kind}),
-                #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}", {{{to_table_columns_str}}}, {{{expanded_columns_str}}})
+                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}_Nested", {join_kind}),
+                #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}_Nested", {{{to_table_columns_str}}})
             in
                 #"Expanded {to_table.name}"'''
         
@@ -443,8 +449,8 @@ class MergedTablesHandler(BaseHandler):
                 combined_columns.append(col)
                 existing_column_names.add(col.name)
         
-        # Generate nested join M-query
-        m_query = self._generate_nested_join_query(from_table, to_table, relationships)
+        # FORCE REGENERATION: Don't generate M-query here, let it be generated later with new deduplication logic
+        # m_query = self._generate_nested_join_query(from_table, to_table, relationships)
         
         # Create combination table
         combination_table = Table(
@@ -452,7 +458,7 @@ class MergedTablesHandler(BaseHandler):
             columns=combined_columns,
             measures=[],  # Combination tables typically don't have measures
             source_query="",  # M-query provides the source
-            m_query=m_query,
+            m_query=None,  # FORCE REGENERATION: Clear cached M-query to use new deduplication logic
             partition_mode="import",
             description=f"Combination table joining {from_table.name} and {to_table.name}",
             annotations={},
@@ -502,16 +508,21 @@ class MergedTablesHandler(BaseHandler):
             if col.name not in from_table_column_names:
                 unique_to_table_columns.append(col.name)
         
+        # CRITICAL FIX: Remove duplicates from unique_to_table_columns itself
+        # The issue is that to_table.columns might have duplicate column names
+        unique_to_table_columns = list(dict.fromkeys(unique_to_table_columns))  # Preserves order, removes duplicates
+        
+        self.logger.info(f"DEBUG: Unique columns for {to_table.name}: {unique_to_table_columns}")
+        
         to_table_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
-        expanded_columns_str = ', '.join([f'"{col}"' for col in unique_to_table_columns])
         
         # For basic relationships, use Inner join as default (since we don't have join type info)
         join_kind = "JoinKind.Inner"
         
         # Generate the nested join M-query with proper indentation
         m_query = f'''let
-                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}", {join_kind}),
-                #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}", {{{to_table_columns_str}}}, {{{expanded_columns_str}}})
+                Source = Table.NestedJoin({from_table.name}, {{{from_table_keys}}}, {to_table.name}, {{{to_table_keys}}}, "{to_table.name}_Nested", {join_kind}),
+                #"Expanded {to_table.name}" = Table.ExpandTableColumn(Source, "{to_table.name}_Nested", {{{to_table_columns_str}}})
             in
                 #"Expanded {to_table.name}"'''
         
