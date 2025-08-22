@@ -1,0 +1,53 @@
+{
+  "source_name": "MATERIAL_CHARGES",
+  "name": "MATERIAL_CHARGES",
+  "lineage_tag": null,
+  "description": "Table created from source: MATERIAL_CHARGES",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "CHARGED_DATE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CHARGED_DATE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TRANSACTION_TYPE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TRANSACTION_TYPE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "MATERIAL_CHARGES",
+      "source_type": "m",
+      "mode": "directQuery",
+      "expression": "let\n    Source = Sql.Database(\"localhost\", \"database_name\", [Query=\"SELECT * FROM MATERIAL_CHARGES\"])\nin\n    Source"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

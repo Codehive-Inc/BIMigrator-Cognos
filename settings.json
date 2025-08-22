@@ -9,7 +9,7 @@
   "staging_tables": {
     "enabled": true,
     "naming_prefix": "Dim_",
-    "data_load_mode": "import",
-    "model_handling": "merged_tables"
+    "data_load_mode": "direct_query",
+    "model_handling": "star_schema"
   }
 }

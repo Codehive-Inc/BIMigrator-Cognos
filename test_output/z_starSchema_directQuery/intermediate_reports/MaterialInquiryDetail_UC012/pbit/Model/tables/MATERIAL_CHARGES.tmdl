@@ -1,0 +1,38 @@
+table MATERIAL_CHARGES
+
+
+    column 'CHARGED_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHARGED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRANSACTION_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'MATERIAL_CHARGES' = m
+        mode: directQuery
+        source = 
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM MATERIAL_CHARGES"])
+in
+    Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,0 +1,3406 @@
+{
+  "sql_relationships": [
+    {
+      "relationship_name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "PURCHASE_ORDER_DESCRIPTIONS",
+      "keys_a": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "0..1 to 1..n",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN PURCHASE_ORDER_LINE ON PURCHASE_ORDER_DESCRIPTIONS.PO_NUMBER = PURCHASE_ORDER_LINE.PO_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.RELEASE_NUMBER = PURCHASE_ORDER_LINE.RELEASE_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.PO_LINE_NUMBER = PURCHASE_ORDER_LINE.PO_LINE_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_LINE ON SITES.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_DESCRIPTIONS",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_DESCRIPTIONS ON SITES.SITE_NUMBER = PURCHASE_ORDER_DESCRIPTIONS.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "STORAGE_LOCATION",
+      "keys_b": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN STORAGE_LOCATION ON ITEM_SITE_EXTRACT.ITEM_NUMBER = STORAGE_LOCATION.ITEM_NUMBER AND ITEM_SITE_EXTRACT.SITE_NUMBER = STORAGE_LOCATION.SITE_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN PURCHASE_ORDER_LINE ON ITEM_SITE_EXTRACT.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER AND ITEM_SITE_EXTRACT.ITEM_NUMBER = PURCHASE_ORDER_LINE.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN ITEM_SITE_EXTRACT ON SITES.SITE_NUMBER = ITEM_SITE_EXTRACT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MANUFACTURER",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..1 to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MANUFACTURER ON ITEM_SITE_EXTRACT.ITEM_NUMBER = MANUFACTURER.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MANUFACTURER]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MANUFACTURER].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN MATERIAL_CHARGES ON SITES.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_RECEIPT",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_RECEIPT ON SITES.SITE_NUMBER = PURCHASE_ORDER_RECEIPT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_RECEIPT",
+      "keys_b": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_RECEIPT ON PURCHASE_ORDER_LINE.PO_NUMBER = PURCHASE_ORDER_RECEIPT.PO_NUMBER AND PURCHASE_ORDER_LINE.RELEASE_NUMBER = PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER AND PURCHASE_ORDER_LINE.PO_LINE_NUMBER = PURCHASE_ORDER_RECEIPT.PO_LINE_NUMBER AND PURCHASE_ORDER_LINE.SITE_NUMBER = PURCHASE_ORDER_RECEIPT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "STORAGE_LOCATION",
+      "keys_b": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN STORAGE_LOCATION ON PURCHASE_ORDER_LINE.ITEM_NUMBER = STORAGE_LOCATION.ITEM_NUMBER AND PURCHASE_ORDER_LINE.SITE_NUMBER = STORAGE_LOCATION.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "JOB_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "JOB_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN MATERIAL_CHARGES ON WORK_ORDERS.JOB_NUMBER = MATERIAL_CHARGES.JOB_NUMBER",
+      "original_relationship": {
+        "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER] = [Database_Layer].[WORK_ORDERS].[JOB_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "MARK_NUMBER"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "MARK_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN WORK_ORDERS ON EQUIPMENT.MARK_NUMBER = WORK_ORDERS.MARK_NUMBER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "table_a_one_side": "ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MATERIAL_CHARGES ON ITEM_ROOT_EXTENDED_DESCRIPTION.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER] = [Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> SITES",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "MODEL_WORK_ORDER",
+      "keys_b": [
+        "STATION_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MODEL_WORK_ORDER ON SITES.SITE_NUMBER = MODEL_WORK_ORDER.STATION_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> SITES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[SITES].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_COMMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_COMMENTS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_COMMENTS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_COMMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_COMMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_MATERIALS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_MATERIALS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_MATERIALS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_MATERIALS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_MATERIALS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_DOCUMENTS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_DOCUMENTS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_STEPS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_STEPS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..1 to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_STEPS ON WORK_ORDERS.WORK_ORDER_SITE = WO_STEPS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_STEPS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_STEPS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_STEPS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_MATERIALS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_MATERIALS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_MATERIALS ON WORK_ORDERS.WORK_ORDER_SITE = WO_MATERIALS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_MATERIALS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_MATERIALS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_MATERIALS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_DOCUMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_DOCUMENTS ON WORK_ORDERS.WORK_ORDER_SITE = WO_DOCUMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_SERVICES",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_SERVICES",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_SERVICES ON WORK_ORDERS.WORK_ORDER_SITE = WO_SERVICES.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_SERVICES.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_SERVICES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_SERVICES]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_SERVICES].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_SERVICES].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_TEST_EQUIP",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_TEST_EQUIP ON WORK_ORDERS.WORK_ORDER_SITE = WO_TEST_EQUIP.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_TEST_EQUIP.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_TEST_EQUIP]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_TEST_EQUIP].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_TEST_EQUIP].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN MATERIAL_CHARGES ON ITEM_SITE_EXTRACT.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER AND ITEM_SITE_EXTRACT.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "MARK_NUMBER",
+        "SITE"
+      ],
+      "table_b_many_side": "MODEL_WORK_ORDER",
+      "keys_b": [
+        "MARK_NUMBER",
+        "STATION_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MODEL_WORK_ORDER ON EQUIPMENT.MARK_NUMBER = MODEL_WORK_ORDER.MARK_NUMBER AND EQUIPMENT.SITE = MODEL_WORK_ORDER.STATION_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER] AND [Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[EQUIPMENT].[SITE]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN MATERIAL_CHARGES ON PURCHASE_ORDER_LINE.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER AND PURCHASE_ORDER_LINE.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> WORK_ORDERS",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "WORK_ORDER_SITE"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN WORK_ORDERS ON SITES.SITE_NUMBER = WORK_ORDERS.WORK_ORDER_SITE",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_COMMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_COMMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_COMMENTS ON WORK_ORDERS.WORK_ORDER_SITE = WO_COMMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_COMMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_COMMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_COMMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+      "table_a_one_side": "ITEM_NUM_IND",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN ITEM_SITE_EXTRACT ON ITEM_NUM_IND.ITEM_NUMBER = ITEM_SITE_EXTRACT.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_NUM_IND]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[ITEM_NUM_IND].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIP_HISTORY",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_NUMBER",
+        "WORK_ORDER_SITE"
+      ],
+      "table_b_many_side": "EQUIP_HISTORY",
+      "keys_b": [
+        "WORKORDER",
+        "SITE"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN EQUIP_HISTORY ON WORK_ORDERS.WORK_ORDER_NUMBER = EQUIP_HISTORY.WORKORDER AND WORK_ORDERS.WORK_ORDER_SITE = EQUIP_HISTORY.SITE",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIP_HISTORY",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_HISTORY].[WORKORDER] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_HISTORY].[SITE]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MOST_RECENT_WO"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WORK_ORDERS ON MODEL_WORK_ORDER.STATION_NUMBER = WORK_ORDERS.WORK_ORDER_SITE AND MODEL_WORK_ORDER.MOST_RECENT_WO = WORK_ORDERS.WORK_ORDER_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MOST_RECENT_WO] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> ITT_MATERIAL",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "ITT_MATERIAL",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN ITT_MATERIAL ON SITES.SITE_NUMBER = ITT_MATERIAL.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> ITT_MATERIAL",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITT_MATERIAL]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITT_MATERIAL].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+      "table_a_one_side": "ITEM_NUMBER",
+      "keys_a": [
+        "SITE",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..n",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN ITEM_SITE_EXTRACT ON ITEM_NUMBER.SITE = ITEM_SITE_EXTRACT.SITE_NUMBER AND ITEM_NUMBER.ITEM_NUMBER = ITEM_SITE_EXTRACT.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_NUMBER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[ITEM_NUMBER].[SITE] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[ITEM_NUMBER].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_STEPS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_STEPS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_STEPS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_STEPS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_STEPS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_STEPS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_STEPS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "EQUIP_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN EQUIP_DOCUMENTS ON WORK_ORDERS.WORK_ORDER_SITE = EQUIP_DOCUMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = EQUIP_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIP_DOCUMENTS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "EQUIP_HISTORY <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "SITE",
+        "MARK_NUMBER"
+      ],
+      "table_b_many_side": "EQUIP_HISTORY",
+      "keys_b": [
+        "SITE",
+        "MARK_NO"
+      ],
+      "cognos_cardinality": "1..n to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN EQUIP_HISTORY ON EQUIPMENT.SITE = EQUIP_HISTORY.SITE AND EQUIPMENT.MARK_NUMBER = EQUIP_HISTORY.MARK_NO",
+      "original_relationship": {
+        "name": "EQUIP_HISTORY <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[EQUIP_HISTORY].[SITE] = [Database_Layer].[EQUIPMENT].[SITE] AND [Database_Layer].[EQUIP_HISTORY].[MARK_NO] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "PURCHASE_ORDER_DESCRIPTIONS",
+      "keys_a": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "0..1 to 1..n",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN PURCHASE_ORDER_LINE ON PURCHASE_ORDER_DESCRIPTIONS.PO_NUMBER = PURCHASE_ORDER_LINE.PO_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.RELEASE_NUMBER = PURCHASE_ORDER_LINE.RELEASE_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.PO_LINE_NUMBER = PURCHASE_ORDER_LINE.PO_LINE_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_LINE ON SITES.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_DESCRIPTIONS",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_DESCRIPTIONS ON SITES.SITE_NUMBER = PURCHASE_ORDER_DESCRIPTIONS.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "STORAGE_LOCATION",
+      "keys_b": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN STORAGE_LOCATION ON ITEM_SITE_EXTRACT.ITEM_NUMBER = STORAGE_LOCATION.ITEM_NUMBER AND ITEM_SITE_EXTRACT.SITE_NUMBER = STORAGE_LOCATION.SITE_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN PURCHASE_ORDER_LINE ON ITEM_SITE_EXTRACT.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER AND ITEM_SITE_EXTRACT.ITEM_NUMBER = PURCHASE_ORDER_LINE.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN ITEM_SITE_EXTRACT ON SITES.SITE_NUMBER = ITEM_SITE_EXTRACT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MANUFACTURER",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..1 to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MANUFACTURER ON ITEM_SITE_EXTRACT.ITEM_NUMBER = MANUFACTURER.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MANUFACTURER]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MANUFACTURER].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN MATERIAL_CHARGES ON SITES.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_RECEIPT",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_RECEIPT ON SITES.SITE_NUMBER = PURCHASE_ORDER_RECEIPT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_RECEIPT",
+      "keys_b": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_RECEIPT ON PURCHASE_ORDER_LINE.PO_NUMBER = PURCHASE_ORDER_RECEIPT.PO_NUMBER AND PURCHASE_ORDER_LINE.RELEASE_NUMBER = PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER AND PURCHASE_ORDER_LINE.PO_LINE_NUMBER = PURCHASE_ORDER_RECEIPT.PO_LINE_NUMBER AND PURCHASE_ORDER_LINE.SITE_NUMBER = PURCHASE_ORDER_RECEIPT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "STORAGE_LOCATION",
+      "keys_b": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN STORAGE_LOCATION ON PURCHASE_ORDER_LINE.ITEM_NUMBER = STORAGE_LOCATION.ITEM_NUMBER AND PURCHASE_ORDER_LINE.SITE_NUMBER = STORAGE_LOCATION.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "JOB_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "JOB_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN MATERIAL_CHARGES ON WORK_ORDERS.JOB_NUMBER = MATERIAL_CHARGES.JOB_NUMBER",
+      "original_relationship": {
+        "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER] = [Database_Layer].[WORK_ORDERS].[JOB_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "MARK_NUMBER"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "MARK_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN WORK_ORDERS ON EQUIPMENT.MARK_NUMBER = WORK_ORDERS.MARK_NUMBER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "table_a_one_side": "ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MATERIAL_CHARGES ON ITEM_ROOT_EXTENDED_DESCRIPTION.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER] = [Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> SITES",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "MODEL_WORK_ORDER",
+      "keys_b": [
+        "STATION_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MODEL_WORK_ORDER ON SITES.SITE_NUMBER = MODEL_WORK_ORDER.STATION_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> SITES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[SITES].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_COMMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_COMMENTS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_COMMENTS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_COMMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_COMMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_MATERIALS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_MATERIALS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_MATERIALS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_MATERIALS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_MATERIALS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_DOCUMENTS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_DOCUMENTS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_STEPS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_STEPS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..1 to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_STEPS ON WORK_ORDERS.WORK_ORDER_SITE = WO_STEPS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_STEPS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_STEPS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_STEPS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_MATERIALS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_MATERIALS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_MATERIALS ON WORK_ORDERS.WORK_ORDER_SITE = WO_MATERIALS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_MATERIALS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_MATERIALS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_MATERIALS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_DOCUMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_DOCUMENTS ON WORK_ORDERS.WORK_ORDER_SITE = WO_DOCUMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_SERVICES",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_SERVICES",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_SERVICES ON WORK_ORDERS.WORK_ORDER_SITE = WO_SERVICES.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_SERVICES.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_SERVICES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_SERVICES]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_SERVICES].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_SERVICES].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_TEST_EQUIP",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_TEST_EQUIP ON WORK_ORDERS.WORK_ORDER_SITE = WO_TEST_EQUIP.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_TEST_EQUIP.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_TEST_EQUIP]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_TEST_EQUIP].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_TEST_EQUIP].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN MATERIAL_CHARGES ON ITEM_SITE_EXTRACT.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER AND ITEM_SITE_EXTRACT.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "MARK_NUMBER",
+        "SITE"
+      ],
+      "table_b_many_side": "MODEL_WORK_ORDER",
+      "keys_b": [
+        "MARK_NUMBER",
+        "STATION_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MODEL_WORK_ORDER ON EQUIPMENT.MARK_NUMBER = MODEL_WORK_ORDER.MARK_NUMBER AND EQUIPMENT.SITE = MODEL_WORK_ORDER.STATION_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER] AND [Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[EQUIPMENT].[SITE]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN MATERIAL_CHARGES ON PURCHASE_ORDER_LINE.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER AND PURCHASE_ORDER_LINE.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> WORK_ORDERS",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "WORK_ORDER_SITE"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN WORK_ORDERS ON SITES.SITE_NUMBER = WORK_ORDERS.WORK_ORDER_SITE",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_COMMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_COMMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_COMMENTS ON WORK_ORDERS.WORK_ORDER_SITE = WO_COMMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_COMMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_COMMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_COMMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+      "table_a_one_side": "ITEM_NUM_IND",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN ITEM_SITE_EXTRACT ON ITEM_NUM_IND.ITEM_NUMBER = ITEM_SITE_EXTRACT.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_NUM_IND]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[ITEM_NUM_IND].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIP_HISTORY",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_NUMBER",
+        "WORK_ORDER_SITE"
+      ],
+      "table_b_many_side": "EQUIP_HISTORY",
+      "keys_b": [
+        "WORKORDER",
+        "SITE"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN EQUIP_HISTORY ON WORK_ORDERS.WORK_ORDER_NUMBER = EQUIP_HISTORY.WORKORDER AND WORK_ORDERS.WORK_ORDER_SITE = EQUIP_HISTORY.SITE",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIP_HISTORY",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_HISTORY].[WORKORDER] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_HISTORY].[SITE]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MOST_RECENT_WO"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WORK_ORDERS ON MODEL_WORK_ORDER.STATION_NUMBER = WORK_ORDERS.WORK_ORDER_SITE AND MODEL_WORK_ORDER.MOST_RECENT_WO = WORK_ORDERS.WORK_ORDER_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MOST_RECENT_WO] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> ITT_MATERIAL",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "ITT_MATERIAL",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN ITT_MATERIAL ON SITES.SITE_NUMBER = ITT_MATERIAL.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> ITT_MATERIAL",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITT_MATERIAL]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITT_MATERIAL].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+      "table_a_one_side": "ITEM_NUMBER",
+      "keys_a": [
+        "SITE",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..n",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN ITEM_SITE_EXTRACT ON ITEM_NUMBER.SITE = ITEM_SITE_EXTRACT.SITE_NUMBER AND ITEM_NUMBER.ITEM_NUMBER = ITEM_SITE_EXTRACT.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_NUMBER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[ITEM_NUMBER].[SITE] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[ITEM_NUMBER].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_STEPS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_STEPS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_STEPS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_STEPS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_STEPS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_STEPS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_STEPS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "EQUIP_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN EQUIP_DOCUMENTS ON WORK_ORDERS.WORK_ORDER_SITE = EQUIP_DOCUMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = EQUIP_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIP_DOCUMENTS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "EQUIP_HISTORY <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "SITE",
+        "MARK_NUMBER"
+      ],
+      "table_b_many_side": "EQUIP_HISTORY",
+      "keys_b": [
+        "SITE",
+        "MARK_NO"
+      ],
+      "cognos_cardinality": "1..n to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN EQUIP_HISTORY ON EQUIPMENT.SITE = EQUIP_HISTORY.SITE AND EQUIPMENT.MARK_NUMBER = EQUIP_HISTORY.MARK_NO",
+      "original_relationship": {
+        "name": "EQUIP_HISTORY <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[EQUIP_HISTORY].[SITE] = [Database_Layer].[EQUIPMENT].[SITE] AND [Database_Layer].[EQUIP_HISTORY].[MARK_NO] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "PURCHASE_ORDER_DESCRIPTIONS",
+      "keys_a": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "0..1 to 1..n",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN PURCHASE_ORDER_LINE ON PURCHASE_ORDER_DESCRIPTIONS.PO_NUMBER = PURCHASE_ORDER_LINE.PO_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.RELEASE_NUMBER = PURCHASE_ORDER_LINE.RELEASE_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.PO_LINE_NUMBER = PURCHASE_ORDER_LINE.PO_LINE_NUMBER AND PURCHASE_ORDER_DESCRIPTIONS.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_DESCRIPTIONS <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_LINE ON SITES.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_DESCRIPTIONS",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_DESCRIPTIONS ON SITES.SITE_NUMBER = PURCHASE_ORDER_DESCRIPTIONS.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_DESCRIPTIONS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "STORAGE_LOCATION",
+      "keys_b": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN STORAGE_LOCATION ON ITEM_SITE_EXTRACT.ITEM_NUMBER = STORAGE_LOCATION.ITEM_NUMBER AND ITEM_SITE_EXTRACT.SITE_NUMBER = STORAGE_LOCATION.SITE_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> STORAGE_LOCATION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_LINE",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN PURCHASE_ORDER_LINE ON ITEM_SITE_EXTRACT.SITE_NUMBER = PURCHASE_ORDER_LINE.SITE_NUMBER AND ITEM_SITE_EXTRACT.ITEM_NUMBER = PURCHASE_ORDER_LINE.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> PURCHASE_ORDER_LINE",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN ITEM_SITE_EXTRACT ON SITES.SITE_NUMBER = ITEM_SITE_EXTRACT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> ITEM_SITE_EXTRACT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MANUFACTURER",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..1 to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MANUFACTURER ON ITEM_SITE_EXTRACT.ITEM_NUMBER = MANUFACTURER.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> MANUFACTURER",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MANUFACTURER]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MANUFACTURER].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN MATERIAL_CHARGES ON SITES.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_RECEIPT",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_RECEIPT ON SITES.SITE_NUMBER = PURCHASE_ORDER_RECEIPT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> PURCHASE_ORDER_RECEIPT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "PURCHASE_ORDER_RECEIPT",
+      "keys_b": [
+        "PO_NUMBER",
+        "RELEASE_NUMBER",
+        "PO_LINE_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN PURCHASE_ORDER_RECEIPT ON PURCHASE_ORDER_LINE.PO_NUMBER = PURCHASE_ORDER_RECEIPT.PO_NUMBER AND PURCHASE_ORDER_LINE.RELEASE_NUMBER = PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER AND PURCHASE_ORDER_LINE.PO_LINE_NUMBER = PURCHASE_ORDER_RECEIPT.PO_LINE_NUMBER AND PURCHASE_ORDER_LINE.SITE_NUMBER = PURCHASE_ORDER_RECEIPT.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> PURCHASE_ORDER_RECEIPT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_RECEIPT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "STORAGE_LOCATION",
+      "keys_b": [
+        "ITEM_NUMBER",
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN STORAGE_LOCATION ON PURCHASE_ORDER_LINE.ITEM_NUMBER = STORAGE_LOCATION.ITEM_NUMBER AND PURCHASE_ORDER_LINE.SITE_NUMBER = STORAGE_LOCATION.SITE_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> STORAGE_LOCATION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[STORAGE_LOCATION]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[ITEM_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[STORAGE_LOCATION].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "JOB_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "JOB_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN MATERIAL_CHARGES ON WORK_ORDERS.JOB_NUMBER = MATERIAL_CHARGES.JOB_NUMBER",
+      "original_relationship": {
+        "name": "MATERIAL_CHARGES <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER] = [Database_Layer].[WORK_ORDERS].[JOB_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "MARK_NUMBER"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "MARK_NUMBER"
+      ],
+      "cognos_cardinality": "1..n to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN WORK_ORDERS ON EQUIPMENT.MARK_NUMBER = WORK_ORDERS.MARK_NUMBER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "table_a_one_side": "ITEM_ROOT_EXTENDED_DESCRIPTION",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MATERIAL_CHARGES ON ITEM_ROOT_EXTENDED_DESCRIPTION.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "MATERIAL_CHARGES <-> ITEM_ROOT_EXTENDED_DESCRIPTION",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER] = [Database_Layer].[ITEM_ROOT_EXTENDED_DESCRIPTION].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> SITES",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "MODEL_WORK_ORDER",
+      "keys_b": [
+        "STATION_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MODEL_WORK_ORDER ON SITES.SITE_NUMBER = MODEL_WORK_ORDER.STATION_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> SITES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[SITES].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_COMMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_COMMENTS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_COMMENTS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_COMMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_COMMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_COMMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_MATERIALS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_MATERIALS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_MATERIALS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_MATERIALS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_MATERIALS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_MATERIALS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_DOCUMENTS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_DOCUMENTS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_STEPS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_STEPS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..1 to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_STEPS ON WORK_ORDERS.WORK_ORDER_SITE = WO_STEPS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_STEPS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_STEPS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_STEPS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_MATERIALS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_MATERIALS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_MATERIALS ON WORK_ORDERS.WORK_ORDER_SITE = WO_MATERIALS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_MATERIALS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_MATERIALS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_MATERIALS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_MATERIALS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_MATERIALS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_DOCUMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_DOCUMENTS ON WORK_ORDERS.WORK_ORDER_SITE = WO_DOCUMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_DOCUMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_SERVICES",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_SERVICES",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_SERVICES ON WORK_ORDERS.WORK_ORDER_SITE = WO_SERVICES.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_SERVICES.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_SERVICES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_SERVICES]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_SERVICES].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_SERVICES].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_TEST_EQUIP",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_TEST_EQUIP ON WORK_ORDERS.WORK_ORDER_SITE = WO_TEST_EQUIP.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_TEST_EQUIP.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_TEST_EQUIP",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_TEST_EQUIP]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_TEST_EQUIP].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_TEST_EQUIP].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+      "table_a_one_side": "ITEM_SITE_EXTRACT",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN MATERIAL_CHARGES ON ITEM_SITE_EXTRACT.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER AND ITEM_SITE_EXTRACT.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "MARK_NUMBER",
+        "SITE"
+      ],
+      "table_b_many_side": "MODEL_WORK_ORDER",
+      "keys_b": [
+        "MARK_NUMBER",
+        "STATION_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN MODEL_WORK_ORDER ON EQUIPMENT.MARK_NUMBER = MODEL_WORK_ORDER.MARK_NUMBER AND EQUIPMENT.SITE = MODEL_WORK_ORDER.STATION_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[MARK_NUMBER] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER] AND [Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[EQUIPMENT].[SITE]"
+      }
+    },
+    {
+      "relationship_name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+      "table_a_one_side": "PURCHASE_ORDER_LINE",
+      "keys_a": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "MATERIAL_CHARGES",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN MATERIAL_CHARGES ON PURCHASE_ORDER_LINE.SITE_NUMBER = MATERIAL_CHARGES.SITE_NUMBER AND PURCHASE_ORDER_LINE.ITEM_NUMBER = MATERIAL_CHARGES.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "PURCHASE_ORDER_LINE <-> MATERIAL_CHARGES",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[PURCHASE_ORDER_LINE]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[MATERIAL_CHARGES]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[SITE_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER] AND [Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER] = [Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> WORK_ORDERS",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "WORK_ORDER_SITE"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN WORK_ORDERS ON SITES.SITE_NUMBER = WORK_ORDERS.WORK_ORDER_SITE",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> WO_COMMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "WO_COMMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_COMMENTS ON WORK_ORDERS.WORK_ORDER_SITE = WO_COMMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = WO_COMMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> WO_COMMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_COMMENTS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[WO_COMMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[WO_COMMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+      "table_a_one_side": "ITEM_NUM_IND",
+      "keys_a": [
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..1",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN ITEM_SITE_EXTRACT ON ITEM_NUM_IND.ITEM_NUMBER = ITEM_SITE_EXTRACT.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_SITE_EXTRACT <-> ITEM_NUM_IND",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_NUM_IND]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER] = [Database_Layer].[ITEM_NUM_IND].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIP_HISTORY",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_NUMBER",
+        "WORK_ORDER_SITE"
+      ],
+      "table_b_many_side": "EQUIP_HISTORY",
+      "keys_b": [
+        "WORKORDER",
+        "SITE"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN EQUIP_HISTORY ON WORK_ORDERS.WORK_ORDER_NUMBER = EQUIP_HISTORY.WORKORDER AND WORK_ORDERS.WORK_ORDER_SITE = EQUIP_HISTORY.SITE",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIP_HISTORY",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_HISTORY].[WORKORDER] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_HISTORY].[SITE]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MOST_RECENT_WO"
+      ],
+      "table_b_many_side": "WORK_ORDERS",
+      "keys_b": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 0..1",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WORK_ORDERS ON MODEL_WORK_ORDER.STATION_NUMBER = WORK_ORDERS.WORK_ORDER_SITE AND MODEL_WORK_ORDER.MOST_RECENT_WO = WORK_ORDERS.WORK_ORDER_NUMBER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WORK_ORDERS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "zero",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MOST_RECENT_WO] = [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "SITE_NUMBER <-> ITT_MATERIAL",
+      "table_a_one_side": "SITES",
+      "keys_a": [
+        "SITE_NUMBER"
+      ],
+      "table_b_many_side": "ITT_MATERIAL",
+      "keys_b": [
+        "SITE_NUMBER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN ITT_MATERIAL ON SITES.SITE_NUMBER = ITT_MATERIAL.SITE_NUMBER",
+      "original_relationship": {
+        "name": "SITE_NUMBER <-> ITT_MATERIAL",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[SITES]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITT_MATERIAL]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[SITES].[SITE_NUMBER] = [Database_Layer].[ITT_MATERIAL].[SITE_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+      "table_a_one_side": "ITEM_NUMBER",
+      "keys_a": [
+        "SITE",
+        "ITEM_NUMBER"
+      ],
+      "table_b_many_side": "ITEM_SITE_EXTRACT",
+      "keys_b": [
+        "SITE_NUMBER",
+        "ITEM_NUMBER"
+      ],
+      "cognos_cardinality": "0..n to 1..n",
+      "join_type": "RIGHT OUTER JOIN",
+      "power_bi_config": "Many-to-One, Single Direction Filter.",
+      "sql_join": "RIGHT OUTER JOIN ITEM_SITE_EXTRACT ON ITEM_NUMBER.SITE = ITEM_SITE_EXTRACT.SITE_NUMBER AND ITEM_NUMBER.ITEM_NUMBER = ITEM_SITE_EXTRACT.ITEM_NUMBER",
+      "original_relationship": {
+        "name": "ITEM_NUMBER <-> ITEM_SITE_EXTRACT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[ITEM_NUMBER]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[ITEM_SITE_EXTRACT]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[ITEM_NUMBER].[SITE] = [Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER] AND [Database_Layer].[ITEM_NUMBER].[ITEM_NUMBER] = [Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]"
+      }
+    },
+    {
+      "relationship_name": "MODEL_WORK_ORDER <-> WO_STEPS",
+      "table_a_one_side": "MODEL_WORK_ORDER",
+      "keys_a": [
+        "STATION_NUMBER",
+        "MODEL_WO_NUMBER"
+      ],
+      "table_b_many_side": "WO_STEPS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..n to 0..n",
+      "join_type": "LEFT OUTER JOIN",
+      "power_bi_config": "One-to-Many, Single Direction Filter.",
+      "sql_join": "LEFT OUTER JOIN WO_STEPS ON MODEL_WORK_ORDER.STATION_NUMBER = WO_STEPS.SITE AND MODEL_WORK_ORDER.MODEL_WO_NUMBER = WO_STEPS.WORKORDER",
+      "original_relationship": {
+        "name": "MODEL_WORK_ORDER <-> WO_STEPS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[MODEL_WORK_ORDER]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[WO_STEPS]",
+          "mincard": "zero",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[MODEL_WORK_ORDER].[STATION_NUMBER] = [Database_Layer].[WO_STEPS].[SITE] AND [Database_Layer].[MODEL_WORK_ORDER].[MODEL_WO_NUMBER] = [Database_Layer].[WO_STEPS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+      "table_a_one_side": "WORK_ORDERS",
+      "keys_a": [
+        "WORK_ORDER_SITE",
+        "WORK_ORDER_NUMBER"
+      ],
+      "table_b_many_side": "EQUIP_DOCUMENTS",
+      "keys_b": [
+        "SITE",
+        "WORKORDER"
+      ],
+      "cognos_cardinality": "1..1 to 1..n",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN EQUIP_DOCUMENTS ON WORK_ORDERS.WORK_ORDER_SITE = EQUIP_DOCUMENTS.SITE AND WORK_ORDERS.WORK_ORDER_NUMBER = EQUIP_DOCUMENTS.WORKORDER",
+      "original_relationship": {
+        "name": "WORK_ORDERS <-> EQUIPMENT_DOCUMENTS",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[WORK_ORDERS]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIP_DOCUMENTS]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "join_expression": "[Database_Layer].[WORK_ORDERS].[WORK_ORDER_SITE] = [Database_Layer].[EQUIP_DOCUMENTS].[SITE] AND [Database_Layer].[WORK_ORDERS].[WORK_ORDER_NUMBER] = [Database_Layer].[EQUIP_DOCUMENTS].[WORKORDER]"
+      }
+    },
+    {
+      "relationship_name": "EQUIP_HISTORY <-> EQUIPMENT",
+      "table_a_one_side": "EQUIPMENT",
+      "keys_a": [
+        "SITE",
+        "MARK_NUMBER"
+      ],
+      "table_b_many_side": "EQUIP_HISTORY",
+      "keys_b": [
+        "SITE",
+        "MARK_NO"
+      ],
+      "cognos_cardinality": "1..n to 1..1",
+      "join_type": "INNER JOIN",
+      "power_bi_config": "One-to-One, Bidirectional Filter.",
+      "sql_join": "INNER JOIN EQUIP_HISTORY ON EQUIPMENT.SITE = EQUIP_HISTORY.SITE AND EQUIPMENT.MARK_NUMBER = EQUIP_HISTORY.MARK_NO",
+      "original_relationship": {
+        "name": "EQUIP_HISTORY <-> EQUIPMENT",
+        "id": "",
+        "left": {
+          "query_subject": "[Database_Layer].[EQUIP_HISTORY]",
+          "mincard": "one",
+          "maxcard": "many"
+        },
+        "right": {
+          "query_subject": "[Database_Layer].[EQUIPMENT]",
+          "mincard": "one",
+          "maxcard": "one"
+        },
+        "join_expression": "[Database_Layer].[EQUIP_HISTORY].[SITE] = [Database_Layer].[EQUIPMENT].[SITE] AND [Database_Layer].[EQUIP_HISTORY].[MARK_NO] = [Database_Layer].[EQUIPMENT].[MARK_NUMBER]"
+      }
+    }
+  ]
+}

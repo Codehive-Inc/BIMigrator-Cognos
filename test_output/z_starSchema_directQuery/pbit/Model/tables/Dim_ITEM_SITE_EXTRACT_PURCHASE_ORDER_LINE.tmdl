@@ -1,0 +1,61 @@
+table Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER_SITE_NUMBER_Key'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER_SITE_NUMBER_Key
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE' = m
+        mode: directQuery
+        source = 
+            let
+            Source = Value.NativeQuery(
+                #"SQL Database",
+                "SELECT DISTINCT
+            [SITE_NUMBER], [ITEM_NUMBER],
+            ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') as [ITEM_NUMBER_SITE_NUMBER_Key]
+        FROM (
+            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT]
+            UNION ALL
+            SELECT [SITE_NUMBER], [ITEM_NUMBER] FROM [PURCHASE_ORDER_LINE]
+        ) AS CombinedKeys
+        WHERE ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([ITEM_NUMBER] AS NVARCHAR(50)), '') <> '''''",
+                null, 
+                [EnableFolding = true]
+            )
+        in
+            Source
+        
+
+
+
+    annotation PBI_ResultType = Table

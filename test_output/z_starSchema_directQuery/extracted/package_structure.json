@@ -1,0 +1,29 @@
+{
+  "name": "ELECTRIC_GENERATION_MAT",
+  "namespaces": [
+    {
+      "name": "ELECTRIC_GENERATION_WPTMATT",
+      "type": "",
+      "id": ""
+    },
+    {
+      "name": "Database_Layer",
+      "type": "",
+      "id": ""
+    }
+  ],
+  "dataSources": [
+    {
+      "id": "",
+      "type": "",
+      "cmDataSource": "ELECTRIC_GENERATION_WPTMATT",
+      "schema": "MATWPT"
+    },
+    {
+      "id": "",
+      "type": "",
+      "cmDataSource": "ELECTRIC_GENERATION_WPTMATT",
+      "schema": "MATWPT"
+    }
+  ]
+}

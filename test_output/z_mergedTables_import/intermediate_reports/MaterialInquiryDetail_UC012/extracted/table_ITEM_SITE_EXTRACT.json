@@ -1,0 +1,517 @@
+{
+  "source_name": "ITEM_SITE_EXTRACT",
+  "name": "ITEM_SITE_EXTRACT",
+  "lineage_tag": null,
+  "description": "Table created from source: ITEM_SITE_EXTRACT",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_LINE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_LINE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RELEASE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RELEASE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DESCRIPTION",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DESCRIPTION",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_OF_MEASURE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UNIT_OF_MEASURE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QTY_ON_HAND",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QTY_ON_HAND",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MINIMUM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MINIMUM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "CONSUMABLE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "CONSUMABLE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SHELF_LIFE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SHELF_LIFE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "MAXIMUM",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "MAXIMUM",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_LAST_ISSUED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_LAST_ISSUED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_LAST_RETURNED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_LAST_RETURNED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_LAST_RECEIVED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_LAST_RECEIVED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UTC_IND",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UTC_IND",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PRIMARY_LOC",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PRIMARY_LOC",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SECONDARY_LOC",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SECONDARY_LOC",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STATUS",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STATUS",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QA_CODE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QA_CODE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QA_LEVEL",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QA_LEVEL",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QA_CERT1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QA_CERT1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QA_CERT2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QA_CERT2",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QA_CERT3",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QA_CERT3",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QA_CERT4",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QA_CERT4",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PIT",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PIT",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PREVENT_MAINTENANCE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PREVENT_MAINTENANCE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "STATUS_DATE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "STATUS_DATE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SAP_IND",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SAP_IND",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC_2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "ITEM_SITE_EXTRACT",
+      "source_type": "m",
+      "mode": "import",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"your_server\", \"your_database\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"SITE_NUMBER\"\" AS \"\"SITE_NUMBER\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"PO_NUMBER\"\" AS \"\"PO_NUMBER\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"PO_LINE_NUMBER\"\" AS \"\"PO_LINE_NUMBER\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"RELEASE_NUMBER\"\" AS \"\"RELEASE_NUMBER\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DESCRIPTION\"\" AS \"\"DESCRIPTION\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"UNIT_OF_MEASURE\"\" AS \"\"UNIT_OF_MEASURE\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QTY_ON_HAND\"\" AS \"\"QTY_ON_HAND\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"MINIMUM\"\" AS \"\"MINIMUM\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"CONSUMABLE\"\" AS \"\"CONSUMABLE\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"SHELF_LIFE\"\" AS \"\"SHELF_LIFE\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"MAXIMUM\"\" AS \"\"MAXIMUM\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DATE_LAST_ISSUED\"\" AS \"\"DATE_LAST_ISSUED\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DATE_LAST_RETURNED\"\" AS \"\"DATE_LAST_RETURNED\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"DATE_LAST_RECEIVED\"\" AS \"\"DATE_LAST_RECEIVED\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"UTC_IND\"\" AS \"\"UTC_IND\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"PRIMARY_LOC\"\" AS \"\"PRIMARY_LOC\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"SECONDARY_LOC\"\" AS \"\"SECONDARY_LOC\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"STATUS\"\" AS \"\"STATUS\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QA_CODE\"\" AS \"\"QA_CODE\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QA_LEVEL\"\" AS \"\"QA_LEVEL\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QA_CERT1\"\" AS \"\"QA_CERT1\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QA_CERT2\"\" AS \"\"QA_CERT2\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QA_CERT3\"\" AS \"\"QA_CERT3\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"QA_CERT4\"\" AS \"\"QA_CERT4\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"PIT\"\" AS \"\"PIT\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"PREVENT_MAINTENANCE\"\" AS \"\"PREVENT_MAINTENANCE\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"STATUS_DATE\"\" AS \"\"STATUS_DATE\"\",\n    \"\"ITEM_SITE_EXTRACT\"\".\"\"SAP_IND\"\" AS \"\"SAP_IND\"\",\n    substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2) AS \"\"LOC_1\"\",\n    substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2) AS \"\"LOC_2\"\"\nFROM\n\"\"Database_Layer\"\".\"\"ITEM_SITE_EXTRACT\"\", \"\"Database_Layer\"\".\"\"PURCHASE_ORDER_LINE\"\"\nWHERE\n    [SITE_NUMBER]= ?SiteNumber?\n    AND     [ITEM_NUMBER]= ?ItemNumber?\n    AND     [PO_NUMBER]=?PO_Number?\n    AND     [PO_LINE_NUMBER]=?LineNumber?\n    AND     [RELEASE_NUMBER]=?ReleaseNumber?\n    AND     [STATUS_DATE]=?StatusDate?\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

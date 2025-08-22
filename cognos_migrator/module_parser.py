@@ -878,6 +878,7 @@ class CognosModuleParser:
             partitions_json.append({
                 'name': f'{module_table.name}-partition',
                 'source_type': 'm',
+                'mode': self._get_partition_mode(),
                 'expression': self._build_m_expression(module_table.source_query)
             })
         
@@ -895,6 +896,17 @@ class CognosModuleParser:
         }
         
         return table_json
+    
+    def _get_partition_mode(self) -> str:
+        """Get partition mode from staging table settings."""
+        try:
+            with open('settings.json', 'r') as f:
+                settings = json.load(f)
+            staging_settings = settings.get('staging_tables', {})
+            data_load_mode = staging_settings.get('data_load_mode', 'import')
+            return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+        except (FileNotFoundError, json.JSONDecodeError):
+            return 'import'
     
     def _build_m_expression(self, source_query: str) -> str:
         """Build M expression for Power BI partition"""

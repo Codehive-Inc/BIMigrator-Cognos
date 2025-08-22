@@ -162,15 +162,65 @@ class StarSchemaHandler(BaseHandler):
         """
         self.logger.info("Processing data model with 'star_schema' + 'direct_query' approach")
         
-        # TODO: Implement star schema with DirectQuery optimizations
-        # Key differences from import mode:
-        # - Dimension table M-queries should use native SQL JOINs where possible
-        # - Composite key creation should be done in SQL (CONCAT or ||)
-        # - Table.Combine operations should be replaced with UNION ALL SQL
-        # - Minimize Power Query transformations to maintain query folding
+        # Use SQL relationships if available, otherwise fall back to basic relationships
+        if self.sql_relationships:
+            self.logger.info(f"Using {len(self.sql_relationships)} SQL relationships for DirectQuery dimension tables")
+            complex_relationships = self._identify_complex_sql_relationships(self.sql_relationships)
+        else:
+            self.logger.info("Using basic data model relationships for DirectQuery dimension tables")
+            complex_relationships = self._identify_complex_relationships(data_model.relationships)
         
-        self.logger.warning("star_schema + direct_query mode is not yet implemented, using import mode")
-        return self.process_import_mode(data_model)
+        self.logger.info(f"Identified {len(complex_relationships)} complex relationships for DirectQuery optimization")
+        
+        if not complex_relationships:
+            self.logger.info("No complex relationships found, returning original model")
+            return data_model
+        
+        # Group relationships by tables they connect
+        if self.sql_relationships:
+            relationship_groups = self._group_sql_relationships_by_tables(complex_relationships)
+        else:
+            relationship_groups = self._group_relationships_by_tables(complex_relationships)
+        
+        self.logger.info(f"Grouped complex relationships into {len(relationship_groups)} groups for DirectQuery")
+        
+        # Create dimension tables with native SQL queries for DirectQuery
+        new_tables = list(data_model.tables)  # Start with all original tables
+        dimension_tables = []
+        
+        for group_key, relationships in relationship_groups.items():
+            # Extract table names from the group key
+            table_names = group_key.split(':')
+            if len(table_names) != 2:
+                continue
+                
+            from_table_name, to_table_name = table_names
+            
+            # Find the actual table objects
+            from_table = next((t for t in data_model.tables if t.name == from_table_name), None)
+            to_table = next((t for t in data_model.tables if t.name == to_table_name), None)
+            
+            if not from_table or not to_table:
+                self.logger.warning(f"Could not find tables for relationship group: {group_key}")
+                continue
+            
+            # Create dimension table with native SQL for DirectQuery
+            dimension_table = self._create_dimension_table_with_native_sql(
+                from_table_name, to_table_name, relationships)
+            
+            dimension_tables.append(dimension_table)
+            new_tables.append(dimension_table)
+            self.logger.info(f"Created DirectQuery dimension table: {dimension_table.name}")
+        
+        # Create new data model with dimension tables
+        new_data_model = DataModel(
+            name=data_model.name,
+            tables=new_tables,
+            relationships=data_model.relationships  # Keep original relationships for now
+        )
+        
+        self.logger.info(f"DirectQuery star schema processing complete: {len(dimension_tables)} dimension tables created")
+        return new_data_model
     
     def _group_sql_relationships_by_tables(self, sql_relationships: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
         """Group SQL relationships by the tables they connect."""
@@ -321,6 +371,124 @@ class StarSchemaHandler(BaseHandler):
             in
                 FilteredRows"""
         
+        return m_query
+    
+    def _create_dimension_table_with_native_sql(self, from_table_name: str, to_table_name: str, 
+                                              relationships: List[Dict[str, Any]]) -> Table:
+        """
+        Create a dimension table using native SQL for DirectQuery optimization.
+        
+        This implements the best practice approach for DirectQuery dimension tables:
+        - Uses Value.NativeQuery for maximum performance
+        - Enables query folding with EnableFolding=true
+        - Creates efficient UNION-based SQL for distinct keys
+        - Avoids Power Query transformations that break query folding
+        
+        Args:
+            from_table_name: First source table name
+            to_table_name: Second source table name  
+            relationships: List of SQL relationships between the tables
+            
+        Returns:
+            A dimension table with optimized native SQL M-query
+        """
+        # Generate dimension table name
+        dimension_table_name = f"{self.naming_prefix}{from_table_name}_{to_table_name}"
+        
+        # Extract key columns from relationships
+        key_columns = set()
+        for rel in relationships:
+            keys_a = rel.get('keys_a', [])
+            keys_b = rel.get('keys_b', [])
+            key_columns.update(keys_a)
+            key_columns.update(keys_b)
+        
+        key_columns = list(key_columns)
+        composite_key_name = self._get_composite_key_name(relationships)
+        
+        # Create columns for the dimension table
+        columns = []
+        for key_col in key_columns:
+            column = Column(
+                name=key_col,
+                data_type=DataType.STRING,
+                source_column=key_col,
+                summarize_by="none"
+            )
+            columns.append(column)
+        
+        # Add composite key column
+        composite_key_column = Column(
+            name=composite_key_name,
+            data_type=DataType.STRING,
+            source_column=composite_key_name,
+            summarize_by="none",
+            is_key=True
+        )
+        columns.append(composite_key_column)
+        
+        # Generate optimized native SQL M-query
+        m_query = self._generate_native_sql_dimension_query(
+            from_table_name, to_table_name, key_columns, composite_key_name)
+        
+        # Create the dimension table
+        dimension_table = Table(
+            name=dimension_table_name,
+            columns=columns,
+            m_query=m_query,
+            source_query=m_query,
+            partition_mode="directQuery"
+        )
+        
+        self.logger.info(f"Generated native SQL for dimension table {dimension_table_name}: {len(key_columns)} key columns, UNION-based SQL")
+        return dimension_table
+    
+    def _generate_native_sql_dimension_query(self, from_table_name: str, to_table_name: str, 
+                                           key_columns: List[str], composite_key_name: str) -> str:
+        """
+        Generate optimized native SQL M-query for dimension table.
+        
+        This implements the best practice approach using Value.NativeQuery with:
+        - UNION ALL for combining distinct keys from both tables
+        - SQL-based composite key generation using CONCAT
+        - EnableFolding=true for maximum query folding
+        - Efficient WHERE clause for null filtering
+        """
+        # Build column selection for both tables
+        key_columns_str = ', '.join([f'[{col}]' for col in key_columns])
+        
+        # Generate SQL CONCAT expression for composite key
+        if len(key_columns) == 1:
+            composite_key_sql = f"[{key_columns[0]}]"
+        else:
+            # Use CONCAT for SQL Server or || for other databases
+            concat_parts = ' + \'|\' + '.join([f"ISNULL(CAST([{col}] AS NVARCHAR(50)), \'\')" for col in key_columns])
+            composite_key_sql = concat_parts
+        
+        # Build the native SQL query using UNION ALL approach
+        native_sql = f'''SELECT DISTINCT
+            {key_columns_str},
+            {composite_key_sql} as [{composite_key_name}]
+        FROM (
+            SELECT {key_columns_str} FROM [{from_table_name}]
+            UNION ALL
+            SELECT {key_columns_str} FROM [{to_table_name}]
+        ) AS CombinedKeys
+        WHERE {composite_key_sql} IS NOT NULL AND {composite_key_sql} <> \'\'\'\'\'
+        '''
+        
+        # Generate the M-query with native SQL
+        m_query = f'''let
+            Source = Value.NativeQuery(
+                #"SQL Database",
+                "{native_sql.strip()}",
+                null, 
+                [EnableFolding = true]
+            )
+        in
+            Source'''
+        
+        self.logger.info(f"Generated native SQL dimension query for {from_table_name} + {to_table_name} with {len(key_columns)} key columns")
         return m_query
     
     def _get_composite_key_logic(self, relationships: List[Any]) -> str:

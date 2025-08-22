@@ -197,6 +197,7 @@ class BaseHandler:
             partitions.append({
                 "name": table.name,
                 "source_type": "m",
+                "mode": self._get_partition_mode(),
                 "expression": m_query
             })
         
@@ -250,3 +251,8 @@ class BaseHandler:
         except Exception as e:
             self.logger.error(f"Error reading M-query from JSON for table {table_name}: {e}")
             return None
+    
+    def _get_partition_mode(self) -> str:
+        """Get partition mode from staging table settings."""
+        data_load_mode = self.settings.get('data_load_mode', 'import')
+        return 'directQuery' if data_load_mode == 'direct_query' else 'import'

@@ -304,6 +304,7 @@ class PackageModelFileGenerator:
                 {
                     "name": table.name,
                     "source_type": "m",
+                    "mode": self._get_partition_mode(),
                     "expression": m_query
                 }
             ]
@@ -388,13 +389,17 @@ class PackageModelFileGenerator:
         # Extract columns from JSON
         columns = []
         for col_json in table_json.get('columns', []):
+            # Use 'name' field from JSON, fallback to 'source_name' if available, then 'Column'
+            column_name = col_json.get('name', col_json.get('source_name', 'Column'))
+            source_column = col_json.get('sourceColumn', col_json.get('source_column', column_name))
+            
             column = {
-                'name': col_json.get('source_name', 'Column'),
-                'source_name': col_json.get('source_name', 'Column'),
-                'datatype': col_json.get('datatype', 'string'),
-                'source_column': col_json.get('source_column', col_json.get('source_name', 'Column')),
+                'name': column_name,
+                'source_name': column_name,
+                'datatype': col_json.get('dataType', col_json.get('datatype', 'string')),
+                'source_column': source_column,
                 'is_calculated': col_json.get('is_calculated', False),
-                'summarize_by': col_json.get('summarize_by', 'none'),
+                'summarize_by': col_json.get('summarizeBy', col_json.get('summarize_by', 'none')),
                 'is_hidden': col_json.get('is_hidden', False),
                 'annotations': col_json.get('annotations', {'SummarizationSetBy': 'Automatic'})
             }
@@ -406,6 +411,7 @@ class PackageModelFileGenerator:
             partition = {
                 'name': partition_json.get('name', table_name),
                 'source_type': partition_json.get('source_type', 'm'),
+                'mode': partition_json.get('mode', self._get_partition_mode()),
                 'expression': partition_json.get('expression', '')
             }
             partitions.append(partition)
@@ -432,6 +438,17 @@ class PackageModelFileGenerator:
         
         self.logger.info(f"Built context from JSON for package table {table_name}: {len(columns)} columns, {len(partitions)} partitions")
         return context
+    
+    def _get_partition_mode(self) -> str:
+        """Get partition mode from staging table settings."""
+        try:
+            with open('settings.json', 'r') as f:
+                settings = json.load(f)
+            staging_settings = settings.get('staging_tables', {})
+            data_load_mode = staging_settings.get('data_load_mode', 'import')
+            return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+        except (FileNotFoundError, json.JSONDecodeError):
+            return 'import'
     
     def _build_package_m_expression(self, table: Table) -> str:
         """Build M expression for package table partition"""
