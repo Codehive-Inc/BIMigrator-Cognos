@@ -1,0 +1,1112 @@
+table Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_CREATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_CREATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TAX_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TAX_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TYPE_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TYPE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FUNCTIONAL_GROUP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FUNCTIONAL_GROUP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MATERIAL_CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: MATERIAL_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_RANK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_RANK
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_INVENTORIED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_INVENTORIED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_ORDER'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_ORDER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HAND'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_AVAILABLE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_AVAILABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MINIMUM'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MINIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAXIMUM'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MAXIMUM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EOQ_QTY'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: EOQ_QTY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CYCLE_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CYCLE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECEIVED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'FERC_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: FERC_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRIMARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRIMARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SECONDARY_LOC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SECONDARY_LOC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'EXTRA_LOCS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: EXTRA_LOCS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_APPROVED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_APPROVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVER_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVER_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVER_BADGE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVER_BADGE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'APPROVAL_SWITCH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: APPROVAL_SWITCH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CERT4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CERT4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VALUE_ON_HAND'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: VALUE_ON_HAND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVIOUS_ITEM_ID'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREVIOUS_ITEM_ID
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ALLOCATED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ALLOCATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONSUMABLE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CONSUMABLE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SHELF_LIFE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SHELF_LIFE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PREVENT_MAINTENANCE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PREVENT_MAINTENANCE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CORPORATE_SWITCH'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CORPORATE_SWITCH
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_OWNER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_OWNER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAFETY_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAFETY_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UTC_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UTC_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_DEPT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_DEPT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'IN_PROCESS_HOLD'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: IN_PROCESS_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PIT'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PIT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_EXCESS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_EXCESS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'NEW_RANK'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: NEW_RANK
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SUB_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SUB_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STRATIFIED_TRANS_COUNT'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: STRATIFIED_TRANS_COUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STRATIFIED_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STRATIFIED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOLERANCE_AMOUNT'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOLERANCE_AMOUNT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TOLERANCE_PERCENTAGE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: TOLERANCE_PERCENTAGE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_LAST_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: SITE_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HOLD'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_LAST_UPDATED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: ITEM_LAST_UPDATED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PROPERTY_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PROPERTY_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PROPERTY_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PROPERTY_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_ISSUED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_ISSUED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RETURNED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RETURNED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CRITICAL_ITEM'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CRITICAL_ITEM
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REVIEW_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: REVIEW_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SAP_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SAP_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHANGE_ORDER_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHANGE_ORDER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BU_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BU_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROMISED_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: PROMISED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_REJECTED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_REJECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_IN_INVENT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_IN_INVENT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECD_SITE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECD_SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_IN_HOLD'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_IN_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ORDERED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ORDERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_RECD_TO_DATE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_RECD_TO_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_INSPECTOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_INSPECTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUISITION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUISITION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BLANKET_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BLANKET_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BLANKET_BEGIN_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: BLANKET_BEGIN_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BLANKET_END_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: BLANKET_END_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ROOT_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ROOT_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ROOT_ORDERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ROOT_ORDERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ROOT_STATUS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ROOT_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOLLARS_COMMITTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DOLLARS_COMMITTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAX_DOLLARS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MAX_DOLLARS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_BLANKET_RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LAST_BLANKET_RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_ROOT_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_ROOT_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REVISION_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REVISION_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERVICE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERVICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOLLARS_RECEIVED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DOLLARS_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSR_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSR_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSR_HOLD_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSR_HOLD_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROMISE_DATE_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROMISE_DATE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRICE_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRICE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROCUREMENT_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROCUREMENT_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_REJECTED_TO_DATE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_REJECTED_TO_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUESTOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUESTOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PURCHASE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PURCHASE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONVERSION_FACTOR'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: CONVERSION_FACTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'Dim_ITEM_SITE_EXTRACT_PURCHASE_ORDER_LINE' = m
+        mode: directQuery
+        source = 
+            let
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
+                Query = Value.NativeQuery(
+                    Source,
+                    "SELECT a.[SITE_NUMBER], a.[ITEM_NUMBER], a.[DESCRIPTION], a.[UNIT_OF_MEASURE], a.[DATE_CREATED], a.[TAX_IND], a.[UNIT_PRICE], a.[TYPE_CODE], a.[FUNCTIONAL_GROUP], a.[MATERIAL_CLASS], a.[STATUS], a.[SITE_RANK], a.[DATE_LAST_INVENTORIED], a.[QTY_ON_ORDER], a.[QTY_ON_HAND], a.[QTY_AVAILABLE], a.[MINIMUM], a.[MAXIMUM], a.[EOQ_QTY], a.[QA_CODE], a.[QA_LEVEL], a.[CYCLE_IND], a.[SHELF_LIFE_DATE], a.[DATE_LAST_RECEIVED], a.[FERC_CODE], a.[PRIMARY_LOC], a.[SECONDARY_LOC], a.[EXTRA_LOCS], a.[DATE_LAST_APPROVED], a.[APPROVER_ID], a.[APPROVER_BADGE_NUMBER], a.[APPROVAL_SWITCH], a.[QA_CERT1], a.[QA_CERT2], a.[QA_CERT3], a.[QA_CERT4], a.[VALUE_ON_HAND], a.[PREVIOUS_ITEM_ID], a.[QTY_ALLOCATED], a.[CONSUMABLE], a.[SHELF_LIFE], a.[PREVENT_MAINTENANCE], a.[CORPORATE_SWITCH], a.[ITEM_OWNER], a.[SAFETY_IND], a.[UTC_IND], a.[ITEM_DEPT], a.[IN_PROCESS_HOLD], a.[PIT], a.[QTY_EXCESS], a.[NEW_RANK], a.[SUB_STATUS], a.[STRATIFIED_TRANS_COUNT], a.[STRATIFIED_DATE], a.[TOLERANCE_AMOUNT], a.[TOLERANCE_PERCENTAGE], a.[SITE_LAST_UPDATED], a.[QTY_ON_HOLD], a.[ITEM_LAST_UPDATED], a.[UNIT_OF_PROPERTY_NUMBER], a.[UNIT_OF_PROPERTY_IND], a.[DATE_LAST_ISSUED], a.[DATE_LAST_RETURNED], a.[CRITICAL_ITEM], a.[REVIEW_DATE], a.[STOP], a.[SAP_IND], a.[SITE_NUMBER], a.[ITEM_NUMBER], a.[DESCRIPTION], a.[UNIT_OF_MEASURE], a.[DATE_CREATED], a.[TAX_IND], a.[UNIT_PRICE], a.[TYPE_CODE], a.[FUNCTIONAL_GROUP], a.[MATERIAL_CLASS], a.[STATUS], a.[SITE_RANK], a.[DATE_LAST_INVENTORIED], a.[QTY_ON_ORDER], a.[QTY_ON_HAND], a.[QTY_AVAILABLE], a.[MINIMUM], a.[MAXIMUM], a.[EOQ_QTY], a.[QA_CODE], a.[QA_LEVEL], a.[CYCLE_IND], a.[SHELF_LIFE_DATE], a.[DATE_LAST_RECEIVED], a.[FERC_CODE], a.[PRIMARY_LOC], a.[SECONDARY_LOC], a.[EXTRA_LOCS], a.[DATE_LAST_APPROVED], a.[APPROVER_ID], a.[APPROVER_BADGE_NUMBER], a.[APPROVAL_SWITCH], a.[QA_CERT1], a.[QA_CERT2], a.[QA_CERT3], a.[QA_CERT4], a.[VALUE_ON_HAND], a.[PREVIOUS_ITEM_ID], a.[QTY_ALLOCATED], a.[CONSUMABLE], a.[SHELF_LIFE], a.[PREVENT_MAINTENANCE], a.[CORPORATE_SWITCH], a.[ITEM_OWNER], a.[SAFETY_IND], a.[UTC_IND], a.[ITEM_DEPT], a.[IN_PROCESS_HOLD], a.[PIT], a.[QTY_EXCESS], a.[NEW_RANK], a.[SUB_STATUS], a.[STRATIFIED_TRANS_COUNT], a.[STRATIFIED_DATE], a.[TOLERANCE_AMOUNT], a.[TOLERANCE_PERCENTAGE], a.[SITE_LAST_UPDATED], a.[QTY_ON_HOLD], a.[ITEM_LAST_UPDATED], a.[UNIT_OF_PROPERTY_NUMBER], a.[UNIT_OF_PROPERTY_IND], a.[DATE_LAST_ISSUED], a.[DATE_LAST_RETURNED], a.[CRITICAL_ITEM], a.[REVIEW_DATE], a.[STOP], a.[SAP_IND], b.[PO_NUMBER], b.[CHANGE_ORDER_NUMBER], b.[RELEASE_NUMBER], b.[PO_LINE_NUMBER], b.[STATUS_DATE], b.[BU_NUMBER], b.[JOB_NUMBER], b.[PROMISED_DATE], b.[DATE_LAST_REJECTED], b.[DATE_LAST_IN_INVENT], b.[DATE_LAST_RECD_SITE], b.[DATE_LAST_IN_HOLD], b.[DATE_ENTERED], b.[QTY_ORDERED], b.[QTY_RECD_TO_DATE], b.[QA_INSPECTOR], b.[REQUISITION], b.[VENDOR_NAME], b.[PO_TYPE], b.[PO_CLASS], b.[BLANKET_TYPE], b.[BLANKET_BEGIN_DATE], b.[BLANKET_END_DATE], b.[DATE_ROOT_ENTERED], b.[DATE_ROOT_ORDERED], b.[DATE_ROOT_STATUS], b.[DOLLARS_COMMITTED], b.[MAX_DOLLARS], b.[LAST_BLANKET_RELEASE_NUMBER], b.[PO_ROOT_STATUS], b.[REVISION_NUMBER], b.[SERVICE], b.[DOLLARS_RECEIVED], b.[DSR_NUMBER], b.[DSR_HOLD_STATUS], b.[PROMISE_DATE_IND], b.[PRICE_CODE], b.[PROCUREMENT_CODE], b.[QTY_REJECTED_TO_DATE], b.[REQUESTOR_NAME], b.[UNIT_OF_PURCHASE], b.[CONVERSION_FACTOR], b.[PO_NUMBER], b.[CHANGE_ORDER_NUMBER], b.[RELEASE_NUMBER], b.[PO_LINE_NUMBER], b.[STATUS_DATE], b.[BU_NUMBER], b.[JOB_NUMBER], b.[PROMISED_DATE], b.[DATE_LAST_REJECTED], b.[DATE_LAST_IN_INVENT], b.[DATE_LAST_RECD_SITE], b.[DATE_LAST_IN_HOLD], b.[DATE_ENTERED], b.[QTY_ORDERED], b.[QTY_RECD_TO_DATE], b.[QA_INSPECTOR], b.[REQUISITION], b.[VENDOR_NAME], b.[PO_TYPE], b.[PO_CLASS], b.[BLANKET_TYPE], b.[BLANKET_BEGIN_DATE], b.[BLANKET_END_DATE], b.[DATE_ROOT_ENTERED], b.[DATE_ROOT_ORDERED], b.[DATE_ROOT_STATUS], b.[DOLLARS_COMMITTED], b.[MAX_DOLLARS], b.[LAST_BLANKET_RELEASE_NUMBER], b.[PO_ROOT_STATUS], b.[REVISION_NUMBER], b.[SERVICE], b.[DOLLARS_RECEIVED], b.[DSR_NUMBER], b.[DSR_HOLD_STATUS], b.[PROMISE_DATE_IND], b.[PRICE_CODE], b.[PROCUREMENT_CODE], b.[QTY_REJECTED_TO_DATE], b.[REQUESTOR_NAME], b.[UNIT_OF_PURCHASE], b.[CONVERSION_FACTOR] FROM [PURCHASE_ORDER_LINE] a LEFT JOIN [ITEM_SITE_EXTRACT] b ON a.[SITE_NUMBER] = b.[SITE_NUMBER] AND a.[ITEM_NUMBER] = b.[ITEM_NUMBER]"
+                )
+                in
+                Query
+        
+
+
+
+    annotation PBI_ResultType = Table

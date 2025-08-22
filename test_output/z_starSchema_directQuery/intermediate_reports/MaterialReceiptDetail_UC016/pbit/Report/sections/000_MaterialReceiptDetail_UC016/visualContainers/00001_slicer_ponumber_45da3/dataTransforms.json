@@ -1,0 +1,73 @@
+{
+  "objects": {
+    "data": [
+      {
+        "properties": {
+          "mode": {
+            "expr": {
+              "Literal": {
+                "Value": "'Basic'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "projectionOrdering": {
+    "Values": [
+      0
+    ]
+  },
+  "projectionActiveItems": {
+    "Values": [
+      {
+        "queryRef": "PURCHASE_ORDER_RECEIPT.PO_NUMBER",
+        "suppressConcat": false
+      }
+    ]
+  },
+  "queryMetadata": {
+    "Select": [
+      {
+        "Restatement": "PO_NUMBER",
+        "Name": "PURCHASE_ORDER_RECEIPT.PO_NUMBER",
+        "Type": 2048
+      }
+    ]
+  },
+  "visualElements": [
+    {
+      "DataRoles": [
+        {
+          "Name": "Values",
+          "Projection": 0,
+          "isActive": true
+        }
+      ]
+    }
+  ],
+  "selects": [
+    {
+      "displayName": "PO_NUMBER",
+      "queryName": "PURCHASE_ORDER_RECEIPT.PO_NUMBER",
+      "roles": {
+        "Values": true
+      },
+      "type": {
+        "category": null,
+        "underlyingType": 1
+      },
+      "expr": {
+        "Column": {
+          "Expression": {
+            "SourceRef": {
+              "Entity": "PURCHASE_ORDER_RECEIPT"
+            }
+          },
+          "Property": "PO_NUMBER"
+        }
+      }
+    }
+  ]
+} 

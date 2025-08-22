@@ -6,11 +6,11 @@
   "is_hidden": false,
   "columns": [
     {
-      "source_name": "RELEASE_NUMBER",
+      "source_name": "PO_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "RELEASE_NUMBER",
+      "source_column": "PO_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -38,11 +38,11 @@
       }
     },
     {
-      "source_name": "PO_LINE_NUMBER",
+      "source_name": "RELEASE_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "PO_LINE_NUMBER",
+      "source_column": "RELEASE_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -54,11 +54,11 @@
       }
     },
     {
-      "source_name": "PO_NUMBER",
+      "source_name": "PO_LINE_NUMBER",
       "datatype": "string",
       "format_string": null,
       "lineage_tag": null,
-      "source_column": "PO_NUMBER",
+      "source_column": "PO_LINE_NUMBER",
       "description": null,
       "is_hidden": false,
       "summarize_by": "none",
@@ -92,7 +92,7 @@
       "name": "Dim_PURCHASE_ORDER_LINE_PURCHASE_ORDER_RECEIPT",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "let\n            Source = Value.NativeQuery(\n                #\"SQL Database\",\n                \"SELECT DISTINCT\n            [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER],\n            ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key]\n        FROM (\n            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_LINE]\n            UNION ALL\n            SELECT [RELEASE_NUMBER], [SITE_NUMBER], [PO_LINE_NUMBER], [PO_NUMBER] FROM [PURCHASE_ORDER_RECEIPT]\n        ) AS CombinedKeys\n        WHERE ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') <> '''''\",\n                null, \n                [EnableFolding = true]\n            )\n        in\n            Source"
+      "expression": "let\n                Source = Sql.Database(\"REPLACE_WITH_YOUR_SERVER\", \"REPLACE_WITH_YOUR_DATABASE\"),\n                Query = Value.NativeQuery(\n                    Source,\n                    \"SELECT DISTINCT [PO_NUMBER], [SITE_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER], ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') as [PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key] FROM (SELECT [PO_NUMBER], [SITE_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER] FROM [PURCHASE_ORDER_LINE] UNION ALL SELECT [PO_NUMBER], [SITE_NUMBER], [RELEASE_NUMBER], [PO_LINE_NUMBER] FROM [PURCHASE_ORDER_RECEIPT]) AS CombinedKeys WHERE ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') IS NOT NULL AND ISNULL(CAST([PO_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([SITE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([RELEASE_NUMBER] AS NVARCHAR(50)), '') + '|' + ISNULL(CAST([PO_LINE_NUMBER] AS NVARCHAR(50)), '') <> ''''''\",\n                    null, \n                    [EnableFolding = true]\n                )\n                in\n                Query"
     }
   ],
   "has_widget_serialization": false,

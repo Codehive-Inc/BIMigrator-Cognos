@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" expressionLocale="en-us" interactivePageBreakByFrame="true" useStyleVersion="1">
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/11.0/" to "http://developer.cognos.com/schemas/report/16.2/" at 2025-8-9. 0:59:50-->
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/6.0/" to "http://developer.cognos.com/schemas/report/11.0/" at 2014-6-25. 17:48:38-->
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/3.0/" to "http://developer.cognos.com/schemas/report/6.0/" at 2013-5-2. 11:39:43-->
+  <!--RSU-SPC-0093 Report specification upgraded from "http://developer.cognos.com/schemas/report/1/" to "http://developer.cognos.com/schemas/report/3.0/" at 2010-7-22 9:5:48-->
+  <drillBehavior modelBasedDrillThru="false"/>
+  <queries>
+    <query name="MaterialAdjustmentDetail">
+      <source>
+        <model/>
+      </source>
+      <selection>
+        <dataItem aggregate="none" name="SITE_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="ITEM_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="CHARGED_DATE" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[CHARGED_DATE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="JOB_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QUANTITY" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[QUANTITY]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="UNIT_PRICE" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[UNIT_PRICE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="TRANSACTION_VALUE" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[TRANSACTION_VALUE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="ADJUSTMENT_DESC" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[ADJUSTMENT_DESC]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="ADJUSTMENT_TYPE" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[ADJUSTMENT_TYPE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="TIME_ENTERED" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[TIME_ENTERED]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="DESCRIPTION" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]</expression>
+        </dataItem>
+        <dataItem aggregate="notApplicable" name="Cost" rollupAggregate="none">
+          <expression>IF ( [UNIT_PRICE] = 0 ) THEN
+	( [TRANSACTION_VALUE] )
+ELSE
+	( [UNIT_PRICE] )</expression>
+        </dataItem>
+      </selection>
+      <detailFilters>
+        <detailFilter>
+          <filterExpression>[SITE_NUMBER]= ?SiteNumber?</filterExpression>
+        </detailFilter>
+        <detailFilter>
+          <filterExpression>[ITEM_NUMBER]=?ItemNumber?</filterExpression>
+        </detailFilter>
+        <detailFilter>
+          <filterExpression>[CHARGED_DATE]=?ChargedDate?</filterExpression>
+        </detailFilter>
+        <detailFilter>
+          <filterExpression>[TIME_ENTERED]=?TimeEntered?</filterExpression>
+        </detailFilter>
+      </detailFilters>
+      <queryHints>
+        <useV4Interpretation value="true"/>
+      </queryHints>
+    </query>
+  </queries>
+</report>

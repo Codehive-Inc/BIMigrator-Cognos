@@ -1,0 +1,592 @@
+{
+  "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+  "columns": [
+    {
+      "name": "SITE_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "SITE_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PO_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "PO_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "CHANGE_ORDER_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "CHANGE_ORDER_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "RELEASE_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "RELEASE_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PO_LINE_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "PO_LINE_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "STATUS",
+      "dataType": "string",
+      "sourceColumn": "STATUS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "STATUS_DATE",
+      "dataType": "dateTime",
+      "sourceColumn": "STATUS_DATE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "ITEM_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "ITEM_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "UNIT_PRICE",
+      "dataType": "int64",
+      "sourceColumn": "UNIT_PRICE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "BU_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "BU_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "JOB_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "JOB_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "UNIT_OF_MEASURE",
+      "dataType": "string",
+      "sourceColumn": "UNIT_OF_MEASURE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PROMISED_DATE",
+      "dataType": "dateTime",
+      "sourceColumn": "PROMISED_DATE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_LAST_REJECTED",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_LAST_REJECTED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_LAST_IN_INVENT",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_LAST_IN_INVENT",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_LAST_RECD_SITE",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_LAST_RECD_SITE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_LAST_IN_HOLD",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_LAST_IN_HOLD",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_ENTERED",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_ENTERED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QTY_ORDERED",
+      "dataType": "int64",
+      "sourceColumn": "QTY_ORDERED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QTY_RECD_TO_DATE",
+      "dataType": "int64",
+      "sourceColumn": "QTY_RECD_TO_DATE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QTY_ON_HOLD",
+      "dataType": "int64",
+      "sourceColumn": "QTY_ON_HOLD",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QA_CODE",
+      "dataType": "string",
+      "sourceColumn": "QA_CODE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QA_INSPECTOR",
+      "dataType": "string",
+      "sourceColumn": "QA_INSPECTOR",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QA_LEVEL",
+      "dataType": "string",
+      "sourceColumn": "QA_LEVEL",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "REQUISITION",
+      "dataType": "string",
+      "sourceColumn": "REQUISITION",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "VENDOR_NAME",
+      "dataType": "string",
+      "sourceColumn": "VENDOR_NAME",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PO_TYPE",
+      "dataType": "string",
+      "sourceColumn": "PO_TYPE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PO_CLASS",
+      "dataType": "string",
+      "sourceColumn": "PO_CLASS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "BLANKET_TYPE",
+      "dataType": "string",
+      "sourceColumn": "BLANKET_TYPE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "BLANKET_BEGIN_DATE",
+      "dataType": "dateTime",
+      "sourceColumn": "BLANKET_BEGIN_DATE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "BLANKET_END_DATE",
+      "dataType": "dateTime",
+      "sourceColumn": "BLANKET_END_DATE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_ROOT_ENTERED",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_ROOT_ENTERED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_ROOT_ORDERED",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_ROOT_ORDERED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DATE_ROOT_STATUS",
+      "dataType": "dateTime",
+      "sourceColumn": "DATE_ROOT_STATUS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DOLLARS_COMMITTED",
+      "dataType": "int64",
+      "sourceColumn": "DOLLARS_COMMITTED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "MAX_DOLLARS",
+      "dataType": "int64",
+      "sourceColumn": "MAX_DOLLARS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LAST_BLANKET_RELEASE_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "LAST_BLANKET_RELEASE_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PO_ROOT_STATUS",
+      "dataType": "string",
+      "sourceColumn": "PO_ROOT_STATUS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "REVISION_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "REVISION_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "SERVICE",
+      "dataType": "string",
+      "sourceColumn": "SERVICE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DOLLARS_RECEIVED",
+      "dataType": "int64",
+      "sourceColumn": "DOLLARS_RECEIVED",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DSR_NUMBER",
+      "dataType": "string",
+      "sourceColumn": "DSR_NUMBER",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "DSR_HOLD_STATUS",
+      "dataType": "string",
+      "sourceColumn": "DSR_HOLD_STATUS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PROMISE_DATE_IND",
+      "dataType": "string",
+      "sourceColumn": "PROMISE_DATE_IND",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PRICE_CODE",
+      "dataType": "string",
+      "sourceColumn": "PRICE_CODE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "PROCUREMENT_CODE",
+      "dataType": "string",
+      "sourceColumn": "PROCUREMENT_CODE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "QTY_REJECTED_TO_DATE",
+      "dataType": "int64",
+      "sourceColumn": "QTY_REJECTED_TO_DATE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "REQUESTOR_NAME",
+      "dataType": "string",
+      "sourceColumn": "REQUESTOR_NAME",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "UNIT_OF_PURCHASE",
+      "dataType": "string",
+      "sourceColumn": "UNIT_OF_PURCHASE",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "CONVERSION_FACTOR",
+      "dataType": "int64",
+      "sourceColumn": "CONVERSION_FACTOR",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "STOP",
+      "dataType": "string",
+      "sourceColumn": "STOP",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "SEGMENTS",
+      "dataType": "int64",
+      "sourceColumn": "SEGMENTS",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION1",
+      "dataType": "string",
+      "sourceColumn": "LOCATION1",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_1",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_1",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION2",
+      "dataType": "string",
+      "sourceColumn": "LOCATION2",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_2",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_2",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION3",
+      "dataType": "string",
+      "sourceColumn": "LOCATION3",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_3",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_3",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION4",
+      "dataType": "string",
+      "sourceColumn": "LOCATION4",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_4",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_4",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION5",
+      "dataType": "string",
+      "sourceColumn": "LOCATION5",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_5",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_5",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION6",
+      "dataType": "string",
+      "sourceColumn": "LOCATION6",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_6",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_6",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION7",
+      "dataType": "string",
+      "sourceColumn": "LOCATION7",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_7",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_7",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION8",
+      "dataType": "string",
+      "sourceColumn": "LOCATION8",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_8",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_8",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION9",
+      "dataType": "string",
+      "sourceColumn": "LOCATION9",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_9",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_9",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOCATION10",
+      "dataType": "string",
+      "sourceColumn": "LOCATION10",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    },
+    {
+      "name": "LOC_NUMBER_10",
+      "dataType": "string",
+      "sourceColumn": "LOC_NUMBER_10",
+      "summarizeBy": "none",
+      "isKey": false,
+      "isNullable": true
+    }
+  ],
+  "partitions": [
+    {
+      "name": "Dim_PURCHASE_ORDER_LINE_STORAGE_LOCATION",
+      "source_type": "m",
+      "mode": "directQuery",
+      "expression": "let\n                Source = Sql.Database(\"REPLACE_WITH_YOUR_SERVER\", \"REPLACE_WITH_YOUR_DATABASE\"),\n                Query = Value.NativeQuery(\n                    Source,\n                    \"SELECT a.[SITE_NUMBER], a.[PO_NUMBER], a.[CHANGE_ORDER_NUMBER], a.[RELEASE_NUMBER], a.[PO_LINE_NUMBER], a.[STATUS], a.[STATUS_DATE], a.[ITEM_NUMBER], a.[UNIT_PRICE], a.[BU_NUMBER], a.[JOB_NUMBER], a.[UNIT_OF_MEASURE], a.[PROMISED_DATE], a.[DATE_LAST_REJECTED], a.[DATE_LAST_IN_INVENT], a.[DATE_LAST_RECD_SITE], a.[DATE_LAST_IN_HOLD], a.[DATE_ENTERED], a.[QTY_ORDERED], a.[QTY_RECD_TO_DATE], a.[QTY_ON_HOLD], a.[QA_CODE], a.[QA_INSPECTOR], a.[QA_LEVEL], a.[REQUISITION], a.[VENDOR_NAME], a.[PO_TYPE], a.[PO_CLASS], a.[BLANKET_TYPE], a.[BLANKET_BEGIN_DATE], a.[BLANKET_END_DATE], a.[DATE_ROOT_ENTERED], a.[DATE_ROOT_ORDERED], a.[DATE_ROOT_STATUS], a.[DOLLARS_COMMITTED], a.[MAX_DOLLARS], a.[LAST_BLANKET_RELEASE_NUMBER], a.[PO_ROOT_STATUS], a.[REVISION_NUMBER], a.[SERVICE], a.[DOLLARS_RECEIVED], a.[DSR_NUMBER], a.[DSR_HOLD_STATUS], a.[PROMISE_DATE_IND], a.[PRICE_CODE], a.[PROCUREMENT_CODE], a.[QTY_REJECTED_TO_DATE], a.[REQUESTOR_NAME], a.[UNIT_OF_PURCHASE], a.[CONVERSION_FACTOR], a.[STOP], a.[SITE_NUMBER], a.[PO_NUMBER], a.[CHANGE_ORDER_NUMBER], a.[RELEASE_NUMBER], a.[PO_LINE_NUMBER], a.[STATUS], a.[STATUS_DATE], a.[ITEM_NUMBER], a.[UNIT_PRICE], a.[BU_NUMBER], a.[JOB_NUMBER], a.[UNIT_OF_MEASURE], a.[PROMISED_DATE], a.[DATE_LAST_REJECTED], a.[DATE_LAST_IN_INVENT], a.[DATE_LAST_RECD_SITE], a.[DATE_LAST_IN_HOLD], a.[DATE_ENTERED], a.[QTY_ORDERED], a.[QTY_RECD_TO_DATE], a.[QTY_ON_HOLD], a.[QA_CODE], a.[QA_INSPECTOR], a.[QA_LEVEL], a.[REQUISITION], a.[VENDOR_NAME], a.[PO_TYPE], a.[PO_CLASS], a.[BLANKET_TYPE], a.[BLANKET_BEGIN_DATE], a.[BLANKET_END_DATE], a.[DATE_ROOT_ENTERED], a.[DATE_ROOT_ORDERED], a.[DATE_ROOT_STATUS], a.[DOLLARS_COMMITTED], a.[MAX_DOLLARS], a.[LAST_BLANKET_RELEASE_NUMBER], a.[PO_ROOT_STATUS], a.[REVISION_NUMBER], a.[SERVICE], a.[DOLLARS_RECEIVED], a.[DSR_NUMBER], a.[DSR_HOLD_STATUS], a.[PROMISE_DATE_IND], a.[PRICE_CODE], a.[PROCUREMENT_CODE], a.[QTY_REJECTED_TO_DATE], a.[REQUESTOR_NAME], a.[UNIT_OF_PURCHASE], a.[CONVERSION_FACTOR], a.[STOP], b.[SEGMENTS], b.[LOCATION1], b.[LOC_NUMBER_1], b.[LOCATION2], b.[LOC_NUMBER_2], b.[LOCATION3], b.[LOC_NUMBER_3], b.[LOCATION4], b.[LOC_NUMBER_4], b.[LOCATION5], b.[LOC_NUMBER_5], b.[LOCATION6], b.[LOC_NUMBER_6], b.[LOCATION7], b.[LOC_NUMBER_7], b.[LOCATION8], b.[LOC_NUMBER_8], b.[LOCATION9], b.[LOC_NUMBER_9], b.[LOCATION10], b.[LOC_NUMBER_10], b.[SEGMENTS], b.[LOCATION1], b.[LOC_NUMBER_1], b.[LOCATION2], b.[LOC_NUMBER_2], b.[LOCATION3], b.[LOC_NUMBER_3], b.[LOCATION4], b.[LOC_NUMBER_4], b.[LOCATION5], b.[LOC_NUMBER_5], b.[LOCATION6], b.[LOC_NUMBER_6], b.[LOCATION7], b.[LOC_NUMBER_7], b.[LOCATION8], b.[LOC_NUMBER_8], b.[LOCATION9], b.[LOC_NUMBER_9], b.[LOCATION10], b.[LOC_NUMBER_10] FROM [PURCHASE_ORDER_LINE] a LEFT JOIN [STORAGE_LOCATION] b ON a.[ITEM_NUMBER] = b.[ITEM_NUMBER] AND a.[SITE_NUMBER] = b.[SITE_NUMBER]\"\n                )\n                in\n                Query"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

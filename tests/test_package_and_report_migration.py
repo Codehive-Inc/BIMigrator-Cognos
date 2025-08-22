@@ -12,7 +12,7 @@ def test_package_and_report_migration():
         "examples/Report XMLs DE/MaterialReceiptDetail_UC016.xml",
         "examples/Report XMLs DE/PartNumbers_UC013.xml"
     ]
-    output_dir = "test_output/z_starSchema_directQuery"
+    output_dir = "test_output/z_mergeTables_directQuery"
 
     os.makedirs(output_dir, exist_ok=True)
     print(f"Created output directory: {output_dir}")
@@ -28,7 +28,8 @@ def test_package_and_report_migration():
         output_path=output_dir,
         report_file_paths=report_files,
         cognos_url=cognos_url,
-        session_key=session_key
+        session_key=session_key,
+        task_id="test_migration_12345"
     )
 
     if success:

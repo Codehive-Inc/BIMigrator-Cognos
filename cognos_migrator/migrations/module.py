@@ -55,7 +55,7 @@ def migrate_module_with_explicit_session(module_id: str,
     
     # Generate task_id if not provided
     if task_id is None:
-        task_id = f"migration_{uuid.uuid4().hex}"
+        task_id = str(uuid.uuid4())
 
     # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
     set_task_info(task_id, total_steps=12)
@@ -182,7 +182,7 @@ def migrate_module_with_reports_explicit_session(module_id: str,
     
     # Generate task_id if not provided
     if task_id is None:
-        task_id = f"migration_{uuid.uuid4().hex}"
+        task_id = str(uuid.uuid4())
 
     # Initialize WebSocket logging with task ID and total steps (12 steps in the migration process)
     set_task_info(task_id, total_steps=12)

@@ -69,15 +69,18 @@ class TMDLPostProcessor:
 
         self.logger.info(f"Read {len(raw_relationships)} raw relationships from TMDL file involving tables: {all_tables}")
 
-        # Step 2: Apply the proven ambiguity resolution logic
-        clean_relationships = self._resolve_ambiguities(raw_relationships, all_tables)
+        # Step 2: Filter out incompatible relationships for DirectQuery mode
+        filtered_relationships = self._filter_directquery_incompatible_relationships(raw_relationships)
+        
+        # Step 3: Apply the proven ambiguity resolution logic
+        clean_relationships = self._resolve_ambiguities(filtered_relationships, all_tables)
         
         # Step 3: Write the clean relationships back to the file
         self._write_tmdl_file(tmdl_file_path, clean_relationships)
         
         self.logger.info(f"Relationship post-processing complete. Wrote {len(clean_relationships)} clean relationships.")
 
-    def _parse_tmdl_file(self, tmdl_content: str) -> (List[Dict[str, Any]], List[str]):
+    def _parse_tmdl_file(self, tmdl_content: str) -> tuple[List[Dict[str, Any]], List[str]]:
         """
         Parses a .tmdl file content and extracts relationship objects and all unique table names.
         """
@@ -221,6 +224,45 @@ class TMDLPostProcessor:
         centrality_priority = -max(centrality.get(from_table, 0), centrality.get(to_table, 0))
 
         return (key_priority, centrality_priority)
+
+    def _filter_directquery_incompatible_relationships(self, relationships: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Filter out relationships that are incompatible with DirectQuery mode.
+        Currently removes CentralDateTable relationships when in DirectQuery mode.
+        """
+        try:
+            # Check if we're in DirectQuery mode and need to filter
+            from ..migrations.package import load_settings
+            settings = load_settings()
+            is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
+            
+            if not is_directquery:
+                self.logger.info("Import mode detected, keeping all relationships")
+                return relationships
+            
+            # Filter out CentralDateTable relationships in DirectQuery mode
+            filtered_relationships = []
+            skipped_count = 0
+            
+            for rel in relationships:
+                # Skip relationships to/from CentralDateTable in DirectQuery mode
+                if (rel.get('from_table') == 'CentralDateTable' or rel.get('to_table') == 'CentralDateTable'):
+                    self.logger.info(f"Skipping CentralDateTable relationship in DirectQuery mode: {rel.get('from_table')}.{rel.get('from_column')} -> {rel.get('to_table')}.{rel.get('to_column')}")
+                    skipped_count += 1
+                    continue
+                    
+                filtered_relationships.append(rel)
+            
+            if skipped_count > 0:
+                self.logger.warning(f"DirectQuery mode: Filtered out {skipped_count} CentralDateTable relationships (calculated date tables are incompatible with DirectQuery)")
+                self.logger.info("To include date functionality in DirectQuery mode, consider creating a physical date table in your database")
+            
+            return filtered_relationships
+            
+        except Exception as e:
+            self.logger.error(f"Error filtering DirectQuery incompatible relationships: {e}")
+            self.logger.warning("Proceeding with all relationships (filtering failed)")
+            return relationships
 
     def _write_tmdl_file(self, file_path: str, relationships: List[Dict[str, Any]]):
         """

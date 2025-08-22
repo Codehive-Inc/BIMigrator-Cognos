@@ -22,7 +22,7 @@ from cognos_migrator.client import CognosClient, CognosAPIError
 from cognos_migrator.common.websocket_client import logging_helper, set_task_info
 from cognos_migrator.extractors.packages import PackageExtractor, ConsolidatedPackageExtractor
 from cognos_migrator.extractors.packages.sql_relationship_extractor import SQLRelationshipExtractor
-from ..models import PowerBIProject, DataModel, Report, ReportPage
+from ..models import PowerBIProject, DataModel, Report, ReportPage, Table
 from ..generators import PowerBIProjectGenerator
 from ..extractors.packages import ConsolidatedPackageExtractor
 from .report import migrate_single_report_with_explicit_session
@@ -364,9 +364,10 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
         Filtered data model with only referenced tables
     """
     # Load table filtering settings
-    filtering_settings = load_table_filtering_settings()
-    filtering_mode = filtering_settings['mode']
-    always_include = filtering_settings['always_include']
+    settings = load_settings()
+    filtering_settings = settings.get('table_filtering', {})
+    filtering_mode = filtering_settings.get('mode', 'include-all')
+    always_include = filtering_settings.get('always_include', [])
     
     # If mode is not 'filter-reports', return the original model
     if filtering_mode != 'filter-reports':
@@ -448,10 +449,33 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     filtered_table_names = {table.name for table in filtered_tables}
     filtered_relationships = []
     
+    # Check DirectQuery mode and date table compatibility
+    settings = load_settings()
+    is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
+    has_central_date_table = "CentralDateTable" in filtered_table_names
+    always_include = settings.get("table_filtering", {}).get("always_include", [])
+    
+    # Log DirectQuery mode handling for date tables
+    if is_directquery and "CentralDateTable" in always_include and not has_central_date_table:
+        logging.warning("DirectQuery mode detected with CentralDateTable in always_include, but CentralDateTable is incompatible with DirectQuery mode (calculated tables require Import mode)")
+        logging.info("CentralDateTable relationships will be automatically excluded to prevent model validation errors")
+    
+    skipped_relationships = 0
     for rel in filtered_model.relationships:
+        # Skip CentralDateTable relationships in DirectQuery mode if CentralDateTable doesn't exist
+        if (is_directquery and not has_central_date_table and 
+            (rel.from_table == "CentralDateTable" or rel.to_table == "CentralDateTable")):
+            logging.info(f"Skipping CentralDateTable relationship in DirectQuery mode: {rel.from_table}.{rel.from_column} -> {rel.to_table}.{rel.to_column}")
+            skipped_relationships += 1
+            continue
+            
         if (rel.from_table in filtered_table_names and 
             rel.to_table in filtered_table_names):
             filtered_relationships.append(rel)
+    
+    # Log summary of skipped relationships
+    if skipped_relationships > 0:
+        logging.warning(f"Skipped {skipped_relationships} CentralDateTable relationships due to DirectQuery mode incompatibility")
     
     filtered_model.relationships = filtered_relationships
     
@@ -467,8 +491,24 @@ def _migrate_shared_model(
     reports_are_ids: bool = False,
     llm_service: Optional[Dict[str, Any]] = None,
     config: Optional[Dict[str, Any]] = None,
+    task_id: Optional[str] = None,
 ) -> bool:
     """Helper function to orchestrate the shared model migration."""
+    
+    # Generate task ID if not provided
+    if task_id is None:
+        task_id = str(uuid.uuid4())
+    
+    # Set task info for WebSocket updates
+    set_task_info(task_id, total_steps=10)
+    
+    log_info(f"Starting shared model migration with task ID: {task_id}")
+    logging_helper(
+        message=f"Starting shared model migration for package: {Path(package_file).name}",
+        progress=0,
+        message_type="info"
+    )
+    
     # --- Step 1: Intermediate migration for each report ---
     intermediate_dir = Path(output_path) / "intermediate_reports"
     shutil.rmtree(intermediate_dir, ignore_errors=True)
@@ -500,6 +540,12 @@ def _migrate_shared_model(
             successful_migrations_paths.append(report_output_path)
     
     # --- Step 2: Analyze intermediate files and consolidate table schemas ---
+    logging_helper(
+        message="Analyzing intermediate files and consolidating table schemas",
+        progress=20,
+        message_type="info"
+    )
+    
     consolidated_tables: Dict[str, Table] = {}
     required_tables = set()
 
@@ -542,9 +588,27 @@ def _migrate_shared_model(
     # Add any "always_include" tables from the configuration
     if config:
         always_include = config.get("table_filtering", {}).get("always_include", [])
+        staging_config = config.get("staging_tables", {})
+        is_directquery = staging_config.get("data_load_mode", "import") == "direct_query"
+        
         if always_include:
-            required_tables.update(always_include)
-            logging.info(f"Adding {len(always_include)} 'always_include' tables: {always_include}")
+            # Filter out incompatible tables in DirectQuery mode
+            filtered_always_include = []
+            for table_name in always_include:
+                if table_name == "CentralDateTable" and is_directquery:
+                    logging.warning(f"Excluding '{table_name}' from always_include: calculated date tables are incompatible with DirectQuery mode")
+                    logging.info("To include date functionality in DirectQuery mode, consider creating a physical date table in your database")
+                else:
+                    filtered_always_include.append(table_name)
+            
+            if filtered_always_include:
+                required_tables.update(filtered_always_include)
+                logging.info(f"Adding {len(filtered_always_include)} compatible 'always_include' tables: {filtered_always_include}")
+            
+            # Log what was excluded for tracking
+            excluded_tables = set(always_include) - set(filtered_always_include)
+            if excluded_tables:
+                logging.warning(f"Excluded {len(excluded_tables)} incompatible tables from always_include due to DirectQuery mode: {list(excluded_tables)}")
 
     # Safety check for direct mode
     if not required_tables and config and config.get("table_filtering", {}).get("mode") == "direct":
@@ -568,6 +632,12 @@ def _migrate_shared_model(
         _merge_calculations_from_intermediate_reports(successful_migrations_paths, Path(output_path))
     
     # --- Step 3: Package Extraction based on REQUIRED tables ---
+    logging_helper(
+        message="Extracting package information based on required tables",
+        progress=40,
+        message_type="info"
+    )
+    
     package_extractor = ConsolidatedPackageExtractor(
         config=config,
         logger=logging.getLogger(__name__)
@@ -582,6 +652,12 @@ def _migrate_shared_model(
     extracted_dir = os.path.join(output_path, "extracted")
     
     # Step 4: Data Model Conversion from FILTERED package info
+    logging_helper(
+        message="Converting package to Power BI data model",
+        progress=60,
+        message_type="info"
+    )
+    
     data_model = package_extractor.convert_to_data_model(package_info)
     
     # Get table names from the data model for filtering SQL relationships
@@ -626,6 +702,12 @@ def _migrate_shared_model(
     logging.info(f"Data model has {len(data_model.tables)} tables before generation: {[t.name for t in data_model.tables]}")
 
     # --- Step 6: Final Generation ---
+    logging_helper(
+        message="Generating Power BI project files",
+        progress=80,
+        message_type="info"
+    )
+    
     from cognos_migrator.config import MigrationConfig
     from ..processors.tmdl_post_processor import TMDLPostProcessor
     migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
@@ -679,6 +761,14 @@ def _migrate_shared_model(
         
     # --- Step 7.5: Calculations are handled through the table JSON files ---
     logging.info("Calculations are handled through the table JSON files")
+    
+    # Final completion message
+    logging_helper(
+        message=f"Shared model migration completed successfully for package: {Path(package_file).name}",
+        progress=100,
+        message_type="success"
+    )
+    log_info(f"Shared model migration completed successfully with task ID: {task_id}")
 
     return True, str(output_path)
 
@@ -699,6 +789,7 @@ def migrate_package_with_local_reports(package_file_path: str,
         session_key=session_key,
         config=settings,
         reports_are_ids=False,
+        task_id=task_id,
     )
 
 def migrate_package_with_reports_explicit_session(package_file_path: str,
@@ -710,8 +801,8 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                        auth_key: str = "IBM-BA-Authorization",
                                        dry_run: bool = False) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
-    config = load_table_filtering_settings()
-    logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded table filtering settings: {config}")
+    config = load_settings()
+    logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings: {config}")
     return _migrate_shared_model(
         package_file=package_file_path,
         reports=report_ids,
@@ -720,6 +811,7 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         session_key=session_key,
         config=config,
         reports_are_ids=True,
+        task_id=task_id,
     )
 
 def _merge_calculations_from_intermediate_reports(

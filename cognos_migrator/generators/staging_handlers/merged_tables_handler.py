@@ -447,14 +447,36 @@ class MergedTablesHandler(BaseHandler):
         # Generate native SQL query
         native_sql_query = self._generate_native_sql_query(from_table, to_table, sql_relationships)
         
-        # Combine columns from both tables (avoiding duplicates)
-        combined_columns = list(from_table.columns)
-        from_table_column_names = {col.name for col in from_table.columns}
+        # Combine columns from both tables (avoiding duplicates by name)
+        combined_columns = []
+        seen_column_names = set()
+        
+        # Add all columns from from_table first
+        for col in from_table.columns:
+            if col.name not in seen_column_names:
+                combined_columns.append(col)
+                seen_column_names.add(col.name)
         
         # Add unique columns from to_table
         for col in to_table.columns:
-            if col.name not in from_table_column_names:
+            if col.name not in seen_column_names:
                 combined_columns.append(col)
+                seen_column_names.add(col.name)
+        
+        # Final safety check for duplicates
+        final_column_names = [col.name for col in combined_columns]
+        duplicate_names = [name for name in final_column_names if final_column_names.count(name) > 1]
+        if duplicate_names:
+            self.logger.error(f"ERROR: Still found duplicate column names after deduplication: {set(duplicate_names)}")
+            # Remove duplicates by creating a new list with unique names only
+            seen_final = set()
+            final_combined_columns = []
+            for col in combined_columns:
+                if col.name not in seen_final:
+                    final_combined_columns.append(col)
+                    seen_final.add(col.name)
+            combined_columns = final_combined_columns
+            self.logger.info(f"Fixed: Reduced {len(final_column_names)} to {len(combined_columns)} unique columns")
         
         # Create the combination table
         combination_table = Table(
@@ -504,7 +526,7 @@ class MergedTablesHandler(BaseHandler):
                                  if col.name not in from_table_column_names]
         
         all_columns = from_table_columns + to_table_unique_columns
-        select_clause = ",\n        ".join(all_columns)
+        select_clause = ", ".join(all_columns)  # Build as single line from start
         
         # Build JOIN condition
         join_conditions = []
@@ -523,20 +545,18 @@ class MergedTablesHandler(BaseHandler):
         elif 'FULL' in join_type:
             sql_join_type = "FULL OUTER JOIN"
         
-        # Generate the native SQL M-query
-        native_sql = f"""SELECT
-        {select_clause}
-    FROM [{from_table.name}] a
-    {sql_join_type} [{to_table.name}] b ON {join_condition}"""
+        # Generate the native SQL M-query (single line for TMDL compatibility)
+        native_sql = f"SELECT {select_clause} FROM [{from_table.name}] a {sql_join_type} [{to_table.name}] b ON {join_condition}"
         
-        # Create M-query with native SQL
+        # Create M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-    Source = Value.NativeQuery(
-        #"SQL Database",
-        "{native_sql}"
-    )
-in
-    Source'''
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
+                Query = Value.NativeQuery(
+                    Source,
+                    "{native_sql}"
+                )
+                in
+                Query'''
         
         self.logger.info(f"Generated native SQL for {from_table.name} + {to_table.name}: {len(all_columns)} columns, {sql_join_type}")
         return m_query

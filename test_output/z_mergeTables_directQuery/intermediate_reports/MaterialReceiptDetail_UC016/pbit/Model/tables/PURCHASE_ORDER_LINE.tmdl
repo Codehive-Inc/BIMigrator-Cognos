@@ -1,0 +1,221 @@
+table PURCHASE_ORDER_LINE
+
+
+    column 'DATE_ENTERED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_RECEIVED_AT_SITE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DATE_RECEIVED_AT_SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_RECEIVED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QTY_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_ENTERED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUESTOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUESTOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC1' = ```
+            LOC1
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC2' = ```
+            LOC2
+    ```
+        dataType: string
+        summarizeBy: none
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TotalCost' = ```
+            TotalCost
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'PURCHASE_ORDER_LINE' = m
+        mode: directQuery
+        source = 
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM PURCHASE_ORDER_LINE"])
+in
+    Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -52,7 +52,7 @@ def migrate_single_report(
     configure_logging("cognos_report_migration")
     
     if task_id is None:
-        task_id = f"report_migration_{uuid.uuid4().hex}"
+        task_id = str(uuid.uuid4())
 
     set_task_info(task_id, total_steps=8)
     
@@ -157,10 +157,10 @@ def migrate_single_report_with_explicit_session(report_id: str,
     """
     log_warning("The function 'migrate_single_report_with_explicit_session' is deprecated. Use 'migrate_single_report' instead.")
     return migrate_single_report(
-        report_id=report_id,
         output_path=output_path,
         cognos_url=cognos_url,
         session_key=session_key,
+        report_id=report_id,
         task_id=task_id,
         auth_key=auth_key
     )

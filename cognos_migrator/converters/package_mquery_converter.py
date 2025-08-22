@@ -139,7 +139,7 @@ let
     SQL_Statement = "{sql_query.replace('"', '""')}",
 
     // --- 2. CONNECT TO THE DATABASE ---
-    Source = Sql.Database(#"DB Server", #"DB Name"),
+    Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
 
     // --- 3. EXECUTE THE NATIVE SQL QUERY ---
     ExecuteQuery = Value.NativeQuery(
