@@ -1,0 +1,42 @@
+relationship 37549a24-187e-42de-981a-8d8fcea60e72
+	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
+	toColumn: STORAGE_LOCATION.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 54c8d188-bf79-44d4-91ac-fb4d4a9f3eaf
+	fromColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
+	toColumn: STORAGE_LOCATION.ITEM_NUMBER
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 6655ed8d-091e-4f6c-a128-446da99f3ace
+	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.STOP
+	toColumn: PURCHASE_ORDER_LINE.STOP
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship dfb8a0d1-e1f9-4d86-9d1f-c053f37d313c
+	fromColumn: PURCHASE_ORDER_LINE.QA_INSPECTOR
+	toColumn: PURCHASE_ORDER_RECEIPT.QA_INSPECTOR
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship c48e8d13-ce0e-45cf-90ff-39f084631a54
+	fromColumn: ITEM_SITE_EXTRACT.STOP
+	toColumn: MATERIAL_CHARGES.STOP
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship c618c6ae-1981-4f99-a6ef-0f1ec94c6625
+	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
+	toColumn: MANUFACTURER.DATE_CREATED
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+

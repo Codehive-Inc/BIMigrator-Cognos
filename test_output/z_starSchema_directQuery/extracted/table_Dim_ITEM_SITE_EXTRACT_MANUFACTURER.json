@@ -44,7 +44,7 @@
       "name": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER",
       "source_type": "m",
       "mode": "directQuery",
-      "expression": "let\n                Source = Value.NativeQuery(\n                    #\"SQL Database\",\n                    \"SELECT DISTINCT [ITEM_NUMBER], [ITEM_NUMBER] as [ITEM_NUMBER_Key] FROM (SELECT [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [ITEM_NUMBER] FROM [MANUFACTURER]) AS CombinedKeys WHERE [ITEM_NUMBER] IS NOT NULL AND [ITEM_NUMBER] <> ''''''\",\n                    null, \n                    [EnableFolding = true]\n                )\n                in\n                Source"
+      "expression": "let\n                Source = Sql.Database(#\"DB Server\", #\"DB Name\"),\n                Query = Value.NativeQuery(\n                    Source,\n                    \"SELECT DISTINCT [ITEM_NUMBER], [ITEM_NUMBER] as [ITEM_NUMBER_Key] FROM (SELECT [ITEM_NUMBER] FROM [ITEM_SITE_EXTRACT] UNION ALL SELECT [ITEM_NUMBER] FROM [MANUFACTURER]) AS CombinedKeys WHERE [ITEM_NUMBER] IS NOT NULL AND [ITEM_NUMBER] <> ''''''\",\n                    null, \n                    [EnableFolding = true]\n                )\n                in\n                Query"
     }
   ],
   "has_widget_serialization": false,

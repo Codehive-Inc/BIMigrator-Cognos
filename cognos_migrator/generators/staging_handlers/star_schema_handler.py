@@ -470,14 +470,15 @@ class StarSchemaHandler(BaseHandler):
         
         # Generate the M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-                Source = Value.NativeQuery(
-                    #"SQL Database",
+                Source = Sql.Database(#"DB Server", #"DB Name"),
+                Query = Value.NativeQuery(
+                    Source,
                     "{native_sql}",
                     null, 
                     [EnableFolding = true]
                 )
                 in
-                Source'''
+                Query'''
         
         self.logger.info(f"Generated native SQL dimension query for {from_table_name} + {to_table_name} with {len(key_columns)} key columns")
         return m_query

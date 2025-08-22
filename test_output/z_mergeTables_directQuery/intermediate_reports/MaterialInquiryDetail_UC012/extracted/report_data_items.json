@@ -1,0 +1,317 @@
+[
+  {
+    "name": "SITE_NUMBER",
+    "id": "SITE_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "ITEM_NUMBER",
+    "id": "ITEM_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "PO_NUMBER",
+    "id": "PO_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER]",
+    "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "PO_LINE_NUMBER",
+    "id": "PO_LINE_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER]",
+    "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "RELEASE_NUMBER",
+    "id": "RELEASE_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER]",
+    "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "DESCRIPTION",
+    "id": "DESCRIPTION",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "UNIT_OF_MEASURE",
+    "id": "UNIT_OF_MEASURE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[UNIT_OF_MEASURE]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QTY_ON_HAND",
+    "id": "QTY_ON_HAND",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QTY_ON_HAND]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "MINIMUM",
+    "id": "MINIMUM",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "CONSUMABLE",
+    "id": "CONSUMABLE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "SHELF_LIFE",
+    "id": "SHELF_LIFE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SHELF_LIFE]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "MAXIMUM",
+    "id": "MAXIMUM",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "DATE_LAST_ISSUED",
+    "id": "DATE_LAST_ISSUED",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_ISSUED]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "DATE_LAST_RETURNED",
+    "id": "DATE_LAST_RETURNED",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_RETURNED]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "DATE_LAST_RECEIVED",
+    "id": "DATE_LAST_RECEIVED",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_RECEIVED]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "UTC_IND",
+    "id": "UTC_IND",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[UTC_IND]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "PRIMARY_LOC",
+    "id": "PRIMARY_LOC",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[PRIMARY_LOC]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "SECONDARY_LOC",
+    "id": "SECONDARY_LOC",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SECONDARY_LOC]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "STATUS",
+    "id": "STATUS",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[STATUS]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QA_CODE",
+    "id": "QA_CODE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CODE]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QA_LEVEL",
+    "id": "QA_LEVEL",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_LEVEL]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QA_CERT1",
+    "id": "QA_CERT1",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT1]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QA_CERT2",
+    "id": "QA_CERT2",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT2]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QA_CERT3",
+    "id": "QA_CERT3",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT3]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "QA_CERT4",
+    "id": "QA_CERT4",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT4]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "PIT",
+    "id": "PIT",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[PIT]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "PREVENT_MAINTENANCE",
+    "id": "PREVENT_MAINTENANCE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[PREVENT_MAINTENANCE]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "STATUS_DATE",
+    "id": "STATUS_DATE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[STATUS_DATE]",
+    "type": "source_column",
+    "table_name": "PURCHASE_ORDER_LINE",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "SAP_IND",
+    "id": "SAP_IND",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[SAP_IND]",
+    "type": "source_column",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "LOC_1",
+    "id": "LOC_1",
+    "aggregate": "notApplicable",
+    "expression": "substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([PRIMARY_LOC], 12, ' '), 11,2)",
+    "type": "calculation",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "LOC_2",
+    "id": "LOC_2",
+    "aggregate": "notApplicable",
+    "expression": "substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([SECONDARY_LOC], 12, ' '), 11,2)",
+    "type": "calculation",
+    "table_name": "ITEM_SITE_EXTRACT",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "SITE_NUMBER",
+    "id": "SITE_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]",
+    "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "ITEM_NUMBER",
+    "id": "ITEM_NUMBER",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]",
+    "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
+    "queryName": "MaterialInquiryDetail"
+  },
+  {
+    "name": "CHARGED_DATE",
+    "id": "CHARGED_DATE",
+    "aggregate": "maximum",
+    "expression": "[Database_Layer].[MATERIAL_CHARGES].[CHARGED_DATE]",
+    "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
+    "queryName": "Query1"
+  },
+  {
+    "name": "TRANSACTION_TYPE",
+    "id": "TRANSACTION_TYPE",
+    "aggregate": "none",
+    "expression": "[Database_Layer].[MATERIAL_CHARGES].[TRANSACTION_TYPE]",
+    "type": "source_column",
+    "table_name": "MATERIAL_CHARGES",
+    "queryName": "Query1"
+  }
+]

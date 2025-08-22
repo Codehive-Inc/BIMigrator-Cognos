@@ -1,0 +1,139 @@
+table ITEM_SITE_EXTRACT
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHARGED_DATE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHARGED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QUANTITY'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QUANTITY
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TRANSACTION_VALUE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TRANSACTION_VALUE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_DESC'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_DESC
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ADJUSTMENT_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ADJUSTMENT_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'TIME_ENTERED'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: TIME_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DESCRIPTION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DESCRIPTION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'Cost' = ```
+            Cost
+    ```
+        dataType: decimal
+        summarizeBy: sum
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'ITEM_SITE_EXTRACT' = m
+        mode: directQuery
+        source = 
+            let
+    Source = Sql.Database("localhost", "database_name", [Query="SELECT * FROM ITEM_SITE_EXTRACT"])
+in
+    Source
+        
+
+
+
+    annotation PBI_ResultType = Table

@@ -1,41 +1,41 @@
-relationship 5dbee95e-ddea-4c44-9adf-5fd115b0c029
-	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.PO_LINE_NUMBER
-	toColumn: PURCHASE_ORDER_LINE.PO_LINE_NUMBER
+relationship 77f190e5-7d64-49bd-9d4c-d541a018fc7b
+	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.RELEASE_NUMBER
+	toColumn: PURCHASE_ORDER_LINE.RELEASE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship fc338ca0-a6db-40b9-9824-46ea2ca67924
-	fromColumn: PURCHASE_ORDER_LINE.PO_LINE_NUMBER
-	toColumn: PURCHASE_ORDER_RECEIPT.PO_LINE_NUMBER
+relationship 010080cd-6d33-4aaf-93eb-ee40c5c745cb
+	fromColumn: PURCHASE_ORDER_LINE.RELEASE_NUMBER
+	toColumn: PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 4e8d9ce4-8b18-4b75-8f9a-d39ac56dee1c
-	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
-	toColumn: STORAGE_LOCATION.ITEM_NUMBER
-	crossFilteringBehavior: BothDirections
-	fromCardinality: many
-	isActive: true
-
-relationship 5526880c-3517-4f7d-929e-dd6ec3d5213d
+relationship 2b2eeba7-5553-404f-9870-d322245699b8
 	fromColumn: PURCHASE_ORDER_LINE.SITE_NUMBER
-	toColumn: MATERIAL_CHARGES.SITE_NUMBER
+	toColumn: STORAGE_LOCATION.SITE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 7fba491b-df6e-4d8b-83c8-2ad86a28d72b
-	fromColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
-	toColumn: STORAGE_LOCATION.ITEM_NUMBER
+relationship 86bb667d-3700-4c79-862d-135b368672c3
+	fromColumn: ITEM_SITE_EXTRACT.SITE_NUMBER
+	toColumn: STORAGE_LOCATION.SITE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship ba65d855-fa81-4ea8-b72d-d3e9f23b7064
-	fromColumn: ITEM_SITE_EXTRACT.ITEM_NUMBER
-	toColumn: MANUFACTURER.ITEM_NUMBER
+relationship 5bb72af5-5641-473c-97bf-dfa989011f26
+	fromColumn: PURCHASE_ORDER_LINE.UNIT_OF_MEASURE
+	toColumn: MATERIAL_CHARGES.UNIT_OF_MEASURE
+	crossFilteringBehavior: BothDirections
+	fromCardinality: many
+	isActive: true
+
+relationship 64898ae1-ce76-4aba-a2f7-f9e706494ee1
+	fromColumn: ITEM_SITE_EXTRACT.DATE_CREATED
+	toColumn: MANUFACTURER.DATE_CREATED
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true

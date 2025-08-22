@@ -528,12 +528,13 @@ class MergedTablesHandler(BaseHandler):
         
         # Create M-query with native SQL (proper TMDL indentation)
         m_query = f'''let
-                Source = Value.NativeQuery(
-                    #"SQL Database",
+                Source = Sql.Database(#"DB Server", #"DB Name"),
+                Query = Value.NativeQuery(
+                    Source,
                     "{native_sql}"
                 )
                 in
-                Source'''
+                Query'''
         
         self.logger.info(f"Generated native SQL for {from_table.name} + {to_table.name}: {len(all_columns)} columns, {sql_join_type}")
         return m_query
