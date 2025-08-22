@@ -1,50 +1,50 @@
 table Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE
 
 
-    column 'Column'
+    column 'PO_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: Column
+        sourceColumn: PO_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Column'
+    column 'RELEASE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: Column
+        sourceColumn: RELEASE_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Column'
+    column 'PO_LINE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: Column
+        sourceColumn: PO_LINE_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Column'
+    column 'SITE_NUMBER'
         dataType: string
         summarizeBy: none
-        sourceColumn: Column
+        sourceColumn: SITE_NUMBER
 
         
 
         annotation SummarizationSetBy = Automatic
 
         
-    column 'Column'
+    column 'PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key'
         dataType: string
         summarizeBy: none
-        sourceColumn: Column
+        sourceColumn: PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key
 
         
 

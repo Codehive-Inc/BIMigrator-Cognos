@@ -389,13 +389,17 @@ class PackageModelFileGenerator:
         # Extract columns from JSON
         columns = []
         for col_json in table_json.get('columns', []):
+            # Use 'name' field from JSON, fallback to 'source_name' if available, then 'Column'
+            column_name = col_json.get('name', col_json.get('source_name', 'Column'))
+            source_column = col_json.get('sourceColumn', col_json.get('source_column', column_name))
+            
             column = {
-                'name': col_json.get('source_name', 'Column'),
-                'source_name': col_json.get('source_name', 'Column'),
-                'datatype': col_json.get('datatype', 'string'),
-                'source_column': col_json.get('source_column', col_json.get('source_name', 'Column')),
+                'name': column_name,
+                'source_name': column_name,
+                'datatype': col_json.get('dataType', col_json.get('datatype', 'string')),
+                'source_column': source_column,
                 'is_calculated': col_json.get('is_calculated', False),
-                'summarize_by': col_json.get('summarize_by', 'none'),
+                'summarize_by': col_json.get('summarizeBy', col_json.get('summarize_by', 'none')),
                 'is_hidden': col_json.get('is_hidden', False),
                 'annotations': col_json.get('annotations', {'SummarizationSetBy': 'Automatic'})
             }

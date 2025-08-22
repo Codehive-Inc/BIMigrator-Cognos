@@ -1,19 +1,19 @@
 [
   {
-    "id": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
+    "id": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
     "fromColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_LINE",
+    "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
     "toColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_DESCRIPTIONS",
+    "id": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE_to_PURCHASE_ORDER_LINE",
     "fromTable": "Dim_PURCHASE_ORDER_DESCRIPTIONS_PURCHASE_ORDER_LINE",
     "fromColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
-    "toTable": "PURCHASE_ORDER_DESCRIPTIONS",
+    "toTable": "PURCHASE_ORDER_LINE",
     "toColumn": "PO_LINE_NUMBER_PO_NUMBER_RELEASE_NUMBER_SITE_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
@@ -140,20 +140,20 @@
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_ITEM_SITE_EXTRACT",
+    "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_MANUFACTURER",
     "fromTable": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER",
     "fromColumn": "ITEM_NUMBER_Key",
-    "toTable": "ITEM_SITE_EXTRACT",
+    "toTable": "MANUFACTURER",
     "toColumn": "ITEM_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
     "crossFilteringBehavior": "BothDirections"
   },
   {
-    "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_MANUFACTURER",
+    "id": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER_to_ITEM_SITE_EXTRACT",
     "fromTable": "Dim_ITEM_SITE_EXTRACT_MANUFACTURER",
     "fromColumn": "ITEM_NUMBER_Key",
-    "toTable": "MANUFACTURER",
+    "toTable": "ITEM_SITE_EXTRACT",
     "toColumn": "ITEM_NUMBER_Key",
     "isActive": true,
     "toCardinality": "many",
