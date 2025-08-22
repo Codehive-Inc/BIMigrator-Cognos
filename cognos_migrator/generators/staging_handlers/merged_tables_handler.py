@@ -104,35 +104,78 @@ class MergedTablesHandler(BaseHandler):
     def process_direct_query_mode(self, data_model: DataModel) -> DataModel:
         """
         Process data model using merged tables approach with DirectQuery mode.
+        Uses native SQL queries for optimal performance and query folding.
         
         Args:
             data_model: The data model to process
             
         Returns:
-            The processed data model with merged staging tables for DirectQuery mode
+            The processed data model with merged staging tables optimized for DirectQuery mode
         """
-
+        self.logger.info("Processing data model with 'merged_tables' + 'direct_query' approach using native SQL")
         
-        self.logger.info("Processing data model with 'merged_tables' + 'direct_query' approach")
+        # Use SQL relationships if available, otherwise fall back to basic relationships
+        if self.sql_relationships:
+            self.logger.info(f"Using {len(self.sql_relationships)} SQL relationships for DirectQuery C_tables")
+            complex_relationships = self._identify_complex_sql_relationships(self.sql_relationships)
+        else:
+            self.logger.info("Using basic data model relationships for DirectQuery C_tables")
+            complex_relationships = self._identify_complex_relationships(data_model.relationships)
         
-        # TODO: Future M-query optimizations for DirectQuery mode:
-        # - M-queries should be optimized for query folding
-        # - Minimize complex transformations that can't be pushed to the database
-        # - Use native SQL operations where possible
-        # - Avoid operations that break query folding (like Table.AddColumn with complex logic)
-        # - Consider replacing nested joins with SQL JOIN syntax for better performance
-        # - Optimize Table.ExpandTableColumn operations for query folding
+        self.logger.info(f"Identified {len(complex_relationships)} complex relationships for DirectQuery optimization")
         
-        # Use the same logic as import mode but with directQuery partition mode
-        processed_model = self.process_import_mode(data_model)
+        if not complex_relationships:
+            self.logger.info("No complex relationships found, returning original model")
+            return data_model
         
-        # Update all generated tables to use directQuery partition mode
-        for table in processed_model.tables:
-            if table.name.startswith('C_') or table.name.startswith(self.naming_prefix):
-                table.partition_mode = "directQuery"
-                self.logger.info(f"Set table {table.name} to directQuery mode")
+        # Group relationships by table pairs to create combination tables  
+        if self.sql_relationships:
+            relationship_groups = self._group_sql_relationships_by_tables(complex_relationships)
+        else:
+            relationship_groups = self._group_relationships_by_tables(complex_relationships)
         
-        return processed_model
+        self.logger.info(f"Grouped complex relationships into {len(relationship_groups)} table pairs for DirectQuery")
+        
+        # Create combination tables with native SQL queries for DirectQuery
+        combination_tables = []
+        for table_pair, relationships in relationship_groups.items():
+            # Split on ":" separator used by _group_sql_relationships_by_tables
+            if ':' in table_pair:
+                from_table_name, to_table_name = table_pair.split(':', 1)
+            else:
+                self.logger.warning(f"Invalid table pair format: {table_pair}")
+                continue
+            
+            # Find the actual table objects
+            from_table = next((t for t in data_model.tables if t.name == from_table_name), None)
+            to_table = next((t for t in data_model.tables if t.name == to_table_name), None)
+            
+            if from_table and to_table:
+                combination_table = self._create_combination_table_with_native_sql(
+                    from_table, to_table, relationships)
+                combination_tables.append(combination_table)
+                self.logger.info(f"Created DirectQuery combination table: {combination_table.name}")
+            else:
+                self.logger.warning(f"Could not find tables for pair: {from_table_name} <-> {to_table_name}")
+        
+        # Create new data model with combination tables
+        all_tables = list(data_model.tables) + combination_tables
+        
+        # Create new data model
+        new_data_model = DataModel(
+            name=data_model.name,
+            tables=all_tables,
+            relationships=data_model.relationships,  # Keep original relationships for now
+            compatibility_level=data_model.compatibility_level
+        )
+        
+        # Save combination tables as JSON for TMDL generation
+        if hasattr(self, 'extracted_dir') and self.extracted_dir:
+            for table in combination_tables:
+                self._save_table_as_json(table, self.extracted_dir)
+        
+        self.logger.info(f"DirectQuery merged tables processing complete: {len(combination_tables)} combination tables created")
+        return new_data_model
     
     def _identify_complex_relationship_tables(self, relationships: List[Relationship]) -> Set[str]:
         """
@@ -383,6 +426,119 @@ class MergedTablesHandler(BaseHandler):
                 #"Expanded {to_table.name}"'''
         
         self.logger.info(f"Generated M-query for {from_table.name} + {to_table.name} with join keys: {keys_a} = {keys_b}")
+        return m_query
+    
+    def _create_combination_table_with_native_sql(self, from_table: Table, to_table: Table, 
+                                                sql_relationships: List[Dict[str, Any]]) -> Table:
+        """
+        Create a combination table using native SQL for DirectQuery optimization.
+        
+        Args:
+            from_table: First source table
+            to_table: Second source table  
+            sql_relationships: List of SQL relationship dictionaries
+            
+        Returns:
+            Table object with native SQL M-query for DirectQuery mode
+        """
+        # Generate combination table name
+        combination_table_name = f"{self.naming_prefix}{from_table.name}_{to_table.name}"
+        
+        # Generate native SQL query
+        native_sql_query = self._generate_native_sql_query(from_table, to_table, sql_relationships)
+        
+        # Combine columns from both tables (avoiding duplicates)
+        combined_columns = list(from_table.columns)
+        from_table_column_names = {col.name for col in from_table.columns}
+        
+        # Add unique columns from to_table
+        for col in to_table.columns:
+            if col.name not in from_table_column_names:
+                combined_columns.append(col)
+        
+        # Create the combination table
+        combination_table = Table(
+            name=combination_table_name,
+            columns=combined_columns,
+            m_query=native_sql_query,
+            source_query=native_sql_query,
+            partition_mode="directQuery"
+        )
+        
+        self.logger.info(f"Created DirectQuery combination table {combination_table_name} with native SQL and {len(combined_columns)} columns")
+        return combination_table
+    
+    def _generate_native_sql_query(self, from_table: Table, to_table: Table, 
+                                 sql_relationships: List[Dict[str, Any]]) -> str:
+        """
+        Generate native SQL query for DirectQuery combination table.
+        
+        Args:
+            from_table: First source table
+            to_table: Second source table
+            sql_relationships: List of SQL relationship dictionaries
+            
+        Returns:
+            M-query string with native SQL for optimal DirectQuery performance
+        """
+        if not sql_relationships:
+            self.logger.warning(f"No SQL relationships found for {from_table.name} and {to_table.name}")
+            return f"// No SQL relationships found\nlet Source = {from_table.name} in Source"
+        
+        # Extract join information from SQL relationship
+        sql_rel = sql_relationships[0]
+        keys_a = sql_rel.get('keys_a', [])
+        keys_b = sql_rel.get('keys_b', [])
+        join_type = sql_rel.get('join_type', 'INNER JOIN').upper()
+        
+        if not keys_a or not keys_b:
+            self.logger.warning(f"No join keys found for {from_table.name} and {to_table.name}")
+            return f"// No join keys found\nlet Source = {from_table.name} in Source"
+        
+        # Build column lists for SELECT
+        from_table_columns = [f"a.[{col.name}]" for col in from_table.columns]
+        
+        # Get unique columns from to_table (avoid duplicates)
+        from_table_column_names = {col.name for col in from_table.columns}
+        to_table_unique_columns = [f"b.[{col.name}]" for col in to_table.columns 
+                                 if col.name not in from_table_column_names]
+        
+        all_columns = from_table_columns + to_table_unique_columns
+        select_clause = ",\n        ".join(all_columns)
+        
+        # Build JOIN condition
+        join_conditions = []
+        for key_a, key_b in zip(keys_a, keys_b):
+            join_conditions.append(f"a.[{key_a}] = b.[{key_b}]")
+        join_condition = " AND ".join(join_conditions)
+        
+        # Map join types to SQL
+        sql_join_type = "INNER JOIN"
+        if 'LEFT' in join_type:
+            sql_join_type = "LEFT JOIN"
+        elif 'RIGHT' in join_type:
+            sql_join_type = "LEFT JOIN"  # Flip to LEFT JOIN for better performance
+            # Swap table order for RIGHT JOIN -> LEFT JOIN conversion
+            from_table, to_table = to_table, from_table
+        elif 'FULL' in join_type:
+            sql_join_type = "FULL OUTER JOIN"
+        
+        # Generate the native SQL M-query
+        native_sql = f"""SELECT
+        {select_clause}
+    FROM [{from_table.name}] a
+    {sql_join_type} [{to_table.name}] b ON {join_condition}"""
+        
+        # Create M-query with native SQL
+        m_query = f'''let
+    Source = Value.NativeQuery(
+        #"SQL Database",
+        "{native_sql}"
+    )
+in
+    Source'''
+        
+        self.logger.info(f"Generated native SQL for {from_table.name} + {to_table.name}: {len(all_columns)} columns, {sql_join_type}")
         return m_query
     
     def _group_relationships_by_tables(self, relationships: List[Relationship]) -> Dict[str, List[Relationship]]:
