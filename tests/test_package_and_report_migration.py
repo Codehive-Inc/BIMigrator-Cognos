@@ -1,5 +1,7 @@
 import os
+
 from cognos_migrator.migrations.package import migrate_package_with_local_reports
+
 
 def test_package_and_report_migration():
     """
@@ -22,14 +24,15 @@ def test_package_and_report_migration():
     # Dummy values for Cognos connection details (required even for file-based migration)
     cognos_url = "http://dummy-cognos-url"
     session_key = "dummy-session-key"
-    
+
     success = migrate_package_with_local_reports(
         package_file_path=package_file,
         output_path=output_dir,
         report_file_paths=report_files,
         cognos_url=cognos_url,
         session_key=session_key,
-        task_id="test_migration_12345"
+        task_id="test_migration_12345",
+        settings=None
     )
 
     if success:
@@ -38,5 +41,6 @@ def test_package_and_report_migration():
     else:
         print("Shared semantic model migration failed.")
 
+
 if __name__ == "__main__":
-    test_package_and_report_migration() 
+    test_package_and_report_migration()
