@@ -15,6 +15,7 @@ dependencies = [
     "typing-extensions",
     "websockets",
     "pybars3",
+    "jinja2",
 ]
 
 [project.optional-dependencies]
