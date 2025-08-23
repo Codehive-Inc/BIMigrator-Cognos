@@ -11,7 +11,7 @@ import re
 import shutil
 import uuid
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Set, Tuple
+from typing import Dict, List, Optional, Any, Set, Tuple, Union
 from collections import defaultdict
 from datetime import datetime
 import shutil
@@ -33,13 +33,13 @@ from ..converters.consolidated_mquery_converter import ConsolidatedMQueryConvert
 
 
 def migrate_package_with_explicit_session(package_file_path: str,
-                                       output_path: str,
-                                       cognos_url: str, session_key: str,
-                                       folder_id: str = None,
-                                       cpf_file_path: str = None,
-                                       task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization",
-                                       settings: Optional[Dict[str, Any]] = None) -> bool:
+                                          output_path: str,
+                                          cognos_url: str, session_key: str,
+                                          folder_id: str = None,
+                                          cpf_file_path: str = None,
+                                          task_id: Optional[str] = None,
+                                          auth_key: str = "IBM-BA-Authorization",
+                                          settings: Optional[Dict[str, Any]] = None) -> bool:
     """Migrate a Cognos Framework Manager package file to Power BI with explicit session credentials
     
     This function does not use environment variables and will raise an exception
@@ -64,13 +64,13 @@ def migrate_package_with_explicit_session(package_file_path: str,
     # Generate task ID if not provided
     if task_id is None:
         task_id = str(uuid.uuid4())
-    
+
     # Configure logging
     configure_logging()
-    
+
     # Set task info for WebSocket updates
     set_task_info(task_id, total_steps=8)
-    
+
     # Create Cognos config with explicit values
     cognos_config = CognosConfig(
         base_url=cognos_url,
@@ -80,73 +80,73 @@ def migrate_package_with_explicit_session(package_file_path: str,
         max_retries=3,
         request_timeout=30
     )
-    
+
     # Log the start of migration
     log_info(f"Starting explicit session migration for package: {package_file_path}")
-    
+
     # Also send to WebSocket for frontend updates
     logging_helper(
         message=f"Starting explicit session migration for package: {package_file_path}",
         progress=0,
         message_type="info"
     )
-    
+
     try:
         # Create output directory structure using the exact path provided by the user
         output_dir = Path(output_path)
         output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Log the output directory being used
         log_info(f"Using output directory: {output_dir}")
-        
+
         # Create subdirectories
         extracted_dir = output_dir / "extracted"
         extracted_dir.mkdir(exist_ok=True)
-        
+
         pbit_dir = output_dir / "pbit"
         pbit_dir.mkdir(exist_ok=True)
-        
+
         # Step 1: Extract package information
         logging_helper(
             message="Extracting package information",
             progress=20,
             message_type="info"
         )
-        
+
         # Create package extractor using the new modular architecture
         package_extractor = ConsolidatedPackageExtractor(logger=logging.getLogger(__name__))
-        
+
         # Extract package information
         package_info = package_extractor.extract_package(package_file_path, str(extracted_dir))
-        
+
         # Save extracted information
         with open(extracted_dir / "package_info.json", 'w', encoding='utf-8') as f:
             json.dump(package_info, f, indent=2)
-        
+
         log_info(f"Extracted package information: {package_info['name']}")
-        
+
         # Step 2: Convert to Power BI data model
         logging_helper(
             message="Converting to Power BI data model",
             progress=40,
             message_type="info"
         )
-        
+
         # Convert to data model
         data_model = package_extractor.convert_to_data_model(package_info)
-        
+
         # Consolidate tables if needed
         consolidate_model_tables(str(extracted_dir))
-        
+
         log_info(f"Converted to data model with {len(data_model.tables)} tables")
-        
+
         # Step 3: Create Power BI project
         logging_helper(
             message="Creating Power BI project",
             progress=60,
             message_type="info"
         )
-        
+
         # Create a basic Report object to ensure report files are generated
         # Create a default report with the package name
         report = Report(
@@ -160,21 +160,21 @@ def migrate_package_with_explicit_session(package_file_path: str,
                 )
             ]
         )
-        
+
         # Create Power BI project with report
         pbi_project = PowerBIProject(
             name=package_info['name'],
             data_model=data_model,
             report=report
         )
-        
+
         # Step 4: Generate Power BI files
         logging_helper(
             message="Generating Power BI files",
             progress=80,
             message_type="info"
         )
-        
+
         # Create generator
         # Initialize with config instead of logger
         config = MigrationConfig(
@@ -183,50 +183,50 @@ def migrate_package_with_explicit_session(package_file_path: str,
             llm_service_enabled=True
         )
         generator = PowerBIProjectGenerator(config=config)
-        
+
         # Use the package-specific M-query converter and generator for package migrations
         from cognos_migrator.converters import PackageMQueryConverter
         from cognos_migrator.generators.package_model_file_generator import PackageModelFileGenerator
         from cognos_migrator.generators.template_engine import TemplateEngine
-        
+
         # Initialize template engine and package M-query converter
         template_engine = TemplateEngine(template_directory=config.template_directory)
         package_mquery_converter = PackageMQueryConverter(output_path=str(output_dir))
-        
+
         # Set up the package-specific model file generator
         if hasattr(generator, 'model_file_generator'):
             package_model_file_generator = PackageModelFileGenerator(
-                template_engine, 
+                template_engine,
                 mquery_converter=package_mquery_converter,
                 settings=settings  # Pass frontend settings
             )
             generator.model_file_generator = package_model_file_generator
-        
+
         # Generate Power BI project files
         success = generator.generate_project(pbi_project, pbit_dir)
         pbit_path = pbit_dir if success else None
-        
+
         log_info(f"Generated PBIT file: {pbit_path}")
-        
+
         # Log completion
         logging_helper(
             message=f"Package migration completed successfully: {package_info['name']}",
             progress=100,
             message_type="success"
         )
-        
+
         return True
-        
+
     except Exception as e:
         log_error(f"Error during package migration: {str(e)}")
-        
+
         # Also send to WebSocket for frontend updates
         logging_helper(
             message=f"Error during package migration: {str(e)}",
             progress=100,
             message_type="error"
         )
-        
+
         return False
 
 
@@ -244,46 +244,46 @@ def extract_tables_from_report(report_output_path: str) -> Set[str]:
     """
     table_references = set()
     report_path = Path(report_output_path)
-    
+
     # Check for extracted directory
     extracted_dir = report_path / "extracted"
     if not extracted_dir.exists():
         return table_references
-    
+
     # Check for report_data_items.json which contains column references
     data_items_file = extracted_dir / "report_data_items.json"
     if data_items_file.exists():
         try:
             with open(data_items_file, 'r', encoding='utf-8') as f:
                 data_items = json.load(f)
-                
+
             # Extract table names from data items
             for item in data_items:
                 # Look for table references in expressions
                 if "expression" in item and item["expression"]:
                     tables = extract_tables_from_expression(item["expression"])
                     table_references.update(tables)
-                
+
                 # Look for direct table references
                 if "tableName" in item and item["tableName"]:
                     table_references.add(item["tableName"])
         except Exception as e:
             logging.error(f"Error extracting tables from report data items: {e}")
-    
+
     # Check for report_queries.json which contains query references
     queries_file = extracted_dir / "report_queries.json"
     if queries_file.exists():
         try:
             with open(queries_file, 'r', encoding='utf-8') as f:
                 queries = json.load(f)
-                
+
             # Extract table names from queries
             for query in queries:
                 if "source" in query and query["source"]:
                     # Extract table names from query source
                     tables = extract_tables_from_expression(query["source"])
                     table_references.update(tables)
-                    
+
                 if "tables" in query and isinstance(query["tables"], list):
                     for table in query["tables"]:
                         if isinstance(table, str):
@@ -292,7 +292,7 @@ def extract_tables_from_report(report_output_path: str) -> Set[str]:
                             table_references.add(table["name"])
         except Exception as e:
             logging.error(f"Error extracting tables from report queries: {e}")
-    
+
     return table_references
 
 
@@ -306,49 +306,59 @@ def extract_tables_from_expression(expression: str) -> Set[str]:
         Set of table names found in the expression
     """
     tables = set()
-    
+
     if not expression or not isinstance(expression, str):
         return tables
-    
+
     # Pattern to match '[Namespace].[Table].[Column]' or '[Table].[Column]'
     # Handles spaces and other characters in names by matching anything inside the brackets.
     patterns = [
         r'\[[^\]]+\]\.\[([^\]]+)\]\.\[[^\]]+\]',  # Captures the middle part of a 3-part expression
-        r'\[([^\]]+)\]\.\[[^\]]+\]'              # Captures the first part of a 2-part expression
+        r'\[([^\]]+)\]\.\[[^\]]+\]'  # Captures the first part of a 2-part expression
     ]
-    
+
     for pattern in patterns:
         matches = re.findall(pattern, expression)
         tables.update(matches)
-    
+
     return tables
 
 
-def load_settings() -> Dict[str, Any]:
-    """Load all settings from settings.json
+def load_settings(custom_settings: Union[Dict[str, Any], str, None] = None) -> Dict[str, Any]:
+    """Load settings from custom input, JSON file path, or default settings.json
+    
+    Args:
+        custom_settings: Dict, JSON file path, or None for default settings.json
     
     Returns:
         Dictionary containing all settings
     """
     settings = {}
-    try:
-        with open('settings.json', 'r') as f:
-            settings = json.load(f)
-    except FileNotFoundError:
-        logging.warning("settings.json not found. Using default settings.")
-    
-    # Get table filtering settings with defaults
-    table_filtering = settings.get('table_filtering', {})
-    filtering_mode = table_filtering.get('mode', 'include-all')  # Default to include all tables
-    always_include = table_filtering.get('always_include', [])
-    
-    # Add table filtering settings to the main settings if they don't exist
-    if 'table_filtering' not in settings:
-        settings['table_filtering'] = {
-            'mode': filtering_mode,
-            'always_include': always_include
-        }
-    
+
+    # Load from dictionary
+    if isinstance(custom_settings, dict):
+        settings = custom_settings.copy()
+
+    # Load from file path
+    if isinstance(custom_settings, str):
+        try:
+            with open(custom_settings, 'r') as f:
+                settings = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            logging.warning(f"Could not load settings from '{custom_settings}'. Using defaults.")
+
+    # Load from default settings.json
+    if custom_settings is None:
+        try:
+            with open('settings.json', 'r') as f:
+                settings = json.load(f)
+        except FileNotFoundError:
+            logging.warning("settings.json not found. Using default settings.")
+
+    # Ensure table_filtering exists with defaults
+    settings.setdefault('table_filtering', {}).setdefault('mode', 'include-all')
+    settings['table_filtering'].setdefault('always_include', [])
+
     logging.info(f"Loaded settings: {settings}")
     return settings
 
@@ -368,25 +378,25 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     filtering_settings = settings.get('table_filtering', {})
     filtering_mode = filtering_settings.get('mode', 'include-all')
     always_include = filtering_settings.get('always_include', [])
-    
+
     # If mode is not 'filter-reports', return the original model
     if filtering_mode != 'filter-reports':
         logging.info(f"Table filtering mode is '{filtering_mode}', not filtering tables")
         return data_model
-    
+
     # If no table references and no always_include tables, return the original model
     if not table_references and not always_include:
         logging.warning("No table references or always_include tables found, returning original model")
         return data_model
-    
+
     # Add always_include tables to the references
     if always_include:
         logging.info(f"Adding {len(always_include)} always_include tables to references: {always_include}")
         table_references.update(always_include)
-    
+
     # Create a new data model with only the referenced tables
     filtered_tables = []
-    
+
     # Check if CentralDateTable is in always_include and add it from date_tables if present
     if 'CentralDateTable' in always_include and hasattr(data_model, 'date_tables'):
         central_date_table_found = False
@@ -394,7 +404,7 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
             if date_table['name'] == 'CentralDateTable':
                 # Create a Table object from the date table info
                 from ..models import Table, Column
-                
+
                 central_date_table = Table(
                     name='CentralDateTable',
                     description='Centralized date dimension table',
@@ -409,28 +419,28 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
                 central_date_table_found = True
                 logging.info("Added CentralDateTable from date_tables to filtered tables")
                 break
-                
+
         if not central_date_table_found:
             logging.warning("CentralDateTable was in always_include but not found in date_tables")
-    
+
     # Process regular tables
     for table in data_model.tables:
         # Check if table name is in references or always_include
         if table.name in table_references:
             filtered_tables.append(table)
             continue
-            
+
         # Also check source_name if available
         if hasattr(table, 'source_name') and table.source_name in table_references:
             filtered_tables.append(table)
             continue
-            
+
         # Check for partial matches (table names might have prefixes/suffixes)
         for ref in table_references:
             if ref in table.name or (hasattr(table, 'source_name') and ref in table.source_name):
                 filtered_tables.append(table)
                 break
-    
+
     # Create a new data model with the filtered tables
     filtered_model_args = {
         'name': data_model.name,
@@ -438,77 +448,80 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
         'relationships': data_model.relationships,  # Keep all relationships for now
         'measures': data_model.measures
     }
-    
+
     # Add perspectives if available in the data model
     if hasattr(data_model, 'perspectives'):
         filtered_model_args['perspectives'] = data_model.perspectives
-        
+
     filtered_model = DataModel(**filtered_model_args)
-    
+
     # Filter relationships to include only those between remaining tables
     filtered_table_names = {table.name for table in filtered_tables}
     filtered_relationships = []
-    
+
     # Check DirectQuery mode and date table compatibility
     settings = load_settings()
     is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
     has_central_date_table = "CentralDateTable" in filtered_table_names
     always_include = settings.get("table_filtering", {}).get("always_include", [])
-    
+
     # Log DirectQuery mode handling for date tables
     if is_directquery and "CentralDateTable" in always_include and not has_central_date_table:
-        logging.warning("DirectQuery mode detected with CentralDateTable in always_include, but CentralDateTable is incompatible with DirectQuery mode (calculated tables require Import mode)")
+        logging.warning(
+            "DirectQuery mode detected with CentralDateTable in always_include, but CentralDateTable is incompatible with DirectQuery mode (calculated tables require Import mode)")
         logging.info("CentralDateTable relationships will be automatically excluded to prevent model validation errors")
-    
+
     skipped_relationships = 0
     for rel in filtered_model.relationships:
         # Skip CentralDateTable relationships in DirectQuery mode if CentralDateTable doesn't exist
-        if (is_directquery and not has_central_date_table and 
-            (rel.from_table == "CentralDateTable" or rel.to_table == "CentralDateTable")):
-            logging.info(f"Skipping CentralDateTable relationship in DirectQuery mode: {rel.from_table}.{rel.from_column} -> {rel.to_table}.{rel.to_column}")
+        if (is_directquery and not has_central_date_table and
+                (rel.from_table == "CentralDateTable" or rel.to_table == "CentralDateTable")):
+            logging.info(
+                f"Skipping CentralDateTable relationship in DirectQuery mode: {rel.from_table}.{rel.from_column} -> {rel.to_table}.{rel.to_column}")
             skipped_relationships += 1
             continue
-            
-        if (rel.from_table in filtered_table_names and 
-            rel.to_table in filtered_table_names):
+
+        if (rel.from_table in filtered_table_names and
+                rel.to_table in filtered_table_names):
             filtered_relationships.append(rel)
-    
+
     # Log summary of skipped relationships
     if skipped_relationships > 0:
-        logging.warning(f"Skipped {skipped_relationships} CentralDateTable relationships due to DirectQuery mode incompatibility")
-    
+        logging.warning(
+            f"Skipped {skipped_relationships} CentralDateTable relationships due to DirectQuery mode incompatibility")
+
     filtered_model.relationships = filtered_relationships
-    
+
     return filtered_model
 
 
 def _migrate_shared_model(
-    package_file: str,
-    reports: List[str],
-    output_path: str,
-    cognos_url: str,
-    session_key: str,
-    reports_are_ids: bool = False,
-    llm_service: Optional[Dict[str, Any]] = None,
-    config: Optional[Dict[str, Any]] = None,
-    task_id: Optional[str] = None,
+        package_file: str,
+        reports: List[str],
+        output_path: str,
+        cognos_url: str,
+        session_key: str,
+        reports_are_ids: bool = False,
+        llm_service: Optional[Dict[str, Any]] = None,
+        config: Optional[Dict[str, Any]] = None,
+        task_id: Optional[str] = None,
 ) -> bool:
     """Helper function to orchestrate the shared model migration."""
-    
+
     # Generate task ID if not provided
     if task_id is None:
         task_id = str(uuid.uuid4())
-    
+
     # Set task info for WebSocket updates
     set_task_info(task_id, total_steps=10)
-    
+
     log_info(f"Starting shared model migration with task ID: {task_id}")
     logging_helper(
         message=f"Starting shared model migration for package: {Path(package_file).name}",
         progress=0,
         message_type="info"
     )
-    
+
     # --- Step 1: Intermediate migration for each report ---
     intermediate_dir = Path(output_path) / "intermediate_reports"
     shutil.rmtree(intermediate_dir, ignore_errors=True)
@@ -521,7 +534,7 @@ def _migrate_shared_model(
             report_name = re.sub(r'[\\/*?:"<>|]', "_", report_item)
         else:
             report_name = Path(report_item).stem
-        
+
         report_output_path = intermediate_dir / report_name
 
         migration_args = {
@@ -533,25 +546,26 @@ def _migrate_shared_model(
             migration_args["report_id"] = report_item
         else:
             migration_args["report_file_path"] = report_item
-            
+
         success = migrate_single_report(**migration_args)
-        
+
         if success:
             successful_migrations_paths.append(report_output_path)
-    
+
     # --- Step 2: Analyze intermediate files and consolidate table schemas ---
     logging_helper(
         message="Analyzing intermediate files and consolidating table schemas",
         progress=20,
         message_type="info"
     )
-    
+
     consolidated_tables: Dict[str, Table] = {}
     required_tables = set()
 
     # Initialize the CognosModuleMigratorExplicit once
     from cognos_migrator.config import MigrationConfig, CognosConfig
-    migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
+    migration_config = MigrationConfig(output_directory=Path(output_path),
+                                       template_directory=str(Path(__file__).parent.parent / "templates"))
     cognos_config = CognosConfig(base_url=cognos_url, auth_key="session_key", auth_value=session_key)
     migrator = CognosModuleMigratorExplicit(
         migration_config=migration_config,
@@ -590,32 +604,36 @@ def _migrate_shared_model(
         always_include = config.get("table_filtering", {}).get("always_include", [])
         staging_config = config.get("staging_tables", {})
         is_directquery = staging_config.get("data_load_mode", "import") == "direct_query"
-        
+
         if always_include:
             # Filter out incompatible tables in DirectQuery mode
             filtered_always_include = []
             for table_name in always_include:
                 if table_name == "CentralDateTable" and is_directquery:
-                    logging.warning(f"Excluding '{table_name}' from always_include: calculated date tables are incompatible with DirectQuery mode")
-                    logging.info("To include date functionality in DirectQuery mode, consider creating a physical date table in your database")
+                    logging.warning(
+                        f"Excluding '{table_name}' from always_include: calculated date tables are incompatible with DirectQuery mode")
+                    logging.info(
+                        "To include date functionality in DirectQuery mode, consider creating a physical date table in your database")
                 else:
                     filtered_always_include.append(table_name)
-            
+
             if filtered_always_include:
                 required_tables.update(filtered_always_include)
-                logging.info(f"Adding {len(filtered_always_include)} compatible 'always_include' tables: {filtered_always_include}")
-            
+                logging.info(
+                    f"Adding {len(filtered_always_include)} compatible 'always_include' tables: {filtered_always_include}")
+
             # Log what was excluded for tracking
             excluded_tables = set(always_include) - set(filtered_always_include)
             if excluded_tables:
-                logging.warning(f"Excluded {len(excluded_tables)} incompatible tables from always_include due to DirectQuery mode: {list(excluded_tables)}")
+                logging.warning(
+                    f"Excluded {len(excluded_tables)} incompatible tables from always_include due to DirectQuery mode: {list(excluded_tables)}")
 
     # Safety check for direct mode
     if not required_tables and config and config.get("table_filtering", {}).get("mode") == "direct":
         logging.warning("No required tables were found and mode is 'direct'. This will result in an empty model.")
 
     logging.info(f"Consolidated a final list of {len(required_tables)} required tables: {required_tables}")
-    
+
     # --- Step 2.5: Merge calculations from intermediate reports ---
     logging.info("Merging calculations from intermediate reports")
     # Get the paths to the intermediate reports directory
@@ -630,14 +648,14 @@ def _migrate_shared_model(
         # Fall back to using successful_migrations_paths
         logging.info(f"Falling back to using successful_migrations_paths with {len(successful_migrations_paths)} paths")
         _merge_calculations_from_intermediate_reports(successful_migrations_paths, Path(output_path))
-    
+
     # --- Step 3: Package Extraction based on REQUIRED tables ---
     logging_helper(
         message="Extracting package information based on required tables",
         progress=40,
         message_type="info"
     )
-    
+
     package_extractor = ConsolidatedPackageExtractor(
         config=config,
         logger=logging.getLogger(__name__)
@@ -647,33 +665,35 @@ def _migrate_shared_model(
         os.path.join(output_path, "extracted"),
         required_tables=required_tables
     )
-    
+
     # --- Step 3.5: Extract SQL relationships and save to extracted folder ---
     extracted_dir = os.path.join(output_path, "extracted")
-    
+
     # Step 4: Data Model Conversion from FILTERED package info
     logging_helper(
         message="Converting package to Power BI data model",
         progress=60,
         message_type="info"
     )
-    
+
     data_model = package_extractor.convert_to_data_model(package_info)
-    
+
     # Get table names from the data model for filtering SQL relationships
     model_table_names = [table.name for table in data_model.tables]
     logging.info(f"Using {len(model_table_names)} tables from data model for SQL relationship filtering")
-    
+
     # Extract SQL relationships with model table names for filtering
-    sql_relationship_extractor = SQLRelationshipExtractor(logger=logging.getLogger(__name__), model_tables=model_table_names)
+    sql_relationship_extractor = SQLRelationshipExtractor(logger=logging.getLogger(__name__),
+                                                          model_tables=model_table_names)
     sql_relationship_extractor.extract_and_save(package_file, extracted_dir)
     logging.info(f"Extracted SQL relationships and saved to {extracted_dir}")
-    
+
     # Log the query subjects that were returned after filtering
     query_subject_names = [qs.get('name', 'Unknown') for qs in package_info.get('query_subjects', [])]
-    logging.info(f"FILTERING DEBUG: Extractor returned package_info with {len(package_info.get('query_subjects', []))} tables.")
+    logging.info(
+        f"FILTERING DEBUG: Extractor returned package_info with {len(package_info.get('query_subjects', []))} tables.")
     logging.info(f"FILTERING DEBUG: Filtered query subject names: {query_subject_names}")
-    
+
     # Log the table names in the data model after conversion
     table_names = [table.name for table in data_model.tables]
     logging.info(f"FILTERING DEBUG: After conversion, data_model has {len(data_model.tables)} tables.")
@@ -691,7 +711,8 @@ def _migrate_shared_model(
                     target_table.columns.append(new_column)
                     logging.info(f"Added column '{new_column.name}' to table '{target_table.name}'.")
         else:
-            logging.warning(f"Table '{table_name}' from reports not found in the filtered package model. It will not be added.")
+            logging.warning(
+                f"Table '{table_name}' from reports not found in the filtered package model. It will not be added.")
 
     # Now, we need to generate the M-queries for this consolidated model
     # We will use our new, specialized converter for this.
@@ -699,7 +720,8 @@ def _migrate_shared_model(
     for table in data_model.tables:
         table.m_query = consolidated_converter.convert_to_m_query(table)
 
-    logging.info(f"Data model has {len(data_model.tables)} tables before generation: {[t.name for t in data_model.tables]}")
+    logging.info(
+        f"Data model has {len(data_model.tables)} tables before generation: {[t.name for t in data_model.tables]}")
 
     # --- Step 6: Final Generation ---
     logging_helper(
@@ -707,25 +729,26 @@ def _migrate_shared_model(
         progress=80,
         message_type="info"
     )
-    
+
     from cognos_migrator.config import MigrationConfig
     from ..processors.tmdl_post_processor import TMDLPostProcessor
-    migration_config = MigrationConfig(output_directory=Path(output_path), template_directory=str(Path(__file__).parent.parent / "templates"))
+    migration_config = MigrationConfig(output_directory=Path(output_path),
+                                       template_directory=str(Path(__file__).parent.parent / "templates"))
     generator = PowerBIProjectGenerator(migration_config)
-    
+
     # Use the package-specific M-query converter and generator for shared model migrations
     from cognos_migrator.converters import PackageMQueryConverter
     from cognos_migrator.generators.package_model_file_generator import PackageModelFileGenerator
     from cognos_migrator.generators.template_engine import TemplateEngine
-    
+
     # Initialize template engine and package M-query converter for shared models
     template_engine = TemplateEngine(template_directory=migration_config.template_directory)
     package_mquery_converter = PackageMQueryConverter(output_path=str(Path(output_path)))
-    
+
     # Set up the package-specific model file generator for shared models
     if hasattr(generator, 'model_file_generator'):
         package_model_file_generator = PackageModelFileGenerator(
-            template_engine, 
+            template_engine,
             mquery_converter=package_mquery_converter,
             settings=config  # Pass the full settings dictionary
         )
@@ -742,15 +765,15 @@ def _migrate_shared_model(
     pbit_dir = Path(output_path) / "pbit"
     pbit_dir.mkdir(parents=True, exist_ok=True)
     generator.generate_project(final_pbi_project, str(pbit_dir))
-    
+
     # --- Step 5.5: Merge calculations into table JSON files ---
     logging.info("Merging calculations into table JSON files")
     _merge_calculations_into_table_json(Path(output_path))
-    
+
     # --- Step 6.5: Consolidate intermediate report pages and slicers into final report ---
     logging.info("Consolidating intermediate report pages and slicers into final unified report")
     _consolidate_intermediate_reports_into_final(output_path, successful_migrations_paths)
-    
+
     # --- Step 7: Post-process the generated TMDL to fix relationships ---
     tmdl_relationships_file = pbit_dir / "Model" / "relationships.tmdl"
     if tmdl_relationships_file.exists():
@@ -758,10 +781,10 @@ def _migrate_shared_model(
         post_processor.fix_relationships(str(tmdl_relationships_file))
     else:
         logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")
-        
+
     # --- Step 7.5: Calculations are handled through the table JSON files ---
     logging.info("Calculations are handled through the table JSON files")
-    
+
     # Final completion message
     logging_helper(
         message=f"Shared model migration completed successfully for package: {Path(package_file).name}",
@@ -772,14 +795,18 @@ def _migrate_shared_model(
 
     return True, str(output_path)
 
-def migrate_package_with_local_reports(package_file_path: str,
-                                       output_path: str,
-                                       report_file_paths: List[str],
-                                       cognos_url: str,
-                                       session_key: str,
-                                       task_id: Optional[str] = None) -> bool:
+
+def migrate_package_with_local_reports(
+        package_file_path: str,
+        output_path: str,
+        report_file_paths: List[str],
+        cognos_url: str,
+        session_key: str,
+        task_id: Optional[str] = None,
+        settings: str = None
+) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
-    settings = load_settings()
+    settings = load_settings(custom_settings=settings)
     logging.info(f"In migrate_package_with_local_reports, loaded settings: {settings}")
     return _migrate_shared_model(
         package_file=package_file_path,
@@ -792,14 +819,15 @@ def migrate_package_with_local_reports(package_file_path: str,
         task_id=task_id,
     )
 
+
 def migrate_package_with_reports_explicit_session(package_file_path: str,
-                                       output_path: str,
-                                       cognos_url: str, session_key: str,
-                                       report_ids: List[str] = None,
-                                       cpf_file_path: str = None,
-                                       task_id: Optional[str] = None,
-                                       auth_key: str = "IBM-BA-Authorization",
-                                       dry_run: bool = False) -> bool:
+                                                  output_path: str,
+                                                  cognos_url: str, session_key: str,
+                                                  report_ids: List[str] = None,
+                                                  cpf_file_path: str = None,
+                                                  task_id: Optional[str] = None,
+                                                  auth_key: str = "IBM-BA-Authorization",
+                                                  dry_run: bool = False) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
     config = load_settings()
     logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings: {config}")
@@ -814,9 +842,10 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
         task_id=task_id,
     )
 
+
 def _merge_calculations_from_intermediate_reports(
-    intermediate_report_paths: List[Path],
-    output_path: Path
+        intermediate_report_paths: List[Path],
+        output_path: Path
 ) -> None:
     """
     Merge calculations from all intermediate report migrations into the consolidated calculations.json file.
@@ -827,89 +856,90 @@ def _merge_calculations_from_intermediate_reports(
     """
     logger = logging.getLogger(__name__)
     consolidated_calculations = {"calculations": []}
-    
+
     # Ensure the extracted directory exists in the output path
     extracted_dir = output_path / "extracted"
     extracted_dir.mkdir(parents=True, exist_ok=True)
-    
+
     consolidated_path = extracted_dir / "calculations.json"
-    
+
     # Load existing consolidated calculations if they exist
     if consolidated_path.exists():
         try:
             with open(consolidated_path, 'r', encoding='utf-8') as f:
                 consolidated_calculations = json.load(f)
-                logger.info(f"Loaded existing consolidated calculations with {len(consolidated_calculations.get('calculations', []))} entries")
+                logger.info(
+                    f"Loaded existing consolidated calculations with {len(consolidated_calculations.get('calculations', []))} entries")
         except Exception as e:
             logger.error(f"Error loading existing consolidated calculations: {e}")
             consolidated_calculations = {"calculations": []}
-    
+
     # Track calculations by table name and column name, with DAX comparison
     # Key format: f"{table_name}|{column_name}"
     calculation_map = {}
-    
+
     # First, add any existing calculations to the map
     for calc in consolidated_calculations.get("calculations", []):
         table_name = calc.get("TableName")
         column_name = calc.get("CognosName")
         dax_expression = calc.get("DAXExpression", "")
-        
+
         if table_name and column_name:
             key = f"{table_name}|{column_name}"
             if key not in calculation_map:
                 calculation_map[key] = []
-            
+
             # Check if this exact DAX expression already exists
-            dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression 
-                            for existing_calc in calculation_map[key])
-            
+            dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression
+                             for existing_calc in calculation_map[key])
+
             if not dax_exists:
                 calculation_map[key].append(calc)
-    
+
     # Log the paths we're checking
     logger.info(f"Looking for calculations in {len(intermediate_report_paths)} intermediate report paths")
     for i, path in enumerate(intermediate_report_paths):
-        logger.info(f"Intermediate report path {i+1}: {path}")
-    
+        logger.info(f"Intermediate report path {i + 1}: {path}")
+
     # Process each intermediate report
     for report_path in intermediate_report_paths:
         # Check if this is a directory path to an intermediate report
         if not report_path.is_dir():
             logger.warning(f"Path is not a directory, skipping: {report_path}")
             continue
-            
+
         # Look for the extracted directory within the intermediate report path
         intermediate_extracted = report_path / "extracted"
         if not intermediate_extracted.exists():
             logger.warning(f"No extracted directory found in {report_path}, skipping")
             continue
-            
+
         # Look for calculations.json in the extracted directory
         calc_file = intermediate_extracted / "calculations.json"
         if not calc_file.exists():
             logger.warning(f"No calculations.json found in {intermediate_extracted}, skipping")
             continue
-            
+
         try:
             with open(calc_file, 'r', encoding='utf-8') as f:
                 report_calcs = json.load(f)
-                
+
             if not report_calcs or "calculations" not in report_calcs:
                 logger.warning(f"No calculations found in {calc_file}, skipping")
                 continue
-                
+
             logger.info(f"Found {len(report_calcs.get('calculations', []))} calculations in {report_path.name}")
-            
+
             # Process each calculation
             for calc in report_calcs.get("calculations", []):
                 table_name = calc.get("TableName")
                 column_name = calc.get("CognosName")
                 dax_expression = calc.get("DAXExpression", "")
-                
+
                 if not table_name or not column_name:
                     logger.warning(f"Skipping calculation with missing table or column name: {calc}")
                     continue
-                
+
                 key = f"{table_name}|{column_name}"
                 if key not in calculation_map:
                     calculation_map[key] = []
@@ -917,33 +947,34 @@ def _merge_calculations_from_intermediate_reports(
                     logger.info(f"Added new calculation for {table_name}.{column_name}")
                 else:
                     # Check if this exact DAX expression already exists
-                    dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression 
-                                    for existing_calc in calculation_map[key])
-                    
+                    dax_exists = any(existing_calc.get("DAXExpression", "") == dax_expression
+                                     for existing_calc in calculation_map[key])
+
                     if not dax_exists:
                         calculation_map[key].append(calc)
                         logger.info(f"Added variant calculation for {table_name}.{column_name} with different DAX")
                     else:
                         logger.info(f"Skipped duplicate calculation for {table_name}.{column_name} with same DAX")
-                
+
         except Exception as e:
             logger.error(f"Error processing calculations from {calc_file}: {e}")
-    
+
     # Convert the map back to a list
     all_calculations = []
     for calc_list in calculation_map.values():
         all_calculations.extend(calc_list)
-    
+
     consolidated_calculations["calculations"] = all_calculations
-    
+
     # Save the consolidated calculations
     try:
         with open(consolidated_path, 'w', encoding='utf-8') as f:
             json.dump(consolidated_calculations, f, indent=2)
-        logger.info(f"Saved {len(consolidated_calculations['calculations'])} consolidated calculations to {consolidated_path}")
+        logger.info(
+            f"Saved {len(consolidated_calculations['calculations'])} consolidated calculations to {consolidated_path}")
     except Exception as e:
         logger.error(f"Error saving consolidated calculations to {consolidated_path}: {e}")
-        
+
     # Verify the file was created
     if consolidated_path.exists():
         logger.info(f"Verified consolidated calculations file exists at {consolidated_path}")
@@ -952,7 +983,7 @@ def _merge_calculations_from_intermediate_reports(
 
 
 def _merge_calculations_into_table_json(
-    output_path: Path
+        output_path: Path
 ) -> None:
     """
     Merge calculations from calculations.json into table JSON files.
@@ -968,21 +999,21 @@ def _merge_calculations_into_table_json(
     import os
     import re
     from pathlib import Path
-    
+
     logger = logging.getLogger(__name__)
     extracted_dir = output_path / "extracted"
     calculations_file = extracted_dir / "calculations.json"
-    
+
     # Check if calculations.json exists
     if not calculations_file.exists():
         logger.warning(f"Calculations file not found at {calculations_file}, skipping calculation merge")
         return
-    
+
     # Load calculations from calculations.json
     try:
         with open(calculations_file, 'r', encoding='utf-8') as f:
             calculations_data = json.load(f)
-        
+
         # Group calculations by table name
         table_calculations = {}
         for calc in calculations_data.get('calculations', []):
@@ -991,26 +1022,27 @@ def _merge_calculations_into_table_json(
                 if table_name not in table_calculations:
                     table_calculations[table_name] = []
                 table_calculations[table_name].append(calc)
-        
-        logger.info(f"Loaded {len(calculations_data.get('calculations', []))} calculations for {len(table_calculations)} tables")
+
+        logger.info(
+            f"Loaded {len(calculations_data.get('calculations', []))} calculations for {len(table_calculations)} tables")
     except Exception as e:
         logger.error(f"Error loading calculations from {calculations_file}: {e}")
         return
-    
+
     # Find all table JSON files
     table_files = list(extracted_dir.glob("table_*.json"))
     logger.info(f"Found {len(table_files)} table JSON files")
-    
+
     # Process each table file
     for table_file in table_files:
         # Extract table name from filename (remove 'table_' prefix and '.json' suffix)
         table_name = table_file.stem.replace('table_', '')
-        
+
         # Check if we have calculations for this table
         if table_name not in table_calculations:
             logger.info(f"No calculations found for table {table_name}, skipping")
             continue
-        
+
         # Load table JSON
         try:
             with open(table_file, 'r', encoding='utf-8') as f:
@@ -1018,28 +1050,29 @@ def _merge_calculations_into_table_json(
         except Exception as e:
             logger.error(f"Error loading table data from {table_file}: {e}")
             continue
-        
+
         # Get calculations for this table
         table_calcs = table_calculations[table_name]
         logger.info(f"Processing {len(table_calcs)} calculations for table {table_name}")
-        
+
         # Ensure columns list exists
         if 'columns' not in table_data:
             table_data['columns'] = []
-        
+
         # Get existing column names to avoid duplicates
-        existing_columns = {col.get('source_name', col.get('name')).lower() for col in table_data['columns'] if col.get('source_name') or col.get('name')}
-        
+        existing_columns = {col.get('source_name', col.get('name')).lower() for col in table_data['columns'] if
+                            col.get('source_name') or col.get('name')}
+
         # Add calculations as columns
         added_count = 0
         for calc in table_calcs:
             column_name = calc.get('CognosName')
             dax_formula = calc.get('FormulaDax')
-            
+
             if not column_name or not dax_formula:
                 logger.warning(f"Skipping calculation with missing name or formula: {calc}")
                 continue
-            
+
             # Check if column already exists
             if column_name.lower() in existing_columns:
                 # Update existing column to ensure it's marked as calculated
@@ -1079,7 +1112,7 @@ def _merge_calculations_into_table_json(
                 table_data['columns'].append(new_column)
                 existing_columns.add(column_name.lower())
                 added_count += 1
-        
+
         # Save updated table JSON
         try:
             with open(table_file, 'w', encoding='utf-8') as f:
@@ -1090,8 +1123,8 @@ def _merge_calculations_into_table_json(
 
 
 def _consolidate_intermediate_reports_into_final(
-    output_path: str,
-    successful_migrations_paths: List[Path]
+        output_path: str,
+        successful_migrations_paths: List[Path]
 ) -> None:
     """
     Consolidate intermediate report pages and slicers into the final unified report.
@@ -1100,51 +1133,51 @@ def _consolidate_intermediate_reports_into_final(
     import json
     import shutil
     from pathlib import Path
-    
+
     logger = logging.getLogger(__name__)
     final_pbit_path = Path(output_path) / "pbit"
     final_sections_path = final_pbit_path / "Report" / "sections"
-    
+
     # Clear the default basic section
     if final_sections_path.exists():
         shutil.rmtree(final_sections_path)
     final_sections_path.mkdir(parents=True, exist_ok=True)
-    
+
     section_ordinal = 0
-    
+
     for report_path in successful_migrations_paths:
         intermediate_sections_path = report_path / "pbit" / "Report" / "sections"
-        
+
         if not intermediate_sections_path.exists():
             logger.warning(f"No sections found in intermediate report: {report_path.name}")
             continue
-            
+
         # Copy each section from intermediate report to final report
         for section_dir in intermediate_sections_path.iterdir():
             if section_dir.is_dir():
                 # Create new section name with ordinal to ensure uniqueness
                 new_section_name = f"{section_ordinal:03d}_{section_dir.name.split('_', 1)[-1] if '_' in section_dir.name else section_dir.name}"
                 new_section_path = final_sections_path / new_section_name
-                
+
                 # Copy the entire section directory
                 shutil.copytree(section_dir, new_section_path)
-                
+
                 # Update section.json with new ordinal
                 section_json_path = new_section_path / "section.json"
                 if section_json_path.exists():
                     try:
                         with open(section_json_path, 'r', encoding='utf-8') as f:
                             section_data = json.load(f)
-                        
+
                         section_data['ordinal'] = section_ordinal
-                        
+
                         with open(section_json_path, 'w', encoding='utf-8') as f:
                             json.dump(section_data, f, indent=2)
-                            
+
                         logger.info(f"Consolidated section from {report_path.name}: {new_section_name}")
                     except Exception as e:
                         logger.warning(f"Could not update section.json for {new_section_name}: {e}")
-                
+
                 section_ordinal += 1
-    
+
     logger.info(f"Successfully consolidated {section_ordinal} report sections with slicers into final report")
