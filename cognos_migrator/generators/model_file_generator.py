@@ -747,13 +747,18 @@ class ModelFileGenerator:
     
     def _get_data_load_mode(self) -> str:
         """Get data load mode from staging table settings."""
-        try:
-            with open('settings.json', 'r') as f:
-                settings = json.load(f)
-            staging_settings = settings.get('staging_tables', {})
+        if self.settings:
+            staging_settings = self.settings.get('staging_tables', {})
             return staging_settings.get('data_load_mode', 'import')
-        except (FileNotFoundError, json.JSONDecodeError):
-            return 'import'
+        else:
+            # Fallback to loading from file if no settings provided
+            try:
+                with open('settings.json', 'r') as f:
+                    settings = json.load(f)
+                staging_settings = settings.get('staging_tables', {})
+                return staging_settings.get('data_load_mode', 'import')
+            except (FileNotFoundError, json.JSONDecodeError):
+                return 'import'
     
     def _build_direct_query_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
         """Build M expression for DirectQuery mode - simplified for direct database access"""

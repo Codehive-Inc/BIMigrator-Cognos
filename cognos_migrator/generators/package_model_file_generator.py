@@ -441,14 +441,20 @@ class PackageModelFileGenerator:
     
     def _get_partition_mode(self) -> str:
         """Get partition mode from staging table settings."""
-        try:
-            with open('settings.json', 'r') as f:
-                settings = json.load(f)
-            staging_settings = settings.get('staging_tables', {})
+        if self.settings:
+            staging_settings = self.settings.get('staging_tables', {})
             data_load_mode = staging_settings.get('data_load_mode', 'import')
             return 'directQuery' if data_load_mode == 'direct_query' else 'import'
-        except (FileNotFoundError, json.JSONDecodeError):
-            return 'import'
+        else:
+            # Fallback to loading from file if no settings provided
+            try:
+                with open('settings.json', 'r') as f:
+                    settings = json.load(f)
+                staging_settings = settings.get('staging_tables', {})
+                data_load_mode = staging_settings.get('data_load_mode', 'import')
+                return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+            except (FileNotFoundError, json.JSONDecodeError):
+                return 'import'
     
     def _build_package_m_expression(self, table: Table) -> str:
         """Build M expression for package table partition"""

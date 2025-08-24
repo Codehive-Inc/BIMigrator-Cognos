@@ -29,11 +29,12 @@ class BaseHandler:
         self.extracted_dir = extracted_dir
         self.mquery_converter = mquery_converter
         
-        # Extract common settings
-        self.enabled = settings.get('enabled', False)
-        self.naming_prefix = settings.get('naming_prefix', 'stg_')
-        self.data_load_mode = settings.get('data_load_mode', 'import')
-        self.model_handling = settings.get('model_handling', 'none')
+        # Extract common settings from staging_tables section
+        staging_settings = settings.get('staging_tables', {})
+        self.enabled = staging_settings.get('enabled', False)
+        self.naming_prefix = staging_settings.get('naming_prefix', 'stg_')
+        self.data_load_mode = staging_settings.get('data_load_mode', 'import')
+        self.model_handling = staging_settings.get('model_handling', 'none')
         
         # Load SQL relationships if available
         self.sql_relationships = []
@@ -213,6 +214,10 @@ class BaseHandler:
         
         self.logger.info(f"Saved table JSON file: {json_file}")
     
+    def _get_partition_mode(self) -> str:
+        """Get partition mode from staging table settings."""
+        return 'directQuery' if self.data_load_mode == 'direct_query' else 'import'
+    
     def _get_original_m_query_from_json(self, table_name: str) -> Optional[str]:
         """
         Get the original M-query for a table from its JSON file.
@@ -254,5 +259,4 @@ class BaseHandler:
     
     def _get_partition_mode(self) -> str:
         """Get partition mode from staging table settings."""
-        data_load_mode = self.settings.get('data_load_mode', 'import')
-        return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+        return 'directQuery' if self.data_load_mode == 'direct_query' else 'import'
