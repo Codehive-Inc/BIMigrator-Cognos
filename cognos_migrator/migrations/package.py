@@ -830,7 +830,7 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                                   dry_run: bool = False,
                                                   settings: Optional[Dict[str, Any]] = None) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
-    config = load_settings()
+    config = load_settings(custom_settings=settings)
     logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings: {config}")
     return _migrate_shared_model(
         package_file=package_file_path,
