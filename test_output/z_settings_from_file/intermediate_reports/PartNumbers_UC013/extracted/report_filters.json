@@ -1,0 +1,20 @@
+[
+  {
+    "id": "detail_filter_0_0",
+    "type": "detail",
+    "queryName": "PartNumbers",
+    "expression": "[Database_Layer].[MANUFACTURER].[ITEM_NUMBER]= ?ItemNumber?"
+  },
+  {
+    "id": "summary_filter_0_0",
+    "type": "summary",
+    "queryName": "PartNumbers",
+    "expression": "[ITEM_NUMBER]= ?ItemNumber?"
+  },
+  {
+    "id": "summary_filter_0_1",
+    "type": "summary",
+    "queryName": "PartNumbers",
+    "expression": "[ACTIVITY_CODE] is not null"
+  }
+]

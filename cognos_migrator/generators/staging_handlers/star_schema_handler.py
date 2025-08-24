@@ -315,7 +315,8 @@ class StarSchemaHandler(BaseHandler):
             name=dimension_table_name,
             columns=columns,
             m_query=m_query,
-            source_query=m_query
+            source_query=m_query,
+            partition_mode=self._get_partition_mode()  # Use correct partition mode from settings
         )
         
         self.logger.info(f"Created dimension table {dimension_table_name} with {len(columns)} columns plus composite key")
@@ -437,7 +438,7 @@ class StarSchemaHandler(BaseHandler):
             columns=columns,
             m_query=m_query,
             source_query=m_query,
-            partition_mode="directQuery"
+            partition_mode=self._get_partition_mode()  # Use correct partition mode from settings
         )
         
         self.logger.info(f"Generated native SQL for dimension table {dimension_table_name}: {len(key_columns)} key columns, UNION-based SQL")

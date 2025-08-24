@@ -20,7 +20,7 @@ class BaseHandler:
         Initialize the base handler.
         
         Args:
-            settings: Staging table settings dictionary
+            settings: Full settings dictionary (will extract staging_tables section)
             extracted_dir: Directory containing extracted files (for SQL relationships)
             mquery_converter: M-query converter instance for generating baseline queries
         """
@@ -29,11 +29,19 @@ class BaseHandler:
         self.extracted_dir = extracted_dir
         self.mquery_converter = mquery_converter
         
-        # Extract common settings
-        self.enabled = settings.get('enabled', False)
-        self.naming_prefix = settings.get('naming_prefix', 'stg_')
-        self.data_load_mode = settings.get('data_load_mode', 'import')
-        self.model_handling = settings.get('model_handling', 'none')
+        # Extract staging table settings from the full settings dictionary
+        staging_settings = settings.get('staging_tables', {}) if isinstance(settings, dict) else settings
+        
+        # Extract common settings from staging_tables section
+        self.enabled = staging_settings.get('enabled', False)
+        self.naming_prefix = staging_settings.get('naming_prefix', 'stg_')
+        self.data_load_mode = staging_settings.get('data_load_mode', 'import')
+        self.model_handling = staging_settings.get('model_handling', 'none')
+        
+        # Log the extracted settings for debugging
+        self.logger.info(f"BaseHandler initialized with staging settings: enabled={self.enabled}, "
+                         f"naming_prefix={self.naming_prefix}, data_load_mode={self.data_load_mode}, "
+                         f"model_handling={self.model_handling}")
         
         # Load SQL relationships if available
         self.sql_relationships = []
@@ -254,5 +262,5 @@ class BaseHandler:
     
     def _get_partition_mode(self) -> str:
         """Get partition mode from staging table settings."""
-        data_load_mode = self.settings.get('data_load_mode', 'import')
-        return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+        # Use the correctly extracted data_load_mode from __init__
+        return 'directQuery' if self.data_load_mode == 'direct_query' else 'import'

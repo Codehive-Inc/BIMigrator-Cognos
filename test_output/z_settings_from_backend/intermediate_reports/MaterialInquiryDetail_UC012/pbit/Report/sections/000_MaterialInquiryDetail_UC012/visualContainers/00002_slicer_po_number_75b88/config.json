@@ -1,0 +1,67 @@
+{
+  "name": "75b885d626c0446ab4f9",
+  "layouts": [
+    {
+      "id": 0,
+      "position": {
+        "x": 410,
+        "y": 10,
+        "z": 0,
+        "width": 288.41,
+        "height": 86.52,
+        "tabOrder": 2
+      }
+    }
+  ],
+  "singleVisual": {
+    "visualType": "slicer",
+    "projections": {
+      "Values": [
+        {
+          "queryRef": "PURCHASE_ORDER_LINE.PO_NUMBER",
+          "active": true
+        }
+      ]
+    },
+    "prototypeQuery": {
+      "Version": 2,
+      "From": [
+        {
+          "Name": "m",
+          "Entity": "PURCHASE_ORDER_LINE",
+          "Type": 0
+        }
+      ],
+      "Select": [
+        {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Source": "m"
+              }
+            },
+            "Property": "PO_NUMBER"
+          },
+          "Name": "PURCHASE_ORDER_LINE.PO_NUMBER",
+          "NativeReferenceName": "PO_NUMBER"
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Basic'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+} 

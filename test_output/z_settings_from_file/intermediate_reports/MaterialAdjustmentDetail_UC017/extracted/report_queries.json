@@ -1,0 +1,87 @@
+[
+  {
+    "id": "query_0",
+    "name": "MaterialAdjustmentDetail",
+    "source": "model",
+    "data_items": [
+      {
+        "name": "SITE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]"
+      },
+      {
+        "name": "ITEM_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]"
+      },
+      {
+        "name": "CHARGED_DATE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[CHARGED_DATE]"
+      },
+      {
+        "name": "JOB_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[JOB_NUMBER]"
+      },
+      {
+        "name": "QUANTITY",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[QUANTITY]"
+      },
+      {
+        "name": "UNIT_PRICE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[UNIT_PRICE]"
+      },
+      {
+        "name": "TRANSACTION_VALUE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[TRANSACTION_VALUE]"
+      },
+      {
+        "name": "ADJUSTMENT_DESC",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[ADJUSTMENT_DESC]"
+      },
+      {
+        "name": "ADJUSTMENT_TYPE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[ADJUSTMENT_TYPE]"
+      },
+      {
+        "name": "TIME_ENTERED",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[MATERIAL_CHARGES].[TIME_ENTERED]"
+      },
+      {
+        "name": "DESCRIPTION",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]"
+      },
+      {
+        "name": "Cost",
+        "aggregate": "notApplicable",
+        "expression": "IF ( [UNIT_PRICE] = 0 ) THEN\n\t( [TRANSACTION_VALUE] )\nELSE\n\t( [UNIT_PRICE] )"
+      }
+    ],
+    "filters": [
+      {
+        "type": "detail",
+        "expression": "[SITE_NUMBER]= ?SiteNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[ITEM_NUMBER]=?ItemNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[CHARGED_DATE]=?ChargedDate?"
+      },
+      {
+        "type": "detail",
+        "expression": "[TIME_ENTERED]=?TimeEntered?"
+      }
+    ]
+  }
+]

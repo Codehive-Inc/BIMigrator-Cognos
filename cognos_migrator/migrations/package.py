@@ -201,6 +201,9 @@ def migrate_package_with_explicit_session(package_file_path: str,
                 settings=settings  # Pass frontend settings
             )
             generator.model_file_generator = package_model_file_generator
+        
+        # CRITICAL FIX: Log the settings being passed to verify they're correct
+        log_info(f"Settings being passed to PackageModelFileGenerator: {settings}")
 
         # Generate Power BI project files
         success = generator.generate_project(pbi_project, pbit_dir)
@@ -827,10 +830,17 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                                   cpf_file_path: str = None,
                                                   task_id: Optional[str] = None,
                                                   auth_key: str = "IBM-BA-Authorization",
-                                                  dry_run: bool = False) -> bool:
+                                                  dry_run: bool = False,
+                                                  settings: Optional[Dict[str, Any]] = None) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
-    config = load_settings()
-    logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings: {config}")
+    # Use provided settings or fall back to file-based settings
+    if settings:
+        config = settings
+        logging.info(f"Using provided settings: {config}")
+    else:
+        config = load_settings()
+        logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings from file: {config}")
+    
     return _migrate_shared_model(
         package_file=package_file_path,
         reports=report_ids,

@@ -1,0 +1,341 @@
+{
+  "source_name": "STORAGE_LOCATION",
+  "name": "STORAGE_LOCATION",
+  "lineage_tag": null,
+  "description": "Table created from source: STORAGE_LOCATION",
+  "is_hidden": false,
+  "columns": [
+    {
+      "source_name": "DATE_ENTERED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_ENTERED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "SITE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "SITE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "PO_LINE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "PO_LINE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "RELEASE_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "RELEASE_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DATE_RECEIVED_AT_SITE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DATE_RECEIVED_AT_SITE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "QTY_RECEIVED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "QTY_RECEIVED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TIME_ENTERED",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TIME_ENTERED",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "ITEM_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "ITEM_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "JOB_NUMBER",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "JOB_NUMBER",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_OF_MEASURE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UNIT_OF_MEASURE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "REQUESTOR_NAME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "REQUESTOR_NAME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "VENDOR_NAME",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "VENDOR_NAME",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOCATION2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "LOCATION2",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "UNIT_PRICE",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "UNIT_PRICE",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "DESCRIPTION1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "DESCRIPTION1",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": false,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC1",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "LOC2",
+      "datatype": "string",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "none",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    },
+    {
+      "source_name": "TotalCost",
+      "datatype": "decimal",
+      "format_string": null,
+      "lineage_tag": null,
+      "source_column": "TotalCost",
+      "description": null,
+      "is_hidden": false,
+      "summarize_by": "sum",
+      "data_category": null,
+      "is_calculated": true,
+      "is_data_type_inferred": true,
+      "annotations": {
+        "SummarizationSetBy": "Automatic"
+      }
+    }
+  ],
+  "hierarchies": [],
+  "partitions": [
+    {
+      "name": "STORAGE_LOCATION",
+      "source_type": "m",
+      "mode": "import",
+      "expression": "\tlet\n\t\t\t\t\tSource = Sql.Database(\"REPLACE_WITH_YOUR_SERVER\", \"REPLACE_WITH_YOUR_DATABASE\"),\n\t\t\t\t\tSQL = Value.NativeQuery(Source, \"SELECT\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"DATE_ENTERED\"\" AS \"\"DATE_ENTERED\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"SITE_NUMBER\"\" AS \"\"SITE_NUMBER\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"PO_NUMBER\"\" AS \"\"PO_NUMBER\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"PO_LINE_NUMBER\"\" AS \"\"PO_LINE_NUMBER\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"RELEASE_NUMBER\"\" AS \"\"RELEASE_NUMBER\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"DATE_RECEIVED_AT_SITE\"\" AS \"\"DATE_RECEIVED_AT_SITE\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"QTY_RECEIVED\"\" AS \"\"QTY_RECEIVED\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"TIME_ENTERED\"\" AS \"\"TIME_ENTERED\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"ITEM_NUMBER\"\" AS \"\"ITEM_NUMBER\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"JOB_NUMBER\"\" AS \"\"JOB_NUMBER\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"UNIT_OF_MEASURE\"\" AS \"\"UNIT_OF_MEASURE\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"REQUESTOR_NAME\"\" AS \"\"REQUESTOR_NAME\"\",\n    \"\"PURCHASE_ORDER_LINE\"\".\"\"VENDOR_NAME\"\" AS \"\"VENDOR_NAME\"\",\n    \"\"STORAGE_LOCATION\"\".\"\"LOCATION1\"\" AS \"\"LOCATION1\"\",\n    \"\"STORAGE_LOCATION\"\".\"\"LOCATION2\"\" AS \"\"LOCATION2\"\",\n    \"\"PURCHASE_ORDER_RECEIPT\"\".\"\"UNIT_PRICE\"\" AS \"\"UNIT_PRICE\"\",\n    \"\"PURCHASE_ORDER_DESCRIPTIONS\"\".\"\"DESCRIPTION1\"\" AS \"\"DESCRIPTION1\"\",\n    substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2) AS \"\"LOC1\"\",\n    substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2) AS \"\"LOC2\"\",\n    [UNIT_PRICE] * [QTY_RECEIVED] AS \"\"TotalCost\"\"\nFROM\n\"\"Database_Layer\"\".\"\"PURCHASE_ORDER_DESCRIPTIONS\"\", \"\"Database_Layer\"\".\"\"PURCHASE_ORDER_LINE\"\", \"\"Database_Layer\"\".\"\"PURCHASE_ORDER_RECEIPT\"\", \"\"Database_Layer\"\".\"\"STORAGE_LOCATION\"\"\nWHERE\n    [SITE_NUMBER]= ?SiteNumber?\n    AND     [PO_NUMBER]= ?PONumber?\n    AND     [PO_LINE_NUMBER]=?LineNumber?\n    AND     [RELEASE_NUMBER]=?ReleaseNumber?\n    AND     [DATE_ENTERED]=?DateEntered?\n    AND     [TIME_ENTERED]=?TimeEntered?\", null, [EnableFolding=true])\n\t\t\t\tin\n\t\t\t\t\tSQL"
+    }
+  ],
+  "has_widget_serialization": false,
+  "visual_type": null,
+  "column_settings": null
+}

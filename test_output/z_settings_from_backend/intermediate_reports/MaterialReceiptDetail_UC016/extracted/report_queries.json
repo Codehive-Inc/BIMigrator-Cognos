@@ -1,0 +1,135 @@
+[
+  {
+    "id": "query_0",
+    "name": "MaterialReceiptDetail",
+    "source": "model",
+    "data_items": [
+      {
+        "name": "DATE_ENTERED",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[DATE_ENTERED]"
+      },
+      {
+        "name": "SITE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[SITE_NUMBER]"
+      },
+      {
+        "name": "PO_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_NUMBER]"
+      },
+      {
+        "name": "PO_LINE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[PO_LINE_NUMBER]"
+      },
+      {
+        "name": "RELEASE_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[RELEASE_NUMBER]"
+      },
+      {
+        "name": "DATE_RECEIVED_AT_SITE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[DATE_RECEIVED_AT_SITE]"
+      },
+      {
+        "name": "QTY_RECEIVED",
+        "aggregate": "total",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[QTY_RECEIVED]"
+      },
+      {
+        "name": "TIME_ENTERED",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[TIME_ENTERED]"
+      },
+      {
+        "name": "ITEM_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[ITEM_NUMBER]"
+      },
+      {
+        "name": "JOB_NUMBER",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[JOB_NUMBER]"
+      },
+      {
+        "name": "UNIT_OF_MEASURE",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[UNIT_OF_MEASURE]"
+      },
+      {
+        "name": "REQUESTOR_NAME",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[REQUESTOR_NAME]"
+      },
+      {
+        "name": "VENDOR_NAME",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_LINE].[VENDOR_NAME]"
+      },
+      {
+        "name": "LOCATION1",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[STORAGE_LOCATION].[LOCATION1]"
+      },
+      {
+        "name": "LOCATION2",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[STORAGE_LOCATION].[LOCATION2]"
+      },
+      {
+        "name": "UNIT_PRICE",
+        "aggregate": "total",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_RECEIPT].[UNIT_PRICE]"
+      },
+      {
+        "name": "DESCRIPTION1",
+        "aggregate": "none",
+        "expression": "[Database_Layer].[PURCHASE_ORDER_DESCRIPTIONS].[DESCRIPTION1]"
+      },
+      {
+        "name": "LOC1",
+        "aggregate": "notApplicable",
+        "expression": "substring(rpad([LOCATION1], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION1], 12, ' '), 11,2)"
+      },
+      {
+        "name": "LOC2",
+        "aggregate": "notApplicable",
+        "expression": "substring(rpad([LOCATION2], 12, ' '), 1,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 3,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 5,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 7,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 9,2) + ' ' +\nsubstring(rpad([LOCATION2], 12, ' '), 11,2)"
+      },
+      {
+        "name": "TotalCost",
+        "aggregate": "notApplicable",
+        "expression": "[UNIT_PRICE] * [QTY_RECEIVED]"
+      }
+    ],
+    "filters": [
+      {
+        "type": "detail",
+        "expression": "[SITE_NUMBER]= ?SiteNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[PO_NUMBER]= ?PONumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[PO_LINE_NUMBER]=?LineNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[RELEASE_NUMBER]=?ReleaseNumber?"
+      },
+      {
+        "type": "detail",
+        "expression": "[DATE_ENTERED]=?DateEntered?"
+      },
+      {
+        "type": "detail",
+        "expression": "[TIME_ENTERED]=?TimeEntered?"
+      }
+    ]
+  }
+]

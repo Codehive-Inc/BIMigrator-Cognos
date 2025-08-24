@@ -1,0 +1,177 @@
+<?xml version="1.0" ?>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/" expressionLocale="en-us" interactivePageBreakByFrame="true" useStyleVersion="1">
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/11.0/" to "http://developer.cognos.com/schemas/report/16.2/" at 2025-8-9. 1:1:28-->
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/6.0/" to "http://developer.cognos.com/schemas/report/11.0/" at 2014-6-25. 17:48:48-->
+  <!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/3.0/" to "http://developer.cognos.com/schemas/report/6.0/" at 2013-5-2. 11:39:48-->
+  <!--RSU-SPC-0093 Report specification upgraded from "http://developer.cognos.com/schemas/report/1/" to "http://developer.cognos.com/schemas/report/3.0/" at 2010-7-22 9:5:55-->
+  <drillBehavior modelBasedDrillThru="false"/>
+  <queries>
+    <query name="MaterialInquiryDetail">
+      <source>
+        <model/>
+      </source>
+      <selection>
+        <dataItem aggregate="none" name="SITE_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[SITE_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="ITEM_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[ITEM_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="PO_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[PURCHASE_ORDER_LINE].[PO_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="PO_LINE_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[PURCHASE_ORDER_LINE].[PO_LINE_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="RELEASE_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[PURCHASE_ORDER_LINE].[RELEASE_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="DESCRIPTION" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[DESCRIPTION]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="UNIT_OF_MEASURE" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[UNIT_OF_MEASURE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QTY_ON_HAND" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QTY_ON_HAND]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="MINIMUM" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[MINIMUM]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="CONSUMABLE" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[CONSUMABLE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="SHELF_LIFE" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[SHELF_LIFE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="MAXIMUM" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[MAXIMUM]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="DATE_LAST_ISSUED" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_ISSUED]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="DATE_LAST_RETURNED" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_RETURNED]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="DATE_LAST_RECEIVED" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[DATE_LAST_RECEIVED]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="UTC_IND" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[UTC_IND]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="PRIMARY_LOC" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[PRIMARY_LOC]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="SECONDARY_LOC" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[SECONDARY_LOC]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="STATUS" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[STATUS]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QA_CODE" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CODE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QA_LEVEL" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QA_LEVEL]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QA_CERT1" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT1]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QA_CERT2" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT2]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QA_CERT3" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT3]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="QA_CERT4" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[QA_CERT4]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="PIT" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[PIT]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="PREVENT_MAINTENANCE" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[PREVENT_MAINTENANCE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="STATUS_DATE" rollupAggregate="none">
+          <expression>[Database_Layer].[PURCHASE_ORDER_LINE].[STATUS_DATE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="SAP_IND" rollupAggregate="none">
+          <expression>[Database_Layer].[ITEM_SITE_EXTRACT].[SAP_IND]</expression>
+        </dataItem>
+        <dataItem aggregate="notApplicable" name="LOC_1" rollupAggregate="none">
+          <expression>substring(rpad([PRIMARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([PRIMARY_LOC], 12, ' '), 11,2)</expression>
+        </dataItem>
+        <dataItem aggregate="notApplicable" name="LOC_2" rollupAggregate="none">
+          <expression>substring(rpad([SECONDARY_LOC], 12, ' '), 1,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 3,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 5,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 7,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 9,2) + ' ' +
+substring(rpad([SECONDARY_LOC], 12, ' '), 11,2)</expression>
+        </dataItem>
+      </selection>
+      <detailFilters>
+        <detailFilter>
+          <filterExpression>[SITE_NUMBER]= ?SiteNumber?</filterExpression>
+        </detailFilter>
+        <detailFilter>
+          <filterExpression>[ITEM_NUMBER]= ?ItemNumber?</filterExpression>
+        </detailFilter>
+        <detailFilter use="optional">
+          <filterExpression>[PO_NUMBER]=?PO_Number?</filterExpression>
+        </detailFilter>
+        <detailFilter use="optional">
+          <filterExpression>[PO_LINE_NUMBER]=?LineNumber?</filterExpression>
+        </detailFilter>
+        <detailFilter use="optional">
+          <filterExpression>[RELEASE_NUMBER]=?ReleaseNumber?</filterExpression>
+        </detailFilter>
+        <detailFilter use="optional">
+          <filterExpression>[STATUS_DATE]=?StatusDate?</filterExpression>
+        </detailFilter>
+      </detailFilters>
+      <queryHints>
+        <useV4Interpretation value="true"/>
+        <queryProcessing value="minimizeLocal"/>
+      </queryHints>
+    </query>
+    <query name="Query1">
+      <source>
+        <model/>
+      </source>
+      <selection>
+        <dataItem aggregate="none" name="SITE_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[SITE_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="ITEM_NUMBER" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[ITEM_NUMBER]</expression>
+        </dataItem>
+        <dataItem aggregate="maximum" name="CHARGED_DATE" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[CHARGED_DATE]</expression>
+        </dataItem>
+        <dataItem aggregate="none" name="TRANSACTION_TYPE" rollupAggregate="none">
+          <expression>[Database_Layer].[MATERIAL_CHARGES].[TRANSACTION_TYPE]</expression>
+        </dataItem>
+      </selection>
+      <summaryFilters>
+        <summaryFilter>
+          <filterExpression>[SITE_NUMBER]= ?SiteNumber?</filterExpression>
+        </summaryFilter>
+        <summaryFilter>
+          <filterExpression>[ITEM_NUMBER]=?ItemNumber?</filterExpression>
+        </summaryFilter>
+        <summaryFilter>
+          <filterExpression>[TRANSACTION_TYPE] is not null</filterExpression>
+        </summaryFilter>
+      </summaryFilters>
+      <queryHints>
+        <useV4Interpretation value="true"/>
+      </queryHints>
+    </query>
+  </queries>
+</report>
