@@ -7,6 +7,7 @@ This module contains functions for migrating Cognos reports to Power BI.
 import os
 import json
 import logging
+import uuid
 from pathlib import Path
 from typing import Optional, Dict, Any
 from datetime import datetime

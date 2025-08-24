@@ -803,7 +803,7 @@ def migrate_package_with_local_reports(
         cognos_url: str,
         session_key: str,
         task_id: Optional[str] = None,
-        settings: str = None
+        settings: Optional[Dict[str, Any]] = None
 ) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
     settings = load_settings(custom_settings=settings)
