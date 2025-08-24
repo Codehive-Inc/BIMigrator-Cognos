@@ -363,18 +363,22 @@ def load_settings(custom_settings: Union[Dict[str, Any], str, None] = None) -> D
     return settings
 
 
-def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) -> DataModel:
+def filter_data_model_tables(data_model: DataModel, table_references: Set[str], settings: Optional[Dict[str, Any]] = None) -> DataModel:
     """Filter the data model to include only tables referenced by reports
     
     Args:
         data_model: The original data model with all tables
         table_references: Set of table names referenced by reports
+        settings: Optional settings dict to use instead of loading from file
         
     Returns:
         Filtered data model with only referenced tables
     """
     # Load table filtering settings
-    settings = load_settings()
+    if settings is None:
+        settings = load_settings()
+    else:
+        settings = settings
     filtering_settings = settings.get('table_filtering', {})
     filtering_mode = filtering_settings.get('mode', 'include-all')
     always_include = filtering_settings.get('always_include', [])
@@ -459,8 +463,8 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     filtered_table_names = {table.name for table in filtered_tables}
     filtered_relationships = []
 
-    # Check DirectQuery mode and date table compatibility
-    settings = load_settings()
+    # Check DirectQuery mode and date table compatibility  
+    # Use settings passed to function instead of loading from file
     is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
     has_central_date_table = "CentralDateTable" in filtered_table_names
     always_include = settings.get("table_filtering", {}).get("always_include", [])
@@ -777,7 +781,7 @@ def _migrate_shared_model(
     # --- Step 7: Post-process the generated TMDL to fix relationships ---
     tmdl_relationships_file = pbit_dir / "Model" / "relationships.tmdl"
     if tmdl_relationships_file.exists():
-        post_processor = TMDLPostProcessor(logger=logging.getLogger(__name__))
+        post_processor = TMDLPostProcessor(logger=logging.getLogger(__name__), settings=config)
         post_processor.fix_relationships(str(tmdl_relationships_file))
     else:
         logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")

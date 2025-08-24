@@ -48,8 +48,9 @@ class Graph:
         return False
 
 class TMDLPostProcessor:
-    def __init__(self, logger=None):
+    def __init__(self, logger=None, settings=None):
         self.logger = logger or logging.getLogger(__name__)
+        self.settings = settings
 
     def fix_relationships(self, tmdl_file_path: str):
         """
@@ -232,8 +233,11 @@ class TMDLPostProcessor:
         """
         try:
             # Check if we're in DirectQuery mode and need to filter
-            from ..migrations.package import load_settings
-            settings = load_settings()
+            if self.settings is None:
+                from ..migrations.package import load_settings
+                settings = load_settings()
+            else:
+                settings = self.settings
             is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
             
             if not is_directquery:
