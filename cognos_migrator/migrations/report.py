@@ -4,12 +4,11 @@ Report migration orchestrators for Cognos to Power BI migration.
 This module contains functions for migrating Cognos reports to Power BI.
 """
 
+import os
 import json
 import logging
-import os
-import uuid
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Optional, Dict, Any
 from datetime import datetime
 
 from cognos_migrator.config import MigrationConfig, CognosConfig
@@ -135,7 +134,8 @@ def migrate_single_report_with_explicit_session(report_id: str,
                                                 output_path: str,
                                                 cognos_url: str, session_key: str,
                                                 task_id: Optional[str] = None,
-                                                auth_key: str = "IBM-BA-Authorization") -> bool:
+                                                auth_key: str = "IBM-BA-Authorization",
+                                                settings: Optional[Dict[str, Any]] = None) -> bool:
     """DEPRECATED: Use migrate_single_report instead.
     Migrate a single Cognos report with explicit session credentials.
     
@@ -162,5 +162,6 @@ def migrate_single_report_with_explicit_session(report_id: str,
         session_key=session_key,
         report_id=report_id,
         task_id=task_id,
-        auth_key=auth_key
+        auth_key=auth_key,
+        settings=settings
     )

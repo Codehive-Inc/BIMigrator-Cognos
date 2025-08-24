@@ -827,7 +827,8 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                                   cpf_file_path: str = None,
                                                   task_id: Optional[str] = None,
                                                   auth_key: str = "IBM-BA-Authorization",
-                                                  dry_run: bool = False) -> bool:
+                                                  dry_run: bool = False,
+                                                  settings: Optional[Dict[str, Any]] = None) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
     config = load_settings()
     logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings: {config}")
