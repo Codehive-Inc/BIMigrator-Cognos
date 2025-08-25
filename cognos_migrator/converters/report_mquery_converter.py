@@ -3,6 +3,8 @@ Report-specific M-Query Converter for converting Cognos report queries to Power 
 """
 import json
 import re
+import requests
+import os
 from typing import Dict, Any, Optional, List
 from pathlib import Path
 
@@ -30,20 +32,26 @@ class ReportMQueryConverter(BaseMQueryConverter):
         """
         self.logger.info(f"[MQUERY_TRACKING] Converting source query to M-query for report table: {table.name}")
         
-        # Build SQL from report queries if report_spec is available
+        # 1. Make API calls for analytics and monitoring
+        self._make_api_calls_for_analytics(table, report_spec, data_sample)
+        
+        # 2. Build SQL from report queries if report_spec is available
         sql_query = self._build_sql_from_report_queries(table)
         if not sql_query:
             self.logger.warning(f"Could not build SQL for report table {table.name}. Falling back to default M-query.")
-            return self._build_default_m_query(table)
-
-        self.logger.info(f"Built SQL query for report table {table.name}: {sql_query}")
+            m_query = self._build_default_m_query(table)
+        else:
+            self.logger.info(f"Built SQL query for report table {table.name}: {sql_query}")
+            
+            # 3. Generate M-query directly from SQL using enhanced logic
+            m_query = self._build_m_query_from_sql(sql_query, table)
         
-        # Generate M-query directly from SQL
-        m_query = self._build_m_query_from_sql(sql_query, table)
-        
-        # Clean and format the M-query
+        # 4. Clean and format the M-query
         cleaned_m_query = self._clean_m_query(m_query)
         self.logger.info(f"[MQUERY_TRACKING] Cleaned M-query for report table {table.name}: {cleaned_m_query[:200]}...")
+        
+        # 5. Make validation API call for quality assurance
+        self._make_validation_api_call(table.name, cleaned_m_query)
         
         return cleaned_m_query
     
@@ -118,3 +126,100 @@ class ReportMQueryConverter(BaseMQueryConverter):
             sql += "\n    AND ".join(where_clauses)
             
         return sql
+    
+    def _make_api_calls_for_analytics(self, table: Table, report_spec: Optional[str], data_sample: Optional[Dict]) -> None:
+        """Make API calls for analytics and monitoring purposes"""
+        try:
+            api_base_url = os.environ.get('DAX_API_URL', 'http://localhost:8080')
+            
+            # Build context for API call according to MQueryContext model
+            context = {
+                'table_name': table.name,
+                'columns': [{'name': col.name, 'data_type': str(col.data_type)} for col in table.columns],
+                'source_info': {
+                    'source_type': 'report',
+                    'connection_details': {'report_spec': report_spec} if report_spec else {}
+                }
+            }
+            
+            # Add optional fields if available
+            if data_sample:
+                context['source_query'] = str(data_sample)  # Convert to string if needed
+            if report_spec:
+                context['report_spec'] = report_spec
+            
+            payload = {
+                'context': context,
+                'options': {
+                    'optimize_for_performance': True,
+                    'query_folding_preference': 'BestEffort',
+                    'error_handling_strategy': 'RemoveErrors',
+                    'add_buffer': False,
+                    'add_documentation_comments': True
+                }
+            }
+            
+            self.logger.info(f"Calling M-query generation API for analytics (table: {table.name})")
+            
+            # Try enhanced endpoint first
+            try:
+                response = requests.post(
+                    f'{api_base_url}/api/mquery/complete',
+                    headers={'Content-Type': 'application/json'},
+                    json=payload,
+                    timeout=30
+                )
+                
+                if response.status_code == 200:
+                    self.logger.info(f"Enhanced M-query API call successful for table {table.name}")
+                    result = response.json()
+                    if 'processing_time' in result:
+                        self.logger.info(f"API processing time for table {table.name}: {result['processing_time']:.2f}s")
+                else:
+                    # Fallback to basic endpoint
+                    response = requests.post(
+                        f'{api_base_url}/api/mquery/generate',
+                        headers={'Content-Type': 'application/json'},
+                        json=payload,
+                        timeout=30
+                    )
+                    if response.status_code == 200:
+                        self.logger.info(f"Basic M-query API call successful for table {table.name}")
+                        
+            except Exception as api_error:
+                self.logger.warning(f"M-query API call failed for table {table.name}: {api_error} - continuing with local processing")
+                
+        except Exception as e:
+            self.logger.warning(f"Error in API analytics call for table {table.name}: {e} - continuing with local processing")
+    
+    def _make_validation_api_call(self, table_name: str, m_query: str) -> None:
+        """Make validation API call for quality assurance"""
+        try:
+            api_base_url = os.environ.get('DAX_API_URL', 'http://localhost:8080')
+            
+            validation_payload = {
+                "m_query": m_query,
+                "context": {"table_name": table_name, "source_type": "report"}
+            }
+            
+            self.logger.info(f"Calling validation API for quality assurance (table: {table_name})")
+            response = requests.post(
+                f'{api_base_url}/api/mquery/validate',
+                headers={'Content-Type': 'application/json'},
+                json=validation_payload,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.logger.info(f"Validation API call successful for table {table_name}")
+                result = response.json()
+                if result.get('is_valid'):
+                    self.logger.info(f"M-query validation passed for table {table_name}")
+                else:
+                    issues = result.get('issues', [])
+                    self.logger.info(f"M-query validation issues for table {table_name}: {issues}")
+            else:
+                self.logger.info(f"Validation API returned status {response.status_code} for table {table_name}")
+                
+        except Exception as e:
+            self.logger.warning(f"Validation API call failed for table {table_name}: {e} - continuing with local validation")
