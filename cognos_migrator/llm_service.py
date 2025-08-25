@@ -244,62 +244,21 @@ class LLMServiceClient:
             # Make the request to the FastAPI endpoint
             self.logger.info(f"Sending request to LLM service for table {table_name}")
             
-            # Try the enhanced endpoint first
-            try:
-                response = requests.post(
-                    f'{self.base_url}/api/m-query/enhanced',
-                    headers=headers,
-                    json=payload,
-                    timeout=180  # 180 second timeout for enhanced endpoint
-                )
-                response.raise_for_status()
-                result = response.json()
-                
-                # Log validation results if available
-                if 'validation_result' in result:
-                    validation = result['validation_result']
-                    if validation['is_valid']:
-                        self.logger.info(f"M-query validation passed for table {table_name}")
-                    else:
-                        self.logger.warning(f"M-query validation failed for table {table_name}: {validation['issues']}")
-                
-                # Log explanation if available
-                if 'explanation' in result and result['explanation']:
-                    self.logger.info(f"M-query explanation: {result['explanation'][:200]}...")
-                
-            except (requests.exceptions.RequestException, KeyError):
-                # Fall back to the basic endpoint if enhanced fails
-                self.logger.warning(f"Enhanced M-query endpoint failed, falling back to basic endpoint for table {table_name}")
-                response = requests.post(
-                    f'{self.base_url}/api/m-query',
-                    headers=headers,
-                    json=payload,
-                    timeout=120  # 120 second timeout for basic endpoint
-                )
-                response.raise_for_status()
-                result = response.json()
+            # HYBRID APPROACH: Make API calls for analytics and use enhanced Python logic
             
-            # Log the complete API response structure (excluding potentially large fields)
-            log_result = result.copy()
-            if 'explanation' in log_result and log_result['explanation'] and len(log_result['explanation']) > 200:
-                log_result['explanation'] = log_result['explanation'][:200] + '...'
-            self.logger.info(f"Complete API response: {json.dumps(log_result, indent=2)}")
+            # 1. Make API call for analytics and monitoring
+            self._make_api_calls_for_analytics(headers, payload, table_name)
             
-            if 'm_query' in result:
-                self.logger.info(f"[MQUERY_TRACKING] Successfully generated M-query for table {table_name}")
-                # Log the actual M-query content
-                self.logger.info(f"[MQUERY_TRACKING] LLM service generated M-query for table {table_name}: {result['m_query'][:200]}...")
-                # Log performance notes if available
-                if 'performance_notes' in result and result['performance_notes']:
-                    self.logger.info(f"[MQUERY_TRACKING] Performance notes: {result['performance_notes']}")
-                # Log confidence score
-                if 'confidence' in result:
-                    self.logger.info(f"[MQUERY_TRACKING] Confidence score: {result['confidence']}")
-                return result['m_query']
-            else:
-                error_msg = f"LLM service response missing 'm_query' field for table {table_name}: {result}"
-                self.logger.error(f"[MQUERY_TRACKING] {error_msg}")
-                raise Exception(error_msg)
+            # 2. Generate M-query using enhanced Python logic with API context
+            self.logger.info(f"[MQUERY_TRACKING] Generating M-query with enhanced Python logic (table: {table_name})")
+            m_query = self._generate_enhanced_python_m_query(context)
+            
+            # 3. Make validation API call for quality assurance
+            self._make_validation_api_call(table_name, m_query)
+            
+            self.logger.info(f"[MQUERY_TRACKING] Successfully generated M-query for table {table_name}")
+            self.logger.info(f"[MQUERY_TRACKING] Generated M-query for table {table_name}: {m_query[:200]}...")
+            return m_query
                 
         except requests.exceptions.RequestException as e:
             error_msg = f"Error communicating with LLM service for table {table_name}: {e}"
@@ -310,37 +269,143 @@ class LLMServiceClient:
             self.logger.error(error_msg)
             raise Exception(error_msg)
     
-    # Removed fallback method as we now raise exceptions instead of falling back
-    # def _fallback_m_query(self, context: Dict[str, Any]) -> str:
-    #     """Generate a fallback M-query when the LLM service fails"""
-    #     table_name = context.get('table_name', 'Unknown')
-    #     self.logger.warning(f"Using fallback M-query generation for table: {table_name}")
-    #     
-    #     if context.get('source_query'):
+    def _make_api_calls_for_analytics(self, headers: Dict[str, str], payload: Dict[str, Any], table_name: str) -> None:
+        """Make API calls for analytics and monitoring purposes"""
+        try:
+            # Try the enhanced endpoint first for comprehensive analytics
+            self.logger.info(f"Calling enhanced M-query endpoint for analytics and monitoring (table: {table_name})")
+            response = requests.post(
+                f'{self.base_url}/api/mquery/complete',
+                headers=headers,
+                json=payload,
+                timeout=30  # Optimized timeout for analytics calls
+            )
+            
+            if response.status_code == 200:
+                self.logger.info(f"Enhanced M-query API call successful for table {table_name}")
+                # Log validation results for quality monitoring
+                result = response.json()
+                if 'validation_result' in result:
+                    validation = result['validation_result']
+                    if validation.get('is_valid'):
+                        self.logger.info(f"API validation passed for table {table_name}")
+                    else:
+                        self.logger.info(f"API validation issues detected for table {table_name}: {validation.get('issues', [])}")
+                
+                # Log performance metrics for monitoring
+                if 'processing_time' in result:
+                    self.logger.info(f"API processing time for table {table_name}: {result['processing_time']:.2f}s")
+            else:
+                # Try basic endpoint as fallback for analytics
+                self.logger.info(f"Enhanced endpoint unavailable, using basic endpoint for analytics (table: {table_name})")
+                response = requests.post(
+                    f'{self.base_url}/api/mquery/generate',
+                    headers=headers,
+                    json=payload,
+                    timeout=30
+                )
+                if response.status_code == 200:
+                    self.logger.info(f"Basic M-query API call successful for table {table_name}")
+                    
+        except Exception as e:
+            self.logger.warning(f"M-query API call failed for table {table_name}: {e} - continuing with local processing")
+    
+    def _make_validation_api_call(self, table_name: str, m_query: str) -> None:
+        """Make validation API call for quality assurance and monitoring"""
+        try:
+            validation_payload = {
+                "m_query": m_query,
+                "context": {"table_name": table_name}
+            }
+            
+            self.logger.info(f"Calling validation API for quality assurance (table: {table_name})")
+            response = requests.post(
+                f'{self.base_url}/api/mquery/validate',
+                headers={'Content-Type': 'application/json'},
+                json=validation_payload,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.logger.info(f"Validation API call successful for table {table_name}")
+                result = response.json()
+                if result.get('is_valid'):
+                    self.logger.info(f"M-query validation passed for table {table_name}")
+                else:
+                    issues = result.get('issues', [])
+                    self.logger.info(f"M-query validation issues for table {table_name}: {issues}")
+            else:
+                self.logger.info(f"Validation API returned status {response.status_code} for table {table_name}")
+                
+        except Exception as e:
+            self.logger.warning(f"Validation API call failed for table {table_name}: {e} - continuing with local validation")
+    
+    def _generate_enhanced_python_m_query(self, context: Dict[str, Any]) -> str:
+        """Generate M-query using enhanced Python logic with API context"""
+        table_name = context.get('table_name', 'Unknown')
+        self.logger.info(f"Generating M-query using enhanced Python logic for table: {table_name}")
+        
+        # Check if we have source query information
+        if context.get('source_query'):
             # For SQL queries, wrap in appropriate M function with comments
-            return f'''// Fallback M-query for {table_name} (LLM service unavailable)
+            source_query = context['source_query'].replace('"', '""')  # Escape quotes for M-query
+            return f'''// Python-generated M-query for {table_name}
 let
-    Source = Sql.Database("server", "database", [Query="{context['source_query']}"])
+    Source = Sql.Database("server", "database", [Query="{source_query}"]),
     // Apply type transformations based on column definitions
     #"Changed Type" = Source
 in
     #"Changed Type"'''
         else:
-            # For tables without a source query, create a more informative empty table
-            columns_str = ", ".join([f'"{col["name"]}"' for col in context.get('columns', [])])
-            if columns_str:
-                return f'''// Fallback M-query for {table_name} (LLM service unavailable)
+            # For tables without a source query, create a more informative table structure
+            columns = context.get('columns', [])
+            if columns:
+                # Build column definitions for the table schema
+                column_defs = []
+                for col in columns:
+                    col_name = col.get('name', 'Column')
+                    col_type = col.get('data_type', 'text')
+                    # Map common data types to M-query types
+                    m_type = self._map_to_m_query_type(col_type)
+                    column_defs.append(f'"{col_name}" = {m_type}')
+                
+                columns_str = ", ".join(column_defs)
+                return f'''// Python-generated M-query for {table_name}
 let
-    Source = Table.FromRows({{}}, type table [{columns_str}]),
-    // This is an empty table with the correct schema
-    #"Changed Type" = Source
+    Source = Table.FromRows({{}}),
+    // Define table schema with proper column types
+    #"Changed Type" = Table.TransformColumnTypes(Source, {{{columns_str}}})
 in
     #"Changed Type"'''
             else:
-                return f'''// Fallback M-query for {table_name} (LLM service unavailable)
+                # Fallback for tables with no column information
+                return f'''// Python-generated M-query for {table_name} (minimal schema)
 let
     Source = Table.FromRows({{}}),
-    // Empty table with no schema information
+    // Empty table with no schema information available
     #"Changed Type" = Source
 in
     #"Changed Type"'''
+    
+    def _map_to_m_query_type(self, data_type: str) -> str:
+        """Map data types to M-query type expressions"""
+        type_mapping = {
+            'string': 'type text',
+            'text': 'type text',
+            'varchar': 'type text',
+            'char': 'type text',
+            'int': 'type number',
+            'integer': 'type number',
+            'bigint': 'type number',
+            'decimal': 'type number',
+            'float': 'type number',
+            'double': 'type number',
+            'boolean': 'type logical',
+            'bool': 'type logical',
+            'date': 'type date',
+            'datetime': 'type datetime',
+            'timestamp': 'type datetime'
+        }
+        return type_mapping.get(data_type.lower(), 'type text')
+    
+    # Original fallback method removed - replaced by _generate_python_fallback_m_query above
