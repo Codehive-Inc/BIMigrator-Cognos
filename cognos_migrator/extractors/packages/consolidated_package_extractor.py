@@ -289,15 +289,13 @@ class ConsolidatedPackageExtractor:
             DataModel instance
         """
         try:
-            # Load settings from settings.json
-            settings = {}
-            try:
-                with open('settings.json', 'r') as f:
-                    settings = json.load(f)
-            except FileNotFoundError:
-                self.logger.warning("settings.json not found. Using default settings.")
+            # Use settings passed to constructor instead of loading separately
+            if not self.config:
+                self.logger.error("ConsolidatedPackageExtractor: No settings provided! Using default date table mode.")
+                date_table_mode = 'visible'
+            else:
+                date_table_mode = self.config.get('date_table_mode', 'visible')
             
-            date_table_mode = settings.get('date_table_mode', 'visible')
             self.logger.info(f"Using date table mode: {date_table_mode}")
 
             self.logger.info(f"Converting package {package_info['name']} to data model")

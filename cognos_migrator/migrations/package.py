@@ -544,6 +544,7 @@ def _migrate_shared_model(
             "output_path": str(report_output_path),
             "cognos_url": cognos_url,
             "session_key": session_key,
+            "settings": config  # Pass settings to individual report migrations
         }
         if reports_are_ids:
             migration_args["report_id"] = report_item
@@ -780,7 +781,7 @@ def _migrate_shared_model(
     # --- Step 7: Post-process the generated TMDL to fix relationships ---
     tmdl_relationships_file = pbit_dir / "Model" / "relationships.tmdl"
     if tmdl_relationships_file.exists():
-        post_processor = TMDLPostProcessor(logger=logging.getLogger(__name__))
+        post_processor = TMDLPostProcessor(logger=logging.getLogger(__name__), settings=config)
         post_processor.fix_relationships(str(tmdl_relationships_file))
     else:
         logging.warning(f"Could not find relationships file to post-process: {tmdl_relationships_file}")

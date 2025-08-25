@@ -48,8 +48,9 @@ class Graph:
         return False
 
 class TMDLPostProcessor:
-    def __init__(self, logger=None):
+    def __init__(self, logger=None, settings=None):
         self.logger = logger or logging.getLogger(__name__)
+        self.settings = settings
 
     def fix_relationships(self, tmdl_file_path: str):
         """
@@ -231,10 +232,12 @@ class TMDLPostProcessor:
         Currently removes CentralDateTable relationships when in DirectQuery mode.
         """
         try:
-            # Check if we're in DirectQuery mode and need to filter
-            from ..migrations.package import load_settings
-            settings = load_settings()
-            is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
+            # Use settings passed to constructor instead of loading separately
+            if self.settings is None:
+                self.logger.error("TMDLPostProcessor: No settings provided! Cannot determine DirectQuery mode. Using import mode as default.")
+                is_directquery = False
+            else:
+                is_directquery = self.settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
             
             if not is_directquery:
                 self.logger.info("Import mode detected, keeping all relationships")

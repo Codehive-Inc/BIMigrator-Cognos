@@ -1,39 +1,39 @@
-relationship 88c359e6-fa20-451a-9f8a-561a1e5b7d6d
-	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.SITE_NUMBER
-	toColumn: PURCHASE_ORDER_LINE.SITE_NUMBER
+relationship 3ec2ad8e-fc9b-485f-8261-690ca6477acf
+	fromColumn: PURCHASE_ORDER_DESCRIPTIONS.RELEASE_NUMBER
+	toColumn: PURCHASE_ORDER_LINE.RELEASE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship d2190c5a-f310-469c-9ef2-99c2b2b97f59
+relationship a6f88173-4b3d-4274-adc6-1faba9827f4d
 	fromColumn: PURCHASE_ORDER_LINE.SITE_NUMBER
-	toColumn: STORAGE_LOCATION.SITE_NUMBER
+	toColumn: ITEM_SITE_EXTRACT.SITE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship dd42e411-0fa9-4d0d-8eeb-3cd15a7f5001
-	fromColumn: ITEM_SITE_EXTRACT.SITE_NUMBER
-	toColumn: STORAGE_LOCATION.SITE_NUMBER
+relationship 726b8e65-49f0-4023-83e1-d7d6c702785a
+	fromColumn: PURCHASE_ORDER_LINE.RELEASE_NUMBER
+	toColumn: PURCHASE_ORDER_RECEIPT.RELEASE_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship b2ad196d-eadf-4951-af45-79db7151b2d3
-	fromColumn: PURCHASE_ORDER_LINE.UNIT_PRICE
-	toColumn: PURCHASE_ORDER_RECEIPT.UNIT_PRICE
+relationship d386f51f-0dfb-45d3-a911-923114356004
+	fromColumn: PURCHASE_ORDER_LINE.ITEM_NUMBER
+	toColumn: STORAGE_LOCATION.ITEM_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 8098e8e2-432b-453f-8a1e-d245fcc2eab1
-	fromColumn: PURCHASE_ORDER_LINE.UNIT_PRICE
-	toColumn: MATERIAL_CHARGES.UNIT_PRICE
+relationship 758a103d-8487-4a61-8300-cfb7e70dd578
+	fromColumn: PURCHASE_ORDER_LINE.BU_NUMBER
+	toColumn: MATERIAL_CHARGES.BU_NUMBER
 	crossFilteringBehavior: BothDirections
 	fromCardinality: many
 	isActive: true
 
-relationship 7783883a-4566-4a28-ab79-834fbd8b506f
+relationship b4cde184-1ab1-4ef8-9bf1-1200ab775578
 	fromColumn: ITEM_SITE_EXTRACT.STOP
 	toColumn: MANUFACTURER.STOP
 	crossFilteringBehavior: BothDirections
