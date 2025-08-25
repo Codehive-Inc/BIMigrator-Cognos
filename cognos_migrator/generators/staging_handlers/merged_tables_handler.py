@@ -341,7 +341,7 @@ class MergedTablesHandler(BaseHandler):
             measures=[],  # Combination tables typically don't have measures
             source_query="",  # M-query provides the source
             m_query=m_query,
-            partition_mode="directQuery" if self.data_load_mode == "direct_query" else "import",
+            partition_mode=self._get_partition_mode(),
             description=f"Combination table joining {from_table.name} and {to_table.name}",
             annotations={},
             metadata={}
@@ -484,7 +484,7 @@ class MergedTablesHandler(BaseHandler):
             columns=combined_columns,
             m_query=native_sql_query,
             source_query=native_sql_query,
-            partition_mode="directQuery"
+            partition_mode=self._get_partition_mode()  # Use correct partition mode from settings
         )
         
         self.logger.info(f"Created DirectQuery combination table {combination_table_name} with native SQL and {len(combined_columns)} columns")
@@ -646,7 +646,7 @@ class MergedTablesHandler(BaseHandler):
             measures=[],  # Combination tables typically don't have measures
             source_query="",  # M-query provides the source
             m_query=None,  # FORCE REGENERATION: Clear cached M-query to use new deduplication logic
-            partition_mode="directQuery" if self.data_load_mode == "direct_query" else "import",
+            partition_mode=self._get_partition_mode(),
             description=f"Combination table joining {from_table.name} and {to_table.name}",
             annotations={},
             metadata={}

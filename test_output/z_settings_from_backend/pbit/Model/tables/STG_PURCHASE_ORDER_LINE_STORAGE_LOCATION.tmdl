@@ -1,0 +1,742 @@
+table STG_PURCHASE_ORDER_LINE_STORAGE_LOCATION
+
+
+    column 'SITE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SITE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CHANGE_ORDER_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: CHANGE_ORDER_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_LINE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_LINE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STATUS_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: STATUS_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'ITEM_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: ITEM_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_PRICE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: UNIT_PRICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BU_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BU_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'JOB_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: JOB_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_MEASURE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_MEASURE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROMISED_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: PROMISED_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_REJECTED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_REJECTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_IN_INVENT'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_IN_INVENT
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_RECD_SITE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_RECD_SITE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_LAST_IN_HOLD'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_LAST_IN_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ORDERED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ORDERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_RECD_TO_DATE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_RECD_TO_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_ON_HOLD'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_ON_HOLD
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_INSPECTOR'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_INSPECTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QA_LEVEL'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: QA_LEVEL
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUISITION'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUISITION
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'VENDOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: VENDOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_CLASS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_CLASS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BLANKET_TYPE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: BLANKET_TYPE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BLANKET_BEGIN_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: BLANKET_BEGIN_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'BLANKET_END_DATE'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: BLANKET_END_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ROOT_ENTERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ROOT_ENTERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ROOT_ORDERED'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ROOT_ORDERED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DATE_ROOT_STATUS'
+        dataType: dateTime
+        summarizeBy: none
+        sourceColumn: DATE_ROOT_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOLLARS_COMMITTED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DOLLARS_COMMITTED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'MAX_DOLLARS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: MAX_DOLLARS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LAST_BLANKET_RELEASE_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LAST_BLANKET_RELEASE_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PO_ROOT_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PO_ROOT_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REVISION_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REVISION_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SERVICE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: SERVICE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DOLLARS_RECEIVED'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: DOLLARS_RECEIVED
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSR_NUMBER'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSR_NUMBER
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'DSR_HOLD_STATUS'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: DSR_HOLD_STATUS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROMISE_DATE_IND'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROMISE_DATE_IND
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PRICE_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PRICE_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'PROCUREMENT_CODE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: PROCUREMENT_CODE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'QTY_REJECTED_TO_DATE'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: QTY_REJECTED_TO_DATE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'REQUESTOR_NAME'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: REQUESTOR_NAME
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'UNIT_OF_PURCHASE'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: UNIT_OF_PURCHASE
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'CONVERSION_FACTOR'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: CONVERSION_FACTOR
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'STOP'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: STOP
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'SEGMENTS'
+        dataType: int64
+        summarizeBy: none
+        sourceColumn: SEGMENTS
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_1'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_1
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_2'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_2
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_3'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_3
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_4'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_4
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_5'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_5
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION6'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_6'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_6
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION7'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION7
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_7'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_7
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION8'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION8
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_8'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_8
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION9'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION9
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_9'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_9
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOCATION10'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOCATION10
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+    column 'LOC_NUMBER_10'
+        dataType: string
+        summarizeBy: none
+        sourceColumn: LOC_NUMBER_10
+
+        
+
+        annotation SummarizationSetBy = Automatic
+
+        
+
+
+
+    partition 'STG_PURCHASE_ORDER_LINE_STORAGE_LOCATION' = m
+        mode: directQuery
+        source = 
+            let
+                Source = Sql.Database("REPLACE_WITH_YOUR_SERVER", "REPLACE_WITH_YOUR_DATABASE"),
+                Query = Value.NativeQuery(
+                    Source,
+                    "SELECT a.[SITE_NUMBER], a.[PO_NUMBER], a.[CHANGE_ORDER_NUMBER], a.[RELEASE_NUMBER], a.[PO_LINE_NUMBER], a.[STATUS], a.[STATUS_DATE], a.[ITEM_NUMBER], a.[UNIT_PRICE], a.[BU_NUMBER], a.[JOB_NUMBER], a.[UNIT_OF_MEASURE], a.[PROMISED_DATE], a.[DATE_LAST_REJECTED], a.[DATE_LAST_IN_INVENT], a.[DATE_LAST_RECD_SITE], a.[DATE_LAST_IN_HOLD], a.[DATE_ENTERED], a.[QTY_ORDERED], a.[QTY_RECD_TO_DATE], a.[QTY_ON_HOLD], a.[QA_CODE], a.[QA_INSPECTOR], a.[QA_LEVEL], a.[REQUISITION], a.[VENDOR_NAME], a.[PO_TYPE], a.[PO_CLASS], a.[BLANKET_TYPE], a.[BLANKET_BEGIN_DATE], a.[BLANKET_END_DATE], a.[DATE_ROOT_ENTERED], a.[DATE_ROOT_ORDERED], a.[DATE_ROOT_STATUS], a.[DOLLARS_COMMITTED], a.[MAX_DOLLARS], a.[LAST_BLANKET_RELEASE_NUMBER], a.[PO_ROOT_STATUS], a.[REVISION_NUMBER], a.[SERVICE], a.[DOLLARS_RECEIVED], a.[DSR_NUMBER], a.[DSR_HOLD_STATUS], a.[PROMISE_DATE_IND], a.[PRICE_CODE], a.[PROCUREMENT_CODE], a.[QTY_REJECTED_TO_DATE], a.[REQUESTOR_NAME], a.[UNIT_OF_PURCHASE], a.[CONVERSION_FACTOR], a.[STOP], a.[SITE_NUMBER], a.[PO_NUMBER], a.[CHANGE_ORDER_NUMBER], a.[RELEASE_NUMBER], a.[PO_LINE_NUMBER], a.[STATUS], a.[STATUS_DATE], a.[ITEM_NUMBER], a.[UNIT_PRICE], a.[BU_NUMBER], a.[JOB_NUMBER], a.[UNIT_OF_MEASURE], a.[PROMISED_DATE], a.[DATE_LAST_REJECTED], a.[DATE_LAST_IN_INVENT], a.[DATE_LAST_RECD_SITE], a.[DATE_LAST_IN_HOLD], a.[DATE_ENTERED], a.[QTY_ORDERED], a.[QTY_RECD_TO_DATE], a.[QTY_ON_HOLD], a.[QA_CODE], a.[QA_INSPECTOR], a.[QA_LEVEL], a.[REQUISITION], a.[VENDOR_NAME], a.[PO_TYPE], a.[PO_CLASS], a.[BLANKET_TYPE], a.[BLANKET_BEGIN_DATE], a.[BLANKET_END_DATE], a.[DATE_ROOT_ENTERED], a.[DATE_ROOT_ORDERED], a.[DATE_ROOT_STATUS], a.[DOLLARS_COMMITTED], a.[MAX_DOLLARS], a.[LAST_BLANKET_RELEASE_NUMBER], a.[PO_ROOT_STATUS], a.[REVISION_NUMBER], a.[SERVICE], a.[DOLLARS_RECEIVED], a.[DSR_NUMBER], a.[DSR_HOLD_STATUS], a.[PROMISE_DATE_IND], a.[PRICE_CODE], a.[PROCUREMENT_CODE], a.[QTY_REJECTED_TO_DATE], a.[REQUESTOR_NAME], a.[UNIT_OF_PURCHASE], a.[CONVERSION_FACTOR], a.[STOP], b.[SEGMENTS], b.[LOCATION1], b.[LOC_NUMBER_1], b.[LOCATION2], b.[LOC_NUMBER_2], b.[LOCATION3], b.[LOC_NUMBER_3], b.[LOCATION4], b.[LOC_NUMBER_4], b.[LOCATION5], b.[LOC_NUMBER_5], b.[LOCATION6], b.[LOC_NUMBER_6], b.[LOCATION7], b.[LOC_NUMBER_7], b.[LOCATION8], b.[LOC_NUMBER_8], b.[LOCATION9], b.[LOC_NUMBER_9], b.[LOCATION10], b.[LOC_NUMBER_10], b.[SEGMENTS], b.[LOCATION1], b.[LOC_NUMBER_1], b.[LOCATION2], b.[LOC_NUMBER_2], b.[LOCATION3], b.[LOC_NUMBER_3], b.[LOCATION4], b.[LOC_NUMBER_4], b.[LOCATION5], b.[LOC_NUMBER_5], b.[LOCATION6], b.[LOC_NUMBER_6], b.[LOCATION7], b.[LOC_NUMBER_7], b.[LOCATION8], b.[LOC_NUMBER_8], b.[LOCATION9], b.[LOC_NUMBER_9], b.[LOCATION10], b.[LOC_NUMBER_10] FROM [PURCHASE_ORDER_LINE] a LEFT JOIN [STORAGE_LOCATION] b ON a.[ITEM_NUMBER] = b.[ITEM_NUMBER] AND a.[SITE_NUMBER] = b.[SITE_NUMBER]"
+                )
+                in
+                Query
+        
+
+
+
+    annotation PBI_ResultType = Table

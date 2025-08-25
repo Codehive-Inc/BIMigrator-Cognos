@@ -67,10 +67,16 @@ class StagingTableHandler:
         self.model_handling = self.staging_settings.get('model_handling', 'none')
         
         # Log settings
-        self.logger.info(f"Staging table settings: enabled={self.enabled}, "
+        self.logger.info(f"StagingTableHandler initialized with settings: enabled={self.enabled}, "
                          f"naming_prefix={self.naming_prefix}, "
                          f"data_load_mode={self.data_load_mode}, "
                          f"model_handling={self.model_handling}")
+        
+        # Log the full settings structure for debugging
+        self.logger.info(f"Full settings received: {settings}")
+        
+        # Store full settings for handler initialization
+        self._full_settings = settings
         
         # Initialize specialized handlers
         self._initialize_handlers()
@@ -80,22 +86,18 @@ class StagingTableHandler:
         if not self.enabled or self.model_handling == 'none':
             return
         
-        handler_settings = {
-            'enabled': self.enabled,
-            'naming_prefix': self.naming_prefix,
-            'data_load_mode': self.data_load_mode,
-            'model_handling': self.model_handling
-        }
+        # Store the full settings for handler initialization
+        full_settings = getattr(self, '_full_settings', {})
         
-        # Initialize handlers
+        # Initialize handlers with full settings (BaseHandler will extract staging_tables section)
         self.star_schema_handler = StarSchemaHandler(
-            settings=handler_settings,
+            settings=full_settings,  # Pass full settings, BaseHandler will extract staging_tables
             extracted_dir=self.extracted_dir,
             mquery_converter=self.mquery_converter
         )
         
         self.merged_tables_handler = MergedTablesHandler(
-            settings=handler_settings,
+            settings=full_settings,  # Pass full settings, BaseHandler will extract staging_tables
             extracted_dir=self.extracted_dir,
             mquery_converter=self.mquery_converter
         )

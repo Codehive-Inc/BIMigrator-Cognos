@@ -747,6 +747,12 @@ class ModelFileGenerator:
     
     def _get_data_load_mode(self) -> str:
         """Get data load mode from staging table settings."""
+        # Use settings passed to constructor, fall back to file if not available
+        if hasattr(self, 'settings') and self.settings:
+            staging_settings = self.settings.get('staging_tables', {})
+            return staging_settings.get('data_load_mode', 'import')
+        
+        # Fall back to reading from settings.json file
         try:
             with open('settings.json', 'r') as f:
                 settings = json.load(f)

@@ -441,6 +441,13 @@ class PackageModelFileGenerator:
     
     def _get_partition_mode(self) -> str:
         """Get partition mode from staging table settings."""
+        # Use settings passed to constructor, fall back to file if not available
+        if hasattr(self, 'settings') and self.settings:
+            staging_settings = self.settings.get('staging_tables', {})
+            data_load_mode = staging_settings.get('data_load_mode', 'import')
+            return 'directQuery' if data_load_mode == 'direct_query' else 'import'
+        
+        # Fall back to reading from settings.json file
         try:
             with open('settings.json', 'r') as f:
                 settings = json.load(f)
