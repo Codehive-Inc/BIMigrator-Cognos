@@ -30,7 +30,11 @@ class BaseHandler:
         self.mquery_converter = mquery_converter
         
         # Extract staging table settings from the full settings dictionary
-        staging_settings = settings.get('staging_tables', {}) if isinstance(settings, dict) else settings
+        # Settings should always be a dict at this point in the consistent approach
+        if not isinstance(settings, dict):
+            self.logger.error(f"BaseHandler: Expected dict settings, got {type(settings)}. Using empty dict.")
+            settings = {}
+        staging_settings = settings.get('staging_tables', {})
         
         # Extract common settings from staging_tables section
         self.enabled = staging_settings.get('enabled', False)

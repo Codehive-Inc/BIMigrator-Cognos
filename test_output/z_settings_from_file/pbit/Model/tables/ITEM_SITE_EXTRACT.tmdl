@@ -675,7 +675,7 @@ table ITEM_SITE_EXTRACT
 
 
     partition 'ITEM_SITE_EXTRACT' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let

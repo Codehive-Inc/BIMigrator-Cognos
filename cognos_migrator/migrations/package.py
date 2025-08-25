@@ -366,18 +366,18 @@ def load_settings(custom_settings: Union[Dict[str, Any], str, None] = None) -> D
     return settings
 
 
-def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) -> DataModel:
+def filter_data_model_tables(data_model: DataModel, table_references: Set[str], settings: Dict[str, Any]) -> DataModel:
     """Filter the data model to include only tables referenced by reports
     
     Args:
         data_model: The original data model with all tables
         table_references: Set of table names referenced by reports
+        settings: Settings dictionary (passed from entry point)
         
     Returns:
         Filtered data model with only referenced tables
     """
-    # Load table filtering settings
-    settings = load_settings()
+    # Use passed settings (no separate loading)
     filtering_settings = settings.get('table_filtering', {})
     filtering_mode = filtering_settings.get('mode', 'include-all')
     always_include = filtering_settings.get('always_include', [])
@@ -463,7 +463,7 @@ def filter_data_model_tables(data_model: DataModel, table_references: Set[str]) 
     filtered_relationships = []
 
     # Check DirectQuery mode and date table compatibility
-    settings = load_settings()
+    # Use the settings that were passed to this function
     is_directquery = settings.get("staging_tables", {}).get("data_load_mode", "import") == "direct_query"
     has_central_date_table = "CentralDateTable" in filtered_table_names
     always_include = settings.get("table_filtering", {}).get("always_include", [])
@@ -806,11 +806,14 @@ def migrate_package_with_local_reports(
         cognos_url: str,
         session_key: str,
         task_id: Optional[str] = None,
-        settings: str = None
+        settings: Optional[Dict[str, Any]] = None
 ) -> bool:
     """Orchestrates shared model creation for a package and local report files."""
-    settings = load_settings(custom_settings=settings)
-    logging.info(f"In migrate_package_with_local_reports, loaded settings: {settings}")
+    # Load settings ONLY if not provided (entry point responsibility)
+    if settings is None:
+        settings = load_settings()
+    
+    logging.info(f"In migrate_package_with_local_reports, using settings: {settings}")
     return _migrate_shared_model(
         package_file=package_file_path,
         reports=report_file_paths,
@@ -833,13 +836,13 @@ def migrate_package_with_reports_explicit_session(package_file_path: str,
                                                   dry_run: bool = False,
                                                   settings: Optional[Dict[str, Any]] = None) -> bool:
     """Orchestrates shared model creation for a package and live report IDs."""
-    # Use provided settings or fall back to file-based settings
-    if settings:
-        config = settings
-        logging.info(f"Using provided settings: {config}")
-    else:
+    # Load settings ONLY if not provided (entry point responsibility)
+    if settings is None:
         config = load_settings()
         logging.info(f"FILTERING DEBUG: In migrate_package_with_reports_explicit_session, loaded settings from file: {config}")
+    else:
+        config = settings
+        logging.info(f"Using provided settings: {config}")
     
     return _migrate_shared_model(
         package_file=package_file_path,

@@ -447,15 +447,9 @@ class PackageModelFileGenerator:
             data_load_mode = staging_settings.get('data_load_mode', 'import')
             return 'directQuery' if data_load_mode == 'direct_query' else 'import'
         
-        # Fall back to reading from settings.json file
-        try:
-            with open('settings.json', 'r') as f:
-                settings = json.load(f)
-            staging_settings = settings.get('staging_tables', {})
-            data_load_mode = staging_settings.get('data_load_mode', 'import')
-            return 'directQuery' if data_load_mode == 'direct_query' else 'import'
-        except (FileNotFoundError, json.JSONDecodeError):
-            return 'import'
+        # No fallback loading - settings should be passed from entry point
+        self.logger.error("PackageModelFileGenerator: No settings provided! Settings should be passed from entry point.")
+        return 'import'  # Safe default
     
     def _build_package_m_expression(self, table: Table) -> str:
         """Build M expression for package table partition"""

@@ -899,14 +899,9 @@ class CognosModuleParser:
     
     def _get_partition_mode(self) -> str:
         """Get partition mode from staging table settings."""
-        try:
-            with open('settings.json', 'r') as f:
-                settings = json.load(f)
-            staging_settings = settings.get('staging_tables', {})
-            data_load_mode = staging_settings.get('data_load_mode', 'import')
-            return 'directQuery' if data_load_mode == 'direct_query' else 'import'
-        except (FileNotFoundError, json.JSONDecodeError):
-            return 'import'
+        # CognosModuleParser should receive settings from migrator instead of loading separately
+        self.logger.warning("CognosModuleParser: No settings access! Using default 'import' mode. Settings should be passed from migrator.")
+        return 'import'  # Safe default
     
     def _build_m_expression(self, source_query: str) -> str:
         """Build M expression for Power BI partition"""

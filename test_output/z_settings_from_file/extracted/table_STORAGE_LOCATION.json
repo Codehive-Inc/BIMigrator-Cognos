@@ -427,7 +427,7 @@
     {
       "name": "STORAGE_LOCATION",
       "source_type": "m",
-      "mode": "import",
+      "mode": "directQuery",
       "expression": "\n                let\n                    Source = Sql.Database(\"REPLACE_WITH_YOUR_SERVER\", \"REPLACE_WITH_YOUR_DATABASE\"),\n                    ExecuteQuery = Value.NativeQuery(Source, \"SELECT \"\"ITEM_NUMBER\"\", \"\"SITE_NUMBER\"\", \"\"SEGMENTS\"\", \"\"LOCATION1\"\", \"\"LOC_NUMBER_1\"\", \"\"LOCATION2\"\", \"\"LOC_NUMBER_2\"\", \"\"LOCATION3\"\", \"\"LOC_NUMBER_3\"\", \"\"LOCATION4\"\", \"\"LOC_NUMBER_4\"\", \"\"LOCATION5\"\", \"\"LOC_NUMBER_5\"\", \"\"LOCATION6\"\", \"\"LOC_NUMBER_6\"\", \"\"LOCATION7\"\", \"\"LOC_NUMBER_7\"\", \"\"LOCATION8\"\", \"\"LOC_NUMBER_8\"\", \"\"LOCATION9\"\", \"\"LOC_NUMBER_9\"\", \"\"LOCATION10\"\", \"\"LOC_NUMBER_10\"\", \"\"STOP\"\" FROM \"\"STORAGE_LOCATION\"\"\", null, [EnableFolding=true]),\n                    #\"Removed Errors\" = Table.RemoveRowsWithErrors(ExecuteQuery)\n                in\n                    #\"Removed Errors\""
     }
   ],

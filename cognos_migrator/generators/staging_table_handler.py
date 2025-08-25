@@ -44,21 +44,10 @@ class StagingTableHandler:
         self.extracted_dir = extracted_dir
         self.mquery_converter = mquery_converter
         
-        # Load settings if not provided
+        # Settings should ALWAYS be provided from the entry point
         if settings is None:
-            settings_path = Path(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) / 'settings.json'
-            if settings_path.exists():
-                try:
-                    with open(settings_path, 'r', encoding='utf-8') as f:
-                        settings = json.load(f)
-                    self.logger.info(f"Loaded settings from {settings_path}")
-                except Exception as e:
-                    self.logger.warning(f"Error loading settings from {settings_path}: {e}")
-                    settings = {}
-            else:
-                self.logger.warning(f"Settings file not found at {settings_path}")
-                settings = {}
-        
+            self.logger.error("StagingTableHandler: No settings provided! Settings should be passed from entry point.")
+            settings = {}  # Use empty dict as fallback to prevent crashes
         # Extract staging table settings
         self.staging_settings = settings.get('staging_tables', {})
         self.enabled = self.staging_settings.get('enabled', False)

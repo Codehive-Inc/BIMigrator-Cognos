@@ -43,7 +43,8 @@ def test_cognos_connection(cognos_url: str, session_key: str) -> bool:
 def post_process_module_with_explicit_session(module_id: str, output_path: str,
                                              cognos_url: str, session_key: str,
                                              successful_report_ids: List[str] = None,
-                                             auth_key: str = "IBM-BA-Authorization") -> bool:
+                                             auth_key: str = "IBM-BA-Authorization",
+                                             settings: Optional[Dict[str, Any]] = None) -> bool:
     """Post-process a module with explicit session credentials
     
     This function does not use environment variables and will raise an exception
@@ -56,6 +57,7 @@ def post_process_module_with_explicit_session(module_id: str, output_path: str,
         session_key: The session key for authentication
         successful_report_ids: List of successfully migrated report IDs
         auth_key: The authentication header key (default: IBM-BA-Authorization)
+        settings: Optional settings dictionary to override default settings.json
         
     Returns:
         bool: True if post-processing was successful, False otherwise
@@ -104,7 +106,8 @@ def post_process_module_with_explicit_session(module_id: str, output_path: str,
             cognos_config=cognos_config,
             cognos_url=cognos_url,
             session_key=session_key,
-            logger=logger
+            logger=logger,
+            settings=settings
         )
         
         # Consolidate model tables

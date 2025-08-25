@@ -752,14 +752,9 @@ class ModelFileGenerator:
             staging_settings = self.settings.get('staging_tables', {})
             return staging_settings.get('data_load_mode', 'import')
         
-        # Fall back to reading from settings.json file
-        try:
-            with open('settings.json', 'r') as f:
-                settings = json.load(f)
-            staging_settings = settings.get('staging_tables', {})
-            return staging_settings.get('data_load_mode', 'import')
-        except (FileNotFoundError, json.JSONDecodeError):
-            return 'import'
+        # No fallback loading - settings should be passed from entry point
+        self.logger.error("ModelFileGenerator: No settings provided! Settings should be passed from entry point.")
+        return 'import'  # Safe default
     
     def _build_direct_query_expression(self, table: Table, report_spec: Optional[str] = None) -> str:
         """Build M expression for DirectQuery mode - simplified for direct database access"""

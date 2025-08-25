@@ -85,7 +85,8 @@ class CognosModuleMigratorExplicit:
             # Default to report converter for backward compatibility
             module_model_file_generator = ModuleModelFileGenerator(
                 template_engine, 
-                mquery_converter=report_mquery_converter
+                mquery_converter=report_mquery_converter,
+                settings=self.settings
             )
             self.project_generator.model_file_generator = module_model_file_generator
             

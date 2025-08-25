@@ -255,7 +255,7 @@ table PURCHASE_ORDER_RECEIPT
 
 
     partition 'PURCHASE_ORDER_RECEIPT' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let

@@ -115,7 +115,7 @@ table MANUFACTURER
 
 
     partition 'MANUFACTURER' = m
-        mode: import
+        mode: directQuery
         source = 
             
                 let
